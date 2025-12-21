@@ -5,6 +5,17 @@ const PAGE_SIZE = 20;
 let LOADING = false;
 
 // -----------------------------
+// 개발자 모드 (?dev=1009)
+// -----------------------------
+const DEV_MODE = (() => {
+  const params = new URLSearchParams(location.search);
+  return params.get('dev') === '1009';
+})();
+
+// 🔍 디버그용 검색 통계 (DEV 전용)
+const SEARCH_STATS = new Map();
+
+// -----------------------------
 // 인덱스 로딩
 // -----------------------------
 fetch('artist_song_index.json')
@@ -12,7 +23,7 @@ fetch('artist_song_index.json')
   .then(data => INDEX = data);
 
 // -----------------------------
-// 한글 / 영문 / 숫자 / 특수문자 자동 분리
+// 토큰 분리
 // -----------------------------
 function splitMixedTokens(input) {
   return input
@@ -30,7 +41,7 @@ function splitMixedTokens(input) {
 }
 
 // -----------------------------
-// debounce (모바일 최적화)
+// debounce
 // -----------------------------
 function debounce(fn, delay = 200) {
   let timer;
@@ -48,11 +59,12 @@ const startSearch = debounce(() => {
   RESULTS = [];
   document.getElementById('result').innerHTML = '';
   document.getElementById('resultCount').textContent = '';
+  document.getElementById('debugLog')?.remove();
   search();
 }, 200);
 
 // -----------------------------
-// 매칭 점수 계산
+// 점수 계산
 // -----------------------------
 function matchScore(token, keyword, weight) {
   if (token === keyword) return weight.exact;
@@ -62,67 +74,54 @@ function matchScore(token, keyword, weight) {
 }
 
 // -----------------------------
-// 검색 메인
+// 단계별 검색
 // -----------------------------
-function search() {
-  const raw = document.getElementById('q').value.trim();
-  if (!raw) return;
+function runSearch(terms, mode) {
+  const WEIGHTS = {
+    recall: {
+      title: { exact: 10, prefix: 6, partial: 3 },
+      track: { exact: 4, prefix: 2, partial: 1 }
+    },
+    precision: {
+      title: { exact: 20, prefix: 12, partial: 6 },
+      track: { exact: 8, prefix: 4, partial: 2 }
+    },
+    relaxed: {
+      title: { exact: 14, prefix: 8, partial: 4 },
+      track: { exact: 6, prefix: 3, partial: 1 }
+    }
+  };
 
-  const terms = splitMixedTokens(raw);
-  if (!terms.length) return;
+  const W = WEIGHTS[mode];
 
-  const joinedQuery = terms.join(' ');
-
-  const precisionMode =
-    document.getElementById('modeToggle')?.checked ?? true;
-  const debugMode =
-    document.getElementById('debugToggle')?.checked ?? false;
-
-  RESULTS = INDEX
+  return INDEX
     .map(item => {
       let score = 0;
-      let matchedCount = 0;
-
-      const titleKeywords = item.keywords.title || [];
-      const trackKeywords = item.keywords.track || [];
-
-      const TITLE_WEIGHT = { exact: 20, prefix: 12, partial: 6 };
-      const TRACK_WEIGHT = { exact: 8, prefix: 4, partial: 2 };
+      let matched = 0;
 
       for (const term of terms) {
-        let bestScore = 0;
+        let best = 0;
 
-        for (const k of titleKeywords) {
-          bestScore = Math.max(
-            bestScore,
-            matchScore(term, k, TITLE_WEIGHT)
-          );
+        for (const k of item.keywords.title || []) {
+          best = Math.max(best, matchScore(term, k, W.title));
+        }
+        for (const k of item.keywords.track || []) {
+          best = Math.max(best, matchScore(term, k, W.track));
         }
 
-        for (const k of trackKeywords) {
-          bestScore = Math.max(
-            bestScore,
-            matchScore(term, k, TRACK_WEIGHT)
-          );
-        }
-
-        if (bestScore > 0) {
-          matchedCount++;
-          score += bestScore;
-        } else if (precisionMode) {
-          return null; // 정확도 모드 → AND 실패
+        if (best > 0) {
+          matched++;
+          score += best;
+        } else if (mode !== 'recall') {
+          return null;
         }
       }
 
-      // 많이 나오는 검색 (Recall)
-      if (!precisionMode && matchedCount === 0) {
-        return null;
-      }
+      if (mode === 'recall' && matched === 0) return null;
 
-      // title 순서 보너스
       if (item.title) {
         const normTitle = splitMixedTokens(item.title).join(' ');
-        if (normTitle.includes(joinedQuery)) {
+        if (normTitle.includes(terms.join(' '))) {
           score += 15;
         }
       }
@@ -131,25 +130,83 @@ function search() {
     })
     .filter(Boolean)
     .sort((a, b) => b._score - a._score);
+}
 
-  // 결과 개수 표시
+// -----------------------------
+// 검색 메인 (자동 전략 + DEV 디버그)
+// -----------------------------
+function search() {
+  const raw = document.getElementById('q').value.trim();
+  if (!raw) return;
+
+  const terms = splitMixedTokens(raw);
+  if (!terms.length) return;
+
+  const queryKey = terms.join(' ');
+
+  const debugMode =
+    DEV_MODE && document.getElementById('debugToggle')?.checked;
+
+  const recall = runSearch(terms, 'recall');
+  const precision = recall.length >= 10 ? runSearch(terms, 'precision') : [];
+  const relaxed =
+    recall.length >= 10 && precision.length < 3
+      ? runSearch(terms, 'relaxed')
+      : [];
+
+  let finalResults = recall;
+  let path = `recall(${recall.length})`;
+
+  if (recall.length >= 10 && precision.length >= 3) {
+    finalResults = precision;
+    path += ` → precision(${precision.length})`;
+  } else if (recall.length >= 10) {
+    finalResults = relaxed;
+    path += ` → precision(${precision.length}) → relaxed(${relaxed.length})`;
+  }
+
+  RESULTS = finalResults;
+
+  // -----------------------------
+  // DEV 전용 디버그 로그
+  // -----------------------------
+  if (debugMode) {
+    const stat = SEARCH_STATS.get(queryKey) || { count: 0, total: 0 };
+    stat.count++;
+    stat.total += RESULTS.length;
+    SEARCH_STATS.set(queryKey, stat);
+
+    const avg = (stat.total / stat.count).toFixed(1);
+
+    const debugDiv = document.createElement('div');
+    debugDiv.id = 'debugLog';
+    debugDiv.className = 'search-debug';
+    debugDiv.innerHTML = `
+      🔍 검색 전략: ${path}<br/>
+      📊 평균 결과 수: ${avg}
+    `;
+
+    document.getElementById('resultCount').after(debugDiv);
+  }
+
   document.getElementById(
     'resultCount'
   ).textContent = `검색 결과 ${RESULTS.length}건`;
 
-  renderNextPage(debugMode);
+  renderNextPage();
 }
 
 // -----------------------------
-// 페이지 렌더링
+// 렌더링
 // -----------------------------
-function renderNextPage(debugMode = false) {
+function renderNextPage() {
   if (LOADING) return;
   LOADING = true;
 
-  const start = PAGE * PAGE_SIZE;
-  const end = start + PAGE_SIZE;
-  const slice = RESULTS.slice(start, end);
+  const slice = RESULTS.slice(
+    PAGE * PAGE_SIZE,
+    (PAGE + 1) * PAGE_SIZE
+  );
   if (!slice.length) {
     LOADING = false;
     return;
@@ -161,26 +218,17 @@ function renderNextPage(debugMode = false) {
     const li = document.createElement('li');
     li.className = 'search-item';
 
-    const titleLink = document.createElement('a');
-    titleLink.href = item.link;
-    titleLink.target = '_blank';
-    titleLink.className = 'search-title';
-    titleLink.textContent = item.title;
+    const a = document.createElement('a');
+    a.href = item.link;
+    a.target = '_blank';
+    a.className = 'search-title';
+    a.textContent = item.title;
 
-    li.appendChild(titleLink);
+    const p = document.createElement('div');
+    p.className = 'search-preview';
+    p.textContent = item.preview || '';
 
-    if (debugMode) {
-      const debug = document.createElement('div');
-      debug.className = 'search-debug';
-      debug.textContent = `score: ${item._score}`;
-      li.appendChild(debug);
-    }
-
-    const preview = document.createElement('div');
-    preview.className = 'search-preview';
-    preview.textContent = item.preview || '';
-
-    li.appendChild(preview);
+    li.append(a, p);
     ul.appendChild(li);
   });
 
@@ -196,8 +244,6 @@ window.addEventListener('scroll', () => {
     window.innerHeight + window.scrollY >=
     document.body.offsetHeight - 120
   ) {
-    renderNextPage(
-      document.getElementById('debugToggle')?.checked
-    );
+    renderNextPage();
   }
 });
