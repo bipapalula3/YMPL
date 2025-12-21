@@ -42,7 +42,6 @@
       user-select: none;
     }
 
-    /* 🔽 검색 결과 개수 */
     #resultCount {
       font-size: 0.85rem;
       color: #94a3b8;
@@ -70,7 +69,6 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
-
       font-weight: bold;
       font-size: 1rem;
       line-height: 1.4;
@@ -88,7 +86,6 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
-
       font-size: 0.9rem;
       line-height: 1.4;
       color: #cbd5e1;
@@ -96,7 +93,6 @@
       white-space: pre-line;
     }
 
-    /* 🔽 score 디버그 표시 */
     .search-debug {
       font-size: 0.75rem;
       color: #64748b;
@@ -121,19 +117,31 @@
   oninput="startSearch()"
 />
 
-<!-- 🔽 검색 옵션 (디버그만 유지) -->
-<div class="search-options">
+<!-- 🔽 디버그 토글 (개발자 전용) -->
+<div class="search-options" id="debugOptions">
   <label>
     <input type="checkbox" id="debugToggle" />
     score 디버그
   </label>
 </div>
 
-<!-- 🔽 검색 결과 개수 -->
 <div id="resultCount"></div>
 
 <ul id="result"></ul>
 <div id="loading" class="loading" style="display:none;">Loading...</div>
+
+<!-- 🔒 개발자 모드 체크 -->
+<script>
+  (function () {
+    const params = new URLSearchParams(location.search);
+    const isDev = params.get('dev') === '1009';
+
+    if (!isDev) {
+      const debug = document.getElementById('debugOptions');
+      if (debug) debug.style.display = 'none';
+    }
+  })();
+</script>
 
 </body>
 </html>
