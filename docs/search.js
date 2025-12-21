@@ -4,6 +4,9 @@ let PAGE = 0;
 const PAGE_SIZE = 20;
 let LOADING = false;
 
+// 기본 커버 이미지 (fallback)
+const DEFAULT_COVER = 'icon80.png';
+
 // -----------------------------
 // 개발자 모드 (?dev=1009)
 // -----------------------------
@@ -193,7 +196,7 @@ function search() {
 }
 
 // -----------------------------
-// 렌더링 (타이틀 + 프리뷰 전체 링크화)
+// 렌더링 (카드 + 커버 이미지 + lazy-load)
 // -----------------------------
 function renderNextPage() {
   if (LOADING) return;
@@ -203,6 +206,7 @@ function renderNextPage() {
     PAGE * PAGE_SIZE,
     (PAGE + 1) * PAGE_SIZE
   );
+
   if (!slice.length) {
     LOADING = false;
     return;
@@ -214,21 +218,35 @@ function renderNextPage() {
     const li = document.createElement('li');
     li.className = 'search-item';
 
-    const link = document.createElement('a');
-    link.href = item.link;
-    link.target = '_blank';
-    link.style.textDecoration = 'none';
+    // 왼쪽 컨텐츠
+    const content = document.createElement('div');
+    content.className = 'search-content';
 
-    const title = document.createElement('div');
-    title.className = 'search-title';
-    title.textContent = item.title;
+    const a = document.createElement('a');
+    a.href = item.link;
+    a.target = '_blank';
+    a.className = 'search-title';
+    a.textContent = item.title;
 
     const preview = document.createElement('div');
     preview.className = 'search-preview';
     preview.textContent = item.preview || '';
 
-    link.append(title, preview);
-    li.appendChild(link);
+    content.append(a, preview);
+
+    // 오른쪽 커버 이미지
+    const img = document.createElement('img');
+    img.className = 'search-cover';
+    img.loading = 'lazy';
+    img.src = item.cover || DEFAULT_COVER;
+    img.alt = '';
+
+    // fallback 처리
+    img.onerror = () => {
+      img.src = DEFAULT_COVER;
+    };
+
+    li.append(content, img);
     ul.appendChild(li);
   });
 
