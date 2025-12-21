@@ -133,7 +133,7 @@ function runSearch(terms, mode) {
 }
 
 // -----------------------------
-// 검색 메인 (자동 전략 + DEV 디버그)
+// 검색 메인
 // -----------------------------
 function search() {
   const raw = document.getElementById('q').value.trim();
@@ -167,9 +167,6 @@ function search() {
 
   RESULTS = finalResults;
 
-  // -----------------------------
-  // DEV 전용 디버그 로그
-  // -----------------------------
   if (debugMode) {
     const stat = SEARCH_STATS.get(queryKey) || { count: 0, total: 0 };
     stat.count++;
@@ -185,7 +182,6 @@ function search() {
       🔍 검색 전략: ${path}<br/>
       📊 평균 결과 수: ${avg}
     `;
-
     document.getElementById('resultCount').after(debugDiv);
   }
 
@@ -197,7 +193,7 @@ function search() {
 }
 
 // -----------------------------
-// 렌더링
+// 렌더링 (타이틀 + 프리뷰 전체 링크화)
 // -----------------------------
 function renderNextPage() {
   if (LOADING) return;
@@ -218,17 +214,21 @@ function renderNextPage() {
     const li = document.createElement('li');
     li.className = 'search-item';
 
-    const a = document.createElement('a');
-    a.href = item.link;
-    a.target = '_blank';
-    a.className = 'search-title';
-    a.textContent = item.title;
+    const link = document.createElement('a');
+    link.href = item.link;
+    link.target = '_blank';
+    link.style.textDecoration = 'none';
 
-    const p = document.createElement('div');
-    p.className = 'search-preview';
-    p.textContent = item.preview || '';
+    const title = document.createElement('div');
+    title.className = 'search-title';
+    title.textContent = item.title;
 
-    li.append(a, p);
+    const preview = document.createElement('div');
+    preview.className = 'search-preview';
+    preview.textContent = item.preview || '';
+
+    link.append(title, preview);
+    li.appendChild(link);
     ul.appendChild(li);
   });
 
