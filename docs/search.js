@@ -196,7 +196,7 @@ function search() {
 }
 
 // -----------------------------
-// 렌더링 (카드 + 커버 이미지 + lazy-load)
+// 렌더링 (카드 전체 클릭 + 커버 이미지 + lazy-load)
 // -----------------------------
 function renderNextPage() {
   if (LOADING) return;
@@ -216,23 +216,31 @@ function renderNextPage() {
 
   slice.forEach(item => {
     const li = document.createElement('li');
-    li.className = 'search-item';
 
-    // 왼쪽 컨텐츠
+    // ✅ 카드 전체를 감싸는 링크
+    const link = document.createElement('a');
+    link.href = item.link;
+    link.target = '_blank';
+    link.className = 'search-link';
+
+    // 카드 본체
+    const card = document.createElement('div');
+    card.className = 'search-item';
+
+    // 왼쪽 텍스트 영역
     const content = document.createElement('div');
     content.className = 'search-content';
 
-    const a = document.createElement('a');
-    a.href = item.link;
-    a.target = '_blank';
-    a.className = 'search-title';
-    a.textContent = item.title;
+    // ❗ 제목은 이제 <a>가 아닌 <div>
+    const title = document.createElement('div');
+    title.className = 'search-title';
+    title.textContent = item.title;
 
     const preview = document.createElement('div');
     preview.className = 'search-preview';
     preview.textContent = item.preview || '';
 
-    content.append(a, preview);
+    content.append(title, preview);
 
     // 오른쪽 커버 이미지
     const img = document.createElement('img');
@@ -246,7 +254,10 @@ function renderNextPage() {
       img.src = DEFAULT_COVER;
     };
 
-    li.append(content, img);
+    // 조립
+    card.append(content, img);
+    link.appendChild(card);
+    li.appendChild(link);
     ul.appendChild(li);
   });
 
