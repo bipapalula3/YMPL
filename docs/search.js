@@ -250,9 +250,9 @@ function renderNextPage() {
     img.alt = '';
 
     // fallback 처리
-    img.onerror = () => {
-      img.src = DEFAULT_COVER;
-    };
+    //img.onerror = () => {
+      //img.src = DEFAULT_COVER;
+    //};
 
     // 조립
     card.append(content, img);
