@@ -242,20 +242,33 @@ function renderNextPage() {
 
     content.append(title, preview);
 
-    // 오른쪽 커버 이미지
-    const img = document.createElement('img');
-    img.className = 'search-cover';
-    img.loading = 'lazy';
-    img.src = item.cover || DEFAULT_COVER;
-    img.alt = '';
+    // 오른쪽 커버 이미지 (조건부 렌더링)
+    let img = null;
 
-    // fallback 처리
-    //img.onerror = () => {
-      //img.src = DEFAULT_COVER;
-    //};
+    if (item.cover) {
+      img = document.createElement('img');
+      img.className = 'search-cover';
+      img.loading = 'lazy';
+      img.src = item.cover;
+      img.alt = '';
+
+      // ❗ 로드 실패 시 이미지 자체 제거
+      img.onerror = () => {
+        img.remove();
+      };
+    } else {
+      // cover 자체가 없을 때만 fallback 사용
+      img = document.createElement('img');
+      img.className = 'search-cover';
+      img.loading = 'lazy';
+      img.src = DEFAULT_COVER;
+      img.alt = '';
+    }
 
     // 조립
-    card.append(content, img);
+    card.append(content);
+    if (img) card.appendChild(img);
+
     link.appendChild(card);
     li.appendChild(link);
     ul.appendChild(li);
