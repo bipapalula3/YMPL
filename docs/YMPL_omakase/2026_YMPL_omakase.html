@@ -6,9 +6,12 @@
   <title>YMPL omakase</title>
   <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
   <style>
-    /* =========================
-       Base Layout
-       ========================= */
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
     body {
       background:#111217;
       color:#e6eef6;
@@ -19,37 +22,22 @@
       text-align:left;
       word-break:break-word;
       line-break:strict;
-      transition: opacity 0.25s ease;
-    }
-    body.page-leave {
-      opacity: 0;
     }
     a { color:#93c5fd; text-decoration:none; }
     a:hover { text-decoration:underline; }
-    h1 {
-      font-size:22px;
-      margin-bottom:16px;
-      text-align:left;
-      letter-spacing:-0.04em;
-    }
-    .artist-subtitle {
-      font-size:18px;
-      letter-spacing:-0.04em;
-    }
-    .album-entry { margin:8px 0; }
+    h1 { font-size:22px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
     img {
       max-width:100%;
       height:auto;
       display:block;
       border-radius:12px;
       box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
     }
-    .credit {
-      font-size:12px;
-      color:#aaaaaa;
-      margin-top:4px;
-      text-align:left;
-    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
     .btn {
       display:inline-block;
       padding:10px 16px;
@@ -61,97 +49,13 @@
       font-size:16px;
       text-align:center;
     }
-    /* =========================
-       Artist Media Block
-       ========================= */
-    .artist-image-wrapper {
-      margin:24px 0;
-      max-width:750px;
-    }
-    .artist-img-box {
-      position:relative;
-      overflow:hidden;
-      background:#1c1f26;
-    }
-    .artist-img {
-      display:block;
-      width:100%;
-      aspect-ratio:1 / 1;
-      object-fit:cover;
-      border-radius:14px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.6);
-    }
-    .artist-img.loading {
-      opacity:0;
-    }
-    .artist-img.loaded {
-      opacity:1;
-      transition: opacity 0.3s ease;
-    }
-    .artist-credit-overlay {
-      position:absolute;
-      right:10px;
-      bottom:8px;
-      font-size:12px;
-      color:#f3f4f6;
-      padding:6px 10px;
-      border-radius:8px;
-      backdrop-filter: blur(4px);
-    }
-    .artist-link-overlay {
-      position:absolute;
-      left:12px;
-      bottom:12px;
-      display:flex;
-      flex-direction:column-reverse;
-      gap:10px;
-    }
-    .artist-btn {
-      padding:12px 20px;
-      font-size:15px;
-      font-weight:500;
-      color:#ffffff;
-      background: rgba(37, 99, 235, 0.6);
-      border:1px solid rgba(147, 197, 253, 0.6);
-      border-radius:14px;
-      text-decoration:none;
-      backdrop-filter: blur(6px);
-    }
-    /* =========================
-       PC Hover Only (모바일 hover 차단)
-       ========================= */
-    @media (hover: hover) and (pointer: fine) {
-      .artist-img {
-        transition: transform 0.35s ease, filter 0.35s ease;
-      }
-      .artist-img-box:hover .artist-img {
-        transform: scale(1.03);
-        filter: brightness(1.05);
-      }
-      .artist-btn {
-        transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
-      }
-      .artist-btn:hover {
-        background: rgba(29, 78, 216, 0.8);
-        transform: translateY(-2px);
-        box-shadow:0 6px 16px rgba(30, 64, 175, 0.6);
-      }
-    }
-    /* =========================
-       Mobile Tap Optimization
-       ========================= */
-    a, img, .artist-img, .artist-btn {
-      -webkit-tap-highlight-color: rgba(0,0,0,0);
-      tap-highlight-color: rgba(0,0,0,0);
-    }
-    a:active, .artist-img:active, .artist-btn:active {
-      transform: scale(0.97);
-      opacity:0.88;
-      filter: brightness(0.95);
-    }
-    a, button, .artist-btn {
-      touch-action: manipulation;
-    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
 /* =========================
    Index Page Artist Media
    ========================= */
@@ -159,42 +63,19 @@
   max-width: 420px;
   margin: 16px 0 8px 0;
 }
-/* 버튼 → 다음 아티스트 이미지 간격 (2배로) */
 .index-page .album-entry {
   margin-bottom: 48px;
 }
 .index-page .artist-img {
-  display: block;
-  width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-}
-/* skeleton 로딩 대응 */
-.index-page .artist-img.loading {
-  opacity: 0;
-}
-.index-page .artist-img.loaded {
-  opacity: 1;
-  transition: opacity 0.25s ease;
-}
-/* =========================
-   PC Hover Only (Index)
-   ========================= */
-@media (hover: hover) and (pointer: fine) {
-  .index-page .artist-img {
-    transition: transform 0.3s ease, filter 0.3s ease;
-  }
-  .index-page .artist-img:hover {
-    transform: scale(1.03);
-    filter: brightness(1.05);
-  }
+  display: block;
 }
 /* =========================
    Mobile Tap / Click Smooth
    ========================= */
 .index-page a,
-.index-page img,
-.index-page .artist-img {
+.index-page img {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   tap-highlight-color: rgba(0,0,0,0);
 }
@@ -226,5 +107,16 @@
 <hr>
 <p style="color:#fca5a5;">💿 지금 바로 앨범을 만나보세요</p>
 <p style="color:#fca5a5;">💿 Discover the album now</p>
+<script>
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('a');
+  if (!link) return;
+  const href = link.getAttribute('href');
+  if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+  e.preventDefault();
+  document.body.classList.add('page-fade-out');
+  setTimeout(function(){ location.href = href; }, 80);
+});
+</script>
 </body>
 </html>
