@@ -16,14 +16,12 @@
       text-align:left;
       word-break:break-word;
       line-break:strict;
+      transition: opacity 0.25s ease;
     }
+    body.page-leave { opacity:0; }
     a { color:#93c5fd; text-decoration:none; }
-    a:hover { text-decoration:underline; }
     h1 { font-size:22px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
-    .artist-subtitle {
-      font-size:18px;
-      letter-spacing:-0.04em;
-    }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
     .album-entry { margin:8px 0 8px; }
     img {
       max-width:100%;
@@ -32,154 +30,98 @@
       border-radius:12px;
       box-shadow:0 0 8px rgba(0,0,0,0.5);
     }
-    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
-    .btn {
-      display:inline-block;
-      padding:10px 16px;
-      background:#1f6feb;
-      color:#fff;
-      border-radius:10px;
-      margin-top:10px;
-      margin-right:20px;
-      font-size:16px;
-      text-align:center;
-    }
-    /* ===== Artist Media Block ===== */
     .artist-image-wrapper {
-      margin: 24px 0;
-      max-width: 750px;
+      margin:24px 0;
+      max-width:750px;
     }
     .artist-img-box {
-      position: relative;
-      overflow: hidden;
+      position:relative;
+      overflow:hidden;
+      background:#1c1f26;
     }
     .artist-img {
-      display: block;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      transition: transform 0.35s ease, filter 0.35s ease;
+      width:100%;
+      aspect-ratio:1 / 1;
+      object-fit:cover;
+      border-radius:14px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.6);
+      transition: transform 0.35s ease, filter 0.35s ease, opacity 0.3s ease;
     }
-    /* 🖼 이미지 hover 효과 */
-    .artist-img-box:hover .artist-img {
-      transform: scale(1.03);
-      filter: brightness(1.05);
+    .artist-img.loading { opacity:0; }
+    .artist-img.loaded { opacity:1; }
+    @media (hover: hover) and (pointer: fine) {
+      .artist-img-box:hover .artist-img {
+        transform: scale(1.03);
+        filter: brightness(1.05);
+      }
+      .artist-btn:hover {
+        background: rgba(29, 78, 216, 0.8);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(30, 64, 175, 0.6);
+      }
     }
-    /* 📌 우측 하단 출처 텍스트 */
     .artist-credit-overlay {
-      position: absolute;
-      right: 10px;
-      bottom: 8px;
-      font-size: 12px;
-      color: #f3f4f6;
-      background: rgba(0,0,0,0);
-      padding: 6px 10px;
-      border-radius: 8px;
-      backdrop-filter: blur(4px);
+      position:absolute;
+      right:10px;
+      bottom:8px;
+      font-size:12px;
+      color:#f3f4f6;
+      padding:6px 10px;
+      border-radius:8px;
     }
     .artist-link-overlay {
-      position: absolute;
-      left: 12px;
-      bottom: 12px;
-      display: flex;
-      flex-direction: column-reverse;
-      gap: 10px;
+      position:absolute;
+      left:12px;
+      bottom:12px;
+      display:flex;
+      flex-direction:column-reverse;
+      gap:10px;
     }
-    /* 🎧 Artist Link Button */
     .artist-btn {
-      padding: 12px 20px;
-      font-size: 15px;
-      font-weight: 500;
-      color: #ffffff;
-      background: rgba(37, 99, 235, 0.6);
-      border: 1px solid rgba(147, 197, 253, 0.6);
-      border-radius: 14px;
-      text-decoration: none;
-      backdrop-filter: blur(6px);
-      transition: 
-        background 0.25s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+      padding:12px 20px;
+      font-size:15px;
+      color:#fff;
+      background: rgba(37,99,235,0.6);
+      border:1px solid rgba(147,197,253,0.6);
+      border-radius:14px;
+      backdrop-filter:blur(6px);
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
-    /* 🖱 버튼 hover 애니메이션 */
-    .artist-btn:hover {
-      background: rgba(29, 78, 216, 0.8);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(30, 64, 175, 0.6);
-    }
-    /* =========================
-       Mobile Tap / Click Smooth
-       ========================= */
-    /* 모바일 탭 하이라이트 제거 */
-    a,
-    img,
-    .artist-img,
-    .artist-btn {
+    a, img, .artist-img, .artist-btn {
       -webkit-tap-highlight-color: rgba(0,0,0,0);
       tap-highlight-color: rgba(0,0,0,0);
-    }
-    /* 터치 반응을 자연스럽게 */
-    a,
-    .artist-img,
-    .artist-btn {
-      transition:
-        transform 0.15s ease,
-        opacity 0.15s ease,
-        filter 0.15s ease;
-    }
-    /* 터치 시 눌림 효과 */
-    a:active,
-    .artist-img:active,
-    .artist-btn:active {
-      transform: scale(0.97);
-      opacity: 0.88;
-      filter: brightness(0.95);
-    }
-    /* 모바일 더블탭 확대 방지 + 빠른 반응 */
-    a,
-    button,
-    .artist-btn {
       touch-action: manipulation;
     }
-/* =========================
-   Index Page Artist Media
-   ========================= */
-.index-page .artist-image-wrapper {
-  max-width: 420px;
-  margin: 16px 0 8px 0;
-}
-/* 버튼 → 다음 아티스트 이미지 간격 (2배로) */
-.index-page .album-entry {
-  margin-bottom: 48px;
-}
-.index-page .artist-img {
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
-}
-/* =========================
-   Mobile Tap / Click Smooth
-   ========================= */
-.index-page a,
-.index-page img {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  tap-highlight-color: rgba(0,0,0,0);
-}
-.index-page a,
-.index-page .artist-img {
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-.index-page a:active,
-.index-page .artist-img:active {
-  transform: scale(0.97);
-  opacity: 0.85;
-}
-.index-page a {
-  touch-action: manipulation;
-}
+    a:active, .artist-img:active, .artist-btn:active {
+      transform: scale(0.97);
+      opacity:0.88;
+    }
+    .index-page .artist-image-wrapper {
+      max-width:420px;
+      margin:16px 0 8px 0;
+    }
+    .index-page .album-entry { margin-bottom:48px; }
   </style>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('a[href]').forEach(link => {
+      link.addEventListener('click', e => {
+        const url = link.getAttribute('href');
+        if (!url || url.startsWith('#') || link.target === '_blank') return;
+        e.preventDefault();
+        document.body.classList.add('page-leave');
+        setTimeout(() => { window.location.href = url; }, 180);
+      });
+    });
+    document.querySelectorAll('.artist-img').forEach(img => {
+      img.classList.add('loading');
+      img.addEventListener('load', () => {
+        img.classList.remove('loading');
+        img.classList.add('loaded');
+      });
+    });
+  });
+  </script>
 </head>
 <body class='index-page'>
 <h1>타이달 한국가수 링크 (ㄱ1) TIDAL Kpop Artist Link (GK)</h1>
