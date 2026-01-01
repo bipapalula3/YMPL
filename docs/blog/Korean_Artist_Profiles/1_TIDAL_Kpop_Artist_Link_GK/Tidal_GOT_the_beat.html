@@ -16,14 +16,12 @@
       text-align:left;
       word-break:break-word;
       line-break:strict;
+      transition: opacity 0.25s ease;
     }
+    body.page-leave { opacity:0; }
     a { color:#93c5fd; text-decoration:none; }
-    a:hover { text-decoration:underline; }
     h1 { font-size:22px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
-    .artist-subtitle {
-      font-size:18px;
-      letter-spacing:-0.04em;
-    }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
     .album-entry { margin:8px 0 8px; }
     img {
       max-width:100%;
@@ -32,190 +30,134 @@
       border-radius:12px;
       box-shadow:0 0 8px rgba(0,0,0,0.5);
     }
-    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
-    .btn {
-      display:inline-block;
-      padding:10px 16px;
-      background:#1f6feb;
-      color:#fff;
-      border-radius:10px;
-      margin-top:10px;
-      margin-right:20px;
-      font-size:16px;
-      text-align:center;
-    }
-    /* ===== Artist Media Block ===== */
     .artist-image-wrapper {
-      margin: 24px 0;
-      max-width: 750px;
+      margin:24px 0;
+      max-width:750px;
     }
     .artist-img-box {
-      position: relative;
-      overflow: hidden;
+      position:relative;
+      overflow:hidden;
+      background:#1c1f26;
     }
     .artist-img {
-      display: block;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      transition: transform 0.35s ease, filter 0.35s ease;
+      width:100%;
+      aspect-ratio:1 / 1;
+      object-fit:cover;
+      border-radius:14px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.6);
+      transition: transform 0.35s ease, filter 0.35s ease, opacity 0.3s ease;
     }
-    /* 🖼 이미지 hover 효과 */
-    .artist-img-box:hover .artist-img {
-      transform: scale(1.03);
-      filter: brightness(1.05);
+    .artist-img.loading { opacity:0; }
+    .artist-img.loaded { opacity:1; }
+    @media (hover: hover) and (pointer: fine) {
+      .artist-img-box:hover .artist-img {
+        transform: scale(1.03);
+        filter: brightness(1.05);
+      }
+      .artist-btn:hover {
+        background: rgba(29, 78, 216, 0.8);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(30, 64, 175, 0.6);
+      }
     }
-    /* 📌 우측 하단 출처 텍스트 */
     .artist-credit-overlay {
-      position: absolute;
-      right: 10px;
-      bottom: 8px;
-      font-size: 12px;
-      color: #f3f4f6;
-      background: rgba(0,0,0,0);
-      padding: 6px 10px;
-      border-radius: 8px;
-      backdrop-filter: blur(4px);
+      position:absolute;
+      right:10px;
+      bottom:8px;
+      font-size:12px;
+      color:#f3f4f6;
+      padding:6px 10px;
+      border-radius:8px;
     }
     .artist-link-overlay {
-      position: absolute;
-      left: 12px;
-      bottom: 12px;
-      display: flex;
-      flex-direction: column-reverse;
-      gap: 10px;
+      position:absolute;
+      left:12px;
+      bottom:12px;
+      display:flex;
+      flex-direction:column-reverse;
+      gap:10px;
     }
-    /* 🎧 Artist Link Button */
     .artist-btn {
-      padding: 12px 20px;
-      font-size: 15px;
-      font-weight: 500;
-      color: #ffffff;
-      background: rgba(37, 99, 235, 0.6);
-      border: 1px solid rgba(147, 197, 253, 0.6);
-      border-radius: 14px;
-      text-decoration: none;
-      backdrop-filter: blur(6px);
-      transition: 
-        background 0.25s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+      padding:12px 20px;
+      font-size:15px;
+      color:#fff;
+      background: rgba(37,99,235,0.6);
+      border:1px solid rgba(147,197,253,0.6);
+      border-radius:14px;
+      backdrop-filter:blur(6px);
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
-    /* 🖱 버튼 hover 애니메이션 */
-    .artist-btn:hover {
-      background: rgba(29, 78, 216, 0.8);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(30, 64, 175, 0.6);
-    }
-    /* =========================
-       Mobile Tap / Click Smooth
-       ========================= */
-    /* 모바일 탭 하이라이트 제거 */
-    a,
-    img,
-    .artist-img,
-    .artist-btn {
+    a, img, .artist-img, .artist-btn {
       -webkit-tap-highlight-color: rgba(0,0,0,0);
       tap-highlight-color: rgba(0,0,0,0);
-    }
-    /* 터치 반응을 자연스럽게 */
-    a,
-    .artist-img,
-    .artist-btn {
-      transition:
-        transform 0.15s ease,
-        opacity 0.15s ease,
-        filter 0.15s ease;
-    }
-    /* 터치 시 눌림 효과 */
-    a:active,
-    .artist-img:active,
-    .artist-btn:active {
-      transform: scale(0.97);
-      opacity: 0.88;
-      filter: brightness(0.95);
-    }
-    /* 모바일 더블탭 확대 방지 + 빠른 반응 */
-    a,
-    button,
-    .artist-btn {
       touch-action: manipulation;
     }
-/* =========================
-   Index Page Artist Media
-   ========================= */
-.index-page .artist-image-wrapper {
-  max-width: 420px;
-  margin: 16px 0 8px 0;
-}
-/* 버튼 → 다음 아티스트 이미지 간격 (2배로) */
-.index-page .album-entry {
-  margin-bottom: 48px;
-}
-.index-page .artist-img {
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
-}
-/* =========================
-   Mobile Tap / Click Smooth
-   ========================= */
-.index-page a,
-.index-page img {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  tap-highlight-color: rgba(0,0,0,0);
-}
-.index-page a,
-.index-page .artist-img {
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-.index-page a:active,
-.index-page .artist-img:active {
-  transform: scale(0.97);
-  opacity: 0.85;
-}
-.index-page a {
-  touch-action: manipulation;
-}
+    a:active, .artist-img:active, .artist-btn:active {
+      transform: scale(0.97);
+      opacity:0.88;
+    }
+    .index-page .artist-image-wrapper {
+      max-width:420px;
+      margin:16px 0 8px 0;
+    }
+    .index-page .album-entry { margin-bottom:48px; }
   </style>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('a[href]').forEach(link => {
+      link.addEventListener('click', e => {
+        const url = link.getAttribute('href');
+        if (!url || url.startsWith('#') || link.target === '_blank') return;
+        e.preventDefault();
+        document.body.classList.add('page-leave');
+        setTimeout(() => { window.location.href = url; }, 180);
+      });
+    });
+    document.querySelectorAll('.artist-img').forEach(img => {
+      img.classList.add('loading');
+      img.addEventListener('load', () => {
+        img.classList.remove('loading');
+        img.classList.add('loaded');
+      });
+    });
+  });
+  </script>
 </head>
 <body class=''>
 <h1>타이달 갓더비트 ( Tidal GOT the beat )</h1>
 <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/86c517fa/c944/4b6d/8a13/304ec1df960f/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/29967511' target='_blank' class='artist-btn'>Artist Link ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
 <div>&nbsp;</div>
 <div><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 갓더비트</div></div>
-<div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>시대를 초월한 디바들의 압도적 시너지</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>K-POP 여제들의 파워풀한 시너지, 그 중심에 서다</div></div>
 <div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> GOT the beat</div></div>
-<div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Overwhelming Synergy of Timeless Divas</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Standing at the Heart of K-POP Queens' Powerful Synergy</div></div>
 <div>&nbsp;</div>
-<div>'갓더비트(GOT the beat)'는 SM 엔터테인먼트의 프로젝트 유닛 'Girls On Top(GOT)'의 첫 번째 라인업이에요. 보아, 소녀시대, 레드벨벳, 에스파 등 세대를 아우르는 최고의 여성 아티스트들이 뭉쳐 강렬한 시너지를 선보이고 있습니다. 이들은 K-POP 역사에 새로운 한 페이지를 쓰고 있죠.</div>
-<div>'GOT the beat' is the first lineup of SM Entertainment's project unit 'Girls On Top (GOT)'. It brings together top female artists spanning generations, including BoA, Girls' Generation, Red Velvet, and aespa, to showcase powerful synergy. They are writing a new page in K-POP history.</div>
-<div>&nbsp;</div>
-<div>✧</div>
-<div>시대를 잇는 슈퍼 유닛의 시작</div>
-<div>갓더비트는 2022년 1월, SM 엔터테인먼트의 'Girls On Top' 프로젝트 아래 첫 유닛으로 세상에 공개되었어요. 여러 그룹의 최정상급 여성 아티스트들이 한데 모여 K-POP 팬들에게는 꿈같은 조합을 선사했죠. 이들은 독보적인 존재감으로 데뷔와 동시에 뜨거운 주목을 받았습니다.</div>
-<div>The Genesis of a Generation-Spanning Super Unit</div>
-<div>GOT the beat was introduced to the world in January 2022 as the first unit under SM Entertainment's 'Girls On Top' project. Top-tier female artists from various groups came together, offering a dreamlike combination to K-POP fans. They garnered immense attention upon their debut with their unparalleled presence.</div>
+<div>갓더비트(GOT the beat)는 SM 엔터테인먼트의 프로젝트 유닛 'Girls On Top(GOT)'의 첫 번째 그룹입니다. 보아, 태연, 효연, 슬기, 웬디, 카리나, 윈터 등 SM을 대표하는 여성 아티스트들이 뭉쳐 강렬한 음악과 퍼포먼스를 선보여요. 이들은 'Girls On Top'이라는 콘셉트처럼, 여성 아티스트들의 다양한 조합을 통해 새로운 시너지를 보여주는 것을 목표로 합니다.</div>
+<div>GOT the beat is the first unit of SM Entertainment's project 'Girls On Top (GOT).' It brings together representative female artists from SM, including BoA, Taeyeon, Hyoyeon, Seulgi, Wendy, Karina, and Winter, to deliver powerful music and performances. Their goal, true to the 'Girls On Top' concept, is to showcase new synergy through various combinations of female artists.</div>
 <div>&nbsp;</div>
 <div>✧</div>
-<div>압도적인 카리스마와 실력</div>
-<div>갓더비트의 음악은 강렬한 비트와 파워풀한 보컬, 그리고 완벽한 퍼포먼스가 특징이에요. 데뷔곡 'Step Back'은 압도적인 무대 장악력과 멤버 개개인의 개성이 어우러져 폭발적인 에너지를 선보였습니다. 이들은 매번 진정성 있는 가사와 섬세한 표현력으로 대중에게 깊은 인상을 남기고 있어요.</div>
-<div>Overwhelming Charisma and Skill</div>
-<div>GOT the beat's music is characterized by intense beats, powerful vocals, and flawless performances. Their debut song 'Step Back' showcased explosive energy through its overwhelming stage presence and the harmony of each member's individuality. They consistently leave a profound impression on the public with sincere lyrics and delicate expressions.</div>
+<div>K-POP 여제들의 만남</div>
+<div>갓더비트는 2022년 1월 3일, SM 콘서트를 통해 데뷔 무대를 가졌고, 싱글 'Step Back'을 발표하며 공식 활동을 시작했어요. 이들은 K-POP 역사상 유례없는 '어벤져스급' 라인업으로 결성 당시부터 폭발적인 관심을 모았습니다. 각 그룹에서 최고의 위치를 차지하는 멤버들의 조합은 팬들에게 신선한 충격과 기대를 안겨주었죠.</div>
+<div>The Gathering of K-POP Queens</div>
+<div>GOT the beat debuted on January 3, 2022, through an SM concert, officially beginning their activities with the single 'Step Back.' This unprecedented 'Avengers-level' lineup in K-POP history garnered immense attention from its formation. The combination of top members from various groups brought fresh shock and anticipation to fans.</div>
 <div>&nbsp;</div>
 <div>✧</div>
-<div>K-POP 씬의 새로운 장을 열다</div>
-<div>데뷔 후 갓더비트는 SMTOWN LIVE 무대를 통해 전 세계 팬들에게 첫 선을 보였어요. 2023년에는 첫 미니 앨범 'Stamp On It'을 발표하며 더욱 확장된 음악 스펙트럼을 증명했습니다. 이들의 활동은 단순히 유닛 활동을 넘어, K-POP 아티스트들의 협업 가능성을 제시하며 새로운 트렌드를 이끌고 있습니다.</div>
-<div>Opening a New Chapter in the K-POP Scene</div>
-<div>After their debut, GOT the beat first greeted global fans through the SMTOWN LIVE stage. In 2023, they released their first mini-album 'Stamp On It', proving an even broader musical spectrum. Their activities go beyond simple unit promotions, presenting the possibilities of collaboration among K-POP artists and leading new trends.</div>
+<div>압도적인 음악과 무대</div>
+<div>갓더비트의 음악은 강렬한 비트와 중독성 있는 멜로디가 특징이며, 멤버들의 폭발적인 보컬과 랩이 완벽한 조화를 이룹니다. 특히 데뷔곡 'Step Back'은 섬세하면서도 파워풀한 군무로 시선을 사로잡으며 '퍼포먼스 퀸'이라는 수식어를 각인시켰어요. 멤버 개개인의 개성과 그룹 전체의 시너지가 돋보이는 무대는 늘 관객들을 열광시킵니다.</div>
+<div>Overwhelming Music and Stage</div>
+<div>GOT the beat's music is characterized by powerful beats and addictive melodies, with the members' explosive vocals and rap forming a perfect harmony. Their debut track 'Step Back,' in particular, captivated audiences with its delicate yet powerful group choreography, solidifying their reputation as 'performance queens.' Their stages, where individual charisma and group synergy shine, always electrify the audience.</div>
 <div>&nbsp;</div>
 <div>✧</div>
-<div>K-POP 역사의 한 페이지를 채우다</div>
-<div>갓더비트는 단순한 프로젝트 그룹을 넘어, K-POP 여성 아티스트들이 함께 만들어갈 수 있는 무한한 가능성을 보여주고 있어요. 이들은 세대를 초월한 음악적 교류의 상징이자, 매번 기대 이상의 무대를 선사하는 존재입니다. 앞으로도 갓더비트가 써내려갈 새로운 역사가 더욱 기대됩니다.</div>
-<div>Filling a Page in K-POP History</div>
-<div>Beyond being a simple project group, GOT the beat shows the infinite possibilities that K-POP female artists can create together. They are a symbol of cross-generational musical exchange and an entity that consistently delivers stages beyond expectation. We eagerly anticipate the new history GOT the beat will continue to write.</div>
+<div>확장되는 유닛의 세계</div>
+<div>2023년 1월에는 첫 미니앨범 'Stamp On It'을 발표하며 더욱 다채로운 매력을 선보였습니다. 갓더비트는 단순한 일회성 프로젝트를 넘어, SM 소속 여성 아티스트들의 무한한 가능성을 보여주는 중요한 이정표가 되었어요. 이들의 성공은 앞으로 이어질 'Girls On Top' 프로젝트의 다른 유닛들에게도 큰 기대감을 불어넣고 있습니다.</div>
+<div>Expanding the Unit's World</div>
+<div>In January 2023, they released their first mini-album 'Stamp On It,' showcasing even more diverse charms. Beyond being a one-off project, GOT the beat has become a significant milestone demonstrating the boundless potential of SM's female artists. Their success instills great anticipation for other units within the ongoing 'Girls On Top' project.</div>
+<div>&nbsp;</div>
+<div>✧</div>
+<div>K-POP의 새로운 지평을 열다</div>
+<div>갓더비트는 K-POP 역사상 가장 강력한 여성 연합으로 기록될 것입니다. 이들은 각기 다른 그룹에서 쌓아온 경험과 재능을 한데 모아 '시너지'의 진정한 의미를 보여주었어요. 앞으로도 갓더비트가 보여줄 무한한 음악적 도전과 여성 아티스트 간의 아름다운 협업에 많은 기대가 모입니다.</div>
+<div>Opening New Horizons for K-POP</div>
+<div>GOT the beat will be recorded as the most powerful female collaboration in K-POP history. They brought together experience and talent from various groups, demonstrating the true meaning of 'synergy.' Great anticipation surrounds GOT the beat's boundless musical challenges and the beautiful collaboration among female artists that they will continue to show.</div>
 <div>&nbsp;</div>
 <div>&nbsp;</div>
 <div>[2023] Stamp On It - The 1st Mini Album</div>
