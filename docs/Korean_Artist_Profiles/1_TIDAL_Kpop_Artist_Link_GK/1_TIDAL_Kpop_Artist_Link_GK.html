@@ -111,15 +111,24 @@
 document.addEventListener('click', function(e) {
   const link = e.target.closest('a');
   if (!link) return;
-  if (link.target === '_blank') return;
   const href = link.getAttribute('href');
   if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+  /* ✅ 같은 origin만 페이드 적용 */
+  try {
+    const url = new URL(href, location.href);
+    if (url.origin !== location.origin) return;
+  } catch (e) {
+    return;
+  }
   e.preventDefault();
   document.body.classList.add('page-fade-out');
-  setTimeout(function(){ location.href = href; }, 80);
+  setTimeout(function() {
+    location.href = href;
+  }, 80);
 });
-/* ✅ 뒤로가기 / 캐시 복원 대응 */window.addEventListener('pageshow', function() {
-document.body.classList.remove('page-fade-out');
+/* ✅ 뒤로가기 / bfcache 복원 대응 */
+window.addEventListener('pageshow', function() {
+  document.body.classList.remove('page-fade-out');
 });
 </script>
 </body>
