@@ -7,23 +7,33 @@
   <script src="search.js"></script>
 
   <style>
+    /* ===== 기본 ===== */
+    html {
+      background: #111217; /* 흰 화면 플래시 방지 */
+    }
+
     body {
       background: #111217;
       color: #e6eef6;
       font-family: Arial, sans-serif;
       padding: 16px;
-      margin: 0;
+
+      /* 🔹 페이지 전환 페이드 */
+      opacity: 1;
+      transition: opacity 0.12s ease;
     }
 
-    /* =========================
-       Basic UI
-       ========================= */
+    body.page-fade-out {
+      opacity: 0;
+    }
 
+    /* h1 크기 */
     h1 {
       margin-bottom: 6px;
       font-size: 24px;
     }
 
+    /* 입력창 */
     input {
       width: 100%;
       height: 52px;
@@ -36,10 +46,7 @@
       box-sizing: border-box;
     }
 
-    /* =========================
-       Search Options
-       ========================= */
-
+    /* 🔽 검색 옵션 */
     .search-options {
       display: flex;
       gap: 16px;
@@ -59,10 +66,6 @@
       margin-bottom: 12px;
     }
 
-    /* =========================
-       Result List
-       ========================= */
-
     ul {
       list-style: none;
       padding: 0;
@@ -73,17 +76,19 @@
       margin-bottom: 16px;
     }
 
-    /* 카드 전체 클릭 */
+    /* =========================
+       🔹 카드 전체 클릭 링크
+       ========================= */
+
     .search-link {
       display: block;
       text-decoration: none;
       color: inherit;
-      touch-action: manipulation;
     }
 
-    /* =========================
-       Item Layout
-       ========================= */
+    .search-link:hover .search-title {
+      text-decoration: underline;
+    }
 
     .search-item {
       display: flex;
@@ -93,6 +98,7 @@
       align-items: flex-start;
     }
 
+    /* 왼쪽 텍스트 */
     .search-content {
       flex: 1;
       min-width: 0;
@@ -103,6 +109,7 @@
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      text-overflow: ellipsis;
       font-weight: bold;
       font-size: 1rem;
       line-height: 1.4;
@@ -114,6 +121,7 @@
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      text-overflow: ellipsis;
       font-size: 0.9rem;
       line-height: 1.4;
       color: #cbd5e1;
@@ -123,10 +131,7 @@
       overflow-wrap: anywhere;
     }
 
-    /* =========================
-       Cover Image
-       ========================= */
-
+    /* 오른쪽 커버 */
     .search-cover {
       width: 80px;
       height: 80px;
@@ -135,17 +140,6 @@
       object-fit: cover;
       background: #1f2937;
       margin-top: 6px;
-      display: block;
-    }
-
-    /* 이미지 로딩 안정화 */
-    .search-cover.loading {
-      opacity: 0;
-    }
-
-    .search-cover.loaded {
-      opacity: 1;
-      transition: opacity 0.25s ease;
     }
 
     .search-debug {
@@ -158,35 +152,6 @@
       text-align: center;
       color: #94a3b8;
       margin: 16px 0;
-    }
-
-    /* =========================
-       PC Hover Only
-       ========================= */
-
-    @media (hover: hover) and (pointer: fine) {
-      .search-link:hover .search-title {
-        text-decoration: underline;
-      }
-    }
-
-    /* =========================
-       Mobile Tap Smooth
-       ========================= */
-
-    a,
-    img {
-      -webkit-tap-highlight-color: rgba(0,0,0,0);
-      tap-highlight-color: rgba(0,0,0,0);
-    }
-
-    .search-link {
-      transition: transform 0.15s ease, opacity 0.15s ease;
-    }
-
-    .search-link:active {
-      transform: scale(0.97);
-      opacity: 0.85;
     }
   </style>
 </head>
@@ -201,7 +166,7 @@
   oninput="startSearch()"
 />
 
-<!-- 🔽 디버그 옵션 -->
+<!-- 🔽 디버그 토글 -->
 <div class="search-options" id="debugOptions">
   <label>
     <input type="checkbox" id="debugToggle" />
@@ -210,7 +175,9 @@
 </div>
 
 <div id="resultCount"></div>
+
 <ul id="result"></ul>
+
 <div id="loading" class="loading" style="display:none;">Loading...</div>
 
 <!-- 🔒 개발자 모드 체크 -->
@@ -218,11 +185,33 @@
   (function () {
     const params = new URLSearchParams(location.search);
     const isDev = params.get('dev') === '1009';
+
     if (!isDev) {
       const debug = document.getElementById('debugOptions');
       if (debug) debug.style.display = 'none';
     }
   })();
+</script>
+
+<!-- 🔹 페이지 이동 페이드 처리 -->
+<script>
+  document.addEventListener("click", function (e) {
+    const link = e.target.closest(".search-link");
+    if (!link) return;
+
+    const href = link.getAttribute("href");
+    if (!href || href.startsWith("#")) return;
+
+    e.preventDefault();
+
+    // 페이드 아웃
+    document.body.classList.add("page-fade-out");
+
+    // 🔹 80ms 딜레이 후 이동
+    setTimeout(() => {
+      location.href = href;
+    }, 80);
+  });
 </script>
 
 </body>
