@@ -8,11 +8,8 @@
   <style>
     html { background:#111217; }
     body {
-      opacity: 1;
+      opacity: 0;
       transition: opacity 0.12s ease;
-    }
-    body.page-fade-out { opacity: 0; }
-    body {
       background:#111217;
       color:#e6eef6;
       font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
@@ -23,6 +20,8 @@
       word-break:break-word;
       line-break:strict;
     }
+    body.page-fade-in { opacity: 1; }
+    body.page-fade-out { opacity: 0; }
     a { color:#93c5fd; text-decoration:none; }
     a:hover { text-decoration:underline; }
     h1 { font-size:22px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
@@ -59,38 +58,16 @@
 /* =========================
    Index Page Artist Media
    ========================= */
-.index-page .artist-image-wrapper {
-  max-width: 420px;
-  margin: 16px 0 8px 0;
-}
-.index-page .album-entry {
-  margin-bottom: 48px;
-}
-.index-page .artist-img {
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
-}
+.index-page .artist-image-wrapper { max-width: 420px; margin: 16px 0 8px 0; }
+.index-page .album-entry { margin-bottom: 48px; }
+.index-page .artist-img { aspect-ratio: 1 / 1; object-fit: cover; display: block; }
 /* =========================
    Mobile Tap / Click Smooth
    ========================= */
-.index-page a,
-.index-page img {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  tap-highlight-color: rgba(0,0,0,0);
-}
-.index-page a,
-.index-page .artist-img {
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-.index-page a:active,
-.index-page .artist-img:active {
-  transform: scale(0.97);
-  opacity: 0.85;
-}
-.index-page a {
-  touch-action: manipulation;
-}
+.index-page a, .index-page img { -webkit-tap-highlight-color: rgba(0,0,0,0); tap-highlight-color: rgba(0,0,0,0); }
+.index-page a, .index-page .artist-img { transition: transform 0.15s ease, opacity 0.15s ease; }
+.index-page a:active, .index-page .artist-img:active { transform: scale(0.97); opacity: 0.85; }
+.index-page a { touch-action: manipulation; }
   </style>
 </head>
 <body class='index-page'>
@@ -108,12 +85,16 @@
 <p style="color:#fca5a5;">💿 지금 바로 앨범을 만나보세요</p>
 <p style="color:#fca5a5;">💿 Discover the album now</p>
 <script>
+function fadeInBody() { document.body.classList.add('page-fade-in'); }
+window.addEventListener('DOMContentLoaded', fadeInBody);
+window.addEventListener('pageshow', function(e){ if(e.persisted) fadeInBody(); });
 document.addEventListener('click', function(e) {
   const link = e.target.closest('a');
-  if (!link) return;
+  if(!link) return;
   const href = link.getAttribute('href');
-  if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+  if(!href || href.startsWith('#') || href.startsWith('javascript:')) return;
   e.preventDefault();
+  document.body.classList.remove('page-fade-in');
   document.body.classList.add('page-fade-out');
   setTimeout(function(){ location.href = href; }, 80);
 });
