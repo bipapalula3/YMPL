@@ -198,12 +198,18 @@
 document.addEventListener("click", function (e) {
   const link = e.target.closest(".search-link");
   if (!link) return;
-  
-  if (link.target === '_blank') return;
 
   const href = link.getAttribute("href");
   if (!href || href.startsWith("#")) return;
-
+  
+  /* ✅ 외부 도메인이면 fade 적용 안 함 */
+  try {
+    const url = new URL(href, location.href);
+    if (url.origin !== location.origin) return;
+  } catch (e) {
+    return;
+  }
+  
   e.preventDefault();
 
   // 페이드 아웃
