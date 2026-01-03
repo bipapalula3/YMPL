@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name='theme-color' content='#111217' />
+  <title>YMPL TIDAL Search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="search.js"></script>
+
+  <style>
+    /* ===== 기본 ===== */
+    html {
+      background: #111217; /* 흰 화면 플래시 방지 */
+    }
+
+    body {
+      background: #111217;
+      color: #e6eef6;
+      font-family: Arial, sans-serif;
+      padding: 16px;
+
+      /* 🔹 페이지 전환 페이드 */
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+
+    body.page-fade-out {
+      opacity: 0;
+    }
+
+    /* h1 크기 */
+    h1 {
+      margin-bottom: 6px;
+      font-size: 24px;
+    }
+
+    /* 입력창 */
+    input {
+      width: 100%;
+      height: 52px;
+      padding: 6px 10px;
+      font-size: 20px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    /* 🔽 검색 옵션 */
+    .search-options {
+      display: flex;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+
+    .search-options label {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #resultCount {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      margin-bottom: 16px;
+    }
+
+    /* =========================
+       🔹 카드 전체 클릭 링크
+       ========================= */
+
+    .search-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .search-link:hover .search-title {
+      text-decoration: underline;
+    }
+
+    .search-item {
+      display: flex;
+      gap: 4px;
+      padding-bottom: 2px;
+      border-bottom: 1px solid #2a2f3a;
+      align-items: flex-start;
+    }
+
+    /* 왼쪽 텍스트 */
+    .search-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search-title {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: bold;
+      font-size: 1rem;
+      line-height: 1.4;
+      color: #93c5fd;
+    }
+
+    .search-preview {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #cbd5e1;
+      margin-top: 6px;
+      white-space: pre-line;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+    }
+
+    /* 오른쪽 커버 */
+    .search-cover {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #1f2937;
+      margin-top: 6px;
+    }
+
+    .search-debug {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    .loading {
+      text-align: center;
+      color: #94a3b8;
+      margin: 16px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>YMPL TIDAL Search</h1>
+
+<input
+  id="q"
+  placeholder="Artist / Track Search (가수 / 노래 검색)"
+  oninput="startSearch()"
+/>
+
+<!-- 🔽 디버그 토글 -->
+<div class="search-options" id="debugOptions">
+  <label>
+    <input type="checkbox" id="debugToggle" />
+    score 디버그
+  </label>
+</div>
+
+<div id="resultCount"></div>
+
+<ul id="result"></ul>
+
+<div id="loading" class="loading" style="display:none;">Loading...</div>
+
+<!-- 🔒 개발자 모드 체크 -->
+<script>
+  (function () {
+    const params = new URLSearchParams(location.search);
+    const isDev = params.get('dev') === '1009';
+
+    if (!isDev) {
+      const debug = document.getElementById('debugOptions');
+      if (debug) debug.style.display = 'none';
+    }
+  })();
+</script>
+
+<!-- 🔹 페이지 이동 페이드 처리 -->
+<script>
+document.addEventListener("click", function (e) {
+  const link = e.target.closest(".search-link");
+  if (!link) return;
+
+  const href = link.getAttribute("href");
+  if (!href || href.startsWith("#")) return;
+  
+  /* ✅ 외부 도메인이면 fade 적용 안 함 */
+  try {
+    const url = new URL(href, location.href);
+    if (url.origin !== location.origin) return;
+  } catch (e) {
+    return;
+  }
+  
+  e.preventDefault();
+
+  // 페이드 아웃
+  document.body.classList.add("page-fade-out");
+
+  // 🔹 80ms 딜레이 후 이동
+  setTimeout(() => {
+    location.href = href;
+  }, 80);
+});
+
+/* ✅ 핵심: 뒤로가기 복구 */
+window.addEventListener("pageshow", function () {
+  document.body.classList.remove("page-fade-out");
+});
+</script>
+
+</body>
+</html>
