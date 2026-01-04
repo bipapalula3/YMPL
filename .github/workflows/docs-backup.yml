@@ -2,7 +2,6 @@ name: Weekly Docs Backup
 
 on:
   schedule:
-    # 매주 월요일 03:00 UTC (KST 월요일 12:00)
     - cron: '0 3 * * 1'
   workflow_dispatch:
 
@@ -12,35 +11,38 @@ jobs:
 
     steps:
       # 1. main 브랜치 체크아웃
-      - name: Checkout main
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: main
 
-      # 2. docs-backup 브랜치로 전환
-      - name: Prepare docs-backup branch
+      # 2. docs-backup 브랜치 체크아웃 (파일 유지)
+      - name: Checkout docs-backup
         run: |
           git fetch origin
           git checkout docs-backup || git checkout --orphan docs-backup
-          git rm -rf . || true
 
-      # 3. 기존 docs를 ZIP으로 보관 (있을 때만)
+      # 3. 기존 docs ZIP 아카이브 (삭제 전에!)
       - name: Archive previous docs
         run: |
-          mkdir -p archives
           if [ -d "docs" ]; then
+            mkdir -p archives
             ZIP_NAME="archives/docs_$(date +'%Y-%m-%d').zip"
             zip -r "$ZIP_NAME" docs
           else
             echo "No previous docs to archive"
           fi
 
-      # 4. 최신 docs 복사
+      # 4. 기존 docs 제거
+      - name: Remove old docs
+        run: |
+          rm -rf docs
+
+      # 5. 최신 docs 복사
       - name: Copy latest docs from main
         run: |
           git checkout main -- docs
 
-      # 5. 커밋 & 푸시
+      # 6. 커밋 & 푸시
       - name: Commit and push
         run: |
           git config user.name "github-actions"
