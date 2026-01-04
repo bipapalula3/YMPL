@@ -1,0 +1,40 @@
+name: Weekly Docs Backup
+
+on:
+  schedule:
+    # 매주 월요일 03:00 UTC (한국시간 월요일 12:00)
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+jobs:
+  backup-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Prepare docs-backup branch
+        run: |
+          git fetch origin
+          if git show-ref --verify --quiet refs/remotes/origin/docs-backup; then
+            git checkout docs-backup
+          else
+            git checkout --orphan docs-backup
+          fi
+          git rm -rf .
+
+      - name: Copy docs folder
+        run: |
+          git checkout main -- docs
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add docs
+          git commit -m "Weekly docs backup ($(date +'%Y-%m-%d'))" || echo "No changes to commit"
+          git push -f origin docs-backup
