@@ -293,7 +293,7 @@ window.addEventListener('scroll', () => {
 // -----------------------------
 // URL 파라미터 자동 검색 (?q=)
 // -----------------------------
-(function autoSearchFromUrl() {
+document.addEventListener('DOMContentLoaded', function () {
   const params = new URLSearchParams(location.search);
   const keyword = params.get('q');
   if (!keyword) return;
@@ -301,7 +301,6 @@ window.addEventListener('scroll', () => {
   const input = document.getElementById('q');
   if (!input) return;
 
-  // 인덱스 로딩 대기
   const waitForIndex = setInterval(() => {
     if (INDEX && INDEX.length > 0) {
       clearInterval(waitForIndex);
@@ -310,4 +309,5 @@ window.addEventListener('scroll', () => {
       startSearch(); // 🔥 자동 검색 실행
     }
   }, 50);
-})();
+});
+
