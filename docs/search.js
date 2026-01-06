@@ -289,3 +289,25 @@ window.addEventListener('scroll', () => {
     renderNextPage();
   }
 });
+
+// -----------------------------
+// URL 파라미터 자동 검색 (?q=)
+// -----------------------------
+(function autoSearchFromUrl() {
+  const params = new URLSearchParams(location.search);
+  const keyword = params.get('q');
+  if (!keyword) return;
+
+  const input = document.getElementById('q');
+  if (!input) return;
+
+  // 인덱스 로딩 대기
+  const waitForIndex = setInterval(() => {
+    if (INDEX && INDEX.length > 0) {
+      clearInterval(waitForIndex);
+
+      input.value = keyword;
+      startSearch(); // 🔥 자동 검색 실행
+    }
+  }, 50);
+})();
