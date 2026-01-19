@@ -289,3 +289,24 @@ window.addEventListener('scroll', () => {
     renderNextPage();
   }
 });
+
+// -----------------------------
+// URL 파라미터 자동 검색 (?q=)
+// -----------------------------
+document.addEventListener('DOMContentLoaded', function () {
+  const params = new URLSearchParams(location.search);
+  const keyword = params.get('q');
+  if (!keyword) return;
+
+  const input = document.getElementById('q');
+  if (!input) return;
+
+  const waitForIndex = setInterval(() => {
+    if (INDEX && INDEX.length > 0) {
+      clearInterval(waitForIndex);
+
+      input.value = keyword;
+      startSearch(); // 🔥 자동 검색 실행
+    }
+  }, 50);
+});
