@@ -26,6 +26,14 @@ fetch('artist_song_index.json')
   .then(res => res.json())
   .then(data => INDEX = data);
 
+function goBackSmart() {
+  if (window.__FROM_APP__) {
+    location.href = "app://back";   // ⭐ 앱으로 복귀
+  } else {
+    location.href = "index.html";   // ⭐ 웹 메인
+  }
+}
+
 // -----------------------------
 // 토큰 분리
 // -----------------------------
@@ -209,8 +217,18 @@ function renderNextPage() {
     // ✅ 카드 전체를 감싸는 링크
     const link = document.createElement('a');
     link.href = item.link;
-    link.target = '_blank';
     link.className = 'search-link';
+
+    link.addEventListener("click", (e) => {
+      if (window.__FROM_APP__) {
+        e.preventDefault();
+
+        const url = new URL(item.link, location.href);
+        url.searchParams.set("from", "app");
+
+        location.href = url.toString();
+      }
+    });
 
     // 카드 본체
     const card = document.createElement('div');
@@ -300,3 +318,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }, 50);
 });
+
+let _handlingBack = false;
+
+window.addEventListener("popstate", function () {
+  if (_handlingBack) return;
+  _handlingBack = true;
+  goBackSmart();
+});
+
