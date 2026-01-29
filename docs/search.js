@@ -284,6 +284,10 @@ window.addEventListener('scroll', () => {
 // -----------------------------
 document.addEventListener('DOMContentLoaded', function () {
   const params = new URLSearchParams(location.search);
+
+  const FROM_APP = params.get('from') === 'app'; // ✅ 먼저 판단
+  window.__FROM_APP__ = FROM_APP;               // ✅ 항상 저장
+
   const keyword = params.get('q');
   if (!keyword) return;
 
@@ -292,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const waitForIndex = setInterval(() => {
     if (INDEX && INDEX.length > 0) {
       clearInterval(waitForIndex);
-      search(); // 🔥 직접 검색 실행
+      search();
     }
   }, 50);
 });
