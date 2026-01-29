@@ -3,6 +3,7 @@ let RESULTS = [];
 let PAGE = 0;
 const PAGE_SIZE = 20;
 let LOADING = false;
+let EXTERNAL_QUERY = '';
 
 // 기본 커버 이미지 (fallback)
 const DEFAULT_COVER = 'icon80.png';
@@ -53,18 +54,6 @@ function debounce(fn, delay = 200) {
     timer = setTimeout(() => fn.apply(this, args), delay);
   };
 }
-
-// -----------------------------
-// 검색 시작
-// -----------------------------
-const startSearch = debounce(() => {
-  PAGE = 0;
-  RESULTS = [];
-  document.getElementById('result').innerHTML = '';
-  document.getElementById('resultCount').textContent = '';
-  document.getElementById('debugLog')?.remove();
-  search();
-}, 200);
 
 // -----------------------------
 // 점수 계산
@@ -139,7 +128,7 @@ function runSearch(terms, mode) {
 // 검색 메인
 // -----------------------------
 function search() {
-  const raw = document.getElementById('q').value.trim();
+  const raw = EXTERNAL_QUERY.trim();
   if (!raw) return;
 
   const terms = splitMixedTokens(raw);
@@ -298,15 +287,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const keyword = params.get('q');
   if (!keyword) return;
 
-  const input = document.getElementById('q');
-  if (!input) return;
+  EXTERNAL_QUERY = keyword;
 
   const waitForIndex = setInterval(() => {
     if (INDEX && INDEX.length > 0) {
       clearInterval(waitForIndex);
-
-      input.value = keyword;
-      startSearch(); // 🔥 자동 검색 실행
+      search(); // 🔥 직접 검색 실행
     }
   }, 50);
 });
