@@ -27,10 +27,10 @@ fetch('artist_song_index.json')
   .then(data => INDEX = data);
 
 function goBackSmart() {
-  if (window.__FROM_APP__) {
-    location.href = "app://back";   // ⭐ 앱으로 복귀
+  if (window.__FROM_APP__ && window.AndroidApp) {
+    AndroidApp.goBackToApp();   // ⭐ 핵심
   } else {
-    location.href = "index.html";   // ⭐ 웹 메인
+    location.href = "index.html";
   }
 }
 
