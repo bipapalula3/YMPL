@@ -303,9 +303,34 @@ window.addEventListener('scroll', () => {
 document.addEventListener('DOMContentLoaded', function () {
   const params = new URLSearchParams(location.search);
 
-  const FROM_APP = params.get('from') === 'app'; // ✅ 먼저 판단
-  window.__FROM_APP__ = FROM_APP;               // ✅ 항상 저장
+  // ✅ 앱에서 열렸는지 판단
+  const FROM_APP = params.get('from') === 'app';
+  window.__FROM_APP__ = FROM_APP;
 
+  // ⬅️ 앱에서 열린 경우에만 뒤로가기 버튼 생성 (깜박임 ❌)
+  if (FROM_APP) {
+    const backBar = document.createElement("div");
+
+    backBar.innerHTML = `
+      <button class="back-btn">
+        ◀️ Back Button ( ◁ 뒤로가기 )
+      </button>
+    `;
+
+    const backBtn = backBar.querySelector("button");
+
+    backBtn.addEventListener("click", () => {
+      if (window.AndroidApp) {
+        AndroidApp.goBackToApp();   // ⭐ WebView 종료
+      } else {
+        location.href = "index.html";
+      }
+    });
+
+    document.body.appendChild(backBar);
+  }
+
+  // 🔍 검색 키워드 처리
   const keyword = params.get('q');
   if (!keyword) return;
 
