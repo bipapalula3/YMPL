@@ -5,7 +5,7 @@
   <meta name='theme-color' content='#111217' />
   <title>YMPL TIDAL Search</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="search.js"></script>
+  <script src="search.js" defer></script>
 
   <style>
     /* ===== 기본 ===== */
@@ -167,10 +167,43 @@
       color: #94a3b8;
       margin: 16px 0;
     }
+    
+    .back-btn {
+      display: block;
+      max-width: 900px;
+      width: 100%;
+      margin: 18px auto;
+      padding: 8px 8px;
+
+      background: #1f6feb;
+      color: #fff;
+
+      border: none;
+      border-radius: 14px;
+
+      text-align: center;
+      line-height: 1.4;
+      min-height: 72px;
+      box-sizing: border-box;
+
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+
+      cursor: pointer;
+    }
+    
   </style>
 </head>
 
 <body>
+
+<!-- ⬅️ 뒤로가기 -->
+<div id="backBar">
+  <button id="backBtn" class="back-btn">
+    🔙 Back Button (뒤로가기)
+  </button>
+</div>
 
 <!-- 🔽 디버그 토글 -->
 <div class="search-options" id="debugOptions">
@@ -230,6 +263,22 @@ document.addEventListener("click", function (e) {
 /* ✅ 핵심: 뒤로가기 복구 */
 window.addEventListener("pageshow", function () {
   document.body.classList.remove("page-fade-out");
+});
+</script>
+
+<!-- ⬅️ 뒤로가기 -->
+<script>
+document.getElementById('backBtn')?.addEventListener('click', function () {
+  // 🔑 search.js에서 설정한 값
+  const fromApp = window.__FROM_APP__ === true;
+
+  if (fromApp) {
+    // ✅ 앱에서 왔으면 앱 메인으로
+    location.href = 'app://main';
+  } else {
+    // ✅ 웹에서 왔으면 웹 메인으로
+    location.href = 'index.html';
+  }
 });
 </script>
 
