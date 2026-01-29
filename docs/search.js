@@ -309,25 +309,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ⬅️ 앱에서 열린 경우에만 뒤로가기 버튼 생성 (깜박임 ❌)
   if (FROM_APP) {
-    const backBar = document.createElement("div");
-
-    backBar.innerHTML = `
-      <button class="back-btn">
-        ◀️ Back Button ( ◁ 뒤로가기 )
-      </button>
-    `;
-
-    const backBtn = backBar.querySelector("button");
+    const backBtn = document.createElement("button");
+    backBtn.className = "back-btn";
+    backBtn.textContent = "◀️ Back Button ( ◁ 뒤로가기 )";
 
     backBtn.addEventListener("click", () => {
       if (window.AndroidApp) {
-        AndroidApp.goBackToApp();   // ⭐ WebView 종료
+        AndroidApp.goBackToApp();
       } else {
         location.href = "index.html";
       }
     });
 
-    document.body.appendChild(backBar);
+    document.body.appendChild(backBtn);
   }
 
   // 🔍 검색 키워드 처리
