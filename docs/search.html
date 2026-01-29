@@ -193,6 +193,9 @@
       cursor: pointer;
     }
     
+    #backBar {
+      display: none;
+    }       
   </style>
 </head>
 
@@ -218,6 +221,19 @@
     ◀️ Back Button ( ◁ 뒤로가기 )
   </button>
 </div>
+
+<script>
+  (function () {
+    const params = new URLSearchParams(location.search);
+    const from = params.get("from");
+
+    const backBar = document.getElementById("backBar");
+
+    if (from === "app" && window.AndroidApp) {
+      backBar.style.display = "block";
+    }
+  })();
+</script>
 
 <!-- 🔒 개발자 모드 체크 -->
 <script>
@@ -272,11 +288,9 @@ window.addEventListener("pageshow", function () {
     const params = new URLSearchParams(location.search);
     const from = params.get("from");
 
-    if (from === "app") {
-      // 🔹 앱에서 열렸다는 신호
-      location.href = "app://back";
+    if (from === "app" && window.AndroidApp) {
+      AndroidApp.goBackToApp();   // ⭐ JS Interface
     } else {
-      // 🔹 웹에서 직접 연 경우
       location.href = "index.html";
     }
   });
