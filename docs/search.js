@@ -307,8 +307,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const FROM_APP = params.get('from') === 'app';
   window.__FROM_APP__ = FROM_APP;
 
-  // ⬅️ 앱에서 열린 경우에만 뒤로가기 버튼 생성 (깜박임 ❌)
+  // ⬅️ 앱에서 열린 경우에만 상단 바 + 뒤로가기 버튼 생성
   if (FROM_APP) {
+    // 🔲 상단 검은 바
+    const topBar = document.createElement("div");
+    topBar.className = "app-top-bar";
+
+    // ◀️ 뒤로가기 버튼
     const backBtn = document.createElement("button");
     backBtn.className = "back-btn";
     backBtn.textContent = "◀️ Back Button ( ◁ 뒤로가기 )";
@@ -321,7 +326,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    document.body.appendChild(backBtn);
+    topBar.appendChild(backBtn);
+    document.body.prepend(topBar);   // ⭐ 맨 위에 삽입
   }
 
   // 🔍 검색 키워드 처리
