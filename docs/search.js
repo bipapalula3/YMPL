@@ -1,6 +1,13 @@
 let INDEX = [];
 let RESULTS = [];
 let PAGE = 0;
+// 🔁 검색 히스토리 (최대 5개)
+const SEARCH_HISTORY_KEY = "ympl_search_history";
+const SEARCH_INDEX_KEY = "ympl_search_index";
+const MAX_HISTORY = 5;
+let INDEX = [];
+let RESULTS = [];
+let PAGE = 0;
 const PAGE_SIZE = 20;
 let LOADING = false;
 let EXTERNAL_QUERY = '';
@@ -61,6 +68,53 @@ function debounce(fn, delay = 200) {
     clearTimeout(timer);
     timer = setTimeout(() => fn.apply(this, args), delay);
   };
+}
+
+// -----------------------------
+// 히스토리 저장 이동 함수
+// -----------------------------
+function saveSearchKeyword(keyword) {
+  let history = JSON.parse(
+    localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
+  );
+
+  // 중복 제거
+  history = history.filter(k => k !== keyword);
+
+  // 최근 검색을 앞에
+  history.unshift(keyword);
+
+  // 최대 5개 유지
+  if (history.length > MAX_HISTORY) {
+    history.length = MAX_HISTORY;
+  }
+
+  localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
+  localStorage.setItem(SEARCH_INDEX_KEY, "0");
+}
+
+function loadSearchByOffset(offset) {
+  const history = JSON.parse(
+    localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
+  );
+  let index = parseInt(
+    localStorage.getItem(SEARCH_INDEX_KEY) || "0",
+    10
+  );
+
+  const nextIndex = index + offset;
+  if (nextIndex < 0 || nextIndex >= history.length) return;
+
+  index = nextIndex;
+  localStorage.setItem(SEARCH_INDEX_KEY, index.toString());
+
+  EXTERNAL_QUERY = history[index];
+
+  PAGE = 0;
+  RESULTS = [];
+  document.getElementById("result").innerHTML = "";
+
+  search();
 }
 
 // -----------------------------
@@ -137,6 +191,7 @@ function runSearch(terms, mode) {
 // -----------------------------
 function search() {
   const raw = EXTERNAL_QUERY.trim();
+  saveSearchKeyword(EXTERNAL_QUERY);
   if (!raw) return;
 
   const terms = splitMixedTokens(raw);
@@ -329,25 +384,38 @@ document.addEventListener('DOMContentLoaded', function () {
       search();
     };
 
-    // ❮ 이전 페이지
+    // ❮ 이전 검색어
     document.getElementById("navPrev").onclick = () => {
-      if (PAGE <= 1) return;
-      PAGE -= 2;
-      renderNextPage();
+      loadSearchByOffset(+1);
     };
 
-    // ❯ 다음 페이지
+    // ❯ 다음 검색어
     document.getElementById("navNext").onclick = () => {
-      renderNextPage();
+      loadSearchByOffset(-1);
     };
   }
 
 
   // 🔍 검색 키워드 처리
   const keyword = params.get('q');
-  if (!keyword) return;
 
-  EXTERNAL_QUERY = keyword;
+  if (keyword) {
+    EXTERNAL_QUERY = keyword;
+    saveSearchKeyword(keyword);
+  } else {
+    // q 파라미터가 없으면 히스토리에서 복구
+    const history = JSON.parse(
+      localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
+    );
+    const index = parseInt(
+      localStorage.getItem(SEARCH_INDEX_KEY) || "0",
+      10
+    );
+
+    if (history[index]) {
+      EXTERNAL_QUERY = history[index];
+    }
+  }
 
   const waitForIndex = setInterval(() => {
     if (INDEX && INDEX.length > 0) {
