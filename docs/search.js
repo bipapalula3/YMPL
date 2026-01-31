@@ -309,26 +309,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ⬅️ 앱에서 열린 경우에만 상단 바 + 뒤로가기 버튼 생성
   if (FROM_APP) {
-    // 🔲 상단 검은 바
-    const topBar = document.createElement("div");
-    topBar.className = "app-top-bar";
+    const bottomNav = document.getElementById("bottomNav");
+    bottomNav.style.display = "flex";
 
-    // ◀️ 뒤로가기 버튼
-    const backBtn = document.createElement("button");
-    backBtn.className = "back-btn";
-    backBtn.textContent = "◀️ Back Button ( ◁ 뒤로가기 )";
-
-    backBtn.addEventListener("click", () => {
+    // 🏠 홈 (앱 복귀)
+    document.getElementById("navHome").onclick = () => {
       if (window.AndroidApp) {
         AndroidApp.goBackToApp();
       } else {
         location.href = "index.html";
       }
-    });
+    };
 
-    topBar.appendChild(backBtn);
-    document.body.prepend(topBar);   // ⭐ 맨 위에 삽입
+    // ⟲ 검색 리셋
+    document.getElementById("navReload").onclick = () => {
+      PAGE = 0;
+      RESULTS = [];
+      document.getElementById("result").innerHTML = "";
+      search();
+    };
+
+    // ❮ 이전 페이지
+    document.getElementById("navPrev").onclick = () => {
+      if (PAGE <= 1) return;
+      PAGE -= 2;
+      renderNextPage();
+    };
+
+    // ❯ 다음 페이지
+    document.getElementById("navNext").onclick = () => {
+      renderNextPage();
+    };
   }
+
 
   // 🔍 검색 키워드 처리
   const keyword = params.get('q');
