@@ -5,7 +5,7 @@
   <meta name='theme-color' content='#111217' />
   <title>YMPL TIDAL Search</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="search.js"></script>
+  <script src="search.js" defer></script>
 
   <style>
     /* ===== 기본 ===== */
@@ -17,15 +17,14 @@
       background: #111217;
       color: #e6eef6;
       font-family: Arial, sans-serif;
-      padding: 2px 16px 16px 16px; /* 위 | 오른쪽 | 아래 | 왼쪽 */
 
-      /* 🔹 페이지 전환 페이드 */
+      padding-top: 2px;
+      padding-left: 16px;
+      padding-right: 16px;
+      padding-bottom: 96px;
+
       opacity: 1;
       transition: opacity 0.12s ease;
-    }
-
-    body.page-fade-out {
-      opacity: 0;
     }
 
     /* h1 크기 */
@@ -167,18 +166,67 @@
       color: #94a3b8;
       margin: 16px 0;
     }
+    
+    /* 🔻 하단 고정 바 */
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      background: #0b0f17; /* 거의 블랙 */
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+
+      z-index: 9998;
+
+      /* 위쪽 경계 살짝 */
+      border-top: 1px solid #1f2937;
+    }
+
+    /* 🔻 앱 하단 네비게이션 바 */
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      height: 52px;
+      background: #000000;
+      display: flex;
+
+      z-index: 9999;
+      border-top: 1px solid #1f2937;
+    }
+
+    /* 버튼 공통 */
+    .nav-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #e5e7eb;
+
+      font-size: 20px;
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-btn:active {
+      background: #111827;
+    }
+
+    /* 홈 아이콘 */
+    .nav-home img {
+      width: 28px;
+      height: 28px;
+    }
+
   </style>
 </head>
 
 <body>
-
-<h1>YMPL TIDAL Search</h1>
-
-<input
-  id="q"
-  placeholder="Artist / Track Search (가수 / 노래 검색)"
-  oninput="startSearch()"
-/>
 
 <!-- 🔽 디버그 토글 -->
 <div class="search-options" id="debugOptions">
@@ -240,6 +288,16 @@ window.addEventListener("pageshow", function () {
   document.body.classList.remove("page-fade-out");
 });
 </script>
+
+<div class="bottom-nav" id="bottomNav" style="display:none;">
+  <button class="nav-btn nav-home" id="navHome">
+    <img src="icon80.png" alt="home">
+  </button>
+  <button class="nav-btn" id="navReload">↺</button>
+  <button class="nav-btn" id="navPrev">◁</button>
+  <button class="nav-btn" id="navNext">▷</button>
+</div>
+
 
 </body>
 </html>

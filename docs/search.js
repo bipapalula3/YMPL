@@ -1,8 +1,13 @@
 let INDEX = [];
 let RESULTS = [];
 let PAGE = 0;
+// 🔁 검색 히스토리 (최대 5개)
+const SEARCH_HISTORY_KEY = "ympl_search_history";
+const SEARCH_INDEX_KEY = "ympl_search_index";
+const MAX_HISTORY = 5;
 const PAGE_SIZE = 20;
 let LOADING = false;
+let EXTERNAL_QUERY = '';
 
 // 기본 커버 이미지 (fallback)
 const DEFAULT_COVER = 'icon80.png';
@@ -24,6 +29,14 @@ const SEARCH_STATS = new Map();
 fetch('artist_song_index.json')
   .then(res => res.json())
   .then(data => INDEX = data);
+
+function goBackSmart() {
+  if (window.__FROM_APP__ && window.AndroidApp) {
+    AndroidApp.goBackToApp();   // ⭐ 핵심
+  } else {
+    location.href = "index.html";
+  }
+}
 
 // -----------------------------
 // 토큰 분리
@@ -55,16 +68,51 @@ function debounce(fn, delay = 200) {
 }
 
 // -----------------------------
-// 검색 시작
+// 히스토리 저장 이동 함수
 // -----------------------------
-const startSearch = debounce(() => {
+function saveSearchKeyword(keyword) {
+  let history = JSON.parse(
+    localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
+  );
+
+  // 중복 제거
+  history = history.filter(k => k !== keyword);
+
+  // 최근 검색을 앞에
+  history.unshift(keyword);
+
+  // 최대 5개 유지
+  if (history.length > MAX_HISTORY) {
+    history.length = MAX_HISTORY;
+  }
+
+  localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
+  localStorage.setItem(SEARCH_INDEX_KEY, "0");
+}
+
+function loadSearchByOffset(offset) {
+  const history = JSON.parse(
+    localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
+  );
+  let index = parseInt(
+    localStorage.getItem(SEARCH_INDEX_KEY) || "0",
+    10
+  );
+
+  const nextIndex = index + offset;
+  if (nextIndex < 0 || nextIndex >= history.length) return;
+
+  index = nextIndex;
+  localStorage.setItem(SEARCH_INDEX_KEY, index.toString());
+
+  EXTERNAL_QUERY = history[index];
+
   PAGE = 0;
   RESULTS = [];
-  document.getElementById('result').innerHTML = '';
-  document.getElementById('resultCount').textContent = '';
-  document.getElementById('debugLog')?.remove();
+  document.getElementById("result").innerHTML = "";
+
   search();
-}, 200);
+}
 
 // -----------------------------
 // 점수 계산
@@ -139,7 +187,8 @@ function runSearch(terms, mode) {
 // 검색 메인
 // -----------------------------
 function search() {
-  const raw = document.getElementById('q').value.trim();
+  const raw = EXTERNAL_QUERY.trim();
+  saveSearchKeyword(EXTERNAL_QUERY);
   if (!raw) return;
 
   const terms = splitMixedTokens(raw);
@@ -220,8 +269,18 @@ function renderNextPage() {
     // ✅ 카드 전체를 감싸는 링크
     const link = document.createElement('a');
     link.href = item.link;
-    link.target = '_blank';
     link.className = 'search-link';
+
+    link.addEventListener("click", (e) => {
+      if (window.__FROM_APP__) {
+        e.preventDefault();
+
+        const url = new URL(item.link, location.href);
+        url.searchParams.set("from", "app");
+
+        location.href = url.toString();
+      }
+    });
 
     // 카드 본체
     const card = document.createElement('div');
@@ -295,18 +354,79 @@ window.addEventListener('scroll', () => {
 // -----------------------------
 document.addEventListener('DOMContentLoaded', function () {
   const params = new URLSearchParams(location.search);
-  const keyword = params.get('q');
-  if (!keyword) return;
 
-  const input = document.getElementById('q');
-  if (!input) return;
+  // ✅ 앱에서 열렸는지 판단
+  const FROM_APP = params.get('from') === 'app';
+  window.__FROM_APP__ = FROM_APP;
+
+  // ⬅️ 앱에서 열린 경우에만 상단 바 + 뒤로가기 버튼 생성
+  if (FROM_APP) {
+    const bottomNav = document.getElementById("bottomNav");
+    bottomNav.style.display = "flex";
+
+    // 🏠 홈 (앱 복귀)
+    document.getElementById("navHome").onclick = () => {
+      if (window.AndroidApp) {
+        AndroidApp.goBackToApp();
+      } else {
+        location.href = "index.html";
+      }
+    };
+
+    // ⟲ 검색 리셋
+    document.getElementById("navReload").onclick = () => {
+      PAGE = 0;
+      RESULTS = [];
+      document.getElementById("result").innerHTML = "";
+      search();
+    };
+
+    // ❮ 이전 검색어
+    document.getElementById("navPrev").onclick = () => {
+      loadSearchByOffset(+1);
+    };
+
+    // ❯ 다음 검색어
+    document.getElementById("navNext").onclick = () => {
+      loadSearchByOffset(-1);
+    };
+  }
+
+
+  // 🔍 검색 키워드 처리
+  const keyword = params.get('q');
+
+  if (keyword) {
+    EXTERNAL_QUERY = keyword;
+    saveSearchKeyword(keyword);
+  } else {
+    // q 파라미터가 없으면 히스토리에서 복구
+    const history = JSON.parse(
+      localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
+    );
+    const index = parseInt(
+      localStorage.getItem(SEARCH_INDEX_KEY) || "0",
+      10
+    );
+
+    if (history[index]) {
+      EXTERNAL_QUERY = history[index];
+    }
+  }
 
   const waitForIndex = setInterval(() => {
     if (INDEX && INDEX.length > 0) {
       clearInterval(waitForIndex);
-
-      input.value = keyword;
-      startSearch(); // 🔥 자동 검색 실행
+      search();
     }
   }, 50);
 });
+
+let _handlingBack = false;
+
+window.addEventListener("popstate", function () {
+  if (_handlingBack) return;
+  _handlingBack = true;
+  goBackSmart();
+});
+
