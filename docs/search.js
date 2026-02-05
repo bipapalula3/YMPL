@@ -27,8 +27,16 @@ const SEARCH_STATS = new Map();
 // 인덱스 로딩
 // -----------------------------
 fetch('artist_song_index.json')
-  .then(res => res.json())
-  .then(data => INDEX = data);
+  .then(res => {
+    if (!res.ok) throw new Error("index load failed");
+    return res.json();
+  })
+  .then(data => INDEX = data)
+  .catch(err => {
+    console.error("❌ INDEX 로딩 실패", err);
+    document.getElementById("resultCount").textContent =
+      "검색 인덱스를 불러오지 못했습니다";
+  });
 
 function goBackSmart() {
   if (window.__FROM_APP__ && window.AndroidApp) {
@@ -136,6 +144,7 @@ function saveSearchKeyword(keyword) {
   localStorage.setItem(SEARCH_INDEX_KEY, "0");
   renderSearchHistory();
 }
+
 
 function loadSearchByOffset(offset) {
   const history = JSON.parse(
@@ -421,7 +430,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // 검색
-    document.getElementById("navReload").onclick = openSearchSheet;
+    document.getElementById("navSearch").onclick = openSearchSheet;
 
     // ❮ 이전 검색어
     document.getElementById("navPrev").onclick = () => {
