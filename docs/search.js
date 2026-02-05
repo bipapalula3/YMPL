@@ -113,7 +113,7 @@ function renderSearchHistory() {
       document.getElementById("result").innerHTML = "";
 
       closeSearchSheet();
-      search();
+      search({ updateHistory: false });
     };
 
     list.appendChild(li);
@@ -188,7 +188,8 @@ function loadSearchByOffset(offset) {
   RESULTS = [];
   document.getElementById("result").innerHTML = "";
 
-  search();
+ // 🚫 히스토리 재정렬 금지
+  search({ updateHistory: false });
 }
 
 
@@ -264,10 +265,13 @@ function runSearch(terms, mode) {
 // -----------------------------
 // 검색 메인
 // -----------------------------
-function search() {
+function search({ updateHistory = true } = {}) {
   const raw = EXTERNAL_QUERY.trim();
   if (!raw) return;
-  saveSearchKeyword(raw);
+
+  if (updateHistory) {
+    saveSearchKeyword(raw);
+  }
 
   const terms = splitMixedTokens(raw);
   if (!terms.length) return;
