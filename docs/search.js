@@ -321,7 +321,7 @@ function search({ updateHistory = true } = {}) {
 
   document.getElementById(
     'resultCount'
-  ).textContent = `검색 결과 ${RESULTS.length}건`;
+  ).textContent = `${EXTERNAL_QUERY} 🔍 검색 결과 ${RESULTS.length}건`;
 
   renderNextPage();
 }
@@ -451,7 +451,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (window.__FROM_APP__ && window.AndroidApp) {
       AndroidApp.goBackToApp();
     } else {
-      location.href = "index.html";
+      location.href = "/index.html";
     }
   };
 
