@@ -42,7 +42,7 @@ function goBackSmart() {
   if (window.__FROM_APP__ && window.AndroidApp) {
     AndroidApp.goBackToApp();   // ⭐ 핵심
   } else {
-    location.href = "index.html";
+    location.href = "/index.html";
   }
 }
 
