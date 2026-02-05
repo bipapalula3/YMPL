@@ -64,6 +64,21 @@ function splitMixedTokens(input) {
     .filter(Boolean);
 }
 
+function toggleSearchSheet() {
+  const sheet = document.getElementById("searchSheet");
+  const backdrop = document.getElementById("sheetBackdrop");
+  if (!sheet || !backdrop) return;
+
+  const isOpen = sheet.classList.contains("open");
+
+  if (isOpen) {
+    closeSearchSheet();
+  } else {
+    openSearchSheet();
+  }
+}
+
+
 // -----------------------------
 // debounce
 // -----------------------------
@@ -129,19 +144,25 @@ function saveSearchKeyword(keyword) {
     localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
   );
 
-  // 중복 제거
-  history = history.filter(k => k !== keyword);
+  // 기존 위치 확인
+  let index = history.indexOf(keyword);
 
-  // 최근 검색을 앞에
+  // 이미 있으면 제거
+  if (index !== -1) {
+    history.splice(index, 1);
+  }
+
+  // 맨 앞에 추가
   history.unshift(keyword);
 
-  // 최대 10개 유지
   if (history.length > MAX_HISTORY) {
     history.length = MAX_HISTORY;
   }
 
+  // ✅ 현재 검색어는 항상 index 0
   localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
   localStorage.setItem(SEARCH_INDEX_KEY, "0");
+
   renderSearchHistory();
 }
 
@@ -150,18 +171,18 @@ function loadSearchByOffset(offset) {
   const history = JSON.parse(
     localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
   );
+
   let index = parseInt(
     localStorage.getItem(SEARCH_INDEX_KEY) || "0",
     10
   );
 
   const nextIndex = index + offset;
+
   if (nextIndex < 0 || nextIndex >= history.length) return;
 
-  index = nextIndex;
-  localStorage.setItem(SEARCH_INDEX_KEY, index.toString());
-
-  EXTERNAL_QUERY = history[index];
+  localStorage.setItem(SEARCH_INDEX_KEY, nextIndex.toString());
+  EXTERNAL_QUERY = history[nextIndex];
 
   PAGE = 0;
   RESULTS = [];
@@ -169,6 +190,7 @@ function loadSearchByOffset(offset) {
 
   search();
 }
+
 
 // -----------------------------
 // 점수 계산
@@ -430,7 +452,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // 검색
-    document.getElementById("navSearch").onclick = openSearchSheet;
+    document.getElementById("navSearch").onclick = toggleSearchSheet;
 
     // ❮ 이전 검색어
     document.getElementById("navPrev").onclick = () => {
