@@ -4,7 +4,7 @@ let PAGE = 0;
 // 🔁 검색 히스토리 (최대 5개)
 const SEARCH_HISTORY_KEY = "ympl_search_history";
 const SEARCH_INDEX_KEY = "ympl_search_index";
-const MAX_HISTORY = 5;
+const MAX_HISTORY = 10;
 const PAGE_SIZE = 20;
 let LOADING = false;
 let EXTERNAL_QUERY = '';
@@ -67,6 +67,52 @@ function debounce(fn, delay = 200) {
   };
 }
 
+function renderSearchHistory() {
+  const list = document.getElementById("searchHistoryList");
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  const history = JSON.parse(
+    localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
+  );
+
+  history.slice(0, MAX_HISTORY).forEach((keyword, i) => {
+    const li = document.createElement("li");
+    li.textContent = keyword;
+
+    li.onclick = () => {
+      EXTERNAL_QUERY = keyword;
+      localStorage.setItem(SEARCH_INDEX_KEY, i.toString());
+
+      PAGE = 0;
+      RESULTS = [];
+      document.getElementById("result").innerHTML = "";
+
+      closeSearchSheet();
+      search();
+    };
+
+    list.appendChild(li);
+  });
+}
+
+function openSearchSheet() {
+  document.getElementById("searchSheet")?.classList.add("open");
+  document.getElementById("sheetBackdrop")?.style.setProperty("display", "block");
+  renderSearchHistory();
+}
+
+function closeSearchSheet() {
+  document.getElementById("searchSheet")?.classList.remove("open");
+  document.getElementById("sheetBackdrop")?.style.setProperty("display", "none");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("sheetBackdrop")
+    ?.addEventListener("click", closeSearchSheet);
+});
+
 // -----------------------------
 // 히스토리 저장 이동 함수
 // -----------------------------
@@ -81,13 +127,14 @@ function saveSearchKeyword(keyword) {
   // 최근 검색을 앞에
   history.unshift(keyword);
 
-  // 최대 5개 유지
+  // 최대 10개 유지
   if (history.length > MAX_HISTORY) {
     history.length = MAX_HISTORY;
   }
 
   localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
   localStorage.setItem(SEARCH_INDEX_KEY, "0");
+  renderSearchHistory();
 }
 
 function loadSearchByOffset(offset) {
@@ -188,8 +235,8 @@ function runSearch(terms, mode) {
 // -----------------------------
 function search() {
   const raw = EXTERNAL_QUERY.trim();
-  saveSearchKeyword(EXTERNAL_QUERY);
   if (!raw) return;
+  saveSearchKeyword(raw);
 
   const terms = splitMixedTokens(raw);
   if (!terms.length) return;
@@ -373,13 +420,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     };
 
-    // ⟲ 검색 리셋
-    document.getElementById("navReload").onclick = () => {
-      PAGE = 0;
-      RESULTS = [];
-      document.getElementById("result").innerHTML = "";
-      search();
-    };
+    // 검색
+    document.getElementById("navReload").onclick = openSearchSheet;
 
     // ❮ 이전 검색어
     document.getElementById("navPrev").onclick = () => {
