@@ -441,33 +441,33 @@ document.addEventListener('DOMContentLoaded', function () {
   const FROM_APP = params.get('from') === 'app';
   window.__FROM_APP__ = FROM_APP;
 
-  // ⬅️ 앱에서 열린 경우에만 상단 바 + 뒤로가기 버튼 생성
-  if (FROM_APP) {
-    const bottomNav = document.getElementById("bottomNav");
-    bottomNav.style.display = "flex";
 
-    // 🏠 홈 (앱 복귀)
-    document.getElementById("navHome").onclick = () => {
-      if (window.AndroidApp) {
-        AndroidApp.goBackToApp();
-      } else {
-        location.href = "index.html";
-      }
-    };
+  //if (FROM_APP) {
+  const bottomNav = document.getElementById("bottomNav");
+  bottomNav.style.display = "flex";
 
-    // 검색
-    document.getElementById("navSearch").onclick = toggleSearchSheet;
+  // 🏠 홈 
+  document.getElementById("navHome").onclick = () => {
+    if (window.__FROM_APP__ && window.AndroidApp) {
+      AndroidApp.goBackToApp();
+    } else {
+      location.href = "index.html";
+    }
+  };
 
-    // ❮ 이전 검색어
-    document.getElementById("navPrev").onclick = () => {
-      loadSearchByOffset(+1);
-    };
+  // 검색
+  document.getElementById("navSearch").onclick = toggleSearchSheet;
 
-    // ❯ 다음 검색어
-    document.getElementById("navNext").onclick = () => {
-      loadSearchByOffset(-1);
-    };
-  }
+  // ❮ 이전 검색어
+  document.getElementById("navPrev").onclick = () => {
+    loadSearchByOffset(+1);
+  };
+
+  // ❯ 다음 검색어
+  document.getElementById("navNext").onclick = () => {
+    loadSearchByOffset(-1);
+  };
+  //}
 
 
   // 🔍 검색 키워드 처리
