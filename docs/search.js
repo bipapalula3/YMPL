@@ -1,6 +1,13 @@
 let INDEX = [];
 let RESULTS = [];
 let PAGE = 0;
+
+// =========================
+// 광고 전역 스위치 ⭐️
+// =========================
+const ADS_ENABLED = false;   // ❌ 지금은 OFF
+// const ADS_ENABLED = true; // ✅ 승인 후 ON
+
 // 🔁 검색 히스토리 (최대 5개)
 const SEARCH_HISTORY_KEY = "ympl_search_history";
 const SEARCH_INDEX_KEY = "ympl_search_index";
