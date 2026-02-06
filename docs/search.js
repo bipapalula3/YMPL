@@ -337,20 +337,30 @@ function createAdItem(slotId) {
   const li = document.createElement("li");
   li.className = "ad-card";
 
-  li.innerHTML = `
-    <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="${AD_CLIENT}"
-      data-ad-slot="${slotId}"
-      data-ad-format="fluid"
-      data-ad-layout-key="-gw-3+1f-3d+2z"></ins>
-  `;
+  const ins = document.createElement("ins");
+  ins.className = "adsbygoogle";
+  ins.style.display = "block";
+  ins.dataset.adClient = AD_CLIENT;
+  ins.dataset.adSlot = slotId;
+  ins.dataset.adFormat = "fluid";
+  ins.dataset.adLayoutKey = "-gw-3+1f-3d+2z";
 
-  // AdSense 요청
+  li.appendChild(ins);
+
   setTimeout(() => {
     try {
       (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {}
+
+      // ⏱ 1.5초 후 광고 iframe 없으면 제거
+      setTimeout(() => {
+        if (!ins.querySelector("iframe")) {
+          li.remove();
+        }
+      }, 1500);
+
+    } catch (e) {
+      li.remove();
+    }
   }, 0);
 
   return li;
