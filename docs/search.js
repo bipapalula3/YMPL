@@ -13,6 +13,13 @@ let EXTERNAL_QUERY = '';
 const DEFAULT_COVER = 'icon80.png';
 
 // -----------------------------
+// AdSense 설정
+// -----------------------------
+const AD_CLIENT = "ca-pub-1954623157146783";
+const AD_SLOT_MID = "9828698918";   // 7번째
+const AD_SLOT_END = "3263290563";   // 마지막
+
+// -----------------------------
 // 개발자 모드 (?dev=1009)
 // -----------------------------
 const DEV_MODE = (() => {
@@ -326,6 +333,35 @@ function search({ updateHistory = true } = {}) {
   renderNextPage();
 }
 
+function createAdItem(slotId) {
+  const li = document.createElement("li");
+  li.className = "ad-card";
+
+  li.innerHTML = `
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="${AD_CLIENT}"
+      data-ad-slot="${slotId}"
+      data-ad-format="fluid"
+      data-ad-layout-key="-gw-3+1f-3d+2z"></ins>
+  `;
+
+  // AdSense 요청
+  setTimeout(() => {
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {}
+  }, 0);
+
+  return li;
+}
+
+function getAdPositions(total) {
+  if (total <= 6) return ["end"];
+  if (total <= 13) return [6];       // 0-based → 7번째
+  return [6, "end"];                 // 7번째 + 마지막
+}
+
 // -----------------------------
 // 렌더링 (카드 전체 클릭 + 커버 이미지 + lazy-load)
 // -----------------------------
@@ -345,10 +381,22 @@ function renderNextPage() {
 
   const ul = document.getElementById('result');
 
-  slice.forEach(item => {
+  const total = RESULTS.length;
+  const adPositions = getAdPositions(total);
+
+  // 현재까지 렌더링된 전체 개수
+  let renderedCount = PAGE * PAGE_SIZE;
+
+  slice.forEach((item, i) => {
+    const globalIndex = renderedCount + i;
+
+    // 🔶 미들 광고 (웹에서만)
+    if (!window.__FROM_APP__ && adPositions.includes(globalIndex)) {
+      ul.appendChild(createAdItem(AD_SLOT_MID));
+    }
+
     const li = document.createElement('li');
 
-    // ✅ 카드 전체를 감싸는 링크
     const link = document.createElement('a');
     link.href = item.link;
     link.className = 'search-link';
@@ -356,23 +404,18 @@ function renderNextPage() {
     link.addEventListener("click", (e) => {
       if (window.__FROM_APP__) {
         e.preventDefault();
-
         const url = new URL(item.link, location.href);
         url.searchParams.set("from", "app");
-
         location.href = url.toString();
       }
     });
 
-    // 카드 본체
     const card = document.createElement('div');
     card.className = 'search-item';
 
-    // 왼쪽 텍스트 영역
     const content = document.createElement('div');
     content.className = 'search-content';
 
-    // ❗ 제목은 이제 <a>가 아닌 <div>
     const title = document.createElement('div');
     title.className = 'search-title';
     title.textContent = item.title;
@@ -383,30 +426,20 @@ function renderNextPage() {
 
     content.append(title, preview);
 
-    // 오른쪽 커버 이미지 (조건부 렌더링)
-    let img = null;
-
+    let img;
     if (item.cover) {
       img = document.createElement('img');
       img.className = 'search-cover';
       img.loading = 'lazy';
       img.src = item.cover;
-      img.alt = '';
-
-      // ❗ 로드 실패 시 이미지 자체 제거
-      img.onerror = () => {
-        img.remove();
-      };
+      img.onerror = () => img.remove();
     } else {
-      // cover 자체가 없을 때만 fallback 사용
       img = document.createElement('img');
       img.className = 'search-cover';
       img.loading = 'lazy';
       img.src = DEFAULT_COVER;
-      img.alt = '';
     }
 
-    // 조립
     card.append(content);
     if (img) card.appendChild(img);
 
@@ -414,6 +447,11 @@ function renderNextPage() {
     li.appendChild(link);
     ul.appendChild(li);
   });
+
+  // 🔶 마지막 광고
+  if (!window.__FROM_APP__ && adPositions.includes("end")) {
+    ul.appendChild(createAdItem(AD_SLOT_END));
+  }
 
   PAGE++;
   LOADING = false;
