@@ -341,6 +341,8 @@ function search({ updateHistory = true } = {}) {
 }
 
 function createAdItem(slotId) {
+  if (!ADS_ENABLED) return null; // ⭐ 핵심
+  
   const li = document.createElement("li");
   li.className = "ad-card";
 
@@ -409,7 +411,8 @@ function renderNextPage() {
 
     // 🔶 미들 광고 (웹에서만)
     if (!window.__FROM_APP__ && adPositions.includes(globalIndex)) {
-      ul.appendChild(createAdItem(AD_SLOT_MID));
+      const ad = createAdItem(AD_SLOT_MID);
+      if (ad) ul.appendChild(ad);
     }
 
     const li = document.createElement('li');
@@ -467,7 +470,8 @@ function renderNextPage() {
 
   // 🔶 마지막 광고
   if (!window.__FROM_APP__ && adPositions.includes("end")) {
-    ul.appendChild(createAdItem(AD_SLOT_END));
+    const ad = createAdItem(AD_SLOT_END);
+    if (ad) ul.appendChild(ad);
   }
 
   PAGE++;
