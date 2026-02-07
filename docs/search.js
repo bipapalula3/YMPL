@@ -384,8 +384,15 @@ function createAdItem(slotId) {
   li.innerHTML = `
     <a href="#" class="search-link ad-link" onclick="return false;">
       <div class="search-item">
+      
+        <!-- 왼쪽 이미지 -->
+        <img
+          class="search-cover"
+          src="https://via.placeholder.com/80x80/1f2937/93c5fd?text=AD"
+          alt="ad"
+        />
 
-        <!-- 왼쪽 텍스트 -->
+        <!-- 오른쪽 텍스트 -->
         <div class="search-content">
           <div class="search-title">
             🎧 스폰서 · YMPL 추천 플레이리스트
@@ -400,14 +407,7 @@ function createAdItem(slotId) {
           <div class="search-debug">
             AD · TEST
           </div>
-        </div>
-
-        <!-- 오른쪽 이미지 -->
-        <img
-          class="search-cover"
-          src="https://via.placeholder.com/80x80/1f2937/93c5fd?text=AD"
-          alt="ad"
-        />
+        </div>   
       </div>
     </a>
   `;
