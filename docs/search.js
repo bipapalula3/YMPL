@@ -337,7 +337,7 @@ function search({ updateHistory = true } = {}) {
   renderNextPage();
 }
 
-function createAdItem(slotId) {
+/* function createAdItem(slotId) {
   if (!ADS_ENABLED) return null; // ⭐ 핵심
   
   const li = document.createElement("li");
@@ -371,6 +371,46 @@ function createAdItem(slotId) {
       li.remove();
     }
   }, 0);
+
+  return li;
+} */
+
+function createAdItem(slotId) {
+  if (!ADS_ENABLED) return null;
+
+  const li = document.createElement("li");
+  li.className = "ad-item";
+
+  li.innerHTML = `
+    <a href="#" class="search-link ad-link" onclick="return false;">
+      <div class="search-item">
+
+        <!-- 왼쪽 텍스트 -->
+        <div class="search-content">
+          <div class="search-title">
+            🎧 스폰서 · YMPL 추천 플레이리스트
+          </div>
+
+          <div class="search-preview">
+            이 결과는 테스트용 네이티브 인피드 광고입니다.
+            실제 검색 결과와 동일한 레이아웃을 사용합니다.
+            승인 후 이 영역에 AdSense 광고가 표시됩니다.
+          </div>
+
+          <div class="search-debug">
+            AD · TEST
+          </div>
+        </div>
+
+        <!-- 오른쪽 이미지 -->
+        <img
+          class="search-cover"
+          src="https://via.placeholder.com/80x80/1f2937/93c5fd?text=AD"
+          alt="ad"
+        />
+      </div>
+    </a>
+  `;
 
   return li;
 }
