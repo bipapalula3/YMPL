@@ -459,10 +459,10 @@ function renderNextPage() {
       img.loading = 'lazy';
       img.src = DEFAULT_COVER;
     }
-
+    
+   if (img) card.appendChild(img);
     card.append(content);
-    if (img) card.appendChild(img);
-
+ 
     link.appendChild(card);
     li.appendChild(link);
     ul.appendChild(li);
