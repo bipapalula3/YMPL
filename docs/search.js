@@ -2,11 +2,8 @@ let INDEX = [];
 let RESULTS = [];
 let PAGE = 0;
 
-// =========================
-// 광고 전역 스위치 ⭐️
-// =========================
-const ADS_ENABLED = false;   // ❌ 지금은 OFF
-// const ADS_ENABLED = true; // ✅ 승인 후 ON
+// html의 광고 전역 스위치 받기
+const ADS_ENABLED = window.ADS_ENABLED === true;
 
 // 🔁 검색 히스토리 (최대 5개)
 const SEARCH_HISTORY_KEY = "ympl_search_history";
@@ -23,8 +20,8 @@ const DEFAULT_COVER = 'icon80.png';
 // AdSense 설정
 // -----------------------------
 const AD_CLIENT = "ca-pub-1954623157146783";
-const AD_SLOT_MID = "9828698918";   // 7번째
-const AD_SLOT_END = "3263290563";   // 마지막
+const AD_SLOT_MID = "5916733430";   // 7번째
+const AD_SLOT_END = "3792396883";   // 마지막
 
 // -----------------------------
 // 개발자 모드 (?dev=1009)
@@ -353,6 +350,9 @@ function createAdItem(slotId) {
   ins.dataset.adSlot = slotId;
   ins.dataset.adFormat = "fluid";
   ins.dataset.adLayoutKey = "-gw-3+1f-3d+2z";
+  
+  // ⭐ 승인 전 테스트 광고
+  ins.dataset.adtest = "on";
 
   li.appendChild(ins);
 
