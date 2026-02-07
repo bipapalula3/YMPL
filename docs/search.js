@@ -341,7 +341,7 @@ function createAdItem(slotId) {
   if (!ADS_ENABLED) return null; // ⭐ 핵심
   
   const li = document.createElement("li");
-  li.className = "ad-card";
+  li.className = "ad-item";
 
   const ins = document.createElement("ins");
   ins.className = "adsbygoogle";
