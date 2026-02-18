@@ -2,10 +2,13 @@ let INDEX = [];
 let RESULTS = [];
 let PAGE = 0;
 
-// html의 광고 전역 스위치 받기
-const ADS_ENABLED = window.ADS_ENABLED === true;
+// =========================
+// 광고 전역 스위치 ⭐️
+// =========================
+const ADS_ENABLED = false;   // ❌ 지금은 OFF
+// const ADS_ENABLED = true; // ✅ 승인 후 ON
 
-// 🔁 검색 히스토리 (최대 5개)
+// 🔁 검색 히스토리 (최대 10개)
 const SEARCH_HISTORY_KEY = "ympl_search_history";
 const SEARCH_INDEX_KEY = "ympl_search_index";
 const MAX_HISTORY = 10;
@@ -20,8 +23,8 @@ const DEFAULT_COVER = 'icon80.png';
 // AdSense 설정
 // -----------------------------
 const AD_CLIENT = "ca-pub-1954623157146783";
-const AD_SLOT_MID = "5916733430";   // 7번째
-const AD_SLOT_END = "3792396883";   // 마지막
+const AD_SLOT_MID = "9828698918";   // 7번째
+const AD_SLOT_END = "3263290563";   // 마지막
 
 // -----------------------------
 // 개발자 모드 (?dev=1009)
@@ -114,6 +117,15 @@ function renderSearchHistory() {
   history.slice(0, MAX_HISTORY).forEach((keyword, i) => {
     const li = document.createElement("li");
     li.textContent = keyword;
+
+    // 🎁 보상 검색 강조 조건
+    if (
+      keyword === "Weekly New Releases" ||
+      keyword === "Top Chart–Newest First" ||
+      keyword === "Latest Debut Album"
+    ) {
+      li.classList.add("reward-highlight");
+    }
 
     li.onclick = () => {
       EXTERNAL_QUERY = keyword;
@@ -330,21 +342,21 @@ function search({ updateHistory = true } = {}) {
     document.getElementById('resultCount').after(debugDiv);
   }
 
+  const label = params.get('label');
+
   document.getElementById(
     'resultCount'
-  ).textContent = `${EXTERNAL_QUERY} 🔍 검색 결과 ${RESULTS.length}건`;
+  ).textContent =
+    `${label || EXTERNAL_QUERY} 🔍 검색 결과 ${RESULTS.length}건`;
 
   renderNextPage();
 }
 
-// -----------------------------
-// 광고 로드
-// -----------------------------
 function createAdItem(slotId) {
   if (!ADS_ENABLED) return null; // ⭐ 핵심
   
   const li = document.createElement("li");
-  li.className = "ad-item";
+  li.className = "ad-card";
 
   const ins = document.createElement("ins");
   ins.className = "adsbygoogle";
@@ -353,7 +365,7 @@ function createAdItem(slotId) {
   ins.dataset.adSlot = slotId;
   ins.dataset.adFormat = "fluid";
   ins.dataset.adLayoutKey = "-gw-3+1f-3d+2z";
-  
+
   li.appendChild(ins);
 
   setTimeout(() => {
@@ -373,7 +385,7 @@ function createAdItem(slotId) {
   }, 0);
 
   return li;
-} 
+}
 
 function getAdPositions(total) {
   if (total <= 6) return ["end"];
@@ -459,10 +471,10 @@ function renderNextPage() {
       img.loading = 'lazy';
       img.src = DEFAULT_COVER;
     }
-    
-   if (img) card.appendChild(img);
+
     card.append(content);
- 
+    if (img) card.appendChild(img);
+
     link.appendChild(card);
     li.appendChild(link);
     ul.appendChild(li);
@@ -530,11 +542,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // 🔍 검색 키워드 처리
-  const keyword = params.get('q');
+  const encryptedKey = params.get('q');
+  const displayLabel = params.get('label');
 
-  if (keyword) {
-    EXTERNAL_QUERY = keyword;
-    saveSearchKeyword(keyword);
+  if (encryptedKey) {
+    EXTERNAL_QUERY = encryptedKey;
+
+    // 👀 히스토리에는 표시용 텍스트 저장
+    if (displayLabel) {
+      saveSearchKeyword(displayLabel);
+    } else {
+      saveSearchKeyword(encryptedKey);
+    }
   } else {
     // q 파라미터가 없으면 히스토리에서 복구
     const history = JSON.parse(
