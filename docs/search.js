@@ -11,6 +11,7 @@ const ADS_ENABLED = false;   // ❌ 지금은 OFF
 // 🔁 검색 히스토리 (최대 10개)
 const SEARCH_HISTORY_KEY = "ympl_search_history";
 const SEARCH_INDEX_KEY = "ympl_search_index";
+const SEARCH_DATE_KEY = "ympl_search_date";
 const MAX_HISTORY = 10;
 const PAGE_SIZE = 20;
 let LOADING = false;
@@ -160,6 +161,21 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // -----------------------------
+// 히스토리 초기화 함수
+// -----------------------------
+function checkAndResetHistoryIfNeeded() {
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const savedDate = localStorage.getItem(SEARCH_DATE_KEY);
+
+  if (savedDate !== today) {
+    // 🔥 날짜가 바뀌었으면 초기화
+    localStorage.removeItem(SEARCH_HISTORY_KEY);
+    localStorage.removeItem(SEARCH_INDEX_KEY);
+    localStorage.setItem(SEARCH_DATE_KEY, today);
+  }
+}
+
+// -----------------------------
 // 히스토리 저장 이동 함수
 // -----------------------------
 function saveSearchKeyword(keyword) {
@@ -185,6 +201,7 @@ function saveSearchKeyword(keyword) {
   // ✅ 현재 검색어는 항상 index 0
   localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
   localStorage.setItem(SEARCH_INDEX_KEY, "0");
+  localStorage.setItem(SEARCH_DATE_KEY, new Date().toISOString().slice(0,10));
 
   renderSearchHistory();
 }
@@ -507,6 +524,7 @@ window.addEventListener('scroll', () => {
 // URL 파라미터 자동 검색 (?q=)
 // -----------------------------
 document.addEventListener('DOMContentLoaded', function () {
+  checkAndResetHistoryIfNeeded();
   const params = new URLSearchParams(location.search);
 
   // ✅ 앱에서 열렸는지 판단
