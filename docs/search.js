@@ -342,13 +342,14 @@ function search({ updateHistory = true } = {}) {
     document.getElementById('resultCount').after(debugDiv);
   }
 
-  const label = params.get('label');
+  const urlParams = new URLSearchParams(location.search);
+  const label = urlParams.get('label');
 
-  document.getElementById(
-    'resultCount'
-  ).textContent =
-    `${label || EXTERNAL_QUERY} 🔍 검색 결과 ${RESULTS.length}건`;
-
+  const resultCountEl = document.getElementById('resultCount');
+  if (resultCountEl) {
+    resultCountEl.textContent =
+      `${label || EXTERNAL_QUERY} 🔍 검색 결과 ${RESULTS.length}건`;
+  }
   renderNextPage();
 }
 
