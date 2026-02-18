@@ -570,9 +570,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 👀 히스토리에는 표시용 텍스트 저장
     if (displayLabel) {
       saveSearchKeyword(displayLabel);
-    } else {
-      saveSearchKeyword(encryptedKey);
-    }
+    } 
   } else {
     // q 파라미터가 없으면 히스토리에서 복구
     const history = JSON.parse(
@@ -591,7 +589,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const waitForIndex = setInterval(() => {
     if (INDEX && INDEX.length > 0) {
       clearInterval(waitForIndex);
-      search();
+
+      if (encryptedKey) {
+        search({ updateHistory: false });  // 🔥 보상 검색은 저장 안 함
+      } else {
+        search();  // 일반 검색은 저장
+      }
     }
   }, 50);
 });
