@@ -105,15 +105,38 @@ function debounce(fn, delay = 200) {
   };
 }
 
+// 🔐 암호 키 검사 함수
+function isEncryptedKey(str) {
+  if (!str || str.length !== 9) return false;
+
+  const digitCount = (str.match(/\d/g) || []).length;
+  const letterCount = (str.match(/[DNT]/g) || []).length;
+
+  // 숫자 8개 + D/N/T 1개
+  if (digitCount !== 8 || letterCount !== 1) return false;
+
+  // 다른 문자 포함 여부 확인
+  const otherChars = str.replace(/[0-9DNT]/g, "");
+  if (otherChars.length > 0) return false;
+
+  return true;
+}
+
 function renderSearchHistory() {
   const list = document.getElementById("searchHistoryList");
   if (!list) return;
 
   list.innerHTML = "";
 
-  const history = JSON.parse(
+  let history = JSON.parse(
     localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
   );
+
+  // 🔐 암호 키 제거
+  history = history.filter(keyword => !isEncryptedKey(keyword));
+
+  // 🔥 정리된 히스토리 다시 저장 (기존 암호 데이터 완전 삭제)
+  localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
 
   history.slice(0, MAX_HISTORY).forEach((keyword, i) => {
     const li = document.createElement("li");
