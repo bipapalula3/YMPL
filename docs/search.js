@@ -8,12 +8,12 @@ let PAGE = 0;
 const ADS_ENABLED = false;   // ❌ 지금은 OFF
 // const ADS_ENABLED = true; // ✅ 승인 후 ON
 
-// 🔁 검색 히스토리 (최대 10개)
+// 🔁 검색 히스토리 (최대 15개)
 const SEARCH_HISTORY_KEY = "ympl_search_history";
 const SEARCH_INDEX_KEY = "ympl_search_index";
 const SEARCH_DATE_KEY = "ympl_search_date";
-const MAX_HISTORY = 10;
-const PAGE_SIZE = 20;
+const MAX_HISTORY = 15;
+const PAGE_SIZE = 30;
 let LOADING = false;
 let EXTERNAL_QUERY = '';
 
