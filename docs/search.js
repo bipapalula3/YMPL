@@ -107,19 +107,13 @@ function debounce(fn, delay = 200) {
 
 // 🔐 암호 키 검사 함수
 function isEncryptedKey(str) {
-  if (!str || str.length !== 9) return false;
+  if (!str) return false;
 
-  const digitCount = (str.match(/\d/g) || []).length;
-  const letterCount = (str.match(/[DNT]/g) || []).length;
+  const clean = str.trim();
 
-  // 숫자 8개 + D/N/T 1개
-  if (digitCount !== 8 || letterCount !== 1) return false;
-
-  // 다른 문자 포함 여부 확인
-  const otherChars = str.replace(/[0-9DNT]/g, "");
-  if (otherChars.length > 0) return false;
-
-  return true;
+  return /^[0-9DNT]{9}$/.test(clean) &&
+         (clean.match(/\d/g) || []).length === 8 &&
+         (clean.match(/[DNT]/g) || []).length === 1;
 }
 
 function renderSearchHistory() {
