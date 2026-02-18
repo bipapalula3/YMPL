@@ -589,12 +589,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const waitForIndex = setInterval(() => {
     if (INDEX && INDEX.length > 0) {
       clearInterval(waitForIndex);
-
-      if (encryptedKey) {
-        search({ updateHistory: false });  // 🔥 보상 검색은 저장 안 함
-      } else {
-        search();  // 일반 검색은 저장
-      }
+      search();
     }
   }, 50);
 });
