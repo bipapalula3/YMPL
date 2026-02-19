@@ -138,9 +138,9 @@ function renderSearchHistory() {
 
     // 🎁 보상 검색 강조 조건
     if (
-      keyword === "Weekly New Releases" ||
-      keyword === "Top Chart–Newest First" ||
-      keyword === "Latest Debut Album"
+      keyword === "Weekly New Kpop Releases" ||
+      keyword === "Ktop Chart - Newest First" ||
+      keyword === "Latest Kpop Debut Albums"
     ) {
       li.classList.add("reward-highlight");
     }
