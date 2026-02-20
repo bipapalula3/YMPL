@@ -389,11 +389,12 @@ function search({ updateHistory = true } = {}) {
     saveSearchKeyword(raw);
   }
 
-  // URL에서 제목(label) 파라미터 미리 가져오기
+  // 1. URL 파라미터에서 제목(label)을 한 번만 가져옵니다.
   const urlParams = new URLSearchParams(location.search);
   const label = urlParams.get('label');
+  const resultCountEl = document.getElementById('resultCount');
 
-  // 🔥 🔐 암호키 직접 매칭 모드
+  // 🔥 🔐 2. 암호키 직접 매칭 모드
   if (isEncryptedKey(raw)) {
     const validKeys = buildValidEncryptedKeys(raw);
     if (!validKeys) return;
@@ -401,42 +402,30 @@ function search({ updateHistory = true } = {}) {
     RESULTS = INDEX.filter(item => {
       const titleKeys = item.keywords?.title || [];
       const trackKeys = item.keywords?.track || [];
-
-      // 소문자 변환 비교
-      for (const k of titleKeys) {
-        if (validKeys.has(k.toLowerCase())) return true;
-      }
-      for (const k of trackKeys) {
-        if (validKeys.has(k.toLowerCase())) return true;
-      }
+      for (const k of titleKeys) { if (validKeys.has(k.toLowerCase())) return true; }
+      for (const k of trackKeys) { if (validKeys.has(k.toLowerCase())) return true; }
       return false;
     });
 
-    const resultCountEl = document.getElementById('resultCount');
     if (resultCountEl) {
-      // ✅ 수정된 부분: 암호키 대신 label(제목)이 있으면 표시, 없으면 raw 표시
-      resultCountEl.textContent = 
-        `${label || raw} 🔍 검색 결과 ${RESULTS.length}건`;
+      // 제목(label)이 있으면 제목을, 없으면 암호키(raw)를 표시
+      resultCountEl.textContent = `${label || raw} 🔍 검색 결과 ${RESULTS.length}건`;
     }
 
     renderNextPage();
-    return; // ⭐ 여기서 종료되므로 위에서 label 처리를 완료해야 함
+    return; // 암호키 검색 완료 후 종료
   }
 
+  // 3. 일반 검색 모드
   const terms = splitMixedTokens(raw);
   if (!terms.length) return;
 
   const queryKey = terms.join(' ');
-
-  const debugMode =
-    DEV_MODE && document.getElementById('debugToggle')?.checked;
+  const debugMode = DEV_MODE && document.getElementById('debugToggle')?.checked;
 
   const recall = runSearch(terms, 'recall');
   const precision = recall.length >= 10 ? runSearch(terms, 'precision') : [];
-  const relaxed =
-    recall.length >= 10 && precision.length < 3
-      ? runSearch(terms, 'relaxed')
-      : [];
+  const relaxed = recall.length >= 10 && precision.length < 3 ? runSearch(terms, 'relaxed') : [];
 
   let finalResults = recall;
   let path = `recall(${recall.length})`;
@@ -451,32 +440,25 @@ function search({ updateHistory = true } = {}) {
 
   RESULTS = finalResults;
 
+  // 디버그 모드 표시
   if (debugMode) {
     const stat = SEARCH_STATS.get(queryKey) || { count: 0, total: 0 };
-    stat.count++;
-    stat.total += RESULTS.length;
+    stat.count++; stat.total += RESULTS.length;
     SEARCH_STATS.set(queryKey, stat);
-
     const avg = (stat.total / stat.count).toFixed(1);
 
     const debugDiv = document.createElement('div');
     debugDiv.id = 'debugLog';
     debugDiv.className = 'search-debug';
-    debugDiv.innerHTML = `
-      🔍 검색 전략: ${path}<br/>
-      📊 평균 결과 수: ${avg}
-    `;
-    document.getElementById('resultCount').after(debugDiv);
+    debugDiv.innerHTML = `🔍 검색 전략: ${path}<br/>📊 평균 결과 수: ${avg}`;
+    resultCountEl?.after(debugDiv);
   }
 
-  const urlParams = new URLSearchParams(location.search);
-  const label = urlParams.get('label');
-
-  const resultCountEl = document.getElementById('resultCount');
+  // 일반 검색 결과 개수 표시
   if (resultCountEl) {
-    resultCountEl.textContent =
-      `${label || EXTERNAL_QUERY} 🔍 검색 결과 ${RESULTS.length}건`;
+    resultCountEl.textContent = `${label || EXTERNAL_QUERY} 🔍 검색 결과 ${RESULTS.length}건`;
   }
+  
   renderNextPage();
 }
 
