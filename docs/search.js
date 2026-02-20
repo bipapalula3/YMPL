@@ -107,39 +107,41 @@ function debounce(fn, delay = 200) {
 // 🔐 암호 키 검사 함수
 function isEncryptedKey(str) {
   if (!str) return false;
-
-  const clean = str.trim();
-
+  const clean = str.trim().toUpperCase(); // 대문자로 변환 후 검사
   return /^(?=(?:.*\d){8})(?=(?:.*[DNT]){1})[0-9DNT]{9}$/.test(clean);
 }
 
 // 🔐 커스텀 키 생성
 function generateCustomKey(dateStr, typeChar) {
-  if (!/^\d{8}$/.test(dateStr)) return dateStr;
-  if (!/[DNT]/.test(typeChar)) return dateStr;
+  if (dateStr.length !== 8) return dateStr; // 8자리(yyyyMMdd) 확인
 
   const digits = dateStr.split('');
+  let builder = "";
 
-  const evenPart = [digits[0], digits[2], digits[4], digits[6]];
-  const oddPart = [digits[7], digits[5], digits[3], digits[1]];
+  // 1️⃣ 짝수 인덱스 정방향 (0,2,4,6) -> 20260220 기준 '2', '2', '0', '2'
+  for (let i = 0; i < digits.length; i += 2) {
+    builder += digits[i];
+  }
 
-  const reordered = evenPart.concat(oddPart).join('');
+  // 2️⃣ 홀수 인덱스 역방향 (7,5,3,1)
+  for (let i = digits.length - 1; i >= 0; i--) {
+    if (i % 2 === 1) {
+      builder += digits[i];
+    }
+  }
 
-  const dayFirstDigit = dateStr[6];
+  const reordered = builder;
+  const dayOfMonth = parseInt(dateStr.substring(6, 8), 10);
+  const dayFirstDigit = dayOfMonth.toString().padStart(2, '0')[0];
 
-  const insertIndex = {
-    '0': 0,
-    '1': 1,
-    '2': 2,
-    '3': 3
-  }[dayFirstDigit] ?? 0;
+  const insertIndex = { '0': 0, '1': 1, '2': 2, '3': 3 }[dayFirstDigit] ?? 0;
 
   return (
     reordered.slice(0, insertIndex) +
     typeChar +
     reordered.slice(insertIndex)
   );
-}  
+}
 
 
 function renderSearchHistory() {
@@ -292,9 +294,8 @@ function matchScore(token, keyword, weight) {
 function buildValidEncryptedKeys(inputKey) {
   if (!isEncryptedKey(inputKey)) return null;
 
-  const type = inputKey.match(/[DNT]/)?.[0]; // T/D/N 추출
+  const type = inputKey.toUpperCase().match(/[DNT]/)?.[0]; 
   const today = new Date();
-
   let days = 90;
   if (type === 'D') days = 360;
 
@@ -304,18 +305,16 @@ function buildValidEncryptedKeys(inputKey) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
 
-    const y = d.getFullYear().toString().slice(2);
+    const y = d.getFullYear().toString(); // 2026 (4자리 전체)
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
 
-    const dateStr = `${y}${m}${day}`;
+    const dateStr = `${y}${m}${day}`; // 20260220 (8자리)
 
-    // ⚠️ 여기 중요: 서버와 동일한 Johnson 변환 필요
     const encoded = generateCustomKey(dateStr, type);
-
-    keys.add(encoded.toLowerCase());
+    keys.add(encoded.toLowerCase()); // 비교를 위해 소문자로 저장
+    keys.add(encoded.toUpperCase()); // 대문자도 혹시 몰라 추가
   }
-
   return keys;
 }
 
