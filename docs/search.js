@@ -147,44 +147,37 @@ function generateCustomKey(dateStr, typeChar) {
 function renderSearchHistory() {
   const list = document.getElementById("searchHistoryList");
   if (!list) return;
-
   list.innerHTML = "";
 
-  let history = JSON.parse(
-    localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
-  );
+  let history = JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || "[]");
 
-  // 🔐 암호 키 제거
-  history = history.filter(keyword => !isEncryptedKey(keyword));
+  history.slice(0, MAX_HISTORY).forEach((item, i) => {
+    // item이 객체면 label을, 문자열이면 item 자체를 제목으로 사용
+    const displayTitle = typeof item === 'object' ? item.label : item;
+    const searchKey = typeof item === 'object' ? item.key : item;
 
-  // 🔥 정리된 히스토리 다시 저장 (기존 암호 데이터 완전 삭제)
-  localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
-
-  history.slice(0, MAX_HISTORY).forEach((keyword, i) => {
     const li = document.createElement("li");
-    li.textContent = keyword;
+    li.textContent = displayTitle;
 
-    // 🎁 보상 검색 강조 조건
-    if (
-      keyword === "Weekly New Kpop Releases" ||
-      keyword === "Ktop Chart - Newest First" ||
-      keyword === "Latest Kpop Debut Albums"
-    ) {
+    if (["Weekly New Kpop Releases", "Ktop Chart - Newest First", "Latest Kpop Debut Albums"].includes(displayTitle)) {
       li.classList.add("reward-highlight");
     }
 
     li.onclick = () => {
-      EXTERNAL_QUERY = keyword;
-      localStorage.setItem(SEARCH_INDEX_KEY, i.toString());
+      // 클릭 시 실제 검색은 key(암호키)로 수행
+      EXTERNAL_QUERY = searchKey;
+      // 화면 표시를 위해 URL의 label 파라미터 강제 업데이트 (선택 사항)
+      const url = new URL(location.href);
+      url.searchParams.set('label', displayTitle);
+      window.history.replaceState({}, '', url);
 
+      localStorage.setItem(SEARCH_INDEX_KEY, i.toString());
       PAGE = 0;
       RESULTS = [];
       document.getElementById("result").innerHTML = "";
-
       closeSearchSheet();
       search({ updateHistory: false });
     };
-
     list.appendChild(li);
   });
 }
@@ -223,31 +216,24 @@ function checkAndResetHistoryIfNeeded() {
 // -----------------------------
 // 히스토리 저장 이동 함수
 // -----------------------------
-function saveSearchKeyword(keyword) {
-  let history = JSON.parse(
-    localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
-  );
+function saveSearchKeyword(keyword, label = null) {
+  let history = JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || "[]");
+  
+  // 저장할 데이터 형태 정의
+  const newData = label ? { key: keyword, label: label } : keyword;
+  
+  // 중복 제거 로직 (key 기준)
+  history = history.filter(item => {
+    const itemKey = typeof item === 'object' ? item.key : item;
+    return itemKey !== keyword;
+  });
 
-  // 기존 위치 확인
-  let index = history.indexOf(keyword);
+  history.unshift(newData);
+  if (history.length > MAX_HISTORY) history.length = MAX_HISTORY;
 
-  // 이미 있으면 제거
-  if (index !== -1) {
-    history.splice(index, 1);
-  }
-
-  // 맨 앞에 추가
-  history.unshift(keyword);
-
-  if (history.length > MAX_HISTORY) {
-    history.length = MAX_HISTORY;
-  }
-
-  // ✅ 현재 검색어는 항상 index 0
   localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
   localStorage.setItem(SEARCH_INDEX_KEY, "0");
-  localStorage.setItem(SEARCH_DATE_KEY, new Date().toISOString().slice(0,10));
-
+  localStorage.setItem(SEARCH_DATE_KEY, new Date().toISOString().slice(0, 10));
   renderSearchHistory();
 }
 
@@ -657,23 +643,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (encryptedKey) {
     EXTERNAL_QUERY = encryptedKey;
-
-    // 👀 히스토리에는 표시용 텍스트 저장
-    if (displayLabel) {
-      saveSearchKeyword(displayLabel);
-    } 
+    // 암호키와 라벨을 함께 저장!
+    saveSearchKeyword(encryptedKey, displayLabel);
   } else {
-    // q 파라미터가 없으면 히스토리에서 복구
-    const history = JSON.parse(
-      localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
-    );
-    const index = parseInt(
-      localStorage.getItem(SEARCH_INDEX_KEY) || "0",
-      10
-    );
-
+    const history = JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || "[]");
+    const index = parseInt(localStorage.getItem(SEARCH_INDEX_KEY) || "0", 10);
     if (history[index]) {
-      EXTERNAL_QUERY = history[index];
+      // 히스토리에서 복구할 때 객체인지 확인
+      const item = history[index];
+      EXTERNAL_QUERY = typeof item === 'object' ? item.key : item;
     }
   }
 
