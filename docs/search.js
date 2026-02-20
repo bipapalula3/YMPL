@@ -93,7 +93,6 @@ function toggleSearchSheet() {
   }
 }
 
-
 // -----------------------------
 // debounce
 // -----------------------------
@@ -111,10 +110,37 @@ function isEncryptedKey(str) {
 
   const clean = str.trim();
 
-  return /^[0-9DNT]{9}$/.test(clean) &&
-         (clean.match(/\d/g) || []).length === 8 &&
-         (clean.match(/[DNT]/g) || []).length === 1;
+  return /^(?=(?:.*\d){8})(?=(?:.*[DNT]){1})[0-9DNT]{9}$/.test(clean);
 }
+
+// 🔐 커스텀 키 생성
+function generateCustomKey(dateStr, typeChar) {
+  if (!/^\d{8}$/.test(dateStr)) return dateStr;
+  if (!/[DNT]/.test(typeChar)) return dateStr;
+
+  const digits = dateStr.split('');
+
+  const evenPart = [digits[0], digits[2], digits[4], digits[6]];
+  const oddPart = [digits[7], digits[5], digits[3], digits[1]];
+
+  const reordered = evenPart.concat(oddPart).join('');
+
+  const dayFirstDigit = dateStr[6];
+
+  const insertIndex = {
+    '0': 0,
+    '1': 1,
+    '2': 2,
+    '3': 3
+  }[dayFirstDigit] ?? 0;
+
+  return (
+    reordered.slice(0, insertIndex) +
+    typeChar +
+    reordered.slice(insertIndex)
+  );
+}  
+
 
 function renderSearchHistory() {
   const list = document.getElementById("searchHistoryList");
@@ -261,6 +287,39 @@ function matchScore(token, keyword, weight) {
 }
 
 // -----------------------------
+// 🔐 유효 암호키 생성
+// -----------------------------
+function buildValidEncryptedKeys(inputKey) {
+  if (!isEncryptedKey(inputKey)) return null;
+
+  const type = inputKey.match(/[DNT]/)?.[0]; // T/D/N 추출
+  const today = new Date();
+
+  let days = 90;
+  if (type === 'D') days = 360;
+
+  const keys = new Set();
+
+  for (let i = 0; i <= days; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+
+    const y = d.getFullYear().toString().slice(2);
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+
+    const dateStr = `${y}${m}${day}`;
+
+    // ⚠️ 여기 중요: 서버와 동일한 Johnson 변환 필요
+    const encoded = generateCustomKey(dateStr, type);
+
+    keys.add(encoded.toLowerCase());
+  }
+
+  return keys;
+}
+
+// -----------------------------
 // 단계별 검색
 // -----------------------------
 function runSearch(terms, mode) {
@@ -328,6 +387,38 @@ function search({ updateHistory = true } = {}) {
 
   if (updateHistory) {
     saveSearchKeyword(raw);
+  }
+
+  // 🔥 🔐 암호키 직접 매칭 모드 (⭐ 여기!)
+  if (isEncryptedKey(raw)) {
+    const validKeys = buildValidEncryptedKeys(raw);
+    if (!validKeys) return;
+
+    RESULTS = INDEX.filter(item => {
+      const titleKeys = item.keywords?.title || [];
+      const trackKeys = item.keywords?.track || [];
+
+      // title 매칭
+      for (const k of titleKeys) {
+        if (validKeys.has(k.toLowerCase())) return true;
+      }
+
+      // track 매칭
+      for (const k of trackKeys) {
+        if (validKeys.has(k.toLowerCase())) return true;
+      }
+
+      return false;
+    });
+
+    const resultCountEl = document.getElementById('resultCount');
+    if (resultCountEl) {
+      resultCountEl.textContent =
+        `${raw} 🔍 검색 결과 ${RESULTS.length}건`;
+    }
+
+    renderNextPage();
+    return; // ⭐ 기존 검색 로직 차단
   }
 
   const terms = splitMixedTokens(raw);
