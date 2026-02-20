@@ -330,7 +330,6 @@ function matchScore(token, keyword, weight) {
 // 🔐 유효 암호키 생성
 // -----------------------------
 function buildValidEncryptedKeys(inputKey) {
-  function buildValidEncryptedKeys(inputKey) {
   if (!isEncryptedKey(inputKey)) return null;
 
   const upperInput = inputKey.toUpperCase(); // ⭐ 추가
