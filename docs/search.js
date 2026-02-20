@@ -61,46 +61,6 @@ function goBackSmart() {
   }
 }
 
-// =========================
-// 🧪 화면 디버그 로그
-// =========================
-function debugLog(...args) {
-  if (!DEV_MODE) return;
-
-  console.log(...args);
-
-  let panel = document.getElementById("debugPanel");
-
-  if (!panel) {
-    panel = document.createElement("div");
-    panel.id = "debugPanel";
-
-    panel.style.position = "fixed";
-    panel.style.bottom = "0";
-    panel.style.left = "0";
-    panel.style.right = "0";
-    panel.style.maxHeight = "40vh";
-    panel.style.overflowY = "auto";
-    panel.style.background = "rgba(0,0,0,0.85)";
-    panel.style.color = "#00ff88";
-    panel.style.fontSize = "11px";
-    panel.style.fontFamily = "monospace";
-    panel.style.padding = "6px";
-    panel.style.zIndex = "99999";
-    panel.style.whiteSpace = "pre-wrap";
-
-    document.body.appendChild(panel);
-  }
-
-  const line = document.createElement("div");
-  line.textContent = args.map(v =>
-    typeof v === "object" ? JSON.stringify(v) : String(v)
-  ).join(" ");
-
-  panel.appendChild(line);
-  panel.scrollTop = panel.scrollHeight;
-}
-
 // -----------------------------
 // 토큰 분리
 // -----------------------------
@@ -148,7 +108,7 @@ function debounce(fn, delay = 200) {
 function isEncryptedKey(str) {
   if (!str) return false;
 
-  const clean = str.trim().toUpperCase(); // ⭐ 추가
+  const clean = str.trim();
 
   return /^(?=(?:.*\d){8})(?=(?:.*[DNT]){1})[0-9DNT]{9}$/.test(clean);
 }
@@ -332,13 +292,7 @@ function matchScore(token, keyword, weight) {
 function buildValidEncryptedKeys(inputKey) {
   if (!isEncryptedKey(inputKey)) return null;
 
-  const upperInput = inputKey.toUpperCase(); // ⭐ 추가
-  const type = upperInput.match(/[DNT]/)?.[0];
-
-  debugLog("🧭 [buildKeys] input:", inputKey);
-  debugLog("🧭 [buildKeys] upper:", upperInput);
-  debugLog("🧭 [buildKeys] type:", type);
-  
+  const type = inputKey.match(/[DNT]/)?.[0]; // T/D/N 추출
   const today = new Date();
 
   let days = 90;
@@ -359,7 +313,7 @@ function buildValidEncryptedKeys(inputKey) {
     // ⚠️ 여기 중요: 서버와 동일한 Johnson 변환 필요
     const encoded = generateCustomKey(dateStr, type);
 
-    keys.add(normalizeForSearch(encoded));
+    keys.add(encoded.toLowerCase());
   }
 
   return keys;
@@ -428,96 +382,47 @@ function runSearch(terms, mode) {
 // 검색 메인
 // -----------------------------
 function search({ updateHistory = true } = {}) {
-  const rawOriginal = EXTERNAL_QUERY.trim();
-  if (!rawOriginal) return;
-
-  const raw = rawOriginal.toUpperCase(); // ⭐⭐⭐ 핵심 추가
-
-  debugLog("🔍 [search] rawOriginal:", rawOriginal);
-  debugLog("🔍 [search] raw(upper):", raw);
-  debugLog("🔍 [search] isEncryptedKey:", isEncryptedKey(raw));
-  debugLog("🔍 [search] INDEX size:", INDEX?.length);
+  const raw = EXTERNAL_QUERY.trim();
+  if (!raw) return;
 
   if (updateHistory) {
-    saveSearchKeyword(rawOriginal);
+    saveSearchKeyword(raw);
   }
 
-  // 🔥 🔐 암호키 직접 매칭 모드 (⭐ 여기!)
+  // URL에서 제목(label) 파라미터 미리 가져오기
+  const urlParams = new URLSearchParams(location.search);
+  const label = urlParams.get('label');
+
+  // 🔥 🔐 암호키 직접 매칭 모드
   if (isEncryptedKey(raw)) {
-    debugLog("🚨 [encrypted] mode entered");
-
     const validKeys = buildValidEncryptedKeys(raw);
-    if (!validKeys) {
-      console.warn("❌ validKeys is null");
-      return;
-    }
-
-    debugLog("🔑 validKeys size:", validKeys.size);
-    debugLog(
-      "🔑 validKeys sample:",
-      [...validKeys].slice(0, 10)
-    );
-
-    // INDEX 샘플 확인
-    if (INDEX?.length) {
-      debugLog(
-        "📦 INDEX sample title:",
-        INDEX[0]?.keywords?.title
-      );
-      debugLog(
-        "📦 INDEX sample track:",
-        INDEX[0]?.keywords?.track
-      );
-    }
+    if (!validKeys) return;
 
     RESULTS = INDEX.filter(item => {
       const titleKeys = item.keywords?.title || [];
       const trackKeys = item.keywords?.track || [];
 
-      // 🔎 디버그: 첫 몇 개만 로그
-      if (Math.random() < 0.002) {
-        debugLog("🧪 checking item:", {
-          titleKeys,
-          trackKeys
-        });
-      }
-
-      // title 매칭
+      // 소문자 변환 비교
       for (const k of titleKeys) {
-        const norm = normalizeForSearch(k);
-        if (validKeys.has(norm)) {
-          debugLog("✅ MATCH title:", k);
-          return true;
-        }
+        if (validKeys.has(k.toLowerCase())) return true;
       }
-
-      // track 매칭
       for (const k of trackKeys) {
-        const norm = normalizeForSearch(k);
-        if (validKeys.has(norm)) {
-          debugLog("✅ MATCH track:", k);
-          return true;
-        }
+        if (validKeys.has(k.toLowerCase())) return true;
       }
-
       return false;
     });
 
-    debugLog("🎯 RESULTS length:", RESULTS.length);
-
     const resultCountEl = document.getElementById('resultCount');
     if (resultCountEl) {
-      resultCountEl.textContent =
-        `${raw} 🔍 검색 결과 ${RESULTS.length}건`;
+      // ✅ 수정된 부분: 암호키 대신 label(제목)이 있으면 표시, 없으면 raw 표시
+      resultCountEl.textContent = 
+        `${label || raw} 🔍 검색 결과 ${RESULTS.length}건`;
     }
 
     renderNextPage();
-    return; // ⭐ 기존 검색 로직 차단
+    return; // ⭐ 여기서 종료되므로 위에서 label 처리를 완료해야 함
   }
 
-  // -----------------------------
-  // 일반 검색
-  // -----------------------------
   const terms = splitMixedTokens(raw);
   if (!terms.length) return;
 
