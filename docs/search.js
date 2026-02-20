@@ -61,6 +61,46 @@ function goBackSmart() {
   }
 }
 
+// =========================
+// 🧪 화면 디버그 로그
+// =========================
+function debugLog(...args) {
+  if (!DEV_MODE) return;
+
+  console.log(...args);
+
+  let panel = document.getElementById("debugPanel");
+
+  if (!panel) {
+    panel = document.createElement("div");
+    panel.id = "debugPanel";
+
+    panel.style.position = "fixed";
+    panel.style.bottom = "0";
+    panel.style.left = "0";
+    panel.style.right = "0";
+    panel.style.maxHeight = "40vh";
+    panel.style.overflowY = "auto";
+    panel.style.background = "rgba(0,0,0,0.85)";
+    panel.style.color = "#00ff88";
+    panel.style.fontSize = "11px";
+    panel.style.fontFamily = "monospace";
+    panel.style.padding = "6px";
+    panel.style.zIndex = "99999";
+    panel.style.whiteSpace = "pre-wrap";
+
+    document.body.appendChild(panel);
+  }
+
+  const line = document.createElement("div");
+  line.textContent = args.map(v =>
+    typeof v === "object" ? JSON.stringify(v) : String(v)
+  ).join(" ");
+
+  panel.appendChild(line);
+  panel.scrollTop = panel.scrollHeight;
+}
+
 // -----------------------------
 // 토큰 분리
 // -----------------------------
@@ -108,7 +148,7 @@ function debounce(fn, delay = 200) {
 function isEncryptedKey(str) {
   if (!str) return false;
 
-  const clean = str.trim();
+  const clean = str.trim().toUpperCase(); // ⭐ 추가
 
   return /^(?=(?:.*\d){8})(?=(?:.*[DNT]){1})[0-9DNT]{9}$/.test(clean);
 }
@@ -290,9 +330,16 @@ function matchScore(token, keyword, weight) {
 // 🔐 유효 암호키 생성
 // -----------------------------
 function buildValidEncryptedKeys(inputKey) {
+  function buildValidEncryptedKeys(inputKey) {
   if (!isEncryptedKey(inputKey)) return null;
 
-  const type = inputKey.match(/[DNT]/)?.[0]; // T/D/N 추출
+  const upperInput = inputKey.toUpperCase(); // ⭐ 추가
+  const type = upperInput.match(/[DNT]/)?.[0];
+
+  debugLog("🧭 [buildKeys] input:", inputKey);
+  debugLog("🧭 [buildKeys] upper:", upperInput);
+  debugLog("🧭 [buildKeys] type:", type);
+  
   const today = new Date();
 
   let days = 90;
@@ -382,20 +429,23 @@ function runSearch(terms, mode) {
 // 검색 메인
 // -----------------------------
 function search({ updateHistory = true } = {}) {
-  const raw = EXTERNAL_QUERY.trim();
-  if (!raw) return;
+  const rawOriginal = EXTERNAL_QUERY.trim();
+  if (!rawOriginal) return;
 
-  console.log("🔍 [search] raw:", raw);
-  console.log("🔍 [search] isEncryptedKey:", isEncryptedKey(raw));
-  console.log("🔍 [search] INDEX size:", INDEX?.length);
+  const raw = rawOriginal.toUpperCase(); // ⭐⭐⭐ 핵심 추가
+
+  debugLog("🔍 [search] rawOriginal:", rawOriginal);
+  debugLog("🔍 [search] raw(upper):", raw);
+  debugLog("🔍 [search] isEncryptedKey:", isEncryptedKey(raw));
+  debugLog("🔍 [search] INDEX size:", INDEX?.length);
 
   if (updateHistory) {
-    saveSearchKeyword(raw);
+    saveSearchKeyword(rawOriginal);
   }
 
   // 🔥 🔐 암호키 직접 매칭 모드 (⭐ 여기!)
   if (isEncryptedKey(raw)) {
-    console.log("🚨 [encrypted] mode entered");
+    debugLog("🚨 [encrypted] mode entered");
 
     const validKeys = buildValidEncryptedKeys(raw);
     if (!validKeys) {
@@ -403,19 +453,19 @@ function search({ updateHistory = true } = {}) {
       return;
     }
 
-    console.log("🔑 validKeys size:", validKeys.size);
-    console.log(
+    debugLog("🔑 validKeys size:", validKeys.size);
+    debugLog(
       "🔑 validKeys sample:",
       [...validKeys].slice(0, 10)
     );
 
     // INDEX 샘플 확인
     if (INDEX?.length) {
-      console.log(
+      debugLog(
         "📦 INDEX sample title:",
         INDEX[0]?.keywords?.title
       );
-      console.log(
+      debugLog(
         "📦 INDEX sample track:",
         INDEX[0]?.keywords?.track
       );
@@ -427,7 +477,7 @@ function search({ updateHistory = true } = {}) {
 
       // 🔎 디버그: 첫 몇 개만 로그
       if (Math.random() < 0.002) {
-        console.log("🧪 checking item:", {
+        debugLog("🧪 checking item:", {
           titleKeys,
           trackKeys
         });
@@ -437,7 +487,7 @@ function search({ updateHistory = true } = {}) {
       for (const k of titleKeys) {
         const norm = normalizeForSearch(k);
         if (validKeys.has(norm)) {
-          console.log("✅ MATCH title:", k);
+          debugLog("✅ MATCH title:", k);
           return true;
         }
       }
@@ -446,7 +496,7 @@ function search({ updateHistory = true } = {}) {
       for (const k of trackKeys) {
         const norm = normalizeForSearch(k);
         if (validKeys.has(norm)) {
-          console.log("✅ MATCH track:", k);
+          debugLog("✅ MATCH track:", k);
           return true;
         }
       }
@@ -454,7 +504,7 @@ function search({ updateHistory = true } = {}) {
       return false;
     });
 
-    console.log("🎯 RESULTS length:", RESULTS.length);
+    debugLog("🎯 RESULTS length:", RESULTS.length);
 
     const resultCountEl = document.getElementById('resultCount');
     if (resultCountEl) {
