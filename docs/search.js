@@ -249,17 +249,28 @@ function loadSearchByOffset(offset) {
   );
 
   const nextIndex = index + offset;
-
   if (nextIndex < 0 || nextIndex >= history.length) return;
 
+  const item = history[nextIndex];
+  const searchKey = typeof item === 'object' ? item.key : item;
+  const displayTitle = typeof item === 'object' ? item.label : item;
+
   localStorage.setItem(SEARCH_INDEX_KEY, nextIndex.toString());
-  EXTERNAL_QUERY = history[nextIndex];
+  EXTERNAL_QUERY = searchKey;
+
+  // ✅ URL의 label 파라미터 업데이트 (상단 제목 표시용)
+  const url = new URL(location.href);
+  if (displayTitle) {
+    url.searchParams.set('label', displayTitle);
+  } else {
+    url.searchParams.delete('label');
+  }
+  window.history.replaceState({}, '', url);
 
   PAGE = 0;
   RESULTS = [];
   document.getElementById("result").innerHTML = "";
 
- // 🚫 히스토리 재정렬 금지
   search({ updateHistory: false });
 }
 
@@ -370,14 +381,15 @@ function search({ updateHistory = true } = {}) {
   const raw = EXTERNAL_QUERY.trim();
   if (!raw) return;
 
-  if (updateHistory) {
-    saveSearchKeyword(raw);
-  }
-
-  // 1. URL 파라미터에서 제목(label)을 한 번만 가져옵니다.
+  // 1. URL 파라미터에서 제목(label)을 가져옵니다.
   const urlParams = new URLSearchParams(location.search);
   const label = urlParams.get('label');
   const resultCountEl = document.getElementById('resultCount');
+
+  // ✅ 수정된 부분: 히스토리 저장 시 label도 함께 넘겨줍니다.
+  if (updateHistory) {
+    saveSearchKeyword(raw, label); 
+  }
 
   // 🔥 🔐 2. 암호키 직접 매칭 모드
   if (isEncryptedKey(raw)) {
