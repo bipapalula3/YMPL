@@ -313,7 +313,7 @@ function buildValidEncryptedKeys(inputKey) {
     // ⚠️ 여기 중요: 서버와 동일한 Johnson 변환 필요
     const encoded = generateCustomKey(dateStr, type);
 
-    keys.add(encoded.toLowerCase());
+    keys.add(normalizeForSearch(encoded));
   }
 
   return keys;
@@ -385,31 +385,76 @@ function search({ updateHistory = true } = {}) {
   const raw = EXTERNAL_QUERY.trim();
   if (!raw) return;
 
+  console.log("🔍 [search] raw:", raw);
+  console.log("🔍 [search] isEncryptedKey:", isEncryptedKey(raw));
+  console.log("🔍 [search] INDEX size:", INDEX?.length);
+
   if (updateHistory) {
     saveSearchKeyword(raw);
   }
 
   // 🔥 🔐 암호키 직접 매칭 모드 (⭐ 여기!)
   if (isEncryptedKey(raw)) {
+    console.log("🚨 [encrypted] mode entered");
+
     const validKeys = buildValidEncryptedKeys(raw);
-    if (!validKeys) return;
+    if (!validKeys) {
+      console.warn("❌ validKeys is null");
+      return;
+    }
+
+    console.log("🔑 validKeys size:", validKeys.size);
+    console.log(
+      "🔑 validKeys sample:",
+      [...validKeys].slice(0, 10)
+    );
+
+    // INDEX 샘플 확인
+    if (INDEX?.length) {
+      console.log(
+        "📦 INDEX sample title:",
+        INDEX[0]?.keywords?.title
+      );
+      console.log(
+        "📦 INDEX sample track:",
+        INDEX[0]?.keywords?.track
+      );
+    }
 
     RESULTS = INDEX.filter(item => {
       const titleKeys = item.keywords?.title || [];
       const trackKeys = item.keywords?.track || [];
 
+      // 🔎 디버그: 첫 몇 개만 로그
+      if (Math.random() < 0.002) {
+        console.log("🧪 checking item:", {
+          titleKeys,
+          trackKeys
+        });
+      }
+
       // title 매칭
       for (const k of titleKeys) {
-        if (validKeys.has(k.toLowerCase())) return true;
+        const norm = normalizeForSearch(k);
+        if (validKeys.has(norm)) {
+          console.log("✅ MATCH title:", k);
+          return true;
+        }
       }
 
       // track 매칭
       for (const k of trackKeys) {
-        if (validKeys.has(k.toLowerCase())) return true;
+        const norm = normalizeForSearch(k);
+        if (validKeys.has(norm)) {
+          console.log("✅ MATCH track:", k);
+          return true;
+        }
       }
 
       return false;
     });
+
+    console.log("🎯 RESULTS length:", RESULTS.length);
 
     const resultCountEl = document.getElementById('resultCount');
     if (resultCountEl) {
@@ -421,6 +466,9 @@ function search({ updateHistory = true } = {}) {
     return; // ⭐ 기존 검색 로직 차단
   }
 
+  // -----------------------------
+  // 일반 검색
+  // -----------------------------
   const terms = splitMixedTokens(raw);
   if (!terms.length) return;
 
