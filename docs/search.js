@@ -2,14 +2,18 @@ let INDEX = [];
 let RESULTS = [];
 let PAGE = 0;
 
-// html의 광고 전역 스위치 받기
-const ADS_ENABLED = window.ADS_ENABLED === true;
+// =========================
+// 광고 전역 스위치 ⭐️
+// =========================
+const ADS_ENABLED = false;   // ❌ 지금은 OFF
+// const ADS_ENABLED = true; // ✅ 승인 후 ON
 
-// 🔁 검색 히스토리 (최대 5개)
+// 🔁 검색 히스토리 (최대 15개)
 const SEARCH_HISTORY_KEY = "ympl_search_history";
 const SEARCH_INDEX_KEY = "ympl_search_index";
-const MAX_HISTORY = 10;
-const PAGE_SIZE = 20;
+const SEARCH_DATE_KEY = "ympl_search_date";
+const MAX_HISTORY = 15;
+const PAGE_SIZE = 30;
 let LOADING = false;
 let EXTERNAL_QUERY = '';
 
@@ -20,8 +24,8 @@ const DEFAULT_COVER = 'icon80.png';
 // AdSense 설정
 // -----------------------------
 const AD_CLIENT = "ca-pub-1954623157146783";
-const AD_SLOT_MID = "5916733430";   // 7번째
-const AD_SLOT_END = "3792396883";   // 마지막
+const AD_SLOT_MID = "9828698918";   // 7번째
+const AD_SLOT_END = "3263290563";   // 마지막
 
 // -----------------------------
 // 개발자 모드 (?dev=1009)
@@ -89,7 +93,6 @@ function toggleSearchSheet() {
   }
 }
 
-
 // -----------------------------
 // debounce
 // -----------------------------
@@ -101,32 +104,80 @@ function debounce(fn, delay = 200) {
   };
 }
 
+// 🔐 암호 키 검사 함수
+function isEncryptedKey(str) {
+  if (!str) return false;
+  const clean = str.trim().toUpperCase(); // 대문자로 변환 후 검사
+  return /^(?=(?:.*\d){8})(?=(?:.*[DNT]){1})[0-9DNT]{9}$/.test(clean);
+}
+
+// 🔐 커스텀 키 생성
+function generateCustomKey(dateStr, typeChar) {
+  if (dateStr.length !== 8) return dateStr; // 8자리(yyyyMMdd) 확인
+
+  const digits = dateStr.split('');
+  let builder = "";
+
+  // 1️⃣ 짝수 인덱스 정방향 (0,2,4,6) -> 20260220 기준 '2', '2', '0', '2'
+  for (let i = 0; i < digits.length; i += 2) {
+    builder += digits[i];
+  }
+
+  // 2️⃣ 홀수 인덱스 역방향 (7,5,3,1)
+  for (let i = digits.length - 1; i >= 0; i--) {
+    if (i % 2 === 1) {
+      builder += digits[i];
+    }
+  }
+
+  const reordered = builder;
+  const dayOfMonth = parseInt(dateStr.substring(6, 8), 10);
+  const dayFirstDigit = dayOfMonth.toString().padStart(2, '0')[0];
+
+  const insertIndex = { '0': 0, '1': 1, '2': 2, '3': 3 }[dayFirstDigit] ?? 0;
+
+  return (
+    reordered.slice(0, insertIndex) +
+    typeChar +
+    reordered.slice(insertIndex)
+  );
+}
+
+
 function renderSearchHistory() {
   const list = document.getElementById("searchHistoryList");
   if (!list) return;
-
   list.innerHTML = "";
 
-  const history = JSON.parse(
-    localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
-  );
+  let history = JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || "[]");
 
-  history.slice(0, MAX_HISTORY).forEach((keyword, i) => {
+  history.slice(0, MAX_HISTORY).forEach((item, i) => {
+    // item이 객체면 label을, 문자열이면 item 자체를 제목으로 사용
+    const displayTitle = typeof item === 'object' ? item.label : item;
+    const searchKey = typeof item === 'object' ? item.key : item;
+
     const li = document.createElement("li");
-    li.textContent = keyword;
+    li.textContent = displayTitle;
+
+    if (["Weekly New Kpop Releases", "Ktop Chart - Newest First", "Latest Kpop Debut Albums"].includes(displayTitle)) {
+      li.classList.add("reward-highlight");
+    }
 
     li.onclick = () => {
-      EXTERNAL_QUERY = keyword;
-      localStorage.setItem(SEARCH_INDEX_KEY, i.toString());
+      // 클릭 시 실제 검색은 key(암호키)로 수행
+      EXTERNAL_QUERY = searchKey;
+      // 화면 표시를 위해 URL의 label 파라미터 강제 업데이트 (선택 사항)
+      const url = new URL(location.href);
+      url.searchParams.set('label', displayTitle);
+      window.history.replaceState({}, '', url);
 
+      localStorage.setItem(SEARCH_INDEX_KEY, i.toString());
       PAGE = 0;
       RESULTS = [];
       document.getElementById("result").innerHTML = "";
-
       closeSearchSheet();
       search({ updateHistory: false });
     };
-
     list.appendChild(li);
   });
 }
@@ -148,32 +199,41 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // -----------------------------
+// 히스토리 초기화 함수
+// -----------------------------
+function checkAndResetHistoryIfNeeded() {
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const savedDate = localStorage.getItem(SEARCH_DATE_KEY);
+
+  if (savedDate !== today) {
+    // 🔥 날짜가 바뀌었으면 초기화
+    localStorage.removeItem(SEARCH_HISTORY_KEY);
+    localStorage.removeItem(SEARCH_INDEX_KEY);
+    localStorage.setItem(SEARCH_DATE_KEY, today);
+  }
+}
+
+// -----------------------------
 // 히스토리 저장 이동 함수
 // -----------------------------
-function saveSearchKeyword(keyword) {
-  let history = JSON.parse(
-    localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
-  );
+function saveSearchKeyword(keyword, label = null) {
+  let history = JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || "[]");
+  
+  // 저장할 데이터 형태 정의
+  const newData = label ? { key: keyword, label: label } : keyword;
+  
+  // 중복 제거 로직 (key 기준)
+  history = history.filter(item => {
+    const itemKey = typeof item === 'object' ? item.key : item;
+    return itemKey !== keyword;
+  });
 
-  // 기존 위치 확인
-  let index = history.indexOf(keyword);
+  history.unshift(newData);
+  if (history.length > MAX_HISTORY) history.length = MAX_HISTORY;
 
-  // 이미 있으면 제거
-  if (index !== -1) {
-    history.splice(index, 1);
-  }
-
-  // 맨 앞에 추가
-  history.unshift(keyword);
-
-  if (history.length > MAX_HISTORY) {
-    history.length = MAX_HISTORY;
-  }
-
-  // ✅ 현재 검색어는 항상 index 0
   localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
   localStorage.setItem(SEARCH_INDEX_KEY, "0");
-
+  localStorage.setItem(SEARCH_DATE_KEY, new Date().toISOString().slice(0, 10));
   renderSearchHistory();
 }
 
@@ -189,17 +249,28 @@ function loadSearchByOffset(offset) {
   );
 
   const nextIndex = index + offset;
-
   if (nextIndex < 0 || nextIndex >= history.length) return;
 
+  const item = history[nextIndex];
+  const searchKey = typeof item === 'object' ? item.key : item;
+  const displayTitle = typeof item === 'object' ? item.label : item;
+
   localStorage.setItem(SEARCH_INDEX_KEY, nextIndex.toString());
-  EXTERNAL_QUERY = history[nextIndex];
+  EXTERNAL_QUERY = searchKey;
+
+  // ✅ URL의 label 파라미터 업데이트 (상단 제목 표시용)
+  const url = new URL(location.href);
+  if (displayTitle) {
+    url.searchParams.set('label', displayTitle);
+  } else {
+    url.searchParams.delete('label');
+  }
+  window.history.replaceState({}, '', url);
 
   PAGE = 0;
   RESULTS = [];
   document.getElementById("result").innerHTML = "";
 
- // 🚫 히스토리 재정렬 금지
   search({ updateHistory: false });
 }
 
@@ -212,6 +283,36 @@ function matchScore(token, keyword, weight) {
   if (keyword.startsWith(token)) return weight.prefix;
   if (keyword.includes(token)) return weight.partial;
   return 0;
+}
+
+// -----------------------------
+// 🔐 유효 암호키 생성
+// -----------------------------
+function buildValidEncryptedKeys(inputKey) {
+  if (!isEncryptedKey(inputKey)) return null;
+
+  const type = inputKey.toUpperCase().match(/[DNT]/)?.[0]; 
+  const today = new Date();
+  let days = 90;
+  if (type === 'D') days = 360;
+
+  const keys = new Set();
+
+  for (let i = 0; i <= days; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+
+    const y = d.getFullYear().toString(); // 2026 (4자리 전체)
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+
+    const dateStr = `${y}${m}${day}`; // 20260220 (8자리)
+
+    const encoded = generateCustomKey(dateStr, type);
+    keys.add(encoded.toLowerCase()); // 비교를 위해 소문자로 저장
+    keys.add(encoded.toUpperCase()); // 대문자도 혹시 몰라 추가
+  }
+  return keys;
 }
 
 // -----------------------------
@@ -280,24 +381,48 @@ function search({ updateHistory = true } = {}) {
   const raw = EXTERNAL_QUERY.trim();
   if (!raw) return;
 
+  // 1. URL 파라미터에서 제목(label)을 가져옵니다.
+  const urlParams = new URLSearchParams(location.search);
+  const label = urlParams.get('label');
+  const resultCountEl = document.getElementById('resultCount');
+
+  // ✅ 수정된 부분: 히스토리 저장 시 label도 함께 넘겨줍니다.
   if (updateHistory) {
-    saveSearchKeyword(raw);
+    saveSearchKeyword(raw, label); 
   }
 
+  // 🔥 🔐 2. 암호키 직접 매칭 모드
+  if (isEncryptedKey(raw)) {
+    const validKeys = buildValidEncryptedKeys(raw);
+    if (!validKeys) return;
+
+    RESULTS = INDEX.filter(item => {
+      const titleKeys = item.keywords?.title || [];
+      const trackKeys = item.keywords?.track || [];
+      for (const k of titleKeys) { if (validKeys.has(k.toLowerCase())) return true; }
+      for (const k of trackKeys) { if (validKeys.has(k.toLowerCase())) return true; }
+      return false;
+    });
+
+    if (resultCountEl) {
+      // 제목(label)이 있으면 제목을, 없으면 암호키(raw)를 표시
+      resultCountEl.textContent = `${label || raw} 🔍 검색 결과 ${RESULTS.length}건`;
+    }
+
+    renderNextPage();
+    return; // 암호키 검색 완료 후 종료
+  }
+
+  // 3. 일반 검색 모드
   const terms = splitMixedTokens(raw);
   if (!terms.length) return;
 
   const queryKey = terms.join(' ');
-
-  const debugMode =
-    DEV_MODE && document.getElementById('debugToggle')?.checked;
+  const debugMode = DEV_MODE && document.getElementById('debugToggle')?.checked;
 
   const recall = runSearch(terms, 'recall');
   const precision = recall.length >= 10 ? runSearch(terms, 'precision') : [];
-  const relaxed =
-    recall.length >= 10 && precision.length < 3
-      ? runSearch(terms, 'relaxed')
-      : [];
+  const relaxed = recall.length >= 10 && precision.length < 3 ? runSearch(terms, 'relaxed') : [];
 
   let finalResults = recall;
   let path = `recall(${recall.length})`;
@@ -312,39 +437,33 @@ function search({ updateHistory = true } = {}) {
 
   RESULTS = finalResults;
 
+  // 디버그 모드 표시
   if (debugMode) {
     const stat = SEARCH_STATS.get(queryKey) || { count: 0, total: 0 };
-    stat.count++;
-    stat.total += RESULTS.length;
+    stat.count++; stat.total += RESULTS.length;
     SEARCH_STATS.set(queryKey, stat);
-
     const avg = (stat.total / stat.count).toFixed(1);
 
     const debugDiv = document.createElement('div');
     debugDiv.id = 'debugLog';
     debugDiv.className = 'search-debug';
-    debugDiv.innerHTML = `
-      🔍 검색 전략: ${path}<br/>
-      📊 평균 결과 수: ${avg}
-    `;
-    document.getElementById('resultCount').after(debugDiv);
+    debugDiv.innerHTML = `🔍 검색 전략: ${path}<br/>📊 평균 결과 수: ${avg}`;
+    resultCountEl?.after(debugDiv);
   }
 
-  document.getElementById(
-    'resultCount'
-  ).textContent = `${EXTERNAL_QUERY} 🔍 검색 결과 ${RESULTS.length}건`;
-
+  // 일반 검색 결과 개수 표시
+  if (resultCountEl) {
+    resultCountEl.textContent = `${label || EXTERNAL_QUERY} 🔍 검색 결과 ${RESULTS.length}건`;
+  }
+  
   renderNextPage();
 }
 
-// -----------------------------
-// 광고 로드
-// -----------------------------
 function createAdItem(slotId) {
   if (!ADS_ENABLED) return null; // ⭐ 핵심
   
   const li = document.createElement("li");
-  li.className = "ad-item";
+  li.className = "ad-card";
 
   const ins = document.createElement("ins");
   ins.className = "adsbygoogle";
@@ -353,7 +472,7 @@ function createAdItem(slotId) {
   ins.dataset.adSlot = slotId;
   ins.dataset.adFormat = "fluid";
   ins.dataset.adLayoutKey = "-gw-3+1f-3d+2z";
-  
+
   li.appendChild(ins);
 
   setTimeout(() => {
@@ -373,7 +492,7 @@ function createAdItem(slotId) {
   }, 0);
 
   return li;
-} 
+}
 
 function getAdPositions(total) {
   if (total <= 6) return ["end"];
@@ -459,10 +578,10 @@ function renderNextPage() {
       img.loading = 'lazy';
       img.src = DEFAULT_COVER;
     }
-    
-   if (img) card.appendChild(img);
+
     card.append(content);
- 
+    if (img) card.appendChild(img);
+
     link.appendChild(card);
     li.appendChild(link);
     ul.appendChild(li);
@@ -494,6 +613,7 @@ window.addEventListener('scroll', () => {
 // URL 파라미터 자동 검색 (?q=)
 // -----------------------------
 document.addEventListener('DOMContentLoaded', function () {
+  checkAndResetHistoryIfNeeded();
   const params = new URLSearchParams(location.search);
 
   // ✅ 앱에서 열렸는지 판단
@@ -530,23 +650,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // 🔍 검색 키워드 처리
-  const keyword = params.get('q');
+  const encryptedKey = params.get('q');
+  const displayLabel = params.get('label');
 
-  if (keyword) {
-    EXTERNAL_QUERY = keyword;
-    saveSearchKeyword(keyword);
+  if (encryptedKey) {
+    EXTERNAL_QUERY = encryptedKey;
+    // 암호키와 라벨을 함께 저장!
+    saveSearchKeyword(encryptedKey, displayLabel);
   } else {
-    // q 파라미터가 없으면 히스토리에서 복구
-    const history = JSON.parse(
-      localStorage.getItem(SEARCH_HISTORY_KEY) || "[]"
-    );
-    const index = parseInt(
-      localStorage.getItem(SEARCH_INDEX_KEY) || "0",
-      10
-    );
-
+    const history = JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || "[]");
+    const index = parseInt(localStorage.getItem(SEARCH_INDEX_KEY) || "0", 10);
     if (history[index]) {
-      EXTERNAL_QUERY = history[index];
+      // 히스토리에서 복구할 때 객체인지 확인
+      const item = history[index];
+      EXTERNAL_QUERY = typeof item === 'object' ? item.key : item;
     }
   }
 
