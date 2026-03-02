@@ -194,7 +194,12 @@ function closeSearchSheet() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // 1. 기존 배경 클릭 시 닫기
   document.getElementById("sheetBackdrop")
+    ?.addEventListener("click", closeSearchSheet);
+
+  // 2. ⭐ 핸들바(끝부분/내리기 표시) 클릭 시 닫기 (이 코드를 추가하세요!)
+  document.querySelector(".sheet-handle")
     ?.addEventListener("click", closeSearchSheet);
 });
 
