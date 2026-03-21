@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 뉴진스 ( Tidal Newjeans )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 뉴진스 ( Tidal Newjeans )</h1>
+<div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/b38e069b/6d33/4183/8ff8/3485f332ebbd/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/33385244' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+
+<div>[A] [2023] GODS</div>
+<div><a href='https://tidal.com/album/315673800' target='_blank'>https://tidal.com/album/315673800</a></div>
+<div>League of Legends, NewJeans - GODS</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/315673800' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Supernatural</div>
+<div><a href='https://tidal.com/album/370211493' target='_blank'>https://tidal.com/album/370211493</a></div>
+<div>NewJeans - Supernatural</div>
+<div>NewJeans - Right Now</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/370211493' target='_blank'><img src='https://resources.tidal.com/images/60765fa4/23ad/4996/972d/938266a5bba3/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] How Sweet</div>
+<div><a href='https://tidal.com/album/364699901' target='_blank'>https://tidal.com/album/364699901</a></div>
+<div>NewJeans - How Sweet</div>
+<div>NewJeans - Bubble Gum</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/364699901' target='_blank'><img src='https://resources.tidal.com/images/fa08f282/0256/4ce1/98b4/175dabdb5a3b/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Zero</div>
+<div><a href='https://tidal.com/album/286170307' target='_blank'>https://tidal.com/album/286170307</a></div>
+<div>NewJeans - Zero</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/286170307' target='_blank'><img src='https://resources.tidal.com/images/22234916/73d7/4efe/942d/0df5ecb6e83b/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] NewJeans X MY DEMON</div>
+<div><a href='https://tidal.com/album/330961424' target='_blank'>https://tidal.com/album/330961424</a></div>
+<div>NewJeans - Our Night is more beautiful than your Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/330961424' target='_blank'><img src='https://resources.tidal.com/images/87825657/e482/48f8/8322/ff54539ec5eb/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] NewJeans 2nd EP 'Get Up'</div>
+<div><a href='https://tidal.com/album/305611953' target='_blank'>https://tidal.com/album/305611953</a></div>
+<div>NewJeans - New Jeans</div>
+<div>NewJeans - Super Shy</div>
+<div>NewJeans - ETA</div>
+<div>NewJeans - Cool With You</div>
+<div>NewJeans - Get Up</div>
+<div>NewJeans - ASAP</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305611953' target='_blank'><img src='https://resources.tidal.com/images/0533537f/7896/4262/bc83/67b908ec13a1/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] NewJeans 'Super Shy'</div>
+<div><a href='https://tidal.com/album/303214635' target='_blank'>https://tidal.com/album/303214635</a></div>
+<div>NewJeans - New Jeans</div>
+<div>NewJeans - Super Shy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303214635' target='_blank'><img src='https://resources.tidal.com/images/192733e0/5ab6/4a50/be2d/61381ef64a6d/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] NewJeans 'OMG'</div>
+<div><a href='https://tidal.com/album/269004278' target='_blank'>https://tidal.com/album/269004278</a></div>
+<div>NewJeans - OMG</div>
+<div>NewJeans - Ditto</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269004278' target='_blank'><img src='https://resources.tidal.com/images/a79643d7/64c9/4e21/b687/3593af2c7816/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] A Time Called You (Music from The Netflix Series)</div>
+<div><a href='https://tidal.com/album/313552099' target='_blank'>https://tidal.com/album/313552099</a></div>
+<div>NewJeans - Beautiful Restriction</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/313552099' target='_blank'><img src='https://resources.tidal.com/images/3cc2a820/96d3/4e6c/b6af/e264ad5ddefa/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] NewJeans 1st EP 'New Jeans'</div>
+<div><a href='https://tidal.com/album/240344348' target='_blank'>https://tidal.com/album/240344348</a></div>
+<div>NewJeans - Attention</div>
+<div>NewJeans - Hype Boy</div>
+<div>NewJeans - Cookie</div>
+<div>NewJeans - Hurt</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/240344348' target='_blank'><img src='https://resources.tidal.com/images/d5d40565/6803/4def/ac04/b8152371d8f7/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Ditto</div>
+<div><a href='https://tidal.com/album/266840725' target='_blank'>https://tidal.com/album/266840725</a></div>
+<div>NewJeans - Ditto</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/266840725' target='_blank'><img src='https://resources.tidal.com/images/33cb34f3/d5f9/4970/979e/328c1204f93a/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 뉴진스</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>새로운 물결을 일으키는 Y2K 팝 아이콘</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Newjeans</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Y2K Pop Icons Creating a New Wave</div></div>
+<div>&nbsp;</div>
+<div>음악계에 신선한 바람을 일으키고 있는 그룹, 뉴진스입니다. 개성 넘치는 멤버들과 트렌디한 음악으로 등장과 동시에 많은 사랑을 받고 있어요. 그녀들은 Y2K 감성을 현대적으로 재해석하며 독보적인 매력을 발산하고 있습니다.</div>
+<div>NewJeans is a group bringing a fresh breeze to the music scene. They are receiving a lot of love from the moment they appeared with their unique members and trendy music. They reinterpret the Y2K sentiment in a modern way, radiating a unique charm.</div>
+<div>&nbsp;</div>
+<div>✧</div>
+<div>그룹의 탄생과 매력</div>
+<div>뉴진스는 기존의 틀을 깬 독특한 데뷔 방식으로 대중의 이목을 집중시켰어요. 멤버 각각의 개성을 살린 스타일링과 자연스러운 매력은 팬들을 사로잡기에 충분했습니다. 그녀들은 단순한 아이돌 그룹을 넘어 하나의 문화 현상으로 자리매김하고 있습니다.</div>
+<div>The Birth and Charm of the Group</div>
+<div>NewJeans captivated the public with their unique debut method, breaking away from the existing framework. The styling that highlighted each member's individuality and their natural charm were enough to capture the fans. They are establishing themselves as a cultural phenomenon beyond a simple idol group.</div>
+<div>&nbsp;</div>
+<div>✧</div>
+<div>음악과 퍼포먼스의 특징</div>
+<div>뉴진스의 음악은 Y2K 팝을 기반으로 다양한 장르를 융합한 것이 특징이에요. 편안하면서도 중독성 있는 멜로디와 멤버들의 청량한 보컬은 듣는 이로 하여금 기분 좋은 에너지를 느끼게 합니다. 퍼포먼스 역시 자연스러움과 힙한 매력을 동시에 보여주며 보는 재미를 더합니다.</div>
+<div>Characteristics of Music and Performance</div>
+<div>NewJeans' music is characterized by a fusion of various genres based on Y2K pop. The comfortable yet addictive melodies and the members' refreshing vocals give listeners a pleasant energy. The performance also adds to the fun by showing both naturalness and hip charm.</div>
+<div>&nbsp;</div>
+<div>✧</div>
+<div>활동과 영향력</div>
+<div>국내를 넘어 글로벌 팬들의 마음까지 사로잡으며 활발한 활동을 이어가고 있어요. 다양한 브랜드와의 협업을 통해 패션, 광고 등 여러 분야에서 영향력을 발휘하고 있습니다. 뉴진스는 앞으로도 음악과 퍼포먼스를 통해 긍정적인 에너지를 전파할 것으로 기대됩니다.</div>
+<div>Activities and Influence</div>
+<div>They are captivating the hearts of global fans beyond Korea and continuing their active career. They are exerting influence in various fields such as fashion and advertising through collaborations with various brands. NewJeans is expected to continue spreading positive energy through music and performance in the future.</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/타이달 뉴진스 ( Tidal Newjeans )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
