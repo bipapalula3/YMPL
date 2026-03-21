@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,84 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 김건모 ( Tidal Kim Gun Mo )_trk.txt"
-                           download="타이달 김건모 ( Tidal Kim Gun Mo )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 김건모 ( Tidal Kim Gun Mo )_trk.txt" download="타이달 김건모 ( Tidal Kim Gun Mo )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EA%B9%80%EA%B1%B4%EB%AA%A8%20%28%20Kim%20Gun%20Mo%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/356321814" target="_blank">https://tidal.com/album/356321814</a>
+                        <pre>💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] 감격시대 - 투신의 탄생 Part.2 (Music from the Original TV Series)</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Kim Gun Mo - 감격시대 - 투신의 탄생 Part.2 (Music from the Original TV Series)
+EN ⇄ KR : Age of Feeling - Birth of God of Fighting Part.2 (Music from the Original TV Series)
+ES     : 감격시대 - El nacimiento del dios de la lucha Parte.2
+ZH-CN  : 感激时代 - 斗神的诞生 Part.2
+
+
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2010] QUEEN OF REVERSAL DRAMA (Original Soundtrack) Part.1</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Kim Gun Mo - Cry
+EN ⇄ KR : 울음
+ES     : Llorar
+ZH-CN  : 哭泣
+
+
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2010] My Girlfriend is Gumiho (Original Soundtrack) Part 2</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Kim Gun Mo - Ulala
+EN ⇄ KR : Eulala
+ES     : Ulala
+ZH-CN  : 乌拉拉
+
+
+💿 <b><a href='https://tidal.com/album/356321814' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Kim Gun Mo The Best Of Remastered 2024</a></b>
+▶️Album link : <a href="https://tidal.com/album/356321814" target="_blank">https://tidal.com/album/356321814</a>
 
 Kim Gun Mo - Sleepless Rainy Night (2024 Remaster)
 EN ⇄ KR : 잠 못 이루는 비 오는 밤 (2024 Remaster)
@@ -175,14 +265,7 @@ ES     : Últimamente
 ZH-CN  : 近来
 
 
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Kim Gun Mo - 감격시대 - 투신의 탄생 Part.2 (Music from the Original TV Series)
-EN ⇄ KR : Age of Feeling - Birth of God of Fighting Part.2 (Music from the Original TV Series)
-ES     : 감격시대 - El nacimiento del dios de la lucha Parte.2
-ZH-CN  : 感激时代 - 斗神的诞生 Part.2
-
-
+💿 <b><a href='https://tidal.com/album/98832735' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] 50</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98832735" target="_blank">https://tidal.com/album/98832735</a>
 
 Kim Gun Mo - I Owe It All To You
@@ -216,6 +299,7 @@ ES     : Cosmos
 ZH-CN  : 宇宙
 
 
+💿 <b><a href='https://tidal.com/album/343735048' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] Life of A Man</a></b>
 ▶️Album link : <a href="https://tidal.com/album/343735048" target="_blank">https://tidal.com/album/343735048</a>
 
 Kim Gun Mo - Life of A Man
@@ -224,6 +308,7 @@ ES     : Vida de un hombre
 ZH-CN  : 一个男人的一生
 
 
+💿 <b><a href='https://tidal.com/album/343677619' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] Autobiography</a></b>
 ▶️Album link : <a href="https://tidal.com/album/343677619" target="_blank">https://tidal.com/album/343677619</a>
 
 Kim Gun Mo - Sadder Than Yesterday
@@ -282,22 +367,7 @@ ES     : Ryeo-In 2
 ZH-CN  : 丽仁 2
 
 
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Kim Gun Mo - Cry
-EN ⇄ KR : 울음
-ES     : Llorar
-ZH-CN  : 哭泣
-
-
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Kim Gun Mo - Ulala
-EN ⇄ KR : Ulala
-ES     : Ulala
-ZH-CN  : 乌拉拉
-
-
+💿 <b><a href='https://tidal.com/album/168681807' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] 유영석 20주년 기념앨범 Part.2 - 세상이 그대를 속일지라도</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168681807" target="_blank">https://tidal.com/album/168681807</a>
 
 Kim Gun Mo - 세상이 그대를 속일지라도
@@ -306,6 +376,7 @@ ES     : Aunque el mundo te engañe
 ZH-CN  : 纵然世界欺骗你
 
 
+💿 <b><a href='https://tidal.com/album/343701721' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] Ryeo-In</a></b>
 ▶️Album link : <a href="https://tidal.com/album/343701721" target="_blank">https://tidal.com/album/343701721</a>
 
 Kim Gun Mo - Ryeo-In
@@ -314,6 +385,7 @@ ES     : Ryeo-In
 ZH-CN  : 丽仁
 
 
+💿 <b><a href='https://tidal.com/album/343668236' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] Everythin’s Gonna Be Alright</a></b>
 ▶️Album link : <a href="https://tidal.com/album/343668236" target="_blank">https://tidal.com/album/343668236</a>
 
 Kim Gun Mo - Everythin’s Gonna Be Alright (Reggae Mix Edition)
@@ -362,6 +434,7 @@ ES     : Solo Enamorado
 ZH-CN  : 独自恋爱
 
 
+💿 <b><a href='https://tidal.com/album/343714838' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2008] Soul Groove</a></b>
 ▶️Album link : <a href="https://tidal.com/album/343714838" target="_blank">https://tidal.com/album/343714838</a>
 
 Kim Gun Mo - Intro (Don't Leave)
@@ -425,6 +498,7 @@ ES     : Recreo Triste
 ZH-CN  : 悲伤的休息
 
 
+💿 <b><a href='https://tidal.com/album/229485225' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2008] 2008 leaf Fall-ing IN Love</a></b>
 ▶️Album link : <a href="https://tidal.com/album/229485225" target="_blank">https://tidal.com/album/229485225</a>
 
 Kim Gun Mo, 김광석 - 그녀가 처음 울던 날
@@ -433,6 +507,7 @@ ES     : El día que ella lloró por primera vez
 ZH-CN  : 她第一次哭的那天
 
 
+💿 <b><a href='https://tidal.com/album/98822582' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2007] Style Album 11 - Scarecrow</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98822582" target="_blank">https://tidal.com/album/98822582</a>
 
 Kim Gun Mo, Cho PD - Jam
@@ -457,7 +532,7 @@ ZH-CN  : 稻草人
 
 Kim Gun Mo - Playboy
 EN ⇄ KR : 난봉꾼
-ES     : Playboy
+ES     : Jugador
 ZH-CN  : 花花公子
 
 Kim Gun Mo - Take care of yourself
@@ -476,6 +551,7 @@ ES     : Cantante
 ZH-CN  : 歌手
 
 
+💿 <b><a href='https://tidal.com/album/98822556' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2005] Be Like…</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98822556" target="_blank">https://tidal.com/album/98822556</a>
 
 Kim Gun Mo - We Are Strangers Now
@@ -529,6 +605,7 @@ ES     : Me siento bien
 ZH-CN  : 我感觉很好
 
 
+💿 <b><a href='https://tidal.com/album/98822524' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2004] Kimgunmo.9</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98822524" target="_blank">https://tidal.com/album/98822524</a>
 
 Kim Gun Mo - What A Girl
@@ -587,6 +664,7 @@ ES     : Sr. Mandamás (Versión Lounge House Mix)
 ZH-CN  : 大人物先生酒廊浩室混音版
 
 
+💿 <b><a href='https://tidal.com/album/98822464' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2003] Hestory</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98822464" target="_blank">https://tidal.com/album/98822464</a>
 
 Kim Gun Mo - Scent
@@ -640,6 +718,7 @@ ES     : Desobligado
 ZH-CN  : 不孝
 
 
+💿 <b><a href='https://tidal.com/album/98822446' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2001] #007 Another Days…</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98822446" target="_blank">https://tidal.com/album/98822446</a>
 
 Kim Gun Mo - Fool
@@ -688,6 +767,7 @@ ES     : Adiós, ayer
 ZH-CN  : 告别昨日
 
 
+💿 <b><a href='https://tidal.com/album/223263041' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1999] 이소라의 프로포즈 2집</a></b>
 ▶️Album link : <a href="https://tidal.com/album/223263041" target="_blank">https://tidal.com/album/223263041</a>
 
 Kim Gun Mo - 당신만이 Live Version
@@ -696,6 +776,7 @@ ES     : Solo tú (Versión en vivo)
 ZH-CN  : 只有你 Live Version
 
 
+💿 <b><a href='https://tidal.com/album/223262998' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1999] 이소라의 프로포즈 1집</a></b>
 ▶️Album link : <a href="https://tidal.com/album/223262998" target="_blank">https://tidal.com/album/223262998</a>
 
 Kim Gun Mo - 당신과 만난 이 날
@@ -704,6 +785,7 @@ ES     : Este día que te conocí
 ZH-CN  : 与你相遇的这天
 
 
+💿 <b><a href='https://tidal.com/album/98822401' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1999] Growing</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98822401" target="_blank">https://tidal.com/album/98822401</a>
 
 Kim Gun Mo - For My Lover
@@ -772,6 +854,7 @@ ES     : Nocturno
 ZH-CN  : 夜曲
 
 
+💿 <b><a href='https://tidal.com/album/98822321' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1997] Myself</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98822321" target="_blank">https://tidal.com/album/98822321</a>
 
 Kim Gun Mo - Intro
@@ -850,6 +933,7 @@ ES     : Monólogo
 ZH-CN  : 独白
 
 
+💿 <b><a href='https://tidal.com/album/98822300' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1996] Exchange Kg. M4</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98822300" target="_blank">https://tidal.com/album/98822300</a>
 
 Kim Gun Mo - Piano Master
@@ -908,6 +992,7 @@ ES     : Vacaciones
 ZH-CN  : 假期
 
 
+💿 <b><a href='https://tidal.com/album/356314393' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1995] Kim Gun Mo 3 (2024 Remasterd)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/356314393" target="_blank">https://tidal.com/album/356314393</a>
 
 Kim Gun Mo - A Beautiful Farewell (2024 Remaster)
@@ -966,6 +1051,7 @@ ES     : Cuando Llega El Invierno
 ZH-CN  : 当冬天来临
 
 
+💿 <b><a href='https://tidal.com/album/343755115' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1994] In My Pops And Live</a></b>
 ▶️Album link : <a href="https://tidal.com/album/343755115" target="_blank">https://tidal.com/album/343755115</a>
 
 Kim Gun Mo - Show Your Smile (Excuses)
@@ -1034,6 +1120,7 @@ ES     : Esperando
 ZH-CN  : 等待
 
 
+💿 <b><a href='https://tidal.com/album/356316830' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1994] In My Pops & Live (2024 Remasterd)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/356316830" target="_blank">https://tidal.com/album/356316830</a>
 
 Kim Gun Mo - Live Intro (2024 Remaster)
@@ -1137,6 +1224,7 @@ ES     : Tu Razón
 ZH-CN  : 你的理由
 
 
+💿 <b><a href='https://tidal.com/album/356311732' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1993] Kim Gun Mo 2 (2024 Remasterd)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/356311732" target="_blank">https://tidal.com/album/356311732</a>
 
 Kim Gun Mo - Alone in Love (2024 Remaster)
@@ -1190,6 +1278,7 @@ ES     : Cuando Teníamos 20
 ZH-CN  : 当我们二十岁时
 
 
+💿 <b><a href='https://tidal.com/album/356309013' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1992] Kim Gun Mo (2024 Remasterd)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/356309013" target="_blank">https://tidal.com/album/356309013</a>
 
 Kim Gun Mo - After A Break Up (2024 Remaster)
@@ -1242,6 +1331,18 @@ EN ⇄ KR : 첫눈에 반함 (Video Land Mix) (2024 Remaster)
 ES     : Primera Vista
 ZH-CN  : 初见</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 김건모 ( Tidal Kim Gun Mo )_trk.txt" download="타이달 김건모 ( Tidal Kim Gun Mo )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EA%B9%80%EA%B1%B4%EB%AA%A8%20%28%20Kim%20Gun%20Mo%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
