@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 김우석 ( Tidal Kim Woo Seok )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 김우석 ( Tidal Kim Woo Seok )</h1>
+<div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/73e5f76e/d9fe/4bce/bad4/d05ad7a998cc/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/19780749' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+
+<div>[2024] In The End</div>
+<div><a href='https://tidal.com/album/398959651' target='_blank'>https://tidal.com/album/398959651</a></div>
+<div>KIM WOO SEOK - In The End</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/398959651' target='_blank'><img src='https://resources.tidal.com/images/cab866df/96c3/42e0/8cc0/ccba625393e4/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 0교시는 인싸타임 OST Part.1</div>
+<div><a href='https://tidal.com/album/393230098' target='_blank'>https://tidal.com/album/393230098</a></div>
+<div>KIM WOO SEOK - Hello</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/393230098' target='_blank'><img src='https://resources.tidal.com/images/4b4a1b15/2cc9/4af1/9360/ed15fdd01e12/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Blank Page</div>
+<div><a href='https://tidal.com/album/285794510' target='_blank'>https://tidal.com/album/285794510</a></div>
+<div>KIM WOO SEOK - Intro- Blank Page</div>
+<div>KIM WOO SEOK - Dawn</div>
+<div>KIM WOO SEOK - Love and Hate</div>
+<div>KIM WOO SEOK - Heaven, Are you there</div>
+<div>KIM WOO SEOK - Slip</div>
+<div>KIM WOO SEOK - Missing you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/285794510' target='_blank'><img src='https://resources.tidal.com/images/5d99445c/458b/4906/952a/7576de408dfe/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 3RD DESIRE [Reve]</div>
+<div><a href='https://tidal.com/album/219016267' target='_blank'>https://tidal.com/album/219016267</a></div>
+<div>KIM WOO SEOK - Ghostin'</div>
+<div>KIM WOO SEOK - Switch</div>
+<div>KIM WOO SEOK - What More Can I Do-</div>
+<div>KIM WOO SEOK - Shame</div>
+<div>KIM WOO SEOK - When spring comes</div>
+<div>KIM WOO SEOK - Satisfied</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219016267' target='_blank'><img src='https://resources.tidal.com/images/51cf3782/ecc9/406a/82e2/eefab9f316a8/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Lucky OST (Drama Stage 2021)</div>
+<div><a href='https://tidal.com/album/196167752' target='_blank'>https://tidal.com/album/196167752</a></div>
+<div>KIM WOO SEOK - Us at that time</div>
+<div>KIM WOO SEOK - Like a Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196167752' target='_blank'><img src='https://resources.tidal.com/images/6f3a7d54/620d/4f5b/bfda/813beaf7ac14/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 2ND DESIRE [TASTY]</div>
+<div><a href='https://tidal.com/album/216420179' target='_blank'>https://tidal.com/album/216420179</a></div>
+<div>KIM WOO SEOK - Tasty</div>
+<div>KIM WOO SEOK - Sugar</div>
+<div>KIM WOO SEOK - Better</div>
+<div>KIM WOO SEOK - Holiday</div>
+<div>KIM WOO SEOK - What are you up to tonight-</div>
+<div>KIM WOO SEOK - Next</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216420179' target='_blank'><img src='https://resources.tidal.com/images/8e2c8b68/ff3d/4e50/88f4/3412b74e5a61/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Sorrow (from Cool Summer Project)</div>
+<div><a href='https://tidal.com/album/189885887' target='_blank'>https://tidal.com/album/189885887</a></div>
+<div>Ravi, YERI, KIM WOO SEOK - Sorrow (from Cool Summer Project)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189885887' target='_blank'><img src='https://resources.tidal.com/images/97b52d61/e4e0/4519/ae3d/b09d05ee6d40/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Memories</div>
+<div><a href='https://tidal.com/album/216179905' target='_blank'>https://tidal.com/album/216179905</a></div>
+<div>KIM WOO SEOK, Lee Eun Sang - Memories</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216179905' target='_blank'><img src='https://resources.tidal.com/images/8e741a6d/0b3c/4cd0/a62a/9927954f4e86/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 1ST DESIRE [GREED]</div>
+<div><a href='https://tidal.com/album/216180885' target='_blank'>https://tidal.com/album/216180885</a></div>
+<div>KIM WOO SEOK - Intro - Lost</div>
+<div>KIM WOO SEOK - Red Moon</div>
+<div>KIM WOO SEOK - SINphony</div>
+<div>KIM WOO SEOK - Somebody Like You</div>
+<div>KIM WOO SEOK - Do U Like</div>
+<div>KIM WOO SEOK - Beautiful</div>
+<div>KIM WOO SEOK - The Winter</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216180885' target='_blank'><img src='https://resources.tidal.com/images/b35e14e3/348e/4675/b49c/d18a34c3e79d/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 김우석</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>섬세한 감성으로 빚어낸 다채로운 음악 세계</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Kim Woo Seok</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Diverse Musical World Crafted with Delicate Emotions</div></div>
+<div>&nbsp;</div>
+<div>독보적인 음색과 섬세한 표현력으로 자신만의 음악 세계를 구축해 온 김우석님. 그는 다채로운 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여주고 있습니다. 솔로 아티스트로서 끊임없이 변화하고 성장하는 모습이 더욱 기대되는 아티스트입니다.</div>
+<div>Kim Woo Seok has built his own musical world with a unique tone and delicate expressiveness. He showcases a wide musical spectrum by mastering various genres. As a solo artist, his constant change and growth make him an even more anticipated artist.</div>
+<div>&nbsp;</div>
+<div>✧</div>
+<div>그룹에서 솔로로, 새로운 시작</div>
+<div>그룹 활동을 통해 이미 많은 사랑을 받았던 김우석님은 솔로 아티스트로서 새로운 도전을 시작했습니다. 자신만의 색깔을 담은 음악들을 선보이며, 더욱 깊어진 감성과 음악적 역량을 보여주고 있습니다. 팬들은 그의 솔로 활동을 통해 더욱 다채로운 매력을 발견하고 열렬히 응원하고 있습니다.</div>
+<div>From Group to Solo, A New Beginning</div>
+<div>Kim Woo Seok, who was already loved through group activities, began a new challenge as a solo artist. He showcases music with his own unique color, demonstrating deeper emotions and musical capabilities. Fans are discovering more diverse charms through his solo activities and enthusiastically supporting him.</div>
+<div>&nbsp;</div>
+<div>✧</div>
+<div>음악적 스펙트럼과 퍼포먼스</div>
+<div>김우석님의 음악은 팝, 록, R&B 등 다양한 장르를 아우르며 폭넓은 스펙트럼을 자랑합니다. 섬세한 감정 표현과 매력적인 음색은 듣는 이들의 마음을 사로잡습니다. 무대 위에서의 몰입도 높은 퍼포먼스는 그의 음악을 더욱 돋보이게 합니다.</div>
+<div>Musical Spectrum and Performance</div>
+<div>Kim Woo Seok's music encompasses various genres such as pop, rock, and R&B, boasting a wide spectrum. His delicate emotional expression and charming tone captivate listeners. His immersive performance on stage further enhances his music.</div>
+<div>&nbsp;</div>
+<div>✧</div>
+<div>끊임없는 성장과 미래</div>
+<div>김우석님은 현재에 안주하지 않고 끊임없이 새로운 시도를 하며 음악적 성장을 거듭하고 있습니다. 앞으로 그가 보여줄 음악 세계는 더욱 확장될 것으로 기대됩니다. 자신만의 색깔을 잃지 않으면서도 대중과의 소통을 잊지 않는 그의 행보에 귀추가 주목됩니다.</div>
+<div>Continuous Growth and Future</div>
+<div>Kim Woo Seok does not rest on his laurels but constantly makes new attempts and continues to grow musically. The musical world he will show in the future is expected to expand further. Attention is focused on his steps as he does not lose his own color while also remembering communication with the public.</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/타이달 김우석 ( Tidal Kim Woo Seok )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
