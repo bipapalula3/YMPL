@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,57 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 다비 ( Tidal Davii )_trk.txt"
-                           download="타이달 다비 ( Tidal Davii )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 다비 ( Tidal Davii )_trk.txt" download="타이달 다비 ( Tidal Davii )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EB%8B%A4%EB%B9%84%20%28%20Davii%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/346710834" target="_blank">https://tidal.com/album/346710834</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/346710834' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [E] [2022] 4th Mini Album -=3 GENEZIS3</a></b>
+▶️Album link : <a href="https://tidal.com/album/346710834" target="_blank">https://tidal.com/album/346710834</a>
 
 DAVII - Davii′s Room (feat. Owen)(Explicit)
 EN ⇄ KR : 다비의 방 (feat. Owen)(Explicit)
@@ -105,6 +168,16 @@ ES     : Dinero
 ZH-CN  : 金钱
 
 
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Prison Playbook, Pt. 8 (Original Telvision Soundtrack)</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+DAVII, Real.be - That′s the way it goes (Feat. Real.be)
+EN ⇄ KR : 흘러가는 대로 (Feat. Real.be)
+ES     : Así es como va
+ZH-CN  : 事情就是这样
+
+
+💿 <b><a href='https://tidal.com/album/337868307' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Bouquet</a></b>
 ▶️Album link : <a href="https://tidal.com/album/337868307" target="_blank">https://tidal.com/album/337868307</a>
 
 Tia, DAVII - Bouquet
@@ -113,6 +186,7 @@ ES     : Ramo
 ZH-CN  : 花束
 
 
+💿 <b><a href='https://tidal.com/album/385160562' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] 0315</a></b>
 ▶️Album link : <a href="https://tidal.com/album/385160562" target="_blank">https://tidal.com/album/385160562</a>
 
 DAVII - Song for Prayer
@@ -126,6 +200,7 @@ ES     : Carnaval
 ZH-CN  : 嘉年华
 
 
+💿 <b><a href='https://tidal.com/album/279245696' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Smiling on Me</a></b>
 ▶️Album link : <a href="https://tidal.com/album/279245696" target="_blank">https://tidal.com/album/279245696</a>
 
 DAVII - Smiling on Me
@@ -134,6 +209,7 @@ ES     : Sonriendo para mí
 ZH-CN  : 对我微笑
 
 
+💿 <b><a href='https://tidal.com/album/290644026' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Groom Vroong</a></b>
 ▶️Album link : <a href="https://tidal.com/album/290644026" target="_blank">https://tidal.com/album/290644026</a>
 
 DAVII - Groom Vroong
@@ -142,6 +218,7 @@ ES     : Novio Vroong
 ZH-CN  : 格鲁姆·弗隆
 
 
+💿 <b><a href='https://tidal.com/album/320000482' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Art of Light</a></b>
 ▶️Album link : <a href="https://tidal.com/album/320000482" target="_blank">https://tidal.com/album/320000482</a>
 
 DAVII, T.Y - Art of Light (With T.y)
@@ -150,6 +227,7 @@ ES     : El Arte de la Luz
 ZH-CN  : 光之艺
 
 
+💿 <b><a href='https://tidal.com/album/252086749' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Be there</a></b>
 ▶️Album link : <a href="https://tidal.com/album/252086749" target="_blank">https://tidal.com/album/252086749</a>
 
 DAVII, PUN - Be there
@@ -158,6 +236,7 @@ ES     : Estar ahí
 ZH-CN  : 在那里
 
 
+💿 <b><a href='https://tidal.com/album/346655764' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] 3rd Mini Album -=2 Today</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346655764" target="_blank">https://tidal.com/album/346655764</a>
 
 DAVII - Nightmare
@@ -186,6 +265,7 @@ ES     : FINAL
 ZH-CN  : 尾声
 
 
+💿 <b><a href='https://tidal.com/album/196165465' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] I′m OK</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196165465" target="_blank">https://tidal.com/album/196165465</a>
 
 DAVII - I′m OK (Feat. Peakboy)
@@ -194,6 +274,7 @@ ES     : Estoy bien
 ZH-CN  : 我没事
 
 
+💿 <b><a href='https://tidal.com/album/196168927' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Don′t play me love</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196168927" target="_blank">https://tidal.com/album/196168927</a>
 
 DAVII - Don′t play me love (Feat. KINO)
@@ -207,6 +288,7 @@ ES     : Fiebre
 ZH-CN  : 发烧
 
 
+💿 <b><a href='https://tidal.com/album/346492277' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] BLUE FROG (Original Version)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346492277" target="_blank">https://tidal.com/album/346492277</a>
 
 DAVII - Blue Frog (Original Version)
@@ -215,6 +297,7 @@ ES     : Rana Azul
 ZH-CN  : 蓝蛙
 
 
+💿 <b><a href='https://tidal.com/album/346593809' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] 2nd Mini Album -=1 RE-new</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346593809" target="_blank">https://tidal.com/album/346593809</a>
 
 DAVII - Bird, tree, fish
@@ -248,6 +331,7 @@ ES     : Consideración
 ZH-CN  : 关怀
 
 
+💿 <b><a href='https://tidal.com/album/128975971' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Teddy Bear</a></b>
 ▶️Album link : <a href="https://tidal.com/album/128975971" target="_blank">https://tidal.com/album/128975971</a>
 
 DAVII, Jin Ah Kwon - Teddy Bear
@@ -256,6 +340,7 @@ ES     : Osito de Peluche
 ZH-CN  : 泰迪熊
 
 
+💿 <b><a href='https://tidal.com/album/196164179' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Don′t stop the music</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196164179" target="_blank">https://tidal.com/album/196164179</a>
 
 DAVII - I gotta sleep
@@ -269,6 +354,7 @@ ES     : Jamie Cullum
 ZH-CN  : 杰米·卡伦
 
 
+💿 <b><a href='https://tidal.com/album/196164841' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Don′t believe in Santa</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196164841" target="_blank">https://tidal.com/album/196164841</a>
 
 DAVII - Don′t believe in Santa with URBAN ZAKAPA
@@ -277,6 +363,7 @@ ES     : No creer en Papá Noel con URBAN ZAKAPA
 ZH-CN  : 不要相信圣诞老人 (与 URBAN ZAKAPA)
 
 
+💿 <b><a href='https://tidal.com/album/346236850' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Cinema</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346236850" target="_blank">https://tidal.com/album/346236850</a>
 
 DAVII - Cinema
@@ -305,6 +392,7 @@ ES     : Final
 ZH-CN  : 结局
 
 
+💿 <b><a href='https://tidal.com/album/216123987' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Would You-</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216123987" target="_blank">https://tidal.com/album/216123987</a>
 
 DAVII - Nothing without you
@@ -318,14 +406,7 @@ ES     : Lo siento
 ZH-CN  : 对不起
 
 
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-DAVII, Real.be - That′s the way it goes (Feat. Real.be)
-EN ⇄ KR : 흘러가는 대로 (Feat. Real.be)
-ES     : Así es como va
-ZH-CN  : 事情就是这样
-
-
+💿 <b><a href='https://tidal.com/album/196141186' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Only me (From Question)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196141186" target="_blank">https://tidal.com/album/196141186</a>
 
 DAVII - Only me (From Question)
@@ -334,6 +415,7 @@ ES     : Solo yo
 ZH-CN  : 只有我
 
 
+💿 <b><a href='https://tidal.com/album/215976562' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Navigation (feat. Heize)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215976562" target="_blank">https://tidal.com/album/215976562</a>
 
 DAVII - Navigation (Feat. Heize)
@@ -341,6 +423,18 @@ EN ⇄ KR : 항해 (Feat. Heize)
 ES     : Navegación
 ZH-CN  : 导航</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 다비 ( Tidal Davii )_trk.txt" download="타이달 다비 ( Tidal Davii )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EB%8B%A4%EB%B9%84%20%28%20Davii%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
