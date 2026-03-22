@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,98 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 마마무 ( Tidal Mamamoo )_trk.txt"
-                           download="타이달 마마무 ( Tidal Mamamoo )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 마마무 ( Tidal Mamamoo )_trk.txt" download="타이달 마마무 ( Tidal Mamamoo )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EB%A7%88%EB%A7%88%EB%AC%B4%20%28%20Mamamoo%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/346783931" target="_blank">https://tidal.com/album/346783931</a>
+                        <pre>💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Strong Woman Do Bong Soon, Pt. 5 (Original Television Soundtrack)</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Mamamoo - Double Trouble Couple
+EN ⇄ KR : 이중고 커플
+ES     : Pareja Problemática
+ZH-CN  : 双重麻烦情侣
+
+
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Romantic Doctor 2 (Original Television Soundtrack) Pt.6</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Mamamoo - 자꾸 더 보고싶은 사람
+EN ⇄ KR : Someone I Keep Wanting To See More
+ES     : Alguien a quien quiero ver más y más
+ZH-CN  : 总是更想见的人
+
+
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Search- WWW (Original Television Soundtrack), Pt. 5</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Mamamoo - WOW
+EN ⇄ KR : 와우
+ES     : ¡GUAU!
+ZH-CN  : 哇
+
+Mamamoo - WOW
+EN ⇄ KR : 와우
+ES     : ¡GUAU!
+ZH-CN  : 哇
+
+
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] My Lovely Girl (Original Television Soundtrack), Pt. 1</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Loco, Mamamoo - This song
+EN ⇄ KR : 이 노래
+ES     : Esta canción
+ZH-CN  : 这首歌
+
+
+💿 <b><a href='https://tidal.com/album/346783931' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] [Hwa Sa Show, Vol. 3] MMM Simile</a></b>
+▶️Album link : <a href="https://tidal.com/album/346783931" target="_blank">https://tidal.com/album/346783931</a>
 
 Mamamoo - MMM Simile (Live ver.)
 EN ⇄ KR : MMM 비유 (Live ver.)
@@ -80,11 +184,12 @@ ES     : MMM Símil
 ZH-CN  : MMM 西米尔
 
 
+💿 <b><a href='https://tidal.com/album/253549971' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] MIC ON</a></b>
 ▶️Album link : <a href="https://tidal.com/album/253549971" target="_blank">https://tidal.com/album/253549971</a>
 
 Mamamoo - 1,2,3 Eoi!
 EN ⇄ KR : 1, 2, 3 어이!
-ES     : 1,2,3 Eoi!
+ES     : 1, 2, 3 ¡Eoi!
 ZH-CN  : 1,2,3 Eoi!
 
 Mamamoo - ILLELLA
@@ -98,6 +203,7 @@ ES     : L.I.E.C
 ZH-CN  : L.I.E.C
 
 
+💿 <b><a href='https://tidal.com/album/351660051' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] I SAY MAMAMOO- THE BEST -Japan Edition-</a></b>
 ▶️Album link : <a href="https://tidal.com/album/351660051" target="_blank">https://tidal.com/album/351660051</a>
 
 Mamamoo - Decalcomanie -Japanese ver.-
@@ -137,7 +243,7 @@ ZH-CN  : gogobebe -日语版-
 
 Mamamoo - Nada Sousou
 EN ⇄ KR : 눈물이 주룩주룩
-ES     : Nada Sousou
+ES     : Lágrimas Constantes
 ZH-CN  : 泪光闪闪
 
 Mamamoo - HIP -Japanese ver.-
@@ -186,6 +292,7 @@ ES     : Sonrisa
 ZH-CN  : 微笑
 
 
+💿 <b><a href='https://tidal.com/album/383010780' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Gleam</a></b>
 ▶️Album link : <a href="https://tidal.com/album/383010780" target="_blank">https://tidal.com/album/383010780</a>
 
 Mamamoo - Gleam
@@ -194,6 +301,7 @@ ES     : Destello
 ZH-CN  : 微光
 
 
+💿 <b><a href='https://tidal.com/album/364152544' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Where Are We Now -Japanese ver.-</a></b>
 ▶️Album link : <a href="https://tidal.com/album/364152544" target="_blank">https://tidal.com/album/364152544</a>
 
 Mamamoo - Where Are We Now -Japanese ver.-
@@ -202,6 +310,7 @@ ES     : ¿Dónde estamos ahora? -Versión japonesa-
 ZH-CN  : Where Are We Now -日语版-
 
 
+💿 <b><a href='https://tidal.com/album/216246657' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] WAW</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216246657" target="_blank">https://tidal.com/album/216246657</a>
 
 Mamamoo - Where Are We Now
@@ -225,14 +334,7 @@ ES     : Destino Parte 2
 ZH-CN  : 命运 第二部分
 
 
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Mamamoo - Double Trouble Couple
-EN ⇄ KR : 이중고 커플
-ES     : Pareja Problemática
-ZH-CN  : 双重麻烦情侣
-
-
+💿 <b><a href='https://tidal.com/album/205504037' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Pink Funky</a></b>
 ▶️Album link : <a href="https://tidal.com/album/205504037" target="_blank">https://tidal.com/album/205504037</a>
 
 Mamamoo - Freakin Shoes
@@ -266,6 +368,7 @@ ES     : ¡AHH OOP!
 ZH-CN  : 哎哟！
 
 
+💿 <b><a href='https://tidal.com/album/216279440' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] I SAY MAMAMOO - THE BEST</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216279440" target="_blank">https://tidal.com/album/216279440</a>
 
 Mamamoo - mumumumuch
@@ -324,7 +427,7 @@ ES     : Hombre del piano 2021
 ZH-CN  : 钢琴人 2021
 
 Mamamoo - AHH OOP 2021
-EN ⇄ KR : AHH OOP 2021
+EN ⇄ KR : 아야 웁 2021
 ES     : AHH OOP 2021
 ZH-CN  : AHH OOP 2021
 
@@ -335,8 +438,8 @@ ZH-CN  : 翻模 2021
 
 Mamamoo - AYA (Traditional ver.)
 EN ⇄ KR : 아야 (Traditional ver.)
-ES     : AYA
-ZH-CN  : AYA
+ES     : AYA (Assuming AYA is a name or acronym and doesn't need translation)
+ZH-CN  : 阿雅
 
 Mamamoo - A little bit 2021
 EN ⇄ KR : 조금만 2021
@@ -379,6 +482,7 @@ ES     : Sí, lo soy
 ZH-CN  : 是的我是
 
 
+💿 <b><a href='https://tidal.com/album/364152879' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] AYA -Japanese ver.-</a></b>
 ▶️Album link : <a href="https://tidal.com/album/364152879" target="_blank">https://tidal.com/album/364152879</a>
 
 Mamamoo - AYA -Japanese ver.-
@@ -387,6 +491,7 @@ ES     : AYA -Versión japonesa-
 ZH-CN  : AYA -日语版-
 
 
+💿 <b><a href='https://tidal.com/album/216534748' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] WANNA BE MYSELF</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216534748" target="_blank">https://tidal.com/album/216534748</a>
 
 Mamamoo - WANNA BE MYSELF
@@ -395,6 +500,7 @@ ES     : QUIERO SER YO MISMO
 ZH-CN  : 想做我自己
 
 
+💿 <b><a href='https://tidal.com/album/216534676' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] TRAVEL</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216534676" target="_blank">https://tidal.com/album/216534676</a>
 
 Mamamoo - Travel
@@ -405,7 +511,7 @@ ZH-CN  : 旅行
 Mamamoo - AYA
 EN ⇄ KR : 아야
 ES     : AYA (Assuming AYA is a name or acronym and doesn't need translation)
-ZH-CN  : AYA
+ZH-CN  : 阿雅
 
 Mamamoo - Chuck
 EN ⇄ KR : 척
@@ -423,6 +529,7 @@ ES     : Buenas noches
 ZH-CN  : 晚安
 
 
+💿 <b><a href='https://tidal.com/album/364157254' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Shampoo</a></b>
 ▶️Album link : <a href="https://tidal.com/album/364157254" target="_blank">https://tidal.com/album/364157254</a>
 
 Mamamoo - Shampoo
@@ -431,14 +538,7 @@ ES     : Champú
 ZH-CN  : 洗发精
 
 
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Mamamoo - 자꾸 더 보고싶은 사람
-EN ⇄ KR : Someone I Keep Wanting To See More
-ES     : Alguien a quien quiero ver más y más
-ZH-CN  : 总是更想见的人
-
-
+💿 <b><a href='https://tidal.com/album/364157243' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] HIP -Japanese ver.-</a></b>
 ▶️Album link : <a href="https://tidal.com/album/364157243" target="_blank">https://tidal.com/album/364157243</a>
 
 Mamamoo - HIP -Japanese ver.-
@@ -447,14 +547,16 @@ ES     : HIP -Versión japonesa-
 ZH-CN  : HIP -日语版-
 
 
+💿 <b><a href='https://tidal.com/album/216534736' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Dingga</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216534736" target="_blank">https://tidal.com/album/216534736</a>
 
 Mamamoo - Dingga
-EN ⇄ KR : Dingga
+EN ⇄ KR : Dingga -> 딩가딩가
 ES     : Dingga (This title is already short and stylistically relevant in English, so it's best to leave it as is.)
 ZH-CN  : 딩가딩가 (Dingga)
 
 
+💿 <b><a href='https://tidal.com/album/216437297' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] reality in BLACK</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216437297" target="_blank">https://tidal.com/album/216437297</a>
 
 Mamamoo - Destiny
@@ -513,6 +615,7 @@ ES     : Soy Tu Fan
 ZH-CN  : 我是你的粉丝
 
 
+💿 <b><a href='https://tidal.com/album/364157049' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] gogobebe -Japanese ver.-</a></b>
 ▶️Album link : <a href="https://tidal.com/album/364157049" target="_blank">https://tidal.com/album/364157049</a>
 
 Mamamoo - gogobebe -Japanese ver.-
@@ -521,6 +624,7 @@ ES     : gogobebe -Versión japonesa-
 ZH-CN  : gogobebe -日语版-
 
 
+💿 <b><a href='https://tidal.com/album/352152640' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Wind flower -Japanese ver.-</a></b>
 ▶️Album link : <a href="https://tidal.com/album/352152640" target="_blank">https://tidal.com/album/352152640</a>
 
 Mamamoo - Wind flower -Japanese ver.-
@@ -534,6 +638,7 @@ ES     : Hablar dormido
 ZH-CN  : 梦话
 
 
+💿 <b><a href='https://tidal.com/album/216437326' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] White Wind</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216437326" target="_blank">https://tidal.com/album/216437326</a>
 
 Mamamoo - Where R U
@@ -572,19 +677,7 @@ ES     : 4 estaciones
 ZH-CN  : 四季
 
 
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Mamamoo - WOW
-EN ⇄ KR : 와우
-ES     : ¡GUAU!
-ZH-CN  : 哇
-
-Mamamoo - WOW
-EN ⇄ KR : 와우
-ES     : ¡GUAU!
-ZH-CN  : 哇
-
-
+💿 <b><a href='https://tidal.com/album/196148846' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Gleam</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196148846" target="_blank">https://tidal.com/album/196148846</a>
 
 Mamamoo - Gleam
@@ -598,6 +691,7 @@ ES     : Destello
 ZH-CN  : 微光
 
 
+💿 <b><a href='https://tidal.com/album/280694800' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Yellow Flower</a></b>
 ▶️Album link : <a href="https://tidal.com/album/280694800" target="_blank">https://tidal.com/album/280694800</a>
 
 Mamamoo - From Winter to Spring (Intro)
@@ -636,6 +730,7 @@ ES     : Píntame
 ZH-CN  : 涂绘我
 
 
+💿 <b><a href='https://tidal.com/album/196140755' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Suits, Pt. 3 (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196140755" target="_blank">https://tidal.com/album/196140755</a>
 
 Mamamoo - You in My Dreams
@@ -644,6 +739,7 @@ ES     : Tú en mis sueños
 ZH-CN  : 梦中你
 
 
+💿 <b><a href='https://tidal.com/album/411161526' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Sugar Man2, Part 7 - Gloomy coincidence</a></b>
 ▶️Album link : <a href="https://tidal.com/album/411161526" target="_blank">https://tidal.com/album/411161526</a>
 
 Mamamoo - Sugar Man2, Part 7 - Gloomy coincidence
@@ -652,6 +748,7 @@ ES     : Sugar Man2, Parte 7 - Coincidencia sombría
 ZH-CN  : Sugar Man 2 第 7 部分 - 阴郁的巧合
 
 
+💿 <b><a href='https://tidal.com/album/216214914' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Rainy Season</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216214914" target="_blank">https://tidal.com/album/216214914</a>
 
 Mamamoo - Rainy Season
@@ -660,6 +757,7 @@ ES     : Temporada de Lluvias
 ZH-CN  : 雨季
 
 
+💿 <b><a href='https://tidal.com/album/280692363' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] RED MOON</a></b>
 ▶️Album link : <a href="https://tidal.com/album/280692363" target="_blank">https://tidal.com/album/280692363</a>
 
 Mamamoo - Midnight Summer Dream
@@ -693,6 +791,7 @@ ES     : Egoísta
 ZH-CN  : 自私
 
 
+💿 <b><a href='https://tidal.com/album/216094026' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Paint Me</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216094026" target="_blank">https://tidal.com/album/216094026</a>
 
 Mamamoo - Paint Me
@@ -701,6 +800,7 @@ ES     : Píntame
 ZH-CN  : 涂绘我
 
 
+💿 <b><a href='https://tidal.com/album/216044642' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Everyday (MAEIL BIO)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216044642" target="_blank">https://tidal.com/album/216044642</a>
 
 Mamamoo - Everyday
@@ -709,6 +809,7 @@ ES     : Cada día
 ZH-CN  : 每天
 
 
+💿 <b><a href='https://tidal.com/album/351776443' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Decalcomanie -Japanese ver.-</a></b>
 ▶️Album link : <a href="https://tidal.com/album/351776443" target="_blank">https://tidal.com/album/351776443</a>
 
 Mamamoo - Decalcomanie -Japanese ver.-
@@ -722,6 +823,7 @@ ES     : No me conoces
 ZH-CN  : 你不了解我
 
 
+💿 <b><a href='https://tidal.com/album/216437341' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] BLUE;S</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216437341" target="_blank">https://tidal.com/album/216437341</a>
 
 Mamamoo - Intro
@@ -755,6 +857,7 @@ ES     : Mañana
 ZH-CN  : 早晨
 
 
+💿 <b><a href='https://tidal.com/album/383072136' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Purple</a></b>
 ▶️Album link : <a href="https://tidal.com/album/383072136" target="_blank">https://tidal.com/album/383072136</a>
 
 Mamamoo - Yes I Am
@@ -783,6 +886,7 @@ ES     : DA RA DA (This is likely meant to be nonsensical or evocative, so I'd l
 ZH-CN  : DA RA DA (保持原文，因为可能是拟声词或无明确意义)
 
 
+💿 <b><a href='https://tidal.com/album/334931357' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Man to Man, Pt. 5 (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/334931357" target="_blank">https://tidal.com/album/334931357</a>
 
 Mamamoo - Open Your Mind
@@ -791,6 +895,7 @@ ES     : Abre Tu Mente
 ZH-CN  : 打开你的心扉
 
 
+💿 <b><a href='https://tidal.com/album/196129038' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Guardian (Original Television Soundtrack), Pt. 13</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196129038" target="_blank">https://tidal.com/album/196129038</a>
 
 Mamamoo - LOVE
@@ -804,6 +909,7 @@ ES     : AMOR
 ZH-CN  : 爱
 
 
+💿 <b><a href='https://tidal.com/album/196112701' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Taller than you</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196112701" target="_blank">https://tidal.com/album/196112701</a>
 
 Mamamoo - Taller than you
@@ -812,6 +918,7 @@ ES     : Más alto que tú
 ZH-CN  : 比你高
 
 
+💿 <b><a href='https://tidal.com/album/196117905' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] NEW YORK</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196117905" target="_blank">https://tidal.com/album/196117905</a>
 
 Mamamoo - NEW YORK
@@ -820,6 +927,7 @@ ES     : NUEVA YORK
 ZH-CN  : 纽约
 
 
+💿 <b><a href='https://tidal.com/album/196113549' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Melting</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196113549" target="_blank">https://tidal.com/album/196113549</a>
 
 Mamamoo - Taller than you
@@ -878,6 +986,7 @@ ES     : Solo/Simplemente
 ZH-CN  : 就这样
 
 
+💿 <b><a href='https://tidal.com/album/196121559' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] MEMORY</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196121559" target="_blank">https://tidal.com/album/196121559</a>
 
 Mamamoo - Memory
@@ -916,6 +1025,7 @@ ES     : Amo demasiado
 ZH-CN  : 我也爱
 
 
+💿 <b><a href='https://tidal.com/album/216046873' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] LG G5 & Friends (Original Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216046873" target="_blank">https://tidal.com/album/216046873</a>
 
 Mamamoo - woo hoo
@@ -924,6 +1034,7 @@ ES     : ¡Uh-ju!
 ZH-CN  : 喔呼
 
 
+💿 <b><a href='https://tidal.com/album/196112276' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] I Miss You</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196112276" target="_blank">https://tidal.com/album/196112276</a>
 
 Mamamoo - I Miss You
@@ -937,6 +1048,7 @@ ES     : Te echo de menos
 ZH-CN  : 我想你
 
 
+💿 <b><a href='https://tidal.com/album/196117248' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Angel, DAB DAB</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196117248" target="_blank">https://tidal.com/album/196117248</a>
 
 Mamamoo - Angel
@@ -950,6 +1062,7 @@ ES     : DAB DAB
 ZH-CN  : DAB DAB (保持不变，因为这是一种拟声词/舞蹈动作)
 
 
+💿 <b><a href='https://tidal.com/album/184486366' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] 스파이 (Original Television Soundtrack) Code No. 4</a></b>
 ▶️Album link : <a href="https://tidal.com/album/184486366" target="_blank">https://tidal.com/album/184486366</a>
 
 Mamamoo - My Everything
@@ -958,6 +1071,7 @@ ES     : Mi Todo
 ZH-CN  : 我的一切
 
 
+💿 <b><a href='https://tidal.com/album/215970232' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] Innisia Nest (Original Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215970232" target="_blank">https://tidal.com/album/215970232</a>
 
 Mamamoo - Girl Crush
@@ -966,6 +1080,7 @@ ES     : Enamorada
 ZH-CN  : 女生迷恋
 
 
+💿 <b><a href='https://tidal.com/album/196098916' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] AHH OOP!</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196098916" target="_blank">https://tidal.com/album/196098916</a>
 
 Mamamoo, Esna - AHH OOP!
@@ -979,6 +1094,7 @@ ES     : ¡AHH OOP!
 ZH-CN  : 哎哟！
 
 
+💿 <b><a href='https://tidal.com/album/196095078' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] 연애말고 결혼 OST Part 2 (tvN 드라마)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196095078" target="_blank">https://tidal.com/album/196095078</a>
 
 Mamamoo - Love Lane
@@ -987,6 +1103,7 @@ ES     : El Callejón del Amor
 ZH-CN  : 爱恋小巷
 
 
+💿 <b><a href='https://tidal.com/album/196097766' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] Piano Man</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196097766" target="_blank">https://tidal.com/album/196097766</a>
 
 Mamamoo - Piano Man
@@ -1005,14 +1122,7 @@ ES     : El pianista
 ZH-CN  : 钢琴师
 
 
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Loco, Mamamoo - This song
-EN ⇄ KR : 이 노래
-ES     : Esta canción
-ZH-CN  : 这首歌
-
-
+💿 <b><a href='https://tidal.com/album/196094161' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] Heeheehaheho</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196094161" target="_blank">https://tidal.com/album/196094161</a>
 
 Mamamoo, Geeks - Heeheehaheho
@@ -1021,6 +1131,7 @@ ES     : Ji ji ja je jo
 ZH-CN  : 嘻嘻哈哈嘿吼
 
 
+💿 <b><a href='https://tidal.com/album/196094007' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] HELLO</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196094007" target="_blank">https://tidal.com/album/196094007</a>
 
 Mamamoo - Hello
@@ -1054,6 +1165,7 @@ ES     : No seas feliz
 ZH-CN  : 不要快乐
 
 
+💿 <b><a href='https://tidal.com/album/196093254' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] Don't be happy</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196093254" target="_blank">https://tidal.com/album/196093254</a>
 
 Mamamoo, Bumkey - Don′t be happy
@@ -1061,6 +1173,18 @@ EN ⇄ KR : 행복하지 마세요
 ES     : No estés feliz
 ZH-CN  : 不要快乐</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 마마무 ( Tidal Mamamoo )_trk.txt" download="타이달 마마무 ( Tidal Mamamoo )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EB%A7%88%EB%A7%88%EB%AC%B4%20%28%20Mamamoo%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
