@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 루시드폴 ( Tidal Lucid Fall )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 루시드폴 ( Tidal Lucid Fall )</h1>
+<div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/b2463420/35f3/428e/837c/433d2285b115/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6890343' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+
+<div>[2023] Being-with</div>
+<div><a href='https://tidal.com/album/334687841' target='_blank'>https://tidal.com/album/334687841</a></div>
+<div>Lucid Fall - Mindmirror</div>
+<div>Lucid Fall - Aviiir</div>
+<div>Lucid Fall - Microcosmo</div>
+<div>Lucid Fall - Mater Dolorosa</div>
+<div>Lucid Fall - Transcendence</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334687841' target='_blank'><img src='https://resources.tidal.com/images/a6731c55/9fec/43ea/81d4/c8b996fb3e7d/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Voice beside Guitar</div>
+<div><a href='https://tidal.com/album/261170938' target='_blank'>https://tidal.com/album/261170938</a></div>
+<div>Lucid Fall - A Small Handful of Songs</div>
+<div>Lucid Fall - Sapiens</div>
+<div>Lucid Fall - Albatross</div>
+<div>Lucid Fall - Statement</div>
+<div>Lucid Fall - Island Cat</div>
+<div>Lucid Fall - Forgive Me</div>
+<div>Lucid Fall - Red Apple</div>
+<div>Lucid Fall - Albatross</div>
+<div>Lucid Fall - Oenothera</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/261170938' target='_blank'><img src='https://resources.tidal.com/images/4a2c456d/be90/4d18/a7a1/214e70d349d3/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Dancing With Water</div>
+<div><a href='https://tidal.com/album/216503585' target='_blank'>https://tidal.com/album/216503585</a></div>
+<div>Lucid Fall - Dancing With Water I</div>
+<div>Lucid Fall - Dancing With Water II</div>
+<div>Lucid Fall - Moment In Love</div>
+<div>Lucid Fall - Fledglings</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216503585' target='_blank'><img src='https://resources.tidal.com/images/79fcfbde/4704/4d8f/ac3f/ac218a77ead1/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 2021 Antenna Christmas Carol</div>
+<div><a href='https://tidal.com/album/216375710' target='_blank'>https://tidal.com/album/216375710</a></div>
+<div>You Hee Yul, Yu Jae Seok, Jung Jae Hyung, Lucid Fall, Peppertones, Park Sae Byul, SAM KIM, Lee Jin A - Hello Antenna, Hello Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216375710' target='_blank'><img src='https://resources.tidal.com/images/3b6919dd/beae/42d6/b72f/e49ee9589daa/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Everything Is OK</div>
+<div><a href='https://tidal.com/album/216276464' target='_blank'>https://tidal.com/album/216276464</a></div>
+<div>Lucid Fall, CHAI, Lee Jin Ah, Jung Seung Hwan, Jung Jae Hyung, SAM KIM, Kwon Jin Ah, Park Sae Byul, - Everything Is OK (with Antenna Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216276464' target='_blank'><img src='https://resources.tidal.com/images/7189316e/893a/4977/8ebe/6fb0006244b5/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 2020 Antenna Christmas Carol</div>
+<div><a href='https://tidal.com/album/216182392' target='_blank'>https://tidal.com/album/216182392</a></div>
+<div>Toy, Jung Seung Hwan, SAM KIM, Jung Jae Hyung, Lucid Fall, Peppertones, Park Sae Byul, Kwon Jin Ah, - Our Christmas Wish For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216182392' target='_blank'><img src='https://resources.tidal.com/images/048f531d/b521/4e2e/90c5/99e411c55556/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Nowana (You & I)</div>
+<div><a href='https://tidal.com/album/216095977' target='_blank'>https://tidal.com/album/216095977</a></div>
+<div>Lucid Fall - Shall We Take A Walk- (Feat. Ludvig Cimbrelius)</div>
+<div>Lucid Fall - On The Road</div>
+<div>Lucid Fall - Pit-a-pat (Feat. CHAI)</div>
+<div>Lucid Fall - Unreadable Book</div>
+<div>Lucid Fall - Another Christmas (Feat. Jung Seung Hwan)</div>
+<div>Lucid Fall - Restless Night</div>
+<div>Lucid Fall - I’ll Always Wait for You (Feat. MiiZUKI)</div>
+<div>Lucid Fall - Our Grand Adventure</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216095977' target='_blank'><img src='https://resources.tidal.com/images/315c1fa4/18ab/40b2/bf04/80a45e91e1bc/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Someone, Somewhere</div>
+<div><a href='https://tidal.com/album/216117167' target='_blank'>https://tidal.com/album/216117167</a></div>
+<div>Lucid Fall - Blooming In April</div>
+<div>Lucid Fall - Pluto</div>
+<div>Lucid Fall - Still There, Still Here</div>
+<div>Lucid Fall - Spring, Summer, Fall, Winter (Feat. Hong Gap)</div>
+<div>Lucid Fall - That’s How It Will Be</div>
+<div>Lucid Fall - As The Sun Sets On Us</div>
+<div>Lucid Fall - Coming Closer Now</div>
+<div>Lucid Fall - Softly Into You</div>
+<div>Lucid Fall - Stars Speak In Their Twinkle (Feat. Lee Jin Ah)</div>
+<div>Lucid Fall - I Promise</div>
+<div>Lucid Fall - Paper Bird</div>
+<div>Lucid Fall - Angel's Lullaby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216117167' target='_blank'><img src='https://resources.tidal.com/images/7c6996c3/d4e7/447a/9e45/29a291398d31/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Flowers Never Say</div>
+<div><a href='https://tidal.com/album/228205004' target='_blank'>https://tidal.com/album/228205004</a></div>
+<div>Lucid Fall - Black Dog</div>
+<div>Lucid Fall - River</div>
+<div>Lucid Fall - Butterfly</div>
+<div>Lucid Fall - To Be Your Warm Sunlight</div>
+<div>Lucid Fall - Birds in seoul</div>
+<div>Lucid Fall - My Old Marigold</div>
+<div>Lucid Fall - Pale Green</div>
+<div>Lucid Fall - Family</div>
+<div>Lucid Fall - A Song Like The Wind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/228205004' target='_blank'><img src='https://resources.tidal.com/images/a1b83308/e084/4fe9/9463/69b12b8e0994/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2011] Beautiful Days</div>
+<div><a href='https://tidal.com/album/228205049' target='_blank'>https://tidal.com/album/228205049</a></div>
+<div>Lucid Fall - Tightrope Walking</div>
+<div>Lucid Fall - When The Snow Comes</div>
+<div>Lucid Fall - Fisherman's song</div>
+<div>Lucid Fall - Don't Know Where I Am</div>
+<div>Lucid Fall - That Night</div>
+<div>Lucid Fall - Dreaming Tree</div>
+<div>Lucid Fall - Lonely You</div>
+<div>Lucid Fall - Fire</div>
+<div>Lucid Fall - Light Of The Song</div>
+<div>Lucid Fall - Don't Be So Sad</div>
+<div>Lucid Fall - Summer flower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/228205049' target='_blank'><img src='https://resources.tidal.com/images/072d1dfc/25e9/44be/85f0/a8caf1f0b5c8/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Les Miserables</div>
+<div><a href='https://tidal.com/album/228205081' target='_blank'>https://tidal.com/album/228205081</a></div>
+<div>Lucid Fall - Ordinary Person</div>
+<div>Lucid Fall - Walk On</div>
+<div>Lucid Fall - Les Misérables (Part 1)</div>
+<div>Lucid Fall - Les Misérables (Part 2)</div>
+<div>Lucid Fall - Rice flower</div>
+<div>Lucid Fall - Mackerel</div>
+<div>Lucid Fall - Whenever I see your sorrow</div>
+<div>Lucid Fall - Loner</div>
+<div>Lucid Fall - You are in low voice</div>
+<div>Lucid Fall - I know</div>
+<div>Lucid Fall - Munsu's secret</div>
+<div>Lucid Fall - Glass garden</div>
+<div>Lucid Fall - Spring snow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/228205081' target='_blank'><img src='https://resources.tidal.com/images/9190e777/77f1/4278/aee6/e3738acee161/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Fish Heart</div>
+<div><a href='https://tidal.com/album/228247387' target='_blank'>https://tidal.com/album/228247387</a></div>
+<div>Lucid Fall - Fish's heart</div>
+<div>Lucid Fall - Calling you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/228247387' target='_blank'><img src='https://resources.tidal.com/images/9e5cf75f/4d1e/4300/883b/8b2eff7f89de/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] The Light Of Songs</div>
+<div><a href='https://tidal.com/album/228153982' target='_blank'>https://tidal.com/album/228153982</a></div>
+<div>Lucid Fall - Into Your Hands (Intro)</div>
+<div>Lucid Fall - Your Face, Your Face</div>
+<div>Lucid Fall - Do You See My Love-</div>
+<div>Lucid Fall - Samchung-dong</div>
+<div>Lucid Fall - Gingko Forest</div>
+<div>Lucid Fall - Still As It Is</div>
+<div>Lucid Fall - Bird</div>
+<div>Lucid Fall - Wind, Where Does It Come From-</div>
+<div>Lucid Fall - Dream Of Becoming Water</div>
+<div>Lucid Fall - Look At The Wildflowers</div>
+<div>Lucid Fall - Kid</div>
+<div>Lucid Fall - Into Your Hands</div>
+<div>Lucid Fall - It Must Have Been Love</div>
+<div>Lucid Fall - No One Told Me</div>
+<div>Lucid Fall - Will I Ever Forget You</div>
+<div>Lucid Fall - Oh, Love</div>
+<div>Lucid Fall - Sam</div>
+<div>Lucid Fall - Everyone Seems Happy</div>
+<div>Lucid Fall - Passing Through My River's End</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/228153982' target='_blank'><img src='https://resources.tidal.com/images/fb8b1d42/2dec/414c/9609/1a149af1f846/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] Night At the Border</div>
+<div><a href='https://tidal.com/album/228247393' target='_blank'>https://tidal.com/album/228247393</a></div>
+<div>Lucid Fall - I Was Once Human</div>
+<div>Lucid Fall - Sunset In My Heart (Feat. Je Duk Jeon)</div>
+<div>Lucid Fall - Rainbow</div>
+<div>Lucid Fall - Night At The Border (Feat. Pudditorium)</div>
+<div>Lucid Fall - Autumn Greetings (Feat. Lee Juck)</div>
+<div>Lucid Fall - I'll sing for you</div>
+<div>Lucid Fall - Light</div>
+<div>Lucid Fall - Wings</div>
+<div>Lucid Fall - Wind, Where Does It Come From-</div>
+<div>Lucid Fall - Kid</div>
+<div>Lucid Fall - Letter from Laos (Feat. My Aunt Mary)</div>
+<div>Lucid Fall - Your Face, Your Face (Feat. Soo Uk Chung)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/228247393' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] Oh, love (Remastered)</div>
+<div><a href='https://tidal.com/album/228247431' target='_blank'>https://tidal.com/album/228247431</a></div>
+<div>Lucid Fall - Dream Of Becoming Water</div>
+<div>Lucid Fall - Grandma’s Heart Is As Vast As The Sea</div>
+<div>Lucid Fall - Oh, Love</div>
+<div>Lucid Fall - Samchung-dong</div>
+<div>Lucid Fall - Look At The Wildflowers</div>
+<div>Lucid Fall - It must have been love</div>
+<div>Lucid Fall - Don’t Have To Wait Anymore</div>
+<div>Lucid Fall - Flower</div>
+<div>Lucid Fall - Do you see my love-</div>
+<div>Lucid Fall - Everyone Seems Happy</div>
+<div>Lucid Fall - Last night, I dreamt of strolling in a peach garden</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/228247431' target='_blank'><img src='https://resources.tidal.com/images/cea54ee8/ea6c/444e/8f91/3927d8b46482/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] L’abri (Original Motion Picture Soundtrack)</div>
+<div><a href='https://tidal.com/album/409093877' target='_blank'>https://tidal.com/album/409093877</a></div>
+<div>Lucid Fall - Into Your Hands (Intro)</div>
+<div>Lucid Fall - Linger (Jaesub’s Theme)</div>
+<div>Lucid Fall - No One Told Me (Sohee’s Theme)</div>
+<div>Lucid Fall - Island</div>
+<div>Lucid Fall - Playfully, Tenderly</div>
+<div>Lucid Fall - My Room Filled With Tears</div>
+<div>Lucid Fall - Into Your Hands (Main Theme)</div>
+<div>Lucid Fall - Destined Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/409093877' target='_blank'><img src='https://resources.tidal.com/images/77d6d9bb/9964/4d36/938b/ad5eb5d11256/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] Lucid Fall</div>
+<div><a href='https://tidal.com/album/409073352' target='_blank'>https://tidal.com/album/409073352</a></div>
+<div>Lucid Fall - Bird (Band Version)</div>
+<div>Lucid Fall - Still As It Is</div>
+<div>Lucid Fall - Passing Through My River's End</div>
+<div>Lucid Fall - Gingko Forest</div>
+<div>Lucid Fall - Will I Ever Forget You</div>
+<div>Lucid Fall - Sunflower</div>
+<div>Lucid Fall - Bird (Acoustic Version, Feat. Kyu Ho Lee)</div>
+<div>Lucid Fall - Take 1 (Feat. Ironman)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/409073352' target='_blank'><img src='https://resources.tidal.com/images/1dcd67fd/28e8/4ab2/b985/140d2050bdd9/640x640.jpg'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 루시드폴</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>섬세한 감성으로 빚어낸 음악 세계</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lucid Fall</div></div>
+<div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Musical World Crafted with Delicate Sensibilities</div></div>
+<div>&nbsp;</div>
+<div>루시드폴은 따뜻한 시선과 깊이 있는 성찰로 우리 마음을 어루만지는 싱어송라이터입니다. 그의 음악은 삶의 작은 조각들을 섬세하게 담아내어 듣는 이에게 잔잔한 위로와 공감을 선사해요. 마치 한 편의 시를 읽는 듯한 아름다운 노랫말과 편안한 멜로디는 오랫동안 우리의 곁을 맴돌 것입니다.</div>
+<div>Lucid Fall is a singer-songwriter who touches our hearts with a warm gaze and profound reflection. His music delicately captures small fragments of life, offering listeners gentle comfort and empathy. The beautiful lyrics, like reading a poem, and the relaxing melodies will linger with us for a long time.</div>
+<div>&nbsp;</div>
+<div>✧</div>
+<div>음악적 여정의 시작</div>
+<div>루시드폴은 학업과 음악 활동을 병행하며 자신만의 독특한 음악 세계를 구축해왔습니다. 그의 음악은 다양한 장르를 넘나들며 실험적인 시도를 거듭하는 동시에, 특유의 서정성을 잃지 않아 폭넓은 공감대를 형성하고 있어요.</div>
+<div>The Beginning of a Musical Journey</div>
+<div>Lucid Fall has built his own unique musical world while balancing his studies and musical activities. His music crosses various genres, repeatedly experimenting while maintaining his unique lyricism, creating a wide range of empathy.</div>
+<div>&nbsp;</div>
+<div>✧</div>
+<div>섬세한 음악과 따뜻한 위로</div>
+<div>그의 음악은 일상 속에서 발견하는 작은 아름다움과 슬픔을 담담하게 그려냅니다. 깊은 밤, 혼자 듣는 그의 노래는 마치 오랜 친구의 조용한 위로처럼 따뜻하게 마음을 감싸주죠. 편안한 기타 선율과 나지막이 읊조리는 듯한 그의 목소리는 듣는 이의 마음을 편안하게 이끌어 줍니다.</div>
+<div>Delicate Music and Warm Comfort</div>
+<div>His music calmly portrays the small beauties and sorrows found in everyday life. His songs, listened to alone in the deep night, warmly embrace the heart like the quiet comfort of an old friend. The comfortable guitar melody and his softly murmuring voice comfortably lead the listener's heart.</div>
+<div>&nbsp;</div>
+<div>✧</div>
+<div>앞으로의 음악, 그리고 의미</div>
+<div>끊임없이 새로운 시도를 통해 음악적 스펙트럼을 넓혀가는 루시드폴. 그의 음악은 단순한 듣는 즐거움을 넘어, 삶에 대한 깊은 사유와 따뜻한 공감을 불러일으키는 예술 작품과 같습니다. 앞으로 그가 들려줄 이야기가 더욱 기대되는 이유입니다.</div>
+<div>Future Music and Meaning</div>
+<div>Lucid Fall continues to expand his musical spectrum through constant new attempts. His music is more than just listening pleasure; it's like a work of art that evokes deep thought and warm empathy for life. That's why we look forward to the stories he will tell in the future.</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/타이달 루시드폴 ( Tidal Lucid Fall )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
