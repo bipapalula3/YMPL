@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,34 +85,61 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 버벌진트 ( Tidal verbal jint )_trk.txt"
-                           download="타이달 버벌진트 ( Tidal verbal jint )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 버벌진트 ( Tidal verbal jint )_trk.txt" download="타이달 버벌진트 ( Tidal verbal jint )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EB%B2%84%EB%B2%8C%EC%A7%84%ED%8A%B8%20%28%20verbal%20jint%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/411696782" target="_blank">https://tidal.com/album/411696782</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/411696782' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2025] HAPPY END</a></b>
+▶️Album link : <a href="https://tidal.com/album/411696782" target="_blank">https://tidal.com/album/411696782</a>
 
 Verbal Jint - BTS (Behind The Scenes)
 EN ⇄ KR : Bulletproof Boy Scouts (Behind The Scenes)
-ES     : BTS
+ES     : Los Bangtan (if referring to the group as "The Bangtan Boys")
 ZH-CN  : 防弹少年团 (或者直接保留：BTS)
 
 Verbal Jint, Bewhy - Money Rap (Feat. BewhY)
@@ -130,6 +193,7 @@ ES     : CAMBIANDO / TRANSICIÓN
 ZH-CN  : 转移
 
 
+💿 <b><a href='https://tidal.com/album/403807796' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] BTS</a></b>
 ▶️Album link : <a href="https://tidal.com/album/403807796" target="_blank">https://tidal.com/album/403807796</a>
 
 Verbal Jint - BTS (Behind The Scenes)
@@ -138,6 +202,7 @@ ES     : Los Bangtan (if referring to the group as "The Bangtan Boys")
 ZH-CN  : 防弹少年团 (或者直接保留：BTS)
 
 
+💿 <b><a href='https://tidal.com/album/294182430' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] 좋아보여 2023 (feat. 검정치마)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/294182430" target="_blank">https://tidal.com/album/294182430</a>
 
 Verbal Jint - 좋아보여 2023 (feat. 검정치마)
@@ -146,6 +211,7 @@ ES     : Se Ve Bien 2023
 ZH-CN  : 看上去不错 2023
 
 
+💿 <b><a href='https://tidal.com/album/304460880' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] got to be U 2023 (feat. Vincent Blue)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/304460880" target="_blank">https://tidal.com/album/304460880</a>
 
 Verbal Jint - got to be U 2023 (feat. Vincent Blue)
@@ -154,6 +220,7 @@ ES     : Tiene que ser U 2023
 ZH-CN  : 一定是你 2023
 
 
+💿 <b><a href='https://tidal.com/album/314568630' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] K-XY _ INFP</a></b>
 ▶️Album link : <a href="https://tidal.com/album/314568630" target="_blank">https://tidal.com/album/314568630</a>
 
 Verbal Jint - Food
@@ -177,8 +244,8 @@ ES     : Zona de amigos
 ZH-CN  : 朋友区
 
 Verbal Jint - LDH
-EN ⇄ KR : LDH
-ES     : LDH
+EN ⇄ KR : Little Dragon Hero
+ES     : DLH
 ZH-CN  : LDH (保留原文)
 
 Verbal Jint, Swervy - Self-destruction (Feat. Swervy)
@@ -217,6 +284,7 @@ ES     : Demasiado diferentes
 ZH-CN  : 太不同
 
 
+💿 <b><a href='https://tidal.com/album/230954674' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Rebuild The World</a></b>
 ▶️Album link : <a href="https://tidal.com/album/230954674" target="_blank">https://tidal.com/album/230954674</a>
 
 Verbal Jint, BILL STAX, gary - Rebuild The World (feat. 개리 & BILL STAX)
@@ -225,6 +293,7 @@ ES     : Reconstruir El Mundo
 ZH-CN  : 重建世界
 
 
+💿 <b><a href='https://tidal.com/album/183194950' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] TEN PROJECT Part.1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/183194950" target="_blank">https://tidal.com/album/183194950</a>
 
 Verbal Jint, Hanhae, Wonstein - Good Morning (feat. Wonstein)
@@ -233,6 +302,7 @@ ES     : Buenos días
 ZH-CN  : 早安
 
 
+💿 <b><a href='https://tidal.com/album/193269491' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Say It Over</a></b>
 ▶️Album link : <a href="https://tidal.com/album/193269491" target="_blank">https://tidal.com/album/193269491</a>
 
 Verbal Jint, Bumkey, Boombastic - Say It Over
@@ -241,6 +311,7 @@ ES     : Dilo Otra Vez
 ZH-CN  : 重复一遍
 
 
+💿 <b><a href='https://tidal.com/album/179427579' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Inflection Point</a></b>
 ▶️Album link : <a href="https://tidal.com/album/179427579" target="_blank">https://tidal.com/album/179427579</a>
 
 Verbal Jint - Gone for a Minute
@@ -314,6 +385,7 @@ ES     : Final del Punto de Inflexión
 ZH-CN  : 拐点尾声
 
 
+💿 <b><a href='https://tidal.com/album/189886234' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Dark Side</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189886234" target="_blank">https://tidal.com/album/189886234</a>
 
 Verbal Jint - Dark Side (feat. lIlBOI)(Explicit)
@@ -322,6 +394,7 @@ ES     : Lado Oscuro
 ZH-CN  : 黑暗面
 
 
+💿 <b><a href='https://tidal.com/album/189841810' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Cold World</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189841810" target="_blank">https://tidal.com/album/189841810</a>
 
 Verbal Jint - Cold World (feat. Mommy Son)
@@ -335,6 +408,7 @@ ES     : Música para atraer dinero
 ZH-CN  : 吸引金钱的音乐
 
 
+💿 <b><a href='https://tidal.com/album/189483734' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] 2020 VISION (feat. YANGHONGWON)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189483734" target="_blank">https://tidal.com/album/189483734</a>
 
 Verbal Jint - 2020 VISION (feat. YANGHONGWON)
@@ -343,6 +417,7 @@ ES     : VISIÓN 2020
 ZH-CN  : 2020视界
 
 
+💿 <b><a href='https://tidal.com/album/189536346' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] 20 Acapellas</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189536346" target="_blank">https://tidal.com/album/189536346</a>
 
 Verbal Jint - VJ in 2020 VISION (BPM102)
@@ -446,6 +521,7 @@ ES     : VJ en Hielo
 ZH-CN  : VJ在冰
 
 
+💿 <b><a href='https://tidal.com/album/189462415' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Year End Report</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189462415" target="_blank">https://tidal.com/album/189462415</a>
 
 Verbal Jint - December (feat. Dbo)
@@ -479,6 +555,7 @@ ES     : Informe de Junio
 ZH-CN  : 六月报告
 
 
+💿 <b><a href='https://tidal.com/album/189205420' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] The Chase Revisited</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189205420" target="_blank">https://tidal.com/album/189205420</a>
 
 Verbal Jint - The Chase Revisited
@@ -492,6 +569,7 @@ ES     : Verdadero o Falso Revisitado
 ZH-CN  : 真或假重访
 
 
+💿 <b><a href='https://tidal.com/album/189183431' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Is It Music Or Is It A Report</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189183431" target="_blank">https://tidal.com/album/189183431</a>
 
 Verbal Jint - January Report
@@ -520,6 +598,7 @@ ES     : Estresándome
 ZH-CN  : 压力山大
 
 
+💿 <b><a href='https://tidal.com/album/189052812' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Hey VJ</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189052812" target="_blank">https://tidal.com/album/189052812</a>
 
 Verbal Jint - Hey VJ
@@ -528,6 +607,7 @@ ES     : Hola VJ
 ZH-CN  : 嘿 VJ
 
 
+💿 <b><a href='https://tidal.com/album/185253313' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] GabBoonSa</a></b>
 ▶️Album link : <a href="https://tidal.com/album/185253313" target="_blank">https://tidal.com/album/185253313</a>
 
 Verbal Jint, Han Yo Han, Jang sukhoon - GabBoonSa (feat. Han Yo Han & Jang SukHoon)
@@ -536,6 +616,7 @@ ES     : GabBoonSa
 ZH-CN  : 加蓬萨
 
 
+💿 <b><a href='https://tidal.com/album/185253309' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Trainee Girl _ Girlfriend</a></b>
 ▶️Album link : <a href="https://tidal.com/album/185253309" target="_blank">https://tidal.com/album/185253309</a>
 
 Verbal Jint, MXM - Trainee Girl (feat. MXM)
@@ -549,6 +630,7 @@ ES     : Novia
 ZH-CN  : 女朋友
 
 
+💿 <b><a href='https://tidal.com/album/185244917' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Self-Suggestion</a></b>
 ▶️Album link : <a href="https://tidal.com/album/185244917" target="_blank">https://tidal.com/album/185244917</a>
 
 Verbal Jint, Superbee - Self-Suggestion (feat. SUPERBEE)
@@ -557,6 +639,7 @@ ES     : Autosugestión
 ZH-CN  : 自我暗示
 
 
+💿 <b><a href='https://tidal.com/album/186893042' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] No Excuses</a></b>
 ▶️Album link : <a href="https://tidal.com/album/186893042" target="_blank">https://tidal.com/album/186893042</a>
 
 Verbal Jint, Babylon - Break (feat. Babylon)
@@ -585,6 +668,7 @@ ES     : Suficiente
 ZH-CN  : 足够
 
 
+💿 <b><a href='https://tidal.com/album/185253304' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Let It Snow</a></b>
 ▶️Album link : <a href="https://tidal.com/album/185253304" target="_blank">https://tidal.com/album/185253304</a>
 
 Verbal Jint, Bumkey - Let It Snow (feat. BUMKEY)
@@ -593,6 +677,7 @@ ES     : Que nieve
 ZH-CN  : 下雪吧
 
 
+💿 <b><a href='https://tidal.com/album/185244887' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] I Wanna Know</a></b>
 ▶️Album link : <a href="https://tidal.com/album/185244887" target="_blank">https://tidal.com/album/185244887</a>
 
 Verbal Jint - OGinmydream
@@ -606,6 +691,7 @@ ES     : Quiero Saber
 ZH-CN  : 我想知道
 
 
+💿 <b><a href='https://tidal.com/album/185244899' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] 17 Acapellas</a></b>
 ▶️Album link : <a href="https://tidal.com/album/185244899" target="_blank">https://tidal.com/album/185244899</a>
 
 Verbal Jint - VJ in Beatiful Life- BPM95
@@ -619,7 +705,7 @@ ES     : VJ en Cero - BPM91
 ZH-CN  : 零
 
 Verbal Jint - VJ in YNF - BPM94
-EN ⇄ KR : VJ in YNF - BPM94
+EN ⇄ KR : YNF의 VJ - 94 BPM
 ES     : VJ en YNF - BPM94
 ZH-CN  : YNF
 
@@ -694,6 +780,7 @@ ES     : VJ en Cambiado - BPM90
 ZH-CN  : 改变
 
 
+💿 <b><a href='https://tidal.com/album/185245842' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] The Chase _ True or False</a></b>
 ▶️Album link : <a href="https://tidal.com/album/185245842" target="_blank">https://tidal.com/album/185245842</a>
 
 Verbal Jint - The Chase
@@ -707,6 +794,7 @@ ES     : Verdadero o Falso
 ZH-CN  : 真与假
 
 
+💿 <b><a href='https://tidal.com/album/66018249' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Sunshine</a></b>
 ▶️Album link : <a href="https://tidal.com/album/66018249" target="_blank">https://tidal.com/album/66018249</a>
 
 Verbal Jint, Chancellor - Sunshine
@@ -715,6 +803,7 @@ ES     : Luz del Sol
 ZH-CN  : 阳光
 
 
+💿 <b><a href='https://tidal.com/album/185244861' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Read My Mind</a></b>
 ▶️Album link : <a href="https://tidal.com/album/185244861" target="_blank">https://tidal.com/album/185244861</a>
 
 Verbal Jint, Yang Da Il - Read My Mind
@@ -723,6 +812,7 @@ ES     : Lee Mi Mente
 ZH-CN  : 读懂我的心
 
 
+💿 <b><a href='https://tidal.com/album/184695374' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] Yeoja</a></b>
 ▶️Album link : <a href="https://tidal.com/album/184695374" target="_blank">https://tidal.com/album/184695374</a>
 
 Verbal Jint, Sanchez - Good Times
@@ -761,6 +851,7 @@ ES     : Buenas noches
 ZH-CN  : 晚安
 
 
+💿 <b><a href='https://tidal.com/album/184695427' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] My Type 2</a></b>
 ▶️Album link : <a href="https://tidal.com/album/184695427" target="_blank">https://tidal.com/album/184695427</a>
 
 Verbal Jint, KANG MIN KYUNG, SANCHEZ - My Type 2 (feat. Kang Min Kyung & Sanchez)
@@ -769,6 +860,7 @@ ES     : Mi Tipo 2
 ZH-CN  : 我的类型 2
 
 
+💿 <b><a href='https://tidal.com/album/189088758' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] GO HARD Part 1 _ 양가치</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189088758" target="_blank">https://tidal.com/album/189088758</a>
 
 Verbal Jint - Rewind
@@ -838,7 +930,7 @@ ZH-CN  : 包租公Flow
 
 Verbal Jint - Karma (feat. Lil cham)(Explicit)
 EN ⇄ KR : 업보 (feat. Lil cham)(Explicit)
-ES     : Karma
+ES     : None
 ZH-CN  : 因果报应
 
 Verbal Jint - Fear
@@ -877,6 +969,7 @@ ES     : Desaparecido
 ZH-CN  : 逝去
 
 
+💿 <b><a href='https://tidal.com/album/184695426' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] Doin' It</a></b>
 ▶️Album link : <a href="https://tidal.com/album/184695426" target="_blank">https://tidal.com/album/184695426</a>
 
 Verbal Jint, Sanchez, Bumkey - Doin' It (feat. BUMKEY)
@@ -885,6 +978,7 @@ ES     : Haciéndolo
 ZH-CN  : 行动起来
 
 
+💿 <b><a href='https://tidal.com/album/189111722' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] 희귀종</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189111722" target="_blank">https://tidal.com/album/189111722</a>
 
 Verbal Jint - Rare Breed (feat. YDG)
@@ -893,6 +987,7 @@ ES     : Raza Extraña
 ZH-CN  : 珍稀品种
 
 
+💿 <b><a href='https://tidal.com/album/189111424' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] 반도의흔한랩퍼</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189111424" target="_blank">https://tidal.com/album/189111424</a>
 
 Verbal Jin - Just Another Rapper (feat. San E & Swings)
@@ -906,6 +1001,7 @@ ES     : Solo Otro Rapero
 ZH-CN  : 又一个饶舌歌手
 
 
+💿 <b><a href='https://tidal.com/album/189133639' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2013] If It Ain't Love</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189133639" target="_blank">https://tidal.com/album/189133639</a>
 
 Verbal Jint - If It Ain't Love (feat. AILEE)
@@ -914,6 +1010,7 @@ ES     : Si No Es Amor
 ZH-CN  : 如果那不是爱
 
 
+💿 <b><a href='https://tidal.com/album/189052670' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2013] Good Start</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189052670" target="_blank">https://tidal.com/album/189052670</a>
 
 Verbal Jint - Good Start (feat. Kang Min Hee)
@@ -922,6 +1019,7 @@ ES     : Buen Comienzo
 ZH-CN  : 好开端
 
 
+💿 <b><a href='https://tidal.com/album/216079361' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2013] DEUX 20th ANNIVERSARY TRIBUTE ALBUM (Original Soundtrack) Part 6</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216079361" target="_blank">https://tidal.com/album/216079361</a>
 
 Bumkey, Verbal Jint - Only for you
@@ -930,6 +1028,7 @@ ES     : Solo para ti
 ZH-CN  : 只为你
 
 
+💿 <b><a href='https://tidal.com/album/189079295' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] 크리스마스를 부탁해</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189079295" target="_blank">https://tidal.com/album/189079295</a>
 
 Verbal Jint - 크리스마스를 부탁해 (feat. Shin Seung Hun)
@@ -938,6 +1037,7 @@ ES     : Por favor, encárgate de la Navidad
 ZH-CN  : 拜托了圣诞节
 
 
+💿 <b><a href='https://tidal.com/album/189140939' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] 굿모닝</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189140939" target="_blank">https://tidal.com/album/189140939</a>
 
 Verbal Jint - 굿모닝 (feat. 10cm)
@@ -946,6 +1046,7 @@ ES     : Buenos Días
 ZH-CN  : 早安
 
 
+💿 <b><a href='https://tidal.com/album/189117809' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] 가을냄새</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189117809" target="_blank">https://tidal.com/album/189117809</a>
 
 Verbal Jint - 가을냄새 (feat. Eddy Kim)
@@ -954,6 +1055,7 @@ ES     : Olor a otoño
 ZH-CN  : 秋天的气息
 
 
+💿 <b><a href='https://tidal.com/album/189033777' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] Walking In The Rain</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189033777" target="_blank">https://tidal.com/album/189033777</a>
 
 Verbal Jint - Walking In The Rain (feat. BUMKEY)
@@ -962,6 +1064,7 @@ ES     : Caminando bajo la lluvia
 ZH-CN  : 雨中漫步
 
 
+💿 <b><a href='https://tidal.com/album/216151668' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] The Thousandth Man (Original Soundtrack) Part.5</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216151668" target="_blank">https://tidal.com/album/216151668</a>
 
 Verbal Jint, As One - Closer Closer
@@ -970,6 +1073,7 @@ ES     : Más Cerca
 ZH-CN  : 靠近 靠近
 
 
+💿 <b><a href='https://tidal.com/album/189052804' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] Classic</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189052804" target="_blank">https://tidal.com/album/189052804</a>
 
 Verbal Jint - Classic
@@ -978,6 +1082,7 @@ ES     : Clásico
 ZH-CN  : 经典
 
 
+💿 <b><a href='https://tidal.com/album/336225846' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] 10 Years of Misinterpretation Part I</a></b>
 ▶️Album link : <a href="https://tidal.com/album/336225846" target="_blank">https://tidal.com/album/336225846</a>
 
 Verbal Jint - Odog (Intro)
@@ -1031,6 +1136,7 @@ ES     : De niños a hombres 2013
 ZH-CN  : 从男孩到男人 2013
 
 
+💿 <b><a href='https://tidal.com/album/189148119' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] 넌 내게 모욕감을 줬어 (feat. KOONTA)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189148119" target="_blank">https://tidal.com/album/189148119</a>
 
 Verbal Jint - 넌 내게 모욕감을 줬어 (feat. KOONTA)
@@ -1039,6 +1145,7 @@ ES     : Me has insultado
 ZH-CN  : 你给了我侮辱
 
 
+💿 <b><a href='https://tidal.com/album/189148258' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] 감사감사</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189148258" target="_blank">https://tidal.com/album/189148258</a>
 
 Verbal Jint - 감사감사 (feat. Linus' Blanket)
@@ -1052,6 +1159,7 @@ ES     : Agradecido, agradecido
 ZH-CN  : 谢谢谢谢
 
 
+💿 <b><a href='https://tidal.com/album/189148160' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] Go Easy</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189148160" target="_blank">https://tidal.com/album/189148160</a>
 
 Verbal Jint - 원숭이띠 미혼남 (feat. ZICO)
@@ -1115,6 +1223,7 @@ ES     : ¡Ánimo, Nuestra Existencia!
 ZH-CN  : 我们的存在 加油
 
 
+💿 <b><a href='https://tidal.com/album/184695434' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] Go Easy 0.5</a></b>
 ▶️Album link : <a href="https://tidal.com/album/184695434" target="_blank">https://tidal.com/album/184695434</a>
 
 Verbal Jint, G.NA - I Promise... Promise (feat. G.NA)
@@ -1138,6 +1247,7 @@ ES     : Cuida de la Navidad
 ZH-CN  : 照顾好圣诞节
 
 
+💿 <b><a href='https://tidal.com/album/184695432' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] Available (feat. Lady Jane)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/184695432" target="_blank">https://tidal.com/album/184695432</a>
 
 Verbal Jint, Lady Jane - Available (feat. Lady Jane)
@@ -1146,6 +1256,7 @@ ES     : Disponible
 ZH-CN  : 可用
 
 
+💿 <b><a href='https://tidal.com/album/222493832' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2010] Poem for People Dreaming</a></b>
 ▶️Album link : <a href="https://tidal.com/album/222493832" target="_blank">https://tidal.com/album/222493832</a>
 
 Verbal Jint, RHYMER, In Hoe Koo Of M.A.C - Poem for People Dreaming (feat. In Hoe Koo Of M.A.C)
@@ -1159,6 +1270,7 @@ ES     : Diario de SeongBok
 ZH-CN  : 成博的日记
 
 
+💿 <b><a href='https://tidal.com/album/216094077' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2010] 2 The Hard Way</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216094077" target="_blank">https://tidal.com/album/216094077</a>
 
 Cho PD, Verbal Jint - Map Music (Feat. ZICO)
@@ -1182,6 +1294,7 @@ ES     : Origen de las Especies
 ZH-CN  : 物种起源
 
 
+💿 <b><a href='https://tidal.com/album/189161453' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] The Good Die Young</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189161453" target="_blank">https://tidal.com/album/189161453</a>
 
 Verbal Jint - 56 Bars
@@ -1251,10 +1364,11 @@ ZH-CN  : 不良教育
 
 Verbal Jint - La Strada
 EN ⇄ KR : 길
-ES     : La Strada
+ES     : La Calle
 ZH-CN  : 大路
 
 
+💿 <b><a href='https://tidal.com/album/344324008' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2008] 누명</a></b>
 ▶️Album link : <a href="https://tidal.com/album/344324008" target="_blank">https://tidal.com/album/344324008</a>
 
 Verbal Jint - 투올더힙합키즈 투 (Simo Rmx)(Explicit)
@@ -1433,6 +1547,7 @@ ES     : Igual Igual
 ZH-CN  : 如如
 
 
+💿 <b><a href='https://tidal.com/album/344326286' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2007] 무명</a></b>
 ▶️Album link : <a href="https://tidal.com/album/344326286" target="_blank">https://tidal.com/album/344326286</a>
 
 Verbal Jint - 투올더힙합키즈 투
@@ -1457,7 +1572,7 @@ ZH-CN  : 超级阶层 2007
 
 Verbal Jint - 무비스타
 EN ⇄ KR : Moviestar
-ES     : 무비스타
+ES     : Movistar
 ZH-CN  : 电影明星
 
 Verbal Jint - 삼박자
@@ -1496,6 +1611,7 @@ ES     : Sambakja (삼박자)
 ZH-CN  : 三拍子
 
 
+💿 <b><a href='https://tidal.com/album/189198680' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2007] Favorite</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189198680" target="_blank">https://tidal.com/album/189198680</a>
 
 Verbal Jint - 합꿍
@@ -1544,6 +1660,7 @@ ES     : Bailemos Todos Juntos
 ZH-CN  : 大家一起跳舞吧
 
 
+💿 <b><a href='https://tidal.com/album/195356253' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2001] Modern Rhymes XX</a></b>
 ▶️Album link : <a href="https://tidal.com/album/195356253" target="_blank">https://tidal.com/album/195356253</a>
 
 Verbal Jint - Overclass (Remastered)
@@ -1587,6 +1704,7 @@ ES     : 80 Temporadas
 ZH-CN  : 八十个季节
 
 
+💿 <b><a href='https://tidal.com/album/197844253' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2001] Modern Rhymes EP</a></b>
 ▶️Album link : <a href="https://tidal.com/album/197844253" target="_blank">https://tidal.com/album/197844253</a>
 
 Verbal Jint - Overclass(Explicit)
@@ -1606,12 +1724,12 @@ ZH-CN  : 爱与嘻哈
 
 Verbal Jint - Radio
 EN ⇄ KR : 라디오
-ES     : Radio
+ES     : None
 ZH-CN  : 电台
 
 Verbal Jint - Drama(Explicit)
 EN ⇄ KR : 드라마(Explicit)
-ES     : Drama
+ES     : None
 ZH-CN  : 戏剧
 
 Verbal Jint - What U Write 4 (Feat. P-Type & The illest I.L.L.S.)
@@ -1624,6 +1742,18 @@ EN ⇄ KR : 역사를 만들다
 ES     : Haciendo Historia
 ZH-CN  : 创造历史</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 버벌진트 ( Tidal verbal jint )_trk.txt" download="타이달 버벌진트 ( Tidal verbal jint )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EB%B2%84%EB%B2%8C%EC%A7%84%ED%8A%B8%20%28%20verbal%20jint%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
