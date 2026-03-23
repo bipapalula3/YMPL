@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,102 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 바다 ( Tidal BaDa )_trk.txt"
-                           download="타이달 바다 ( Tidal BaDa )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 바다 ( Tidal BaDa )_trk.txt" download="타이달 바다 ( Tidal BaDa )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EB%B0%94%EB%8B%A4%20%28%20BaDa%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/359370162" target="_blank">https://tidal.com/album/359370162</a>
+                        <pre>💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] [Vol.143] You Hee yul's Sketchbook With you - 93th Voice 'Sketchbook X BADA'</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Bada - Blue Rain
+EN ⇄ KR : 파란 비
+ES     : Lluvia Azul
+ZH-CN  : 蓝雨
+
+
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] [Vol.142] You Hee yul's Sketchbook With you - 93th Voice 'Sketchbook X BADA'</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Bada - In the Summer
+EN ⇄ KR : 여름에
+ES     : En el Verano
+ZH-CN  : 在夏天
+
+
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Homemade Love Story (Original Television Soundtrack) Pt.8</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Bada - I'm in love
+EN ⇄ KR : 나는 사랑에 빠졌어
+ES     : Estoy enamorado
+ZH-CN  : 我恋爱了
+
+
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] A thousand kisses DRAMA (Original Soundtrack) Part.4</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Bada - Sweet my love
+EN ⇄ KR : 달콤한 나의 사랑
+ES     : Dulce amor mío
+ZH-CN  : 甜蜜的爱
+
+
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2010] Baking King, Kim Takgu (Original Soundtrack) Part.4 - Only One Person</a></b>
+▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
+
+Bada - Baking King, Kim Takgu (Original Soundtrack) Part.4 - Only One Person
+EN ⇄ KR : 단 한 사람 - 제빵왕 김탁구 (Original Soundtrack) Part.4
+ES     : Solo Una Persona
+ZH-CN  : 面包王金卓求 (原声带) Part.4 - 只有一个人
+
+
+💿 <b><a href='https://tidal.com/album/359370162' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] 핑@.@ (PING@.@)</a></b>
+▶️Album link : <a href="https://tidal.com/album/359370162" target="_blank">https://tidal.com/album/359370162</a>
 
 Bada - 핑@.@ (PING@.@)
 EN ⇄ KR : Ping@.@ (PING@.@)
@@ -80,6 +188,7 @@ ES     : Ping@.@
 ZH-CN  : 핑@.@
 
 
+💿 <b><a href='https://tidal.com/album/396872598' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] kiss me baby</a></b>
 ▶️Album link : <a href="https://tidal.com/album/396872598" target="_blank">https://tidal.com/album/396872598</a>
 
 Bada - kiss me baby
@@ -88,11 +197,12 @@ ES     : Bésame, cariño
 ZH-CN  : 亲亲宝贝
 
 Bada - kiss me baby (lnst.)
-EN ⇄ KR : None (lnst.)
+EN ⇄ KR : 나에게 키스해줘요, 자기 (lnst.)
 ES     : Bésame, cariño
 ZH-CN  : 亲亲宝贝
 
 
+💿 <b><a href='https://tidal.com/album/346359357' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Not for sale this christmas</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346359357" target="_blank">https://tidal.com/album/346359357</a>
 
 Bada - Not for sale this christmas (Feat. Eugene)
@@ -106,6 +216,7 @@ ES     : No está a la venta esta Navidad
 ZH-CN  : 今年圣诞不出售
 
 
+💿 <b><a href='https://tidal.com/album/346358538' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Into My Playlist Pt. 6</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346358538" target="_blank">https://tidal.com/album/346358538</a>
 
 Bada - Decalcomanie
@@ -114,6 +225,7 @@ ES     : Calcomanía
 ZH-CN  : 翻印
 
 
+💿 <b><a href='https://tidal.com/album/233951660' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] 오 마이 웨딩 OST Part.2</a></b>
 ▶️Album link : <a href="https://tidal.com/album/233951660" target="_blank">https://tidal.com/album/233951660</a>
 
 Bada - 그대를 부를게요
@@ -122,22 +234,7 @@ ES     : Te llamaré
 ZH-CN  : 我会呼唤你
 
 
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Bada - Blue Rain
-EN ⇄ KR : 파란 비
-ES     : Lluvia Azul
-ZH-CN  : 蓝雨
-
-
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Bada - In the Summer
-EN ⇄ KR : 여름에
-ES     : En el Verano
-ZH-CN  : 在夏天
-
-
+💿 <b><a href='https://tidal.com/album/343527985' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] The Blue Night of Jeju Island</a></b>
 ▶️Album link : <a href="https://tidal.com/album/343527985" target="_blank">https://tidal.com/album/343527985</a>
 
 Bada - The Blue Night of Jeju Island
@@ -146,6 +243,7 @@ ES     : La Noche Azul de la Isla de Jeju
 ZH-CN  : 济州岛的蓝色夜晚
 
 
+💿 <b><a href='https://tidal.com/album/422170709' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] 오! 삼광빌라! (Original Television Soundtrack), Pt. 8</a></b>
 ▶️Album link : <a href="https://tidal.com/album/422170709" target="_blank">https://tidal.com/album/422170709</a>
 
 Bada - 그대로 채워가요 (I'm in love)
@@ -154,14 +252,7 @@ ES     : Llenándolo poco a poco
 ZH-CN  : 就这样填满
 
 
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Bada - I'm in love
-EN ⇄ KR : 나는 사랑에 빠졌어
-ES     : Estoy enamorado
-ZH-CN  : 我恋爱了
-
-
+💿 <b><a href='https://tidal.com/album/346191712' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] OFF THE RECORD</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346191712" target="_blank">https://tidal.com/album/346191712</a>
 
 Bada - OFF THE RECORD
@@ -170,6 +261,7 @@ ES     : Fuera de Registro
 ZH-CN  : 幕后花絮
 
 
+💿 <b><a href='https://tidal.com/album/111932210' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] 마녀의 법정 OST, Part. 03 Witch at Court OST, Part. 03</a></b>
 ▶️Album link : <a href="https://tidal.com/album/111932210" target="_blank">https://tidal.com/album/111932210</a>
 
 Bada - 사랑했다고 That You Loved Me
@@ -178,6 +270,7 @@ ES     : Que me amaste
 ZH-CN  : 爱过你 That You Loved Me
 
 
+💿 <b><a href='https://tidal.com/album/76916515' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Bae</a></b>
 ▶️Album link : <a href="https://tidal.com/album/76916515" target="_blank">https://tidal.com/album/76916515</a>
 
 Bada - Bae
@@ -186,6 +279,7 @@ ES     : Cariño
 ZH-CN  : 宝贝
 
 
+💿 <b><a href='https://tidal.com/album/305383630' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Summer Time</a></b>
 ▶️Album link : <a href="https://tidal.com/album/305383630" target="_blank">https://tidal.com/album/305383630</a>
 
 Bada - Summer Time
@@ -194,6 +288,7 @@ ES     : Tiempo de verano
 ZH-CN  : 夏日时光
 
 
+💿 <b><a href='https://tidal.com/album/216043007' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] FLOWER</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216043007" target="_blank">https://tidal.com/album/216043007</a>
 
 Bada - AMAZING
@@ -212,6 +307,7 @@ ES     : PIDE UN DESEO
 ZH-CN  : 许愿
 
 
+💿 <b><a href='https://tidal.com/album/217228660' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2013] 결혼의 여신 (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/217228660" target="_blank">https://tidal.com/album/217228660</a>
 
 Bada - Stay
@@ -220,22 +316,7 @@ ES     : Quedarse
 ZH-CN  : 停留
 
 
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Bada - Sweet my love
-EN ⇄ KR : 달콤한 나의 사랑
-ES     : Dulce amor mío
-ZH-CN  : 甜蜜的爱
-
-
-▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
-
-Bada - Baking King, Kim Takgu (Original Soundtrack) Part.4 - Only One Person
-EN ⇄ KR : 단 한 사람 - 제빵왕 김탁구 (Original Soundtrack) Part.4
-ES     : Solo Una Persona
-ZH-CN  : 面包王金卓求 (原声带) Part.4 - 只有一个人
-
-
+💿 <b><a href='https://tidal.com/album/102480276' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] 바다를 바라보다…</a></b>
 ▶️Album link : <a href="https://tidal.com/album/102480276" target="_blank">https://tidal.com/album/102480276</a>
 
 Bada - 바다를 바라보다---
@@ -304,6 +385,7 @@ ES     : ...¿verdad? Versión Bonus Track
 ZH-CN  : ...我吗 Bonus Track Version
 
 
+💿 <b><a href='https://tidal.com/album/218732076' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] Yes I'm In Love</a></b>
 ▶️Album link : <a href="https://tidal.com/album/218732076" target="_blank">https://tidal.com/album/218732076</a>
 
 Bada, 택연 - Yes I'm In Love
@@ -312,6 +394,7 @@ ES     : Sí, estoy enamorado
 ZH-CN  : 是的，我在恋爱
 
 
+💿 <b><a href='https://tidal.com/album/168721450' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2008] Think About' Chu</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168721450" target="_blank">https://tidal.com/album/168721450</a>
 
 Bada, Kim Ban Jang, Windy City - Think About' Chu
@@ -320,6 +403,7 @@ ES     : Piensa En Chu
 ZH-CN  : 想着你
 
 
+💿 <b><a href='https://tidal.com/album/168721414' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2007] Queen</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168721414" target="_blank">https://tidal.com/album/168721414</a>
 
 Bada - Queen (V.I.P 2)
@@ -329,10 +413,11 @@ ZH-CN  : 皇后乐队
 
 Bada - Allegro (feat. Mario)
 EN ⇄ KR : 쾌속악장 (feat. Mario)
-ES     : Allegro
+ES     : Alegre
 ZH-CN  : 快板
 
 
+💿 <b><a href='https://tidal.com/album/168532539' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2006] Start</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168532539" target="_blank">https://tidal.com/album/168532539</a>
 
 Bada - Go Go Go
@@ -351,6 +436,7 @@ ES     : Cara de Póquer
 ZH-CN  : 扑克脸
 
 
+💿 <b><a href='https://tidal.com/album/168721345' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2006] Made In Sea</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168721345" target="_blank">https://tidal.com/album/168721345</a>
 
 Bada - Intro
@@ -409,6 +495,7 @@ ES     : Aquí Estoy Esperando
 ZH-CN  : 我在此等待
 
 
+💿 <b><a href='https://tidal.com/album/164208155' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2004] AURORA</a></b>
 ▶️Album link : <a href="https://tidal.com/album/164208155" target="_blank">https://tidal.com/album/164208155</a>
 
 Bada - 해피 페이스
@@ -477,11 +564,12 @@ ES     : Niño Pequeño
 ZH-CN  : 小男孩
 
 
+💿 <b><a href='https://tidal.com/album/168128769' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2003] A DAY OF RENEW</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168128769" target="_blank">https://tidal.com/album/168128769</a>
 
 Bada - Prologue
 EN ⇄ KR : 프롤로그
-ES     : Prólogo
+ES     : translated title
 ZH-CN  : 序幕
 
 Bada - A Day of Renew
@@ -549,6 +637,18 @@ EN ⇄ KR : 음악 다른 버전
 ES     : MÚSICA Versión Alternativa
 ZH-CN  : 音乐 另类版本</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 바다 ( Tidal BaDa )_trk.txt" download="타이달 바다 ( Tidal BaDa )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EB%B0%94%EB%8B%A4%20%28%20BaDa%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
