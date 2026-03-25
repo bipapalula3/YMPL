@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,57 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 사이먼도미닉 ( Tidal Simon Dominic )_trk.txt"
-                           download="타이달 사이먼도미닉 ( Tidal Simon Dominic )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 사이먼도미닉 ( Tidal Simon Dominic )_trk.txt" download="타이달 사이먼도미닉 ( Tidal Simon Dominic )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%82%AC%EC%9D%B4%EB%A8%BC%EB%8F%84%EB%AF%B8%EB%8B%89%20%28%20Simon%20Dominic%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/248537245" target="_blank">https://tidal.com/album/248537245</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/248537245' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] TTFU</a></b>
+▶️Album link : <a href="https://tidal.com/album/248537245" target="_blank">https://tidal.com/album/248537245</a>
 
 Simon Dominic, Loco, Woo, Coogie - TTFU
 EN ⇄ KR : 엿 먹어
@@ -80,6 +143,7 @@ ES     : A Tope
 ZH-CN  : 别搞砸了
 
 
+💿 <b><a href='https://tidal.com/album/206281366' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] WIN (THE SOLDIERS X Simon Dominic)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/206281366" target="_blank">https://tidal.com/album/206281366</a>
 
 Simon Dominic - WIN
@@ -88,6 +152,7 @@ ES     : Ganar
 ZH-CN  : 赢
 
 
+💿 <b><a href='https://tidal.com/album/216181926' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Taxidriver (Original Soundtrack) Part.5</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216181926" target="_blank">https://tidal.com/album/216181926</a>
 
 Simon Dominic - RUN AWAY
@@ -96,6 +161,7 @@ ES     : HUIR
 ZH-CN  : 逃跑
 
 
+💿 <b><a href='https://tidal.com/album/196166645' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Party Forever</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196166645" target="_blank">https://tidal.com/album/196166645</a>
 
 Simon Dominic - Party Forever
@@ -104,6 +170,7 @@ ES     : Fiesta Para Siempre
 ZH-CN  : 永远的派对
 
 
+💿 <b><a href='https://tidal.com/album/196167616' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] At Night</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196167616" target="_blank">https://tidal.com/album/196167616</a>
 
 Simon Dominic - At Night
@@ -112,6 +179,7 @@ ES     : De Noche
 ZH-CN  : 在夜晚
 
 
+💿 <b><a href='https://tidal.com/album/216252741' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] RECONNECT</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216252741" target="_blank">https://tidal.com/album/216252741</a>
 
 CODE KUNST, Choi Jung Hoon, Simon Dominic - For the gone(with ELLE KOREA)
@@ -120,11 +188,12 @@ ES     : Para los que se han ido
 ZH-CN  : 为逝者
 
 
+💿 <b><a href='https://tidal.com/album/428143000' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Dingo X DAMOIM (Part 4)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/428143000" target="_blank">https://tidal.com/album/428143000</a>
 
 Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic - RUN
 EN ⇄ KR : 달려
-ES     : CORRER
+ES     : CORRE
 ZH-CN  : 跑
 
 Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic - RUN (Acapella, BPM 92.4)
@@ -133,6 +202,7 @@ ES     : CORRE
 ZH-CN  : 跑
 
 
+💿 <b><a href='https://tidal.com/album/196149265' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] make her dance</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196149265" target="_blank">https://tidal.com/album/196149265</a>
 
 Simon Dominic - make her dance
@@ -141,6 +211,7 @@ ES     : Hazla bailar
 ZH-CN  : 让她跳舞
 
 
+💿 <b><a href='https://tidal.com/album/216772193' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] SignHere episode1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216772193" target="_blank">https://tidal.com/album/216772193</a>
 
 RYNO,sogumm,YELLA D - Game Good (Feat. Simon Dominic) (Prod. GooseBumps & Simon Dominic)
@@ -149,6 +220,7 @@ ES     : Juego Bueno
 ZH-CN  : 游戏愉快
 
 
+💿 <b><a href='https://tidal.com/album/196149591' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] No Open Flames</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196149591" target="_blank">https://tidal.com/album/196149591</a>
 
 Simon Dominic - intro
@@ -187,10 +259,11 @@ ES     : no eres de la banda
 ZH-CN  : 你不是帮派的
 
 
+💿 <b><a href='https://tidal.com/album/428142992' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Dingo X DAMOIM (Part 3)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/428142992" target="_blank">https://tidal.com/album/428142992</a>
 
 Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic - J2B
-EN ⇄ KR : J To B
+EN ⇄ KR : J에서 B로
 ES     : J2B
 ZH-CN  : J2B
 
@@ -200,6 +273,7 @@ ES     : J2B
 ZH-CN  : J2B
 
 
+💿 <b><a href='https://tidal.com/album/428142986' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Dingo X DAMOIM (Part 2)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/428142986" target="_blank">https://tidal.com/album/428142986</a>
 
 Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic, Woo, Keem Hyo-Eun, Nucksal, Huckleberry P - I′MMA DO (feat. WOO, Keem Hyo-Eun, Nucksal, Huckleberry P)
@@ -213,6 +287,7 @@ ES     : LO VOY A HACER
 ZH-CN  : 我要这么做
 
 
+💿 <b><a href='https://tidal.com/album/428142980' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Dingo X DAMOIM (Part 1)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/428142980" target="_blank">https://tidal.com/album/428142980</a>
 
 Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic - Forever 84
@@ -226,6 +301,7 @@ ES     : Para Siempre 84
 ZH-CN  : 永远的 84
 
 
+💿 <b><a href='https://tidal.com/album/276076711' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Upside Down</a></b>
 ▶️Album link : <a href="https://tidal.com/album/276076711" target="_blank">https://tidal.com/album/276076711</a>
 
 Jay Park, Simon Dominic, Loco, Gray - Upside Down
@@ -234,6 +310,7 @@ ES     : Al revés
 ZH-CN  : 颠倒
 
 
+💿 <b><a href='https://tidal.com/album/276076789' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Simon Says</a></b>
 ▶️Album link : <a href="https://tidal.com/album/276076789" target="_blank">https://tidal.com/album/276076789</a>
 
 Simon Dominic, Pharoahe Monch - Simon Says (Feat. Pharoahe Monch)
@@ -242,6 +319,7 @@ ES     : Simón Dice
 ZH-CN  : 谁说了算
 
 
+💿 <b><a href='https://tidal.com/album/276076730' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Me No Jay Park</a></b>
 ▶️Album link : <a href="https://tidal.com/album/276076730" target="_blank">https://tidal.com/album/276076730</a>
 
 Simon Dominic - Me No Jay Park
@@ -250,6 +328,7 @@ ES     : Yo No Soy Jay Park
 ZH-CN  : 我不是朴载范
 
 
+💿 <b><a href='https://tidal.com/album/276076718' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] DARKROOM</a></b>
 ▶️Album link : <a href="https://tidal.com/album/276076718" target="_blank">https://tidal.com/album/276076718</a>
 
 Simon Dominic - roommates only
@@ -298,6 +377,7 @@ ES     : En mi barrio
 ZH-CN  : 在我的街区
 
 
+💿 <b><a href='https://tidal.com/album/276059864' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] ￦ & ONLY</a></b>
 ▶️Album link : <a href="https://tidal.com/album/276059864" target="_blank">https://tidal.com/album/276059864</a>
 
 Simon Dominic, Jay Park - WON & ONLY (Feat. Jay Park)
@@ -316,6 +396,7 @@ ES     : El dinero no miente
 ZH-CN  : 金钱不会说谎
 
 
+💿 <b><a href='https://tidal.com/album/269759277' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] 여섯시 반</a></b>
 ▶️Album link : <a href="https://tidal.com/album/269759277" target="_blank">https://tidal.com/album/269759277</a>
 
 Simon Dominic, Lady Jane - 여섯시 반
@@ -324,6 +405,7 @@ ES     : Seis y media
 ZH-CN  : 六点半
 
 
+💿 <b><a href='https://tidal.com/album/196089858' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] AIR</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196089858" target="_blank">https://tidal.com/album/196089858</a>
 
 Gaeko, CHOIZA, Simon Dominic, Primary - AIR
@@ -332,6 +414,7 @@ ES     : AIRE
 ZH-CN  : 空气
 
 
+💿 <b><a href='https://tidal.com/album/196089544' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] Stay Cool</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196089544" target="_blank">https://tidal.com/album/196089544</a>
 
 Simon Dominic, Zion.T - Stay Cool (Feat. Zion.T)
@@ -340,6 +423,7 @@ ES     : Mantente Tranquilo
 ZH-CN  : 保持冷静
 
 
+💿 <b><a href='https://tidal.com/album/196089528' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] Simon Dominic Presents 'SNL LEAGUE BEGINS'</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196089528" target="_blank">https://tidal.com/album/196089528</a>
 
 Simon Dominic, DJ Friz - Intro (Feat. dj friz)(Explicit)
@@ -393,6 +477,7 @@ ES     : Mejorando
 ZH-CN  : 越来越好
 
 
+💿 <b><a href='https://tidal.com/album/316866816' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] Hero</a></b>
 ▶️Album link : <a href="https://tidal.com/album/316866816" target="_blank">https://tidal.com/album/316866816</a>
 
 Simon Dominic - Hero(Explicit)
@@ -400,6 +485,18 @@ EN ⇄ KR : 영웅(Explicit)
 ES     : Héroe
 ZH-CN  : 英雄</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 사이먼도미닉 ( Tidal Simon Dominic )_trk.txt" download="타이달 사이먼도미닉 ( Tidal Simon Dominic )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%82%AC%EC%9D%B4%EB%A8%BC%EB%8F%84%EB%AF%B8%EB%8B%89%20%28%20Simon%20Dominic%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
