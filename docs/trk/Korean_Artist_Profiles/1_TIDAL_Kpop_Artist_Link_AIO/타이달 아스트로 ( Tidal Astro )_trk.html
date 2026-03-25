@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,57 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 아스트로 ( Tidal Astro )_trk.txt"
-                           download="타이달 아스트로 ( Tidal Astro )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 아스트로 ( Tidal Astro )_trk.txt" download="타이달 아스트로 ( Tidal Astro )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%95%84%EC%8A%A4%ED%8A%B8%EB%A1%9C%20%28%20Astro%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/347085715" target="_blank">https://tidal.com/album/347085715</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/347085715' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Circles</a></b>
+▶️Album link : <a href="https://tidal.com/album/347085715" target="_blank">https://tidal.com/album/347085715</a>
 
 ASTRO (아스트로) - Circles
 EN ⇄ KR : 원
@@ -80,6 +143,7 @@ ES     : Círculos
 ZH-CN  : 圆圈
 
 
+💿 <b><a href='https://tidal.com/album/269809683' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] INCENSE</a></b>
 ▶️Album link : <a href="https://tidal.com/album/269809683" target="_blank">https://tidal.com/album/269809683</a>
 
 MOONBIN&SANHA(ASTRO) - Perfumer
@@ -113,6 +177,7 @@ ES     : Tu día
 ZH-CN  : 你的一天
 
 
+💿 <b><a href='https://tidal.com/album/237829760' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] U&Iverse</a></b>
 ▶️Album link : <a href="https://tidal.com/album/237829760" target="_blank">https://tidal.com/album/237829760</a>
 
 ASTRO (아스트로) - U&Iverse
@@ -121,6 +186,7 @@ ES     : U&Iverso
 ZH-CN  : 你与我宇宙
 
 
+💿 <b><a href='https://tidal.com/album/220960244' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] REFUGE</a></b>
 ▶️Album link : <a href="https://tidal.com/album/220960244" target="_blank">https://tidal.com/album/220960244</a>
 
 MOONBIN&SANHA(ASTRO) - WHO
@@ -149,6 +215,7 @@ ES     : Pueblo Fantasma
 ZH-CN  : 鬼镇
 
 
+💿 <b><a href='https://tidal.com/album/241010298' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Kakao Webtoon 〈Since I Met You〉 (Original Soundtrack) Part.1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/241010298" target="_blank">https://tidal.com/album/241010298</a>
 
 MOONBIN&SANHA(ASTRO) - Dive into you
@@ -157,6 +224,7 @@ ES     : Sumérgete en ti
 ZH-CN  : 沉入你心
 
 
+💿 <b><a href='https://tidal.com/album/216437389' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Ghost Town</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216437389" target="_blank">https://tidal.com/album/216437389</a>
 
 MOONBIN&SANHA(ASTRO) - Ghost Town
@@ -165,6 +233,7 @@ ES     : Pueblo Fantasma
 ZH-CN  : 鬼镇
 
 
+💿 <b><a href='https://tidal.com/album/229466271' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Drive to the Starry Road</a></b>
 ▶️Album link : <a href="https://tidal.com/album/229466271" target="_blank">https://tidal.com/album/229466271</a>
 
 ASTRO (아스트로) - Candy Sugar Pop
@@ -208,8 +277,8 @@ ES     : Vamos a montar
 ZH-CN  : 让我们去兜风
 
 ASTRO (아스트로) - S#1-
-EN ⇄ KR : S#1-
-ES     : S#1-
+EN ⇄ KR : Sharp #1
+ES     : S#1
 ZH-CN  : S#1-
 
 ASTRO (아스트로) - 24 Hours
@@ -223,6 +292,7 @@ ES     : Como estrellas
 ZH-CN  : 像星星一样
 
 
+💿 <b><a href='https://tidal.com/album/216303629' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] SWITCH ON</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216303629" target="_blank">https://tidal.com/album/216303629</a>
 
 ASTRO (아스트로) - After Midnight
@@ -256,6 +326,7 @@ ES     : No te preocupes
 ZH-CN  : 别担心
 
 
+💿 <b><a href='https://tidal.com/album/216217486' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] All Yours</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216217486" target="_blank">https://tidal.com/album/216217486</a>
 
 ASTRO (아스트로) - Dear my universe
@@ -271,7 +342,7 @@ ZH-CN  : 蝴蝶效应
 ASTRO (아스트로) - ONE
 EN ⇄ KR : 하나
 ES     : UNO
-ZH-CN  : ONE
+ZH-CN  : 一
 
 ASTRO (아스트로) - Someone Else
 EN ⇄ KR : 다른 누군가
@@ -280,8 +351,8 @@ ZH-CN  : 别人
 
 ASTRO (아스트로) - SNS
 EN ⇄ KR : 소셜 네트워크 서비스
-ES     : SNS
-ZH-CN  : SNS
+ES     : Redes Sociales
+ZH-CN  : 社交网络服务
 
 ASTRO (아스트로) - All Good
 EN ⇄ KR : 모든 것이 괜찮아
@@ -309,6 +380,7 @@ ES     : géminis
 ZH-CN  : 双子座
 
 
+💿 <b><a href='https://tidal.com/album/192987217' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] All Good-JP Ver.-</a></b>
 ▶️Album link : <a href="https://tidal.com/album/192987217" target="_blank">https://tidal.com/album/192987217</a>
 
 ASTRO (아스트로) - All Good-JP Ver.-
@@ -317,6 +389,7 @@ ES     : All Good - Versión JP -
 ZH-CN  : All Good-JP Ver.-
 
 
+💿 <b><a href='https://tidal.com/album/346721225' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] ALIVE</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346721225" target="_blank">https://tidal.com/album/346721225</a>
 
 ASTRO (아스트로) - ALIVE
@@ -325,6 +398,7 @@ ES     : Vivo
 ZH-CN  : 活着
 
 
+💿 <b><a href='https://tidal.com/album/201568191' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] 1番好きな人にサヨナラを言おう</a></b>
 ▶️Album link : <a href="https://tidal.com/album/201568191" target="_blank">https://tidal.com/album/201568191</a>
 
 ASTRO (아스트로) - 1番好きな人にサヨナラを言おう
@@ -333,6 +407,7 @@ ES     : Digamos adiós a la persona que más amo
 ZH-CN  : 向最爱的人说再见吧
 
 
+💿 <b><a href='https://tidal.com/album/216420427' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] ONE&ONLY</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216420427" target="_blank">https://tidal.com/album/216420427</a>
 
 ASTRO (아스트로) - ONE&ONLY
@@ -341,6 +416,7 @@ ES     : Único y solo
 ZH-CN  : 唯一
 
 
+💿 <b><a href='https://tidal.com/album/216123481' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] No, I don’t..</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216123481" target="_blank">https://tidal.com/album/216123481</a>
 
 ASTRO (아스트로) - No, I don’t--
@@ -349,6 +425,7 @@ ES     : No, yo no--
 ZH-CN  : 不，我不要--
 
 
+💿 <b><a href='https://tidal.com/album/216252098' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] IN-OUT</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216252098" target="_blank">https://tidal.com/album/216252098</a>
 
 MOONBIN&SANHA(ASTRO) - Eyez On U
@@ -377,6 +454,7 @@ ES     : Atrapasueños
 ZH-CN  : 捕梦网
 
 
+💿 <b><a href='https://tidal.com/album/216181491' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] ASTRO Digital Single [We Still (Be With U)]</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216181491" target="_blank">https://tidal.com/album/216181491</a>
 
 ASTRO (아스트로) - We Still (Be With U)
@@ -385,6 +463,7 @@ ES     : Aún Quedamos
 ZH-CN  : 我们依然
 
 
+💿 <b><a href='https://tidal.com/album/216148102' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] ASTRO 7th Mini Album [GATEWAY]</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216148102" target="_blank">https://tidal.com/album/216148102</a>
 
 ASTRO (아스트로) - Knock
@@ -418,6 +497,7 @@ ES     : Luces Encendidas
 ZH-CN  : 灯亮着
 
 
+💿 <b><a href='https://tidal.com/album/106588912' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Venus</a></b>
 ▶️Album link : <a href="https://tidal.com/album/106588912" target="_blank">https://tidal.com/album/106588912</a>
 
 ASTRO (아스트로) - Always You
@@ -451,6 +531,7 @@ ES     : Estoy de Tu Lado
 ZH-CN  : 我在你身边
 
 
+💿 <b><a href='https://tidal.com/album/216420459' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] BLUE FLAME</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216420459" target="_blank">https://tidal.com/album/216420459</a>
 
 ASTRO (아스트로) - Blue Flame
@@ -479,6 +560,7 @@ ES     : Eres mi mundo
 ZH-CN  : 你是我的世界
 
 
+💿 <b><a href='https://tidal.com/album/216420448' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] All Light</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216420448" target="_blank">https://tidal.com/album/216420448</a>
 
 ASTRO (아스트로) - Starry Sky
@@ -532,6 +614,7 @@ ES     : Florecer
 ZH-CN  : 绽放
 
 
+💿 <b><a href='https://tidal.com/album/216097561' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Sugar Man2 Part.3</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216097561" target="_blank">https://tidal.com/album/216097561</a>
 
 ASTRO (아스트로) - Shadow
@@ -540,6 +623,7 @@ ES     : Sombra
 ZH-CN  : 影子
 
 
+💿 <b><a href='https://tidal.com/album/216420442' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Rise Up</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216420442" target="_blank">https://tidal.com/album/216420442</a>
 
 ASTRO (아스트로) - Always You
@@ -568,6 +652,7 @@ ES     : Amor Verdadero
 ZH-CN  : 真爱
 
 
+💿 <b><a href='https://tidal.com/album/216420413' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Merry-Go-Round (Christmas Edition)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216420413" target="_blank">https://tidal.com/album/216420413</a>
 
 ASTRO (아스트로) - Merry-Go-Round (Christmas Edition)
@@ -576,6 +661,7 @@ ES     : Carrusel
 ZH-CN  : 旋转木马
 
 
+💿 <b><a href='https://tidal.com/album/216280171' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Winter Dream</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216280171" target="_blank">https://tidal.com/album/216280171</a>
 
 ASTRO (아스트로) - Again
@@ -594,6 +680,7 @@ ES     : Tú y Yo
 ZH-CN  : 你和我
 
 
+💿 <b><a href='https://tidal.com/album/216420436' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Dream Part.02</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216420436" target="_blank">https://tidal.com/album/216420436</a>
 
 ASTRO (아스트로) - With You
@@ -622,6 +709,7 @@ ES     : Mejor Contigo
 ZH-CN  : 与你更好
 
 
+💿 <b><a href='https://tidal.com/album/216420465' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Dream Part.01</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216420465" target="_blank">https://tidal.com/album/216420465</a>
 
 ASTRO (아스트로) - Dreams Come True
@@ -665,6 +753,7 @@ ES     : Cada minuto
 ZH-CN  : 每分每秒
 
 
+💿 <b><a href='https://tidal.com/album/216280456' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Summer Vibes</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216280456" target="_blank">https://tidal.com/album/216280456</a>
 
 ASTRO (아스트로) - Fireworks
@@ -684,7 +773,7 @@ ZH-CN  : 成长的烦恼
 
 ASTRO (아스트로) - Polaris
 EN ⇄ KR : 북극성
-ES     : Polaris
+ES     : Polar
 ZH-CN  : 北极星
 
 ASTRO (아스트로) - My Style
@@ -698,6 +787,7 @@ ES     : Sin Aliento
 ZH-CN  : 喘不过气
 
 
+💿 <b><a href='https://tidal.com/album/216280381' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Spring Up</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216280381" target="_blank">https://tidal.com/album/216280381</a>
 
 ASTRO (아스트로) - OK! READY
@@ -726,6 +816,7 @@ ES     : Ojo de gato
 ZH-CN  : 猫眼
 
 
+💿 <b><a href='https://tidal.com/album/216280118' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Autumn story</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216280118" target="_blank">https://tidal.com/album/216280118</a>
 
 ASTRO (아스트로) - Lonely
@@ -753,6 +844,18 @@ EN ⇄ KR : 별
 ES     : Estrella
 ZH-CN  : 星星</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 아스트로 ( Tidal Astro )_trk.txt" download="타이달 아스트로 ( Tidal Astro )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%95%84%EC%8A%A4%ED%8A%B8%EB%A1%9C%20%28%20Astro%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
