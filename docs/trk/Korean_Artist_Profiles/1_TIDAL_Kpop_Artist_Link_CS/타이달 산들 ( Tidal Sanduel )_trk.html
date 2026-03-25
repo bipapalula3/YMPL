@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,57 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 산들 ( Tidal Sanduel )_trk.txt"
-                           download="타이달 산들 ( Tidal Sanduel )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 산들 ( Tidal Sanduel )_trk.txt" download="타이달 산들 ( Tidal Sanduel )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%82%B0%EB%93%A4%20%28%20Sanduel%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/347939647" target="_blank">https://tidal.com/album/347939647</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/347939647' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Wedding Impossible _ Original Soundtrack Special</a></b>
+▶️Album link : <a href="https://tidal.com/album/347939647" target="_blank">https://tidal.com/album/347939647</a>
 
 SANDEUL - Butterfly
 EN ⇄ KR : 나비
@@ -80,6 +143,7 @@ ES     : Mariposa
 ZH-CN  : 蝴蝶
 
 
+💿 <b><a href='https://tidal.com/album/348189747' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] HELLO! WM_V</a></b>
 ▶️Album link : <a href="https://tidal.com/album/348189747" target="_blank">https://tidal.com/album/348189747</a>
 
 SANDEUL, HYOJUNG, Hyojin - 366 Days
@@ -88,6 +152,7 @@ ES     : 366 Días
 ZH-CN  : 366天
 
 
+💿 <b><a href='https://tidal.com/album/331299044' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] CASTAWAY DIVA (Original Soundtrack) Part.9</a></b>
 ▶️Album link : <a href="https://tidal.com/album/331299044" target="_blank">https://tidal.com/album/331299044</a>
 
 SANDEUL - You're leaving like the season
@@ -96,6 +161,7 @@ ES     : Te vas como la estación
 ZH-CN  : 你像季节一样离去
 
 
+💿 <b><a href='https://tidal.com/album/346637576' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] It's alright (Prod. Captain Planet)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346637576" target="_blank">https://tidal.com/album/346637576</a>
 
 Ahn Seha, SANDEUL - It's alright (Prod. Captain Planet)
@@ -104,6 +170,7 @@ ES     : Está bien
 ZH-CN  : 没关系
 
 
+💿 <b><a href='https://tidal.com/album/216277524' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] The One And Only You (The Moon during the Day X SANDEUL)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216277524" target="_blank">https://tidal.com/album/216277524</a>
 
 SANDEUL - The One And Only You (The Moon during the Day X SANDEUL)
@@ -112,6 +179,7 @@ ES     : El único y verdadero tú
 ZH-CN  : 独一无二的你
 
 
+💿 <b><a href='https://tidal.com/album/216375394' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] I Miss You (CookieBox X Sandeul)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216375394" target="_blank">https://tidal.com/album/216375394</a>
 
 SANDEUL - I Miss You (CookieBox X Sandeul)
@@ -120,6 +188,7 @@ ES     : Te echo de menos
 ZH-CN  : 我想你
 
 
+💿 <b><a href='https://tidal.com/album/199838406' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Hometown Cha-Cha-Cha OST Part 6</a></b>
 ▶️Album link : <a href="https://tidal.com/album/199838406" target="_blank">https://tidal.com/album/199838406</a>
 
 SANDEUL - The Image of You (Remains in My Memory)
@@ -128,6 +197,7 @@ ES     : La Imagen de Ti
 ZH-CN  : 你的形象
 
 
+💿 <b><a href='https://tidal.com/album/182261509' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Contemplation</a></b>
 ▶️Album link : <a href="https://tidal.com/album/182261509" target="_blank">https://tidal.com/album/182261509</a>
 
 SANDEUL - Remember
@@ -151,6 +221,7 @@ ES     : Tu Corazón
 ZH-CN  : 你的心
 
 
+💿 <b><a href='https://tidal.com/album/379009676' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Smile Box</a></b>
 ▶️Album link : <a href="https://tidal.com/album/379009676" target="_blank">https://tidal.com/album/379009676</a>
 
 SANDEUL - Smile Box
@@ -159,6 +230,7 @@ ES     : Caja de Sonrisas
 ZH-CN  : 笑脸盒子
 
 
+💿 <b><a href='https://tidal.com/album/216118619' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Slightly Tipsy (She is My Type♡ X SANDEUL)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216118619" target="_blank">https://tidal.com/album/216118619</a>
 
 SANDEUL - Slightly Tipsy (She is My Type♡ X SANDEUL)
@@ -167,6 +239,7 @@ ES     : Ligeramente Achispado
 ZH-CN  : 有点微醺
 
 
+💿 <b><a href='https://tidal.com/album/408902809' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] My Little Thought</a></b>
 ▶️Album link : <a href="https://tidal.com/album/408902809" target="_blank">https://tidal.com/album/408902809</a>
 
 SANDEUL - Summer day summer night
@@ -195,6 +268,7 @@ ES     : Gracias
 ZH-CN  : 谢谢你
 
 
+💿 <b><a href='https://tidal.com/album/367017540' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Lazy Me</a></b>
 ▶️Album link : <a href="https://tidal.com/album/367017540" target="_blank">https://tidal.com/album/367017540</a>
 
 SANDEUL - Lazy Me
@@ -203,6 +277,7 @@ ES     : Yo Perezoso
 ZH-CN  : 懒惰的我
 
 
+💿 <b><a href='https://tidal.com/album/348860940' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Dark Tales (Talesrunner Original Soundtrack Pt. 1)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/348860940" target="_blank">https://tidal.com/album/348860940</a>
 
 SANDEUL - Dark Tales
@@ -211,6 +286,7 @@ ES     : Cuentos Oscuros
 ZH-CN  : 黑暗故事
 
 
+💿 <b><a href='https://tidal.com/album/339862471' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] WannabeChallenge (Original Soundtrack) Part.2</a></b>
 ▶️Album link : <a href="https://tidal.com/album/339862471" target="_blank">https://tidal.com/album/339862471</a>
 
 SANDEUL - I Wish
@@ -219,6 +295,7 @@ ES     : Desearía
 ZH-CN  : 我希望
 
 
+💿 <b><a href='https://tidal.com/album/189363170' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] The Tale Of Nokdu (Original Television Soundtrack), Pt. 5</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189363170" target="_blank">https://tidal.com/album/189363170</a>
 
 SANDEUL - Lingering Inside Me
@@ -227,6 +304,7 @@ ES     : Persistiendo Dentro de Mí
 ZH-CN  : 在我心中徘徊
 
 
+💿 <b><a href='https://tidal.com/album/104488809' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] PCR</a></b>
 ▶️Album link : <a href="https://tidal.com/album/104488809" target="_blank">https://tidal.com/album/104488809</a>
 
 SANDEUL - PCR (Original Mix)
@@ -235,6 +313,7 @@ ES     : PCR
 ZH-CN  : PCR
 
 
+💿 <b><a href='https://tidal.com/album/354742390' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] ONE FINE DAY</a></b>
 ▶️Album link : <a href="https://tidal.com/album/354742390" target="_blank">https://tidal.com/album/354742390</a>
 
 SANDEUL - One Fine Day
@@ -268,6 +347,7 @@ ES     : Estoy bien
 ZH-CN  : 我很好
 
 
+💿 <b><a href='https://tidal.com/album/241313907' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] 연결되어 있으니까</a></b>
 ▶️Album link : <a href="https://tidal.com/album/241313907" target="_blank">https://tidal.com/album/241313907</a>
 
 Yang Yoseop, SANDEUL, Jung Seung Hwan - 연결되어 있으니까
@@ -276,6 +356,7 @@ ES     : Porque estamos conectados
 ZH-CN  : 因为连接着
 
 
+💿 <b><a href='https://tidal.com/album/196138196' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Bad Guys_ Vile City, Pt. 3 (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196138196" target="_blank">https://tidal.com/album/196138196</a>
 
 SANDEUL - Other World
@@ -284,6 +365,7 @@ ES     : Otro Mundo
 ZH-CN  : 异世界
 
 
+💿 <b><a href='https://tidal.com/album/237600635' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] OPPA</a></b>
 ▶️Album link : <a href="https://tidal.com/album/237600635" target="_blank">https://tidal.com/album/237600635</a>
 
 Yu Seung Woo, SANDEUL - OPPA (PROD. Brother Su)
@@ -292,6 +374,7 @@ ES     : Chico mayor (If referring to an older male friend or love interest)
 ZH-CN  : 哥哥
 
 
+💿 <b><a href='https://tidal.com/album/196130029' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Introverted Boss (Original Television Soundtrack), Pt. 3</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196130029" target="_blank">https://tidal.com/album/196130029</a>
 
 SANDEUL - One More Step
@@ -300,6 +383,7 @@ ES     : Un Paso Más
 ZH-CN  : 再走一步
 
 
+💿 <b><a href='https://tidal.com/album/322792786' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] 구르미 그린 달빛 (Original Television Soundtrack), Pt.2</a></b>
 ▶️Album link : <a href="https://tidal.com/album/322792786" target="_blank">https://tidal.com/album/322792786</a>
 
 SANDEUL - 마음을 삼킨다
@@ -308,6 +392,7 @@ ES     : Traga el corazón
 ZH-CN  : 吞噬心灵
 
 
+💿 <b><a href='https://tidal.com/album/354759071' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] STAY AS YOU ARE</a></b>
 ▶️Album link : <a href="https://tidal.com/album/354759071" target="_blank">https://tidal.com/album/354759071</a>
 
 SANDEUL - Stay as you are
@@ -336,6 +421,7 @@ ES     : El camino contigo
 ZH-CN  : 与你相伴的方式
 
 
+💿 <b><a href='https://tidal.com/album/326005624' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] God's Gift _ 14 Days (Original Soundtrack) Part.3</a></b>
 ▶️Album link : <a href="https://tidal.com/album/326005624" target="_blank">https://tidal.com/album/326005624</a>
 
 SANDEUL - 아파서
@@ -343,6 +429,18 @@ EN ⇄ KR : Sick
 ES     : Duele
 ZH-CN  : 因为痛</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 산들 ( Tidal Sanduel )_trk.txt" download="타이달 산들 ( Tidal Sanduel )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%82%B0%EB%93%A4%20%28%20Sanduel%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
