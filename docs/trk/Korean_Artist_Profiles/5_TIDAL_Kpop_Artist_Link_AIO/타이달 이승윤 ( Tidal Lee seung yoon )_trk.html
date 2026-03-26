@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,57 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 이승윤 ( Tidal Lee seung yoon )_trk.txt"
-                           download="타이달 이승윤 ( Tidal Lee seung yoon )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 이승윤 ( Tidal Lee seung yoon )_trk.txt" download="타이달 이승윤 ( Tidal Lee seung yoon )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%9D%B4%EC%8A%B9%EC%9C%A4%20%28%20Lee%20seung%20yoon%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/418347010" target="_blank">https://tidal.com/album/418347010</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/418347010' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2025] When the Stars Gossip (Original Soundtrack) Part.7</a></b>
+▶️Album link : <a href="https://tidal.com/album/418347010" target="_blank">https://tidal.com/album/418347010</a>
 
 Lee Seung Yoon - When You Appeared
 EN ⇄ KR : 당신이 나타났을 때
@@ -80,6 +143,7 @@ ES     : Cuando apareciste
 ZH-CN  : 当你出现时
 
 
+💿 <b><a href='https://tidal.com/album/427476783' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2025] Buried Hearts (Original Television Soundtrack) Pt. 7</a></b>
 ▶️Album link : <a href="https://tidal.com/album/427476783" target="_blank">https://tidal.com/album/427476783</a>
 
 Lee Seung Yoon - Last Story
@@ -88,11 +152,12 @@ ES     : Última Historia
 ZH-CN  : 最后的物语
 
 
+💿 <b><a href='https://tidal.com/album/395345557' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] YEOK SEONG</a></b>
 ▶️Album link : <a href="https://tidal.com/album/395345557" target="_blank">https://tidal.com/album/395345557</a>
 
 Lee Seung Yoon - Intro
 EN ⇄ KR : 소개
-ES     : Introducción
+ES     : BPM69
 ZH-CN  : 简介
 
 Lee Seung Yoon - POKZOOK TIME
@@ -161,6 +226,7 @@ ES     : Una Oda a los Corazones No Vistos
 ZH-CN  : 献给未见之心的颂歌
 
 
+💿 <b><a href='https://tidal.com/album/372922994' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] PRE-RELEASE 3RD ALBUM [YEOK SEONG]</a></b>
 ▶️Album link : <a href="https://tidal.com/album/372922994" target="_blank">https://tidal.com/album/372922994</a>
 
 Lee Seung Yoon - Waterfall
@@ -204,6 +270,7 @@ ES     : Canon
 ZH-CN  : 卡农
 
 
+💿 <b><a href='https://tidal.com/album/364540361' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] LEE SEUNG YOON CONCERT [DOCKING _ LIFTOFF] LIVE ALBUM</a></b>
 ▶️Album link : <a href="https://tidal.com/album/364540361" target="_blank">https://tidal.com/album/364540361</a>
 
 Lee Seung Yoon - Wild Horse
@@ -287,9 +354,9 @@ ES     : Sin Subtítulos
 ZH-CN  : 无字幕
 
 Lee Seung Yoon - NARAGAZA
-EN ⇄ KR : NARAGAZA
-ES     : NARAGAZA
-ZH-CN  : NARAGAZA
+EN ⇄ KR : 나라가자
+ES     : NARAGAZA (This name sounds like it could be a fictional location or creature. Leaving it as is is often best.)
+ZH-CN  : 纳拉加扎
 
 Lee Seung Yoon - Docking
 EN ⇄ KR : 도킹
@@ -332,6 +399,7 @@ ES     : Sobre Una Sonrisa
 ZH-CN  : 带着微笑
 
 
+💿 <b><a href='https://tidal.com/album/408657847' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Empty Space Above</a></b>
 ▶️Album link : <a href="https://tidal.com/album/408657847" target="_blank">https://tidal.com/album/408657847</a>
 
 Lee Seung Yoon - Empty Space Above
@@ -340,6 +408,7 @@ ES     : Espacio Vacío Arriba
 ZH-CN  : 上方的空白空间
 
 
+💿 <b><a href='https://tidal.com/album/273537810' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Shelter Of Dreams</a></b>
 ▶️Album link : <a href="https://tidal.com/album/273537810" target="_blank">https://tidal.com/album/273537810</a>
 
 Lee Seung Yoon - Hero Collector
@@ -403,6 +472,7 @@ ES     : Apodo
 ZH-CN  : 昵称
 
 
+💿 <b><a href='https://tidal.com/album/270200688' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Pricey Hangover</a></b>
 ▶️Album link : <a href="https://tidal.com/album/270200688" target="_blank">https://tidal.com/album/270200688</a>
 
 Lee Seung Yoon - Pricey Hangover
@@ -421,6 +491,7 @@ ES     : Más Duro Que Una Oración
 ZH-CN  : 比祈祷更难
 
 
+💿 <b><a href='https://tidal.com/album/263766560' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Upon A Smile</a></b>
 ▶️Album link : <a href="https://tidal.com/album/263766560" target="_blank">https://tidal.com/album/263766560</a>
 
 Lee Seung Yoon - A Sip Of Song
@@ -439,6 +510,7 @@ ES     : Sobre Una Sonrisa
 ZH-CN  : 带着微笑
 
 
+💿 <b><a href='https://tidal.com/album/210883477' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Our Beloved Summer (Original Television Soundtrack), Pt. 7</a></b>
 ▶️Album link : <a href="https://tidal.com/album/210883477" target="_blank">https://tidal.com/album/210883477</a>
 
 Lee Seung Yoon - The Giving Tree
@@ -447,6 +519,7 @@ ES     : El Árbol que Daba
 ZH-CN  : 给予树
 
 
+💿 <b><a href='https://tidal.com/album/250473370' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Mental Coach Jegal OST Part 3</a></b>
 ▶️Album link : <a href="https://tidal.com/album/250473370" target="_blank">https://tidal.com/album/250473370</a>
 
 Lee Seung Yoon - I Remember You
@@ -455,6 +528,7 @@ ES     : Te Recuerdo
 ZH-CN  : 我记得你
 
 
+💿 <b><a href='https://tidal.com/album/216303999' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Unspoken</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216303999" target="_blank">https://tidal.com/album/216303999</a>
 
 Lee Seung Yoon - Unspoken
@@ -463,6 +537,7 @@ ES     : Tácito
 ZH-CN  : 未说出口的
 
 
+💿 <b><a href='https://tidal.com/album/203671406' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Reflection of You OST Part.4</a></b>
 ▶️Album link : <a href="https://tidal.com/album/203671406" target="_blank">https://tidal.com/album/203671406</a>
 
 Lee Seung Yoon - I Am Lost
@@ -471,6 +546,7 @@ ES     : Estoy Perdido
 ZH-CN  : 我迷失了
 
 
+💿 <b><a href='https://tidal.com/album/196168510' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Mine (Original Television Soundtrack), Pt. 1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196168510" target="_blank">https://tidal.com/album/196168510</a>
 
 Lee Seung Yoon - This is Mine
@@ -479,6 +555,7 @@ ES     : Esto es mío
 ZH-CN  : 这是我的
 
 
+💿 <b><a href='https://tidal.com/album/334932599' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Famous Singers, Pt. 9 (From the _JTBC_ TV SHOW)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/334932599" target="_blank">https://tidal.com/album/334932599</a>
 
 Lee Seung Yoon - Love, two
@@ -487,6 +564,7 @@ ES     : Amor, dos
 ZH-CN  : 爱，两人
 
 
+💿 <b><a href='https://tidal.com/album/216375873' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Even If Things Fall Apart</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216375873" target="_blank">https://tidal.com/album/216375873</a>
 
 Lee Seung Yoon - Docking
@@ -535,6 +613,7 @@ ES     : Reúne Sueños Dispersos
 ZH-CN  : 拼凑零散的梦
 
 
+💿 <b><a href='https://tidal.com/album/172776673' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] DEADLIFT</a></b>
 ▶️Album link : <a href="https://tidal.com/album/172776673" target="_blank">https://tidal.com/album/172776673</a>
 
 Lee Seung Yoon - DEADLIFT
@@ -543,6 +622,7 @@ ES     : Peso Muerto
 ZH-CN  : 硬举
 
 
+💿 <b><a href='https://tidal.com/album/199207335' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] BENCH PRESS</a></b>
 ▶️Album link : <a href="https://tidal.com/album/199207335" target="_blank">https://tidal.com/album/199207335</a>
 
 Lee Seung Yoon - BENCH PRESS
@@ -551,6 +631,7 @@ ES     : Press de banca
 ZH-CN  : 卧推
 
 
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] The Summer of 1995</a></b>
 ▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
 
 Lee Seung Yoon - The Summer of 1995
@@ -559,6 +640,7 @@ ES     : El Verano de 1995
 ZH-CN  : 1995年的夏天
 
 
+💿 <b><a href='https://tidal.com/album/146610988' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] SHUT UP & SQUAT</a></b>
 ▶️Album link : <a href="https://tidal.com/album/146610988" target="_blank">https://tidal.com/album/146610988</a>
 
 Lee Seung Yoon - SHUT UP & SQUAT
@@ -567,6 +649,7 @@ ES     : CÁLLATE Y HAZ SENTADILLAS
 ZH-CN  : 闭嘴，深蹲
 
 
+💿 <b><a href='https://tidal.com/album/168236466' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] From the Dawn</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168236466" target="_blank">https://tidal.com/album/168236466</a>
 
 Lee Seung Yoon - Warped Exterior
@@ -595,6 +678,7 @@ ES     : ¡Uf!
 ZH-CN  : 吁！
 
 
+💿 <b><a href='https://tidal.com/album/168236411' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] How Pretty the Moon is</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168236411" target="_blank">https://tidal.com/album/168236411</a>
 
 Lee Seung Yoon - Drink Up The Universe
@@ -622,6 +706,18 @@ EN ⇄ KR : 새롭게 쓰고 싶어
 ES     : Quiero Escribirlo de Nuevo
 ZH-CN  : 我想重新书写</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 이승윤 ( Tidal Lee seung yoon )_trk.txt" download="타이달 이승윤 ( Tidal Lee seung yoon )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%9D%B4%EC%8A%B9%EC%9C%A4%20%28%20Lee%20seung%20yoon%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
