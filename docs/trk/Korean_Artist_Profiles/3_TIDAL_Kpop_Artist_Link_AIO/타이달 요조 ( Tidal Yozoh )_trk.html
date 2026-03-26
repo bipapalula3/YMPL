@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,57 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 요조 ( Tidal Yozoh )_trk.txt"
-                           download="타이달 요조 ( Tidal Yozoh )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 요조 ( Tidal Yozoh )_trk.txt" download="타이달 요조 ( Tidal Yozoh )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%9A%94%EC%A1%B0%20%28%20Yozoh%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/400304849" target="_blank">https://tidal.com/album/400304849</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/400304849' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Names</a></b>
+▶️Album link : <a href="https://tidal.com/album/400304849" target="_blank">https://tidal.com/album/400304849</a>
 
 Yozoh - Tommy
 EN ⇄ KR : 타미
@@ -110,6 +173,7 @@ ES     : L.I.B.R.O.
 ZH-CN  : 书
 
 
+💿 <b><a href='https://tidal.com/album/343893114' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Weak People</a></b>
 ▶️Album link : <a href="https://tidal.com/album/343893114" target="_blank">https://tidal.com/album/343893114</a>
 
 Yozoh - Weak People
@@ -118,6 +182,7 @@ ES     : Gente Débil
 ZH-CN  : 弱者
 
 
+💿 <b><a href='https://tidal.com/album/341495966' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Quince Tree</a></b>
 ▶️Album link : <a href="https://tidal.com/album/341495966" target="_blank">https://tidal.com/album/341495966</a>
 
 Yozoh - Quince Tree
@@ -126,6 +191,7 @@ ES     : Membrillo
 ZH-CN  : 榅桲树
 
 
+💿 <b><a href='https://tidal.com/album/203981198' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] My Tteokbokki Memories (Yozoh X BAEMIN)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/203981198" target="_blank">https://tidal.com/album/203981198</a>
 
 Yozoh - My Tteokbokki Memories (Yozoh X BAEMIN)
@@ -139,6 +205,7 @@ ES     : Mis Recuerdos de Tteokbokki (Yozoh X BAEMIN) (yum-yum ver.)
 ZH-CN  : 我的辣炒年糕回忆 (Yozoh X BAEMIN) (yum-yum v
 
 
+💿 <b><a href='https://tidal.com/album/98821283' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] School 2017 Pt. 2 (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98821283" target="_blank">https://tidal.com/album/98821283</a>
 
 Yozoh - Summer Vacation
@@ -147,6 +214,7 @@ ES     : Vacaciones de Verano
 ZH-CN  : 暑假
 
 
+💿 <b><a href='https://tidal.com/album/98833334' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] School 2017 (Orignial Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/98833334" target="_blank">https://tidal.com/album/98833334</a>
 
 Yozoh - Summer Vacation
@@ -155,6 +223,7 @@ ES     : Vacaciones de Verano
 ZH-CN  : 暑假
 
 
+💿 <b><a href='https://tidal.com/album/364437155' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Best Driver</a></b>
 ▶️Album link : <a href="https://tidal.com/album/364437155" target="_blank">https://tidal.com/album/364437155</a>
 
 Yozoh - Passing by the airport
@@ -183,6 +252,7 @@ ES     : Quiero burlarme
 ZH-CN  : 我想找乐子
 
 
+💿 <b><a href='https://tidal.com/album/366292377' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] Lucy</a></b>
 ▶️Album link : <a href="https://tidal.com/album/366292377" target="_blank">https://tidal.com/album/366292377</a>
 
 Yozoh, Eric You - Lucy
@@ -191,6 +261,7 @@ ES     : Lucy
 ZH-CN  : 露西
 
 
+💿 <b><a href='https://tidal.com/album/52905324' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] Love Has Left Fall Behind</a></b>
 ▶️Album link : <a href="https://tidal.com/album/52905324" target="_blank">https://tidal.com/album/52905324</a>
 
 Yozoh, Jae Il Jung - Love Has Left Fall Behind
@@ -199,6 +270,7 @@ ES     : El amor se ha quedado atrás
 ZH-CN  : 爱已逝去，落后了
 
 
+💿 <b><a href='https://tidal.com/album/336678899' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] You & Me Forever At Last</a></b>
 ▶️Album link : <a href="https://tidal.com/album/336678899" target="_blank">https://tidal.com/album/336678899</a>
 
 Yozoh - You & Me Forever At Last
@@ -207,6 +279,7 @@ ES     : Tú y yo para siempre al fin
 ZH-CN  : 你和我 最终永远
 
 
+💿 <b><a href='https://tidal.com/album/216075168' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] Tiny bits of life Part.1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216075168" target="_blank">https://tidal.com/album/216075168</a>
 
 Yozoh - Day Dream
@@ -220,6 +293,7 @@ ES     : Sueño Diurno
 ZH-CN  : 白日梦
 
 
+💿 <b><a href='https://tidal.com/album/216048609' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] High-school_Love on (Original Soundtrack) Vol.3</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216048609" target="_blank">https://tidal.com/album/216048609</a>
 
 Mad Clown, Yozoh - Chocolat Cherrybomb
@@ -228,6 +302,7 @@ ES     : Bomba de Chocolate y Cereza
 ZH-CN  : 巧克力樱桃炸弹
 
 
+💿 <b><a href='https://tidal.com/album/216046270' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] Family's story (Original Soundtrack) Part.1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216046270" target="_blank">https://tidal.com/album/216046270</a>
 
 Yozoh - I told you
@@ -236,6 +311,7 @@ ES     : Te lo dije
 ZH-CN  : 我告诉过你
 
 
+💿 <b><a href='https://tidal.com/album/366244719' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2013] Existence and Happiness</a></b>
 ▶️Album link : <a href="https://tidal.com/album/366244719" target="_blank">https://tidal.com/album/366244719</a>
 
 Yozoh - Existence and Happiness
@@ -289,6 +365,7 @@ ES     : Me llamo Yozoh
 ZH-CN  : 我的名字是Yozoh
 
 
+💿 <b><a href='https://tidal.com/album/413895694' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] 듀엣 (Original Motion Picture Soundtrack), Pt. 1 - Sitting in my room alone</a></b>
 ▶️Album link : <a href="https://tidal.com/album/413895694" target="_blank">https://tidal.com/album/413895694</a>
 
 Yozoh - 듀엣 (Original Motion Picture Soundtrack), Pt. 1 - S
@@ -297,6 +374,7 @@ ES     : Dúo (Banda Sonora Original), Pt. 1 - S
 ZH-CN  : 二重奏 (电影原声音乐), Pt. 1 - S
 
 
+💿 <b><a href='https://tidal.com/album/305930848' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] My Husband Got a Family (Original Television Soundtrack) Pt. 3</a></b>
 ▶️Album link : <a href="https://tidal.com/album/305930848" target="_blank">https://tidal.com/album/305930848</a>
 
 Yozoh - 빈 하늘 바라보며
@@ -305,6 +383,7 @@ ES     : Mirando al cielo vacío
 ZH-CN  : 仰望空旷的天空
 
 
+💿 <b><a href='https://tidal.com/album/241321529' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] Time_ 전화, 나와 당신의 이야기 (MBC 창사특집 다큐멘터리) (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/241321529" target="_blank">https://tidal.com/album/241321529</a>
 
 Yozoh - 전화를 걸어
@@ -313,6 +392,7 @@ ES     : Llamar por teléfono
 ZH-CN  : 打电话
 
 
+💿 <b><a href='https://tidal.com/album/189140167' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2010] 우리는 선처럼 가만히 누워</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189140167" target="_blank">https://tidal.com/album/189140167</a>
 
 Yozoh - 우리는 선처럼 가만히 누워 (feat. Lee Sang Soon)
@@ -341,6 +421,7 @@ ES     : Te amo
 ZH-CN  : 我爱你
 
 
+💿 <b><a href='https://tidal.com/album/189098598' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] 허니 허니 베이비</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189098598" target="_blank">https://tidal.com/album/189098598</a>
 
 Yozoh - 허니 허니 베이비
@@ -349,6 +430,7 @@ ES     : Cariño, Cariño, Bebé
 ZH-CN  : 甜心甜心宝贝
 
 
+💿 <b><a href='https://tidal.com/album/189098567' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] Vono - Sweet Step</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189098567" target="_blank">https://tidal.com/album/189098567</a>
 
 Yozoh - Vono - Sweet Step
@@ -357,6 +439,7 @@ ES     : Vono - Paso Dulce
 ZH-CN  : Vono - 甜蜜的脚步
 
 
+💿 <b><a href='https://tidal.com/album/168870655' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] Color Of City (Pink)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168870655" target="_blank">https://tidal.com/album/168870655</a>
 
 Yozoh, Kim Jin Pyo - 좋아해
@@ -365,6 +448,7 @@ ES     : Me gustas
 ZH-CN  : 喜欢你
 
 
+💿 <b><a href='https://tidal.com/album/189098543' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2008] Traveler</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189098543" target="_blank">https://tidal.com/album/189098543</a>
 
 Yozoh - Giant
@@ -423,6 +507,7 @@ ES     : Así a Ti
 ZH-CN  : 那样向你
 
 
+💿 <b><a href='https://tidal.com/album/252578961' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2008] Brown Classic 1st - Nostalgia</a></b>
 ▶️Album link : <a href="https://tidal.com/album/252578961" target="_blank">https://tidal.com/album/252578961</a>
 
 Yozoh, Eric - Brown Classic 1st - Nostalgia
@@ -431,6 +516,7 @@ ES     : Clásico Marrón 1º - Nostalgia
 ZH-CN  : 棕色经典第一章 - 怀旧
 
 
+💿 <b><a href='https://tidal.com/album/189098814' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2007] My Name is Yozoh</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189098814" target="_blank">https://tidal.com/album/189098814</a>
 
 Yozoh, Sogyumo Acacia Band - My Name Is Yozoh (With Sogyumo Acacia Band)
@@ -483,6 +569,18 @@ EN ⇄ KR : 내 이름은 요조 (소규모 아카시아 밴드와 함께) (라�
 ES     : Me Llamo Yozoh (Con Sogyumo Acacia Band) (Radio
 ZH-CN  : 我的名字是Yozoh (With Sogyumo Acacia Band) (Radio</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 요조 ( Tidal Yozoh )_trk.txt" download="타이달 요조 ( Tidal Yozoh )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%9A%94%EC%A1%B0%20%28%20Yozoh%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
