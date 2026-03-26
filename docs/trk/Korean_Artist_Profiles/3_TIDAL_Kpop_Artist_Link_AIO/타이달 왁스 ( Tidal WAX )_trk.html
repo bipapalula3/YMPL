@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,57 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 왁스 ( Tidal WAX )_trk.txt"
-                           download="타이달 왁스 ( Tidal WAX )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 왁스 ( Tidal WAX )_trk.txt" download="타이달 왁스 ( Tidal WAX )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%99%81%EC%8A%A4%20%28%20WAX%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/390562305" target="_blank">https://tidal.com/album/390562305</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/390562305' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Our Bright and Happy Days</a></b>
+▶️Album link : <a href="https://tidal.com/album/390562305" target="_blank">https://tidal.com/album/390562305</a>
 
 Wax - Our Bright and Happy Days
 EN ⇄ KR : 우리의 밝고 행복했던 날들
@@ -85,6 +148,7 @@ ES     : Nuestros Días Brillantes y Felices (Versión con Guitarra Acústica)
 ZH-CN  : 我们明亮而快乐的时光 (原声吉他版)
 
 
+💿 <b><a href='https://tidal.com/album/362827221' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] On The Street</a></b>
 ▶️Album link : <a href="https://tidal.com/album/362827221" target="_blank">https://tidal.com/album/362827221</a>
 
 Wax - On The Street
@@ -93,6 +157,7 @@ ES     : En La Calle
 ZH-CN  : 在街上
 
 
+💿 <b><a href='https://tidal.com/album/349577219' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] At The City Hall Station</a></b>
 ▶️Album link : <a href="https://tidal.com/album/349577219" target="_blank">https://tidal.com/album/349577219</a>
 
 Wax - At The City Hall Station
@@ -101,6 +166,7 @@ ES     : En La Estación Del Ayuntamiento
 ZH-CN  : 在市政厅站
 
 
+💿 <b><a href='https://tidal.com/album/342464876' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] A Beautiful Farewell</a></b>
 ▶️Album link : <a href="https://tidal.com/album/342464876" target="_blank">https://tidal.com/album/342464876</a>
 
 Wax - A Beautiful Farewell
@@ -109,6 +175,7 @@ ES     : Una Hermosa Despedida
 ZH-CN  : 美丽的告别
 
 
+💿 <b><a href='https://tidal.com/album/301319846' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] 월간 더 스테이지</a></b>
 ▶️Album link : <a href="https://tidal.com/album/301319846" target="_blank">https://tidal.com/album/301319846</a>
 
 Wax - 슬픔활용법
@@ -117,6 +184,7 @@ ES     : Cómo usar la tristeza
 ZH-CN  : 悲伤活用法
 
 
+💿 <b><a href='https://tidal.com/album/319813328' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Take The Subway (2023)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/319813328" target="_blank">https://tidal.com/album/319813328</a>
 
 Wax - Take The Subway (2023)
@@ -125,6 +193,7 @@ ES     : Coge el metro
 ZH-CN  : 搭地铁
 
 
+💿 <b><a href='https://tidal.com/album/322659768' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Last Love</a></b>
 ▶️Album link : <a href="https://tidal.com/album/322659768" target="_blank">https://tidal.com/album/322659768</a>
 
 Wax - Last Love
@@ -133,6 +202,7 @@ ES     : Último Amor
 ZH-CN  : 最后的爱
 
 
+💿 <b><a href='https://tidal.com/album/333819573' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] A Doll’s Wish</a></b>
 ▶️Album link : <a href="https://tidal.com/album/333819573" target="_blank">https://tidal.com/album/333819573</a>
 
 Wax - A Doll’s Wish
@@ -141,6 +211,7 @@ ES     : El Deseo de una Muñeca
 ZH-CN  : 娃娃的愿望
 
 
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Never Forget (Back to You X WAX)</a></b>
 ▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
 
 Wax - Never Forget (Back to You X WAX)
@@ -149,6 +220,7 @@ ES     : Nunca Olvides
 ZH-CN  : 永不忘记
 
 
+💿 <b><a href='https://tidal.com/album/235550545' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] By Mistake</a></b>
 ▶️Album link : <a href="https://tidal.com/album/235550545" target="_blank">https://tidal.com/album/235550545</a>
 
 왁스 - By Mistake
@@ -157,6 +229,7 @@ ES     : Por Error
 ZH-CN  : 误打误撞
 
 
+💿 <b><a href='https://tidal.com/album/172184990' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] 결혼작사 이혼작곡 OST Part 5</a></b>
 ▶️Album link : <a href="https://tidal.com/album/172184990" target="_blank">https://tidal.com/album/172184990</a>
 
 왁스 - 나를 끝낼 수 있나요
@@ -165,6 +238,7 @@ ES     : ¿Puedes Acabar Conmigo?
 ZH-CN  : 你能结束我吗
 
 
+💿 <b><a href='https://tidal.com/album/305859693' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] missing you</a></b>
 ▶️Album link : <a href="https://tidal.com/album/305859693" target="_blank">https://tidal.com/album/305859693</a>
 
 Wax - missing you
@@ -173,6 +247,7 @@ ES     : te echo de menos
 ZH-CN  : 想念你
 
 
+💿 <b><a href='https://tidal.com/album/177295149' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] contradiction</a></b>
 ▶️Album link : <a href="https://tidal.com/album/177295149" target="_blank">https://tidal.com/album/177295149</a>
 
 Wax - contradiction
@@ -181,6 +256,7 @@ ES     : contradicción
 ZH-CN  : 矛盾
 
 
+💿 <b><a href='https://tidal.com/album/305853112' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Us, back then</a></b>
 ▶️Album link : <a href="https://tidal.com/album/305853112" target="_blank">https://tidal.com/album/305853112</a>
 
 Wax - Us, back then
@@ -189,6 +265,7 @@ ES     : Nosotros, en aquel entonces
 ZH-CN  : 那时的我们
 
 
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] 오! 삼광빌라! (Original Television Soundtrack), Pt. 12</a></b>
 ▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
 
 Wax - 바래봐요
@@ -197,6 +274,7 @@ ES     : Espero
 ZH-CN  : 希望吧
 
 
+💿 <b><a href='https://tidal.com/album/189587190' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] TAKE ME HOME</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189587190" target="_blank">https://tidal.com/album/189587190</a>
 
 Wax - TAKE ME HOME
@@ -205,6 +283,7 @@ ES     : LLÉVAME A CASA
 ZH-CN  : 带我回家
 
 
+💿 <b><a href='https://tidal.com/album/216149843' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] as cold as winter</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216149843" target="_blank">https://tidal.com/album/216149843</a>
 
 Wax - as cold as winter
@@ -213,6 +292,7 @@ ES     : Tan frío como el invierno
 ZH-CN  : 像冬天一样寒冷
 
 
+💿 <b><a href='https://tidal.com/album/216050852' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Silly you</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216050852" target="_blank">https://tidal.com/album/216050852</a>
 
 Wax - Silly you
@@ -221,6 +301,7 @@ ES     : Qué tonto eres
 ZH-CN  : 傻瓜你
 
 
+💿 <b><a href='https://tidal.com/album/334933703' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] SKY Castle, Pt. 5 (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/334933703" target="_blank">https://tidal.com/album/334933703</a>
 
 Wax - Comma
@@ -229,6 +310,7 @@ ES     : Coma
 ZH-CN  : 逗号
 
 
+💿 <b><a href='https://tidal.com/album/216017467' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] My Romance</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216017467" target="_blank">https://tidal.com/album/216017467</a>
 
 Wax - My Romance
@@ -252,6 +334,7 @@ ES     : Qué tonto eres
 ZH-CN  : 傻瓜你
 
 
+💿 <b><a href='https://tidal.com/album/168532354' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Kiss</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168532354" target="_blank">https://tidal.com/album/168532354</a>
 
 Wax - Kiss
@@ -260,6 +343,7 @@ ES     : Beso
 ZH-CN  : 吻
 
 
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] 엄마 OST Part 4 MOM OST Part 4</a></b>
 ▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
 
 왁스 WAX - 그냥 눈물이 나
@@ -268,6 +352,7 @@ ES     : Simplemente Brotan las Lágrimas
 ZH-CN  : 只是流泪
 
 
+💿 <b><a href='https://tidal.com/album/216008173' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] You are You are You are</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216008173" target="_blank">https://tidal.com/album/216008173</a>
 
 Wax - You are You are You are
@@ -276,6 +361,7 @@ ES     : Eres Eres Eres
 ZH-CN  : 你就是你 就是你 就是你
 
 
+💿 <b><a href='https://tidal.com/album/56701426' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Mom, Pt. 4 (Original Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/56701426" target="_blank">https://tidal.com/album/56701426</a>
 
 Wax - Tears In My Eyes
@@ -284,6 +370,7 @@ ES     : Lágrimas en mis ojos
 ZH-CN  : 眼中的泪水
 
 
+💿 <b><a href='https://tidal.com/album/215969452' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] Not my mind</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215969452" target="_blank">https://tidal.com/album/215969452</a>
 
 Wax - Not my mind
@@ -292,6 +379,7 @@ ES     : No es mi mente
 ZH-CN  : 非我所愿
 
 
+💿 <b><a href='https://tidal.com/album/215968534' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2015] Dear Memories</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215968534" target="_blank">https://tidal.com/album/215968534</a>
 
 Wax - Dear Memories (Feat. Jung Il Hoon of BTOB)
@@ -300,6 +388,7 @@ ES     : Queridos Recuerdos
 ZH-CN  : 亲爱的回忆
 
 
+💿 <b><a href='https://tidal.com/album/216048412' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] SPARK</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216048412" target="_blank">https://tidal.com/album/216048412</a>
 
 Wax - We are Infinite
@@ -358,6 +447,7 @@ ES     : Medio Amor, Oculto
 ZH-CN  : 一半的爱，藏起来了
 
 
+💿 <b><a href='https://tidal.com/album/35402369' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] Not Even A Call</a></b>
 ▶️Album link : <a href="https://tidal.com/album/35402369" target="_blank">https://tidal.com/album/35402369</a>
 
 Wax - Not Even A Call
@@ -366,6 +456,7 @@ ES     : Ni Siquiera Una Llamada
 ZH-CN  : 连个电话都没有
 
 
+💿 <b><a href='https://tidal.com/album/35402201' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] Lucky (Single)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/35402201" target="_blank">https://tidal.com/album/35402201</a>
 
 Wax - Lucky
@@ -374,6 +465,7 @@ ES     : Afortunado
 ZH-CN  : 幸运
 
 
+💿 <b><a href='https://tidal.com/album/193498348' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] Empress Ki (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/193498348" target="_blank">https://tidal.com/album/193498348</a>
 
 Wax - Love Wind
@@ -382,6 +474,7 @@ ES     : Viento de amor
 ZH-CN  : 爱之风
 
 
+💿 <b><a href='https://tidal.com/album/216078956' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] Coin Laundry (Never Loved)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216078956" target="_blank">https://tidal.com/album/216078956</a>
 
 Wax - Coin Laundry (Never Loved)
@@ -390,11 +483,12 @@ ES     : Lavandería Automática
 ZH-CN  : 自助洗衣店
 
 
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] Always You</a></b>
 ▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
 
 Wax - Intro
 EN ⇄ KR : 소개
-ES     : Introducción
+ES     : BPM69
 ZH-CN  : 简介
 
 Wax - Stubby Pencil
@@ -433,8 +527,8 @@ ES     : te echo de menos
 ZH-CN  : 想念你
 
 Wax - Chiki Chiki
-EN ⇄ KR : Chiki Chiki
-ES     : Chiki Chiki
+EN ⇄ KR : Cheeky Cheeky
+ES     : Chiki Chiki (This one is fine as is, a playful nonsense word often doesn't need translation)
 ZH-CN  : 奇奇奇奇
 
 Wax - Expiration Date
@@ -448,6 +542,7 @@ ES     : No Lloraré
 ZH-CN  : 不会哭
 
 
+💿 <b><a href='https://tidal.com/album/305946993' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2013] 칼과 꽃 (Original Television Soundtrack) Pt. 1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/305946993" target="_blank">https://tidal.com/album/305946993</a>
 
 Wax - 사랑아
@@ -456,6 +551,7 @@ ES     : Amor
 ZH-CN  : 爱情啊
 
 
+💿 <b><a href='https://tidal.com/album/228357799' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2013] Empress Ki (Original Television Soundtrack) Pt. 2</a></b>
 ▶️Album link : <a href="https://tidal.com/album/228357799" target="_blank">https://tidal.com/album/228357799</a>
 
 Wax - Love Wind
@@ -464,6 +560,7 @@ ES     : Viento de amor
 ZH-CN  : 爱之风
 
 
+💿 <b><a href='https://tidal.com/album/168532576' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] 빛과 그림자 (Original Soundtrack), Pt. 2</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168532576" target="_blank">https://tidal.com/album/168532576</a>
 
 Wax - 사랑한다
@@ -472,6 +569,7 @@ ES     : Te amo
 ZH-CN  : 我爱你
 
 
+💿 <b><a href='https://tidal.com/album/18384926' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] Now And Forever</a></b>
 ▶️Album link : <a href="https://tidal.com/album/18384926" target="_blank">https://tidal.com/album/18384926</a>
 
 Wax - Greatest Love Songs - Women Live With Love
@@ -575,6 +673,7 @@ ES     : Las Mejores Canciones de Amor - Mi Novio
 ZH-CN  : 最伟大的情歌 - 我的男朋友
 
 
+💿 <b><a href='https://tidal.com/album/228357459' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2012] I Miss You (Original Television Soundtrack) Pt. 1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/228357459" target="_blank">https://tidal.com/album/228357459</a>
 
 Wax - Tears are falling
@@ -583,6 +682,7 @@ ES     : Lágrimas están cayendo
 ZH-CN  : 眼泪在坠落
 
 
+💿 <b><a href='https://tidal.com/album/35402105' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] fall in...</a></b>
 ▶️Album link : <a href="https://tidal.com/album/35402105" target="_blank">https://tidal.com/album/35402105</a>
 
 Wax - Booze Is a Problem
@@ -616,6 +716,7 @@ ES     : El alcohol es un problema
 ZH-CN  : 酒精是个问题
 
 
+💿 <b><a href='https://tidal.com/album/215931320' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2010] WAX Unplugged Side B</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215931320" target="_blank">https://tidal.com/album/215931320</a>
 
 Wax - 원하고 원망하죠
@@ -649,6 +750,7 @@ ES     : Buena Persona
 ZH-CN  : 好人
 
 
+💿 <b><a href='https://tidal.com/album/215782391' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2010] WAX Unplugged Side A</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215782391" target="_blank">https://tidal.com/album/215782391</a>
 
 Wax - 이별이야기 (Feat. JO KWON)
@@ -682,6 +784,7 @@ ES     : Carta
 ZH-CN  : 信
 
 
+💿 <b><a href='https://tidal.com/album/215930884' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2010] Two women</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215930884" target="_blank">https://tidal.com/album/215930884</a>
 
 Wax - Two women
@@ -690,6 +793,7 @@ ES     : Dos mujeres
 ZH-CN  : 两个女人
 
 
+💿 <b><a href='https://tidal.com/album/216096579' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] 울면 안돼</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216096579" target="_blank">https://tidal.com/album/216096579</a>
 
 Wax - 울면 안돼
@@ -698,6 +802,7 @@ ES     : No llores
 ZH-CN  : 不要哭
 
 
+💿 <b><a href='https://tidal.com/album/34422893' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2008] Women live with love</a></b>
 ▶️Album link : <a href="https://tidal.com/album/34422893" target="_blank">https://tidal.com/album/34422893</a>
 
 Wax - Women live with love
@@ -750,6 +855,18 @@ EN ⇄ KR : 나는 아파요
 ES     : Estoy enfermo/a
 ZH-CN  : 我病了</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 왁스 ( Tidal WAX )_trk.txt" download="타이달 왁스 ( Tidal WAX )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%99%81%EC%8A%A4%20%28%20WAX%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
