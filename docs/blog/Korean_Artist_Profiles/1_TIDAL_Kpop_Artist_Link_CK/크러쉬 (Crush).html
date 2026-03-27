@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 크러쉬 ( Tidal Crush )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 크러쉬 ( Tidal Crush )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/bc62362a/471e/40bd/b989/ddc1b76dc2f6/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/19758136' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 크러쉬</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>장르를 넘나드는 감각적인 음색</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Crush</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Sensuous Vocalist Transcending Genres</div><p>독특한 음색과 폭넓은 음악 스펙트럼으로 사랑받는 아티스트, 크러쉬입니다. R&B, 힙합, 소울 등 다양한 장르를 자신만의 색깔로 소화하며 많은 팬들을 매료시키고 있어요. 그의 음악은 트렌디하면서도 깊은 감성을 담아내어 듣는 이로 하여금 끊임없이 새로운 매력을 느끼게 합니다.</p><p>Crush is an artist loved for his unique vocal tone and broad musical spectrum. He captivates many fans by digesting various genres such as R&B, hip-hop, and soul with his own colors. His music is trendy yet contains deep emotions, allowing listeners to constantly feel new charms.</p><p>✧</p><p>솔로 아티스트의 시작</p><p>크러쉬는 VV:D 크루 활동을 통해 이름을 알리기 시작했습니다. 이후 솔로 아티스트로 데뷔하여 자신만의 음악 세계를 구축해 나가고 있어요. 그의 음악은 단순한 장르 구분을 넘어선 실험적인 시도를 보여줍니다.</p><p>The Beginning of a Solo Artist</p><p>Crush began to make a name for himself through his activities with the VV:D crew. Since then, he has debuted as a solo artist and is building his own musical world. His music showcases experimental attempts that go beyond simple genre classifications.</p><p>✧</p><p>음악적 스타일과 퍼포먼스</p><p>크러쉬의 음악은 R&B와 힙합을 기반으로 다양한 장르의 요소를 융합하는 것이 특징입니다. 그는 보컬뿐만 아니라 작사, 작곡, 프로듀싱 능력까지 겸비한 다재다능한 아티스트예요. 무대 위에서의 퍼포먼스 또한 그의 음악적 매력을 더욱 돋보이게 합니다.</p><p>Musical Style and Performance</p><p>Crush's music is characterized by the fusion of various genres based on R&B and hip-hop. He is a versatile artist with not only vocals but also songwriting, composing, and producing skills. His performance on stage further enhances his musical charm.</p><p>✧</p><p>주요 활동과 협업</p><p>크러쉬는 꾸준한 음반 발매와 공연 활동을 통해 팬들과 소통하고 있습니다. 또한 다양한 아티스트들과의 협업을 통해 음악적 스펙트럼을 넓혀가고 있어요. 그의 협업은 항상 새로운 시너지 효과를 창출하며 음악 팬들의 기대를 충족시켜 줍니다.</p><p>Major Activities and Collaborations</p><p>Crush communicates with fans through consistent album releases and performances. He is also expanding his musical spectrum through collaborations with various artists. His collaborations always create new synergy effects and satisfy the expectations of music fans.</p><p>✧</p><p>미래와 음악적 의미</p><p>크러쉬는 앞으로도 끊임없는 음악적 탐구를 통해 자신만의 색깔을 더욱 깊게 만들어갈 것으로 기대됩니다. 그의 음악은 단순한 유행을 넘어 오랫동안 사랑받는 작품으로 남을 것입니다. 앞으로 그가 보여줄 새로운 음악 세계가 더욱 기대됩니다.</p><p>Future and Musical Significance</p><p>Crush is expected to deepen his own color through continuous musical exploration in the future. His music will remain a beloved work for a long time, beyond simple trends. We look forward to the new musical world he will show us in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] wonderego</div>
+<div><a href='https://tidal.com/album/327729352' target='_blank'>https://tidal.com/album/327729352</a></div>
+<div>Crush - New Day(Explicit)</div>
+<div>Crush - Hmm-cheat</div>
+<div>Crush - No Break (Feat. Dynamicduo)</div>
+<div>Crush - Me Myself & I</div>
+<div>Crush - Satisfied (Feat. PENOMECO)</div>
+<div>Crush - Deep End (Feat. AMAKA)</div>
+<div>Crush - EZPZ</div>
+<div>Crush - Nothing Else (Feat. Kim Ximya)</div>
+<div>Crush - GOT ME GOT U</div>
+<div>Crush - Bad Habits (Feat. LeeHi)</div>
+<div>Crush - Ego</div>
+<div>Crush - Ego’s Theme (Interlude)</div>
+<div>Crush - A Man Like Me</div>
+<div>Crush - Monday Blues</div>
+<div>Crush - You</div>
+<div>Crush - SHE</div>
+<div>Crush - Harness</div>
+<div>Crush - For Days to Come</div>
+<div>Crush - Remember Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/327729352' target='_blank'><img src='https://resources.tidal.com/images/8852ad08/9504/4a3c/b498/8d3355172e4b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Rush Hour</div>
+<div><a href='https://tidal.com/album/306288803' target='_blank'>https://tidal.com/album/306288803</a></div>
+<div>Crush - Rush Hour (Feat. j-hope of BTS)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306288803' target='_blank'><img src='https://resources.tidal.com/images/00c17aa3/8366/48e1/9e0c/ab82cac0c1e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Guardian (Original Television Soundtrack), Pt. 4</div>
+<div><a href='https://tidal.com/album/196126983' target='_blank'>https://tidal.com/album/196126983</a></div>
+<div>Crush - Beautiful</div>
+<div>Crush - Beautiful</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196126983' target='_blank'><img src='https://resources.tidal.com/images/010378f6/241b/4eff/82fb/b7ba88bb12ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] with HER</div>
+<div><a href='https://tidal.com/album/189821356' target='_blank'>https://tidal.com/album/189821356</a></div>
+<div>Crush - Let Me Go (with TAEYEON)</div>
+<div>Crush - Tip Toe (with LeeHi)</div>
+<div>Crush - Love Encore (with Lee Sora)</div>
+<div>Crush - Step By Step (with yoonmirae)</div>
+<div>Crush - She Said (with BIBI)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189821356' target='_blank'><img src='https://resources.tidal.com/images/31a7c876/f3c0/4322/a959/4ae5e41d39dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] homemade 1</div>
+<div><a href='https://tidal.com/album/189784044' target='_blank'>https://tidal.com/album/189784044</a></div>
+<div>Crush - Mayday (Feat. Joy)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189784044' target='_blank'><img src='https://resources.tidal.com/images/56624017/84fc/45a8/8ed7/2779322c899b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Sweet Love (She is My Type♡ X Crush)</div>
+<div><a href='https://tidal.com/album/216253155' target='_blank'>https://tidal.com/album/216253155</a></div>
+<div>Crush - Sweet Love (She is My Type♡ X Crush)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216253155' target='_blank'><img src='https://resources.tidal.com/images/df98fa8b/677e/4322/bdde/c236a0953c39/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] OHIO</div>
+<div><a href='https://tidal.com/album/189866680' target='_blank'>https://tidal.com/album/189866680</a></div>
+<div>Crush - OHIO</div>
+<div>Crush - Let Me (Feat. Devin Morrison)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189866680' target='_blank'><img src='https://resources.tidal.com/images/536209c2/fab9/4aa2/922f/942adb8d7f8d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] ITAEWON CLASS (Original Television Soundtrack) Pt. 11</div>
+<div><a href='https://tidal.com/album/294583091' target='_blank'>https://tidal.com/album/294583091</a></div>
+<div>Crush - 어떤 말도</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/294583091' target='_blank'><img src='https://resources.tidal.com/images/0e46d7a1/d45c/46fb/8895/4bbaf87a9570/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Digital Lover</div>
+<div><a href='https://tidal.com/album/189557029' target='_blank'>https://tidal.com/album/189557029</a></div>
+<div>Crush - Digital Lover</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189557029' target='_blank'><img src='https://resources.tidal.com/images/8e587fab/2afd/4210/9d41/88aad2da80f6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Crash Landing on You OST Part 10</div>
+<div><a href='https://tidal.com/album/196153879' target='_blank'>https://tidal.com/album/196153879</a></div>
+<div>Crush - Let Us Go</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196153879' target='_blank'><img src='https://resources.tidal.com/images/92cd01e8/a27d/4856/ba54/acb473efeb4e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] NAPPA</div>
+<div><a href='https://tidal.com/album/189263091' target='_blank'>https://tidal.com/album/189263091</a></div>
+<div>Crush - NAPPA</div>
+<div>Crush, Joyce Wrice, Devin Morrison - Lookin 4 (Feat. Joyce Wrice, Devin Morrison)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189263091' target='_blank'><img src='https://resources.tidal.com/images/99edb79b/dbb4/43ea/b6e9/54471017bd9d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] I Wanna Be Yours</div>
+<div><a href='https://tidal.com/album/121315419' target='_blank'>https://tidal.com/album/121315419</a></div>
+<div>Pink Sweat$, Crush - I Wanna Be Yours</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/121315419' target='_blank'><img src='https://resources.tidal.com/images/a9d3a518/5d55/41aa/b759/a8667c19fd98/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] From Midnight To Sunrise</div>
+<div><a href='https://tidal.com/album/189448747' target='_blank'>https://tidal.com/album/189448747</a></div>
+<div>Crush - From Midnight To Sunrise</div>
+<div>Crush, DEAN - Wake Up (Feat. DEAN)</div>
+<div>Crush, Band Wonderlust - Wonderlust (Feat. Band Wonderlust)</div>
+<div>Crush - With You</div>
+<div>Crush - Alone</div>
+<div>Crush, DPR LIVE - Tiki-Taka (Feat. DPR LIVE)</div>
+<div>Crush - Sunset</div>
+<div>Crush - Butterfly</div>
+<div>Crush - Ibiza</div>
+<div>Crush - Cloth</div>
+<div>Crush - Sleep No More</div>
+<div>Crush, Zion.T - Nighty Night (Feat. Zion.T)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189448747' target='_blank'><img src='https://resources.tidal.com/images/6f2eaac7/f328/42e0/9e7c/f2c4759ce5d7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] wonderlost</div>
+<div><a href='https://tidal.com/album/196141796' target='_blank'>https://tidal.com/album/196141796</a></div>
+<div>Crush - Chill (Feat. Sik-K)</div>
+<div>Crush - Endorphin (Feat. PENOMECO & PUNCHNELLO)</div>
+<div>Crush - Cereal (Feat. ZICO)</div>
+<div>Crush - Close Your Eyes (Feat. Hoody)</div>
+<div>Crush - RYO (Feat. CIFIKA & Byung Un of Balming Tiger)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141796' target='_blank'><img src='https://resources.tidal.com/images/1c963cef/f55b/495c/8097/90d0a639cb4f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] none</div>
+<div><a href='https://tidal.com/album/196143394' target='_blank'>https://tidal.com/album/196143394</a></div>
+<div>Crush - none</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143394' target='_blank'><img src='https://resources.tidal.com/images/065fc3ec/bbdc/4a88/806a/1bda8e87f1d9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Lay Your Head On Me</div>
+<div><a href='https://tidal.com/album/196144353' target='_blank'>https://tidal.com/album/196144353</a></div>
+<div>Crush - Lay Your Head on Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196144353' target='_blank'><img src='https://resources.tidal.com/images/a3f5de0a/dcb6/4c63/9ca7/7f2183a6d297/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Finding Heroes_ Geek Tour Special</div>
+<div><a href='https://tidal.com/album/196141188' target='_blank'>https://tidal.com/album/196141188</a></div>
+<div>Crush - Stevie Wonderlust (With Band Wonderlust)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141188' target='_blank'><img src='https://resources.tidal.com/images/cef03e5c/4fa2/4365/bc1d/a9686b36bd57/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Bittersweet</div>
+<div><a href='https://tidal.com/album/196140728' target='_blank'>https://tidal.com/album/196140728</a></div>
+<div>Crush - Bittersweet</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140728' target='_blank'><img src='https://resources.tidal.com/images/fbe429b1/c9e2/41a6/919c/357c4a4de666/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] be by my side</div>
+<div><a href='https://tidal.com/album/196137929' target='_blank'>https://tidal.com/album/196137929</a></div>
+<div>Crush - be by my side</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137929' target='_blank'><img src='https://resources.tidal.com/images/024d4ace/5a9b/4525/9b3a/8294a6f369ae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Outside</div>
+<div><a href='https://tidal.com/album/196140920' target='_blank'>https://tidal.com/album/196140920</a></div>
+<div>Crush - Summer Love</div>
+<div>Crush - Outside (Feat. Beenzino)</div>
+<div>Crush - Don′t be shy (Feat. Sik-K)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140920' target='_blank'><img src='https://resources.tidal.com/images/7833f599/28c1/4dde/8af1/3be5b8593b2a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Last Festival</div>
+<div><a href='https://tidal.com/album/196137247' target='_blank'>https://tidal.com/album/196137247</a></div>
+<div>Crush - Last Festival</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137247' target='_blank'><img src='https://resources.tidal.com/images/da4d5ac9/1f70/4cc2/ae75/2150d1b7a97d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] wonderlust</div>
+<div><a href='https://tidal.com/album/196140914' target='_blank'>https://tidal.com/album/196140914</a></div>
+<div>Crush - wanderlust</div>
+<div>Crush - 2411</div>
+<div>Crush - nostalgia</div>
+<div>Crush - fall</div>
+<div>Crush - like my father</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140914' target='_blank'><img src='https://resources.tidal.com/images/9d031c10/b008/4da2/90a7/b960bc5315ee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] highfiVe</div>
+<div><a href='https://tidal.com/album/260458321' target='_blank'>https://tidal.com/album/260458321</a></div>
+<div>Dynamicduo, Primary, Boi B, Crush - highfiVe</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260458321' target='_blank'><img src='https://resources.tidal.com/images/fa7f02b1/10ec/4406/9e65/49d2bcaea2fa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Interlude</div>
+<div><a href='https://tidal.com/album/196140908' target='_blank'>https://tidal.com/album/196140908</a></div>
+<div>Crush - In The Air</div>
+<div>Crush - woo ah</div>
+<div>Crush - 9 to 5 (Feat. Gaeko)</div>
+<div>Crush - Castaway (Feat. MISO)</div>
+<div>Crush - Dust</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140908' target='_blank'><img src='https://resources.tidal.com/images/32930102/2a8d/4fb7/8fc9/7f7e66508553/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Don′t Forget</div>
+<div><a href='https://tidal.com/album/196140906' target='_blank'>https://tidal.com/album/196140906</a></div>
+<div>Crush - Don’t Forget (Feat. TAEYEON)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140906' target='_blank'><img src='https://resources.tidal.com/images/24e20295/accc/4259/9603/65a069209c50/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Oasis</div>
+<div><a href='https://tidal.com/album/196140903' target='_blank'>https://tidal.com/album/196140903</a></div>
+<div>Crush - You and I</div>
+<div>Crush - Oasis (Feat. ZICO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140903' target='_blank'><img src='https://resources.tidal.com/images/d1d77554/d98f/4d71/b118/0a51f59becb4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Sometimes</div>
+<div><a href='https://tidal.com/album/196145810' target='_blank'>https://tidal.com/album/196145810</a></div>
+<div>Crush - Sometimes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196145810' target='_blank'><img src='https://resources.tidal.com/images/fb94488d/4511/4ee2/9b66/924c58b9ec11/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2014] SOFA</div>
+<div><a href='https://tidal.com/album/196140900' target='_blank'>https://tidal.com/album/196140900</a></div>
+<div>Crush - SOFA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140900' target='_blank'><img src='https://resources.tidal.com/images/3799d7c7/3a3f/4e2b/8cde/c5600d861329/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] It's Okay, That's Love, Pt. 3 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196095368' target='_blank'>https://tidal.com/album/196095368</a></div>
+<div>Crush - Sleepless Night (Feat. Punch)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196095368' target='_blank'><img src='https://resources.tidal.com/images/b3f944e7/6da5/4d1a/ad37/e9e1760828e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Crush On You</div>
+<div><a href='https://tidal.com/album/196140888' target='_blank'>https://tidal.com/album/196140888</a></div>
+<div>Crush - I Fancy You</div>
+<div>Crush - A Little Bit (Feat. Lydia Paek)</div>
+<div>Crush - Hey Baby (Feat. Zion.T)</div>
+<div>Crush - Whatever You Do (Feat. Gray)</div>
+<div>Crush - I’m Fine (Feat. Kumapark)</div>
+<div>Crush - Lovely (Feat. CHOIZA)</div>
+<div>Crush - I Want You</div>
+<div>Crush - Hug Me (Feat. Gaeko)</div>
+<div>Crush - Give It To Me (Feat. Jay Park , Simon Dominic)(Explicit)</div>
+<div>Crush - Friday ya (Feat. Jinbo)</div>
+<div>Crush - Sometimes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140888' target='_blank'><img src='https://resources.tidal.com/images/a89bcffa/b4ac/4b9c/a049/c73923c269e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Where We Go_</div>
+<div><a href='https://tidal.com/album/189034501' target='_blank'>https://tidal.com/album/189034501</a></div>
+<div>gary, Taewan, Crush - Where We Go-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189034501' target='_blank'><img src='https://resources.tidal.com/images/0400090e/d0d8/403b/aac4/612fc851e4cd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Crush On You (Feat. Swings)</div>
+<div><a href='https://tidal.com/album/204453674' target='_blank'>https://tidal.com/album/204453674</a></div>
+<div>Crush - Crush On You (Feat. Swings)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204453674' target='_blank'><img src='https://resources.tidal.com/images/2d0689a5/79eb/4aae/8378/1890ea8cf297/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Red Dress (Feat. TakeOne)</div>
+<div><a href='https://tidal.com/album/204491622' target='_blank'>https://tidal.com/album/204491622</a></div>
+<div>Crush - Red Dress (Feat. TakeOne)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204491622' target='_blank'><img src='https://resources.tidal.com/images/3ed79248/8e86/485b/a487/a38c3e2ac409/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/타이달 크러쉬 ( Tidal Crush )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
