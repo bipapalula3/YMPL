@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 크레용팝 ( Tidal Crayon Pop )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 크레용팝 ( Tidal Crayon Pop )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/39db3dcb/cb60/4c08/a422/3d258abd560c/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5077093' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 크레용팝</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>독특한 콘셉트로 대중을 사로잡는 다섯 요정</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Crayon Pop</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Five Fairies Captivating the Public with a Unique Concept</div><p>개성 넘치는 콘셉트와 중독성 강한 멜로디로 사랑받는 그룹, 크레용팝입니다. 다섯 멤버의 다채로운 매력과 에너지 넘치는 퍼포먼스는 보는 이들을 즐겁게 하죠. 독보적인 색깔로 K팝 씬에 신선한 바람을 불어넣고 있습니다.</p><p>Crayon Pop is a group loved for its unique concept and highly addictive melodies. The diverse charms and energetic performances of the five members are sure to delight viewers. They are bringing a breath of fresh air to the K-pop scene with their unique color.</p><p>✧</p><p>그룹 탄생</p><p>크레용팝은 2012년 데뷔하여 독특한 콘셉트로 대중의 시선을 사로잡았습니다. 평범함을 거부하고 자신들만의 개성을 드러내는 음악과 퍼포먼스로 존재감을 알렸죠. 신선함으로 무장한 이들의 등장은 K팝 씬에 새로운 활력을 불어넣었습니다.</p><p>Group's Origin</p><p>Crayon Pop debuted in 2012 and immediately captivated the public with their unique concept. They made their presence known with music and performances that rejected the ordinary and showcased their own individuality. Their arrival, armed with freshness, injected new energy into the K-pop scene.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>크레용팝의 음악은 중독성 강한 멜로디와 재치 있는 가사가 특징입니다. 헬멧과 트레이닝복을 매치한 파격적인 스타일의 퍼포먼스는 그들의 음악을 더욱 돋보이게 하죠. 한번 보면 잊을 수 없는 강렬한 인상을 남깁니다.</p><p>Music and Performance</p><p>Crayon Pop's music is characterized by addictive melodies and witty lyrics. Their unconventional performances, matching helmets with tracksuits, further enhance their music. They leave a strong impression that is unforgettable once seen.</p><p>✧</p><p>주요 활동</p><p>크레용팝은 'Bar Bar Bar'로 대중적인 인기를 얻으며 K팝을 대표하는 그룹 중 하나로 자리매김했습니다. 국내뿐 아니라 해외에서도 많은 팬들의 사랑을 받으며 활발한 활동을 펼쳤습니다. 독창적인 콘셉트는 다양한 패러디를 낳으며 큰 화제를 모았습니다.</p><p>Key Activities</p><p>Crayon Pop gained popularity with 'Bar Bar Bar' and established themselves as one of the leading groups in K-pop. They have been actively working, receiving love from many fans not only in Korea but also overseas. Their original concept has generated a lot of buzz, spawning various parodies.</p><p>✧</p><p>미래/의미</p><p>크레용팝은 K팝 씬에 독특한 발자취를 남긴 그룹으로 기억될 것입니다. 틀에 얽매이지 않는 자유로운 시도와 도전 정신은 후배 아티스트들에게도 영감을 주고 있습니다. 앞으로도 크레용팝만의 개성 넘치는 음악을 기대해봅니다.</p><p>Future/Significance</p><p>Crayon Pop will be remembered as a group that left a unique mark on the K-pop scene. Their free-spirited attempts and challenging spirit, unconstrained by conventions, are inspiring to younger artists as well. We look forward to Crayon Pop's unique music in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2016] Vroom Vroom</div>
+<div><a href='https://tidal.com/album/142682130' target='_blank'>https://tidal.com/album/142682130</a></div>
+<div>Crayon Pop - Vroom Vroom</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142682130' target='_blank'><img src='https://resources.tidal.com/images/da09fd9f/7891/4f3b/8f6d/2e768d18a96d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Evolution Pop_Vol. 1</div>
+<div><a href='https://tidal.com/album/142682112' target='_blank'>https://tidal.com/album/142682112</a></div>
+<div>Crayon Pop - Bar Bar Bar</div>
+<div>Crayon Pop - Vroom Vroom</div>
+<div>Crayon Pop - Too Much</div>
+<div>Crayon Pop - UH-EE</div>
+<div>Crayon Pop - Dancing Queen 2.0</div>
+<div>Crayon Pop - Doo Doom Chit</div>
+<div>Crayon Pop - Bing Bing</div>
+<div>Crayon Pop - Boogie Woogie</div>
+<div>Crayon Pop - FM</div>
+<div>Crayon Pop - Tonight</div>
+<div>Crayon Pop - Get It Here</div>
+<div>Crayon Pop - Saturday Night</div>
+<div>Crayon Pop - Sketch Book</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142682112' target='_blank'><img src='https://resources.tidal.com/images/2363653b/b964/438e/a5a4/860c2b4a1ac5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] The Artist Diary Project Part.11</div>
+<div><a href='https://tidal.com/album/216008085' target='_blank'>https://tidal.com/album/216008085</a></div>
+<div>Crayon Pop - SUP (wassup) (Feat. Robin)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216008085' target='_blank'><img src='https://resources.tidal.com/images/4720c2d5/e3fd/4e15/8c1c/619dcd068420/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 2015 2nd. Mini 'FM'</div>
+<div><a href='https://tidal.com/album/142681885' target='_blank'>https://tidal.com/album/142681885</a></div>
+<div>Crayon Pop - FM</div>
+<div>Crayon Pop - 하파타카</div>
+<div>Crayon Pop - 1, 2, 3, 4</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142681885' target='_blank'><img src='https://resources.tidal.com/images/aed1f759/192a/4c4f/8e30/310d0200ba8f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Uh-ee</div>
+<div><a href='https://tidal.com/album/142681892' target='_blank'>https://tidal.com/album/142681892</a></div>
+<div>Crayon Pop - UH-EE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142681892' target='_blank'><img src='https://resources.tidal.com/images/2e555dce/67ca/447d/8ab1/b15016527c3e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] High-school_Love on (Original Soundtrack) Vol.5</div>
+<div><a href='https://tidal.com/album/216047267' target='_blank'>https://tidal.com/album/216047267</a></div>
+<div>Crayon Pop - C'mon C'mon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216047267' target='_blank'><img src='https://resources.tidal.com/images/07b00059/6681/4ff8/b6ce/19598498f181/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Hey Mister (From _Trot Lovers_)</div>
+<div><a href='https://tidal.com/album/72638398' target='_blank'>https://tidal.com/album/72638398</a></div>
+<div>Crayon Pop - Hey Mister</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/72638398' target='_blank'><img src='https://resources.tidal.com/images/476e7153/4e28/4490/ba60/8d4de1681fb8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Hero</div>
+<div><a href='https://tidal.com/album/305848790' target='_blank'>https://tidal.com/album/305848790</a></div>
+<div>Kim Jang Hoon, Crayon Pop - Hero</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305848790' target='_blank'><img src='https://resources.tidal.com/images/642aca1f/ca13/4fae/a177/66befafa9463/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 2014 Chrome Family - A Very Special Christmas</div>
+<div><a href='https://tidal.com/album/305846570' target='_blank'>https://tidal.com/album/305846570</a></div>
+<div>Crayon Pop, Bob Girls, Zanzan, Be.A - LOVE CHRISTMAS</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305846570' target='_blank'><img src='https://resources.tidal.com/images/6aea47d3/32a3/411f/998c/4da3448f243c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] 빠빠빠</div>
+<div><a href='https://tidal.com/album/142681902' target='_blank'>https://tidal.com/album/142681902</a></div>
+<div>Crayon Pop - Bar Bar Bar</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142681902' target='_blank'><img src='https://resources.tidal.com/images/a1d5365b/e97c/4622/8b36/feb73f9310a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 꾸리스마스</div>
+<div><a href='https://tidal.com/album/142681895' target='_blank'>https://tidal.com/album/142681895</a></div>
+<div>Crayon Pop - 꾸리스마스</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142681895' target='_blank'><img src='https://resources.tidal.com/images/b1958821/ed85/448d/a90f/40d3a0e58ffb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] The Streets Go Disco</div>
+<div><a href='https://tidal.com/album/142681898' target='_blank'>https://tidal.com/album/142681898</a></div>
+<div>Crayon Pop - 빠빠빠 2.0</div>
+<div>Crayon Pop - Dancing Queen 2.0</div>
+<div>Crayon Pop - Bing Bing (Poppin Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142681898' target='_blank'><img src='https://resources.tidal.com/images/0b29297e/cd2e/450b/9f3d/09e60d8f575d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Dancing Queen</div>
+<div><a href='https://tidal.com/album/142681905' target='_blank'>https://tidal.com/album/142681905</a></div>
+<div>Crayon Pop - Dancing Queen</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142681905' target='_blank'><img src='https://resources.tidal.com/images/4e77ff23/6ea6/492c/ae7a/0794d412c045/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Crayon Pop 1st Mini</div>
+<div><a href='https://tidal.com/album/142681910' target='_blank'>https://tidal.com/album/142681910</a></div>
+<div>Crayon Pop - Bing Bing</div>
+<div>Crayon Pop - Saturday Night</div>
+<div>Crayon Pop - Saturday Night (Dubstep Mix Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142681910' target='_blank'><img src='https://resources.tidal.com/images/e1cc13a4/888e/44ba/ae72/8a975bec60cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/타이달 크레용팝 ( Tidal Crayon Pop )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
