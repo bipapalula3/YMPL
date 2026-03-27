@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 콜드 ( Tidal colde )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 콜드 ( Tidal colde )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/81d5346c/00c2/4134/97f8/2a4854cebab9/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9219822' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 콜드</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>콜드 (Colde) - 감성적인 R&B 선율을 빚어내는 음유시인</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> colde</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Colde - A Poetic Musician Crafting Sensuous R&B Melodies</div><p>독특한 음색과 섬세한 감성으로 리스너들의 마음을 사로잡는 아티스트, 콜드입니다. 그는 솔직하고 진솔한 가사와 트렌디한 사운드를 통해 자신만의 음악 세계를 구축해 나가고 있어요. 듣는 이로 하여금 깊은 공감과 위로를 느끼게 하는 그의 음악은, 단순한 유행을 넘어 오랜 시간 사랑받을 힘을 지니고 있습니다.</p><p>Colde is an artist who captivates listeners with his unique voice and delicate emotions. He is building his own musical world through honest lyrics and trendy sounds. His music, which allows listeners to feel deep empathy and comfort, has the power to be loved for a long time, beyond simple trends.</p><p>✧</p><p>그룹 탄생</p><p>콜드는 웨이브(Wave)라는 R&B 듀오로 음악계에 첫 발을 내딛었습니다. 웨이브 활동을 통해 그는 작사, 작곡, 프로듀싱 능력을 키우며 자신만의 음악적 색깔을 만들어나가기 시작했어요. 이러한 경험은 훗날 솔로 아티스트로서의 성공적인 활동을 위한 밑거름이 되었습니다.</p><p>The Birth of a Group</p><p>Colde first stepped into the music scene as part of the R&B duo Wave. Through his activities with Wave, he developed his songwriting, composing, and producing skills, and began to create his own musical style. This experience laid the foundation for his successful career as a solo artist.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>콜드의 음악은 몽환적이면서도 세련된 R&B를 기반으로 합니다. 그는 다양한 장르를 넘나들며 실험적인 사운드를 시도하고, 독특한 보컬 스타일과 감각적인 가사를 통해 자신만의 음악적 개성을 드러냅니다. 그의 음악은 듣는 이에게 깊은 여운을 남기며, 끊임없이 새로운 모습을 보여주고자 하는 그의 노력을 엿볼 수 있습니다.</p><p>Music and Performance</p><p>Colde's music is based on dreamy and sophisticated R&B. He experiments with various genres, revealing his own musical personality through a unique vocal style and sensual lyrics. His music leaves a lasting impression on listeners, and reveals his efforts to constantly show new sides of himself.</p><p>✧</p><p>주요 활동</p><p>콜드는 솔로 활동 외에도 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀왔습니다. RM (of BTS), 이하이, 백예린 등 다양한 뮤지션들과의 협업은 그의 음악적 역량을 더욱 돋보이게 해주었습니다. 또한, 그는 자신의 레이블 WAVY를 설립하여 신인 아티스트 발굴 및 지원에도 힘쓰고 있습니다.</p><p>Key Activities</p><p>In addition to his solo activities, Colde has broadened his musical spectrum through collaborations with various artists. Collaborations with musicians such as RM (of BTS), Lee Hi, and Yerin Baek have further highlighted his musical capabilities. He has also established his own label, WAVY, and is working to discover and support new artists.</p><p>✧</p><p>미래/의미</p><p>콜드는 끊임없이 변화하고 성장하는 아티스트입니다. 그는 자신만의 음악적 색깔을 유지하면서도 새로운 시도를 두려워하지 않으며, 앞으로 더욱 다양한 음악적 시도를 통해 리스너들에게 신선한 감동을 선사할 것으로 기대됩니다. 그의 음악은 단순한 즐거움을 넘어, 우리 삶의 다양한 감정을 어루만지는 깊은 울림을 전달해 줄 것입니다.</p><p>Future/Meaning</p><p>Colde is an artist who is constantly changing and growing. He is not afraid of new attempts while maintaining his own musical color, and is expected to deliver fresh inspiration to listeners through more diverse musical endeavors in the future. His music will go beyond simple pleasure and deliver a deep resonance that touches the various emotions of our lives.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] My Dearest Nemesis OST Part.4</div>
+<div><a href='https://tidal.com/album/422888615' target='_blank'>https://tidal.com/album/422888615</a></div>
+<div>Colde - Moonrise</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/422888615' target='_blank'><img src='https://resources.tidal.com/images/04c07c5e/16c7/421a/8973/0104f6f59401/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Yoonseul</div>
+<div><a href='https://tidal.com/album/389402314' target='_blank'>https://tidal.com/album/389402314</a></div>
+<div>Colde - Yoonseul</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/389402314' target='_blank'><img src='https://resources.tidal.com/images/224a9092/90bd/4f1a/b9f9/905e86c7596c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] YIN</div>
+<div><a href='https://tidal.com/album/415656283' target='_blank'>https://tidal.com/album/415656283</a></div>
+<div>Colde - Toxic Love</div>
+<div>Colde - I Color You</div>
+<div>Colde - Nirvana Blues</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/415656283' target='_blank'><img src='https://resources.tidal.com/images/3a4d10db/6c3b/4e4f/badb/87d13d63759f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] No Gain No Love, Pt. 8 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/389902155' target='_blank'>https://tidal.com/album/389902155</a></div>
+<div>Colde - Only For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/389902155' target='_blank'><img src='https://resources.tidal.com/images/a5faf6ed/9eaf/47f7/b9d3/4ec17a273e95/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] See You in My 19th Life, Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/300933118' target='_blank'>https://tidal.com/album/300933118</a></div>
+<div>Colde - Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/300933118' target='_blank'><img src='https://resources.tidal.com/images/4b441ced/fa12/4a8b/9fad/9157ae1ef7c7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Love Part 2</div>
+<div><a href='https://tidal.com/album/389424219' target='_blank'>https://tidal.com/album/389424219</a></div>
+<div>Colde - Island</div>
+<div>Colde, RM - Don't ever say love me (feat. RM of BTS)</div>
+<div>Colde - I'm Still Here</div>
+<div>Colde, LEE CHANHYUK - Heartbreak Club (feat. LEE CHANHYUK)</div>
+<div>Colde - After Everything</div>
+<div>Colde, BAEKHYUN - When Dawn Comes Again (feat. BAEKHYUN)</div>
+<div>Colde - Settle</div>
+<div>Colde - Even Though You Said So Easily</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/389424219' target='_blank'><img src='https://resources.tidal.com/images/09b90c8e/b23e/4481/95d9/41af3f15d55a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] After Love</div>
+<div><a href='https://tidal.com/album/389402756' target='_blank'>https://tidal.com/album/389402756</a></div>
+<div>Colde - if you love me (demo)</div>
+<div>Colde - I'm okay</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/389402756' target='_blank'><img src='https://resources.tidal.com/images/6c38f637/d7c7/468f/9a8e/2869a60b1f0c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Myo (Cat)</div>
+<div><a href='https://tidal.com/album/389402318' target='_blank'>https://tidal.com/album/389402318</a></div>
+<div>Colde - Myo (Cat)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/389402318' target='_blank'><img src='https://resources.tidal.com/images/163ba1a4/2b16/41bc/848f/340442987e2a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Happy Birthday</div>
+<div><a href='https://tidal.com/album/389402316' target='_blank'>https://tidal.com/album/389402316</a></div>
+<div>Colde - Happy Birthday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/389402316' target='_blank'><img src='https://resources.tidal.com/images/1a2eec80/b6cd/43ca/b6f9/f4329f6f8f01/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Fresh</div>
+<div><a href='https://tidal.com/album/234436066' target='_blank'>https://tidal.com/album/234436066</a></div>
+<div>Colde - Fresh</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/234436066' target='_blank'><img src='https://resources.tidal.com/images/7230d30e/d081/498d/af99/6f296ae0b125/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] idealism</div>
+<div><a href='https://tidal.com/album/401951917' target='_blank'>https://tidal.com/album/401951917</a></div>
+<div>Colde - Lighter(Explicit)</div>
+<div>Colde - Wolf</div>
+<div>Colde - The Museum</div>
+<div>Colde - Dream</div>
+<div>Colde - Tunnel</div>
+<div>Colde - A Song Nobody Knows</div>
+<div>Colde - Blue Candle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/401951917' target='_blank'><img src='https://resources.tidal.com/images/797c05ab/59d9/4c24/8b0b/0afa7b1aaa2e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] When Dawn Comes Again (feat. BAEKHYUN)</div>
+<div><a href='https://tidal.com/album/401951927' target='_blank'>https://tidal.com/album/401951927</a></div>
+<div>Colde, BAEKHYUN - When Dawn Comes Again (feat. BAEKHYUN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/401951927' target='_blank'><img src='https://resources.tidal.com/images/c2f08a6d/a087/4e31/907d/ed2a4ac4310b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] RECONNECT</div>
+<div><a href='https://tidal.com/album/216375391' target='_blank'>https://tidal.com/album/216375391</a></div>
+<div>CODE KUNST, LEE CHAN HYUK, Colde, sogumm - Cheers (with ELLE KOREA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216375391' target='_blank'><img src='https://resources.tidal.com/images/b406e9f5/4aba/462f/a6bb/bd71c7c81f76/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] New Vision</div>
+<div><a href='https://tidal.com/album/202785859' target='_blank'>https://tidal.com/album/202785859</a></div>
+<div>Colde, JEON SOYEON - New Vision</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/202785859' target='_blank'><img src='https://resources.tidal.com/images/10117a98/2070/4a43/bebd/f61864d7cc74/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Love Part 1</div>
+<div><a href='https://tidal.com/album/401960352' target='_blank'>https://tidal.com/album/401960352</a></div>
+<div>Colde - Love Is a Flower</div>
+<div>Colde - Love Makes Me Jealous</div>
+<div>Colde - I Fxxking Love You(Explicit)</div>
+<div>Colde - WA-R-R</div>
+<div>Colde - Scent</div>
+<div>Colde - You don't need my love-</div>
+<div>Colde - Endless Love</div>
+<div>Colde - Don't Leave Me, My Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/401960352' target='_blank'><img src='https://resources.tidal.com/images/1f0c36d6/aa11/4b5f/b475/20413b11b61d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Light</div>
+<div><a href='https://tidal.com/album/401951925' target='_blank'>https://tidal.com/album/401951925</a></div>
+<div>Colde - Light</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/401951925' target='_blank'><img src='https://resources.tidal.com/images/8456746b/c742/4c17/9e65/d46696c30dfd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] It's You</div>
+<div><a href='https://tidal.com/album/197844007' target='_blank'>https://tidal.com/album/197844007</a></div>
+<div>Colde - It′s You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/197844007' target='_blank'><img src='https://resources.tidal.com/images/c3972bf5/72eb/41ec/a647/606f70ffe1f0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] I`m In Love</div>
+<div><a href='https://tidal.com/album/274642259' target='_blank'>https://tidal.com/album/274642259</a></div>
+<div>Colde - I`m In Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/274642259' target='_blank'><img src='https://resources.tidal.com/images/17a5a1ff/b81c/497b/a833/6e404caa9ce2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Enough</div>
+<div><a href='https://tidal.com/album/305872585' target='_blank'>https://tidal.com/album/305872585</a></div>
+<div>Colde, Jung Yumi, APRO - Enough (prod. APRO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305872585' target='_blank'><img src='https://resources.tidal.com/images/8eddc1ff/1931/46df/add6/7a9f631cc3eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 유별나! 문셰프 (Original Television Soundtrack), Pt. 4</div>
+<div><a href='https://tidal.com/album/410438092' target='_blank'>https://tidal.com/album/410438092</a></div>
+<div>Colde - 사랑은 그곳에서</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/410438092' target='_blank'><img src='https://resources.tidal.com/images/d791b5a4/1797/4358/88bd/065787691d24/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Backstreet Rookie (Original Television Soundtrack), Pt.5</div>
+<div><a href='https://tidal.com/album/189867120' target='_blank'>https://tidal.com/album/189867120</a></div>
+<div>Colde - Treasure</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189867120' target='_blank'><img src='https://resources.tidal.com/images/02a53517/9a3b/4258/ba0d/741c9bd655cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 상실 Loss</div>
+<div><a href='https://tidal.com/album/115277674' target='_blank'>https://tidal.com/album/115277674</a></div>
+<div>Colde - 상실 Loss</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115277674' target='_blank'><img src='https://resources.tidal.com/images/b7f22113/3156/45b1/bcdc/ca87d8961d65/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Control Me</div>
+<div><a href='https://tidal.com/album/401960338' target='_blank'>https://tidal.com/album/401960338</a></div>
+<div>Colde - Control Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/401960338' target='_blank'><img src='https://resources.tidal.com/images/776e10cf/63d2/4a6c/9a5d/21563c395fd9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Your Dog Loves You</div>
+<div><a href='https://tidal.com/album/234056763' target='_blank'>https://tidal.com/album/234056763</a></div>
+<div>Colde - Your Dog Loves You (Feat. Crush)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/234056763' target='_blank'><img src='https://resources.tidal.com/images/bab5fc46/00fb/42bb/a41f/36ba345fb7b0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Wave</div>
+<div><a href='https://tidal.com/album/401960340' target='_blank'>https://tidal.com/album/401960340</a></div>
+<div>Colde - Freedom(Explicit)</div>
+<div>Colde - Move</div>
+<div>Colde, Omega Sapien - YAYAYA (feat. Omega Sapien)(Explicit)</div>
+<div>Colde - Sunflower</div>
+<div>Colde - SPACE(Explicit)</div>
+<div>Colde - Lovestruck</div>
+<div>Colde, Sunwoojunga - String (feat. sunwoojunga)</div>
+<div>Colde - Please Love Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/401960340' target='_blank'><img src='https://resources.tidal.com/images/c22b7899/090a/4658/b028/3db06e08521c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Poem</div>
+<div><a href='https://tidal.com/album/401960335' target='_blank'>https://tidal.com/album/401960335</a></div>
+<div>Colde - Wall</div>
+<div>Colde - Poem (Shhh)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/401960335' target='_blank'><img src='https://resources.tidal.com/images/8ec3ff99/f3f2/4c4d/8c4a/3fd7980cbdf7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/타이달 콜드 ( Tidal colde )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
