@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 최백호 ( Tidal Choi Baek Ho )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 최백호 ( Tidal Choi Baek Ho )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/975517e9/6fcc/4a3a/93e6/8cadfcf221f9/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9111845' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/11676173' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 최백호</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>시대의 감성을 노래하는 영원한 로맨티시스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Choi Baek Ho</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>The Eternal Romanticist Singing the Sentiments of the Times</div><p>깊은 울림과 진솔한 가사로 오랫동안 사랑받아온 가수 최백호님을 소개합니다. 그의 음악은 단순한 노래를 넘어, 삶의 희로애락을 담아낸 한 편의 시와 같습니다. 시대를 초월하는 감성으로 많은 이들의 마음을 어루만지는 그의 음악 세계로 함께 떠나볼까요?</p><p>Let me introduce Choi Baek Ho, a singer who has been loved for a long time for his deep resonance and sincere lyrics. His music is more than just a song; it is like a poem that captures the joys and sorrows of life. Shall we embark on a journey into his musical world, which touches the hearts of many with his timeless sensibility?</p><p>✧</p><p>음악과의 만남</p><p>최백호님은 독특한 음색과 깊이 있는 감성으로 자신만의 음악 세계를 구축해왔습니다. 그의 노래는 삶의 고독과 희망, 사랑과 이별 등 다양한 감정을 진솔하게 담아내어 듣는 이에게 깊은 공감을 선사합니다. 특히, 그의 허스키하면서도 따뜻한 목소리는 듣는 이의 마음을 편안하게 해주는 매력이 있습니다.</p><p>Encountering Music</p><p>Choi Baek Ho has built his own musical world with a unique tone and deep sensibility. His songs sincerely capture various emotions such as the solitude and hope of life, love and parting, providing listeners with deep empathy. In particular, his husky yet warm voice has the charm of making the listener's heart feel comfortable.</p><p>✧</p><p>음악적 여정</p><p>최백호님의 음악은 포크, 팝, 재즈 등 다양한 장르를 아우르며 끊임없이 변화하고 발전해왔습니다. 그는 다양한 뮤지션과의 협업을 통해 새로운 시도를 두려워하지 않고, 자신의 음악적 스펙트럼을 넓혀왔습니다. 이러한 노력은 그의 음악을 더욱 풍성하고 다채롭게 만들어주었습니다.</p><p>Musical Journey</p><p>Choi Baek Ho's music has constantly changed and developed, encompassing various genres such as folk, pop, and jazz. He is not afraid of new attempts through collaboration with various musicians, and has expanded his musical spectrum. These efforts have made his music more rich and diverse.</p><p>✧</p><p>주요 음악 활동</p><p>최백호님은 꾸준한 음반 발매와 공연 활동을 통해 팬들과 소통해왔습니다. 그의 공연은 깊은 감동과 여운을 남기며, 많은 이들에게 잊지 못할 추억을 선사합니다. 또한, 그는 후배 뮤지션 양성에도 힘쓰며 한국 대중음악 발전에 기여하고 있습니다.</p><p>Main Musical Activities</p><p>Choi Baek Ho has communicated with fans through steady album releases and performances. His performances leave a deep impression and lingering feeling, giving many people unforgettable memories. In addition, he is contributing to the development of Korean popular music by nurturing younger musicians.</p><p>✧</p><p>음악의 의미와 미래</p><p>최백호님의 음악은 단순한 유행을 타지 않고, 시대를 초월하는 깊이와 감동을 선사합니다. 그의 음악은 앞으로도 많은 사람들에게 위로와 희망을 전달하며 오랫동안 사랑받을 것입니다. 변치 않는 진심으로 노래하는 그의 음악 세계에 계속해서 귀 기울여 주세요.</p><p>Meaning and Future of Music</p><p>Choi Baek Ho's music does not simply follow trends, but provides timeless depth and emotion. His music will continue to convey comfort and hope to many people and will be loved for a long time. Please continue to listen to his musical world, where he sings with unchanging sincerity.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] Moment</div>
+<div><a href='https://tidal.com/album/259441407' target='_blank'>https://tidal.com/album/259441407</a></div>
+<div>Choi Baek Ho - Moment (Narr. ZICO)</div>
+<div>Choi Baek Ho - Moment</div>
+<div>Choi Baek Ho, Colde - Paint Over (Feat. Colde)</div>
+<div>Choi Baek Ho, GEORGE - Dream With Me (Feat. george)</div>
+<div>Choi Baek Ho, Tiger Jk - Change (Feat. Tiger JK)</div>
+<div>Choi Baek Ho, Jeong Mijo - Old Memories (Feat. Jeong Mijo)</div>
+<div>Choi Baek Ho, Jung Seung Hwan - Pass Away (Feat. Jung Seung Hwan)</div>
+<div>Choi Baek Ho - Book (Special Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/259441407' target='_blank'><img src='https://resources.tidal.com/images/4d43bdcc/f3c1/4d0b/abb6/84b512af6763/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Beyond Evil (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/178385936' target='_blank'>https://tidal.com/album/178385936</a></div>
+<div>Choi Baek Ho - The Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/178385936' target='_blank'><img src='https://resources.tidal.com/images/2ae036a9/9215/44e1/b4b0/4b61182cec1b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Beyond Evil (Original Television Soundtrack) Pt. 1</div>
+<div><a href='https://tidal.com/album/175019970' target='_blank'>https://tidal.com/album/175019970</a></div>
+<div>Choi Baek Ho - The Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175019970' target='_blank'><img src='https://resources.tidal.com/images/2d5a6ad2/48f6/4829/9f87/de55c288f7bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 7 (seven)</div>
+<div><a href='https://tidal.com/album/196147734' target='_blank'>https://tidal.com/album/196147734</a></div>
+<div>Choi Baek Ho - At Last</div>
+<div>Choi Baek Ho - To My Younger Brother</div>
+<div>Choi Baek Ho - Winter is Over</div>
+<div>Choi Baek Ho - Dear Gapsun</div>
+<div>Choi Baek Ho - Fall is Gone</div>
+<div>Choi Baek Ho - Gapado</div>
+<div>Choi Baek Ho - 1950, Daepyeongdong</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196147734' target='_blank'><img src='https://resources.tidal.com/images/abc1b620/258f/4f94/9198/e3bc0888efa0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Regression</div>
+<div><a href='https://tidal.com/album/196139590' target='_blank'>https://tidal.com/album/196139590</a></div>
+<div>Choi Baek Ho - 1950 Daepyeong-dong</div>
+<div>Choi Baek Ho - Moochangpo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196139590' target='_blank'><img src='https://resources.tidal.com/images/11ce8995/9e2c/46af/93a6/1b3042b1f1b9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Gapado</div>
+<div><a href='https://tidal.com/album/196143537' target='_blank'>https://tidal.com/album/196143537</a></div>
+<div>Choi Baek Ho - Gapado</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143537' target='_blank'><img src='https://resources.tidal.com/images/9644d110/8748/434d/934a/44b660f04f12/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 바다 끝</div>
+<div><a href='https://tidal.com/album/196131189' target='_blank'>https://tidal.com/album/196131189</a></div>
+<div>Choi Baek Ho - 바다 끝</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196131189' target='_blank'><img src='https://resources.tidal.com/images/b413fa53/22a7/4217/9768/402a724d5635/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 40th Anniversary</div>
+<div><a href='https://tidal.com/album/196131813' target='_blank'>https://tidal.com/album/196131813</a></div>
+<div>Choi Baek Ho - Wondering Heart</div>
+<div>Choi Baek Ho - End of the Sea</div>
+<div>Choi Baek Ho - Like Birds</div>
+<div>Choi Baek Ho - Longing Was Not Love</div>
+<div>Choi Baek Ho - Sympathy</div>
+<div>Choi Baek Ho - Quiet Days</div>
+<div>Choi Baek Ho - My Old Love Story</div>
+<div>Choi Baek Ho - All Day</div>
+<div>Choi Baek Ho - Well of Tears</div>
+<div>Choi Baek Ho - It Will Pass</div>
+<div>Choi Baek Ho - An Old Friend</div>
+<div>Choi Baek Ho - About Romance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196131813' target='_blank'><img src='https://resources.tidal.com/images/975517e9/6fcc/4a3a/93e6/8cadfcf221f9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Family's story (Original Soundtrack) Part.2</div>
+<div><a href='https://tidal.com/album/216045757' target='_blank'>https://tidal.com/album/216045757</a></div>
+<div>Choi Baek Ho - On the street</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216045757' target='_blank'><img src='https://resources.tidal.com/images/6de9789b/b2ee/4df9/b92e/c9be903bb7f6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] First Love</div>
+<div><a href='https://tidal.com/album/123799180' target='_blank'>https://tidal.com/album/123799180</a></div>
+<div>Choi Baekho - First Love</div>
+<div>Choi Baekho - If you go to Busan  (with Eco Bridge)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/123799180' target='_blank'><img src='https://resources.tidal.com/images/5e350bcd/eb40/498b/b351/2f9b7b732301/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Again, On The Road</div>
+<div><a href='https://tidal.com/album/63796652' target='_blank'>https://tidal.com/album/63796652</a></div>
+<div>Choi Baek Ho - Run</div>
+<div>Choi Baek Ho - Late Autumn</div>
+<div>Choi Baek Ho - On The Road</div>
+<div>Choi Baek Ho - Waiting For The Last Train</div>
+<div>Choi Baek Ho - Magnolia</div>
+<div>Choi Baek Ho - Along The Wind</div>
+<div>Choi Baek Ho - Spring</div>
+<div>Choi Baek Ho - Goodbye</div>
+<div>Choi Baek Ho - Beautiful Days</div>
+<div>Choi Baek Ho - Gypsy</div>
+<div>Choi Baek Ho - Memory</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/63796652' target='_blank'><img src='https://resources.tidal.com/images/1541750e/4a33/4bef/8ea2/500459587035/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] Cheongsapo(History)</div>
+<div><a href='https://tidal.com/album/229473878' target='_blank'>https://tidal.com/album/229473878</a></div>
+<div>Choi Baek Ho - Cheongsapo</div>
+<div>Choi Baek Ho - My Heart Has Lost Its Way</div>
+<div>Choi Baek Ho - About Romance</div>
+<div>Choi Baek Ho - Friend from Youngil Bay</div>
+<div>Choi Baek Ho - Father</div>
+<div>Choi Baek Ho - Night Before Enlistment</div>
+<div>Choi Baek Ho - Ain’t It</div>
+<div>Choi Baek Ho - The Face I Miss</div>
+<div>Choi Baek Ho - Passionate Love</div>
+<div>Choi Baek Ho - Run</div>
+<div>Choi Baek Ho - Autumn Sea Autumn City</div>
+<div>Choi Baek Ho - Empty Space</div>
+<div>Choi Baek Ho - I Love You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/229473878' target='_blank'><img src='https://resources.tidal.com/images/2b0f0729/48ac/4006/8ae3/db4f92c6de2c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Hey _ Alumi Meeting _ Man</div>
+<div><a href='https://tidal.com/album/229473947' target='_blank'>https://tidal.com/album/229473947</a></div>
+<div>Choi Baek Ho - Hey</div>
+<div>Choi Baek Ho - Alumni Meeting</div>
+<div>Choi Baek Ho - To Men</div>
+<div>Choi Baek Ho - Poet and Soldier</div>
+<div>Choi Baek Ho - Jangansa</div>
+<div>Choi Baek Ho - The Ocean</div>
+<div>Choi Baek Ho - About Romance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/229473947' target='_blank'><img src='https://resources.tidal.com/images/3d86368e/bef9/43bf/8585/3eaad5f7fc71/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1977] 그쟈_입영전야</div>
+<div><a href='https://tidal.com/album/263282941' target='_blank'>https://tidal.com/album/263282941</a></div>
+<div>Choi Baek Ho - 그쟈-</div>
+<div>Choi Baek Ho - 별</div>
+<div>Choi Baek Ho - 빈자리</div>
+<div>Choi Baek Ho - 보고싶은 얼굴</div>
+<div>Choi Baek Ho - 태양의 계절</div>
+<div>Choi Baek Ho - 뭔가</div>
+<div>Choi Baek Ho - 입영전야(入營前夜)</div>
+<div>Choi Baek Ho - 꿈</div>
+<div>Choi Baek Ho - 얼굴 하나</div>
+<div>Choi Baek Ho - 날아라 갈매기(CBS 연속방송극 주제가)</div>
+<div>Choi Baek Ho - 가을의 여인(가을로 가자)</div>
+<div>Choi Baek Ho - 용사의 충정(군가)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263282941' target='_blank'><img src='https://resources.tidal.com/images/758a5a13/b574/49f0/930e/a80f92f035cb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_Ch/타이달 최백호 ( Tidal Choi Baek Ho )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
