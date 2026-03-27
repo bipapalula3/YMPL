@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 쿨 ( Tidal Cool )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 쿨 ( Tidal Cool )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/9308a6c8/207c/458a/b3fd/c3d470555ecb/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/4858572 ---------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 쿨</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>쿨 (Cool) - 여름을 노래하는 청량한 멜로디</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Cool</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Cool - Refreshing Melodies That Sing of Summer</div><p>1990년대 여름을 대표하는 그룹, 바로 쿨(Cool)입니다. 시원한 멜로디와 공감가는 가사로 많은 사랑을 받았어요. 듣기만 해도 기분 좋아지는 그들의 음악은 시대를 초월하여 여전히 많은 사람들에게 즐거움을 선사합니다.</p><p>Cool is the group that represents the summer of the 1990s. They were loved for their cool melodies and relatable lyrics. Their music, which makes you feel good just by listening, transcends generations and still brings joy to many.</p><p>✧</p><p>그룹 탄생</p><p>쿨은 1994년 데뷔하여 한국 가요계에 신선한 바람을 일으켰습니다. 초기 멤버 변화를 거쳐 김성수, 이재훈, 유리 3인조로 자리매김하며 전성기를 맞이했어요. 쿨 특유의 밝고 경쾌한 음악은 당시 젊은 세대의 감성을 사로잡았습니다.</p><p>Group Formation</p><p>Cool debuted in 1994 and brought a fresh breeze to the Korean pop music scene. After initial member changes, the group solidified as a trio consisting of Kim Sung-soo, Lee Jae-hoon, and Yuri, marking their golden age. Cool's unique bright and cheerful music captivated the sensibilities of the younger generation at the time.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>쿨의 음악은 주로 댄스 팝을 기반으로 하며, 여름과 사랑을 주제로 한 곡들이 많습니다. 이재훈의 시원한 보컬과 유리의 매력적인 음색이 조화를 이루며 독특한 음악적 색깔을 만들어냈어요. 무대 위에서의 에너지 넘치는 퍼포먼스 또한 쿨의 인기 요인 중 하나였습니다.</p><p>Music and Performance</p><p>Cool's music is mainly based on dance-pop, with many songs themed around summer and love. Lee Jae-hoon's cool vocals and Yuri's charming tone harmonized to create a unique musical color. The energetic performances on stage were also one of the factors in Cool's popularity.</p><p>✧</p><p>주요 활동</p><p>수많은 히트곡을 발표하며 쿨은 90년대 가요계를 대표하는 그룹으로 자리매김했습니다. '애상', 'All For You', '해변의 여인' 등은 지금도 많은 사람들에게 사랑받는 명곡들이에요. 다양한 방송 활동과 콘서트를 통해 팬들과 꾸준히 소통하며 인기를 이어갔습니다.</p><p>Key Activities</p><p>Having released numerous hit songs, Cool established itself as a representative group in the 90s music scene. 'Aesang (Sorrow)', 'All For You', and 'Haebyeonui Yeoin (Beach Girl)' are still beloved classics. They continued to maintain their popularity by communicating with fans through various broadcasting activities and concerts.</p><p>✧</p><p>미래/의미</p><p>쿨의 음악은 시간이 흘러도 변치 않는 청량함과 설렘을 선사합니다. 그들의 음악은 단순한 유행을 넘어, 한 시대를 대표하는 아이콘으로 기억될 것입니다. 앞으로도 쿨의 음악은 많은 사람들에게 즐거움과 추억을 선물할 것입니다.</p><p>Future/Meaning</p><p>Cool's music offers unchanging freshness and excitement even as time passes. Their music transcends mere trends and will be remembered as an icon representing an era. In the future, Cool's music will continue to bring joy and memories to many people.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2016] COOL_ All Time Greatest Hits, Pt. 1</div>
+<div><a href='https://tidal.com/album/346666033' target='_blank'>https://tidal.com/album/346666033</a></div>
+<div>cool - Hopefully (2016 Remastered Version)</div>
+<div>cool - Just Stopping By (2016 Remastered Version)</div>
+<div>cool - Aroha (2016 Remastered Version)</div>
+<div>cool - Farewell (2016 Remastered Version)</div>
+<div>cool - I Love You (2016 Remastered Version)</div>
+<div>cool - I See You (2016 Remastered Version)</div>
+<div>cool - Beach Girl (2016 Remastered Version)</div>
+<div>cool - Fate (2016 Remastered Version)</div>
+<div>cool - Before My Sadness (2016 Remastered Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346666033' target='_blank'><img src='https://resources.tidal.com/images/d94a52a9/27e5/4734/83c7/a7b7ff8beb81/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 한여름 밤의 고백</div>
+<div><a href='https://tidal.com/album/344487215' target='_blank'>https://tidal.com/album/344487215</a></div>
+<div>cool - 한여름 밤의 고백</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344487215' target='_blank'><img src='https://resources.tidal.com/images/b2d6bb6f/60d2/4bda/91c9/e07ff0f1581a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 다 잘될 거야</div>
+<div><a href='https://tidal.com/album/344491256' target='_blank'>https://tidal.com/album/344491256</a></div>
+<div>cool - 다 잘될 거야</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344491256' target='_blank'><img src='https://resources.tidal.com/images/a9f9fc30/da88/4768/a908/83a4b6afacd1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Before a Breakup</div>
+<div><a href='https://tidal.com/album/344383775' target='_blank'>https://tidal.com/album/344383775</a></div>
+<div>cool - Before a Breakup</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344383775' target='_blank'><img src='https://resources.tidal.com/images/401cc90c/a40e/4cf2/bdb1/bf6e6aaea915/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] 쿨 11집</div>
+<div><a href='https://tidal.com/album/344325804' target='_blank'>https://tidal.com/album/344325804</a></div>
+<div>cool - 보고보고</div>
+<div>cool - In Your Eyes</div>
+<div>cool - Kiss</div>
+<div>cool - Happy Time</div>
+<div>cool - 신발</div>
+<div>cool - Blue Night</div>
+<div>cool - 선물</div>
+<div>cool - 헤어지나요</div>
+<div>cool - 달콤한 거짓말</div>
+<div>cool - Summer Melody</div>
+<div>cool - I′m So Cool</div>
+<div>cool - 고고씽</div>
+<div>cool - In Your Eyes (Guitar Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344325804' target='_blank'><img src='https://resources.tidal.com/images/98989bb9/eb59/4479/9d1d/3c8865b6bddd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 사랑을 원해</div>
+<div><a href='https://tidal.com/album/344324537' target='_blank'>https://tidal.com/album/344324537</a></div>
+<div>cool - Bpm 140</div>
+<div>cool - Dance Dance</div>
+<div>cool - 이별을 견디는 몇가지 방법</div>
+<div>cool - 첫사랑</div>
+<div>cool - 보고 싶은데</div>
+<div>cool - 사랑을 원해</div>
+<div>cool - 서울 구경</div>
+<div>cool - 바보</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344324537' target='_blank'><img src='https://resources.tidal.com/images/7067f943/84d7/44b9/ae45/4e9594431cf5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] Forever</div>
+<div><a href='https://tidal.com/album/215691059' target='_blank'>https://tidal.com/album/215691059</a></div>
+<div>cool - 이 여름 SUMMER</div>
+<div>cool - 고백합시다</div>
+<div>cool - SEXY SUMMER LADY</div>
+<div>cool - 애정의 조건</div>
+<div>cool - 너에게 가는 여행</div>
+<div>cool - 혼자인걸요</div>
+<div>cool - Good bye (feat. MC몽)</div>
+<div>cool - 스트롱~맨</div>
+<div>cool - 널 잊는 날</div>
+<div>cool - 어머머</div>
+<div>cool - 널 잊는 연습</div>
+<div>cool - 단 하나의 둘</div>
+<div>cool - PROMISE</div>
+<div>cool - THE FIGHTER</div>
+<div>cool - FRIENDS</div>
+<div>cool - 10 YEARS</div>
+<div>cool - END…AND</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215691059' target='_blank'><img src='https://resources.tidal.com/images/f3eb1996/ca2e/41e6/8a70/e9ba511abcb9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Cool Best</div>
+<div><a href='https://tidal.com/album/344321145' target='_blank'>https://tidal.com/album/344321145</a></div>
+<div>cool - 그럴 수 있다면</div>
+<div>cool - 어떡해</div>
+<div>cool - 벌써 이렇게</div>
+<div>cool - 작은 기다림</div>
+<div>cool - 너의 집앞에서</div>
+<div>cool - 애상</div>
+<div>cool - All For You</div>
+<div>cool - 변명</div>
+<div>cool - Jumpo Mambo</div>
+<div>cool - 영원한 비밀</div>
+<div>cool - 슬퍼지려하기전에 (R&B Version)</div>
+<div>cool - 친구가 연인이 되기까지</div>
+<div>cool - 웨딩데이</div>
+<div>cool - 해변의 여인</div>
+<div>cool - 그래서 행복합니다</div>
+<div>cool - 맥주와 땅콩</div>
+<div>cool - Blue Eyes</div>
+<div>cool - 산책</div>
+<div>cool - Love Letter</div>
+<div>cool - Someday</div>
+<div>cool - 작년, 오늘</div>
+<div>cool - 진실</div>
+<div>cool - 이젠</div>
+<div>cool - 해석남녀</div>
+<div>cool - 결혼을 할거라면</div>
+<div>cool - 아로하</div>
+<div>cool - 5분전</div>
+<div>cool - 운명</div>
+<div>cool - Tell Me Why</div>
+<div>cool - 날아 날아</div>
+<div>cool - 좋은 세상 만들기</div>
+<div>cool - 한장의 추억 (Best Version)</div>
+<div>cool - 미절 Misery</div>
+<div>cool - 십계 (십계명)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344321145' target='_blank'><img src='https://resources.tidal.com/images/447cbbda/f6b8/4257/9c18/9d83cbb4097c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] 9th Performance_ Let‘s See What‘s Happening Now</div>
+<div><a href='https://tidal.com/album/215690969' target='_blank'>https://tidal.com/album/215690969</a></div>
+<div>cool - 친구찾기</div>
+<div>cool - Jingle Love Song(청춘에서 황혼까지)</div>
+<div>cool - 사랑노래</div>
+<div>cool - 아가씨와 건달들</div>
+<div>cool - 그대, 20m, 나</div>
+<div>cool - Now I Know</div>
+<div>cool - 5 땡 Q</div>
+<div>cool - Turning</div>
+<div>cool - 도시 바캉스</div>
+<div>cool - 등 푸른 추억</div>
+<div>cool - Falling in Love</div>
+<div>cool - 둘만의 비밀</div>
+<div>cool - 에게해에 지다</div>
+<div>cool - Solo</div>
+<div>cool - 할 수 있는 건</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215690969' target='_blank'><img src='https://resources.tidal.com/images/85a1c605/7cb2/4359/aa48/c8251cd65b58/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2003] Third Whisper</div>
+<div><a href='https://tidal.com/album/344318684' target='_blank'>https://tidal.com/album/344318684</a></div>
+<div>cool - Blue Moon</div>
+<div>cool - 떠나야만 했나요-</div>
+<div>cool - 나는 유죄다</div>
+<div>cool - 당신에게 일어날 수 있는 일</div>
+<div>cool - 설야</div>
+<div>cool - 별과 나 Notting Hill</div>
+<div>cool - 그래요 난…</div>
+<div>cool - 약속할게요</div>
+<div>cool - 겨울잠</div>
+<div>cool - Again</div>
+<div>cool - 괜찮을 것 같아</div>
+<div>cool - 소곡 小哭</div>
+<div>cool - Last Christmas</div>
+<div>cool - 겨울여행</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344318684' target='_blank'><img src='https://resources.tidal.com/images/0bed8b60/591b/4697/9da8/7384d9523ef9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] COOL 8ight</div>
+<div><a href='https://tidal.com/album/344318891' target='_blank'>https://tidal.com/album/344318891</a></div>
+<div>cool - Cool Love</div>
+<div>cool - One Summer Drive</div>
+<div>cool - 결혼을 할 거라면</div>
+<div>cool - 못난이</div>
+<div>cool - 그대 행복을 빌어줄순 없죠</div>
+<div>cool - 과거를 묻지마세요</div>
+<div>cool - 바보야</div>
+<div>cool - 숟가락 두개</div>
+<div>cool - 에덴의 동쪽</div>
+<div>cool - Beautiful People</div>
+<div>cool - 쉿</div>
+<div>cool - 2 Become 1</div>
+<div>cool - 섬집아기</div>
+<div>cool - 사랑 조리법</div>
+<div>cool - 껌</div>
+<div>cool - 괜찮아요</div>
+<div>cool - 추억이 오는 날</div>
+<div>cool - 못난이 (Acoustic Guitar Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344318891' target='_blank'><img src='https://resources.tidal.com/images/09aa2db6/52dd/4f52/af17/8fd7bce6f87f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] Second Whisper</div>
+<div><a href='https://tidal.com/album/344318554' target='_blank'>https://tidal.com/album/344318554</a></div>
+<div>cool - 백설공주를 사랑한 일곱번째 난장이</div>
+<div>cool - 작년, 오늘</div>
+<div>cool - Sometimes</div>
+<div>cool - If</div>
+<div>cool - 산책</div>
+<div>cool - 부디</div>
+<div>cool - 다시</div>
+<div>cool - This Song</div>
+<div>cool - 청혼</div>
+<div>cool - 겨울이야기</div>
+<div>cool - 발자욱</div>
+<div>cool - 양치기 소년</div>
+<div>cool - 유리공주</div>
+<div>cool - 작년 오늘 기차</div>
+<div>cool - 걱정이죠</div>
+<div>cool - Daring</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344318554' target='_blank'><img src='https://resources.tidal.com/images/393135fb/0d45/48d6/b520/02f9321f6633/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] 7Even</div>
+<div><a href='https://tidal.com/album/344318182' target='_blank'>https://tidal.com/album/344318182</a></div>
+<div>cool - Intro</div>
+<div>cool - 짚신커플</div>
+<div>cool - 숙아</div>
+<div>cool - Sad Cafe</div>
+<div>cool - 남과 여</div>
+<div>cool - 울보</div>
+<div>cool - 좋은 사람</div>
+<div>cool - 진실</div>
+<div>cool - 고백가</div>
+<div>cool - Cheat</div>
+<div>cool - Blue Eyes</div>
+<div>cool - 여우비</div>
+<div>cool - 헤어짐에 관한 짧은 필름</div>
+<div>cool - Any Time</div>
+<div>cool - 첫사랑을 만나다</div>
+<div>cool - 나밖에 모르던 내가</div>
+<div>cool - 그대는 다르겠죠</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344318182' target='_blank'><img src='https://resources.tidal.com/images/23244223/9161/4b37/8c10/0f3e44fd8789/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] First Whisper</div>
+<div><a href='https://tidal.com/album/344317955' target='_blank'>https://tidal.com/album/344317955</a></div>
+<div>cool - I Love You</div>
+<div>cool - Tell Me Why</div>
+<div>cool - White Christmas</div>
+<div>cool - 아로하</div>
+<div>cool - 헤어지는 날</div>
+<div>cool - 그래서 행복합니다</div>
+<div>cool - 나의 바램</div>
+<div>cool - 소원</div>
+<div>cool - Love Again</div>
+<div>cool - 하늘로 쓰는 편지</div>
+<div>cool - 아마 그댄---</div>
+<div>cool - 웨딩전야</div>
+<div>cool - 그녀의 결혼식</div>
+<div>cool - 한장의 추억</div>
+<div>cool - 우리 이렇게 서로 스쳐 보내면</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344317955' target='_blank'><img src='https://resources.tidal.com/images/783236cd/4862/483b/a11a/8cabb5048dbe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] COOL 6ix</div>
+<div><a href='https://tidal.com/album/344317873' target='_blank'>https://tidal.com/album/344317873</a></div>
+<div>cool - 좋은 세상 만들기</div>
+<div>cool - Jumpo Mambo</div>
+<div>cool - 오래된 연인</div>
+<div>cool - 비밀</div>
+<div>cool - 이별로 배운 사랑</div>
+<div>cool - 소중한 사람아</div>
+<div>cool - 애구애구</div>
+<div>cool - 믿어- 믿어!</div>
+<div>cool - 밤</div>
+<div>cool - Queen Of The Night</div>
+<div>cool - you&I</div>
+<div>cool - 하늘로 쓰는 편지</div>
+<div>cool - 천사에게</div>
+<div>cool - Someday</div>
+<div>cool - Weekend</div>
+<div>cool - 친구가 된다는 건</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344317873' target='_blank'><img src='https://resources.tidal.com/images/9fbe9165/3e51/47c3/92e4/9eeb737f9e93/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] Cool 5</div>
+<div><a href='https://tidal.com/album/346831617' target='_blank'>https://tidal.com/album/346831617</a></div>
+<div>cool - Cool Night</div>
+<div>cool - Love Letter</div>
+<div>cool - 해석남녀</div>
+<div>cool - Skin Ship</div>
+<div>cool - 5분전</div>
+<div>cool - 웨딩데이</div>
+<div>cool - 맥주와 땅콩</div>
+<div>cool - 칼로리</div>
+<div>cool - 사랑의 이름으로</div>
+<div>cool - 비연</div>
+<div>cool - All for You</div>
+<div>cool - 바람의 아들</div>
+<div>cool - 늦었음을…</div>
+<div>cool - 매끈한 여자</div>
+<div>cool - All for You Guitar</div>
+<div>cool - 오랜 친구에게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346831617' target='_blank'><img src='https://resources.tidal.com/images/3c3b254e/ab12/4315/800b/abe16b6498e0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/타이달 쿨 ( Tidal Cool )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
