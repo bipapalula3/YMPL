@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,33 +85,60 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 제시 ( Tidal Jessi )_trk.txt"
-                           download="타이달 제시 ( Tidal Jessi )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 제시 ( Tidal Jessi )_trk.txt" download="타이달 제시 ( Tidal Jessi )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%A0%9C%EC%8B%9C%20%28%20Jessi%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/355338298" target="_blank">https://tidal.com/album/355338298</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/355338298' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] No Lowkey</a></b>
+▶️Album link : <a href="https://tidal.com/album/355338298" target="_blank">https://tidal.com/album/355338298</a>
 
 YUNGIN, Jessi, CAMO - No Lowkey(Explicit)
-EN ⇄ KR : 은밀하지 않아(Explicit)
+EN ⇄ KR : Not Lowkey(Explicit)
 ES     : Sin Disimulo
 ZH-CN  : 不低调
 
@@ -85,6 +148,7 @@ ES     : Sin Disimulo
 ZH-CN  : 不低调
 
 
+💿 <b><a href='https://tidal.com/album/390342572' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Boomerang</a></b>
 ▶️Album link : <a href="https://tidal.com/album/390342572" target="_blank">https://tidal.com/album/390342572</a>
 
 Jessi - Boomerang (The Judge from Hell - Original Televisi
@@ -93,6 +157,7 @@ ES     : Boomerang (El Juez del Infierno - Banda Sonora Original)
 ZH-CN  : 回旋镖（来自地狱的法官 - 电视剧原声）
 
 
+💿 <b><a href='https://tidal.com/album/324120393' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Gum</a></b>
 ▶️Album link : <a href="https://tidal.com/album/324120393" target="_blank">https://tidal.com/album/324120393</a>
 
 Jessi - Gum
@@ -101,14 +166,16 @@ ES     : Goma
 ZH-CN  : 口香糖
 
 
+💿 <b><a href='https://tidal.com/album/224787669' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] ZOOM</a></b>
 ▶️Album link : <a href="https://tidal.com/album/224787669" target="_blank">https://tidal.com/album/224787669</a>
 
 Jessi - ZOOM
 EN ⇄ KR : 확대
 ES     : ACERCAMIENTO
-ZH-CN  : ZOOM
+ZH-CN  : 变焦
 
 
+💿 <b><a href='https://tidal.com/album/346675738' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Woori the Virgin, Pt. 3 (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346675738" target="_blank">https://tidal.com/album/346675738</a>
 
 Jessi - Gosh
@@ -117,6 +184,7 @@ ES     : Caramba
 ZH-CN  : 哇塞
 
 
+💿 <b><a href='https://tidal.com/album/216618475' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] What Type of X</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216618475" target="_blank">https://tidal.com/album/216618475</a>
 
 Jessi - What Type of X
@@ -125,6 +193,7 @@ ES     : ¿Qué tipo de X?
 ZH-CN  : 哪种类型的 X
 
 
+💿 <b><a href='https://tidal.com/album/200979260' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Cold Blooded</a></b>
 ▶️Album link : <a href="https://tidal.com/album/200979260" target="_blank">https://tidal.com/album/200979260</a>
 
 Jessi - Cold Blooded
@@ -133,6 +202,7 @@ ES     : A Sangre Fría
 ZH-CN  : 冷血
 
 
+💿 <b><a href='https://tidal.com/album/216618462' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] NUNA</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216618462" target="_blank">https://tidal.com/album/216618462</a>
 
 Jessi - NUNU NANA
@@ -166,6 +236,7 @@ ES     : Goteo
 ZH-CN  : 滴落
 
 
+💿 <b><a href='https://tidal.com/album/131958992' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Life Is Beautiful</a></b>
 ▶️Album link : <a href="https://tidal.com/album/131958992" target="_blank">https://tidal.com/album/131958992</a>
 
 Vava, 王以太, Dok2, Jessi - Life Is Beautiful(Explicit)
@@ -174,6 +245,7 @@ ES     : La vida es bella
 ZH-CN  : 生命是美好的
 
 
+💿 <b><a href='https://tidal.com/album/216618455' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Digital Lover (Jessi ver.)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216618455" target="_blank">https://tidal.com/album/216618455</a>
 
 Jessi - Digital Lover (Jessi ver.)
@@ -182,6 +254,7 @@ ES     : Amante Digital
 ZH-CN  : 数字恋人
 
 
+💿 <b><a href='https://tidal.com/album/216618460' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Who Dat B</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216618460" target="_blank">https://tidal.com/album/216618460</a>
 
 Jessi - Who Dat B
@@ -190,6 +263,7 @@ ES     : Quién es esa perra
 ZH-CN  : 谁是那个B
 
 
+💿 <b><a href='https://tidal.com/album/216618451' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Drip</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216618451" target="_blank">https://tidal.com/album/216618451</a>
 
 Jessi - Drip (Feat. Jay Park)
@@ -198,6 +272,7 @@ ES     : Goteo
 ZH-CN  : 滴落
 
 
+💿 <b><a href='https://tidal.com/album/101915025' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] 가시</a></b>
 ▶️Album link : <a href="https://tidal.com/album/101915025" target="_blank">https://tidal.com/album/101915025</a>
 
 제시,더블케이,마이크로닷 - 가시
@@ -206,6 +281,7 @@ ES     : Espina
 ZH-CN  : 刺
 
 
+💿 <b><a href='https://tidal.com/album/210487067' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Down</a></b>
 ▶️Album link : <a href="https://tidal.com/album/210487067" target="_blank">https://tidal.com/album/210487067</a>
 
 Jessi - Down
@@ -214,6 +290,7 @@ ES     : Abajo
 ZH-CN  : 低落
 
 
+💿 <b><a href='https://tidal.com/album/168871987' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] 울리지마</a></b>
 ▶️Album link : <a href="https://tidal.com/album/168871987" target="_blank">https://tidal.com/album/168871987</a>
 
 Jessi - 울리지마
@@ -222,6 +299,7 @@ ES     : No suenes
 ZH-CN  : 不要响起
 
 
+💿 <b><a href='https://tidal.com/album/210487061' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] un2verse</a></b>
 ▶️Album link : <a href="https://tidal.com/album/210487061" target="_blank">https://tidal.com/album/210487061</a>
 
 Jessi - Gucci
@@ -250,6 +328,7 @@ ES     : Llegó
 ZH-CN  : 到达
 
 
+💿 <b><a href='https://tidal.com/album/155516251' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] 신데렐라와 네 명의 기사 OST Part 2 Cinderella and four knights OST Part 2</a></b>
 ▶️Album link : <a href="https://tidal.com/album/155516251" target="_blank">https://tidal.com/album/155516251</a>
 
 Jessi - My Romeo
@@ -258,6 +337,7 @@ ES     : Mi Romeo
 ZH-CN  : 我的罗密欧
 
 
+💿 <b><a href='https://tidal.com/album/189148671' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Excessive Love</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189148671" target="_blank">https://tidal.com/album/189148671</a>
 
 Jessi - Excessive Love
@@ -266,6 +346,7 @@ ES     : Amor Excesivo
 ZH-CN  : 过度的爱
 
 
+💿 <b><a href='https://tidal.com/album/64111689' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] Cinderella & Four Knights, Pt. 2 (Original Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/64111689" target="_blank">https://tidal.com/album/64111689</a>
 
 Jessi - My Romeo
@@ -274,6 +355,7 @@ ES     : Mi Romeo
 ZH-CN  : 我的罗密欧
 
 
+💿 <b><a href='https://tidal.com/album/216008805' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] BeBopaLula ♡ Jessi</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216008805" target="_blank">https://tidal.com/album/216008805</a>
 
 Jessi, TAE JIN A - BeBopaLula ♡ Jessi
@@ -282,6 +364,7 @@ ES     : BeBopaLula ♡ Jessi
 ZH-CN  : 巴巴拉鲁拉 ♡ Jessi
 
 
+💿 <b><a href='https://tidal.com/album/102480056' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2009] The Rebirth - 인생은 즐거워</a></b>
 ▶️Album link : <a href="https://tidal.com/album/102480056" target="_blank">https://tidal.com/album/102480056</a>
 
 Jessi - The Rebirth - 인생은 즐거워
@@ -290,6 +373,7 @@ ES     : El Renacimiento - La vida es divertida
 ZH-CN  : 重生 - 人生真美好
 
 
+💿 <b><a href='https://tidal.com/album/184929047' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2007] White Romance Vol. 1 - Platonic Syndrome</a></b>
 ▶️Album link : <a href="https://tidal.com/album/184929047" target="_blank">https://tidal.com/album/184929047</a>
 
 Jessi - Christmas Song
@@ -297,6 +381,18 @@ EN ⇄ KR : 크리스마스 노래
 ES     : Canción Navideña
 ZH-CN  : 圣诞歌曲</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 제시 ( Tidal Jessi )_trk.txt" download="타이달 제시 ( Tidal Jessi )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%A0%9C%EC%8B%9C%20%28%20Jessi%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
