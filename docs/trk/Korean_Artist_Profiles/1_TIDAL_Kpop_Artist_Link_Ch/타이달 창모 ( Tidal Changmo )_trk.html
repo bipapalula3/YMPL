@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,57 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 창모 ( Tidal Changmo )_trk.txt"
-                           download="타이달 창모 ( Tidal Changmo )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 창모 ( Tidal Changmo )_trk.txt" download="타이달 창모 ( Tidal Changmo )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%B0%BD%EB%AA%A8%20%28%20Changmo%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/432831954" target="_blank">https://tidal.com/album/432831954</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/432831954' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2025] Op.1</a></b>
+▶️Album link : <a href="https://tidal.com/album/432831954" target="_blank">https://tidal.com/album/432831954</a>
 
 CHANGMO - HOLDUP
 EN ⇄ KR : 강도
@@ -85,6 +148,7 @@ ES     : HIMNO
 ZH-CN  : 赞歌
 
 
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2025] HOLDUP</a></b>
 ▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
 
 CHANGMO - HOLDUP
@@ -93,14 +157,16 @@ ES     : ATRACO
 ZH-CN  : 抢劫
 
 
+💿 <b><a href='https://tidal.com/album/391277764' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] ZOOM</a></b>
 ▶️Album link : <a href="https://tidal.com/album/391277764" target="_blank">https://tidal.com/album/391277764</a>
 
 BMSG POSSE, Sky-Hi, CHANGMO, Novel Core - ZOOM(Explicit)
 EN ⇄ KR : 확대(Explicit)
 ES     : ACERCAMIENTO
-ZH-CN  : ZOOM
+ZH-CN  : 变焦
 
 
+💿 <b><a href='https://tidal.com/album/342472448' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Wonderful Days</a></b>
 ▶️Album link : <a href="https://tidal.com/album/342472448" target="_blank">https://tidal.com/album/342472448</a>
 
 CHANGMO, Street Baby, Kor Kash - PURE RAGE (Feat. Street Baby, KOR KASH)
@@ -129,6 +195,7 @@ ES     : Eres El Único
 ZH-CN  : 你是唯一
 
 
+💿 <b><a href='https://tidal.com/album/352914408' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] M O T O W N</a></b>
 ▶️Album link : <a href="https://tidal.com/album/352914408" target="_blank">https://tidal.com/album/352914408</a>
 
 CHANGMO - Light Me Up
@@ -167,6 +234,7 @@ ES     : Las mujeres son iguales
 ZH-CN  : 女人都一样
 
 
+💿 <b><a href='https://tidal.com/album/362445007' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Homesick</a></b>
 ▶️Album link : <a href="https://tidal.com/album/362445007" target="_blank">https://tidal.com/album/362445007</a>
 
 YUNGIN, Paul Blanco, CHANGMO - Homesick(Explicit)
@@ -175,6 +243,7 @@ ES     : Nostálgico
 ZH-CN  : 想家
 
 
+💿 <b><a href='https://tidal.com/album/219385624' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Street Man Fighter (SMF) Original Vol.1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/219385624" target="_blank">https://tidal.com/album/219385624</a>
 
 CHANGMO - SMF (Prod. Czaer)
@@ -188,6 +257,7 @@ ES     : SMF
 ZH-CN  : SMF
 
 
+💿 <b><a href='https://tidal.com/album/220802546' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Just the two of us</a></b>
 ▶️Album link : <a href="https://tidal.com/album/220802546" target="_blank">https://tidal.com/album/220802546</a>
 
 CHANGMO - Just the two of us
@@ -196,15 +266,16 @@ ES     : Solo nosotros dos
 ZH-CN  : 只有我们俩
 
 
+💿 <b><a href='https://tidal.com/album/204734746' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] UNDERGROUND ROCKSTAR</a></b>
 ▶️Album link : <a href="https://tidal.com/album/204734746" target="_blank">https://tidal.com/album/204734746</a>
 
 CHANGMO - MORAESIGYE
-EN ⇄ KR : MORAESIGYE
-ES     : MORAESIGYE
+EN ⇄ KR : Time of Sandglass
+ES     : Reloj de arena
 ZH-CN  : 莫雷西格耶
 
 CHANGMO - TAIJI(Explicit)
-EN ⇄ KR : TAIJI(Explicit)
+EN ⇄ KR : Supreme Ultimate(Explicit)
 ES     : TAIJI
 ZH-CN  : 太极
 
@@ -214,7 +285,7 @@ ES     : Estilo de Vida de Rockstar
 ZH-CN  : 摇滚明星生活方式
 
 CHANGMO - Beretta (Feat. Dayoung Ahn)(Explicit)
-EN ⇄ KR : Beretta (Feat. Dayoung Ahn)(Explicit)
+EN ⇄ KR : 베레타 (Feat. Dayoung Ahn)(Explicit)
 ES     : Beretta
 ZH-CN  : 贝雷塔
 
@@ -224,7 +295,7 @@ ES     : Amor Crónico
 ZH-CN  : 慢性爱恋
 
 CHANGMO - Vivienne
-EN ⇄ KR : Vivienne
+EN ⇄ KR : 비비안
 ES     : Vivienne
 ZH-CN  : 薇薇安
 
@@ -234,7 +305,7 @@ ES     : Hermanitos
 ZH-CN  : 小兄弟
 
 CHANGMO - Hyperstar(Explicit)
-EN ⇄ KR : Hyperstar(Explicit)
+EN ⇄ KR : 초성(Explicit)
 ES     : Hiperestrella
 ZH-CN  : 超级巨星
 
@@ -254,6 +325,7 @@ ES     : Supernova
 ZH-CN  : 超新星
 
 
+💿 <b><a href='https://tidal.com/album/170421143' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Runner (feat. CHANGMO)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/170421143" target="_blank">https://tidal.com/album/170421143</a>
 
 T1, Raiden, BAEKHYUN, CHANGMO - Runner (feat. CHANGMO)
@@ -262,6 +334,7 @@ ES     : Corredor
 ZH-CN  : 跑者
 
 
+💿 <b><a href='https://tidal.com/album/331577599' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Boyhood</a></b>
 ▶️Album link : <a href="https://tidal.com/album/331577599" target="_blank">https://tidal.com/album/331577599</a>
 
 CHANGMO - wish
@@ -301,7 +374,7 @@ ZH-CN  : 小夜曲
 
 CHANGMO, KIRIN - 031576 (Feat. KIRIN)
 EN ⇄ KR : 영삼일오칠육 (Feat. KIRIN)
-ES     : 031576
+ES     : 031576 (no translation needed as it's a number)
 ZH-CN  : 031576 (保持原样)
 
 CHANGMO, CHUNG HA - REMEDY (Feat. CHUNG HA)
@@ -316,7 +389,7 @@ ZH-CN  : 在多伦多见我
 
 CHANGMO, Hash Swan - Hotel Walkerhill (Feat. Hash Swan)
 EN ⇄ KR : 워커힐 호텔 (Feat. Hash Swan)
-ES     : Hotel Walkerhill
+ES     : Hotel Walkerhill (no translation needed as it's a proper noun)
 ZH-CN  : 华克山庄酒店
 
 CHANGMO - S T A R T
@@ -325,14 +398,16 @@ ES     : C O M I E N Z O
 ZH-CN  : 开 始
 
 
+💿 <b><a href='https://tidal.com/album/208173193' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] B.O.T.B. (Best Of The Best)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/208173193" target="_blank">https://tidal.com/album/208173193</a>
 
 Gaeko, CHANGMO, Don Mills, Los, DeVita, SOLE, SINC - B.O.T.B. (Prod. GRAY)(Explicit)
 EN ⇄ KR : Battle Of The Best Brothers (Prod. GRAY)(Explicit)
-ES     : B.O.T.B.
+ES     : B.O.T.B. (Since this is an acronym/initialism, it's generally left as is, unless a specific translation is known/intended)
 ZH-CN  : 机器人之战
 
 
+💿 <b><a href='https://tidal.com/album/277984047' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] PAY DAY with KozyPop</a></b>
 ▶️Album link : <a href="https://tidal.com/album/277984047" target="_blank">https://tidal.com/album/277984047</a>
 
 CHANGMO, ASH ISLAND, Junggigo - PAY DAY
@@ -341,6 +416,7 @@ ES     : Día de Pago
 ZH-CN  : 发薪日
 
 
+💿 <b><a href='https://tidal.com/album/196163534' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] GJD</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196163534" target="_blank">https://tidal.com/album/196163534</a>
 
 CHANGMO - GJD
@@ -354,6 +430,7 @@ ES     : Día D
 ZH-CN  : D-Day
 
 
+💿 <b><a href='https://tidal.com/album/196157217' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] COUNTIN MY GUAP</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196157217" target="_blank">https://tidal.com/album/196157217</a>
 
 CHANGMO - COUNTIN MY GUAP
@@ -362,6 +439,7 @@ ES     : CONTANDO MI LANA
 ZH-CN  : 数着我的钱
 
 
+💿 <b><a href='https://tidal.com/album/196158087' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] BIPOLAR</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196158087" target="_blank">https://tidal.com/album/196158087</a>
 
 CHANGMO - birthstone
@@ -395,6 +473,7 @@ ES     : FREESTYLE DÍA 5 DE LA GIRA
 ZH-CN  : 巡演第五天自由发挥
 
 
+💿 <b><a href='https://tidal.com/album/196147880' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] The Fearless Ones</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196147880" target="_blank">https://tidal.com/album/196147880</a>
 
 The Quiett, Sik-K, 빈지노 (Beenzino), CHANGMO - The Fearless Ones
@@ -403,6 +482,7 @@ ES     : Los Valientes
 ZH-CN  : 无畏者
 
 
+💿 <b><a href='https://tidal.com/album/196151081' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Don′t Touch My Phone</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196151081" target="_blank">https://tidal.com/album/196151081</a>
 
 CHANGMO - 4 Times
@@ -421,6 +501,7 @@ ES     : de vuelta a ti
 ZH-CN  : 回到你身边
 
 
+💿 <b><a href='https://tidal.com/album/216147027' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Dingo X Ambition Musik</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216147027" target="_blank">https://tidal.com/album/216147027</a>
 
 CHANGMO, Hash Swan, ASH ISLAND, Keem Hyoeun, Leell - Beer (Prod.Way Ched)
@@ -429,6 +510,7 @@ ES     : Cerveza
 ZH-CN  : 啤酒
 
 
+💿 <b><a href='https://tidal.com/album/216044043' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] We Bad</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216044043" target="_blank">https://tidal.com/album/216044043</a>
 
 CHANGMO, The Quiett, Dok2 - We Bad (Prod by D.O)
@@ -437,11 +519,12 @@ ES     : Somos Malos
 ZH-CN  : 我们坏
 
 
+💿 <b><a href='https://tidal.com/album/196141434' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Dnsg</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196141434" target="_blank">https://tidal.com/album/196141434</a>
 
 CHANGMO - Intro
 EN ⇄ KR : 소개
-ES     : Introducción
+ES     : BPM69
 ZH-CN  : 简介
 
 CHANGMO - Lilac
@@ -480,6 +563,7 @@ ES     : ¿No ves que soy una estrella de rock?
 ZH-CN  : 你看不到我是个摇滚明星吗
 
 
+💿 <b><a href='https://tidal.com/album/196142844' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] BOY</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196142844" target="_blank">https://tidal.com/album/196142844</a>
 
 CHANGMO - BOY
@@ -493,6 +577,7 @@ ES     : Hermosa
 ZH-CN  : 美丽
 
 
+💿 <b><a href='https://tidal.com/album/196132173' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Voice (Original Television Soundtrack), Pt. 3</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196132173" target="_blank">https://tidal.com/album/196132173</a>
 
 CHANGMO - I′m All Ears
@@ -501,6 +586,7 @@ ES     : Soy todo oídos
 ZH-CN  : 我洗耳恭听
 
 
+💿 <b><a href='https://tidal.com/album/196136298' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] The Best Hit, Pt. 7 (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196136298" target="_blank">https://tidal.com/album/196136298</a>
 
 CHANGMO - I Always
@@ -509,6 +595,7 @@ ES     : Siempre lo hago
 ZH-CN  : 我总是
 
 
+💿 <b><a href='https://tidal.com/album/196135102' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Gettin Money Moment</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196135102" target="_blank">https://tidal.com/album/196135102</a>
 
 CHANGMO - Inkigayo
@@ -552,6 +639,7 @@ ES     : Espérame
 ZH-CN  : 等我
 
 
+💿 <b><a href='https://tidal.com/album/237600693' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] BLUE MOON</a></b>
 ▶️Album link : <a href="https://tidal.com/album/237600693" target="_blank">https://tidal.com/album/237600693</a>
 
 Hyolyn, CHANGMO - BLUE MOON (Prod. GroovyRoom)
@@ -560,6 +648,7 @@ ES     : LUNA AZUL
 ZH-CN  : 蓝月亮
 
 
+💿 <b><a href='https://tidal.com' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] 돈 벌 시간 2</a></b>
 ▶️Album link : <a href="https://tidal.com" target="_blank">https://tidal.com</a>
 
 CHANGMO - 돈이 하게 했어
@@ -569,7 +658,7 @@ ZH-CN  : 是钱让我做的
 
 CHANGMO - D.O.N
 EN ⇄ KR : 돈
-ES     : D.O.N
+ES     : D.O.N.
 ZH-CN  : D.O.N (保持原文)
 
 CHANGMO, Don Mills - 사나이 (Sanai) (Feat. Don Mills)
@@ -593,6 +682,7 @@ ES     : Mozart
 ZH-CN  : 莫扎特 (保持原文)
 
 
+💿 <b><a href='https://tidal.com/album/358032911' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] 담배</a></b>
 ▶️Album link : <a href="https://tidal.com/album/358032911" target="_blank">https://tidal.com/album/358032911</a>
 
 CHANGMO - 담배
@@ -601,6 +691,7 @@ ES     : Cigarrillo
 ZH-CN  : 烟
 
 
+💿 <b><a href='https://tidal.com/album/196126864' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] DBSG 3</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196126864" target="_blank">https://tidal.com/album/196126864</a>
 
 CHANGMO - Ambition(Explicit)
@@ -633,6 +724,18 @@ EN ⇄ KR : 재거(Explicit)
 ES     : Jagger
 ZH-CN  : 贾格尔 (不做翻译，保留原英文，通常指歌手米克·贾格尔)</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 창모 ( Tidal Changmo )_trk.txt" download="타이달 창모 ( Tidal Changmo )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%EC%B0%BD%EB%AA%A8%20%28%20Changmo%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
