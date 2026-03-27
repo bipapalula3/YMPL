@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 클래지콰이 ( Tidal Clazziquai )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 클래지콰이 ( Tidal Clazziquai )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/76bda60f/cd30/4b39/80f9/ec51f802555d/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/11731135' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 클래지콰이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>경계를 허무는 감각적인 사운드 스케이프</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Clazziquai</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Sensuous Soundscape That Blurs Boundaries</div><p>클래지콰이는 일렉트로니카, 팝, 하우스 등 다양한 장르를 융합하여 독창적인 음악 세계를 구축한 그룹입니다. 감각적인 멜로디와 세련된 사운드는 듣는 이로 하여금 특별한 공간으로 이동하는 듯한 경험을 선사합니다. 이들은 음악을 통해 끊임없이 새로운 시도를 감행하며, 대중과 평단의 끊임없는 사랑을 받고 있습니다.</p><p>Clazziquai is a group that has built a unique musical world by fusing various genres such as electronica, pop, and house. Their sensual melodies and sophisticated sounds offer listeners an experience as if they are being transported to a special place. They are constantly experimenting with new approaches through music and are receiving constant love from the public and critics alike.</p><p>✧</p><p>그룹의 탄생과 음악적 실험</p><p>클래지콰이는 DJ 클래지와 보컬 호란, 알렉스가 만나 탄생했습니다. 초기부터 이들은 특정 장르에 얽매이지 않고 자유로운 시도를 통해 자신들만의 독특한 색깔을 만들어냈습니다. 다양한 사운드와 감각적인 멜로디는 그들의 음악적 실험 정신을 잘 보여줍니다.</p><p>The Birth of the Group and Musical Experimentation</p><p>Clazziquai was formed when DJ Clazzi met vocalists Horan and Alex. From the beginning, they created their own unique color through free experimentation without being bound by a specific genre. Various sounds and sensual melodies demonstrate their spirit of musical experimentation.</p><p>✧</p><p>음악적 스타일과 다채로운 퍼포먼스</p><p>클래지콰이의 음악은 일렉트로니카를 기반으로 팝, 재즈, 보사노바 등 다양한 장르를 넘나듭니다. 멤버들의 개성이 돋보이는 보컬과 악기 연주는 듣는 재미를 더합니다. 또한, 여러 아티스트와의 협업을 통해 더욱 폭넓은 음악적 스펙트럼을 선보이고 있습니다.</p><p>Musical Style and Diverse Performances</p><p>Clazziquai's music spans various genres such as pop, jazz, and bossa nova based on electronica. The distinctive vocals and instrumental performances of the members add to the fun of listening. In addition, they are showcasing an even wider musical spectrum through collaborations with various artists.</p><p>✧</p><p>주요 활동과 음악적 영향력</p><p>클래지콰이는 꾸준한 앨범 발매와 공연 활동을 통해 대중과의 소통을 이어왔습니다. 그들의 음악은 드라마, 영화, 광고 등 다양한 매체에 삽입되어 더욱 많은 사람들에게 알려졌습니다. 감각적인 음악 스타일은 후배 뮤지션들에게도 많은 영감을 주고 있습니다.</p><p>Major Activities and Musical Influence</p><p>Clazziquai has continued to communicate with the public through consistent album releases and performances. Their music has been inserted into various media such as dramas, movies, and advertisements, making them known to more people. Their sensuous musical style has also inspired many junior musicians.</p><p>✧</p><p>미래와 음악적 의미</p><p>클래지콰이는 앞으로도 끊임없이 새로운 음악적 시도를 이어갈 것으로 기대됩니다. 장르의 경계를 허물고 독창적인 사운드를 추구하는 그들의 음악은 많은 이들에게 신선한 영감을 줄 것입니다. 클래지콰이는 단순한 음악 그룹을 넘어, 하나의 문화 현상으로 자리매김하고 있습니다.</p><p>The Future and Musical Significance</p><p>Clazziquai is expected to continue their relentless pursuit of new musical endeavors. Their music, which blurs the boundaries of genres and seeks unique sounds, will provide fresh inspiration to many. Clazziquai has established itself as a cultural phenomenon, going beyond a simple music group.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] World (feat. Yu Seung Woo, YEHAM)</div>
+<div><a href='https://tidal.com/album/337093839' target='_blank'>https://tidal.com/album/337093839</a></div>
+<div>Clazziquai, Yu Seung Woo, YEHAM - World (feat. Yu Seung Woo, YEHAM)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/337093839' target='_blank'><img src='https://resources.tidal.com/images/f1aad222/9f88/4ddc/baab/a0f90266132a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Tonight (feat. Park Sol of THE SOLUTIONS, It's)</div>
+<div><a href='https://tidal.com/album/330750806' target='_blank'>https://tidal.com/album/330750806</a></div>
+<div>Clazziquai, Park Sol, It's - Tonight (feat. Park Sol of THE SOLUTIONS, It′s)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/330750806' target='_blank'><img src='https://resources.tidal.com/images/1ecb5334/c29a/4635/acfc/0f8b9f720620/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Static (feat. JAEMAN, Kei)</div>
+<div><a href='https://tidal.com/album/307008005' target='_blank'>https://tidal.com/album/307008005</a></div>
+<div>Clazziquai, JaeMan, kei - Static (feat. JAEMAN, Kei)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/307008005' target='_blank'><img src='https://resources.tidal.com/images/97c8a0de/6a0b/4068/8901/9b700a721ee3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] My Girl (feat. KWON SOON IL (Urban Zakapa))</div>
+<div><a href='https://tidal.com/album/323486272' target='_blank'>https://tidal.com/album/323486272</a></div>
+<div>Clazziquai, Kwon Soon Il - My Girl (feat. KWON SOON IL (Urban Zakapa))</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/323486272' target='_blank'><img src='https://resources.tidal.com/images/f2bc2284/dd81/4349/a735/53401c68b06d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Lost Highway (feat. Wilcox, Jin Hyojeong)</div>
+<div><a href='https://tidal.com/album/313362224' target='_blank'>https://tidal.com/album/313362224</a></div>
+<div>Clazziquai, Wilcox, Jin Hyojeong - Lost Highway (feat. Wilcox, Jin Hyojeong)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/313362224' target='_blank'><img src='https://resources.tidal.com/images/850ef288/f644/446c/9c47/c7a77abfd51e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Beautiful Thing (Feat. Jaeyeon, Kim Suyoung)</div>
+<div><a href='https://tidal.com/album/294524621' target='_blank'>https://tidal.com/album/294524621</a></div>
+<div>Clazziquai, Jaeyeon, Kim Suyoung - Beautiful Thing (Feat. Jaeyeon, Kim Suyoung)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/294524621' target='_blank'><img src='https://resources.tidal.com/images/76bda60f/cd30/4b39/80f9/ec51f802555d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Baby</div>
+<div><a href='https://tidal.com/album/300704814' target='_blank'>https://tidal.com/album/300704814</a></div>
+<div>Clazziquai, Jaeyeon, LIM SEJOO - Baby (Feat. Jaeyeon, Lim Sejoo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/300704814' target='_blank'><img src='https://resources.tidal.com/images/90a26a0c/a8b2/413b/aa0c/f5c0b16fafa1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] What if (feat. Kim Suyoung)</div>
+<div><a href='https://tidal.com/album/189263269' target='_blank'>https://tidal.com/album/189263269</a></div>
+<div>Clazziquai - What if (feat. Kim Suyoung)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189263269' target='_blank'><img src='https://resources.tidal.com/images/24f6acdc/1fc5/4dcb/be6b/9979c7410fe4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Take back (feat. Hong Dahye)</div>
+<div><a href='https://tidal.com/album/189448725' target='_blank'>https://tidal.com/album/189448725</a></div>
+<div>Clazziquai - Take back (feat. Hong Dahye)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189448725' target='_blank'><img src='https://resources.tidal.com/images/85671621/7a18/44b5/a4a7/047fea9f6d21/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] Travellers</div>
+<div><a href='https://tidal.com/album/306557745' target='_blank'>https://tidal.com/album/306557745</a></div>
+<div>Clazziquai - Dangerous</div>
+<div>Clazziquai - #궁금해</div>
+<div>Clazziquai - Sweet Life</div>
+<div>Clazziquai - 걱정남녀</div>
+<div>Clazziquai - Make Up Break Up</div>
+<div>Clazziquai - 야간비행</div>
+<div>Clazziquai - 잠 못드는 밤</div>
+<div>Clazziquai - Sweetie Fruity Jelly</div>
+<div>Clazziquai - Aurora</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306557745' target='_blank'><img src='https://resources.tidal.com/images/d3feac8d/c6cc/4a0e/bf51/d4f802fb56d3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] #궁금해</div>
+<div><a href='https://tidal.com/album/306551774' target='_blank'>https://tidal.com/album/306551774</a></div>
+<div>Clazziquai - #궁금해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306551774' target='_blank'><img src='https://resources.tidal.com/images/1a17ecbd/8f75/4747/a12d/a2a0eb3956dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Madly</div>
+<div><a href='https://tidal.com/album/278004129' target='_blank'>https://tidal.com/album/278004129</a></div>
+<div>Clazziquai - Madly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278004129' target='_blank'><img src='https://resources.tidal.com/images/051ba557/8379/4e55/ae86/4d673d3d588e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Love Satellite</div>
+<div><a href='https://tidal.com/album/278004262' target='_blank'>https://tidal.com/album/278004262</a></div>
+<div>Clazziquai - Love Satellite</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278004262' target='_blank'><img src='https://resources.tidal.com/images/7af25934/3417/494f/8360/413c375663b4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Blink</div>
+<div><a href='https://tidal.com/album/268552342' target='_blank'>https://tidal.com/album/268552342</a></div>
+<div>Clazziquai - Still I'm by Your Side</div>
+<div>Clazziquai - Madly</div>
+<div>Clazziquai - Crave You</div>
+<div>Clazziquai - Android</div>
+<div>Clazziquai - Maybe Baby</div>
+<div>Clazziquai - Love Satellite</div>
+<div>Clazziquai - Come on and Go with Me</div>
+<div>Clazziquai - Life Etc-</div>
+<div>Clazziquai - Call Me Back (feat. BAECHIGI)</div>
+<div>Clazziquai - Think About You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/268552342' target='_blank'><img src='https://resources.tidal.com/images/48fdf8eb/da13/4c4e/a13e/7d76649904f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Blessed</div>
+<div><a href='https://tidal.com/album/306513157' target='_blank'>https://tidal.com/album/306513157</a></div>
+<div>Clazziquai - Blessed</div>
+<div>Clazziquai - Sweetest Name</div>
+<div>Clazziquai - 러브 레시피</div>
+<div>Clazziquai - 그녀는 위대해</div>
+<div>Clazziquai - Can't Go On My Own (Feat. Kim Jin Pyo)</div>
+<div>Clazziquai - Love Right</div>
+<div>Clazziquai - 꽃잎 같은 먼지가</div>
+<div>Clazziquai - Brown Gold Eyes</div>
+<div>Clazziquai - Like a Diamond</div>
+<div>Clazziquai - 사랑도 간다</div>
+<div>Clazziquai - 여전히</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306513157' target='_blank'><img src='https://resources.tidal.com/images/1979dc37/e672/4fb9/bb00/e8b0ee4e3da9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Can't Go On My Own (Feat. Kim Jin Pyo)</div>
+<div><a href='https://tidal.com/album/278003939' target='_blank'>https://tidal.com/album/278003939</a></div>
+<div>Clazziquai - Can't Go On My Own (Feat. Kim Jin Pyo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278003939' target='_blank'><img src='https://resources.tidal.com/images/a58b0905/952c/4d1d/b175/e22a57f12943/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Robotica</div>
+<div><a href='https://tidal.com/album/306537083' target='_blank'>https://tidal.com/album/306537083</a></div>
+<div>Clazziquai - Freedom</div>
+<div>Clazziquai - Iconic Love</div>
+<div>Clazziquai - Robotica</div>
+<div>Clazziquai - You</div>
+<div>Clazziquai - Why</div>
+<div>Clazziquai - Beautiful Stranger</div>
+<div>Clazziquai - Our Lives (FPM Hyper Society Mix Version)</div>
+<div>Clazziquai - Lover Boy (As Pap As Pop Mix Version)</div>
+<div>Clazziquai - Love Mode (feat. PE'Z & Verbal) (pzq mode Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306537083' target='_blank'><img src='https://resources.tidal.com/images/28046170/547d/41b4/9030/09ba8b637117/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Wizard of Oz</div>
+<div><a href='https://tidal.com/album/306538970' target='_blank'>https://tidal.com/album/306538970</a></div>
+<div>Clazziquai - Wizard of Oz</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306538970' target='_blank'><img src='https://resources.tidal.com/images/985dbf3e/ec70/422d/bd18/575d8a0b96fe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2009] Mucho Punk</div>
+<div><a href='https://tidal.com/album/306531713' target='_blank'>https://tidal.com/album/306531713</a></div>
+<div>Clazziquai - Chocolate Truffles</div>
+<div>Clazziquai - Kiss Kiss Kiss</div>
+<div>Clazziquai - Love Again</div>
+<div>Clazziquai - At the End of Love</div>
+<div>Clazziquai - Tell Yourself</div>
+<div>Clazziquai - Back in Time</div>
+<div>Clazziquai - Lazy Sunday Morning</div>
+<div>Clazziquai - Take a Walk</div>
+<div>Clazziquai - The Road</div>
+<div>Clazziquai - Spinning the World</div>
+<div>Clazziquai - 라푼젤</div>
+<div>Clazziquai - Wizard of OZ</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306531713' target='_blank'><img src='https://resources.tidal.com/images/21064004/6839/4255/980e/b9d7b5fecd26/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Mucho Beat</div>
+<div><a href='https://tidal.com/album/306530304' target='_blank'>https://tidal.com/album/306530304</a></div>
+<div>Clazziquai - Ping</div>
+<div>Clazziquai - LaLaLa</div>
+<div>Clazziquai - Affection</div>
+<div>Clazziquai - Chocolate Truffles (Unplugged Version)</div>
+<div>Clazziquai - Affection (4Step 4Ward mix - Han (W) Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306530304' target='_blank'><img src='https://resources.tidal.com/images/dc8b2c78/eec4/4dc8/8a4b/43c9b72ea3f0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 화분</div>
+<div><a href='https://tidal.com/album/306552124' target='_blank'>https://tidal.com/album/306552124</a></div>
+<div>Clazziquai - Romeo N Juliet</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306552124' target='_blank'><img src='https://resources.tidal.com/images/3b35526e/6e04/497a/a87c/cbce41ea045b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Metrotronics</div>
+<div><a href='https://tidal.com/album/306528612' target='_blank'>https://tidal.com/album/306528612</a></div>
+<div>Clazziquai - Electronics</div>
+<div>Clazziquai - Flea</div>
+<div>Clazziquai - Beat in Love</div>
+<div>Clazziquai - Color</div>
+<div>Clazziquai - Night Stage</div>
+<div>Clazziquai - Creator</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306528612' target='_blank'><img src='https://resources.tidal.com/images/c2806af9/850e/4303/b18d/31c891103586/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] Love Child of the Century</div>
+<div><a href='https://tidal.com/album/306528685' target='_blank'>https://tidal.com/album/306528685</a></div>
+<div>Clazziquai - Prayers</div>
+<div>Clazziquai - Lover Boy</div>
+<div>Clazziquai - Our Lives</div>
+<div>Clazziquai - Session 1 - All Hail</div>
+<div>Clazziquai - Gentle Giant</div>
+<div>Clazziquai - Last Tango</div>
+<div>Clazziquai - Fiesta</div>
+<div>Clazziquai - Next Love</div>
+<div>Clazziquai - Romeo n Juliet</div>
+<div>Clazziquai - Flower Children</div>
+<div>Clazziquai - Session 2 - Confession</div>
+<div>Clazziquai - Blues Friday Blues</div>
+<div>Clazziquai - Glory</div>
+<div>Clazziquai - The Light</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306528685' target='_blank'><img src='https://resources.tidal.com/images/1d96aefb/c42a/4122/841e/8371b5a039b3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] Pinch Your Soul</div>
+<div><a href='https://tidal.com/album/306532269' target='_blank'>https://tidal.com/album/306532269</a></div>
+<div>Clazziquai - Love Mode (feat. Tablo)</div>
+<div>Clazziquai - Chi Chi</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306532269' target='_blank'><img src='https://resources.tidal.com/images/4eb714bb/a85e/4c99/b6a8/7a2b91fc6330/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] Color Your Soul</div>
+<div><a href='https://tidal.com/album/306519806' target='_blank'>https://tidal.com/album/306519806</a></div>
+<div>Clazziquai - Beautiful Woman</div>
+<div>Clazziquai - Salesman</div>
+<div>Clazziquai - Fill This Night</div>
+<div>Clazziquai - Cry Out Loud</div>
+<div>Clazziquai - I Will Give You Everything</div>
+<div>Clazziquai - Come Alive</div>
+<div>Clazziquai - Dateline</div>
+<div>Clazziquai - Hold Your Tears</div>
+<div>Clazziquai - Color Your Soul</div>
+<div>Clazziquai - Speechless</div>
+<div>Clazziquai - Sunshine</div>
+<div>Clazziquai - Steps Ahead</div>
+<div>Clazziquai - Will I Ever Find</div>
+<div>Clazziquai - Be My Love (Original Mix Version-Bonus Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306519806' target='_blank'><img src='https://resources.tidal.com/images/8b59bd83/96e9/41bc/8f95/69452ff85bc3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Zbam</div>
+<div><a href='https://tidal.com/album/306545958' target='_blank'>https://tidal.com/album/306545958</a></div>
+<div>Clazziquai - She Loves You</div>
+<div>Clazziquai - Snatcher</div>
+<div>Clazziquai - After Love (Female Version)</div>
+<div>Clazziquai - Skyscraper</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306545958' target='_blank'><img src='https://resources.tidal.com/images/6e74c539/04d5/4d51/aaf7/d8c42d07f1e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Instant Pig</div>
+<div><a href='https://tidal.com/album/306526227' target='_blank'>https://tidal.com/album/306526227</a></div>
+<div>Clazziquai - You Never Know</div>
+<div>Clazziquai - Come To Me</div>
+<div>Clazziquai - Futuristic</div>
+<div>Clazziquai - After Love</div>
+<div>Clazziquai - Novabossa</div>
+<div>Clazziquai - Sweety</div>
+<div>Clazziquai - Stepping Out</div>
+<div>Clazziquai - Tattoo</div>
+<div>Clazziquai - I Will Never Cry</div>
+<div>Clazziquai - Gentle Rain</div>
+<div>Clazziquai - Flower</div>
+<div>Clazziquai - Play Girl</div>
+<div>Clazziquai - Cat Bossa</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306526227' target='_blank'><img src='https://resources.tidal.com/images/a49d4e3e/cd00/448e/89fa/c80f5288b3b2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/타이달 클래지콰이 ( Tidal Clazziquai )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
