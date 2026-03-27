@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 체리블렛 ( Tidal Cherry Bullet )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 체리블렛 ( Tidal Cherry Bullet )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/9811a3c4/94d7/47e0/ad83/90cb58615c56/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/16117107' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 체리블렛</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>상큼함으로 무장한 에너지 넘치는 소녀들</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Cherry Bullet</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Energetic Girls Armed with Freshness</div><p>체리처럼 달콤하고 총알처럼 강렬한 매력을 지닌 그룹, 체리블렛입니다. 다채로운 콘셉트와 에너지 넘치는 퍼포먼스로 팬들의 마음을 사로잡고 있어요. 앞으로가 더욱 기대되는 그녀들의 이야기를 함께 알아볼까요?</p><p>Cherry Bullet is a group with a charm that is as sweet as cherries and as intense as bullets. They captivate fans with their diverse concepts and energetic performances. Shall we explore their story, which is even more anticipated in the future?</p><p>✧</p><p>그룹의 탄생</p><p>체리블렛은 FNC엔터테인먼트에서 야심차게 선보인 걸그룹입니다. 'Cherry'와 'Bullet'이라는 상반된 단어의 조합처럼, 사랑스러움과 에너제틱한 매력을 동시에 보여주겠다는 포부를 담고 탄생했어요.</p><p>The Birth of the Group</p><p>Cherry Bullet is a girl group ambitiously introduced by FNC Entertainment. Like the combination of contrasting words 'Cherry' and 'Bullet,' they were born with the ambition to show both lovely and energetic charms at the same time.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>체리블렛은 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여주고 있습니다. 에너제틱한 퍼포먼스와 중독성 강한 멜로디는 그녀들의 음악을 더욱 돋보이게 하는 요소입니다. 무대 위에서 보여주는 멤버들의 개성과 조화 역시 빼놓을 수 없죠.</p><p>Music and Performance</p><p>Cherry Bullet showcases a wide musical spectrum by taking on various genres. Their energetic performances and addictive melodies are elements that make their music stand out even more. The individuality and harmony of the members on stage are also indispensable.</p><p>✧</p><p>주요 활동</p><p>데뷔 이후 체리블렛은 꾸준히 음반을 발표하며 활동 영역을 넓혀왔습니다. 국내뿐만 아니라 해외 팬들에게도 많은 사랑을 받으며 글로벌한 인기를 얻고 있어요. 다양한 방송 출연과 콘텐츠 제작을 통해 팬들과 소통하고 있습니다.</p><p>Key Activities</p><p>Since their debut, Cherry Bullet has been steadily releasing albums and expanding their activities. They are gaining global popularity, receiving much love from fans not only in Korea but also overseas. They communicate with fans through various TV appearances and content production.</p><p>✧</p><p>미래와 의미</p><p>체리블렛은 끊임없이 새로운 시도를 통해 성장하는 그룹입니다. 자신들만의 색깔을 확고히 하면서 대중에게 더욱 사랑받는 아티스트가 되기 위해 노력하고 있어요. 앞으로 그녀들이 보여줄 음악과 퍼포먼스가 더욱 기대됩니다.</p><p>Future and Meaning</p><p>Cherry Bullet is a group that grows through constant new attempts. They are working hard to become artists who are more loved by the public while solidifying their own unique color. Their future music and performances are highly anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] Cherry Dash</div>
+<div><a href='https://tidal.com/album/280488860' target='_blank'>https://tidal.com/album/280488860</a></div>
+<div>Cherry Bullet - P.O.W! (Play On the World)</div>
+<div>Cherry Bullet - Whistle Like That</div>
+<div>Cherry Bullet - Cloud Nine</div>
+<div>Cherry Bullet - Queen</div>
+<div>Cherry Bullet - A Winter Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/280488860' target='_blank'><img src='https://resources.tidal.com/images/e59bacde/67cd/47e1/8460/422fc7c34b30/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Cherry Wish</div>
+<div><a href='https://tidal.com/album/219088020' target='_blank'>https://tidal.com/album/219088020</a></div>
+<div>Cherry Bullet - Love In Space</div>
+<div>Cherry Bullet - Broken</div>
+<div>Cherry Bullet - Hiccups</div>
+<div>Cherry Bullet - KKa KKa</div>
+<div>Cherry Bullet - My Boo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219088020' target='_blank'><img src='https://resources.tidal.com/images/cc027d7c/8ef0/46a9/8988/d8de59edd6bd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Cherry Rush</div>
+<div><a href='https://tidal.com/album/216255851' target='_blank'>https://tidal.com/album/216255851</a></div>
+<div>Cherry Bullet - Love So Sweet</div>
+<div>Cherry Bullet - Follow Me</div>
+<div>Cherry Bullet - Keep Your Head Up</div>
+<div>Cherry Bullet - Whatever</div>
+<div>Cherry Bullet - Ting-a-ring-a-ring</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216255851' target='_blank'><img src='https://resources.tidal.com/images/e54b17c2/9734/439d/95e1/b0db9e6e7d96/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Hands Up</div>
+<div><a href='https://tidal.com/album/216119129' target='_blank'>https://tidal.com/album/216119129</a></div>
+<div>Cherry Bullet - Hands Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216119129' target='_blank'><img src='https://resources.tidal.com/images/23fd67bb/ae34/4576/b1f8/587ed205494d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Aloha Oe</div>
+<div><a href='https://tidal.com/album/216151640' target='_blank'>https://tidal.com/album/216151640</a></div>
+<div>Cherry Bullet - Aloha Oe</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216151640' target='_blank'><img src='https://resources.tidal.com/images/42037a03/8b77/4e1f/83de/961583d4098a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Cherry Bullet 1st Single Album Let's Play Cherry Bullet</div>
+<div><a href='https://tidal.com/album/344188327' target='_blank'>https://tidal.com/album/344188327</a></div>
+<div>Cherry Bullet - Q&A</div>
+<div>Cherry Bullet - VIOLET</div>
+<div>Cherry Bullet - Stick Out</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344188327' target='_blank'><img src='https://resources.tidal.com/images/47535165/bab2/4b03/8d59/6ece50e942eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_Ch/타이달 체리블렛 ( Tidal Cherry Bullet )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
