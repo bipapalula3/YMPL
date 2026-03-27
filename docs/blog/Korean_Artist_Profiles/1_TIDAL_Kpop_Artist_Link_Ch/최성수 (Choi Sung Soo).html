@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 최성수 ( Tidal Choi Sung Soo )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 최성수 ( Tidal Choi Sung Soo )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/c2077eff/e2f5/4c86/a168/cd45c4920f8f/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5265078' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/10558894' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 최성수</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>최성수 (Choi Sung Soo) - 삶의 풍경을 담아내는 따뜻한 음유시인</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Choi Sung Soo</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Choi Sung Soo - A Warm Balladeer Capturing Life's Landscapes</div><p>부드러운 음색과 깊이 있는 감성으로 오랜 시간 사랑받아 온 가수 최성수님을 소개합니다. 그의 음악은 일상 속 소소한 이야기부터 인생의 깊은 성찰까지, 다채로운 감정을 섬세하게 표현해 듣는 이의 마음을 어루만져 줍니다. 편안함과 진솔함이 느껴지는 그의 음악 세계로 함께 떠나볼까요?</p><p>Let me introduce Choi Sung Soo, a singer who has been loved for a long time for his soft tone and deep emotions. His music delicately expresses a variety of emotions, from small stories of everyday life to deep reflections on life, touching the hearts of listeners. Shall we take a journey into his musical world, where you can feel comfort and sincerity?</p><p>✧</p><p>음악적 여정의 시작</p><p>최성수님은 독특한 음악적 감수성으로 자신만의 영역을 구축해왔습니다. 그의 음악은 특정 장르에 얽매이지 않고, 다양한 스타일을 아우르며 폭넓은 음악 스펙트럼을 보여줍니다. 섬세한 멜로디와 진솔한 가사는 오랜 시간 그의 음악을 사랑받게 하는 원동력입니다.</p><p>The Beginning of a Musical Journey</p><p>Choi Sung Soo has built his own realm with his unique musical sensibility. His music is not bound by a specific genre, and encompasses various styles, showing a wide musical spectrum. Delicate melodies and sincere lyrics are the driving force behind the enduring love for his music.</p><p>✧</p><p>감성을 자극하는 음악 세계</p><p>최성수님의 음악은 듣는 이로 하여금 다양한 감정을 느끼게 합니다. 때로는 따뜻한 위로를, 때로는 아련한 향수를 불러일으키며, 삶의 다양한 순간들을 떠올리게 합니다. 편안하게 듣기 좋은 그의 음악은 지친 일상에 작은 쉼표를 선물합니다.</p><p>A Musical World That Stimulates Emotions</p><p>Choi Sung Soo's music makes listeners feel a variety of emotions. Sometimes it evokes warm comfort, sometimes it evokes vague nostalgia, and it reminds us of various moments in life. His music, which is comfortable to listen to, presents a small comma in a tiring daily life.</p><p>✧</p><p>꾸준한 활동과 깊어지는 음악</p><p>끊임없는 음악적 탐구를 통해 최성수님은 꾸준히 새로운 작품을 선보이고 있습니다. 그의 음악은 시간이 지날수록 더욱 깊어지고, 폭넓은 공감대를 형성하며 많은 이들에게 위로와 희망을 전달합니다. 변함없는 열정으로 음악 활동을 이어가는 그의 모습은 많은 이들에게 귀감이 됩니다.</p><p>Consistent Activity and Deepening Music</p><p>Through constant musical exploration, Choi Sung Soo continues to present new works. His music becomes deeper over time, forms a broad consensus, and delivers comfort and hope to many people. His unwavering passion for music is an inspiration to many.</p><p>✧</p><p>앞으로의 행보, 그리고 음악의 의미</p><p>앞으로도 최성수님은 진솔한 음악으로 대중과 소통하며, 따뜻한 감동을 선사할 것으로 기대됩니다. 그의 음악은 단순한 유행을 넘어, 시대를 초월하는 깊은 울림을 지니며 오랫동안 우리 곁에 머무를 것입니다. 그의 음악이 앞으로도 많은 이들에게 위로와 행복을 전해주기를 바랍니다.</p><p>Future Steps and the Meaning of Music</p><p>In the future, Choi Sung Soo is expected to communicate with the public through sincere music and deliver warm emotions. His music transcends simple trends, has a deep resonance that transcends time, and will remain with us for a long time. I hope his music will continue to bring comfort and happiness to many people.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] 인생은 짧고 월요일은 길지만 행복은 충분해</div>
+<div><a href='https://tidal.com/album/423236761' target='_blank'>https://tidal.com/album/423236761</a></div>
+<div>최성수 - 꽃바람이 들었답니다</div>
+<div>최성수 - 인생은 짧고 월요일은 길지만 행복은 충분해</div>
+<div>최성수 - 봄날</div>
+<div>최성수 - 왜인지는 모르겠지만</div>
+<div>최성수 - 울고 들어온 너에게</div>
+<div>최성수 - 또 하루</div>
+<div>최성수 - 나비가 숨은 어린나무</div>
+<div>최성수 - 꿈을 생시로 잇다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/423236761' target='_blank'><img src='https://resources.tidal.com/images/ade1351e/b4d5/427a/94c3/344125a0c9e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] At Sokcho</div>
+<div><a href='https://tidal.com/album/338017307' target='_blank'>https://tidal.com/album/338017307</a></div>
+<div>Choi Sung Soo - At Sokcho</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/338017307' target='_blank'><img src='https://resources.tidal.com/images/1cad8012/13c1/4eae/a008/b635e534e19c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 엄마는 그래도 되는줄 알았습니다</div>
+<div><a href='https://tidal.com/album/296503974' target='_blank'>https://tidal.com/album/296503974</a></div>
+<div>Choi Sung Soo - 엄마는 그래도 되는줄 알았습니다</div>
+<div>Choi Sung Soo - 엄마는 그래도 되는줄 알았습니다 (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296503974' target='_blank'><img src='https://resources.tidal.com/images/6bc2a87b/cb66/4e65/b056/a9a02e7717fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] I Like You</div>
+<div><a href='https://tidal.com/album/321971115' target='_blank'>https://tidal.com/album/321971115</a></div>
+<div>Choi Sung Soo - I Like You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/321971115' target='_blank'><img src='https://resources.tidal.com/images/65cfdc31/8021/49e7/8d57/308fde04476d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 혼술</div>
+<div><a href='https://tidal.com/album/188091676' target='_blank'>https://tidal.com/album/188091676</a></div>
+<div>Choi Sung Soo - 혼술</div>
+<div>Choi Sung Soo - Mom's thread reel</div>
+<div>Choi Sung Soo - Don't ask why</div>
+<div>Choi Sung Soo - 개밀고개</div>
+<div>Choi Sung Soo - In the mountains</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188091676' target='_blank'><img src='https://resources.tidal.com/images/de043b0f/e54f/4bea/863e/ace946ef24f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 린도마니</div>
+<div><a href='https://tidal.com/album/296333013' target='_blank'>https://tidal.com/album/296333013</a></div>
+<div>Choi Sung Soo - 린도마니</div>
+<div>Choi Sung Soo - 친구 이정하</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296333013' target='_blank'><img src='https://resources.tidal.com/images/a2c74f5a/fa07/468e/8bed/751805e93ba3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 시가풍류방</div>
+<div><a href='https://tidal.com/album/163793929' target='_blank'>https://tidal.com/album/163793929</a></div>
+<div>최성수 - 구름처럼 만나고 헤어진 많은 사람 중에</div>
+<div>최성수 - 고맙다 사랑, 그립다 그대</div>
+<div>최성수 (feat. 조윤성) - 동행</div>
+<div>최성수 - 달이 떴다고 전화를 주시다니요</div>
+<div>최성수 - 그리운 당신이 오신다니</div>
+<div>최성수 (feat. 조윤성) - 해후</div>
+<div>최성수 - 고뇌하는 청춘에게라</div>
+<div>최성수 - 도봉</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163793929' target='_blank'><img src='https://resources.tidal.com/images/faa1a31e/f2f0/4461/964c/e9e1385a80dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 봄, 시가미다방</div>
+<div><a href='https://tidal.com/album/243473275' target='_blank'>https://tidal.com/album/243473275</a></div>
+<div>최성수 - 다시 오는 봄</div>
+<div>최성수 - 술먹게 하는 봄밤</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/243473275' target='_blank'><img src='https://resources.tidal.com/images/cd5ebdd0/eabb/45c9/974f/2f6967452aee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] 아버지처럼 살기 싫었어 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/223238908' target='_blank'>https://tidal.com/album/223238908</a></div>
+<div>Choi Sung Soo - 그때 그대로</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223238908' target='_blank'><img src='https://resources.tidal.com/images/b848f5c4/63bd/41b4/8bff/4f113bfb0c69/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2002] Whisky On The Rock</div>
+<div><a href='https://tidal.com/album/287601402' target='_blank'>https://tidal.com/album/287601402</a></div>
+<div>Choi Sung Soo - 그대는 모르시더이다</div>
+<div>Choi Sung Soo - 한 여자를 사랑했다</div>
+<div>Choi Sung Soo - 남남</div>
+<div>Choi Sung Soo - 순정</div>
+<div>Choi Sung Soo - 눈물로 쓴 고백</div>
+<div>Choi Sung Soo - 천년의 해후</div>
+<div>Choi Sung Soo - 동행</div>
+<div>Choi Sung Soo - 풀잎사랑</div>
+<div>Choi Sung Soo - Whisky On The Rock</div>
+<div>Choi Sung Soo - 아버지처럼 살기 싫었어</div>
+<div>Choi Sung Soo - Alone</div>
+<div>Choi Sung Soo - 사랑 사랑 사랑</div>
+<div>Choi Sung Soo - Blue Summer Dream</div>
+<div>Choi Sung Soo - 잊지 말아요</div>
+<div>Choi Sung Soo - 가인</div>
+<div>Choi Sung Soo - 공항에서 오는 길</div>
+<div>Choi Sung Soo - 용서</div>
+<div>Choi Sung Soo - 해후</div>
+<div>Choi Sung Soo - 기쁜 우리 사랑은</div>
+<div>Choi Sung Soo - 까메오</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287601402' target='_blank'><img src='https://resources.tidal.com/images/4c1afb23/25b8/471d/9c77/181cb871f36d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] Choi Sung Soo's Cafe Music 01</div>
+<div><a href='https://tidal.com/album/24575873' target='_blank'>https://tidal.com/album/24575873</a></div>
+<div>Choi Sung Soo - A Rocky Island</div>
+<div>Choi Sung Soo - Before Everyone Goes</div>
+<div>Choi Sung Soo - Forgotten Season</div>
+<div>Choi Sung Soo - Friends</div>
+<div>Choi Sung Soo - Life Is Incompletion</div>
+<div>Choi Sung Soo - Love Goes Away</div>
+<div>Choi Sung Soo - Lovely Eyes</div>
+<div>Choi Sung Soo - Meeting</div>
+<div>Choi Sung Soo - Meeting Again</div>
+<div>Choi Sung Soo - Oh Love</div>
+<div>Choi Sung Soo - The Rain of Yesterday</div>
+<div>Choi Sung Soo - We Are</div>
+<div>Choi Sung Soo - Where You`re Staying</div>
+<div>Choi Sung Soo - You're Crying, Too</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/24575873' target='_blank'><img src='https://resources.tidal.com/images/90098fa1/8524/404f/b24d/c18d1d5d40b3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Choi Sung Soo Vol. 7</div>
+<div><a href='https://tidal.com/album/55281265' target='_blank'>https://tidal.com/album/55281265</a></div>
+<div>Choi Sung Soo - A Paper Giant</div>
+<div>Choi Sung Soo - April</div>
+<div>Choi Sung Soo - Don't Make a Joke</div>
+<div>Choi Sung Soo - Pure Love</div>
+<div>Choi Sung Soo - The Power of the Destiny</div>
+<div>Choi Sung Soo - The Secret at Night</div>
+<div>Choi Sung Soo - Without Knowing Other's Mind</div>
+<div>Choi Sung Soo - You're My Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/55281265' target='_blank'><img src='https://resources.tidal.com/images/cf0f3642/0ef4/4cef/b263/a4b19112ee65/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] Choi Sung Soo Golden Best</div>
+<div><a href='https://tidal.com/album/24577250' target='_blank'>https://tidal.com/album/24577250</a></div>
+<div>Choi Sung Soo - A Company</div>
+<div>Choi Sung Soo - Huin</div>
+<div>Choi Sung Soo - Meet by Chance</div>
+<div>Choi Sung Soo - Our Love</div>
+<div>Choi Sung Soo - People Unrelated to Each Other</div>
+<div>Choi Sung Soo - Pulipsarang</div>
+<div>Choi Sung Soo - Sorrow</div>
+<div>Choi Sung Soo - The End of the Beautiful Day</div>
+<div>Choi Sung Soo - What Will I Tell You</div>
+<div>Choi Sung Soo - When a Magnolia Blossom Flowers</div>
+<div>Choi Sung Soo - You</div>
+<div>Choi Sung Soo - You Don't Know It</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/24577250' target='_blank'><img src='https://resources.tidal.com/images/deee36bb/01cf/4bfa/986a/5121fc4bc990/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] Choi Sung Soo Live '95</div>
+<div><a href='https://tidal.com/album/53769620' target='_blank'>https://tidal.com/album/53769620</a></div>
+<div>Choi Sung Soo - A Company</div>
+<div>Choi Sung Soo - A Crane</div>
+<div>Choi Sung Soo - A Lovely Smile</div>
+<div>Choi Sung Soo - As Watching Tv</div>
+<div>Choi Sung Soo - Drink, Women and Songs</div>
+<div>Choi Sung Soo - Meet by Chance</div>
+<div>Choi Sung Soo - Our Love</div>
+<div>Choi Sung Soo - Pizzicato Polka</div>
+<div>Choi Sung Soo - Pulipsarang</div>
+<div>Choi Sung Soo - Tears of Roses</div>
+<div>Choi Sung Soo - You Don't Know It</div>
+<div>Choi Sung Soo - You're My Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/53769620' target='_blank'><img src='https://resources.tidal.com/images/e8e411b2/8568/4252/96f9/270adc4df6e3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1993] The Room Which Is the Nude</div>
+<div><a href='https://tidal.com/album/24583632' target='_blank'>https://tidal.com/album/24583632</a></div>
+<div>Choi Sung Soo - A Hurt</div>
+<div>Choi Sung Soo - A Lovely Smile</div>
+<div>Choi Sung Soo - A Lover Like a Friend</div>
+<div>Choi Sung Soo - A Prolog</div>
+<div>Choi Sung Soo - An Epilogue</div>
+<div>Choi Sung Soo - As Watching Tv</div>
+<div>Choi Sung Soo - Confession</div>
+<div>Choi Sung Soo - Don't Love Anybody Any More</div>
+<div>Choi Sung Soo - From Saturday Night to Sunday Dawn</div>
+<div>Choi Sung Soo - Gwangalli</div>
+<div>Choi Sung Soo - Tears of Roses</div>
+<div>Choi Sung Soo - The Room Which Is the Nude</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/24583632' target='_blank'><img src='https://resources.tidal.com/images/90ec6093/564a/451a/9ed0/5e391556639a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1990] 최성수 Golden Best</div>
+<div><a href='https://tidal.com/album/287595704' target='_blank'>https://tidal.com/album/287595704</a></div>
+<div>Choi Sung Soo - 남남</div>
+<div>Choi Sung Soo - 동행</div>
+<div>Choi Sung Soo - 플잎사랑</div>
+<div>Choi Sung Soo - 해후</div>
+<div>Choi Sung Soo - 아름다운 날의 끝이여</div>
+<div>Choi Sung Soo - 당신</div>
+<div>Choi Sung Soo - 기쁜 우리 사랑은</div>
+<div>Choi Sung Soo - 그대는 모르시더이다</div>
+<div>Choi Sung Soo - 후인</div>
+<div>Choi Sung Soo - 목련꽃 필때면</div>
+<div>Choi Sung Soo - 그대에게 무슨말을할까</div>
+<div>Choi Sung Soo - 애수</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287595704' target='_blank'><img src='https://resources.tidal.com/images/5838315e/0288/43c5/bd90/482c7923f1ab/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1989] It Does Not Forget</div>
+<div><a href='https://tidal.com/album/24579303' target='_blank'>https://tidal.com/album/24579303</a></div>
+<div>Choi Sung Soo - Conclusion</div>
+<div>Choi Sung Soo - Don't Forget It</div>
+<div>Choi Sung Soo - For the Haert Which Is More Painful Than Me</div>
+<div>Choi Sung Soo - Love, Love</div>
+<div>Choi Sung Soo - Meet Again My Darling</div>
+<div>Choi Sung Soo - One Fall</div>
+<div>Choi Sung Soo - Painful as Much as I Love You</div>
+<div>Choi Sung Soo - Sad Valentine</div>
+<div>Choi Sung Soo - Till the End of the World</div>
+<div>Choi Sung Soo - When You Call Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/24579303' target='_blank'><img src='https://resources.tidal.com/images/cdaaabb9/cfed/48bb/9c22/80a5e49b8be4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1987] Goodbye_Love of Compassion</div>
+<div><a href='https://tidal.com/album/210600041' target='_blank'>https://tidal.com/album/210600041</a></div>
+<div>Choi Sung Soo - Goodbye</div>
+<div>Choi Sung Soo - Dear</div>
+<div>Choi Sung Soo - Words Left in My Heart</div>
+<div>Choi Sung Soo - I Must Froget You</div>
+<div>Choi Sung Soo - I Want to Love You Now</div>
+<div>Choi Sung Soo - For You</div>
+<div>Choi Sung Soo - Love of Compassion</div>
+<div>Choi Sung Soo - You Don’t Know</div>
+<div>Choi Sung Soo - Don’t Say It</div>
+<div>Choi Sung Soo - I Know What You Feel</div>
+<div>Choi Sung Soo - When the Magnolia Blooms</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210600041' target='_blank'><img src='https://resources.tidal.com/images/04b5b466/8969/420a/bf6d/d1711bf54cc0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1987] 2집 동행, 해후</div>
+<div><a href='https://tidal.com/album/287641338' target='_blank'>https://tidal.com/album/287641338</a></div>
+<div>Choi Sung Soo - 동행</div>
+<div>Choi Sung Soo - 해후</div>
+<div>Choi Sung Soo - 당신</div>
+<div>Choi Sung Soo - 안개섬</div>
+<div>Choi Sung Soo - 나의 슬픔에 그대는 타인</div>
+<div>Choi Sung Soo - 후인</div>
+<div>Choi Sung Soo - 축제와 나그네</div>
+<div>Choi Sung Soo - 목련꽃 필때면</div>
+<div>Choi Sung Soo - 내 너를 부르면</div>
+<div>Choi Sung Soo - 기쁜 우리 사랑은</div>
+<div>Choi Sung Soo - 사랑의 발렌타인</div>
+<div>Choi Sung Soo - 그대를 위해</div>
+<div>Choi Sung Soo - 이별앞에서</div>
+<div>Choi Sung Soo - 널 사랑하는 내가</div>
+<div>Choi Sung Soo - 그대에게 무슨 말을 할까</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287641338' target='_blank'><img src='https://resources.tidal.com/images/c2077eff/e2f5/4c86/a168/cd45c4920f8f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1984] Youthful Song Specials</div>
+<div><a href='https://tidal.com/album/207622062' target='_blank'>https://tidal.com/album/207622062</a></div>
+<div>Choi Sung Soo - Goodbye</div>
+<div>Choi Sung Soo - Dear</div>
+<div>Choi Sung Soo - Words Left in My Heart</div>
+<div>Choi Sung Soo - I Must Froget You</div>
+<div>Choi Sung Soo - Finally, I Want to Give You My Love</div>
+<div>Choi Sung Soo - Anything for You</div>
+<div>Choi Sung Soo - Simpathy</div>
+<div>Choi Sung Soo - You Seemed Didn't Know</div>
+<div>Choi Sung Soo - Don't Say Anything</div>
+<div>Choi Sung Soo - I Know How You Feel</div>
+<div>Choi Sung Soo - When the Magnolia Blooms</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/207622062' target='_blank'><img src='https://resources.tidal.com/images/9804cfa7/f78b/422e/81dd/1b5dec0c52c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1984] Park Yongkang_Choi Sung Soo</div>
+<div><a href='https://tidal.com/album/210486405' target='_blank'>https://tidal.com/album/210486405</a></div>
+<div>Choi Sung Soo - Hi</div>
+<div>Choi Sung Soo - Darling</div>
+<div>Choi Sung Soo - Love of Compassion</div>
+<div>Choi Sung Soo - You Don’t Know</div>
+<div>Choi Sung Soo - Words Left in My Heart</div>
+<div>Choi Sung Soo - I Must Froget You</div>
+<div>Choi Sung Soo - Don’t Say It</div>
+<div>Choi Sung Soo - When the Magnolia Blooms</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210486405' target='_blank'><img src='https://resources.tidal.com/images/3cebda13/2d68/4402/a584/3cea35dc96c3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_Ch/타이달 최성수 ( Tidal Choi Sung Soo )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
