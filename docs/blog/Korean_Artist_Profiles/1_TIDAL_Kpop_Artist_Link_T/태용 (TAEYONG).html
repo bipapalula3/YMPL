@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 태용 ( Tidal TAEYONG )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 태용 ( Tidal TAEYONG )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/9ec4d1fd/4f97/4bb9/b3d9/27044210afa7/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7675636' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 태용</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>경계를 허무는 음악적 실험가</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> TAEYONG</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Musical Experimenter Breaking Boundaries</div><p>독창적인 음악 세계를 구축하며 끊임없이 변화하는 아티스트, 바로 태용입니다. 그는 다채로운 장르를 넘나들며 자신만의 색깔을 담은 음악을 선보이고 있어요. 퍼포먼스, 작사, 작곡 등 다방면에서 뛰어난 재능을 발휘하며 대중을 매료시키고 있습니다.</p><p>Meet TAEYONG, an artist who is constantly evolving, building a unique musical world. He crosses various genres and presents music with his own colors. He is captivating the public by demonstrating outstanding talent in various fields such as performance, lyric writing, and composing.</p><p>✧</p><p>그룹 탄생</p><p>태용은 아이돌 그룹의 멤버로서 대중 앞에 처음 모습을 드러냈습니다. 데뷔 초부터 강렬한 비주얼과 뛰어난 랩 실력으로 주목받으며 팀의 핵심 멤버로 자리매김했어요. 이후 다양한 유닛 활동을 통해 음악적 스펙트럼을 넓혀갔습니다.</p><p>Birth of a Group Member</p><p>Taeyong first appeared before the public as a member of an idol group. From his debut, he gained attention for his intense visuals and excellent rap skills, establishing himself as a key member of the team. Since then, he has expanded his musical spectrum through various unit activities.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그의 음악은 힙합을 기반으로 팝, 알앤비 등 다양한 장르를 넘나드는 실험적인 시도가 돋보입니다. 강렬한 랩은 물론, 부드러운 보컬까지 소화하며 음악적 역량을 입증하고 있어요. 무대 위에서의 카리스마 넘치는 퍼포먼스는 보는 이들을 압도하는 매력을 지니고 있습니다.</p><p>Music and Performance</p><p>His music stands out for its experimental attempts to cross various genres such as pop and R&B, based on hip-hop. He proves his musical competence by performing not only intense rap but also smooth vocals. His charismatic performance on stage has an overwhelming charm.</p><p>✧</p><p>주요 활동</p><p>솔로 아티스트로서 태용은 자신만의 음악적 색깔을 더욱 뚜렷하게 드러내고 있습니다. 작사, 작곡에 적극적으로 참여하며 진솔한 이야기를 음악에 담아내고 있어요. 다양한 아티스트와의 협업을 통해 음악적 교류를 이어가며 끊임없이 성장하는 모습을 보여주고 있습니다.</p><p>Main Activities</p><p>As a solo artist, Taeyong is revealing his own musical color more clearly. He actively participates in writing and composing lyrics, incorporating sincere stories into his music. He continues to grow by continuing musical exchanges through collaborations with various artists.</p><p>✧</p><p>미래/의미</p><p>태용은 끊임없는 음악적 탐구를 통해 자신만의 영역을 구축해나가고 있습니다. 틀에 갇히지 않는 자유로운 음악적 시도는 앞으로 그가 보여줄 무한한 가능성을 예감하게 합니다. 자신만의 색깔로 대중과 소통하며 음악적 영향력을 넓혀갈 그의 미래가 더욱 기대됩니다.</p><p>Future/Meaning</p><p>Taeyong is building his own territory through constant musical exploration. His free musical attempts, unconstrained by frames, foreshadow the endless possibilities he will show in the future. His future is even more anticipated as he communicates with the public with his own colors and expands his musical influence.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] TAP - The 2nd Mini Album</div>
+<div><a href='https://tidal.com/album/343111535' target='_blank'>https://tidal.com/album/343111535</a></div>
+<div>TAEYONG - TAP</div>
+<div>TAEYONG - Moon Tour</div>
+<div>TAEYONG - Run Away</div>
+<div>TAEYONG - APE</div>
+<div>TAEYONG - 나에게 했던 것과 같이 Ups & Downs</div>
+<div>TAEYONG - 404 Loading</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343111535' target='_blank'><img src='https://resources.tidal.com/images/d163d499/f70b/4eb4/916b/b0536f45d036/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Remember - Back To You</div>
+<div><a href='https://tidal.com/album/363103884' target='_blank'>https://tidal.com/album/363103884</a></div>
+<div>TAEYONG - Remember - Back To You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/363103884' target='_blank'><img src='https://resources.tidal.com/images/e201b41d/0e2f/4a31/a80e/829cfb651d58/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] SHALALA - The 1st Mini Album</div>
+<div><a href='https://tidal.com/album/296328543' target='_blank'>https://tidal.com/album/296328543</a></div>
+<div>TAEYONG - 샤랄라 SHALALA</div>
+<div>TAEYONG - 관둬 GWANDO</div>
+<div>TAEYONG, WENDY - Move Mood Mode</div>
+<div>TAEYONG - Virtual Insanity</div>
+<div>TAEYONG - RUBY</div>
+<div>TAEYONG - 404 File Not Found</div>
+<div>TAEYONG - Back to the Past</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296328543' target='_blank'><img src='https://resources.tidal.com/images/b1f3013f/2a96/4f28/9834/db734f7d9918/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Love Theory - SM STATION</div>
+<div><a href='https://tidal.com/album/224495378' target='_blank'>https://tidal.com/album/224495378</a></div>
+<div>TAEYONG, Wonstein - Love Theory</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/224495378' target='_blank'><img src='https://resources.tidal.com/images/e3ee32b0/cc40/490b/b050/a26a71894e9d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Long Flight</div>
+<div><a href='https://tidal.com/album/115277004' target='_blank'>https://tidal.com/album/115277004</a></div>
+<div>TAEYONG - Long Flight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115277004' target='_blank'><img src='https://resources.tidal.com/images/6d983db8/eb76/41ce/b498/437c718bb01d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Hotel del Luna (Original Television Soundtrack) Pt.13</div>
+<div><a href='https://tidal.com/album/305861386' target='_blank'>https://tidal.com/album/305861386</a></div>
+<div>TAEYONG, Punch - 러브 델루나</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305861386' target='_blank'><img src='https://resources.tidal.com/images/359f8dfd/9ab3/4382/8654/3d5be222b4db/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] School 2017 Pt. 4 (Original Televisoin Soundtrack)</div>
+<div><a href='https://tidal.com/album/98821502' target='_blank'>https://tidal.com/album/98821502</a></div>
+<div>TAEIL, TAEYONG, DOYOUNG - Stay in my Life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98821502' target='_blank'><img src='https://resources.tidal.com/images/9f22f54d/3371/41b7/be42/02a0709930d2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] School 2017 (Orignial Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/98833334' target='_blank'>https://tidal.com/album/98833334</a></div>
+<div>TAEIL, TAEYONG, DOYOUNG - Stay In My Life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98833334' target='_blank'><img src='https://resources.tidal.com/images/693cb2a7/ed06/484d/8342/21a60fa9663f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] AROUND</div>
+<div><a href='https://tidal.com/album/115280913' target='_blank'>https://tidal.com/album/115280913</a></div>
+<div>Hitchhiker, TAEYONG - AROUND</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115280913' target='_blank'><img src='https://resources.tidal.com/images/ede6577d/dc87/4473/b6a6/993918f73d56/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_T/타이달 태용 ( Tidal TAEYONG )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
