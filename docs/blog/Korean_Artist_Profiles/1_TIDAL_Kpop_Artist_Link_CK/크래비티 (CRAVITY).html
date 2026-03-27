@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 크래비티 ( Tidal CRAVITY )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 크래비티 ( Tidal CRAVITY )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/f4372579/4217/463f/8ba9/8fdc770265f4/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/23220311' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 크래비티</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>청춘의 에너지와 다채로운 매력을 담은 아홉 빛깔 무대</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> CRAVITY</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Nine Colors on Stage, Capturing Youthful Energy and Diverse Charms</div><p>새로운 영역을 개척하는 아홉 명의 별, 크래비티를 소개합니다. 이들은 데뷔와 동시에 독창적인 음악과 퍼포먼스로 팬들의 마음을 사로잡았어요. 무한한 가능성을 지닌 크래비티의 매력 속으로 함께 빠져볼까요?</p><p>Introducing CRAVITY, nine stars pioneering a new realm. From their debut, they captivated fans with their unique music and performances. Shall we dive into the charm of CRAVITY, who possess endless possibilities?</p><p>✧</p><p>그룹 탄생</p><p>크래비티는 스타쉽엔터테인먼트에서 야심차게 선보인 9인조 보이 그룹입니다. 멤버들은 다양한 오디션 프로그램과 이전 활동을 통해 이미 탄탄한 팬덤을 구축하고 있었어요. 데뷔 전부터 뜨거운 관심을 받으며 가요계에 화려하게 등장했답니다.</p><p>Group Formation</p><p>CRAVITY is a nine-member boy group ambitiously introduced by Starship Entertainment. The members had already built a solid fanbase through various audition programs and previous activities. They made a splendid debut in the music industry, receiving a lot of attention even before their debut.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>크래비티는 힙합, 팝, R&B 등 다양한 장르를 소화하며 폭넓은 음악 스펙트럼을 보여줍니다. 특히, 청량하면서도 에너제틱한 퍼포먼스는 이들의 가장 큰 강점이라고 할 수 있어요. 무대 위에서 보여주는 자신감 넘치는 모습은 팬들을 매료시키기에 충분하답니다.</p><p>Music and Performance</p><p>CRAVITY showcases a wide musical spectrum, covering various genres such as hip-hop, pop, and R&B. In particular, their refreshing yet energetic performances are one of their greatest strengths. Their confident appearance on stage is enough to captivate fans.</p><p>✧</p><p>주요 활동</p><p>크래비티는 데뷔 이후 꾸준한 앨범 발매와 다양한 활동을 통해 글로벌 팬들에게 다가가고 있습니다. 국내외를 넘나드는 활발한 활동은 그들의 인기를 더욱 공고히 하고 있어요. 음악 방송뿐만 아니라 예능, 라디오 등 다양한 플랫폼에서도 활약하며 매력을 발산하고 있답니다.</p><p>Key Activities</p><p>Since their debut, CRAVITY has been reaching out to global fans through consistent album releases and various activities. Their active performances both domestically and internationally are further solidifying their popularity. They are showcasing their charms not only on music shows but also on various platforms such as entertainment programs and radio.</p><p>✧</p><p>미래/의미</p><p>크래비티는 앞으로 더욱 성장하고 발전할 잠재력이 무궁무진한 그룹입니다. 그들은 끊임없이 새로운 시도를 하며 자신들만의 색깔을 만들어갈 것입니다. 앞으로 크래비티가 보여줄 음악과 무대가 더욱 기대되는 이유입니다.</p><p>Future/Significance</p><p>CRAVITY is a group with endless potential for further growth and development in the future. They will continuously make new attempts and create their own unique color. That's why we are even more excited about the music and performances CRAVITY will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Jelly Bean</div>
+<div><a href='https://tidal.com/album/423656244' target='_blank'>https://tidal.com/album/423656244</a></div>
+<div>CRAVITY - Jelly Bean</div>
+<div>CRAVITY - Love or Die - Japanese ver. -</div>
+<div>CRAVITY - SCORCH</div>
+<div>CRAVITY - ENIGMA</div>
+<div>CRAVITY - Cheese - Japanese ver. -</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/423656244' target='_blank'><img src='https://resources.tidal.com/images/587ea46a/cc73/4798/84ec/8c94cf0e0e00/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] SHOW OFF</div>
+<div><a href='https://tidal.com/album/364919039' target='_blank'>https://tidal.com/album/364919039</a></div>
+<div>CRAVITY - SHOW OFF</div>
+<div>CRAVITY - Blue & White</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/364919039' target='_blank'><img src='https://resources.tidal.com/images/4fdfbcf2/1436/4bd5/bdb0/468b476308b8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] ROAD TO KINGDOM _ ACE OF ACE 〈IDENTITY〉 Part. 1</div>
+<div><a href='https://tidal.com/album/391942448' target='_blank'>https://tidal.com/album/391942448</a></div>
+<div>CRAVITY - Love or Die</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/391942448' target='_blank'><img src='https://resources.tidal.com/images/30e04110/bddc/4675/bc91/962a64a09233/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] FIND THE ORBIT</div>
+<div><a href='https://tidal.com/album/400352397' target='_blank'>https://tidal.com/album/400352397</a></div>
+<div>CRAVITY - Now or Never</div>
+<div>CRAVITY - Secret</div>
+<div>CRAVITY - Horizon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/400352397' target='_blank'><img src='https://resources.tidal.com/images/d9ce86d8/8a3c/40a2/8e0e/b0e2496b6342/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] EVERSHINE</div>
+<div><a href='https://tidal.com/album/345379681' target='_blank'>https://tidal.com/album/345379681</a></div>
+<div>CRAVITY - C'est La Vie</div>
+<div>CRAVITY - Love or Die</div>
+<div>CRAVITY - Cherry Blossom</div>
+<div>CRAVITY - Mr-</div>
+<div>CRAVITY - Worst Thriller</div>
+<div>CRAVITY - Over & Over</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/345379681' target='_blank'><img src='https://resources.tidal.com/images/01f80f9f/cf99/4bc3/a74e/2bdce3ce10d1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] The Uncanny Counter 2, Pt. 1 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/308392244' target='_blank'>https://tidal.com/album/308392244</a></div>
+<div>CRAVITY - Ready Set Go</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308392244' target='_blank'><img src='https://resources.tidal.com/images/d70a166f/8fde/4ebd/ac4d/f797834eba76/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] SUN SEEKER</div>
+<div><a href='https://tidal.com/album/313319340' target='_blank'>https://tidal.com/album/313319340</a></div>
+<div>CRAVITY - Cheese</div>
+<div>CRAVITY - Ready or Not</div>
+<div>CRAVITY - MEGAPHONE</div>
+<div>CRAVITY - Vibration</div>
+<div>CRAVITY - 9 o'clock</div>
+<div>CRAVITY - LOVE FIRE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/313319340' target='_blank'><img src='https://resources.tidal.com/images/8c054bfa/cce4/4e6d/91e1/4f80c29b7238/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] PARTY ROCK - Japanese ver. -</div>
+<div><a href='https://tidal.com/album/355908425' target='_blank'>https://tidal.com/album/355908425</a></div>
+<div>CRAVITY - PARTY ROCK - Japanese ver. -</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/355908425' target='_blank'><img src='https://resources.tidal.com/images/0c2df10c/b6ce/4549/ab00/3a5b9dddaf0e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] MASTER _ PIECE</div>
+<div><a href='https://tidal.com/album/277815132' target='_blank'>https://tidal.com/album/277815132</a></div>
+<div>CRAVITY - Groovy</div>
+<div>CRAVITY - FLY</div>
+<div>CRAVITY - Get Lifted</div>
+<div>CRAVITY - Baddie</div>
+<div>CRAVITY - A to Z</div>
+<div>CRAVITY - Light the way</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/277815132' target='_blank'><img src='https://resources.tidal.com/images/5dea0b44/4084/4412/9928/6379c13a8b9e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] Groovy - Japanese ver. -</div>
+<div><a href='https://tidal.com/album/355905823' target='_blank'>https://tidal.com/album/355905823</a></div>
+<div>CRAVITY - Groovy - Japanese ver. -</div>
+<div>CRAVITY - I Can't Fight The Feeling</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/355905823' target='_blank'><img src='https://resources.tidal.com/images/85c08aa0/6ebf/4782/bc73/c163917b72bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Dilly Dally</div>
+<div><a href='https://tidal.com/album/333532210' target='_blank'>https://tidal.com/album/333532210</a></div>
+<div>CRAVITY - Dilly Dally</div>
+<div>CRAVITY - Adrenaline - Japanese ver. -</div>
+<div>CRAVITY - PARTY ROCK - Japanese ver. -</div>
+<div>CRAVITY - Christmastide</div>
+<div>CRAVITY - Sukinanda - Japanese ver. -</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/333532210' target='_blank'><img src='https://resources.tidal.com/images/9f15f3a0/e642/41ab/a1ff/43cf16459fd8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Cheese</div>
+<div><a href='https://tidal.com/album/312127526' target='_blank'>https://tidal.com/album/312127526</a></div>
+<div>CRAVITY - Cheese</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/312127526' target='_blank'><img src='https://resources.tidal.com/images/45a5bb68/d357/4967/9409/7f75cea5d361/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] VIVID</div>
+<div><a href='https://tidal.com/album/346708817' target='_blank'>https://tidal.com/album/346708817</a></div>
+<div>CRAVITY - VIVID</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346708817' target='_blank'><img src='https://resources.tidal.com/images/aea62213/fbad/4152/9b83/59fd713ca00c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] NEW WAVE</div>
+<div><a href='https://tidal.com/album/248807842' target='_blank'>https://tidal.com/album/248807842</a></div>
+<div>CRAVITY - Boogie Woogie</div>
+<div>CRAVITY - PARTY ROCK</div>
+<div>CRAVITY - New Addiction</div>
+<div>CRAVITY - AUTOMATIC</div>
+<div>CRAVITY - Colorful</div>
+<div>CRAVITY - Knock Knock</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/248807842' target='_blank'><img src='https://resources.tidal.com/images/cd64ba14/c4b6/4b42/b5e0/afeb73f6b96c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] CRAVITY 1ST ALBUM PART 2 [LIBERTY _ IN OUR COSMOS]</div>
+<div><a href='https://tidal.com/album/222000828' target='_blank'>https://tidal.com/album/222000828</a></div>
+<div>CRAVITY - Adrenaline</div>
+<div>CRAVITY - POW!</div>
+<div>CRAVITY - BOPPIN’</div>
+<div>CRAVITY - Chandelier</div>
+<div>CRAVITY - FLIP THE FRAME</div>
+<div>CRAVITY - Maybe Baby</div>
+<div>CRAVITY - Late Night</div>
+<div>CRAVITY - Outro - In Our Cosmos</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222000828' target='_blank'><img src='https://resources.tidal.com/images/af45b1c0/b10a/4606/99e1/5e30705c2099/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Boogie Woogie</div>
+<div><a href='https://tidal.com/album/241554663' target='_blank'>https://tidal.com/album/241554663</a></div>
+<div>CRAVITY - Boogie Woogie</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/241554663' target='_blank'><img src='https://resources.tidal.com/images/6cf94380/df99/4d17/af97/8293a4efd0f3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] HIDEOUT_ BE OUR VOICE - SEASON 3.</div>
+<div><a href='https://tidal.com/album/216512419' target='_blank'>https://tidal.com/album/216512419</a></div>
+<div>CRAVITY - My Turn</div>
+<div>CRAVITY - Call my name</div>
+<div>CRAVITY - Mammoth</div>
+<div>CRAVITY - Bad Habits</div>
+<div>CRAVITY - Moonlight</div>
+<div>CRAVITY - Dangerous</div>
+<div>CRAVITY - Give me your love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216512419' target='_blank'><img src='https://resources.tidal.com/images/b95d8a24/22cc/4e9f/868f/303ba35a383b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] CRAVITY 1ST ALBUM PART 1 [The Awakening_ Written In The Stars]</div>
+<div><a href='https://tidal.com/album/216279140' target='_blank'>https://tidal.com/album/216279140</a></div>
+<div>CRAVITY - Intro - New Horizon</div>
+<div>CRAVITY - Gas Pedal</div>
+<div>CRAVITY - VENI VIDI VICI</div>
+<div>CRAVITY - CHINGA-LINGA</div>
+<div>CRAVITY - Celebrate</div>
+<div>CRAVITY - Grand Prix</div>
+<div>CRAVITY - Divin'</div>
+<div>CRAVITY - GO GO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216279140' target='_blank'><img src='https://resources.tidal.com/images/b2627f7e/1862/47f6/87fe/317961bc5f16/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] HIDEOUT_ THE NEW DAY WE STEP INTO - SEASON 2.</div>
+<div><a href='https://tidal.com/album/216345338' target='_blank'>https://tidal.com/album/216345338</a></div>
+<div>CRAVITY - Flame</div>
+<div>CRAVITY - Believer</div>
+<div>CRAVITY - Ohh Ahh</div>
+<div>CRAVITY - Realize</div>
+<div>CRAVITY - HOT AIR BALLOON</div>
+<div>CRAVITY - Sunrise</div>
+<div>CRAVITY - Breathing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216345338' target='_blank'><img src='https://resources.tidal.com/images/eff0ec56/b874/470a/a5ed/b9774e61918a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] HIDEOUT_ REMEMBER WHO WE ARE - SEASON1.</div>
+<div><a href='https://tidal.com/album/216541928' target='_blank'>https://tidal.com/album/216541928</a></div>
+<div>CRAVITY - Top of the Chain</div>
+<div>CRAVITY - Break all the Rules</div>
+<div>CRAVITY - JUMPER</div>
+<div>CRAVITY - Blackout</div>
+<div>CRAVITY - Stay</div>
+<div>CRAVITY - Cloud 9</div>
+<div>CRAVITY - Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216541928' target='_blank'><img src='https://resources.tidal.com/images/1bf25107/c242/47a2/b6c5/ccb771594187/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/타이달 크래비티 ( Tidal CRAVITY )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
