@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 크라잉넛 ( Tidal Crying Nut )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 크라잉넛 ( Tidal Crying Nut )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/1c3449eb/441f/410e/a7d1/166b60a196e5/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/3591511' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 크라잉넛</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>청춘을 노래하는, 영원한 인디 록의 아이콘</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Crying Nut</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Singing of youth, an eternal icon of indie rock</div><p>한국 인디 록의 역사를 써내려 온 밴드, 크라잉넛을 소개합니다. 그들의 음악은 단순한 멜로디를 넘어, 청춘의 에너지와 자유로운 정신을 담고 있어요. 언제나 유쾌하고 뜨거운 무대를 선사하는 크라잉넛과 함께 신나는 음악 세계로 빠져볼까요?</p><p>Let us introduce Crying Nut, the band that has been writing the history of Korean indie rock. Their music goes beyond simple melodies, capturing the energy of youth and a free spirit. Shall we dive into the exciting world of music with Crying Nut, who always presents joyful and passionate stages?</p><p>✧</p><p>자유로운 영혼들의 만남</p><p>1990년대 후반, 혈기왕성한 젊은이들이 모여 크라잉넛이 탄생했습니다. 거리 공연과 클럽 무대를 통해 실력을 쌓으며 독특한 음악 스타일을 만들어냈어요. 그들의 음악은 틀에 얽매이지 않는 자유로움 그 자체였답니다.</p><p>A Meeting of Free Spirits</p><p>In the late 1990s, a group of energetic young people came together to form Crying Nut. They honed their skills through street performances and club stages, creating a unique musical style. Their music was freedom itself, unbound by convention.</p><p>✧</p><p>에너지 넘치는 음악과 퍼포먼스</p><p>크라잉넛의 음악은 펑크 록을 기반으로 다양한 장르를 넘나들며 신나는 분위기를 선사합니다. 특히, 그들의 공연은 열정적인 연주와 재치 있는 무대 매너로 관객들을 사로잡아요. 한번 보면 잊을 수 없는 강렬한 에너지를 느낄 수 있을 거예요.</p><p>Energetic Music and Performance</p><p>Crying Nut's music is based on punk rock, crossing various genres to deliver an exciting atmosphere. In particular, their performances captivate audiences with passionate performances and witty stage presence. You will feel an unforgettable intense energy once you see them.</p><p>✧</p><p>인디 씬의 개척자</p><p>크라잉넛은 한국 인디 음악 씬의 부흥을 이끈 선구자 중 하나입니다. 그들은 대중적인 성공과 함께 인디 정신을 잃지 않고 꾸준히 활동하며 후배 뮤지션들에게 큰 영향을 주었어요. 끊임없이 새로운 시도를 하는 그들의 열정은 감동을 자아냅니다.</p><p>Pioneers of the Indie Scene</p><p>Crying Nut is one of the pioneers who led the revival of the Korean indie music scene. They have had a great influence on younger musicians, constantly working without losing their indie spirit along with popular success. Their passion for constantly trying new things is truly inspiring.</p><p>✧</p><p>변치 않는 청춘, 영원한 에너지</p><p>시간이 흘러도 크라잉넛은 여전히 청춘의 에너지와 긍정적인 메시지를 전달합니다. 그들의 음악은 힘든 일상에 지친 사람들에게 위로와 용기를 주며, 함께 웃고 즐길 수 있는 시간을 선사해요. 앞으로도 크라잉넛은 변치 않는 모습으로 우리 곁에 함께할 거예요.</p><p>Unchanging Youth, Eternal Energy</p><p>Even as time passes, Crying Nut continues to deliver the energy of youth and a positive message. Their music provides comfort and courage to those tired of their hard daily lives, and offers a time to laugh and enjoy together. Crying Nut will continue to be with us, unchanging in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Our old bar</div>
+<div><a href='https://tidal.com/album/431898347' target='_blank'>https://tidal.com/album/431898347</a></div>
+<div>Crying Nut - Our old bar</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431898347' target='_blank'><img src='https://resources.tidal.com/images/c382b4dd/1fc2/44ce/92cb/1c8d6d85bf23/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] White star</div>
+<div><a href='https://tidal.com/album/386389397' target='_blank'>https://tidal.com/album/386389397</a></div>
+<div>Crying Nut - White star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/386389397' target='_blank'><img src='https://resources.tidal.com/images/d932592f/18e6/4061/9516/be53011feda1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Lonesome Petals Came Together To Become A Butterfly</div>
+<div><a href='https://tidal.com/album/368903240' target='_blank'>https://tidal.com/album/368903240</a></div>
+<div>Crying Nut - Lonesome Petals Came Together To Become A Butterfl</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/368903240' target='_blank'><img src='https://resources.tidal.com/images/7aa2809d/d437/441f/a6a0/0b1da8497d83/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] The First Responders2 (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/311336562' target='_blank'>https://tidal.com/album/311336562</a></div>
+<div>Crying Nut - Hero</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/311336562' target='_blank'><img src='https://resources.tidal.com/images/9a1b8f18/4527/4b8d/9efc/ecf622208dd3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Night overtime</div>
+<div><a href='https://tidal.com/album/297734279' target='_blank'>https://tidal.com/album/297734279</a></div>
+<div>Crying Nut - Night overtime</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297734279' target='_blank'><img src='https://resources.tidal.com/images/bbce9158/5b03/47f3/8aa6/ecbf96d82ac2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] New Recruit</div>
+<div><a href='https://tidal.com/album/346708285' target='_blank'>https://tidal.com/album/346708285</a></div>
+<div>Crying Nut - The Paradise</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346708285' target='_blank'><img src='https://resources.tidal.com/images/25424b51/0fee/4cc0/a09f/506d00e54efe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] NEW FESTA EPISODE.8</div>
+<div><a href='https://tidal.com/album/240012607' target='_blank'>https://tidal.com/album/240012607</a></div>
+<div>Crying Nut - If you live in this world (with Kingston Rudieska)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/240012607' target='_blank'><img src='https://resources.tidal.com/images/0c01cca2/c184/4278/8af6/f5e5f3dda072/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 2021 Kiwoom Heroes</div>
+<div><a href='https://tidal.com/album/184974780' target='_blank'>https://tidal.com/album/184974780</a></div>
+<div>Crying Nut - We Are the Winners</div>
+<div>Crying Nut - Oh Kiwoom, Kiwoom Heroes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184974780' target='_blank'><img src='https://resources.tidal.com/images/4e8785d3/ec92/4105/92a3/0925b37e8d09/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 크라잉넛 25주년 기념 베스트앨범 Pt. 2 - Isn’t That Good_</div>
+<div><a href='https://tidal.com/album/190041360' target='_blank'>https://tidal.com/album/190041360</a></div>
+<div>Crying Nut - 크라잉넛 25주년 기념 베스트앨범 Pt. 2 - Isn’t That Good- 25th A</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/190041360' target='_blank'><img src='https://resources.tidal.com/images/d705a955/5edc/4d78/844f/2a0609182dce/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] 크라잉넛 25주년 기념 베스트앨범 Pt. 1 - Oh! What a Shiny Night</div>
+<div><a href='https://tidal.com/album/190040169' target='_blank'>https://tidal.com/album/190040169</a></div>
+<div>Crying Nut - 크라잉넛 25주년 기념 베스트앨범 Pt. 1 - Oh! What a Shiny Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/190040169' target='_blank'><img src='https://resources.tidal.com/images/58f18a76/9e87/476b/b385/32d463a7e11a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] CRYING NUT 25th Anniversary Best Album</div>
+<div><a href='https://tidal.com/album/189953107' target='_blank'>https://tidal.com/album/189953107</a></div>
+<div>Crying Nut - Circus Magic Clowns 25th Anniversary Version</div>
+<div>Crying Nut - Speed Up Losers 25th Anniversary Version</div>
+<div>Crying Nut - Luxembourg 25th Anniversary Version</div>
+<div>Crying Nut - Myeong-dong Calling 25th Anniversary Version</div>
+<div>Crying Nut - Let’s Drink 25th Anniversary Version</div>
+<div>Crying Nut - Dog Talk 25th Anniversary Version</div>
+<div>Crying Nut - Vicious Song 25th Anniversary Version(Explicit)</div>
+<div>Crying Nut - Dove 25th Anniversary Version</div>
+<div>Crying Nut - Punk Girl 25th Anniversary Version</div>
+<div>Crying Nut - Oh! What a Shiny Night 25th Anniversary Version</div>
+<div>Crying Nut - Blue Bird 25th Anniversary Version</div>
+<div>Crying Nut - Sooni Heading to the Cosmos 25th Anniversary Versi</div>
+<div>Crying Nut - Burning Goodbye 25th Anniversary Version</div>
+<div>Crying Nut - The Poppy 25th Anniversary Version(Explicit)</div>
+<div>Crying Nut - Isn’t That Good- 25th Anniversary Version</div>
+<div>Crying Nut - All Die 25th Anniversary Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189953107' target='_blank'><img src='https://resources.tidal.com/images/0b9e7431/3083/42b5/be20/58ce135465a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 다음에 잘하자 Let’s Do Better Next Time</div>
+<div><a href='https://tidal.com/album/148604703' target='_blank'>https://tidal.com/album/148604703</a></div>
+<div>Crying Nut - Let’s Do Better Next Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148604703' target='_blank'><img src='https://resources.tidal.com/images/19a4ae39/9061/4152/ad3e/1080f0264932/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 리모델링 Remodeling</div>
+<div><a href='https://tidal.com/album/148604690' target='_blank'>https://tidal.com/album/148604690</a></div>
+<div>Crying Nut - 구닥다리 멜로디 Old School Melody</div>
+<div>Crying Nut - 리모델링 Remodeling</div>
+<div>Crying Nut - 내 인생 마지막 토요일 The Last Saturday of My</div>
+<div>Crying Nut - 길고양이 Stray Cat</div>
+<div>Crying Nut - 잘생겨서 죄송합니다 Sorry for Being So Damn Ha</div>
+<div>Crying Nut - 심장의 노래 Song of the Heart</div>
+<div>Crying Nut - 이방인 The Stranger</div>
+<div>Crying Nut - 토요일밤 Saturday Night</div>
+<div>Crying Nut - 똥이 밀려와 Wave of Sh!t</div>
+<div>Crying Nut - 망상 Delusion</div>
+<div>Crying Nut - 우리들은 걷는다 We’re Gonna Walk</div>
+<div>Crying Nut - 운 좋게도 Luckily (2018 Mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148604690' target='_blank'><img src='https://resources.tidal.com/images/5af8616f/b0c1/4206/a453/74e2dafa3a13/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Clean With Passion For Now, Pt. 6 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/334931868' target='_blank'>https://tidal.com/album/334931868</a></div>
+<div>Crying Nut - Cleaning</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334931868' target='_blank'><img src='https://resources.tidal.com/images/76d49400/0d3f/43ce/a609/0dd8e19f3288/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 운 좋게도 Luckily</div>
+<div><a href='https://tidal.com/album/148604678' target='_blank'>https://tidal.com/album/148604678</a></div>
+<div>Crying Nut - 운 좋게도 Luckily</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148604678' target='_blank'><img src='https://resources.tidal.com/images/a593c7e7/75ed/45d2/bab1/84d62d339272/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 스노우볼 프로젝트 Vol. 3 - 우린 여기에</div>
+<div><a href='https://tidal.com/album/173432042' target='_blank'>https://tidal.com/album/173432042</a></div>
+<div>Crying Nut, P-Type - 스노우볼 프로젝트 Vol. 3  - 우린 여기에</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/173432042' target='_blank'><img src='https://resources.tidal.com/images/3e95b299/9522/4efa/80ab/da9d30901ca8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 안녕 Bye-Bye</div>
+<div><a href='https://tidal.com/album/148604676' target='_blank'>https://tidal.com/album/148604676</a></div>
+<div>Crying Nut - 안녕 Bye-Bye</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148604676' target='_blank'><img src='https://resources.tidal.com/images/756c182d/44ab/4ded/b4f7/d9746964ead7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 다시 한 번 필승 코리아 Victory Korea Again</div>
+<div><a href='https://tidal.com/album/148604667' target='_blank'>https://tidal.com/album/148604667</a></div>
+<div>Crying Nut - 필살 Offside Deathblow Offside (New Recording Versio</div>
+<div>Crying Nut - The Hero (New Recording Version)</div>
+<div>Crying Nut - 일어나라 대한민국 Wake Up Korea (New Recording Version)</div>
+<div>Crying Nut - 룩셈부르크 Luxembourg (New Recording Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148604667' target='_blank'><img src='https://resources.tidal.com/images/b79b1a86/d082/44c3/9d82/e1228c81507a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] FLAMING NUTS</div>
+<div><a href='https://tidal.com/album/215782879' target='_blank'>https://tidal.com/album/215782879</a></div>
+<div>Crying Nut - 해적의 항로 The Pirate’s Path</div>
+<div>Crying Nut - Give Me the Money</div>
+<div>Crying Nut - 레고 Lego</div>
+<div>Crying Nut - 미지의 세계 Unknown Universe</div>
+<div>Crying Nut - 5분 세탁 Five Minute Laundry</div>
+<div>Crying Nut - 땅콩 Peanut</div>
+<div>Crying Nut - 새신발 New Shoes</div>
+<div>Crying Nut - 취생몽사 Happy Go Lucky Guy</div>
+<div>Crying Nut - Self Happy Christmas & New Year</div>
+<div>Crying Nut - 여름 Summer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215782879' target='_blank'><img src='https://resources.tidal.com/images/a1f1abfe/dd5b/4305/81f9/d55a96d8b943/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 개구쟁이 Naughty Boy</div>
+<div><a href='https://tidal.com/album/148604652' target='_blank'>https://tidal.com/album/148604652</a></div>
+<div>Crying Nut - 이사가는 날 Moving Day</div>
+<div>Crying Nut - 브레이브 맨 The Brave Man</div>
+<div>Crying Nut - 이사가는 날 Moving Day (Original Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148604652' target='_blank'><img src='https://resources.tidal.com/images/62a2a674/ecbd/406e/85df/0d068538546b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] 불편한 파티</div>
+<div><a href='https://tidal.com/album/215751649' target='_blank'>https://tidal.com/album/215751649</a></div>
+<div>Crying Nut - CRYING NUT SONG</div>
+<div>Crying Nut - 착한아이</div>
+<div>Crying Nut - 불편한 파티</div>
+<div>Crying Nut - 루나</div>
+<div>Crying Nut - 만취천국</div>
+<div>Crying Nut - 비둘기</div>
+<div>Crying Nut - 귀신은 뭐하나</div>
+<div>Crying Nut - WAKE UP</div>
+<div>Crying Nut - 가련다</div>
+<div>Crying Nut - 가배물어 (咖啡物語)</div>
+<div>Crying Nut - ROSE BANG</div>
+<div>Crying Nut - 빈자리</div>
+<div>Crying Nut - 생일축하</div>
+<div>Crying Nut - GOLD RUSH</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215751649' target='_blank'><img src='https://resources.tidal.com/images/06ad5448/6027/4a22/a650/4e9f653035b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] 좋지 아니한가 (Single)</div>
+<div><a href='https://tidal.com/album/215603609' target='_blank'>https://tidal.com/album/215603609</a></div>
+<div>Crying Nut - 좋지 아니한가</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215603609' target='_blank'><img src='https://resources.tidal.com/images/567316a6/4409/473c/80ed/522875cd0725/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] 안녕고래</div>
+<div><a href='https://tidal.com/album/215832384' target='_blank'>https://tidal.com/album/215832384</a></div>
+<div>Crying Nut - 안녕고래</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215832384' target='_blank'><img src='https://resources.tidal.com/images/2931db76/3f9b/4b95/a31f/101941200da7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] Crying Nut 3 Singles</div>
+<div><a href='https://tidal.com/album/148607518' target='_blank'>https://tidal.com/album/148607518</a></div>
+<div>Crying Nut - 안녕 고래 Hello, Whale</div>
+<div>Crying Nut - 좋지 아니한가 Isn't That Good-</div>
+<div>Crying Nut - 보드카 서울 드라이빙 Vodka Seoul Driving</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148607518' target='_blank'><img src='https://resources.tidal.com/images/8fec1ce9/e570/4f1c/a5bc/d706f3ef95fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] 네이트 CF 삽입- 크라잉넛 캐롤송</div>
+<div><a href='https://tidal.com/album/215832426' target='_blank'>https://tidal.com/album/215832426</a></div>
+<div>Crying Nut - WE WISH YOU A MERRY CHRISTMAS (네이트 CF 삽입곡)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215832426' target='_blank'><img src='https://resources.tidal.com/images/d0aed8d4/a695/4794/b863/8a09a6f272f1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] OK 목장의 젖소 Milk Cattle at the OK Corral</div>
+<div><a href='https://tidal.com/album/148607483' target='_blank'>https://tidal.com/album/148607483</a></div>
+<div>Crying Nut - OK 목장의 젖소 Milk Cattle at the OK Corral</div>
+<div>Crying Nut - 룩셈부르크 Luxembourg</div>
+<div>Crying Nut - 부딪쳐 Smash It</div>
+<div>Crying Nut - 명동콜링 Myeong-dong Calling</div>
+<div>Crying Nut - 마시자 Let's Drink</div>
+<div>Crying Nut - 유원지의 밤 A Night at the Amusement Park</div>
+<div>Crying Nut - 뜨거운 안녕 Burning Goodbye</div>
+<div>Crying Nut - 물밑의 속삭임 Whisper Under the Water (feat.</div>
+<div>Crying Nut - 백수일기 Diary of the Jobless</div>
+<div>Crying Nut - 새 Bird</div>
+<div>Crying Nut - My World</div>
+<div>Crying Nut - 순이 우주로 Soony Heading to the Cosmos</div>
+<div>Crying Nut - 오줌싸게 Bed-Wetting Generation</div>
+<div>Crying Nut - 한낮의 꿈 Daydream</div>
+<div>Crying Nut - 감옥으로 부터의 사색 Meditation from Prison</div>
+<div>Crying Nut - 튼튼이의 모험 The Adventures of the Strong</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148607483' target='_blank'><img src='https://resources.tidal.com/images/b5567123/edae/4af0/850a/254195368e14/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] Crying Nut Best!_</div>
+<div><a href='https://tidal.com/album/148607243' target='_blank'>https://tidal.com/album/148607243</a></div>
+<div>Crying Nut - Circus Magic Clowns</div>
+<div>Crying Nut - Speed Up Losers</div>
+<div>Crying Nut - Oh! What a Shiny Night</div>
+<div>Crying Nut - Vicious Song</div>
+<div>Crying Nut - Funny Song</div>
+<div>Crying Nut - The Poppy</div>
+<div>Crying Nut - Not Funny Story</div>
+<div>Crying Nut - Oh My 007</div>
+<div>Crying Nut - The Secondhand Radio</div>
+<div>Crying Nut - All Die</div>
+<div>Crying Nut - The Hero</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148607243' target='_blank'><img src='https://resources.tidal.com/images/a351af46/b5cb/4814/9dc6/d75f7b79c5a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2005] The Hero</div>
+<div><a href='https://tidal.com/album/427026700' target='_blank'>https://tidal.com/album/427026700</a></div>
+<div>Crying Nut - The Hero</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/427026700' target='_blank'><img src='https://resources.tidal.com/images/4d09cede/ec90/415b/a73f/d8f3d2b4728c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] CryingNut Best-Wild Wild Live</div>
+<div><a href='https://tidal.com/album/344213583' target='_blank'>https://tidal.com/album/344213583</a></div>
+<div>Crying Nut - 서커스 매직 유랑단 Circus Magic Clowns</div>
+<div>Crying Nut - 필살 Offside Deathblow Offside</div>
+<div>Crying Nut - 만성피로 Chronic Fatigue</div>
+<div>Crying Nut - 지독한 노래 Vicious Song</div>
+<div>Crying Nut - 갈매기 Seagull</div>
+<div>Crying Nut - 브로드웨이 AM03-00 Broadway AM03-00</div>
+<div>Crying Nut - 배짱이 Grasshopper</div>
+<div>Crying Nut - 퀵서비스맨 Quick Service Man</div>
+<div>Crying Nut - 검은새 Black Bird</div>
+<div>Crying Nut - 너구리 Raccoon</div>
+<div>Crying Nut - 개가 말하네 Dog Talks</div>
+<div>Crying Nut - 양귀비 The Poppy</div>
+<div>Crying Nut - 고물 라디오 The Secondhand Radio</div>
+<div>Crying Nut - 빨대맨 Straw Man</div>
+<div>Crying Nut - Oh My 007</div>
+<div>Crying Nut - 군바리 Soldier 230</div>
+<div>Crying Nut - 펑크걸 Punk Girl</div>
+<div>Crying Nut - 황금마차 Golden Wagon</div>
+<div>Crying Nut - 말달리자 Speed Up Losers</div>
+<div>Crying Nut - 안웃겨 So Not Funny</div>
+<div>Crying Nut - 게릴라성 집중호우 Guerrilla Rainstorm</div>
+<div>Crying Nut - 허니 Honey</div>
+<div>Crying Nut - 다죽자 All Die</div>
+<div>Crying Nut - 밤이 깊었네 Oh! What a Shiny Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344213583' target='_blank'><img src='https://resources.tidal.com/images/da962a70/9dc1/41d5/be60/6716413d8c49/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] 고물라디오</div>
+<div><a href='https://tidal.com/album/215649490' target='_blank'>https://tidal.com/album/215649490</a></div>
+<div>Crying Nut - 고물라디오</div>
+<div>Crying Nut - 필살 Offside</div>
+<div>Crying Nut - 너구리</div>
+<div>Crying Nut - 퀵서비스맨</div>
+<div>Crying Nut - 소크라테스 클럽</div>
+<div>Crying Nut - 오드리</div>
+<div>Crying Nut - 황금마차</div>
+<div>Crying Nut - 사망가</div>
+<div>Crying Nut - 타이거당췌!</div>
+<div>Crying Nut - Oh My 007</div>
+<div>Crying Nut - 양치기 소년의 항해일지</div>
+<div>Crying Nut - 개가 말하네</div>
+<div>Crying Nut - 불꽃놀이</div>
+<div>Crying Nut - 빽구두</div>
+<div>Crying Nut - 귀뚜라미 별곡</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215649490' target='_blank'><img src='https://resources.tidal.com/images/c576ccad/ba19/4aae/af36/4247d6f13f29/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] 하수연가</div>
+<div><a href='https://tidal.com/album/215649649' target='_blank'>https://tidal.com/album/215649649</a></div>
+<div>Crying Nut - 이소룡을 찾아랏!!</div>
+<div>Crying Nut - 만성피로</div>
+<div>Crying Nut - 밤이 깊었네</div>
+<div>Crying Nut - 지독한 노래</div>
+<div>Crying Nut - 붉은방</div>
+<div>Crying Nut - 양귀비</div>
+<div>Crying Nut - 웃기지도 않는 이야기</div>
+<div>Crying Nut - 금환식</div>
+<div>Crying Nut - Honey</div>
+<div>Crying Nut - 불놀이</div>
+<div>Crying Nut - 코미디의 왕</div>
+<div>Crying Nut - 하수구</div>
+<div>Crying Nut - 몰랐어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215649649' target='_blank'><img src='https://resources.tidal.com/images/80e7aeb1/6b1e/45ed/8135/ef8a6a6a4ed4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] 서커스 매직 유랑단</div>
+<div><a href='https://tidal.com/album/215649473' target='_blank'>https://tidal.com/album/215649473</a></div>
+<div>Crying Nut - 써커스 매직 유랑단</div>
+<div>Crying Nut - 신기한 노래</div>
+<div>Crying Nut - 강변에 서다</div>
+<div>Crying Nut - 배짱이</div>
+<div>Crying Nut - 다죽자</div>
+<div>Crying Nut - 더러운 도시</div>
+<div>Crying Nut - 군바리230</div>
+<div>Crying Nut - 탈출기 (바람의 계곡을 넘어)</div>
+<div>Crying Nut - 벗어</div>
+<div>Crying Nut - 브로드웨이</div>
+<div>Crying Nut - S.F</div>
+<div>Crying Nut - 빨대맨</div>
+<div>Crying Nut - 게릴라성 집중호우</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215649473' target='_blank'><img src='https://resources.tidal.com/images/12c80ec1/f2e8/4d03/a1b5/10b43e5e6647/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] 말달리자</div>
+<div><a href='https://tidal.com/album/215649445' target='_blank'>https://tidal.com/album/215649445</a></div>
+<div>Crying Nut - 묘비명</div>
+<div>Crying Nut - 갈매기</div>
+<div>Crying Nut - 말 달리자</div>
+<div>Crying Nut - 접속</div>
+<div>Crying Nut - 파랑새</div>
+<div>Crying Nut - 검은새</div>
+<div>Crying Nut - 펑크걸</div>
+<div>Crying Nut - 요람을 흔드는 돈</div>
+<div>Crying Nut - 뻔데기</div>
+<div>Crying Nut - 안웃껴</div>
+<div>Crying Nut - 성냥팔이 소녀</div>
+<div>Crying Nut - 허리케인</div>
+<div>Crying Nut - 싸나이</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215649445' target='_blank'><img src='https://resources.tidal.com/images/12962d70/0205/4b7e/b65a/68f9c31d3460/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/타이달 크라잉넛 ( Tidal Crying Nut )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
