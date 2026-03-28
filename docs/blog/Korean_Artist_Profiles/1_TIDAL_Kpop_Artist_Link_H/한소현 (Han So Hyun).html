@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 한소현 ( Tidal Han So Hyun )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 한소현 ( Tidal Han So Hyun )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/a39ca253/a309/41ef/9601/75fbdb42035d/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/17452845' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 한소현</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>감성적인 위로를 건네는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Han So Hyun</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Singer-Songwriter Delivering Emotional Comfort</div><p>섬세한 감성으로 듣는 이의 마음을 어루만지는 한소현입니다. 그녀의 음악은 진솔한 가사와 따뜻한 멜로디로 깊은 공감을 자아내요. 일상 속 작은 이야기부터 깊은 내면의 고백까지, 다양한 감정을 노래합니다.</p><p>Han So Hyun soothes the hearts of listeners with her delicate emotions. Her music creates deep empathy with sincere lyrics and warm melodies. She sings about various emotions, from small stories of everyday life to deep inner confessions.</p><p>✧</p><p>음악적 시작</p><p>한소현은 자신만의 음악적 색깔을 꾸준히 다듬어 왔습니다. 그녀의 음악은 어쿠스틱 사운드를 기반으로, 팝적인 감성을 더해 듣기 편안한 멜로디를 선사해요. 꾸밈없는 목소리는 진심을 담아 더욱 깊은 울림을 줍니다.</p><p>Musical Beginnings</p><p>Han So Hyun has steadily refined her own musical color. Her music is based on acoustic sounds, adding pop sensibilities to deliver comfortable melodies. Her unadorned voice conveys sincerity, adding to the depth of resonance.</p><p>✧</p><p>감성적인 음악 세계</p><p>그녀의 음악은 사랑, 이별, 그리움 등 다양한 감정을 섬세하게 표현합니다. 때로는 부드럽게 속삭이는 듯, 때로는 애절하게 울려 퍼지는 그녀의 목소리는 듣는 이의 감정을 고스란히 대변하는 듯해요. 잔잔한 밤, 위로가 필요한 순간 그녀의 음악은 더욱 빛을 발합니다.</p><p>An Emotional Musical World</p><p>Her music delicately expresses various emotions such as love, farewell, and longing. Sometimes softly whispering, sometimes mournfully resounding, her voice seems to represent the listener's emotions as they are. On a quiet night, her music shines even brighter when comfort is needed.</p><p>✧</p><p>주요 음악 활동</p><p>한소현은 꾸준히 음원을 발표하며 활동 영역을 넓혀가고 있습니다. 그녀의 음악은 다양한 플레이리스트에 소개되며 많은 이들에게 알려지고 있어요. 라이브 공연을 통해 팬들과 직접 소통하며 더욱 깊은 유대감을 형성하고 있습니다.</p><p>Major Musical Activities</p><p>Han So Hyun is steadily releasing music and expanding her activities. Her music is being introduced to various playlists and is becoming known to many people. She communicates directly with fans through live performances, forming deeper bonds.</p><p>✧</p><p>앞으로의 음악 여정</p><p>앞으로 한소현은 더욱 다양한 음악적 시도를 통해 자신만의 색깔을 확고히 할 것으로 기대됩니다. 그녀의 진솔한 음악은 지친 일상 속에서 작은 위로와 희망을 전달하며 오랫동안 사랑받을 거예요. 다음 음악 여정이 더욱 기대됩니다.</p><p>Future Musical Journey</p><p>In the future, Han So Hyun is expected to solidify her own color through more diverse musical attempts. Her sincere music will be loved for a long time, delivering small comforts and hope in a tiring daily life. We look forward to her next musical journey even more.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2013] Oh My Darling</div>
+<div><a href='https://tidal.com/album/184486359' target='_blank'>https://tidal.com/album/184486359</a></div>
+<div>Han So Hyun - Oh My Darling</div>
+<div>Han So Hyun - 미안해</div>
+<div>Han So Hyun - Night & Day</div>
+<div>Han So Hyun - Go Away</div>
+<div>Han So Hyun - 잘자요</div>
+<div>Han So Hyun - 미안해 Acoustic Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184486359' target='_blank'><img src='https://resources.tidal.com/images/a39ca253/a309/41ef/9601/75fbdb42035d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] 러브레터 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/381058193' target='_blank'>https://tidal.com/album/381058193</a></div>
+<div>Han So Hyun - 너를 위한 기도</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381058193' target='_blank'><img src='https://resources.tidal.com/images/77ee2a85/20f8/4114/8565/960e9611d520/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/타이달 한소현 ( Tidal Han So Hyun )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
