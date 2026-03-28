@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 아르테미스 ( Tidal ARTMS )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 아르테미스 ( Tidal ARTMS )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/ea5fa3c3/3688/4eaa/8440/be8ead8f3c10/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/21898071' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 아르테미스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>ARTMS: 새로운 세계를 향한 용감한 항해</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> ARTMS</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>ARTMS: A Courageous Voyage to a New World</div><p>ARTMS는 자신만의 빛을 찾아 끊임없이 도전하는 그룹이에요. 멤버들은 각자의 개성을 살려 다채로운 음악적 스펙트럼을 보여주며, 듣는 이들에게 깊은 공감과 위로를 전달합니다.</p><p>ARTMS is a group that constantly challenges themselves to find their own light. The members showcase a diverse musical spectrum that brings out their individual personalities, delivering deep empathy and comfort to listeners.</p><p>✧</p><p>그룹 탄생: 여정의 시작</p><p>ARTMS는 기존의 틀을 벗어나 새로운 시작을 알린 그룹이에요. 멤버들은 각자의 꿈을 향해 나아가는 여정 속에서, 더욱 단단해진 팀워크와 음악적 시너지를 보여줍니다.</p><p>Group Formation: The Beginning of the Journey</p><p>ARTMS is a group that broke away from the existing framework and announced a new beginning. In their journey towards their own dreams, the members showcase stronger teamwork and musical synergy.</p><p>✧</p><p>음악 및 퍼포먼스: 다채로운 스펙트럼</p><p>ARTMS의 음악은 몽환적인 분위기와 강렬한 사운드를 넘나들며, 다양한 감정을 표현해요. 섬세하면서도 파워풀한 퍼포먼스는 그들의 음악적 메시지를 더욱 효과적으로 전달합니다.</p><p>Music and Performance: A Diverse Spectrum</p><p>ARTMS' music ranges from dreamy atmospheres to intense sounds, expressing a variety of emotions. Their delicate yet powerful performances effectively convey their musical message.</p><p>✧</p><p>주요 활동: 빛을 향한 열정</p><p>ARTMS는 앨범 발매뿐만 아니라 다양한 프로젝트와 협업을 통해 팬들과 소통하고 있어요. 그들의 끊임없는 노력과 열정은 음악 팬들에게 긍정적인 영향을 주고 있습니다.</p><p>Main Activities: Passion for Light</p><p>ARTMS communicates with fans through not only album releases but also various projects and collaborations. Their constant efforts and passion are positively impacting music fans.</p><p>✧</p><p>미래/의미: 새로운 가능성</p><p>ARTMS는 앞으로도 독창적인 음악과 퍼포먼스를 통해 새로운 가능성을 보여줄 것으로 기대돼요. 그들의 음악은 단순한 즐거움을 넘어, 듣는 이들에게 용기와 희망을 전달하는 의미 있는 메시지를 담고 있습니다.</p><p>Future/Meaning: New Possibilities</p><p>ARTMS is expected to show new possibilities through their original music and performances in the future. Their music goes beyond simple enjoyment, containing meaningful messages that convey courage and hope to listeners.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Club Icarus</div>
+<div><a href='https://tidal.com/album/436843278' target='_blank'>https://tidal.com/album/436843278</a></div>
+<div>artms - Club for the Broken</div>
+<div>artms - Icarus</div>
+<div>artms - Obsessed</div>
+<div>artms - Goddess</div>
+<div>artms - Verified Beauty</div>
+<div>artms - BURN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/436843278' target='_blank'><img src='https://resources.tidal.com/images/29d174db/d9fd/4e15/b957/b2bc5f3396c0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] BURN</div>
+<div><a href='https://tidal.com/album/417000996' target='_blank'>https://tidal.com/album/417000996</a></div>
+<div>artms - Light It Up</div>
+<div>artms - BURN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/417000996' target='_blank'><img src='https://resources.tidal.com/images/c1109c04/c3a1/4d99/8b75/ef70600820dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] BURN (Dolby Atmos Version)</div>
+<div><a href='https://tidal.com/album/423236424' target='_blank'>https://tidal.com/album/423236424</a></div>
+<div>artms - Light It Up</div>
+<div>artms - BURN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/423236424' target='_blank'><img src='https://resources.tidal.com/images/307b4ba7/3211/4e3f/ac8d/4b608337002a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Pre 4 Air (Dolby)</div>
+<div><a href='https://tidal.com/album/359234426' target='_blank'>https://tidal.com/album/359234426</a></div>
+<div>artms - Air (Dolby)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/359234426' target='_blank'><img src='https://resources.tidal.com/images/4f61845d/f5ad/46ad/a4ea/f555b8e7d6af/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Pre 4  Air</div>
+<div><a href='https://tidal.com/album/353975247' target='_blank'>https://tidal.com/album/353975247</a></div>
+<div>artms - Air</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353975247' target='_blank'><img src='https://resources.tidal.com/images/ce225d1a/5d85/4e26/a34d/ddb11c6b98b2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Pre 3  Candy Crush</div>
+<div><a href='https://tidal.com/album/353975249' target='_blank'>https://tidal.com/album/353975249</a></div>
+<div>artms - Candy Crush</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353975249' target='_blank'><img src='https://resources.tidal.com/images/6efba548/dc94/40d3/b000/a7145e5518e0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Pre 3  Candy Crush (Dolby)</div>
+<div><a href='https://tidal.com/album/359210378' target='_blank'>https://tidal.com/album/359210378</a></div>
+<div>artms - Candy Crush</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/359210378' target='_blank'><img src='https://resources.tidal.com/images/b430f8b6/c63b/4c5f/8d44/6f265d3f9edd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Pre 2  Flower Rhythm</div>
+<div><a href='https://tidal.com/album/353975245' target='_blank'>https://tidal.com/album/353975245</a></div>
+<div>artms - Flower Rhythm</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353975245' target='_blank'><img src='https://resources.tidal.com/images/7546e605/8f37/4abc/b4ac/d650a571c32f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Pre 2  Flower Rhythm (Dolby)</div>
+<div><a href='https://tidal.com/album/359383689' target='_blank'>https://tidal.com/album/359383689</a></div>
+<div>artms - Flower Rhythm</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/359383689' target='_blank'><img src='https://resources.tidal.com/images/05fff35f/239a/4d42/9317/a2322596272b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] Pre 1  Birth</div>
+<div><a href='https://tidal.com/album/352036038' target='_blank'>https://tidal.com/album/352036038</a></div>
+<div>artms - Birth</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352036038' target='_blank'><img src='https://resources.tidal.com/images/35a6c3d1/1957/4df2/b46f/1abaf9177eca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Pre 1  Birth (Dolby)</div>
+<div><a href='https://tidal.com/album/359211412' target='_blank'>https://tidal.com/album/359211412</a></div>
+<div>artms - Birth</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/359211412' target='_blank'><img src='https://resources.tidal.com/images/b108ea60/b1fd/4964/81f6/23aa4ef1e376/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Dall</div>
+<div><a href='https://tidal.com/album/366566080' target='_blank'>https://tidal.com/album/366566080</a></div>
+<div>artms - url</div>
+<div>artms - Virtual Angel</div>
+<div>artms - Sparkle</div>
+<div>artms - The Hitchhiker's Guide to the Galaxy</div>
+<div>artms - Flower Rhythm</div>
+<div>artms - Candy Crush</div>
+<div>artms - Air</div>
+<div>artms - UnfAir</div>
+<div>artms - Distress</div>
+<div>artms - Butterfly Effect</div>
+<div>artms - Birth</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366566080' target='_blank'><img src='https://resources.tidal.com/images/e65089e4/2dd2/4491/937b/7c60705460f7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Dall (Dolby)</div>
+<div><a href='https://tidal.com/album/367234331' target='_blank'>https://tidal.com/album/367234331</a></div>
+<div>artms - url</div>
+<div>artms - Virtual Angel</div>
+<div>artms - Sparkle</div>
+<div>artms - The Hitchhiker's Guide to the Galaxy</div>
+<div>artms - Flower Rhythm</div>
+<div>artms - Candy Crush</div>
+<div>artms - Air</div>
+<div>artms - UnfAir</div>
+<div>artms - Distress</div>
+<div>artms - Butterfly Effect</div>
+<div>artms - Birth</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/367234331' target='_blank'><img src='https://resources.tidal.com/images/6d8d20dc/2907/4605/86c3/dd575cc9b34f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] The Carol 3.0</div>
+<div><a href='https://tidal.com/album/353585448' target='_blank'>https://tidal.com/album/353585448</a></div>
+<div>artms - The Carol 3.0</div>
+<div>artms - The Carol 3.0 (Eng Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353585448' target='_blank'><img src='https://resources.tidal.com/images/8a8a77f3/c495/4c9e/b329/5d434e0505d7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Diana</div>
+<div><a href='https://tidal.com/album/161358204' target='_blank'>https://tidal.com/album/161358204</a></div>
+<div>artms - Berlin</div>
+<div>artms - Lavender</div>
+<div>artms - Ydmtr</div>
+<div>artms - Fools Gold</div>
+<div>artms - Yellow</div>
+<div>artms - Bad Kitty</div>
+<div>artms - This Is the Shit</div>
+<div>artms - River</div>
+<div>artms - Playtime (for Androids)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/161358204' target='_blank'><img src='https://resources.tidal.com/images/90c55f1c/32ec/4e4f/b9f3/531518db056f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/타이달 아르테미스 ( Tidal ARTMS )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
