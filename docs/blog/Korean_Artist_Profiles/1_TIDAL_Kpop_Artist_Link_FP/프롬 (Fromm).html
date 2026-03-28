@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 프롬 ( Tidal Fromm )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 프롬 ( Tidal Fromm )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/32ee742f/6b12/4a15/abc2/8656b4229d52/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7505604' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 프롬</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>프롬 (Fromm) – 섬세한 감성으로 빚어낸 음악 세계</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Fromm</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Fromm – A World of Music Crafted with Delicate Sensibilities</div><p>독특한 음색과 깊이 있는 감성으로 리스너들의 마음을 사로잡는 아티스트, 프롬입니다. 그녀의 음악은 마치 한 편의 시처럼 아름다운 노랫말과 몽환적인 분위기가 특징이에요. 프롬의 음악 세계로 함께 떠나볼까요?</p><p>Fromm is an artist who captivates listeners with her unique voice and profound emotions. Her music is characterized by beautiful lyrics and a dreamlike atmosphere, like a poem. Shall we embark on a journey into Fromm's musical world?</p><p>✧</p><p>홀로 피어난 아름다운 시작</p><p>프롬은 자신만의 색깔을 담아낸 음악으로 데뷔하여 주목받기 시작했습니다. 그녀의 음악은 인디 씬에서 독보적인 존재감을 드러내며 점차 많은 이들에게 알려졌어요. 섬세한 감정 표현과 독특한 음악 스타일이 프롬만의 매력을 만들어냈죠.</p><p>A Beautiful Beginning Blooming Alone</p><p>Fromm began to gain attention with her music that captured her own unique style. Her music has become increasingly known, standing out in the indie scene. Delicate emotional expressions and unique musical styles have created Fromm's charm.</p><p>✧</p><p>음악적 스펙트럼, 그 다채로운 향연</p><p>프롬의 음악은 특정 장르에 얽매이지 않고 다양한 스타일을 탐구하는 것이 특징입니다. 팝, 포크, 발라드 등 다양한 장르를 넘나들며 자신만의 음악적 색깔을 녹여내죠. 때로는 몽환적이고, 때로는 따뜻한 그녀의 음악은 듣는 이에게 깊은 공감과 위로를 선사합니다.</p><p>A Diverse Feast of Musical Spectrum</p><p>Fromm's music is characterized by exploring various styles without being bound by specific genres. She crosses various genres such as pop, folk, and ballad, melting her own musical color into them. Sometimes dreamlike, sometimes warm, her music offers deep empathy and comfort to listeners.</p><p>✧</p><p>무대 위에서 빛나는 존재감</p><p>프롬은 음반 활동뿐만 아니라 다양한 공연과 페스티벌을 통해 팬들과 소통하고 있습니다. 그녀의 라이브 무대는 특유의 감성적인 분위기와 섬세한 표현력으로 관객들에게 깊은 인상을 남기죠. 무대 위에서 더욱 빛나는 프롬의 매력을 느껴보세요.</p><p>A Shining Presence on Stage</p><p>Fromm communicates with fans not only through album activities but also through various performances and festivals. Her live performances leave a deep impression on the audience with her unique emotional atmosphere and delicate expressiveness. Experience Fromm's charm that shines even more on stage.</p><p>✧</p><p>앞으로의 음악, 그리고 의미</p><p>프롬은 앞으로도 자신만의 음악 세계를 더욱 깊고 넓게 펼쳐나갈 것으로 기대됩니다. 그녀의 음악은 단순한 즐거움을 넘어, 듣는 이의 마음을 어루만지고 위로하는 힘을 가지고 있어요. 프롬의 음악이 우리에게 선사할 앞으로의 감동을 기대하며 응원합니다.</p><p>Future Music and Meaning</p><p>Fromm is expected to further expand her musical world deeply and broadly in the future. Her music has the power to caress and comfort the listener's heart, going beyond simple enjoyment. We look forward to and support the future emotions that Fromm's music will bring us.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] we never turn cold</div>
+<div><a href='https://tidal.com/album/403051040' target='_blank'>https://tidal.com/album/403051040</a></div>
+<div>Fromm - we never turn cold</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/403051040' target='_blank'><img src='https://resources.tidal.com/images/51e2f530/0f63/4ffd/9880/7c911623a717/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] What Comes After Love (Original Soundtrack from the Coupang Play Series)</div>
+<div><a href='https://tidal.com/album/391979906' target='_blank'>https://tidal.com/album/391979906</a></div>
+<div>Fromm - Closer than the Stars</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/391979906' target='_blank'><img src='https://resources.tidal.com/images/00e471dc/ecf5/4163/a4de/e60b15832f94/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Far golden</div>
+<div><a href='https://tidal.com/album/371833411' target='_blank'>https://tidal.com/album/371833411</a></div>
+<div>Fromm - Far golden</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/371833411' target='_blank'><img src='https://resources.tidal.com/images/c78c76b2/6150/460f/a708/23e2da173324/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Sad You, Still Fine</div>
+<div><a href='https://tidal.com/album/311589539' target='_blank'>https://tidal.com/album/311589539</a></div>
+<div>Fromm - Sad You, Still Fine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/311589539' target='_blank'><img src='https://resources.tidal.com/images/c41f7be2/750a/4fe8/bee5/463f91c4821c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Not Others, Pt. 5 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346803035' target='_blank'>https://tidal.com/album/346803035</a></div>
+<div>Fromm - Calling for Spring</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346803035' target='_blank'><img src='https://resources.tidal.com/images/1c6d21c7/e0d2/482a/8385/8ca95ece9b9e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Thirty-nine (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/222779033' target='_blank'>https://tidal.com/album/222779033</a></div>
+<div>Fromm - I was a fool</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222779033' target='_blank'><img src='https://resources.tidal.com/images/7a108fbb/08c9/46b2/a22d/2a2fe348a105/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Thirty-nine (Original Television Soundtrack) Pt. 2</div>
+<div><a href='https://tidal.com/album/217110207' target='_blank'>https://tidal.com/album/217110207</a></div>
+<div>Fromm - I was a fool</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/217110207' target='_blank'><img src='https://resources.tidal.com/images/4efad889/b5c6/4886/b587/a43bf44cead0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Summer Strike, Pt. 3 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346752383' target='_blank'>https://tidal.com/album/346752383</a></div>
+<div>Fromm - A Slow Summer Song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346752383' target='_blank'><img src='https://resources.tidal.com/images/9a5daf1b/13c2/4c20/b600/893000de2a02/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Beautiful World</div>
+<div><a href='https://tidal.com/album/213731748' target='_blank'>https://tidal.com/album/213731748</a></div>
+<div>Fromm - Beautiful World</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/213731748' target='_blank'><img src='https://resources.tidal.com/images/fc279c55/3b88/41df/a928/fe49ba374059/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Dali and Cocky Prince (Original Television Soundtrack) Pt.5</div>
+<div><a href='https://tidal.com/album/200948460' target='_blank'>https://tidal.com/album/200948460</a></div>
+<div>Fromm - Can't You Love Me</div>
+<div>Fromm - Can't You Love Me (Piano Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200948460' target='_blank'><img src='https://resources.tidal.com/images/2ab47175/49b9/4b68/a781/f2ec698747f0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Rescue me</div>
+<div><a href='https://tidal.com/album/301706189' target='_blank'>https://tidal.com/album/301706189</a></div>
+<div>Fromm - Rescue me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/301706189' target='_blank'><img src='https://resources.tidal.com/images/49e5ae64/298f/4af4/98ec/8f71c366d359/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] CELLOPHANE</div>
+<div><a href='https://tidal.com/album/318136307' target='_blank'>https://tidal.com/album/318136307</a></div>
+<div>Fromm - Citrus Summer Ale</div>
+<div>Fromm - Rescue me</div>
+<div>Fromm, Kim Feel - ALIENS (With Kim Feel)</div>
+<div>Fromm - Sunset Panorama</div>
+<div>Fromm - O2</div>
+<div>Fromm - Today's Prim</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318136307' target='_blank'><img src='https://resources.tidal.com/images/e41fb227/da4e/434d/a30e/ab7d3942940c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Mioclonem Spasm_ 005</div>
+<div><a href='https://tidal.com/album/108931421' target='_blank'>https://tidal.com/album/108931421</a></div>
+<div>Fromm - transmitter nolifeforms</div>
+<div>Fromm - mistikegg</div>
+<div>Fromm - omni drr al</div>
+<div>Fromm - learnmode</div>
+<div>Fromm - haslamz</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/108931421' target='_blank'><img src='https://resources.tidal.com/images/991a511c/e09e/4b21/8040/5deefbe2826b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Firefly</div>
+<div><a href='https://tidal.com/album/346459671' target='_blank'>https://tidal.com/album/346459671</a></div>
+<div>Fromm - Firefly</div>
+<div>Fromm - Stars At That Moment</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346459671' target='_blank'><img src='https://resources.tidal.com/images/b55d6b8e/d0c7/4048/b5c8/fb2c1a9f2f4b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Angel's last mission _ love (Original Television Soundtrack), Pt.6</div>
+<div><a href='https://tidal.com/album/248816286' target='_blank'>https://tidal.com/album/248816286</a></div>
+<div>Fromm - In Your Light</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/248816286' target='_blank'><img src='https://resources.tidal.com/images/21bd7623/5859/4beb/9cf4/6c92feff6a7a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Twelve Nights (Original Television Soundtrack), Pt. 3</div>
+<div><a href='https://tidal.com/album/346080303' target='_blank'>https://tidal.com/album/346080303</a></div>
+<div>Fromm - If You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346080303' target='_blank'><img src='https://resources.tidal.com/images/4960a583/97a2/4456/9d3d/ebb0095a8e66/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Milan Blue</div>
+<div><a href='https://tidal.com/album/346888275' target='_blank'>https://tidal.com/album/346888275</a></div>
+<div>Fromm - Milan Blue</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346888275' target='_blank'><img src='https://resources.tidal.com/images/2c63517e/5779/459c/b9a6/367c19e86344/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Midnight Candy</div>
+<div><a href='https://tidal.com/album/346888709' target='_blank'>https://tidal.com/album/346888709</a></div>
+<div>Fromm - Midnight Driver</div>
+<div>Fromm - Milan Blue</div>
+<div>Fromm, 9z - Us On A Young Night (with 9z)</div>
+<div>Fromm, Car, The Garden - Hold Me Like It’s Forever (with CAR, THE GARDEN)</div>
+<div>Fromm - Seoul Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346888709' target='_blank'><img src='https://resources.tidal.com/images/32ee742f/6b12/4a15/abc2/8656b4229d52/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] SBS 드라마 사랑의 온도 OST Part.6</div>
+<div><a href='https://tidal.com/album/285537740' target='_blank'>https://tidal.com/album/285537740</a></div>
+<div>Fromm - Wonderful moment</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/285537740' target='_blank'><img src='https://resources.tidal.com/images/a0c54c44/40b3/48a2/9cb4/ef51fd160ea6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] REVE</div>
+<div><a href='https://tidal.com/album/213849011' target='_blank'>https://tidal.com/album/213849011</a></div>
+<div>Fromm - Our night</div>
+<div>Fromm - Beautiful world</div>
+<div>프롬 - 봄은 겨울이 꾸는 꿈</div>
+<div>Fromm - Fin</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/213849011' target='_blank'><img src='https://resources.tidal.com/images/90a833eb/0706/4435/91f7/a5ba7e61094f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Queen For Seven Days (Original Television Soundtrack) Pt.5</div>
+<div><a href='https://tidal.com/album/98830332' target='_blank'>https://tidal.com/album/98830332</a></div>
+<div>Fromm - When The Moonlight Shines On You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98830332' target='_blank'><img src='https://resources.tidal.com/images/3256eece/330c/4575/9bde/dab4a9a9ecba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Linda Linda</div>
+<div><a href='https://tidal.com/album/305822539' target='_blank'>https://tidal.com/album/305822539</a></div>
+<div>Fromm - Linda Linda</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305822539' target='_blank'><img src='https://resources.tidal.com/images/fd833f82/29df/4913/baa7/8e883d0d6ff9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 반짝이던 안녕</div>
+<div><a href='https://tidal.com/album/179867007' target='_blank'>https://tidal.com/album/179867007</a></div>
+<div>Fromm - 반짝이던 안녕</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/179867007' target='_blank'><img src='https://resources.tidal.com/images/f68b3283/5a83/449c/b40c/0c9bfe1c2db0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Erica</div>
+<div><a href='https://tidal.com/album/213848979' target='_blank'>https://tidal.com/album/213848979</a></div>
+<div>프롬 - 달의 뒤편으로 와요</div>
+<div>프롬 - 반짝이던 안녕</div>
+<div>프롬, 기리보이 - 서로의 조각 (With 기리보이)</div>
+<div>Fromm - Blue Night</div>
+<div>프롬 - 당신의 계절은 무엇입니까. (With 조정치)</div>
+<div>프롬 - 서로의 조각 (With 박주원 Acoustic ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/213848979' target='_blank'><img src='https://resources.tidal.com/images/8863e316/72ac/4478/a8d5/94e319d2745a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Mongolian Princess (Original Motion Picture Soundtrack)</div>
+<div><a href='https://tidal.com/album/177682148' target='_blank'>https://tidal.com/album/177682148</a></div>
+<div>Fromm, Ji Hyun Hong, 최수연 - I Am Elisabeth (Main Theme)</div>
+<div>Fromm, Ji Hyun Hong, 최수연 - What Is Your Favorite Color</div>
+<div>Fromm, Ji Hyun Hong, 최수연 - The Perfect Weather To Snuggle Up</div>
+<div>Fromm, Ji Hyun Hong, 최수연 - Even Before You Kissed Me</div>
+<div>Fromm, Ji Hyun Hong, 최수연 - You Are Not A Fool</div>
+<div>Fromm, Ji Hyun Hong, 최수연 - How Can I Be Your Friend</div>
+<div>Fromm, Ji Hyun Hong, 최수연 - Do You Mind If I Look At You</div>
+<div>Fromm, Ji Hyun Hong, 최수연 - I Am Danwoo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/177682148' target='_blank'><img src='https://resources.tidal.com/images/02ebddad/2dcf/421a/8af6/95a7a534395e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] MOONBOW</div>
+<div><a href='https://tidal.com/album/191774522' target='_blank'>https://tidal.com/album/191774522</a></div>
+<div>Fromm - Moonlight Dancing</div>
+<div>Fromm - Love Buzz</div>
+<div>Fromm - Under the Daylight Moon</div>
+<div>Fromm - You'll Never Know This Song</div>
+<div>Fromm, HWANG MIN HYUN - The Aftermath</div>
+<div>Fromm - A Memory of Spring Moonbow Version</div>
+<div>Fromm - A Spring Day Out</div>
+<div>Fromm - The Hidden Track</div>
+<div>Fromm - Okay For Now</div>
+<div>Fromm - Like You 2015 Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/191774522' target='_blank'><img src='https://resources.tidal.com/images/3edd1bd4/014d/4ff6/ad04/28d55513c93b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] CheoYoung 2 (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/215970253' target='_blank'>https://tidal.com/album/215970253</a></div>
+<div>Fromm - Wonder in Dreams</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215970253' target='_blank'><img src='https://resources.tidal.com/images/f5be1cc9/bc51/4d3b/8f91/a9ed9b4dcfe2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2014] 그녀의 바다</div>
+<div><a href='https://tidal.com/album/173299531' target='_blank'>https://tidal.com/album/173299531</a></div>
+<div>Fromm - 그녀의 바다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/173299531' target='_blank'><img src='https://resources.tidal.com/images/096cd7a5/2456/4e88/b876/fdc59baa3088/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 너와 나의</div>
+<div><a href='https://tidal.com/album/241313841' target='_blank'>https://tidal.com/album/241313841</a></div>
+<div>Fromm - 너와 나의</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/241313841' target='_blank'><img src='https://resources.tidal.com/images/caf2b4d9/7b50/4432/afea/4df828c5d8f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Arrival</div>
+<div><a href='https://tidal.com/album/173292319' target='_blank'>https://tidal.com/album/173292319</a></div>
+<div>Fromm - 도착</div>
+<div>Fromm - 마음셔틀금지</div>
+<div>Fromm - 너와 나의</div>
+<div>Fromm - 좋아해</div>
+<div>Fromm - Sailing Boat</div>
+<div>Fromm - 달, 말하다</div>
+<div>Fromm - Merry Go Round</div>
+<div>Fromm - 마중가는 길</div>
+<div>Fromm - 사랑 아니었나</div>
+<div>Fromm - 불꽃놀이</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/173292319' target='_blank'><img src='https://resources.tidal.com/images/d3650976/a3fa/4746/8f3a/eadd133b9db8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 사랑 아니었나</div>
+<div><a href='https://tidal.com/album/241314016' target='_blank'>https://tidal.com/album/241314016</a></div>
+<div>Fromm - 사랑 아니었나</div>
+<div>Fromm - 마중가는 길</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/241314016' target='_blank'><img src='https://resources.tidal.com/images/f8baff92/7018/4eed/b32d/88e90b460af4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_FP/타이달 프롬 ( Tidal Fromm )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
