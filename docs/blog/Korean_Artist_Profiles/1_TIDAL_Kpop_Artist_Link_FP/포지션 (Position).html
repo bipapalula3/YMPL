@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 포지션 ( Tidal Position )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 포지션 ( Tidal Position )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/8e82b6f4/aa2e/40f6/bffa/023117a81605/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7002461 ------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/31668002' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a><a href='https://tidal.com/browse/artist/22311290' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 3</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 포지션</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>포지션 (Position) - 깊은 감성을 노래하는 발라드의 장인</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Position</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Position - A Master of Ballads Singing Deep Emotions</div><p>애절한 보이스와 깊이 있는 감성으로 듣는 이의 마음을 울리는 가수 '포지션'입니다. 특유의 호소력 짙은 음색은 수많은 이들에게 위로와 공감을 전하며 오랜 시간 사랑받고 있어요. 그의 음악은 단순한 노래를 넘어, 한 편의 드라마 같은 감동을 선사합니다.</p><p>Position is a singer who touches the hearts of listeners with a sorrowful voice and deep emotions. His uniquely appealing timbre has been loved for a long time, delivering comfort and empathy to many. His music goes beyond simple songs, offering a drama-like emotion.</p><p>✧</p><p>그룹 탄생</p><p>포지션은 1996년 안정훈과 김민수로 시작된 프로젝트 그룹입니다. 초기에는 댄스 음악을 선보였으나, 이후 멤버 변화를 거치며 현재는 임재욱의 솔로 프로젝트로 자리 잡았어요. 그의 음악적 색깔은 더욱 깊어지고, 발라드 가수로써의 입지를 굳건히 다지게 됩니다.</p><p>Group Formation</p><p>Position started as a project group with Ahn Jung-hoon and Kim Min-soo in 1996. Initially, they presented dance music, but after changes in members, it has now become a solo project by Lim Jae-wook. His musical color deepened, solidifying his position as a ballad singer.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>포지션의 음악은 애절한 멜로디와 가슴을 파고드는 가사가 특징입니다. 그는 사랑과 이별의 아픔, 그리움 등 인간의 보편적인 감정을 섬세하게 표현해요. 그의 무대는 진솔한 감정 전달에 집중하며, 듣는 이로 하여금 깊은 몰입감을 느끼게 합니다.</p><p>Music and Performance</p><p>Position's music is characterized by mournful melodies and heart-piercing lyrics. He delicately expresses universal human emotions such as the pain of love and separation, and longing. His stage focuses on delivering sincere emotions, allowing listeners to feel a deep sense of immersion.</p><p>✧</p><p>주요 활동</p><p>포지션은 'Day After'를 시작으로 'Blue Day', 'Erasing' 등 수많은 히트곡을 발표하며 대중적인 사랑을 받았습니다. 드라마 OST 참여와 꾸준한 콘서트 활동을 통해 팬들과 소통하고 있어요. 다양한 리메이크 앨범을 통해 새로운 감성으로 과거의 명곡들을 재해석하기도 합니다.</p><p>Key Activities</p><p>Position has received popular love by releasing numerous hit songs such as 'Day After', 'Blue Day', and 'Erasing'. He communicates with fans through participation in drama OSTs and steady concert activities. He also reinterprets past masterpieces with new emotions through various remake albums.</p><p>✧</p><p>미래/의미</p><p>포지션은 앞으로도 진정성 있는 음악으로 대중의 마음을 어루만질 예정입니다. 그의 음악은 시대를 초월하여 오랫동안 사랑받는 발라드 명곡으로 남을 것입니다. 변치 않는 감성으로 우리 곁을 지켜주는 그의 노래는 앞으로도 많은 이들에게 위로와 희망을 선사할 거예요.</p><p>Future/Meaning</p><p>Position will continue to touch the hearts of the public with authentic music. His music will transcend generations and remain a beloved ballad masterpiece. His songs, which stay by our side with unchanging emotions, will continue to provide comfort and hope to many in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 어디있을까</div>
+<div><a href='https://tidal.com/album/340536861' target='_blank'>https://tidal.com/album/340536861</a></div>
+<div>Position - 어디있을까</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340536861' target='_blank'><img src='https://resources.tidal.com/images/b0f29a48/cc47/43bb/86fe/8017af558f5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 온다</div>
+<div><a href='https://tidal.com/album/226142997' target='_blank'>https://tidal.com/album/226142997</a></div>
+<div>포지션 - 온다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/226142997' target='_blank'><img src='https://resources.tidal.com/images/0e300d9d/9da4/487c/87ad/a77f982aae7b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 내 말 들어봐</div>
+<div><a href='https://tidal.com/album/333041903' target='_blank'>https://tidal.com/album/333041903</a></div>
+<div>Position - 내 말 들어봐</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/333041903' target='_blank'><img src='https://resources.tidal.com/images/ecb0ba8b/a0b6/425e/8316/23d1aa2e7a44/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 스캔들 (Original Television Soundtrack) Pt. 1</div>
+<div><a href='https://tidal.com/album/163273113' target='_blank'>https://tidal.com/album/163273113</a></div>
+<div>더 포지션 - 내 생애 마지막 사랑</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163273113' target='_blank'><img src='https://resources.tidal.com/images/12dad4fd/413e/4a72/aaf2/ce93ef6474b9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] 애가 (愛歌)</div>
+<div><a href='https://tidal.com/album/231132953' target='_blank'>https://tidal.com/album/231132953</a></div>
+<div>Position - 왠지</div>
+<div>Position - Love Is Over (Feat. 조관우)</div>
+<div>Position - 혼자</div>
+<div>Position - 하루</div>
+<div>Position - 자꾸 눈에 밟혀서</div>
+<div>Position - 이따위 사랑같은건</div>
+<div>Position - 그림자</div>
+<div>Position - 독백</div>
+<div>Position - 아찔했어요</div>
+<div>Position - Lonely Day (Blue DayⅡ)</div>
+<div>Position - 슬픈 허락</div>
+<div>Position - Friends (Feat. 이동건)</div>
+<div>Position - 너 없는 하루</div>
+<div>Position - 사랑 그 하나로</div>
+<div>Position - 미루나무</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/231132953' target='_blank'><img src='https://resources.tidal.com/images/62c8ac29/27b6/46a3/8453/6497a22d9db0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] Renaissance (Remake 2005)</div>
+<div><a href='https://tidal.com/album/305992346' target='_blank'>https://tidal.com/album/305992346</a></div>
+<div>Position - 추억 (2005 Remake Version)</div>
+<div>Position - 슬픔 속에 그댈 지워야만 해 (2005 Remake Version)</div>
+<div>Position - 가려진 시간 사이로 (2005 Remake Version)</div>
+<div>Position - 그 아픔까지 사랑한거야 (2005 Remake Version)</div>
+<div>Position - 가리워진 길 (2005 Remake Version)</div>
+<div>Position - 그대가 이 세상에 있는 것만으로 (2005 Remake Version)</div>
+<div>Position - 먼지가 되어 (2005 Remake Version)</div>
+<div>Position - 아직도 그대는 내 사랑 (2005 Remake Version)</div>
+<div>Position - 그대가 나에게 (2005 Remake Version)</div>
+<div>Position - 사랑할수록 (2005 Remake Version)</div>
+<div>Position - 기도 (2005 Remake Version)</div>
+<div>Position - 기억의 습작 (2005 Remake Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305992346' target='_blank'><img src='https://resources.tidal.com/images/6b14c318/3211/428b/a3fb/b1997c6c3ca8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] On The Road - New & Best</div>
+<div><a href='https://tidal.com/album/290622245' target='_blank'>https://tidal.com/album/290622245</a></div>
+<div>Position - Goodbye</div>
+<div>Position - 편지</div>
+<div>Position - Blue</div>
+<div>Position - Remember</div>
+<div>Position - Too Far Away</div>
+<div>Position - 재회</div>
+<div>Position - Desperado</div>
+<div>Position - Summer Time</div>
+<div>Position - Extra</div>
+<div>Position - 후회 없는 사랑</div>
+<div>Position - 마지막 약속</div>
+<div>Position - 신부에게</div>
+<div>Position - I Love You</div>
+<div>Position - 다시 네 곁에---</div>
+<div>Position - 두려운 이별</div>
+<div>Position - 또 한번의 이별</div>
+<div>Position - I Love U More</div>
+<div>Position - 너에게</div>
+<div>Position - Blue Day</div>
+<div>Position - 애심 (愛心)</div>
+<div>Position - 가지마</div>
+<div>Position - 두려움 없는 사랑</div>
+<div>Position - Desperado II (하늘도 울린 사랑) (Music Video Version)</div>
+<div>Position - 사랑해 사랑해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/290622245' target='_blank'><img src='https://resources.tidal.com/images/861dae43/cdb1/4dc7/8c06/a10306d0af4a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] I LOVE YOU</div>
+<div><a href='https://tidal.com/album/102166797' target='_blank'>https://tidal.com/album/102166797</a></div>
+<div>Position - NARRATION+나의 길</div>
+<div>Position - 짧은 인연</div>
+<div>Position - 애수</div>
+<div>Position - I LOVE YOU</div>
+<div>Position - 추억의 이름으로---</div>
+<div>Position - GOODBYE FOREVER</div>
+<div>Position - 그해 겨울은---</div>
+<div>Position - 재회</div>
+<div>Position - 용서</div>
+<div>Position - KEEP ON RUNNING</div>
+<div>Position - NEVER</div>
+<div>Position - WINTER LOVE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102166797' target='_blank'><img src='https://resources.tidal.com/images/8e82b6f4/aa2e/40f6/bffa/023117a81605/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] Blue Day</div>
+<div><a href='https://tidal.com/album/102166859' target='_blank'>https://tidal.com/album/102166859</a></div>
+<div>Position - Prologue</div>
+<div>Position - Run</div>
+<div>Position - One Night</div>
+<div>Position - Blue day</div>
+<div>Position - You</div>
+<div>Position - 변심</div>
+<div>Position - 너 떠난 후---</div>
+<div>Position - 단 한번의 사랑</div>
+<div>Position - 오랜 연인과의 이별</div>
+<div>Position - Say Say Say</div>
+<div>Position - 사랑해 사랑해</div>
+<div>Position - Piano No. 7</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102166859' target='_blank'><img src='https://resources.tidal.com/images/7575a30c/921c/41b9/b01d/b73d877521b8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1998] FEEL SO GOOD</div>
+<div><a href='https://tidal.com/album/305380209' target='_blank'>https://tidal.com/album/305380209</a></div>
+<div>Position - Prologue</div>
+<div>Position - The change</div>
+<div>Position - 두려움 없는 사랑</div>
+<div>Position - 편지</div>
+<div>Position - Paradise</div>
+<div>Position - 애수</div>
+<div>Position - 이별유예</div>
+<div>Position - 허무한 날들</div>
+<div>Position - 방황</div>
+<div>Position - 기도</div>
+<div>Position - Africa</div>
+<div>Position - 날 위한 노래</div>
+<div>Position - 상처</div>
+<div>Position - 꿈</div>
+<div>Position - Friends</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305380209' target='_blank'><img src='https://resources.tidal.com/images/9e0132f0/6797/4d63/b732/908ea23bf415/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] WINE&TEARS</div>
+<div><a href='https://tidal.com/album/102075397' target='_blank'>https://tidal.com/album/102075397</a></div>
+<div>Position - Rock your world</div>
+<div>Position - Remember</div>
+<div>Position - 너없는 생일</div>
+<div>Position - Memory</div>
+<div>Position - 작은 상자</div>
+<div>Position - 마지막 부탁</div>
+<div>Position - Summer time</div>
+<div>Position - 슬픈 약속</div>
+<div>Position - 예감했던 이별</div>
+<div>Position - 혼자 남은 세상</div>
+<div>Position - 어색한 만남</div>
+<div>Position - 너에게 Rock Version</div>
+<div>Position - Happy birthday to you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102075397' target='_blank'><img src='https://resources.tidal.com/images/64c4ae07/f8bb/49d3/8441/53f59923c4fe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] 후회없는 사랑</div>
+<div><a href='https://tidal.com/album/102166923' target='_blank'>https://tidal.com/album/102166923</a></div>
+<div>Position - 결별</div>
+<div>Position - 후회 없는 사랑</div>
+<div>Position - 남겨진 추억</div>
+<div>Position - 널 기억하며---</div>
+<div>Position - 후회</div>
+<div>Position - 우린 그때 똑같은 바보였지</div>
+<div>Position - 너에게</div>
+<div>Position - 진실한 사랑</div>
+<div>Position - 어린 시절 첫사랑처럼---</div>
+<div>Position - 너의 또다른 모습</div>
+<div>Position - The messiah will come again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102166923' target='_blank'><img src='https://resources.tidal.com/images/4b40e7d4/e132/49ce/a3c8/5d8ad749d32b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_FP/타이달 포지션 ( Tidal Position )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
