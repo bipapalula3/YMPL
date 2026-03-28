@@ -16,32 +16,68 @@
 
                         /* 상단 여백 확보용 */
                         .top-spacer {
-                          height: 20px;
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
                         }
 
-                        /* 다운로드 바 (고정 ❌, 스크롤됨 ⭕) */
-                        .download-bar {
-                          background: #0f172a;
-                          padding: 10px 14px;
-                          text-align: center;
-                          border-bottom: 1px solid #1e293b;
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
                         }
 
-                        .download-btn {
-                          display: inline-block;
-                          padding: 8px 16px;
-                          font-size: 16px;
-                          background: #2563eb;
-                          color: #fff;
-                          text-decoration: none;
-                          border-radius: 6px;
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
                         }
 
-                        .download-btn:active {
-                          opacity: 0.85;
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
                         }
 
-                        /* 트랙 영역 */
                         .track-content {
                           padding: 4px;
                         }
@@ -49,30 +85,57 @@
                         pre {
                           white-space: pre-wrap;
                           font-size: 15px;
-                          line-height: 1.2;        /* ✅ 줄간격 축소 */
-                          letter-spacing: -0.5px;  /* ✅ 자간 축소 */
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
                           font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
                           margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
                         }
                       </style>
                     </head>
                     <body>
 
-                      <!-- 🔹 상단 여백 -->
                       <div class="top-spacer"></div>
 
-                      <!-- ⬇️ 버튼도 텍스트처럼 함께 스크롤 -->
-                      <div class="download-bar">
-                        <a class="download-btn"
-                           href="./타이달 하동균 ( Tidal Ha Dong Qn )_trk.txt"
-                           download="타이달 하동균 ( Tidal Ha Dong Qn )_trk.txt">
-                           ⬇️ Download Original Tidal Track
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 하동균 ( Tidal Ha Dong Qn )_trk.txt" download="타이달 하동균 ( Tidal Ha Dong Qn )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%ED%95%98%EB%8F%99%EA%B7%A0%20%28%20Ha%20Dong%20Qn%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
                         </a>
                       </div>
 
-                      <!-- 📄 트랙 텍스트 -->
                       <div class="track-content">
-                        <pre>▶️Album link : <a href="https://tidal.com/album/425132811" target="_blank">https://tidal.com/album/425132811</a>
+                        <pre>💿 <b><a href='https://tidal.com/album/425132811' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2025] Exhausted (Music from _The Match_ Original Motion Picture Soundtrack)</a></b>
+▶️Album link : <a href="https://tidal.com/album/425132811" target="_blank">https://tidal.com/album/425132811</a>
 
 Ha Dong Qn - Exhausted
 EN ⇄ KR : 기진맥진
@@ -80,6 +143,7 @@ ES     : Agotado
 ZH-CN  : 精疲力竭
 
 
+💿 <b><a href='https://tidal.com/album/429235054' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2025] As If You Feel Nothing</a></b>
 ▶️Album link : <a href="https://tidal.com/album/429235054" target="_blank">https://tidal.com/album/429235054</a>
 
 Ha Dong Qn - As If You Feel Nothing
@@ -93,14 +157,16 @@ ES     : No lo sé
 ZH-CN  : 我不知道
 
 
+💿 <b><a href='https://tidal.com/album/376069168' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Songstealer - LIMIT</a></b>
 ▶️Album link : <a href="https://tidal.com/album/376069168" target="_blank">https://tidal.com/album/376069168</a>
 
 Ha Dong Qn - LIMIT
 EN ⇄ KR : 한계
 ES     : LÍMITE
-ZH-CN  : LIMIT
+ZH-CN  : 极限
 
 
+💿 <b><a href='https://tidal.com/album/383900065' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Malibu</a></b>
 ▶️Album link : <a href="https://tidal.com/album/383900065" target="_blank">https://tidal.com/album/383900065</a>
 
 KinD, Brick, Ha Dong Qn - Malibu
@@ -109,6 +175,7 @@ ES     : Malibú
 ZH-CN  : 马里布
 
 
+💿 <b><a href='https://tidal.com/album/370227033' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] I Will</a></b>
 ▶️Album link : <a href="https://tidal.com/album/370227033" target="_blank">https://tidal.com/album/370227033</a>
 
 Ha Dong Qn - I Will
@@ -117,6 +184,7 @@ ES     : Lo haré
 ZH-CN  : 我愿意
 
 
+💿 <b><a href='https://tidal.com/album/318112409' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Wish</a></b>
 ▶️Album link : <a href="https://tidal.com/album/318112409" target="_blank">https://tidal.com/album/318112409</a>
 
 Ha Dong Qn - Wish
@@ -125,6 +193,7 @@ ES     : Deseo
 ZH-CN  : 愿望
 
 
+💿 <b><a href='https://tidal.com/album/325871418' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Like the</a></b>
 ▶️Album link : <a href="https://tidal.com/album/325871418" target="_blank">https://tidal.com/album/325871418</a>
 
 Ha Dong Qn - Wake up call
@@ -138,6 +207,7 @@ ES     : Como el
 ZH-CN  : 像那样的
 
 
+💿 <b><a href='https://tidal.com/album/346801430' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2023] Blue night song</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346801430" target="_blank">https://tidal.com/album/346801430</a>
 
 JOY, Ha Dong Qn - Blue night song
@@ -146,6 +216,7 @@ ES     : Canción de la noche azul
 ZH-CN  : 蓝色夜之歌
 
 
+💿 <b><a href='https://tidal.com/album/236904749' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Lavender</a></b>
 ▶️Album link : <a href="https://tidal.com/album/236904749" target="_blank">https://tidal.com/album/236904749</a>
 
 KinD, Ha Dong Qn, Skinny Brown - Lavender
@@ -154,6 +225,7 @@ ES     : Lavanda
 ZH-CN  : 薰衣草
 
 
+💿 <b><a href='https://tidal.com/album/219682908' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] BE MYSELF (duet with Yang Da Il)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/219682908" target="_blank">https://tidal.com/album/219682908</a>
 
 Ha Dong Qn, Yang Da Il - BE MYSELF (duet with Yang Da Il)
@@ -162,6 +234,7 @@ ES     : SER YO MISMO
 ZH-CN  : 做我自己
 
 
+💿 <b><a href='https://tidal.com/album/346679107' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] Again my life, Pt. 8 (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346679107" target="_blank">https://tidal.com/album/346679107</a>
 
 Ha Dong Qn - Killing Me
@@ -170,6 +243,7 @@ ES     : Matándome
 ZH-CN  : 要我命
 
 
+💿 <b><a href='https://tidal.com/album/195958293' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] lost (Original Television Soundtrack, Pt. 1)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/195958293" target="_blank">https://tidal.com/album/195958293</a>
 
 Ha Dong Qn - My Story
@@ -178,6 +252,7 @@ ES     : Mi Historia
 ZH-CN  : 我的故事
 
 
+💿 <b><a href='https://tidal.com/album/334927949' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] The World of the Married, Pt. 4 (Original Television Soundtrack)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/334927949" target="_blank">https://tidal.com/album/334927949</a>
 
 Ha Dong Qn - Just Leave Me
@@ -186,6 +261,7 @@ ES     : Solo Déjame
 ZH-CN  : 就让我走吧
 
 
+💿 <b><a href='https://tidal.com/album/200610668' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] ME.N.U</a></b>
 ▶️Album link : <a href="https://tidal.com/album/200610668" target="_blank">https://tidal.com/album/200610668</a>
 
 Ha Dong Qn, JUNNY - ME.N.U
@@ -194,6 +270,7 @@ ES     : ME.N.U
 ZH-CN  : ME.N.U
 
 
+💿 <b><a href='https://tidal.com/album/216419772' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] I will be waiting</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216419772" target="_blank">https://tidal.com/album/216419772</a>
 
 Ha Dong Qn, Bong Gu - I will be waiting
@@ -202,6 +279,7 @@ ES     : Estaré esperando
 ZH-CN  : 我会等待
 
 
+💿 <b><a href='https://tidal.com/album/188436295' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Here I Am</a></b>
 ▶️Album link : <a href="https://tidal.com/album/188436295" target="_blank">https://tidal.com/album/188436295</a>
 
 Ha Dong Qn - Here I Am
@@ -210,6 +288,7 @@ ES     : Aquí estoy
 ZH-CN  : 我在这里
 
 
+💿 <b><a href='https://tidal.com/album/346598547' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Cry me a river [From _Show Window_ The Queen's House_ (Original Soundtrack), Pt.4]</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346598547" target="_blank">https://tidal.com/album/346598547</a>
 
 Ha Dong Qn - Cry me a river [From -Show Window- The Queen's Hou
@@ -218,6 +297,7 @@ ES     : Llorame un río [De -Show Window- The Queen's Hou
 ZH-CN  : 哭泣的河流 [来自 -橱窗女王-]
 
 
+💿 <b><a href='https://tidal.com/album/254564239' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Begin Again Open Mic Episode.20</a></b>
 ▶️Album link : <a href="https://tidal.com/album/254564239" target="_blank">https://tidal.com/album/254564239</a>
 
 Lim Kim, Ha Dong Qn - Say something
@@ -231,6 +311,7 @@ ES     : Por la razón llamada amor
 ZH-CN  : 因为是爱
 
 
+💿 <b><a href='https://tidal.com/album/254564264' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Begin Again Open Mic Episode.19</a></b>
 ▶️Album link : <a href="https://tidal.com/album/254564264" target="_blank">https://tidal.com/album/254564264</a>
 
 Lim Kim, Ha Dong Qn - Imagine
@@ -239,6 +320,7 @@ ES     : Imagina
 ZH-CN  : 想象
 
 
+💿 <b><a href='https://tidal.com/album/254564280' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Begin Again Open Mic Episode.17</a></b>
 ▶️Album link : <a href="https://tidal.com/album/254564280" target="_blank">https://tidal.com/album/254564280</a>
 
 Ha Dong Qn - 라구요
@@ -257,6 +339,7 @@ ES     : De Mark
 ZH-CN  : 来自马克
 
 
+💿 <b><a href='https://tidal.com/album/211361750' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] Beautiful Day</a></b>
 ▶️Album link : <a href="https://tidal.com/album/211361750" target="_blank">https://tidal.com/album/211361750</a>
 
 J.Lee, Ha Dong Qn - Beautiful Day
@@ -265,6 +348,7 @@ ES     : Día hermoso
 ZH-CN  : 美好的一天
 
 
+💿 <b><a href='https://tidal.com/album/196164956' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] awaken OST Part 2</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196164956" target="_blank">https://tidal.com/album/196164956</a>
 
 Ha Dong Qn - Set Me Free (Day Ver.)
@@ -278,6 +362,7 @@ ES     : Libérame
 ZH-CN  : 让我自由
 
 
+💿 <b><a href='https://tidal.com/album/271782915' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Unfinished Job Pt. 1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/271782915" target="_blank">https://tidal.com/album/271782915</a>
 
 Ha Dong Qn, Jang Hye Jin - Special Thanks To (prod. LA박피디)
@@ -286,6 +371,7 @@ ES     : Agradecimiento Especial A
 ZH-CN  : 特别鸣谢
 
 
+💿 <b><a href='https://tidal.com/album/346342801' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] Traveller, No.201</a></b>
 ▶️Album link : <a href="https://tidal.com/album/346342801" target="_blank">https://tidal.com/album/346342801</a>
 
 Ha Dong Qn - When We First Met
@@ -294,6 +380,7 @@ ES     : Cuando nos conocimos por primera vez
 ZH-CN  : 当我们初次相遇
 
 
+💿 <b><a href='https://tidal.com/album/188436285' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2020] STAR DUST</a></b>
 ▶️Album link : <a href="https://tidal.com/album/188436285" target="_blank">https://tidal.com/album/188436285</a>
 
 Ha Dong Qn - STAR DUST
@@ -302,6 +389,7 @@ ES     : Polvo de estrellas
 ZH-CN  : 星尘
 
 
+💿 <b><a href='https://tidal.com/album/216487739' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Never Forget</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216487739" target="_blank">https://tidal.com/album/216487739</a>
 
 KinD, Loopy, Ha Dong Qn - Never Forget
@@ -310,6 +398,7 @@ ES     : Nunca Olvides
 ZH-CN  : 永不忘记
 
 
+💿 <b><a href='https://tidal.com/album/188436297' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Gift</a></b>
 ▶️Album link : <a href="https://tidal.com/album/188436297" target="_blank">https://tidal.com/album/188436297</a>
 
 Ha Dong Qn - Gift
@@ -318,6 +407,7 @@ ES     : Regalo
 ZH-CN  : 礼物
 
 
+💿 <b><a href='https://tidal.com/album/215974045' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] Beautiful</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215974045" target="_blank">https://tidal.com/album/215974045</a>
 
 KinD, Ha Dong Qn, DOUBLE K - Beautiful
@@ -326,6 +416,7 @@ ES     : Hermosa
 ZH-CN  : 美丽
 
 
+💿 <b><a href='https://tidal.com/album/189563074' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2019] 2019 월간 윤종신 9월호</a></b>
 ▶️Album link : <a href="https://tidal.com/album/189563074" target="_blank">https://tidal.com/album/189563074</a>
 
 Ha Dong Qn, Yoon Jong Shin - Workaholic
@@ -334,6 +425,7 @@ ES     : Adicto al trabajo
 ZH-CN  : 工作狂
 
 
+💿 <b><a href='https://tidal.com/album/196138866' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] 마더 OST Part. 3 (tvN 수목드라마)</a></b>
 ▶️Album link : <a href="https://tidal.com/album/196138866" target="_blank">https://tidal.com/album/196138866</a>
 
 Ha Dong Qn - 같이 가자
@@ -342,6 +434,7 @@ ES     : Vamos juntos
 ZH-CN  : 一起走吧
 
 
+💿 <b><a href='https://tidal.com/album/219398426' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2018] Home (Original Soundtrack From _라이프_), Pt. 1</a></b>
 ▶️Album link : <a href="https://tidal.com/album/219398426" target="_blank">https://tidal.com/album/219398426</a>
 
 Ha Dong Qn - Home
@@ -350,6 +443,7 @@ ES     : Hogar
 ZH-CN  : 家
 
 
+💿 <b><a href='https://tidal.com/album/188436287' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] POLYGON</a></b>
 ▶️Album link : <a href="https://tidal.com/album/188436287" target="_blank">https://tidal.com/album/188436287</a>
 
 Ha Dong Qn - BEAUTIFUL THINGS
@@ -378,6 +472,7 @@ ES     : SUEÑO LÚCIDO
 ZH-CN  : 清醒梦
 
 
+💿 <b><a href='https://tidal.com/album/188749307' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2016] 원티드 (Original Television Soundtrack), Pt. 2</a></b>
 ▶️Album link : <a href="https://tidal.com/album/188749307" target="_blank">https://tidal.com/album/188749307</a>
 
 Ha Dong Qn - 나는 너에게
@@ -386,6 +481,7 @@ ES     : Yo a ti
 ZH-CN  : 我对你
 
 
+💿 <b><a href='https://tidal.com/album/188436276' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2014] WORD</a></b>
 ▶️Album link : <a href="https://tidal.com/album/188436276" target="_blank">https://tidal.com/album/188436276</a>
 
 Ha Dong Qn - Run
@@ -419,6 +515,7 @@ ES     : CORRE
 ZH-CN  : 跑
 
 
+💿 <b><a href='https://tidal.com/album/305923491' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2013] Doctor Good (Original Television Soundtrack) Pt. 4</a></b>
 ▶️Album link : <a href="https://tidal.com/album/305923491" target="_blank">https://tidal.com/album/305923491</a>
 
 Ha Dong Qn - 좋아보여
@@ -427,6 +524,7 @@ ES     : Se ve bien
 ZH-CN  : 看上去不错
 
 
+💿 <b><a href='https://tidal.com/album/216542103' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] Twinkle Twinkle (Original Soundtrack) part.2</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216542103" target="_blank">https://tidal.com/album/216542103</a>
 
 Ha Dong Qn - After the Love
@@ -435,6 +533,7 @@ ES     : Después del Amor
 ZH-CN  : 在爱之后
 
 
+💿 <b><a href='https://tidal.com/album/216118984' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] The Princess' Man (Original Soundtrack) Part.3</a></b>
 ▶️Album link : <a href="https://tidal.com/album/216118984" target="_blank">https://tidal.com/album/216118984</a>
 
 Ha Dong Qn, Lee Jung - I'll wait for you
@@ -448,6 +547,7 @@ ES     : Adiós, mi amor
 ZH-CN  : 再见，我的爱人
 
 
+💿 <b><a href='https://tidal.com/album/215650093' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2008] Even In the Rainy or Snowy Day</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215650093" target="_blank">https://tidal.com/album/215650093</a>
 
 Ha Dong Qn - Even In the Rainy or Snowy Day
@@ -456,6 +556,7 @@ ES     : Incluso en los Días Lluviosos o Nevados
 ZH-CN  : 即使在雨天或雪天
 
 
+💿 <b><a href='https://tidal.com/album/215648260' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2006] Stand alone</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215648260" target="_blank">https://tidal.com/album/215648260</a>
 
 Ha Dong Qn - Intro - On the Street
@@ -539,6 +640,7 @@ ES     : Outro - En mi habitación
 ZH-CN  : Outro - 在我的房间
 
 
+💿 <b><a href='https://tidal.com/album/215650134' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2006] DQ from WANTED</a></b>
 ▶️Album link : <a href="https://tidal.com/album/215650134" target="_blank">https://tidal.com/album/215650134</a>
 
 Ha Dong Qn - Intro-On the street
@@ -556,6 +658,18 @@ EN ⇄ KR : 막간극 - 술집에서
 ES     : Interludio - En el bar
 ZH-CN  : Interluce-在酒吧里</pre>
                       </div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./타이달 하동균 ( Tidal Ha Dong Qn )_trk.txt" download="타이달 하동균 ( Tidal Ha Dong Qn )_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%ED%95%98%EB%8F%99%EA%B7%A0%20%28%20Ha%20Dong%20Qn%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
 
                     </body>
                     </html>
