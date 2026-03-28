@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 캣츠아이 ( Tidal KATSEYE )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 캣츠아이 ( Tidal KATSEYE )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/464ba9e5/c457/4fda/8320/e800f5ada9bc/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/48604055' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 캣츠아이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>개성 넘치는 Z세대 감성을 담은 올라운더 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> KATSEYE</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>An All-rounder Group Capturing the Unique Sensibilities of Gen Z</div><p>톡톡 튀는 매력과 다재다능함으로 무장한 그룹, 캣츠아이(KATSEYE)를 소개합니다. 이들은 음악, 퍼포먼스, 스타일까지 모든 면에서 자신들만의 색깔을 드러내며 빠르게 팬덤을 확장하고 있습니다. 앞으로의 행보가 더욱 기대되는 그룹입니다.</p><p>Introducing KATSEYE, a group armed with sparkling charm and versatility. They are rapidly expanding their fandom by showcasing their unique colors in every aspect, from music and performance to style. We look forward to their future activities.</p><p>✧</p><p>그룹 탄생</p><p>캣츠아이는 글로벌 오디션 프로그램을 통해 결성된 다국적 그룹입니다. 멤버들은 각자의 개성과 재능을 바탕으로 팀워크를 이루며 시너지를 창출하고 있습니다. 이들의 조합은 신선함과 동시에 글로벌한 매력을 선사합니다.</p><p>Group Formation</p><p>KATSEYE is a multinational group formed through a global audition program. The members create synergy with their teamwork based on their individual personalities and talents. Their combination offers freshness and global appeal.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>캣츠아이의 음악은 힙합, 팝, 알앤비 등 다양한 장르를 아우르며 독특한 사운드를 만들어냅니다. 퍼포먼스 역시 에너지 넘치고 트렌디한 안무로 시선을 사로잡습니다. 무대 위에서 보여주는 이들의 자신감 넘치는 모습은 팬들을 매료시키기에 충분합니다.</p><p>Music and Performance</p><p>KATSEYE's music encompasses various genres such as hip-hop, pop, and R&B, creating a unique sound. Their performances also captivate with energetic and trendy choreography. Their confident appearance on stage is enough to fascinate fans.</p><p>✧</p><p>주요 활동</p><p>캣츠아이는 데뷔 이후 다양한 음원 발매와 더불어 몬스터 하이(Monster High)와 같은 브랜드와의 협업을 통해 활동 영역을 넓혀가고 있습니다. 또한, 자체 콘텐츠 제작 등을 통해 팬들과 적극적으로 소통하고 있습니다. 이들의 활발한 활동은 대중에게 더욱 가까이 다가가는 계기가 되고 있습니다.</p><p>Key Activities</p><p>Since their debut, KATSEYE has been expanding their activities through various music releases and collaborations with brands such as Monster High. They are also actively communicating with fans through self-produced content. Their active engagement is an opportunity to get closer to the public.</p><p>✧</p><p>미래/의미</p><p>캣츠아이는 Z세대의 아이콘으로 자리매김하며 음악계를 넘어 다양한 분야에서 영향력을 발휘할 것으로 기대됩니다. 자신들의 이야기를 솔직하게 담아낸 음악과 퍼포먼스를 통해 많은 이들에게 공감과 영감을 선사할 것입니다. 앞으로 이들이 만들어갈 새로운 역사가 주목됩니다.</p><p>Future/Meaning</p><p>KATSEYE is expected to establish itself as an icon of Generation Z and exert influence in various fields beyond the music scene. Through music and performances that honestly capture their stories, they will provide empathy and inspiration to many. Attention is focused on the new history they will create in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] Internet Girl</div>
+<div><a href='https://tidal.com/album/484929529' target='_blank'>https://tidal.com/album/484929529</a></div>
+<div>KATSEYE - Internet Girl</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/484929529' target='_blank'><img src='https://resources.tidal.com/images/3bbf1af2/154a/4f2d/8399/d51fe92a2919/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Gabriela</div>
+<div><a href='https://tidal.com/album/441831769' target='_blank'>https://tidal.com/album/441831769</a></div>
+<div>KATSEYE - Gabriela</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/441831769' target='_blank'><img src='https://resources.tidal.com/images/1a83c765/73dd/42d6/8ea8/d54fb6971634/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Monster High Fright Song</div>
+<div><a href='https://tidal.com/album/448241980' target='_blank'>https://tidal.com/album/448241980</a></div>
+<div>Monster High, KATSEYE, Mattel - Monster High Fright Song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/448241980' target='_blank'><img src='https://resources.tidal.com/images/febade8d/c7f0/4311/9e99/1494d031bcb4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Gnarly</div>
+<div><a href='https://tidal.com/album/431665150' target='_blank'>https://tidal.com/album/431665150</a></div>
+<div>KATSEYE - Gnarly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431665150' target='_blank'><img src='https://resources.tidal.com/images/76d3a359/2c6b/43e9/96ec/04553c669dc9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Gnarly (Clean Edit)</div>
+<div><a href='https://tidal.com/album/431665148' target='_blank'>https://tidal.com/album/431665148</a></div>
+<div>KATSEYE - Gnarly (Clean Edit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431665148' target='_blank'><img src='https://resources.tidal.com/images/c35fe082/6018/463c/abb6/a7ce20fc2616/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] GOOD BOY (Original Television Soundtrack), Pt. 6</div>
+<div><a href='https://tidal.com/album/442862797' target='_blank'>https://tidal.com/album/442862797</a></div>
+<div>KATSEYE - Time Lapse</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/442862797' target='_blank'><img src='https://resources.tidal.com/images/2402850d/bbd8/4ee9/9b44/70a6336ece88/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] BEAUTIFUL CHAOS</div>
+<div><a href='https://tidal.com/album/443251419' target='_blank'>https://tidal.com/album/443251419</a></div>
+<div>KATSEYE - Gnarly</div>
+<div>KATSEYE - Gabriela</div>
+<div>KATSEYE - Gameboy</div>
+<div>KATSEYE - Mean Girls</div>
+<div>KATSEYE - M.I.A</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/443251419' target='_blank'><img src='https://resources.tidal.com/images/4f798dbb/075b/4a5e/ac03/a7c888c13e76/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Touch</div>
+<div><a href='https://tidal.com/album/376091075' target='_blank'>https://tidal.com/album/376091075</a></div>
+<div>KATSEYE - Touch</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/376091075' target='_blank'><img src='https://resources.tidal.com/images/4c5f5875/eb64/4eab/a0ee/7f943be6c963/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Touch (ft. YEONJUN of TOMORROW X TOGETHER)</div>
+<div><a href='https://tidal.com/album/391245967' target='_blank'>https://tidal.com/album/391245967</a></div>
+<div>KATSEYE, YEONJUN - Touch (ft. YEONJUN of TOMORROW X TOGETHER)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/391245967' target='_blank'><img src='https://resources.tidal.com/images/72ddb699/d953/40c2/b480/9b49ba650af6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] Touch (Holiday Version)</div>
+<div><a href='https://tidal.com/album/399668729' target='_blank'>https://tidal.com/album/399668729</a></div>
+<div>KATSEYE - Touch (Holiday Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/399668729' target='_blank'><img src='https://resources.tidal.com/images/55cb86a9/bbbc/4472/8a8f/ae83f9ebf4aa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] SIS (Soft Is Strong)</div>
+<div><a href='https://tidal.com/album/380185446' target='_blank'>https://tidal.com/album/380185446</a></div>
+<div>KATSEYE - Debut</div>
+<div>KATSEYE - Touch</div>
+<div>KATSEYE - My Way</div>
+<div>KATSEYE - I'm Pretty</div>
+<div>KATSEYE - Tonight I Might</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/380185446' target='_blank'><img src='https://resources.tidal.com/images/12f4123c/a610/4006/a7ad/44f927b29328/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Flame (from the Netflix Series Jentry Chau vs the Underworld)</div>
+<div><a href='https://tidal.com/album/395492466' target='_blank'>https://tidal.com/album/395492466</a></div>
+<div>KATSEYE - Flame (from the Netflix Series Jentry Chau vs the Underworld)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/395492466' target='_blank'><img src='https://resources.tidal.com/images/7a34357f/b80e/4b16/b44b/c81d059a1329/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Debut</div>
+<div><a href='https://tidal.com/album/370627638' target='_blank'>https://tidal.com/album/370627638</a></div>
+<div>KATSEYE - Debut</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/370627638' target='_blank'><img src='https://resources.tidal.com/images/0e31f60a/5139/407d/840b/b4f237665d3e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/타이달 캣츠아이 ( Tidal KATSEYE )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
