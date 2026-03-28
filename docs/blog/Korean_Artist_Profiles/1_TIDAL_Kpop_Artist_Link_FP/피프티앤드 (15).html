@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 피프티앤드 ( Tidal 15& )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 피프티앤드 ( Tidal 15& )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/243c6408/996b/4559/9a07/b2d4610f8d1c/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/15104799' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 피프티앤드</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>듀엣 하모니로 그려낸 다채로운 음악 스펙트럼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 15&</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Colorful Musical Spectrum Painted with a Duet Harmony</div><p>15&(피프티앤드)는 뛰어난 가창력을 자랑하는 두 소녀, 박지민과 백예린으로 이루어진 듀오입니다. 각자의 개성이 뚜렷하지만, 함께 만들어내는 하모니는 특별한 시너지를 선사하며 많은 사랑을 받았어요. 15&의 음악은 풋풋한 감성부터 성숙한 분위기까지 폭넓은 매력을 담고 있습니다.</p><p>15& (Fifteen And) is a duo composed of two girls with outstanding vocal skills, Park Jimin and Baek Yerin. Although each has a distinct personality, the harmony they create together provides a special synergy and has been much loved. 15&'s music encompasses a wide range of charms, from youthful emotions to mature atmospheres.</p><p>✧</p><p>그룹 탄생</p><p>15&는 K팝 스타 시즌1의 우승자 박지민과 뛰어난 실력을 인정받은 백예린이 JYP 엔터테인먼트에서 만나 결성되었습니다. 그룹명은 두 멤버의 나이를 의미하며, 음악적으로 함께 성장해나가겠다는 의지를 담고 있어요. 데뷔 전부터 뛰어난 가창력으로 주목받으며 큰 기대를 모았습니다.</p><p>Group Formation</p><p>15& was formed by Park Jimin, the winner of K-pop Star Season 1, and Baek Yerin, who was recognized for her outstanding skills, at JYP Entertainment. The group name signifies the age of the two members and reflects their determination to grow together musically. They garnered much anticipation by attracting attention for their exceptional singing ability even before their debut.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>15&는 팝, R&B, 소울 등 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여줬습니다. 두 멤버의 개성 강한 보컬은 서로 조화를 이루면서도 각자의 매력을 드러내요. 퍼포먼스 역시 가창력을 기반으로 한 안정적인 무대를 선보이며 듣는 즐거움과 보는 즐거움을 모두 선사했습니다.</p><p>Music and Performance</p><p>15& showcased a wide musical spectrum by performing in various genres such as pop, R&B, and soul. The two members' unique vocals harmonize with each other while revealing their individual charms. Their performances, based on their vocal abilities, presented stable stages, providing both listening and viewing pleasure.</p><p>✧</p><p>주요 활동</p><p>15&는 데뷔곡 'Somebody'를 통해 대중에게 강렬한 인상을 남기며 성공적으로 데뷔했습니다. 이후 다양한 싱글과 OST 참여 등을 통해 꾸준히 활동을 이어갔어요. 멤버들은 그룹 활동 외에도 솔로 활동을 통해 각자의 음악적 역량을 더욱 발전시켜 나갔습니다.</p><p>Main Activities</p><p>15& made a successful debut by leaving a strong impression on the public with their debut song 'Somebody'. Since then, they have continued to be active through various singles and OST participations. In addition to group activities, the members further developed their musical capabilities through solo activities.</p><p>✧</p><p>미래/의미</p><p>비록 현재는 그룹 활동이 잠정적으로 중단되었지만, 15&가 남긴 음악적 유산은 여전히 많은 이들에게 영감을 주고 있습니다. 두 멤버는 각자의 자리에서 솔로 아티스트로서 활발하게 활동하며 자신만의 음악 세계를 구축해나가고 있어요. 15&는 짧은 활동 기간에도 불구하고 K팝 씬에 뚜렷한 발자취를 남긴 듀오로 기억될 것입니다.</p><p>Future/Meaning</p><p>Although group activities are currently on hiatus, the musical legacy left by 15& continues to inspire many. The two members are actively working as solo artists in their respective positions, building their own musical worlds. Despite their short period of activity, 15& will be remembered as a duo that left a distinct mark on the K-pop scene.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] Somebody</div>
+<div><a href='https://tidal.com/album/304369332' target='_blank'>https://tidal.com/album/304369332</a></div>
+<div>15& - Somebody</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304369332' target='_blank'><img src='https://resources.tidal.com/images/d3d7d1a5/b528/470c/9e33/4bef1f747982/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Love is Madness</div>
+<div><a href='https://tidal.com/album/304039303' target='_blank'>https://tidal.com/album/304039303</a></div>
+<div>15&, Kanto - Love is Madness</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304039303' target='_blank'><img src='https://resources.tidal.com/images/0d54a494/d19e/4681/90fd/d2ee390a4dd1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] I Dream</div>
+<div><a href='https://tidal.com/album/304484868' target='_blank'>https://tidal.com/album/304484868</a></div>
+<div>15& - I Dream</div>
+<div>15& - Interview</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304484868' target='_blank'><img src='https://resources.tidal.com/images/08a4e2f0/cc91/46ec/bf7a/74bb12a45e33/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Can't Hide It</div>
+<div><a href='https://tidal.com/album/304273558' target='_blank'>https://tidal.com/album/304273558</a></div>
+<div>15& - Can't Hide It</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304273558' target='_blank'><img src='https://resources.tidal.com/images/1cb60bb0/10b4/4d4d/a5ec/d1d9ab6eda60/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Sugar</div>
+<div><a href='https://tidal.com/album/304039292' target='_blank'>https://tidal.com/album/304039292</a></div>
+<div>15& - Star</div>
+<div>15& - Sugar</div>
+<div>15& - Shy Ma Boy</div>
+<div>15& - Oh My God</div>
+<div>15& - Rain & Cry</div>
+<div>15& - Not Today Not Tomorrow</div>
+<div>15& - Silly Boy</div>
+<div>15& - Somebody</div>
+<div>15& - Can’t hide it</div>
+<div>15& - I Dream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304039292' target='_blank'><img src='https://resources.tidal.com/images/e2098794/c9a9/433f/b26a/f1d8c07a9390/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_FP/타이달 피프티앤드 ( Tidal 15& )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
