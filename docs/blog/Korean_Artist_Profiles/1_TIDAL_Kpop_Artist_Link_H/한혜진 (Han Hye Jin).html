@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 한혜진 ( Tidal Han Hye Jin )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 한혜진 ( Tidal Han Hye Jin )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/d04da895/92b8/4ce9/baf8/974be79f5d18/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/22311191' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/10317374' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 한혜진</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>애절한 감성으로 마음을 울리는 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Han Hye Jin</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Vocalist Who Touches Hearts with Soulful Emotion</div><p>한혜진 님은 깊은 감성과 호소력 짙은 목소리로 오랜 시간 동안 사랑받아온 가수입니다. 그녀의 음악은 듣는 이의 마음을 어루만지는 따뜻함과 애절함을 동시에 지니고 있어요. 폭넓은 음악적 스펙트럼을 통해 다양한 감정을 표현하며 대중에게 깊은 인상을 남겼습니다.</p><p>Han Hye Jin is a singer who has been loved for a long time for her deep emotion and appealing voice. Her music possesses both warmth and sorrow, comforting the hearts of listeners. She has left a deep impression on the public by expressing various emotions through a wide musical spectrum.</p><p>✧</p><p>음악적 여정의 시작</p><p>한혜진 님은 섬세한 감정 표현과 뛰어난 가창력으로 데뷔 초부터 주목받았습니다. 그녀만의 독특한 음색과 깊이 있는 해석은 발라드, 팝, 심지어는 캐럴에 이르기까지 다양한 장르를 아우르며 폭넓은 팬층을 확보하게 했습니다. 꾸준한 음악 활동을 통해 자신만의 음악 세계를 구축해나가고 있어요.</p><p>The Beginning of a Musical Journey</p><p>Han Hye Jin has been recognized for her delicate emotional expression and excellent singing ability since her debut. Her unique tone and in-depth interpretation cover various genres, from ballads and pop to even carols, securing a wide fan base. She is constantly building her own musical world through consistent musical activities.</p><p>✧</p><p>다채로운 음악 스타일</p><p>그녀의 음악은 슬픔과 희망, 사랑과 이별 등 다양한 감정을 섬세하게 표현하는 것이 특징입니다. 애절한 발라드에서 느껴지는 깊은 슬픔은 그녀의 트레이드 마크가 되었으며, 밝고 경쾌한 멜로디는 듣는 이에게 긍정적인 에너지를 전달합니다. 크리스마스 캐럴을 통해 따뜻하고 포근한 감성을 선사하기도 합니다.</p><p>Diverse Musical Styles</p><p>Her music is characterized by the delicate expression of various emotions such as sadness and hope, love and parting. The deep sadness felt in her soulful ballads has become her trademark, and the bright and cheerful melodies convey positive energy to listeners. She also provides a warm and cozy feeling through Christmas carols.</p><p>✧</p><p>감동을 선사하는 무대</p><p>한혜진 님은 무대 위에서 진심을 다하는 열정적인 모습으로 관객들에게 깊은 감동을 선사합니다. 그녀의 공연은 단순히 노래를 듣는 것을 넘어, 감정을 공유하고 소통하는 특별한 경험을 제공합니다. 관객들은 그녀의 음악을 통해 위로받고, 용기를 얻으며, 때로는 함께 눈물 흘리기도 합니다.</p><p>A Stage That Delivers Emotion</p><p>Han Hye Jin deeply impresses audiences with her passionate performances on stage. Her performances offer a special experience that goes beyond just listening to music, sharing emotions and communicating. Through her music, audiences are comforted, encouraged, and sometimes even shed tears together.</p><p>✧</p><p>앞으로의 행보와 의미</p><p>앞으로도 한혜진 님은 그녀만의 음악적 색깔을 잃지 않고, 더욱 깊이 있는 음악으로 대중과 소통할 것으로 기대됩니다. 그녀의 음악은 단순한 유행을 넘어, 오랫동안 사람들의 마음속에 남아 위로와 감동을 선사할 것입니다. 진심을 담은 그녀의 노래는 시대를 초월하여 영원히 기억될 거예요.</p><p>Future Direction and Meaning</p><p>It is expected that Han Hye Jin will continue to communicate with the public through deeper music without losing her unique musical color. Her music will go beyond simple trends and remain in people's hearts for a long time, providing comfort and emotion. Her sincere songs will be remembered forever, transcending generations.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Diversify</div>
+<div><a href='https://tidal.com/album/360360011' target='_blank'>https://tidal.com/album/360360011</a></div>
+<div>한혜진 - Disc1 - Turn Away</div>
+<div>한혜진 - Disc1 - Sole</div>
+<div>한혜진 - Disc1 - Good Day</div>
+<div>한혜진 - Disc1 - Sad Tango</div>
+<div>한혜진 - Disc1 - Just As The Wind Blows</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/360360011' target='_blank'><img src='https://resources.tidal.com/images/2b46f78b/ef31/4ac5/a015/2855e6fc1a88/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 나를 사랑 하시네</div>
+<div><a href='https://tidal.com/album/312153002' target='_blank'>https://tidal.com/album/312153002</a></div>
+<div>한혜진 - 나를 사랑 하시네</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/312153002' target='_blank'><img src='https://resources.tidal.com/images/0ac5312e/c2f6/49ce/8588/bcc9f008ee53/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] A Christmas Dream</div>
+<div><a href='https://tidal.com/album/331306708' target='_blank'>https://tidal.com/album/331306708</a></div>
+<div>한혜진 - O Holy Night</div>
+<div>한혜진 - Deck The Hall</div>
+<div>한혜진 - Silent Night</div>
+<div>한혜진 - Jingle Bells</div>
+<div>한혜진 - O Christmas Tree</div>
+<div>한혜진 - O Little Town Of Bethlehem</div>
+<div>한혜진 - It Came Upon A Midnight Clear</div>
+<div>한혜진 - 군밤 캐롤 (2023 Remastered Version)</div>
+<div>한혜진 - A Christmas Dream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/331306708' target='_blank'><img src='https://resources.tidal.com/images/276d3297/3b6b/4262/b125/e7a82541945d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 한강수</div>
+<div><a href='https://tidal.com/album/263732489' target='_blank'>https://tidal.com/album/263732489</a></div>
+<div>한혜진 - 한강수</div>
+<div>한혜진 - 집으로 가는 길</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263732489' target='_blank'><img src='https://resources.tidal.com/images/6a9189cd/eb6a/44b8/a459/929492cf64de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Winter Love</div>
+<div><a href='https://tidal.com/album/401942688' target='_blank'>https://tidal.com/album/401942688</a></div>
+<div>Han Hye Jin, Kian84 - Winter Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/401942688' target='_blank'><img src='https://resources.tidal.com/images/3235937e/76f9/41a9/9f31/965eae6cfd7d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 그대가 그리워</div>
+<div><a href='https://tidal.com/album/163379193' target='_blank'>https://tidal.com/album/163379193</a></div>
+<div>한혜진, Hooni Yongi - 그대가 그리워 (feat. 후니용이)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163379193' target='_blank'><img src='https://resources.tidal.com/images/5efdde38/7c09/4565/af06/88ff759143b8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 그리워라 (Trot Verion)</div>
+<div><a href='https://tidal.com/album/419150268' target='_blank'>https://tidal.com/album/419150268</a></div>
+<div>Han Hye Jin - 그리워라 Dance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/419150268' target='_blank'><img src='https://resources.tidal.com/images/f0fbc988/f825/4838/8ed7/20e1cd109374/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 그 여자의 바다 (Original Television Soundtrack), Pt. 6</div>
+<div><a href='https://tidal.com/album/419150228' target='_blank'>https://tidal.com/album/419150228</a></div>
+<div>Han Hye Jin - 그리워라</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/419150228' target='_blank'><img src='https://resources.tidal.com/images/0d222436/c2f1/47cf/9b05/04b03c130e73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] HAN HYE JIN 8th single album</div>
+<div><a href='https://tidal.com/album/163272558' target='_blank'>https://tidal.com/album/163272558</a></div>
+<div>한혜진 - 지푸라기</div>
+<div>한혜진 - 쭉가라</div>
+<div>한혜진 - 여자여</div>
+<div>한혜진 - 지푸라기 First Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163272558' target='_blank'><img src='https://resources.tidal.com/images/869e252b/c4f3/469e/b4d0/cbb5a5b0cf1b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2010] Born Again</div>
+<div><a href='https://tidal.com/album/163272468' target='_blank'>https://tidal.com/album/163272468</a></div>
+<div>한혜진 - 사랑아 가자</div>
+<div>한혜진 - 그대라서</div>
+<div>한혜진 - 마지막 연인</div>
+<div>한혜진 - 다시 한번만</div>
+<div>한혜진 - 너는 내 남자</div>
+<div>한혜진 - 서울의 밤</div>
+<div>한혜진 - 갈색추억</div>
+<div>한혜진 - 내영혼의 남자</div>
+<div>한혜진 - 정말 진짜로</div>
+<div>한혜진 - 위험한 사랑</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163272468' target='_blank'><img src='https://resources.tidal.com/images/308eeaea/0b13/438a/88fe/caf95f9cd3b6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] 2003 한혜진</div>
+<div><a href='https://tidal.com/album/163274602' target='_blank'>https://tidal.com/album/163274602</a></div>
+<div>한혜진 - 다시 한번만</div>
+<div>한혜진 - 너는 내 남자</div>
+<div>한혜진 - 널 위해 살겠다</div>
+<div>한혜진 - 내 영혼의 남자</div>
+<div>한혜진 - 서울의 밤</div>
+<div>한혜진 - 몰라요 몰라</div>
+<div>한혜진 - 진도 이야기</div>
+<div>한혜진 - 여자가 사랑을 할 때</div>
+<div>한혜진 - 여자의 방</div>
+<div>한혜진 - 다시 한번 생각해 봐요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163274602' target='_blank'><img src='https://resources.tidal.com/images/45a55f20/016f/4434/bbd5/f5de87db2c43/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] 伤心</div>
+<div><a href='https://tidal.com/album/164207778' target='_blank'>https://tidal.com/album/164207778</a></div>
+<div>한혜진 - 변심</div>
+<div>한혜진 - 내 영혼의 남자</div>
+<div>한혜진 - 서리</div>
+<div>한혜진 - 잊으란 그 말 밖에</div>
+<div>한혜진 - 내가 선택한 사랑</div>
+<div>한혜진 - 마지막 연인</div>
+<div>한혜진 - 잊지 말아요</div>
+<div>한혜진 - 미련</div>
+<div>한혜진 - 순정</div>
+<div>한혜진 - 슬픈 여인</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/164207778' target='_blank'><img src='https://resources.tidal.com/images/88a85769/1803/4ecd/bacb/5c8d51079cfa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] Last Lover</div>
+<div><a href='https://tidal.com/album/163274367' target='_blank'>https://tidal.com/album/163274367</a></div>
+<div>한혜진 - 마지막 연인</div>
+<div>한혜진 - 창가에 두 그림자</div>
+<div>한혜진 - 몰라요 몰라</div>
+<div>한혜진 - 여자의 방</div>
+<div>한혜진 - 승복할 수 없어요</div>
+<div>한혜진 - 애상</div>
+<div>한혜진 - 슬픈 사랑 이야기</div>
+<div>한혜진 - 다시 한번 생각해 봐요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163274367' target='_blank'><img src='https://resources.tidal.com/images/1466f9cf/c598/40ae/b502/e3acaba382c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1993] 서울의 밤</div>
+<div><a href='https://tidal.com/album/163274454' target='_blank'>https://tidal.com/album/163274454</a></div>
+<div>한혜진 - 서울의 밤</div>
+<div>한혜진 - 여자가 사랑을 할때</div>
+<div>한혜진 - 젖은 유리창</div>
+<div>한혜진 - 진도 이야기</div>
+<div>한혜진 - 갈색추억</div>
+<div>한혜진 - 혼자만의 사랑</div>
+<div>한혜진 - 남은 인연</div>
+<div>한혜진 - 아직도 사랑일까</div>
+<div>한혜진 - 마지막 연인</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163274454' target='_blank'><img src='https://resources.tidal.com/images/9192ab4e/b5a4/446b/bc11/7817fbf3a6ee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1993] 갈색추억_열번 찍힌 소나무_수선화</div>
+<div><a href='https://tidal.com/album/163274305' target='_blank'>https://tidal.com/album/163274305</a></div>
+<div>한혜진 - 갈색추억</div>
+<div>한혜진 - 수선화</div>
+<div>한혜진 - 바보약속</div>
+<div>한혜진 - 꼭 행복하세요</div>
+<div>한혜진 - 열번 찍힌 나무</div>
+<div>한혜진 - 거짓말쟁이</div>
+<div>한혜진 - 이별의 노래</div>
+<div>한혜진 - 가버린 사람</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163274305' target='_blank'><img src='https://resources.tidal.com/images/d04da895/92b8/4ce9/baf8/974be79f5d18/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1992] What Is Love_Stand By Me</div>
+<div><a href='https://tidal.com/album/210766450' target='_blank'>https://tidal.com/album/210766450</a></div>
+<div>Han Hye Jin - Whatever Love Is</div>
+<div>Han Hye Jin - Let's All Forget</div>
+<div>Han Hye Jin - Because of Regret</div>
+<div>Han Hye Jin - You Don't Know</div>
+<div>Han Hye Jin - Stand By Me</div>
+<div>Han Hye Jin - Don't Say What Hurts</div>
+<div>Han Hye Jin - Think Once More</div>
+<div>Han Hye Jin - You Gave Me Love and Left</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210766450' target='_blank'><img src='https://resources.tidal.com/images/4b545d8f/8b33/4031/adfe/b59a70631eef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1991] The 1st Album of Han Hye Jin(What Is Love, Erase All)</div>
+<div><a href='https://tidal.com/album/203302270' target='_blank'>https://tidal.com/album/203302270</a></div>
+<div>Han Hye Jin - Whatever Love Is</div>
+<div>Han Hye Jin - Let's All Forget</div>
+<div>Han Hye Jin - Because of Regret</div>
+<div>Han Hye Jin - You Don't Know</div>
+<div>Han Hye Jin - Stand By Me</div>
+<div>Han Hye Jin - Don't Say What Hurts</div>
+<div>Han Hye Jin - Think Once More</div>
+<div>Han Hye Jin - You Gave Me Love and Left</div>
+<div>Han Hye Jin - To My Lover Leaving Me</div>
+<div>Han Hye Jin - Turn Off the Light</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/203302270' target='_blank'><img src='https://resources.tidal.com/images/8f21e285/197e/4675/9411/0a14029ad542/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/타이달 한혜진 ( Tidal Han Hye Jin )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
