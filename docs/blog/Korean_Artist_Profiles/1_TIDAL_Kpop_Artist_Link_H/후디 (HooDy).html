@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 후디 ( Tidal HooDy )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 후디 ( Tidal HooDy )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/891325e6/1fdd/4fb7/bd8a/365d62f3a295/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/32571169' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 후디</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>후디 (Hoody) - 섬세한 감성으로 빚어낸 R&B</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> HooDy</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Hoody - R&B Crafted with Delicate Emotion</div><p>매력적인 음색과 솔직한 음악으로 리스너의 마음을 사로잡는 아티스트, 후디입니다. 그녀는 자신만의 색깔을 담아낸 R&B 음악으로 꾸준히 사랑받고 있어요. 섬세한 감정 표현과 트렌디한 사운드의 조화가 돋보입니다.</p><p>Hoody is an artist who captivates listeners with her charming voice and honest music. She is consistently loved for her R&B music, which is infused with her own unique style. The harmony of delicate emotional expression and trendy sound is remarkable.</p><p>✧</p><p>AOMG와의 만남</p><p>후디는 힙합 레이블 AOMG에 합류하며 본격적인 음악 활동을 시작했어요. 레이블 내 다양한 아티스트들과의 협업을 통해 그녀만의 음악적 스펙트럼을 넓혀왔습니다. AOMG는 후디의 음악적 성장에 든든한 발판이 되어주었죠.</p><p>Meeting AOMG</p><p>Hoody began her full-fledged music career by joining the hip-hop label AOMG. Through collaborations with various artists within the label, she has expanded her musical spectrum. AOMG has been a solid foundation for Hoody's musical growth.</p><p>✧</p><p>음악적 스타일과 퍼포먼스</p><p>후디의 음악은 부드러운 보컬과 섬세한 감정선이 특징이에요. R&B를 기반으로 소울, 팝 등 다양한 장르를 넘나들며 자신만의 색깔을 만들어가죠. 무대 위에서 보여주는 그녀의 자연스러운 퍼포먼스 역시 많은 사랑을 받고 있습니다.</p><p>Musical Style and Performance</p><p>Hoody's music is characterized by her smooth vocals and delicate emotional lines. Based on R&B, she crosses various genres such as soul and pop to create her own unique color. Her natural performance on stage is also much loved.</p><p>✧</p><p>다채로운 음악 활동</p><p>후디는 꾸준한 싱글 발매와 앨범 활동뿐만 아니라, 다양한 아티스트들과의 협업을 통해 음악적 역량을 발휘하고 있어요. 그녀만의 감성적인 보컬은 수많은 곡에서 빛을 발하며, 리스너들에게 깊은 인상을 남깁니다. 폭넓은 음악적 스펙트럼은 후디를 더욱 매력적인 아티스트로 만들죠.</p><p>Diverse Musical Activities</p><p>Hoody is demonstrating her musical capabilities not only through consistent single releases and album activities but also through collaborations with various artists. Her unique emotional vocals shine in numerous songs, leaving a deep impression on listeners. Her wide musical spectrum makes Hoody an even more attractive artist.</p><p>✧</p><p>후디의 음악이 가진 의미</p><p>후디의 음악은 단순한 듣는 즐거움을 넘어, 섬세한 감정을 공유하고 공감대를 형성하는 데 큰 의미를 지닙니다. 그녀의 진솔한 가사와 따뜻한 멜로디는 많은 이들에게 위로와 희망을 전달하죠. 앞으로 그녀가 보여줄 음악적 성장이 더욱 기대됩니다.</p><p>The Meaning of Hoody's Music</p><p>Hoody's music goes beyond simple listening pleasure and has great significance in sharing delicate emotions and forming a sense of empathy. Her sincere lyrics and warm melodies convey comfort and hope to many. Her future musical growth is highly anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] The Star</div>
+<div><a href='https://tidal.com/album/398774845' target='_blank'>https://tidal.com/album/398774845</a></div>
+<div>Hoody, Jason Lee - The Star</div>
+<div>Hoody, Jason Lee - Lovely Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/398774845' target='_blank'><img src='https://resources.tidal.com/images/df304115/fa1b/4383/9a5b/6728584409c3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Sailing</div>
+<div><a href='https://tidal.com/album/316837419' target='_blank'>https://tidal.com/album/316837419</a></div>
+<div>Hoody - Fantasy</div>
+<div>Hoody - Think About You</div>
+<div>Hoody, pH-1 - Daydream (Feat. pH-1)</div>
+<div>Hoody - Sailing</div>
+<div>Hoody - Lonely</div>
+<div>Hoody - So Good To Me</div>
+<div>Hoody, Jinbo - Just Be You (Feat. JINBO)</div>
+<div>Hoody, GSoul - Game (Feat. GSoul)</div>
+<div>Hoody - Blind</div>
+<div>Hoody - Again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/316837419' target='_blank'><img src='https://resources.tidal.com/images/df12edc3/be05/459d/8a58/eaeb7b9e216d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Revenge of Others (Original Television Soundtrack), Pt.2</div>
+<div><a href='https://tidal.com/album/262266301' target='_blank'>https://tidal.com/album/262266301</a></div>
+<div>Hoody - Blue</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/262266301' target='_blank'><img src='https://resources.tidal.com/images/dd49c21b/0a06/4d9e/bfdb/079bb465580b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Amazing</div>
+<div><a href='https://tidal.com/album/265186622' target='_blank'>https://tidal.com/album/265186622</a></div>
+<div>Hoody - Amazing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/265186622' target='_blank'><img src='https://resources.tidal.com/images/204bfaac/e663/4e6b/853f/f21cfffc42ff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] When The Rain Stops</div>
+<div><a href='https://tidal.com/album/200814852' target='_blank'>https://tidal.com/album/200814852</a></div>
+<div>Hoody - When The Rain Stops</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200814852' target='_blank'><img src='https://resources.tidal.com/images/29d31bfc/8e75/49c3/9f3b/0f7073a7a305/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] D-day</div>
+<div><a href='https://tidal.com/album/202412692' target='_blank'>https://tidal.com/album/202412692</a></div>
+<div>Hoody - Lights</div>
+<div>Hoody - D-day (Feat. GIRIBOY)</div>
+<div>Hoody - Dream About U (Feat. KUONECHAN)</div>
+<div>Hoody - When The Rain Stops</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/202412692' target='_blank'><img src='https://resources.tidal.com/images/d2c659be/ffda/49f0/9c6a/c4840a66b096/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Submarine</div>
+<div><a href='https://tidal.com/album/285461310' target='_blank'>https://tidal.com/album/285461310</a></div>
+<div>Hoody, Bronze - Submarine (K)</div>
+<div>Hoody, Bronze - Submarine (English Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/285461310' target='_blank'><img src='https://resources.tidal.com/images/51e1e344/ccaf/4181/b6fd/8ed7299856d9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Melting Me Softly (Original Television Soundtrack), Pt. 6</div>
+<div><a href='https://tidal.com/album/196151650' target='_blank'>https://tidal.com/album/196151650</a></div>
+<div>Hoody - Fresh</div>
+<div>Hoody - Fresh</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196151650' target='_blank'><img src='https://resources.tidal.com/images/20a3544c/9ad6/4fe0/b063/94ea88e46b68/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] MIRO</div>
+<div><a href='https://tidal.com/album/287862508' target='_blank'>https://tidal.com/album/287862508</a></div>
+<div>Hoody - MIRO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287862508' target='_blank'><img src='https://resources.tidal.com/images/273e73ba/297a/4bf8/a196/eedae196a14d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Sunshine</div>
+<div><a href='https://tidal.com/album/282366329' target='_blank'>https://tidal.com/album/282366329</a></div>
+<div>Hoody, Crush - Sunshine (Feat. Crush)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/282366329' target='_blank'><img src='https://resources.tidal.com/images/711b6c40/c39c/4430/b426/7a1e133d8c79/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Golden</div>
+<div><a href='https://tidal.com/album/196140694' target='_blank'>https://tidal.com/album/196140694</a></div>
+<div>Hoody - Why (Prod. Slom)</div>
+<div>Hoody - Golden (Prod. Slom)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140694' target='_blank'><img src='https://resources.tidal.com/images/97132731/dab6/43e1/ae81/443e528e4175/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] HANGANG</div>
+<div><a href='https://tidal.com/album/196137105' target='_blank'>https://tidal.com/album/196137105</a></div>
+<div>Hoody - HANGANG</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137105' target='_blank'><img src='https://resources.tidal.com/images/891325e6/1fdd/4fb7/bd8a/365d62f3a295/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Can′t Wait</div>
+<div><a href='https://tidal.com/album/196137635' target='_blank'>https://tidal.com/album/196137635</a></div>
+<div>Hoody - Can′t Wait</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137635' target='_blank'><img src='https://resources.tidal.com/images/12461736/f4d8/4bd6/8ac7/1a8e46e8a19b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] On and On</div>
+<div><a href='https://tidal.com/album/196125493' target='_blank'>https://tidal.com/album/196125493</a></div>
+<div>Hoody - By Your Side</div>
+<div>Hoody - Your Eyes</div>
+<div>Hoody - The Light</div>
+<div>Hoody - Lust</div>
+<div>Hoody - Forest</div>
+<div>Hoody - Need U</div>
+<div>Hoody - Like You</div>
+<div>Hoody - On And On</div>
+<div>Hoody - Your Eyes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196125493' target='_blank'><img src='https://resources.tidal.com/images/a0d288e8/2f40/4769/b979/94aad11403fd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Like You</div>
+<div><a href='https://tidal.com/album/196116155' target='_blank'>https://tidal.com/album/196116155</a></div>
+<div>Hoody - Like You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196116155' target='_blank'><img src='https://resources.tidal.com/images/78345291/81aa/4a45/891d/b5e9af731251/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] By Your Side</div>
+<div><a href='https://tidal.com/album/196126134' target='_blank'>https://tidal.com/album/196126134</a></div>
+<div>Hoody - By Your Side</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196126134' target='_blank'><img src='https://resources.tidal.com/images/07f2d77b/e676/492a/952b/b7e9800b638c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Let Em Know</div>
+<div><a href='https://tidal.com/album/196104780' target='_blank'>https://tidal.com/album/196104780</a></div>
+<div>Hoody - Let Em Know</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196104780' target='_blank'><img src='https://resources.tidal.com/images/d8578ac3/0dfc/41f2/b014/8293dfec64c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Baby oh baby</div>
+<div><a href='https://tidal.com/album/196095576' target='_blank'>https://tidal.com/album/196095576</a></div>
+<div>Hoody - Baby oh baby</div>
+<div>Hoody - Baby oh baby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196095576' target='_blank'><img src='https://resources.tidal.com/images/c8f08307/8c5d/49e7/af8c/c9d627ac9661/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] My Ride</div>
+<div><a href='https://tidal.com/album/196091547' target='_blank'>https://tidal.com/album/196091547</a></div>
+<div>Hoody - My Ride</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196091547' target='_blank'><img src='https://resources.tidal.com/images/b04cd710/c956/44fc/96d9/87a818946832/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/타이달 후디 ( Tidal HooDy )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
