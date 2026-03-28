@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 하이디 ( Tidal Heidi )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 하이디 ( Tidal Heidi )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/ffd4b803/4e24/4579/ae89/e190751d658f/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10641966' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 하이디</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>감성적인 음색으로 마음을 물들이는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Heidi</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Singer-Songwriter Who Paints Hearts with an Emotional Voice</div><p>싱어송라이터 하이디(Heidi)는 섬세한 감정 표현과 매력적인 음색으로 듣는 이들의 마음을 사로잡습니다. 그녀의 음악은 일상 속 다양한 순간들을 포착하여 솔직하고 진솔하게 풀어내는 매력이 있습니다. 하이디만의 감성이 녹아든 음악 세계로 함께 떠나볼까요?</p><p>Singer-songwriter Heidi captivates listeners with her delicate emotional expression and charming voice. Her music captures various moments in everyday life, unfolding them honestly and sincerely. Shall we embark on a musical journey into Heidi's world of emotions?</p><p>✧</p><p>음악적 색깔의 시작</p><p>하이디는 자신만의 색깔을 담은 음악으로 데뷔하여 꾸준히 활동을 이어왔습니다. 그녀의 음악은 다양한 장르를 넘나들며, 특유의 감성적인 분위기를 잃지 않는 것이 특징입니다. 리스너들에게 깊은 공감과 위로를 선사하며 자신만의 음악적 입지를 다져나가고 있습니다.</p><p>The Beginning of a Musical Hue</p><p>Heidi debuted with music that captured her unique color and has continued to be active ever since. Her music crosses various genres while maintaining her signature emotional atmosphere. She provides listeners with deep empathy and comfort, solidifying her musical position.</p><p>✧</p><p>섬세한 감정, 다채로운 표현</p><p>하이디의 음악은 사랑, 이별, 그리움 등 다양한 감정을 솔직하게 담아냅니다. 그녀의 음색은 때로는 따뜻하게, 때로는 아련하게 다가와 곡의 분위기를 더욱 깊게 만들어줍니다. 듣는 이들은 그녀의 음악을 통해 자신의 감정을 되돌아보고 공감하며 위로받을 수 있습니다.</p><p>Delicate Emotions, Diverse Expressions</p><p>Heidi's music honestly captures various emotions such as love, parting, and longing. Her voice sometimes approaches warmly, sometimes wistfully, deepening the atmosphere of the songs. Listeners can reflect on their own emotions, empathize, and be comforted through her music.</p><p>✧</p><p>폭넓은 음악적 스펙트럼</p><p>하이디는 발라드뿐만 아니라 다양한 장르에 도전하며 음악적 스펙트럼을 넓혀가고 있습니다. 그녀는 꾸준한 음악적 시도를 통해 자신만의 독창적인 스타일을 구축해나가고 있습니다. 앞으로 그녀가 보여줄 더욱 다양한 음악적 변신이 기대됩니다.</p><p>A Wide Musical Spectrum</p><p>Heidi is expanding her musical spectrum by challenging not only ballads but also various genres. She is building her own unique style through constant musical experimentation. We look forward to the more diverse musical transformations she will show in the future.</p><p>✧</p><p>음악이 전하는 위로와 공감</p><p>하이디의 음악은 단순히 듣는 즐거움을 넘어, 우리의 삶과 감정을 어루만지는 따뜻한 위로를 전합니다. 그녀의 진솔한 음악은 앞으로도 많은 사람들에게 깊은 감동과 영감을 선사할 것입니다. 하이디의 음악은 우리에게 잔잔한 울림을 선사하며 오랫동안 기억될 것입니다.</p><p>Comfort and Empathy Conveyed Through Music</p><p>Heidi's music goes beyond mere listening pleasure, delivering warm comfort that touches our lives and emotions. Her sincere music will continue to provide deep emotion and inspiration to many people in the future. Heidi's music will leave a quiet resonance in us and will be remembered for a long time.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 마티니 블루스</div>
+<div><a href='https://tidal.com/album/346313865' target='_blank'>https://tidal.com/album/346313865</a></div>
+<div>하이디 - 마티니 블루스</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346313865' target='_blank'><img src='https://resources.tidal.com/images/c2583066/1cf8/41f9/984f/c7196b021f5c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Especially for you</div>
+<div><a href='https://tidal.com/album/404744073' target='_blank'>https://tidal.com/album/404744073</a></div>
+<div>하이디 - Especially for you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/404744073' target='_blank'><img src='https://resources.tidal.com/images/899ee059/7a13/43d6/b99a/d9038e081e44/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 잠 못 드는 밤</div>
+<div><a href='https://tidal.com/album/272239667' target='_blank'>https://tidal.com/album/272239667</a></div>
+<div>하이디 (feat. 김대성) - 잠 못 드는 밤 (feat. 김대성)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/272239667' target='_blank'><img src='https://resources.tidal.com/images/515dc1f8/69e0/4547/acb6/d232d4ac0295/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 꽃 보러 가지 않을래</div>
+<div><a href='https://tidal.com/album/281926917' target='_blank'>https://tidal.com/album/281926917</a></div>
+<div>하이디 - 꽃 보러 가지 않을래</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/281926917' target='_blank'><img src='https://resources.tidal.com/images/8f408f86/55c7/4632/b90b/2ad9171ef603/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 그날의 우리는 그곳에 두고 올게</div>
+<div><a href='https://tidal.com/album/266595096' target='_blank'>https://tidal.com/album/266595096</a></div>
+<div>하이디 - 그날의 우리는 그곳에 두고 올게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/266595096' target='_blank'><img src='https://resources.tidal.com/images/470e7180/bda3/408c/b3c9/6676a7eb9172/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 그때 우린</div>
+<div><a href='https://tidal.com/album/178652766' target='_blank'>https://tidal.com/album/178652766</a></div>
+<div>하이디 - 그때 우린</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/178652766' target='_blank'><img src='https://resources.tidal.com/images/f2925148/1075/494a/a0c4/605f9abd0190/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Aurora</div>
+<div><a href='https://tidal.com/album/203818529' target='_blank'>https://tidal.com/album/203818529</a></div>
+<div>하이디 - Aurora</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/203818529' target='_blank'><img src='https://resources.tidal.com/images/ffd4b803/4e24/4579/ae89/e190751d658f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Liar</div>
+<div><a href='https://tidal.com/album/252192240' target='_blank'>https://tidal.com/album/252192240</a></div>
+<div>하이디 - Liar</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/252192240' target='_blank'><img src='https://resources.tidal.com/images/b67fe1ba/91b6/4734/8ab8/3424f23665fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 솔직히 말해주세요</div>
+<div><a href='https://tidal.com/album/305419935' target='_blank'>https://tidal.com/album/305419935</a></div>
+<div>하이디 - 솔직히 말해주세요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305419935' target='_blank'><img src='https://resources.tidal.com/images/10a37b75/f4c8/46b4/a4ff/7002c46865d7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] Dollar</div>
+<div><a href='https://tidal.com/album/305409879' target='_blank'>https://tidal.com/album/305409879</a></div>
+<div>하이디 - Dollar</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305409879' target='_blank'><img src='https://resources.tidal.com/images/5919ef54/61e3/4a50/b625/576eccc78481/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/타이달 하이디 ( Tidal Heidi )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
