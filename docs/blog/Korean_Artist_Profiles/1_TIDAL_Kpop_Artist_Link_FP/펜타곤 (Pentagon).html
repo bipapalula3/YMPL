@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 펜타곤 ( Tidal Pentagon )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 펜타곤 ( Tidal Pentagon )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/77ef1974/fe9d/4fbc/8b1c/631b18fa3ddb/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/23977331' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 펜타곤</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>다채로운 음악적 스펙트럼을 지닌 무한한 가능성</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Pentagon</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Infinite Potential with a Diverse Musical Spectrum</div><p>보이그룹 펜타곤은 독창적인 음악과 퍼포먼스로 끊임없이 변화하는 매력을 보여줍니다. 멤버들의 뛰어난 작사, 작곡 능력과 다재다능함은 펜타곤만의 색깔을 만들어내죠. 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 펼쳐나가는 모습이 인상적입니다.</p><p>The boy group Pentagon constantly showcases its ever-changing charms through original music and performances. The members' exceptional songwriting skills and versatility create Pentagon's unique color. It is impressive to see them digest various genres and develop a wide musical spectrum.</p><p>✧</p><p>그룹 탄생</p><p>펜타곤은 큐브 엔터테인먼트에서 야심차게 데뷔한 그룹입니다. 데뷔 전 서바이벌 프로그램을 통해 멤버들의 실력과 매력을 대중에게 알렸어요. 끈끈한 팀워크와 개개인의 뛰어난 역량이 돋보이는 그룹입니다.</p><p>Group Formation</p><p>Pentagon is a group ambitiously debuted by Cube Entertainment. Prior to their debut, they showcased their skills and charms to the public through a survival program. They are a group that stands out for their strong teamwork and outstanding individual capabilities.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>펜타곤은 팝, 힙합, R&B 등 다양한 장르를 넘나드는 음악을 선보입니다. 섬세한 감정 표현과 강렬한 퍼포먼스를 동시에 소화하는 능력이 뛰어나요. 멤버들이 직접 작사, 작곡에 참여하여 진정성 있는 음악을 만들어내는 점도 주목할 만합니다.</p><p>Music and Performance</p><p>Pentagon presents music that crosses various genres such as pop, hip-hop, and R&B. They are excellent at handling both delicate emotional expression and intense performances. It is also noteworthy that the members participate directly in writing and composing lyrics, creating authentic music.</p><p>✧</p><p>주요 활동</p><p>펜타곤은 한국뿐만 아니라 일본을 비롯한 해외에서도 활발하게 활동하고 있습니다. 다양한 콘서트와 팬미팅을 통해 글로벌 팬들과 소통하고 있어요. 멤버들은 연기, 예능 등 다방면에서 재능을 발휘하며 활동 영역을 넓혀가고 있습니다.</p><p>Main Activities</p><p>Pentagon is active not only in Korea but also overseas, including Japan. They communicate with global fans through various concerts and fan meetings. The members are expanding their activities by demonstrating their talents in various fields such as acting and entertainment.</p><p>✧</p><p>미래/의미</p><p>펜타곤은 앞으로도 끊임없는 음악적 실험과 도전을 통해 성장해 나갈 것입니다. 그들의 음악은 듣는 이들에게 위로와 공감을 선사하고, 긍정적인 에너지를 전달하죠. 펜타곤이 보여줄 미래가 더욱 기대됩니다.</p><p>Future/Meaning</p><p>Pentagon will continue to grow through constant musical experimentation and challenges. Their music offers comfort and empathy to listeners, and conveys positive energy. The future that Pentagon will show is even more anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] 결국 (Love is Pain)</div>
+<div><a href='https://tidal.com/album/307634920' target='_blank'>https://tidal.com/album/307634920</a></div>
+<div>PENTAGON - 결국 (Love is Pain)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/307634920' target='_blank'><img src='https://resources.tidal.com/images/d739706f/b142/423a/ad01/b99223df3998/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Shh</div>
+<div><a href='https://tidal.com/album/291613657' target='_blank'>https://tidal.com/album/291613657</a></div>
+<div>PENTAGON - Shh</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/291613657' target='_blank'><img src='https://resources.tidal.com/images/fbdc379c/f6ff/4dfb/adf4/c0c83221df5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] PADO</div>
+<div><a href='https://tidal.com/album/312141980' target='_blank'>https://tidal.com/album/312141980</a></div>
+<div>PENTAGON - PADO (wave to me)</div>
+<div>PENTAGON - LOOP (L∞P)</div>
+<div>PENTAGON - Shh (Aug ver.)</div>
+<div>PENTAGON - Billie Jean</div>
+<div>PENTAGON - Made In Heaven</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/312141980' target='_blank'><img src='https://resources.tidal.com/images/554044d1/d74c/4419/9f05/85d6a943ca9a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Sparkling Night (Japanese Version)</div>
+<div><a href='https://tidal.com/album/242149024' target='_blank'>https://tidal.com/album/242149024</a></div>
+<div>PENTAGON - Sparkling Night (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/242149024' target='_blank'><img src='https://resources.tidal.com/images/66f13895/7459/403d/b1cd/962d1672fa31/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] KCON 2022 SAUDI ARABIA SIGNATURE SONG</div>
+<div><a href='https://tidal.com/album/251428078' target='_blank'>https://tidal.com/album/251428078</a></div>
+<div>PENTAGON - POPPIA (SAUDI ARABIA Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/251428078' target='_blank'><img src='https://resources.tidal.com/images/0e7d1eb8/3de0/438d/ad58/6912ac9e71ca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Feelin' Like</div>
+<div><a href='https://tidal.com/album/242013236' target='_blank'>https://tidal.com/album/242013236</a></div>
+<div>PENTAGON - Feelin' Like (Japanese Version)</div>
+<div>PENTAGON - Sparkling Night (Japanese Version)</div>
+<div>PENTAGON - Don't</div>
+<div>PENTAGON - Mr. Wolf</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/242013236' target='_blank'><img src='https://resources.tidal.com/images/14963c65/62a0/4b33/9c15/64ab6691721a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] @User not found (Original Television Soundtrack) Pt. 2</div>
+<div><a href='https://tidal.com/album/211436057' target='_blank'>https://tidal.com/album/211436057</a></div>
+<div>PENTAGON - A-HA!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/211436057' target='_blank'><img src='https://resources.tidal.com/images/53991851/a2bb/4d72/b687/a3659d075b32/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] LOVE or TAKE</div>
+<div><a href='https://tidal.com/album/176264964' target='_blank'>https://tidal.com/album/176264964</a></div>
+<div>PENTAGON - 10s and</div>
+<div>PENTAGON - DO or NOT</div>
+<div>PENTAGON - 1+1</div>
+<div>PENTAGON - Baby I Love You</div>
+<div>PENTAGON - That's Me</div>
+<div>PENTAGON - Sing-a-song</div>
+<div>PENTAGON - Boy in time (HUI Solo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/176264964' target='_blank'><img src='https://resources.tidal.com/images/65f96cf8/f6a3/466c/b7f3/b6e4113014a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] DO or NOT</div>
+<div><a href='https://tidal.com/album/186744751' target='_blank'>https://tidal.com/album/186744751</a></div>
+<div>PENTAGON - DO or NOT (Japanese Version)</div>
+<div>PENTAGON - Daisy (Japanese Version)</div>
+<div>PENTAGON - Don’t worry ’bout me</div>
+<div>PENTAGON - Dazzling</div>
+<div>PENTAGON - Boy in time (HUI Solo Japaense Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/186744751' target='_blank'><img src='https://resources.tidal.com/images/e236e8a7/192b/498d/a442/53e49a0390e5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Cerberus</div>
+<div><a href='https://tidal.com/album/193850180' target='_blank'>https://tidal.com/album/193850180</a></div>
+<div>PENTAGON - Cerberus</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/193850180' target='_blank'><img src='https://resources.tidal.com/images/dce236aa/cf1d/4ca5/afc7/8827e3008c63/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] WE_TH</div>
+<div><a href='https://tidal.com/album/157466456' target='_blank'>https://tidal.com/album/157466456</a></div>
+<div>PENTAGON - Daisy</div>
+<div>PENTAGON - Beautiful Goodbye</div>
+<div>PENTAGON - Nostalgia</div>
+<div>PENTAGON - You Like</div>
+<div>PENTAGON - Paradise</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/157466456' target='_blank'><img src='https://resources.tidal.com/images/13014e25/7cc6/4fab/89d9/a40cfe03ac31/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Universe _ The Black Hall</div>
+<div><a href='https://tidal.com/album/130644145' target='_blank'>https://tidal.com/album/130644145</a></div>
+<div>PENTAGON - Dr. BeBe</div>
+<div>PENTAGON - Asteroid</div>
+<div>PENTAGON - Shower Of Rain</div>
+<div>PENTAGON - Die For You</div>
+<div>PENTAGON - Talk</div>
+<div>PENTAGON - The Black Hall</div>
+<div>PENTAGON - Worship U</div>
+<div>PENTAGON - Zoom Up</div>
+<div>PENTAGON - Camellia</div>
+<div>PENTAGON - Someday (Song By JINHO, HUI)</div>
+<div>PENTAGON - Happiness (KR Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/130644145' target='_blank'><img src='https://resources.tidal.com/images/43025d95/65cc/4f1e/8cf0/b3e45eed731a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] UNIVERSE _ THE HISTORY</div>
+<div><a href='https://tidal.com/album/155415601' target='_blank'>https://tidal.com/album/155415601</a></div>
+<div>PENTAGON - Gorilla (2020 Japanese Version)</div>
+<div>PENTAGON - Can You Feel It (2020 Japanese Version)</div>
+<div>PENTAGON - Pretty Pretty (2020 Japanese Version)</div>
+<div>PENTAGON - To Universe (Japanese Version)</div>
+<div>PENTAGON - Violet (2020 Japanese Version)</div>
+<div>PENTAGON - Shine (2020 Japanese Version)</div>
+<div>PENTAGON - Cosmo</div>
+<div>PENTAGON - Naughty Boy (Japanese Version)</div>
+<div>PENTAGON - HAPPINESS</div>
+<div>PENTAGON - SHA LA LA (Japanese Version)</div>
+<div>PENTAGON - Humph! (Japanese Version)</div>
+<div>PENTAGON - Dr. BeBe (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/155415601' target='_blank'><img src='https://resources.tidal.com/images/4f14e32e/06c0/4415/95e6/a32f6041e964/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Twenty-Twenty Part.1</div>
+<div><a href='https://tidal.com/album/216252391' target='_blank'>https://tidal.com/album/216252391</a></div>
+<div>PENTAGON - Twenty-Twenty</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216252391' target='_blank'><img src='https://resources.tidal.com/images/939e398a/6506/4cdd/bc0d/7bad6eeda57b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Road to Kingdom _My Song_ Part.1</div>
+<div><a href='https://tidal.com/album/196156532' target='_blank'>https://tidal.com/album/196156532</a></div>
+<div>PENTAGON - Shine+Spring Snow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196156532' target='_blank'><img src='https://resources.tidal.com/images/e9e40a7d/4792/44c0/946d/1722701cd6c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Road to Kingdom _King′s Melody_ Part.2</div>
+<div><a href='https://tidal.com/album/196156501' target='_blank'>https://tidal.com/album/196156501</a></div>
+<div>PENTAGON - Very Good (PENTAGON Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196156501' target='_blank'><img src='https://resources.tidal.com/images/429ccad9/86f6/4ef2/ae7c/7982a3d16a1f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Eternal Flame</div>
+<div><a href='https://tidal.com/album/165770092' target='_blank'>https://tidal.com/album/165770092</a></div>
+<div>PENTAGON - Eternal Flame</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/165770092' target='_blank'><img src='https://resources.tidal.com/images/f10933aa/f008/4fbf/9e0c/a77fc27d56d8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Dr. BeBe (Japanese Version)</div>
+<div><a href='https://tidal.com/album/154425982' target='_blank'>https://tidal.com/album/154425982</a></div>
+<div>PENTAGON - Dr. BeBe (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/154425982' target='_blank'><img src='https://resources.tidal.com/images/f972c535/989c/4ebb/b3cc/1cee395652f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Daisy</div>
+<div><a href='https://tidal.com/album/159858296' target='_blank'>https://tidal.com/album/159858296</a></div>
+<div>PENTAGON - Daisy (Japanese Version)</div>
+<div>PENTAGON - Daisy (Chinese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/159858296' target='_blank'><img src='https://resources.tidal.com/images/2782c5ea/c601/460a/a97f/6e0ab257d0e3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] SUM(ME_R)</div>
+<div><a href='https://tidal.com/album/113344430' target='_blank'>https://tidal.com/album/113344430</a></div>
+<div>PENTAGON - Humph!</div>
+<div>PENTAGON - Fantasystic</div>
+<div>PENTAGON - SUMMER!</div>
+<div>PENTAGON - Round 2 (Bonus Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/113344430' target='_blank'><img src='https://resources.tidal.com/images/443c0422/17a0/428c/8f71/37d23753a610/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] HAPPINESS _ SHA LA LA</div>
+<div><a href='https://tidal.com/album/115442063' target='_blank'>https://tidal.com/album/115442063</a></div>
+<div>PENTAGON - HAPPINESS</div>
+<div>PENTAGON - SHA LA LA (Japanese Version)</div>
+<div>PENTAGON - SEASONS</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115442063' target='_blank'><img src='https://resources.tidal.com/images/62678a1a/0890/4d00/9e9d/5aeaba48b702/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Genie_us</div>
+<div><a href='https://tidal.com/album/216502900' target='_blank'>https://tidal.com/album/216502900</a></div>
+<div>PENTAGON - SHA LA LA</div>
+<div>PENTAGON - Lost Paradise (Hip Hop Unit)</div>
+<div>PENTAGON - Till… (Ballad Unit)</div>
+<div>PENTAGON - Alien</div>
+<div>PENTAGON - Spring Snow</div>
+<div>PENTAGON - Round 1 (Bonus Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216502900' target='_blank'><img src='https://resources.tidal.com/images/f6a403ad/cd2f/47a9/88cb/1fc116597e70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Cosmo</div>
+<div><a href='https://tidal.com/album/103669959' target='_blank'>https://tidal.com/album/103669959</a></div>
+<div>PENTAGON - Cosmo</div>
+<div>PENTAGON - Dear Friend</div>
+<div>PENTAGON - & You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/103669959' target='_blank'><img src='https://resources.tidal.com/images/682a0074/5351/49e0/ad2a/a40e8f062db4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] VIOLET</div>
+<div><a href='https://tidal.com/album/216141172' target='_blank'>https://tidal.com/album/216141172</a></div>
+<div>PENTAGON - WAKE UP</div>
+<div>PENTAGON - Burnin’Love</div>
+<div>PENTAGON - Violet (Japanese ver.)</div>
+<div>PENTAGON - Beautiful (Japanese ver.)</div>
+<div>PENTAGON - LOVE</div>
+<div>PENTAGON - UP! UP! UP!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216141172' target='_blank'><img src='https://resources.tidal.com/images/626e407d/f8d8/4276/b688/941ab48d2db4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Thumbs Up!</div>
+<div><a href='https://tidal.com/album/237494569' target='_blank'>https://tidal.com/album/237494569</a></div>
+<div>PENTAGON - Naughty boy</div>
+<div>PENTAGON - Just do it yo!!</div>
+<div>PENTAGON - SKATEBOARD</div>
+<div>PENTAGON - When It Rains In Night</div>
+<div>PENTAGON - Thumbs Up!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237494569' target='_blank'><img src='https://resources.tidal.com/images/6038452c/780c/4fa4/9866/2c91d17fe33d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Shine</div>
+<div><a href='https://tidal.com/album/93910900' target='_blank'>https://tidal.com/album/93910900</a></div>
+<div>PENTAGON - SHINE (Japanese ver.)</div>
+<div>PENTAGON - Shine</div>
+<div>PENTAGON - OFF-ROAD (Japanese ver.)</div>
+<div>PENTAGON - Off-Road (Japanese Version)</div>
+<div>PENTAGON - I'm Fine</div>
+<div>PENTAGON - Wake Up</div>
+<div>PENTAGON - 悪夢 – wake up – - 악몽</div>
+<div>PENTAGON - Wasurerarenai</div>
+<div>PENTAGON - 忘れられない - 잊을 수가 없어</div>
+<div>PENTAGON - Hey! Hey! Hey!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/93910900' target='_blank'><img src='https://resources.tidal.com/images/b9e4c5af/b85f/4aa0/b6d4/8ba9953ff211/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Positive</div>
+<div><a href='https://tidal.com/album/237494575' target='_blank'>https://tidal.com/album/237494575</a></div>
+<div>PENTAGON - OFF-ROAD</div>
+<div>PENTAGON - Shine</div>
+<div>PENTAGON - Think about you</div>
+<div>PENTAGON - Do it for fun (Rap unit)</div>
+<div>PENTAGON - Nothing i can do</div>
+<div>PENTAGON - Let's go together</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237494575' target='_blank'><img src='https://resources.tidal.com/images/b02d8644/5ccf/45db/b37f/5041631b2b50/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] ONE</div>
+<div><a href='https://tidal.com/album/216215466' target='_blank'>https://tidal.com/album/216215466</a></div>
+<div>HyunA, Jo Kwon, BTOB, CLC, PENTAGON, YOO SEONHO, i - Upgrade</div>
+<div>HyunA, Jo Kwon, BTOB, CLC, PENTAGON, YOO SEONHO, i - Young & One</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216215466' target='_blank'><img src='https://resources.tidal.com/images/bbfcd9ce/c88b/470e/abf1/9b801625b6c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Stay</div>
+<div><a href='https://tidal.com/album/237510396' target='_blank'>https://tidal.com/album/237510396</a></div>
+<div>PENTAGON - Stay (Vocal Unit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237510396' target='_blank'><img src='https://resources.tidal.com/images/4ce45f5a/3e84/4f2d/98a1/03af4ca4d32a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Gorilla (Special Edition)</div>
+<div><a href='https://tidal.com/album/71526966' target='_blank'>https://tidal.com/album/71526966</a></div>
+<div>PENTAGON - Gorilla (Japanese Ver.)</div>
+<div>PENTAGON - Can you feel it (Japanese Ver.)</div>
+<div>PENTAGON - Pretty Pretty (Japanese Ver.)</div>
+<div>PENTAGON - You are (Japanese Ver.)</div>
+<div>PENTAGON - 光-HIKARI- - 빛</div>
+<div>PENTAGON - Get Down</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/71526966' target='_blank'><img src='https://resources.tidal.com/images/05788102/0221/4d46/9d68/ef9e9cca67dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] GORILLA</div>
+<div><a href='https://tidal.com/album/216141514' target='_blank'>https://tidal.com/album/216141514</a></div>
+<div>PENTAGON - Gorilla</div>
+<div>PENTAGON - Can You Feel It</div>
+<div>PENTAGON - Pretty Pretty</div>
+<div>PENTAGON - You Are (Jin Ho, Hui, Hong Seok, Shin Won, Yeo One</div>
+<div>PENTAGON - Hikari</div>
+<div>PENTAGON - Get Down</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216141514' target='_blank'><img src='https://resources.tidal.com/images/1c5389f0/f8b4/4a43/bc24/92aaaa58a1de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] DEMO_02</div>
+<div><a href='https://tidal.com/album/237510398' target='_blank'>https://tidal.com/album/237510398</a></div>
+<div>PENTAGON - Violet</div>
+<div>PENTAGON - Runaway</div>
+<div>PENTAGON - All Right</div>
+<div>PENTAGON - Pretty Boys (Rap Unit)</div>
+<div>PENTAGON - Stay (Vocal Unit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237510398' target='_blank'><img src='https://resources.tidal.com/images/163fca3f/6097/4f19/ac0f/4a7e4bdb8144/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] DEMO_01</div>
+<div><a href='https://tidal.com/album/237510404' target='_blank'>https://tidal.com/album/237510404</a></div>
+<div>PENTAGON - Like This</div>
+<div>PENTAGON - It's Over</div>
+<div>PENTAGON - One More Night</div>
+<div>PENTAGON - Get That Drink</div>
+<div>PENTAGON - When I Was In Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237510404' target='_blank'><img src='https://resources.tidal.com/images/683f60b2/6b20/47b4/a40c/837a42cadd5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] CEREMONY</div>
+<div><a href='https://tidal.com/album/237510410' target='_blank'>https://tidal.com/album/237510410</a></div>
+<div>PENTAGON - Critical Beauty</div>
+<div>PENTAGON - Lucky</div>
+<div>PENTAGON - To Universe</div>
+<div>PENTAGON - Nothing</div>
+<div>PENTAGON - Spectacular</div>
+<div>PENTAGON - Thank you (Jinho, Hui)</div>
+<div>PENTAGON - Beautiful (Prod. by Il Hoon Jung Of BTOB)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237510410' target='_blank'><img src='https://resources.tidal.com/images/36add6d5/abcf/42da/8056/48e8a1cec761/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Beautiful (Prod. by JUNG ILHOON Of BTOB)</div>
+<div><a href='https://tidal.com/album/237510418' target='_blank'>https://tidal.com/album/237510418</a></div>
+<div>PENTAGON - Beautiful (Prod. by JUNG ILHOON Of BTOB)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237510418' target='_blank'><img src='https://resources.tidal.com/images/02c34a7d/4204/4764/9788/ac99ad765040/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] PENTAGON</div>
+<div><a href='https://tidal.com/album/237510426' target='_blank'>https://tidal.com/album/237510426</a></div>
+<div>PENTAGON - Wake up (Intro)</div>
+<div>PENTAGON - Pentagon</div>
+<div>PENTAGON - Gorilla</div>
+<div>PENTAGON - Lukewarm</div>
+<div>PENTAGON - Smile</div>
+<div>PENTAGON - Organic song (E'dawn, Yuto, Woo Seok With Hui)</div>
+<div>PENTAGON - You are (Jin Ho, Hui, Hong Seok, Shin Won, Yeo One</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237510426' target='_blank'><img src='https://resources.tidal.com/images/13acf549/6511/454b/9f1d/bb6722152349/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] Five Senses</div>
+<div><a href='https://tidal.com/album/237510420' target='_blank'>https://tidal.com/album/237510420</a></div>
+<div>PENTAGON - Can You Feel It</div>
+<div>PENTAGON - Engine</div>
+<div>PENTAGON - Pretty Pretty</div>
+<div>PENTAGON - Lose Yourself</div>
+<div>PENTAGON - Stay Crazy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237510420' target='_blank'><img src='https://resources.tidal.com/images/00b36f29/8ec8/47eb/a787/fd3216993f4e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_FP/타이달 펜타곤 ( Tidal Pentagon )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
