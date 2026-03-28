@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이븐 ( Tidal EVNNE )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이븐 ( Tidal EVNNE )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/3ead1e2e/8423/4040/ab07/16b607495ea2/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/42069476' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이븐</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>새로운 파도를 일으키는 다재다능한 에너지</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> EVNNE</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Versatile Energy Creating New Waves</div><p>새로운 시너지를 창출하며 가요계에 등장한 그룹, 이븐(EVNNE)입니다. 각 멤버의 개성과 매력이 하나로 모여 폭발적인 에너지를 만들어내고 있어요. 앞으로 이들이 보여줄 음악적 스펙트럼에 기대가 큽니다.</p><p>EVNNE is a group that has emerged in the music industry, creating new synergy. Each member's individuality and charm come together to create explosive energy. There are high expectations for the musical spectrum they will show in the future.</p><p>✧</p><p>그룹 탄생</p><p>다양한 배경을 가진 멤버들이 모여 이븐(EVNNE)이라는 이름으로 새롭게 시작했습니다. 이들은 이전의 경험을 바탕으로 더욱 강력하고 완성도 높은 음악을 선보이고자 해요. 팬들과의 소통을 중요하게 생각하며, 진솔한 모습으로 다가가려 노력하고 있습니다.</p><p>Group Formation</p><p>Members from diverse backgrounds have come together to start anew under the name EVNNE. They aim to showcase more powerful and complete music based on their previous experiences. They value communication with fans and strive to approach them with sincerity.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>이븐은 다채로운 장르를 소화하며, 강렬한 퍼포먼스를 통해 시각적인 즐거움까지 선사합니다. 힙합, 팝 등 다양한 스타일을 자신들만의 색깔로 재해석하는 능력이 돋보여요. 무대 위에서의 카리스마 넘치는 모습은 물론, 음악적 깊이 또한 놓치지 않으려 노력합니다.</p><p>Music and Performance</p><p>EVNNE digests various genres and provides visual enjoyment through intense performances. Their ability to reinterpret various styles such as hip-hop and pop with their own colors stands out. They strive not only for charismatic appearances on stage, but also for musical depth.</p><p>✧</p><p>주요 활동</p><p>데뷔 이후, 이븐은 활발한 음악 활동과 더불어 다양한 콘텐츠를 통해 팬들과 소통하고 있습니다. 음반 발매, 방송 출연, 팬미팅 등 다양한 활동을 통해 인지도를 높여가고 있어요. 멤버들은 각자의 매력을 살려 예능, 연기 등 다방면에서 활약할 가능성을 보여주고 있습니다.</p><p>Key Activities</p><p>Since their debut, EVNNE has been communicating with fans through active music activities and various content. They are increasing their recognition through various activities such as album releases, TV appearances, and fan meetings. The members are showing the potential to be active in various fields such as entertainment and acting by utilizing their individual charms.</p><p>✧</p><p>미래/의미</p><p>이븐은 앞으로도 끊임없는 음악적 도전을 통해 성장해 나갈 것입니다. 그들의 음악은 단순한 즐거움을 넘어, 듣는 이들에게 위로와 공감을 전달하고자 해요. 자신들만의 색깔을 더욱 확고히 하며, 글로벌 팬들에게 사랑받는 아티스트로 발돋움할 것으로 기대됩니다.</p><p>Future/Meaning</p><p>EVNNE will continue to grow through continuous musical challenges in the future. Their music aims to go beyond simple enjoyment and deliver comfort and empathy to listeners. It is expected that they will further solidify their own color and emerge as an artist loved by global fans.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] LOVE ANECDOTE(S)</div>
+<div><a href='https://tidal.com/album/451129529' target='_blank'>https://tidal.com/album/451129529</a></div>
+<div>EVNNE - dirtybop</div>
+<div>EVNNE - How Can I Do</div>
+<div>EVNNE - Mako</div>
+<div>EVNNE - love chat</div>
+<div>EVNNE - PUT IT ON ME</div>
+<div>EVNNE - Newest</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/451129529' target='_blank'><img src='https://resources.tidal.com/images/5af6c3bf/5fe5/4cd3/9249/e314174e00f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] HOT MESS</div>
+<div><a href='https://tidal.com/album/416179467' target='_blank'>https://tidal.com/album/416179467</a></div>
+<div>EVNNE - HOT MESS</div>
+<div>EVNNE - Birthday</div>
+<div>EVNNE - Love Like That</div>
+<div>EVNNE - CROWN</div>
+<div>EVNNE - Youth</div>
+<div>EVNNE - KESHIKI (Korean Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/416179467' target='_blank'><img src='https://resources.tidal.com/images/fd42b587/e05a/4958/903c/ded7ef41d105/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 景色 (KESHIKI)</div>
+<div><a href='https://tidal.com/album/397438129' target='_blank'>https://tidal.com/album/397438129</a></div>
+<div>EVNNE - 景色 (KESHIKI)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397438129' target='_blank'><img src='https://resources.tidal.com/images/9ea733d8/61ad/4317/9690/aa76a4f3bbac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Un SEEN</div>
+<div><a href='https://tidal.com/album/340027985' target='_blank'>https://tidal.com/album/340027985</a></div>
+<div>EVNNE - UGLY</div>
+<div>EVNNE - SYRUP</div>
+<div>EVNNE - K.O. (Keep On)</div>
+<div>EVNNE - Chase</div>
+<div>EVNNE - Festa</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340027985' target='_blank'><img src='https://resources.tidal.com/images/f40763c1/7688/47aa/8a73/5982c602edf7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] RIDE or DIE</div>
+<div><a href='https://tidal.com/album/368683891' target='_blank'>https://tidal.com/album/368683891</a></div>
+<div>EVNNE - Badder Love</div>
+<div>EVNNE - I ＜3 U (I love U)</div>
+<div>EVNNE - XO</div>
+<div>EVNNE - 2X</div>
+<div>EVNNE - Boom Bari</div>
+<div>EVNNE - Badder Love (English Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/368683891' target='_blank'><img src='https://resources.tidal.com/images/58ef0d47/2c1d/4666/b02e/f7fc91500cf9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Target ME</div>
+<div><a href='https://tidal.com/album/316204614' target='_blank'>https://tidal.com/album/316204614</a></div>
+<div>EVNNE - TROUBLE</div>
+<div>EVNNE - Role Model</div>
+<div>EVNNE - Pretty Thing</div>
+<div>EVNNE - Your Text</div>
+<div>EVNNE - JUKEBOX</div>
+<div>EVNNE - Even More</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/316204614' target='_blank'><img src='https://resources.tidal.com/images/fb5b9808/ef58/4cd2/9622/19a6a40e898b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/타이달 이븐 ( Tidal EVNNE )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
