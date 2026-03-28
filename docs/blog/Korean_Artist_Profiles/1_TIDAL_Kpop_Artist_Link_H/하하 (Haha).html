@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 하하 ( Tidal Haha )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 하하 ( Tidal Haha )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/aff45f31/9c5b/430b/a437/858eba68a129/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10251910 ---------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 하하</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>만능 엔터테이너, 웃음과 음악으로 소통하는 이야기꾼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Haha</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Versatile Entertainer, A Storyteller Communicating Through Laughter and Music</div><p>방송인, 가수로서 다재다능한 면모를 보여주는 하하는 특유의 긍정적인 에너지로 많은 사랑을 받고 있어요. 그의 음악은 편안함과 유쾌함을 동시에 선사하며 듣는 이들에게 즐거움을 전달합니다. 다양한 장르를 넘나들며 자신만의 색깔을 만들어가는 하하의 음악 세계를 함께 알아볼까요?</p><p>Haha, a versatile entertainer as a broadcaster and singer, is loved for his unique positive energy. His music offers both comfort and fun, delivering joy to listeners. Shall we explore the musical world of Haha, who creates his own color by crossing various genres?</p><p>✧</p><p>버라이어티 쇼에서 음악으로</p><p>하하는 예능 프로그램에서 활약하며 대중에게 친숙한 이미지를 쌓았지만, 음악에 대한 꾸준한 열정을 보여줬어요. 힙합, 레게 등 다양한 장르를 시도하며 자신만의 음악적 영역을 넓혀왔습니다. 동료 연예인들과의 협업을 통해 신선한 시너지를 창출하기도 합니다.</p><p>From Variety Shows to Music</p><p>Haha has built a familiar image to the public through his activities in entertainment programs, but he has shown a constant passion for music. He has expanded his musical territory by trying various genres such as hip-hop and reggae. He also creates fresh synergy through collaborations with fellow entertainers.</p><p>✧</p><p>다채로운 음악적 스펙트럼</p><p>하하의 음악은 한 가지 장르에 국한되지 않고 다양한 스타일을 포용하는 것이 특징입니다. 레게 리듬을 기반으로 하면서도 팝, 힙합적인 요소를 가미하여 듣는 재미를 더합니다. 때로는 따뜻하고 감성적인 멜로디로, 때로는 신나는 분위기로 청취자들을 사로잡습니다.</p><p>A Diverse Musical Spectrum</p><p>Haha's music is characterized by embracing various styles without being limited to one genre. It adds to the fun of listening by incorporating pop and hip-hop elements while based on reggae rhythms. Sometimes with warm and emotional melodies, sometimes with an exciting atmosphere, it captivates listeners.</p><p>✧</p><p>끊임없는 도전과 협업</p><p>하하는 솔로 활동뿐만 아니라 다양한 프로젝트 그룹을 통해 꾸준히 음악 활동을 이어가고 있어요. 'Running Man' 멤버들과 함께 음원을 발표하거나, 오마이걸, 소향 등 다양한 아티스트들과 협업하며 음악적 스펙트럼을 넓혔습니다. 이러한 협업은 그의 음악에 새로운 색깔을 더하고 대중과의 소통을 강화하는 데 기여합니다.</p><p>Constant Challenges and Collaborations</p><p>Haha has been steadily continuing his music activities not only as a solo artist but also through various project groups. He has expanded his musical spectrum by releasing music with 'Running Man' members and collaborating with various artists such as OH MY GIRL and So Hyang. These collaborations add a new color to his music and contribute to strengthening communication with the public.</p><p>✧</p><p>웃음과 감동을 전하는 음악</p><p>하하는 앞으로도 특유의 유쾌함과 진솔함을 담아 대중에게 즐거움을 선사할 것으로 기대됩니다. 그의 음악은 단순한 즐거움을 넘어 긍정적인 에너지와 위로를 전달하며 많은 사람들에게 힘이 되어줄 것입니다. 앞으로 그가 보여줄 음악적 행보에 더욱 기대가 모아집니다.</p><p>Music that Delivers Laughter and Emotion</p><p>Haha is expected to continue to bring joy to the public with his unique humor and sincerity. His music goes beyond simple enjoyment, delivering positive energy and comfort, and will be a source of strength for many people. There is increasing anticipation for his future musical journey.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Hang Out With YOO Wintersong - Songs to sing in winter Part 2.</div>
+<div><a href='https://tidal.com/album/414916018' target='_blank'>https://tidal.com/album/414916018</a></div>
+<div>Yoo Jae Seok, Johan Kim, HAHA, KCM, Woojae Joo, Jo - Butterfly</div>
+<div>Yoo Jae Seok, Johan Kim, HAHA, KCM, Woojae Joo, Jo - Blue whale</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/414916018' target='_blank'><img src='https://resources.tidal.com/images/5fc13dfb/bd2e/43e5/ab51/b02b4dab7af1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 黄金年代</div>
+<div><a href='https://tidal.com/album/383088485' target='_blank'>https://tidal.com/album/383088485</a></div>
+<div>Brown Tigger, HAHA - Yang Yang Beach (prod. Own)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383088485' target='_blank'><img src='https://resources.tidal.com/images/7f56baa2/141d/4754/a516/4e9884fcb143/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] GAP</div>
+<div><a href='https://tidal.com/album/216375440' target='_blank'>https://tidal.com/album/216375440</a></div>
+<div>HAHA - Don't know</div>
+<div>HAHA - GAP</div>
+<div>HAHA - No matter what</div>
+<div>HAHA - It's me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216375440' target='_blank'><img src='https://resources.tidal.com/images/55f761d0/d47c/4913/a89c/475e6bedef2a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] White (feat. M.TySON)</div>
+<div><a href='https://tidal.com/album/216438046' target='_blank'>https://tidal.com/album/216438046</a></div>
+<div>HAHA, OH MY GIRL - White (Feat. M.TySON)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216438046' target='_blank'><img src='https://resources.tidal.com/images/5abff051/526a/4727/bf40/25ded4de8fce/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Pat Pat</div>
+<div><a href='https://tidal.com/album/215903674' target='_blank'>https://tidal.com/album/215903674</a></div>
+<div>HAHA - Pat Pat (with So Hyang)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215903674' target='_blank'><img src='https://resources.tidal.com/images/dcf25b31/5211/4862/ba1e/aecc164310dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] QUAN NINOMARLEY A.K.A HAHA REGGAE WAVE</div>
+<div><a href='https://tidal.com/album/215904565' target='_blank'>https://tidal.com/album/215904565</a></div>
+<div>HAHA - INTRO</div>
+<div>HAHA - Sae SONG</div>
+<div>HAHA - Rosa</div>
+<div>HAHA - Ha Wa U-- Fine Thank you!! (Feat. Skull)</div>
+<div>HAHA - My name is DongHoon!! (Feat. Koonta)</div>
+<div>HAHA - Hangover (with TigerJK)</div>
+<div>HAHA - Hangover (feat.Tau) (Reggae Ver.)</div>
+<div>HAHA - You are my destiny</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215904565' target='_blank'><img src='https://resources.tidal.com/images/895bc579/af53/46fa/8751/da42df34c0f2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Ha Wa U__ Fine Thank you!!</div>
+<div><a href='https://tidal.com/album/215904607' target='_blank'>https://tidal.com/album/215904607</a></div>
+<div>HAHA - Ha Wa U-- Fine Thank you!! (Feat. Skull)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215904607' target='_blank'><img src='https://resources.tidal.com/images/27e63653/eba5/4a35/bc48/13438d232121/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] You Are My Destiny 2</div>
+<div><a href='https://tidal.com/album/215930906' target='_blank'>https://tidal.com/album/215930906</a></div>
+<div>HAHA - You Are My Destiny 2</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215930906' target='_blank'><img src='https://resources.tidal.com/images/29734f00/4653/4a4b/a6db/a5f09457eb71/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Hangover</div>
+<div><a href='https://tidal.com/album/215931449' target='_blank'>https://tidal.com/album/215931449</a></div>
+<div>HAHA - Hangover (with Tiger JK)</div>
+<div>HAHA - Hangover (String + ACCA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931449' target='_blank'><img src='https://resources.tidal.com/images/71c8e16c/a4e4/4084/836b/b2d29d957d0a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2008] Yeah, I can`t sing well</div>
+<div><a href='https://tidal.com/album/189313762' target='_blank'>https://tidal.com/album/189313762</a></div>
+<div>HAHA - Yeah, I can`t sing well</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189313762' target='_blank'><img src='https://resources.tidal.com/images/e4bfbe4d/f6d6/4f46/ac9e/01f1e35da2ea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 7년만이야</div>
+<div><a href='https://tidal.com/album/209573325' target='_blank'>https://tidal.com/album/209573325</a></div>
+<div>Taw, HAHA, MC truth - 지키리 송</div>
+<div>Taw, HAHA, MC truth - 지키리 러브송</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209573325' target='_blank'><img src='https://resources.tidal.com/images/635a2d96/e223/4c54/9cdd/eafc027ceeff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] 너는 내 운명</div>
+<div><a href='https://tidal.com/album/275241378' target='_blank'>https://tidal.com/album/275241378</a></div>
+<div>HAHA - 너는 내 운명</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/275241378' target='_blank'><img src='https://resources.tidal.com/images/797ade42/0a37/40de/acec/d7ad4683279c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/타이달 하하 ( Tidal Haha )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
