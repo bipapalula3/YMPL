@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 플라이투더스카이 ( Tidal fly to the sky )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 플라이투더스카이 ( Tidal fly to the sky )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/88437f75/25fa/41e1/af9a/488068b916ae/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9194495' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 플라이투더스카이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>플라이투더스카이 (Fly to the Sky) - 감성 발라드의 정수를 노래하는 듀오</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> fly to the sky</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Fly to the Sky - A Duo Singing the Essence of Emotional Ballads</div><p>대한민국 R&B 발라드 씬에 독보적인 존재감을 드러내는 플라이투더스카이는 환희와 브라이언, 두 멤버의 아름다운 하모니로 많은 사랑을 받고 있습니다. 깊은 감성과 폭발적인 가창력으로 듣는 이들의 마음을 사로잡으며 오랜 시간 동안 변치 않는 감동을 선사해 왔습니다. 이들의 음악은 단순한 노래를 넘어, 깊은 울림을 주는 예술 작품과 같습니다.</p><p>Fly to the Sky, a duo with an unrivaled presence in the Korean R&B ballad scene, is loved for the beautiful harmony of members Hwanhee and Brian. They have captivated listeners with their deep emotions and explosive singing ability, delivering unchanging emotion for a long time. Their music is more than just a song; it's a work of art that resonates deeply.</p><p>✧</p><p>그룹 탄생</p><p>플라이투더스카이는 1999년 데뷔 이후 독특한 음악적 색깔과 뛰어난 가창력으로 대중의 주목을 받기 시작했습니다. 두 멤버의 개성 넘치는 보컬은 완벽한 조화를 이루며, 기존의 아이돌 그룹과는 차별화된 음악성을 선보였습니다. 데뷔 초부터 R&B와 발라드를 중심으로 다양한 음악적 시도를 감행했습니다.</p><p>Birth of the Group</p><p>Fly to the Sky debuted in 1999 and began to gain public attention with their unique musical style and outstanding singing ability. The two members' distinctive vocals blended perfectly, showcasing a musicality that set them apart from existing idol groups. From their debut, they attempted various musical styles centered on R&B and ballads.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>이들의 음악은 깊은 감성을 자극하는 멜로디와 진솔한 가사가 특징입니다. 특히 두 멤버의 보컬은 서로를 보완하며 더욱 풍성한 음악적 경험을 선사합니다. 무대 위에서의 카리스마 넘치는 모습은 물론, 섬세한 감정 표현까지 완벽하게 소화해냅니다.</p><p>Music and Performance</p><p>Their music is characterized by melodies that evoke deep emotions and sincere lyrics. In particular, the vocals of the two members complement each other, providing a richer musical experience. They perfectly embody both charismatic appearances on stage and delicate emotional expression.</p><p>✧</p><p>주요 활동</p><p>플라이투더스카이는 수많은 히트곡을 발표하며 대한민국 대표 R&B 듀오로 자리매김했습니다. 솔로 활동과 다양한 콜라보레이션을 통해 각자의 음악적 역량을 더욱 확장해 나가기도 했습니다. 드라마 OST 참여, 예능 프로그램 출연 등 다방면에서 활발하게 활동하며 대중과의 꾸준한 소통을 이어왔습니다.</p><p>Key Activities</p><p>Fly to the Sky has established itself as Korea's leading R&B duo by releasing numerous hit songs. They have also expanded their musical capabilities through solo activities and various collaborations. They have been actively involved in various fields such as drama OST participation and entertainment program appearances, maintaining continuous communication with the public.</p><p>✧</p><p>미래/의미</p><p>플라이투더스카이는 앞으로도 변함없는 음악적 열정으로 팬들에게 감동을 선사할 것입니다. 이들의 음악은 시대를 초월하여 오랫동안 사랑받는 명곡으로 기억될 것입니다. 단순히 듣는 음악을 넘어, 마음을 어루만지는 따뜻한 위로와 공감을 전하는 음악으로 남을 것입니다.</p><p>Future/Meaning</p><p>Fly to the Sky will continue to impress fans with their unwavering musical passion. Their music will be remembered as timeless classics that are loved for a long time. Beyond just listening to music, it will remain as music that conveys warm comfort and empathy that touches the heart.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2019] FLY TO THE SKY 10TH ALBUM [Fly High]</div>
+<div><a href='https://tidal.com/album/120227930' target='_blank'>https://tidal.com/album/120227930</a></div>
+<div>Fly to the Sky - Intro</div>
+<div>Fly to the Sky - Thank You for Being My Part of Life</div>
+<div>Fly to the Sky, MFBTY - Feel This Love (feat. MFBTY)</div>
+<div>Fly to the Sky, MIIII - Our Season (feat. MIIII)</div>
+<div>Fly to the Sky - Even Our Love Is End</div>
+<div>Fly to the Sky - Day By Day (Song by Baek A Yeon)</div>
+<div>Fly to the Sky - Sea of Love (Song by Ailee)</div>
+<div>Fly to the Sky - Missing You (Song by GB9)</div>
+<div>Fly to the Sky - Outro</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/120227930' target='_blank'><img src='https://resources.tidal.com/images/6cf5e0a8/a902/4b41/b7bd/6e08bbff901f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] FLY TO THE SKY 3RD MINI ALBUM [I]</div>
+<div><a href='https://tidal.com/album/216049672' target='_blank'>https://tidal.com/album/216049672</a></div>
+<div>Fly to the Sky - Come Thru</div>
+<div>Fly to the Sky - A Time Limit</div>
+<div>Fly to the Sky - The Last Day</div>
+<div>Fly to the Sky - I don't remember you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216049672' target='_blank'><img src='https://resources.tidal.com/images/85c36116/ff48/44cf/9f67/36565038c38d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Your Season</div>
+<div><a href='https://tidal.com/album/216075851' target='_blank'>https://tidal.com/album/216075851</a></div>
+<div>Fly to the Sky - Your Season</div>
+<div>Fly to the Sky - Talk To Me</div>
+<div>Fly to the Sky - Your Trace</div>
+<div>Fly to the Sky - Into you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216075851' target='_blank'><img src='https://resources.tidal.com/images/3923c93e/1003/4840/9f97/dd08ca25496e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Winter Story</div>
+<div><a href='https://tidal.com/album/215967628' target='_blank'>https://tidal.com/album/215967628</a></div>
+<div>Lena Park, Fly to the Sky - Winter Story</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215967628' target='_blank'><img src='https://resources.tidal.com/images/d6d9b7a8/1b51/45ef/9a9d/2e7feca101c7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] LOVE & HATE</div>
+<div><a href='https://tidal.com/album/215970388' target='_blank'>https://tidal.com/album/215970388</a></div>
+<div>Fly to the Sky - It happens to be that way</div>
+<div>Fly to the Sky - If I have to hate you</div>
+<div>Fly to the Sky - Once Again</div>
+<div>Fly to the Sky - Between Love and Friendship</div>
+<div>Fly to the Sky - Stop Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215970388' target='_blank'><img src='https://resources.tidal.com/images/a253ac0f/a698/4778/acc2/7d36be1f8642/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] CONTINUUM</div>
+<div><a href='https://tidal.com/album/216052113' target='_blank'>https://tidal.com/album/216052113</a></div>
+<div>Fly to the Sky - You You You</div>
+<div>Fly to the Sky - Don't Call, Don't Answer</div>
+<div>Fly to the Sky - Unknown Love (Feat. Kim Na Young)</div>
+<div>Fly to the Sky - Your Voice</div>
+<div>Fly to the Sky - Like a Lie</div>
+<div>Fly to the Sky - You</div>
+<div>Fly to the Sky - Years Apart</div>
+<div>Fly to the Sky - Kiss & Say goodbye</div>
+<div>Fly to the Sky - So cool</div>
+<div>Fly to the Sky - We</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216052113' target='_blank'><img src='https://resources.tidal.com/images/7ead3efb/d74e/4936/8223/8665eec0caf6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Back in Time</div>
+<div><a href='https://tidal.com/album/216047540' target='_blank'>https://tidal.com/album/216047540</a></div>
+<div>Fly to the Sky - Sea Of Love</div>
+<div>Fly to the Sky - Even Though My Heart Breaks</div>
+<div>Fly to the Sky - Missing you</div>
+<div>Fly to the Sky - Like a Man</div>
+<div>Fly to the Sky - You don't know</div>
+<div>Fly to the Sky - Habit</div>
+<div>Fly to the Sky - Day By Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216047540' target='_blank'><img src='https://resources.tidal.com/images/a3f477d5/2a3f/497b/82d7/bd01bb5c2c6f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Decennium</div>
+<div><a href='https://tidal.com/album/216437526' target='_blank'>https://tidal.com/album/216437526</a></div>
+<div>Fly to the Sky - Decennium</div>
+<div>Fly to the Sky - 구속</div>
+<div>Fly to the Sky - Close To You (Feat. Dynamic Duo)</div>
+<div>Fly to the Sky - 가버려 너</div>
+<div>Fly to the Sky - Good Girl</div>
+<div>Fly to the Sky - Song For You</div>
+<div>Fly to the Sky - 즐겨찾기 (Feat. GARY)</div>
+<div>Fly to the Sky - 술</div>
+<div>Fly to the Sky - 마지막 기도</div>
+<div>Fly to the Sky - 사랑이겠지</div>
+<div>Fly to the Sky - 눈물아 미안해</div>
+<div>Fly to the Sky - 온음표</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437526' target='_blank'><img src='https://resources.tidal.com/images/b776eaaf/f738/4636/b722/e9b7a6c2d112/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Recollection</div>
+<div><a href='https://tidal.com/album/216437640' target='_blank'>https://tidal.com/album/216437640</a></div>
+<div>Fly to the Sky - 행복을 주는 사람</div>
+<div>Fly to the Sky - 취중진담 (Feat. And)</div>
+<div>Fly to the Sky - 마지막 사랑</div>
+<div>Fly to the Sky - 회상</div>
+<div>Fly to the Sky - 이밤의 끝을 잡고</div>
+<div>Fly to the Sky - 달팽이</div>
+<div>Fly to the Sky - 세상끝에서의 시작 (Brian Solo)</div>
+<div>Fly to the Sky - 소원 (Hwany Solo)</div>
+<div>Fly to the Sky - 내 눈물 모아</div>
+<div>Fly to the Sky - 한장의 추억</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437640' target='_blank'><img src='https://resources.tidal.com/images/be7b3f59/11f5/4821/868f/3e6a406cc14c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2005] Transition</div>
+<div><a href='https://tidal.com/album/216437666' target='_blank'>https://tidal.com/album/216437666</a></div>
+<div>Fly to the Sky - 환상</div>
+<div>Fly to the Sky - Hot And Cool</div>
+<div>Fly to the Sky - When I Say</div>
+<div>Fly to the Sky - Be With You</div>
+<div>Fly to the Sky - 피 (避)</div>
+<div>Fly to the Sky - 남자답게</div>
+<div>Fly to the Sky - Yellow Butterfly</div>
+<div>Fly to the Sky - 빌고 또 빌어도</div>
+<div>Fly to the Sky - 하루가 가</div>
+<div>Fly to the Sky - 사랑해요 우리 (With GUMMY)</div>
+<div>Fly to the Sky - 다시 돌아온 너에게</div>
+<div>Fly to the Sky - The Girl Is Mine (Feat. Lisa & J.ho)</div>
+<div>Fly to the Sky - 폭풍속에 내 이름 불러주길</div>
+<div>Fly to the Sky - Question</div>
+<div>Fly to the Sky - 심장 (♡障)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437666' target='_blank'><img src='https://resources.tidal.com/images/ec291bb7/e826/4275/a0bc/d604477c0b16/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] Transition [Repackage]</div>
+<div><a href='https://tidal.com/album/216437679' target='_blank'>https://tidal.com/album/216437679</a></div>
+<div>Fly to the Sky - Be With You</div>
+<div>Fly to the Sky - 피(避)</div>
+<div>Fly to the Sky - 남자답게</div>
+<div>Fly to the Sky - Yellow Butterfly</div>
+<div>Fly to the Sky - 빌고 또 빌어도</div>
+<div>Fly to the Sky - 하루가 가---</div>
+<div>Fly to the Sky - 사랑해요 우리 (With Gummy)</div>
+<div>Fly to the Sky - 다시 돌아온 너에게</div>
+<div>Fly to the Sky - The Girl Is Mine (Feat. Lisa & J.Ho)</div>
+<div>Fly to the Sky - 폭풍 속에 내 이름 불러주길</div>
+<div>Fly to the Sky - Question</div>
+<div>Fly to the Sky - 심장 (♡障)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437679' target='_blank'><img src='https://resources.tidal.com/images/589b2853/71c6/41c5/b1b9/b0e3f26bf2f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] Eternity - Best Album</div>
+<div><a href='https://tidal.com/album/115286837' target='_blank'>https://tidal.com/album/115286837</a></div>
+<div>Fly to the Sky - 별... Like shining stars---</div>
+<div>Fly to the Sky - Missing You</div>
+<div>Fly to the Sky - 그대는 모르죠 Good-Bye</div>
+<div>Fly to the Sky - Destiny</div>
+<div>Fly to the Sky - In Your Eyes</div>
+<div>Fly to the Sky - 그대를... I know... but--</div>
+<div>Fly to the Sky - Day By Day</div>
+<div>Fly to the Sky - Maybe GOD Knows</div>
+<div>Fly to the Sky - 한참이 지나도 If You Go Away</div>
+<div>Fly to the Sky - Trust</div>
+<div>Fly to the Sky - Condition Of My Heart</div>
+<div>Fly to the Sky - Only One</div>
+<div>Fly to the Sky - What U Want</div>
+<div>Fly to the Sky - 원망 Tragic Love</div>
+<div>Fly to the Sky - 내겐 너무 예쁜 그대 Beautiful Girl</div>
+<div>Fly to the Sky - Real Love</div>
+<div>Fly to the Sky - Little Step</div>
+<div>Fly to the Sky - Sea Of Love</div>
+<div>Fly to the Sky - 사랑을 모르다... Monologue</div>
+<div>Fly to the Sky - 약속 The Promise</div>
+<div>Fly to the Sky - Fly to the Sky</div>
+<div>Fly to the Sky - 이젠 모두 잊고 싶어요</div>
+<div>Fly to the Sky - Forever</div>
+<div>Fly to the Sky - 중력 Gravity</div>
+<div>Fly to the Sky - 습관 Poison Ivy</div>
+<div>Fly to the Sky - Don't Care No More---</div>
+<div>Fly to the Sky - Blind</div>
+<div>Fly to the Sky - Stay</div>
+<div>Fly to the Sky - Magic song</div>
+<div>Fly to the Sky - 고백 A Confession</div>
+<div>Fly to the Sky - My Love</div>
+<div>Fly to the Sky - Eternity</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115286837' target='_blank'><img src='https://resources.tidal.com/images/3589964e/8075/4396/a5a9/f2c92032d36e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Unforgettable - The 1st Live Concert Album</div>
+<div><a href='https://tidal.com/album/115288094' target='_blank'>https://tidal.com/album/115288094</a></div>
+<div>Fly to the Sky - Intro (Live)</div>
+<div>Fly to the Sky - 한 (Live)</div>
+<div>Fly to the Sky - Sea Of Love (Live)</div>
+<div>Fly to the Sky - Opening Ment (Live)</div>
+<div>Fly to the Sky - 약속 - Only one - Day By Day (Live)</div>
+<div>Fly to the Sky - Magic Song (Live)</div>
+<div>Fly to the Sky, with BMK - Endless love [with BMK] (Fany Solo [Live])</div>
+<div>Fly to the Sky - Wanna Be With You (Live)</div>
+<div>Fly to the Sky - 원망 (Live)</div>
+<div>Fly to the Sky - 습관 (Live)</div>
+<div>Fly to the Sky - Condition Of My Heart (Live)</div>
+<div>Fly to the Sky - Ment (Live)</div>
+<div>Fly to the Sky - 그대를… (Brian Solo [Live])</div>
+<div>Fly to the Sky - Retry - Maybe GOD knows - Fly to the Sky (Live)</div>
+<div>Fly to the Sky - What U want - No more games (Live)</div>
+<div>Fly to the Sky - 후 後 (Live)</div>
+<div>Fly to the Sky - Missing You (Live)</div>
+<div>Fly to the Sky - Closing Ment (Live)</div>
+<div>Fly to the Sky - My Love (Live)</div>
+<div>Fly to the Sky - 내겐 너무 예쁜 그대 BEAUTIFUL GIRL (Live)</div>
+<div>Fly to the Sky - Don’t Care No More (Studio Version (Live))</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115288094' target='_blank'><img src='https://resources.tidal.com/images/5637318a/f42f/4f8b/b3be/fcf5475d5d63/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Gravity - The 5th Album</div>
+<div><a href='https://tidal.com/album/115287960' target='_blank'>https://tidal.com/album/115287960</a></div>
+<div>Fly to the Sky - Stay</div>
+<div>Fly to the Sky - 중력 Gravity</div>
+<div>Fly to the Sky - 그대는 모르죠 Good-Bye</div>
+<div>Fly to the Sky - Old Skool Love</div>
+<div>Fly to the Sky - 열감기 Rest Of My Life</div>
+<div>Fly to the Sky - 한참이 지나도 If You Go Away</div>
+<div>Fly to the Sky - Take A Bow</div>
+<div>Fly to the Sky - 사랑을 모르다... Monologue</div>
+<div>Fly to the Sky - Tell Me</div>
+<div>Fly to the Sky - My Neverending Story</div>
+<div>Fly to the Sky - For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115287960' target='_blank'><img src='https://resources.tidal.com/images/adcdba22/9f41/44fd/90aa/78204f405a13/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] Missing You - The 4th Album</div>
+<div><a href='https://tidal.com/album/115287570' target='_blank'>https://tidal.com/album/115287570</a></div>
+<div>Fly to the Sky - 후 后</div>
+<div>Fly to the Sky - Missing You</div>
+<div>Fly to the Sky - 한</div>
+<div>Fly to the Sky - 습 관 Poison Ivy</div>
+<div>Fly to the Sky - 2 become 1</div>
+<div>Fly to the Sky - 마법의 노래 Magic Song</div>
+<div>Fly to the Sky - Still</div>
+<div>Fly to the Sky - Only One</div>
+<div>Fly to the Sky - Good To You</div>
+<div>Fly to the Sky - You</div>
+<div>Fly to the Sky - My Love</div>
+<div>Fly to the Sky - I'm gonna... (Streaming Trax)</div>
+<div>Fly to the Sky - Baby, baby, baby (Streaming Trax)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115287570' target='_blank'><img src='https://resources.tidal.com/images/98a2ed97/a17b/49e9/8394/eaedadd25a7e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] Sea of Love - The 3rd Album</div>
+<div><a href='https://tidal.com/album/115288254' target='_blank'>https://tidal.com/album/115288254</a></div>
+<div>Fly to the Sky - Sea of Love</div>
+<div>Fly to the Sky - Condition of My Heart</div>
+<div>Fly to the Sky - Rains</div>
+<div>Fly to the Sky - 그대를… I know..but--</div>
+<div>Fly to the Sky - Future Tonight</div>
+<div>Fly to the Sky - Say My Name</div>
+<div>Fly to the Sky - Trust</div>
+<div>Fly to the Sky - No More Games</div>
+<div>Fly to the Sky - In Love</div>
+<div>Fly to the Sky - How many nights how many days</div>
+<div>Fly to the Sky - All My Love</div>
+<div>Fly to the Sky - 5 Minutes</div>
+<div>Fly to the Sky - 원망 Tragic Love</div>
+<div>Fly to the Sky - Sea of Love (Fanny Version [Bonus Track])</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115288254' target='_blank'><img src='https://resources.tidal.com/images/88437f75/25fa/41e1/af9a/488068b916ae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] The Promise - The 2nd Album</div>
+<div><a href='https://tidal.com/album/115287683' target='_blank'>https://tidal.com/album/115287683</a></div>
+<div>Fly to the Sky - 약속 The Promise</div>
+<div>Fly to the Sky - 고백 A Confession</div>
+<div>Fly to the Sky - What U Want</div>
+<div>Fly to the Sky, feat. KANGTA & BoA - I Want</div>
+<div>Fly to the Sky, feat. Kim Jo Han - I Want You I Need You</div>
+<div>Fly to the Sky - Retry</div>
+<div>Fly to the Sky - Always Together</div>
+<div>Fly to the Sky - Maybe God Knows</div>
+<div>Fly to the Sky - In Your Eyes</div>
+<div>Fly to the Sky, feat. JinJoo - Crystal</div>
+<div>Fly to the Sky - Don't Forget Me</div>
+<div>Fly to the Sky - Shy Love</div>
+<div>Fly to the Sky - Baby Love</div>
+<div>Fly to the Sky - Should I Stay---</div>
+<div>Fly to the Sky - 약속 (Booty Mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115287683' target='_blank'><img src='https://resources.tidal.com/images/af3290fb/ff71/4ef8/a615/5968c1f777c7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] Contact - 김조한 & Fly to the Sky Joint Live Concert</div>
+<div><a href='https://tidal.com/album/115287104' target='_blank'>https://tidal.com/album/115287104</a></div>
+<div>Fly to the Sky, Johan Kim - Intro</div>
+<div>Fly to the Sky, Johan Kim - I Want You I Need You</div>
+<div>Fly to the Sky - Always Together - Day by Day</div>
+<div>Fly to the Sky - Opening Ment</div>
+<div>Fly to the Sky - Shy Love</div>
+<div>Fly to the Sky - Maybe God Knows</div>
+<div>Fly to the Sky - 약속</div>
+<div>Fly to the Sky - What U Want</div>
+<div>Fly to the Sky - 이밤의 끝을 잡고</div>
+<div>Fly to the Sky, Johan Kim - Ending Ment</div>
+<div>Fly to the Sky, Johan Kim - September</div>
+<div>Fly to the Sky - 이젠 모두 잊고 싶어요 (2001 Fanny's R&B Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115287104' target='_blank'><img src='https://resources.tidal.com/images/e1033c5d/3bbb/4455/b84e/a124a30128b9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1999] Day by Day - The 1st Album</div>
+<div><a href='https://tidal.com/album/115287382' target='_blank'>https://tidal.com/album/115287382</a></div>
+<div>Fly to the Sky - INTRO</div>
+<div>Fly to the Sky, feat. H.O.T- - IN MY DREAM</div>
+<div>Fly to the Sky - DAY BY DAY</div>
+<div>Fly to the Sky - I DON'T WANNA SAY GOOD-BYE</div>
+<div>Fly to the Sky - FLY TO THE SKY</div>
+<div>Fly to the Sky - WANNA BE WITH YOU</div>
+<div>Fly to the Sky - EVERYTHING---</div>
+<div>Fly to the Sky - 내겐 너무 예쁜 그대 Beatiful Girl</div>
+<div>Fly to the Sky - 사랑을 닮은 노래 A Song for Love</div>
+<div>Fly to the Sky - WARNING</div>
+<div>Fly to the Sky - LOVE FOREVER</div>
+<div>Fly to the Sky - IN MY DREAM (Extended Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115287382' target='_blank'><img src='https://resources.tidal.com/images/bc3d0232/1c43/47ec/ae79/cd8bf08fd85e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_FP/타이달 플라이투더스카이 ( Tidal fly to the sky )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
