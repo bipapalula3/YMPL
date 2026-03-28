@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 한해 ( Tidal Hanhae )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 한해 ( Tidal Hanhae )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/c621d7fb/ba8e/4449/8f5d/a7db624d7c93/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6256713' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 한해</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>한해 (Hanhae) - 다재다능한 매력의 팔색조 래퍼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Hanhae</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Hanhae - A Versatile Rapper with Multifaceted Charms</div><p>독특한 플로우와 재치 있는 가사로 사랑받는 래퍼 한해를 소개합니다. 그는 다양한 음악적 시도를 통해 자신만의 색깔을 만들어가고 있어요. 솔로 활동뿐만 아니라 여러 아티스트와의 협업을 통해 스펙트럼을 넓혀가며 끊임없이 성장하는 모습을 보여주고 있습니다.</p><p>Introducing Hanhae, a rapper loved for his unique flow and witty lyrics. He is creating his own unique style through various musical experiments. He is constantly growing by expanding his spectrum through solo activities as well as collaborations with various artists.</p><p>✧</p><p>그룹에서 솔로로, 다재다능함의 시작</p><p>한해는 아이돌 그룹으로 데뷔하여 대중에게 얼굴을 알렸습니다. 이후 솔로 아티스트로 전향하여 랩 실력뿐만 아니라 작사, 작곡 능력까지 선보이며 다재다능한 면모를 드러내고 있어요. 다양한 장르를 소화하며 자신만의 음악적 영역을 구축해 나가고 있습니다.</p><p>From Group to Solo, The Beginning of Versatility</p><p>Hanhae debuted as an idol group, gaining recognition from the public. He then transitioned into a solo artist, showcasing not only his rap skills but also his songwriting abilities, revealing his versatile side. He is building his own musical territory by digesting various genres.</p><p>✧</p><p>음악적 스펙트럼, 한계를 넘어서</p><p>한해의 음악은 힙합을 기반으로 하지만, 팝, 알앤비 등 다양한 장르를 넘나드는 것이 특징입니다. 그는 특유의 리듬감과 유머러스한 가사로 듣는 재미를 더하고 있어요. 때로는 감성적인 보컬을 선보이며 음악적 깊이를 더하기도 합니다.</p><p>Musical Spectrum, Beyond Limitations</p><p>Hanhae's music is based on hip-hop, but it is characterized by crossing various genres such as pop and R&B. He adds fun to listening with his unique sense of rhythm and humorous lyrics. Sometimes he shows off his emotional vocals, adding musical depth.</p><p>✧</p><p>콜라보레이션, 음악적 시너지 창출</p><p>한해는 다양한 아티스트들과의 협업을 통해 끊임없이 새로운 음악적 시너지를 창출하고 있습니다. 동료 래퍼뿐만 아니라 보컬리스트, 프로듀서 등 다양한 분야의 아티스트들과 함께 작업하며 폭넓은 음악적 스펙트럼을 보여주고 있어요. 이러한 협업은 그의 음악 세계를 더욱 풍성하게 만들어줍니다.</p><p>Collaboration, Creating Musical Synergy</p><p>Hanhae is constantly creating new musical synergies through collaborations with various artists. He is working with artists in various fields, including fellow rappers, vocalists, and producers, showcasing a wide range of musical spectrums. These collaborations make his music world even richer.</p><p>✧</p><p>앞으로의 행보, 더욱 기대되는 아티스트</p><p>끊임없이 변화하고 성장하는 한해는 앞으로 더욱 다채로운 음악을 선보일 것으로 기대됩니다. 그는 자신만의 개성을 유지하면서도 새로운 시도를 두려워하지 않아요. 앞으로 어떤 음악으로 대중을 놀라게 할지 기대하며 그의 행보를 응원합니다.</p><p>Future Steps, An Artist to Look Forward To</p><p>Hanhae, who is constantly changing and growing, is expected to show more diverse music in the future. He maintains his own personality while not being afraid of new attempts. We look forward to what kind of music he will surprise the public with and support his future steps.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Teach Me</div>
+<div><a href='https://tidal.com/album/416430893' target='_blank'>https://tidal.com/album/416430893</a></div>
+<div>Hanhae, Moon Se Yoon - Teach Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/416430893' target='_blank'><img src='https://resources.tidal.com/images/69d8110a/db15/45f6/a4f4/226dfcdb23df/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] ALREADY A YEAR</div>
+<div><a href='https://tidal.com/album/430198065' target='_blank'>https://tidal.com/album/430198065</a></div>
+<div>Hanhae, Moon Se Yoon - ALREADY A YEAR</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/430198065' target='_blank'><img src='https://resources.tidal.com/images/e799bf9b/4053/45a7/af7c/a9b02c89d09f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Evergreen (2024)</div>
+<div><a href='https://tidal.com/album/337520771' target='_blank'>https://tidal.com/album/337520771</a></div>
+<div>Lee Hae Ri, Hanhae - Evergreen</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/337520771' target='_blank'><img src='https://resources.tidal.com/images/7bd07191/970c/4c3d/bb42/0bb48175aa45/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Champagne</div>
+<div><a href='https://tidal.com/album/362444523' target='_blank'>https://tidal.com/album/362444523</a></div>
+<div>Hanhae - Champagne</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/362444523' target='_blank'><img src='https://resources.tidal.com/images/38c26d53/ef00/493b/ae27/38a80251d76d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] INFINITE BORDERS</div>
+<div><a href='https://tidal.com/album/271615459' target='_blank'>https://tidal.com/album/271615459</a></div>
+<div>Hanhae - INFINITE BORDERS (feat. Jasmine Cho)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/271615459' target='_blank'><img src='https://resources.tidal.com/images/7229e549/330b/4fc0/b0c7/3430f81b7aa2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Again my life, Pt. 6 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/346674325' target='_blank'>https://tidal.com/album/346674325</a></div>
+<div>Hanhae, KISSXS - Shadow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346674325' target='_blank'><img src='https://resources.tidal.com/images/189f1346/09ac/4814/9d60/07c1e0da31a6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] TEN PROJECT Part.1</div>
+<div><a href='https://tidal.com/album/183194950' target='_blank'>https://tidal.com/album/183194950</a></div>
+<div>Verbal Jint, Hanhae, Wonstein - Good Morning (feat. Wonstein)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183194950' target='_blank'><img src='https://resources.tidal.com/images/69ffc084/369f/4d21/8b3b/92c48a286dc3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Syncopation</div>
+<div><a href='https://tidal.com/album/173776791' target='_blank'>https://tidal.com/album/173776791</a></div>
+<div>Hanhae, Killagramz - Syncopation (feat. KILLAGRAMZ)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/173776791' target='_blank'><img src='https://resources.tidal.com/images/221ea3df/0c40/4225/8153/078c5dcda229/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Pop Song with KozyPop</div>
+<div><a href='https://tidal.com/album/200109172' target='_blank'>https://tidal.com/album/200109172</a></div>
+<div>Nive, Hanhae - Pop Song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200109172' target='_blank'><img src='https://resources.tidal.com/images/434523cd/30c0/4506/b935/68326ff9b5ad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Lay Back</div>
+<div><a href='https://tidal.com/album/194653907' target='_blank'>https://tidal.com/album/194653907</a></div>
+<div>Hanhae, Layone, Nucksal - Lay Back (feat. Nucksal & Layone)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/194653907' target='_blank'><img src='https://resources.tidal.com/images/e0303544/1c8e/4e02/b37d/fb0ec366c132/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Song For You Project, Vol. 1_ Mask Christmas (with LOTTE DEPARTMENT STORE)</div>
+<div><a href='https://tidal.com/album/163334113' target='_blank'>https://tidal.com/album/163334113</a></div>
+<div>Hanhae, YODAYOUNG, LOTTE DEPARTMENT STORE - Song For You Project, Vol. 1- Mask Christmas (with</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163334113' target='_blank'><img src='https://resources.tidal.com/images/bced8482/e6aa/4459/a9c3/472fa4bd54fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] SICK</div>
+<div><a href='https://tidal.com/album/167033243' target='_blank'>https://tidal.com/album/167033243</a></div>
+<div>Hanhae - SICK(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167033243' target='_blank'><img src='https://resources.tidal.com/images/83bfa8e0/25bd/4dd1/b26f/f42393143119/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Cold (feat. HANHAE)</div>
+<div><a href='https://tidal.com/album/115278087' target='_blank'>https://tidal.com/album/115278087</a></div>
+<div>KEY, Hanhae - Cold (feat. HANHAE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115278087' target='_blank'><img src='https://resources.tidal.com/images/aa915785/5ba1/4d98/af31/f7cd84bf2323/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] About Time</div>
+<div><a href='https://tidal.com/album/104188531' target='_blank'>https://tidal.com/album/104188531</a></div>
+<div>Hanhae - Flashback</div>
+<div>Hanhae - I Go</div>
+<div>Hanhae - Gunzo</div>
+<div>Hanhae, Badminton - About Time (feat. BADMINTON)</div>
+<div>Hanhae, RUDALS (루달스) - Domino (feat. Rudals)</div>
+<div>Hanhae, Dope'Doug - Clip Clop (feat. Dope'Doug)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/104188531' target='_blank'><img src='https://resources.tidal.com/images/7a62aae6/827e/4083/a483/491fa775a598/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] eyes (feat. HANI of EXID)</div>
+<div><a href='https://tidal.com/album/81654228' target='_blank'>https://tidal.com/album/81654228</a></div>
+<div>Hanhae, HANI of EXID - eyes (feat. HANI of EXID)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/81654228' target='_blank'><img src='https://resources.tidal.com/images/c3641c3a/f3e0/46e9/8106/fa9825c6fa22/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Organic Life</div>
+<div><a href='https://tidal.com/album/86238953' target='_blank'>https://tidal.com/album/86238953</a></div>
+<div>Hanhae, NO-EL, REDDY - Organic Life (feat. Reddy, NO-EL)</div>
+<div>Hanhae, Esna - Just Be The Way You Are (feat. eSNa)</div>
+<div>Hanhae, Gaeko - In My Dream (feat. Gaeko)</div>
+<div>Hanhae - January 10</div>
+<div>Hanhae - More Than I Can Bear</div>
+<div>Hanhae, Hani - eyes (feat. HANI )</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/86238953' target='_blank'><img src='https://resources.tidal.com/images/ffb749c5/d4f0/4dc2/b518/17f90593043f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] More Than I Can Bear</div>
+<div><a href='https://tidal.com/album/83412132' target='_blank'>https://tidal.com/album/83412132</a></div>
+<div>Hanhae - More Than I Can Bear</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/83412132' target='_blank'><img src='https://resources.tidal.com/images/0ac1f922/a686/4c63/9f3b/5dcacd88e11f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Clip Clop (feat. Dope'Doug)</div>
+<div><a href='https://tidal.com/album/90696248' target='_blank'>https://tidal.com/album/90696248</a></div>
+<div>Hanhae, Dope'Doug - Clip Clop (feat. Dope'Doug)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/90696248' target='_blank'><img src='https://resources.tidal.com/images/dd64013c/4f07/4154/b76c/f34f2ec6ec8b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] BMDM</div>
+<div><a href='https://tidal.com/album/101470426' target='_blank'>https://tidal.com/album/101470426</a></div>
+<div>Hanhae, NO-EL, REDDY - Organic Life (feat. Reddy & NO-EL) [JVillian Mix]</div>
+<div>Hanhae, NO-EL, REDDY - Organic Life (feat. Reddy & NO-EL) [sucozy Mix]</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/101470426' target='_blank'><img src='https://resources.tidal.com/images/a6b3c0fe/e27d/44d7/875b/e5d33a3ae553/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Are You Human_ (Original Television Soundtrack), Pt.2</div>
+<div><a href='https://tidal.com/album/188500287' target='_blank'>https://tidal.com/album/188500287</a></div>
+<div>LYN, Hanhae - LOVE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188500287' target='_blank'><img src='https://resources.tidal.com/images/b78526ed/c1aa/4a99/954d/62b9ab333ab0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] eyes</div>
+<div><a href='https://tidal.com/album/247277905' target='_blank'>https://tidal.com/album/247277905</a></div>
+<div>Hanhae - eyes (Feat. HANI)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/247277905' target='_blank'><img src='https://resources.tidal.com/images/3b311abd/c959/44f7/a202/127b5c6d7d97/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Queen of Mystery (Original Television Soundtrack), Pt. 1</div>
+<div><a href='https://tidal.com/album/188574693' target='_blank'>https://tidal.com/album/188574693</a></div>
+<div>Jang Jane, Hanhae - Far Away</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188574693' target='_blank'><img src='https://resources.tidal.com/images/3b1e8a78/55c9/4fdd/91b5/ad354c26d62b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] LIPSTICK ON MY BODY</div>
+<div><a href='https://tidal.com/album/70957237' target='_blank'>https://tidal.com/album/70957237</a></div>
+<div>Hanhae, HENNEY - LIPSTICK ON MY BODY</div>
+<div>Hanhae, HENNEY, Verbal Jint - TROPHY (feat. Verbal Jint)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/70957237' target='_blank'><img src='https://resources.tidal.com/images/eaa2e69b/5d7f/4811/b210/772f68db0de2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] AIRPLANE</div>
+<div><a href='https://tidal.com/album/72786266' target='_blank'>https://tidal.com/album/72786266</a></div>
+<div>Hanhae, Kanto - AIRPLANE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/72786266' target='_blank'><img src='https://resources.tidal.com/images/b45df701/3f5f/4800/aa48/a3cb5388b776/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 의미 없다 (2016 월간 윤종신 6월호)</div>
+<div><a href='https://tidal.com/album/189568041' target='_blank'>https://tidal.com/album/189568041</a></div>
+<div>Yoon Jong Shin, Hanhae, KittiB - 의미 없다 (2016 월간 윤종신 6월호)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189568041' target='_blank'><img src='https://resources.tidal.com/images/c400d44f/190b/483a/b90b/33ba0a3c3bc0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] I Used To</div>
+<div><a href='https://tidal.com/album/58423773' target='_blank'>https://tidal.com/album/58423773</a></div>
+<div>Hanhae - I Used To</div>
+<div>Hanhae, D.meanor, Owen Ovadoz - Fill It Up (feat. Owen Ovadoz, D.meanor)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/58423773' target='_blank'><img src='https://resources.tidal.com/images/a1b54e0c/8d46/4fd7/a4a9/e57fda47e290/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] I Know</div>
+<div><a href='https://tidal.com/album/59576223' target='_blank'>https://tidal.com/album/59576223</a></div>
+<div>Candle, Hanhae - I Know</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/59576223' target='_blank'><img src='https://resources.tidal.com/images/aa6c3f37/20eb/48dd/bcf9/8d45a8db08bd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2015] Stay weird stay different</div>
+<div><a href='https://tidal.com/album/216009096' target='_blank'>https://tidal.com/album/216009096</a></div>
+<div>Raina, Hanhae - Stay weird stay different (Feat. Verbal Jint)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216009096' target='_blank'><img src='https://resources.tidal.com/images/2f61ae96/0dea/4230/b74a/3f09a7c0b87b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Geunduun</div>
+<div><a href='https://tidal.com/album/188891820' target='_blank'>https://tidal.com/album/188891820</a></div>
+<div>Hanhae, Bumkey - Geunduun (feat. BUMKEY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188891820' target='_blank'><img src='https://resources.tidal.com/images/ed9ed57e/0895/4fae/a9c2/c6316ca4e6e3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] EYESCREAM</div>
+<div><a href='https://tidal.com/album/188891736' target='_blank'>https://tidal.com/album/188891736</a></div>
+<div>Hanhae, Jung Eun Ji - EYESCREAM (feat. Jung Eun Ji)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188891736' target='_blank'><img src='https://resources.tidal.com/images/63d46da9/6c1a/4a29/878b/678c5c526057/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 365</div>
+<div><a href='https://tidal.com/album/188891711' target='_blank'>https://tidal.com/album/188891711</a></div>
+<div>Hanhae, D.meanor - Man Of The Year (feat. D.meanor)</div>
+<div>Hanhae, Digiri, Ugly Duck - Neck Breaker (feat. Ugly Duck & Digiri)(Explicit)</div>
+<div>Hanhae, NewDay - Over Action (feat. Newday)</div>
+<div>Hanhae, D.meanor - Make It Warm (feat. D.meanor)</div>
+<div>Hanhae - It's On Me</div>
+<div>Hanhae - 365(Explicit)</div>
+<div>Hanhae, Swings - Pity (feat. Swings)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188891711' target='_blank'><img src='https://resources.tidal.com/images/c621d7fb/ba8e/4449/8f5d/a7db624d7c93/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Hang up</div>
+<div><a href='https://tidal.com/album/216075374' target='_blank'>https://tidal.com/album/216075374</a></div>
+<div>Hanhae - Hang up (Feat. San E, TAEWAN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216075374' target='_blank'><img src='https://resources.tidal.com/images/108fe681/729b/4453/99b1/30b691cef706/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] The Lyrics - No.3</div>
+<div><a href='https://tidal.com/album/305980422' target='_blank'>https://tidal.com/album/305980422</a></div>
+<div>Lee Ji Young, Hanhae - 불편한 진실</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305980422' target='_blank'><img src='https://resources.tidal.com/images/4900990c/cfe0/459c/bfe5/2ab2736c7f75/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/타이달 한해 ( Tidal Hanhae )_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    // innerHTML을 사용하여 <br> 태그와 이모지가 깨지지 않게 전달
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
