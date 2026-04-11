@@ -170,18 +170,26 @@
 <h1>타이달 한국가수 링크 (ㄴ1) TIDAL Kpop Artist Link (N)</h1>
 <div>&nbsp;</div>
 <div><style>
-            /* 상단 바 영역 */
+            /* 헤더를 화면 최상단에 고정 */
             .index-nav-header {
                 width: 100%;
                 background: #0d1117;
-                padding: 12px 0;
+                padding: 10px 0;
                 display: flex;
                 justify-content: flex-end;
                 border-bottom: 1px solid rgba(165, 204, 255, 0.1);
-                margin-bottom: 25px;
-                position: sticky;
+                
+                /* 핵심: 제목보다 무조건 위에 오도록 고정 */
+                position: fixed; 
                 top: 0;
-                z-index: 9999;
+                left: 0;
+                z-index: 10000; 
+                box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            }
+
+            /* 헤더가 고정되면서 제목을 가리지 않도록 전체 페이지에 여백 추가 */
+            body.index-page {
+                padding-top: 70px !important; 
             }
 
             .custom-select-container {
@@ -201,16 +209,9 @@
                 font-size: 13px;
                 font-weight: 600;
                 text-align: center;
-                transition: all 0.3s;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                transition: 0.3s;
             }
 
-            .select-trigger:hover {
-                border-color: #a5ccff;
-                background: #1c2128;
-            }
-
-            /* 드롭다운 리스트 */
             .select-options {
                 position: absolute;
                 top: calc(100% + 8px);
@@ -224,7 +225,6 @@
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.3s ease;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             }
 
             .custom-select-container.open .select-options {
@@ -242,15 +242,11 @@
                 border-bottom: 1px solid rgba(255,255,255,0.03);
             }
 
-            .select-option:last-child { border-bottom: none; }
             .select-option:hover { background: rgba(165, 204, 255, 0.1); color: #fff; }
 
-            /* 스크롤바 커스텀 */
-            .select-options::-webkit-scrollbar { width: 5px; }
-            .select-options::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
-
             @media (max-width: 768px) {
-                .custom-select-container { width: 200px; margin-right: 15px; }
+                .custom-select-container { width: 180px; margin-right: 15px; }
+                body.index-page { padding-top: 60px !important; }
             }
         </style>
 
@@ -291,18 +287,11 @@
                 const trigger = cs.querySelector('.select-trigger');
                 const options = cs.querySelectorAll('.select-option');
                 const baseUrl = "https://bipapalula3.github.io/YMPL/";
-
-                trigger.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    cs.classList.toggle('open');
-                });
-
+                trigger.addEventListener('click', (e) => { e.stopPropagation(); cs.classList.toggle('open'); });
                 window.addEventListener('click', () => cs.classList.remove('open'));
-
                 options.forEach(opt => {
                     opt.addEventListener('click', function() {
-                        const path = this.getAttribute('data-value');
-                        window.location.href = baseUrl + path;
+                        window.location.href = baseUrl + this.getAttribute('data-value');
                     });
                 });
             })();
