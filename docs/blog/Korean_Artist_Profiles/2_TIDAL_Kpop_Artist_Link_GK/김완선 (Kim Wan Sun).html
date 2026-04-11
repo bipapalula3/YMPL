@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 김완선 ( Tidal Kim Wan Sun )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 김완선 ( Tidal Kim Wan Sun )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/198b8385/0486/497d/a598/ccc42ee18023/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/4669016' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/10611283' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 김완선</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>무대 위의 여왕, ‘삐에로는 우릴 보고 웃지’의 강렬함과 ‘오늘’의 섬세한 감성을 넘나드는 독보적인 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Kim Wan Sun</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>The Queen of the Stage, a unique diva who goes back and forth between the intensity of 'Pierrot Laughs At Us' and the delicate emotions of 'Today'</div><p>1980년대 후반, 강렬한 퍼포먼스와 독특한 음악으로 가요계에 센세이션을 일으킨 김완선 님을 소개합니다. 그녀는 시대를 앞서가는 음악적 시도와 파격적인 무대 매너로 대중을 사로잡았어요. 끊임없이 변화하고 도전하는 그녀의 음악 세계를 함께 알아볼까요?</p><p>Introducing Kim Wan Sun, who caused a sensation in the music industry in the late 1980s with her intense performances and unique music. She captivated the public with her forward-thinking musical experiments and unconventional stage manners. Shall we explore her constantly changing and challenging musical world?</p><p>✧</p><p>그룹 탄생</p><p>김완선 님은 1986년 1집 앨범 '오늘밤'으로 데뷔하여 독보적인 존재감을 드러냈습니다. 당시 10대였음에도 불구하고, 파워풀한 댄스 실력과 카리스마 넘치는 무대 장악력으로 단숨에 스타덤에 올랐어요. 그녀의 등장은 획일화된 여성 솔로 가수 시장에 신선한 바람을 불어넣었습니다.</p><p>Birth of an Icon</p><p>Kim Wan Sun debuted in 1986 with her first album, 'Tonight,' revealing her unique presence. Despite being a teenager at the time, she quickly rose to stardom with her powerful dance skills and charismatic stage presence. Her appearance brought a breath of fresh air to the standardized female solo singer market.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>김완선 님의 음악은 댄스, 팝, 발라드 등 다양한 장르를 아우르며 폭넓은 스펙트럼을 자랑합니다. 특히 그녀의 퍼포먼스는 단순한 안무를 넘어 예술적인 경지에 이르렀다는 평가를 받아요. 실험적인 사운드와 강렬한 비트, 그리고 몽환적인 분위기가 어우러져 독특한 매력을 발산합니다.</p><p>Music and Performance</p><p>Kim Wan Sun's music encompasses a variety of genres, including dance, pop, and ballad, boasting a wide spectrum. In particular, her performance is considered to have reached an artistic level beyond simple choreography. Experimental sounds, intense beats, and a dreamy atmosphere combine to create a unique charm.</p><p>✧</p><p>주요 활동</p><p>1980년대 후반부터 2020년대까지, 김완선 님은 꾸준히 음악 활동을 이어오며 다양한 히트곡을 발표했습니다. '삐에로는 우릴 보고 웃지', '리듬 속의 그 춤을', '애수' 등 수많은 명곡들이 그녀의 대표곡으로 꼽힙니다. 최근에는 새로운 스타일의 음악을 선보이며 끊임없이 변화하는 모습을 보여주고 있어요.</p><p>Major Activities</p><p>From the late 1980s to the 2020s, Kim Wan Sun has consistently continued her music career and released various hit songs. Numerous masterpieces such as 'Pierrot Laughs At Us,' 'The Dance in Rhythm,' and 'Sorrow' are considered her representative songs. Recently, she has been showing her constantly changing appearance by presenting new styles of music.</p><p>✧</p><p>미래/의미</p><p>김완선 님은 단순한 가수를 넘어, 시대를 대표하는 아이콘으로 자리매김했습니다. 그녀의 음악과 퍼포먼스는 많은 후배 아티스트들에게 영감을 주며, 한국 대중음악사에 뚜렷한 발자취를 남겼어요. 앞으로도 그녀가 보여줄 새로운 음악과 무대가 더욱 기대됩니다.</p><p>Future/Meaning</p><p>Kim Wan Sun has established herself as an icon representing the era, beyond being a simple singer. Her music and performance inspire many junior artists and have left a distinct mark on the history of Korean popular music. We look forward to the new music and stage she will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] TBS For you Season2 Episode.1 - Kim Wan Sun</div>
+<div><a href='https://tidal.com/album/220892527' target='_blank'>https://tidal.com/album/220892527</a></div>
+<div>Kim Wan Sun - Pierrot Laughs At Us  (Live)</div>
+<div>Kim Wan Sun - Masquerade  (Live)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/220892527' target='_blank'><img src='https://resources.tidal.com/images/708ebbc6/50e0/49d3/9c85/a6e3ad210374/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 2020 김완선</div>
+<div><a href='https://tidal.com/album/269469874' target='_blank'>https://tidal.com/album/269469874</a></div>
+<div>Kim Wan Sun - YELLOW</div>
+<div>Kim Wan Sun - Here I Am</div>
+<div>Kim Wan Sun - 심장이 기억해</div>
+<div>Kim Wan Sun - 오늘</div>
+<div>Kim Wan Sun - Set Me On Fire</div>
+<div>Kim Wan Sun - High Heels</div>
+<div>Kim Wan Sun - It's You</div>
+<div>Kim Wan Sun - Oz On The Moon</div>
+<div>Kim Wan Sun - Mir</div>
+<div>Kim Wan Sun - 삐에로는 우릴보고 웃지 2019</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269469874' target='_blank'><img src='https://resources.tidal.com/images/a963212a/bad2/4e42/a5e1/4a4a19476dad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Tonight</div>
+<div><a href='https://tidal.com/album/188855702' target='_blank'>https://tidal.com/album/188855702</a></div>
+<div>Kim Wan Sun - Tonight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188855702' target='_blank'><img src='https://resources.tidal.com/images/eff5ecfb/cf46/43bf/9965/42421b0c6280/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The heart remembers</div>
+<div><a href='https://tidal.com/album/186023885' target='_blank'>https://tidal.com/album/186023885</a></div>
+<div>Kim Wan Sun - The heart remembers</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/186023885' target='_blank'><img src='https://resources.tidal.com/images/8b651ec5/1790/4bd6/9226/52383abda0ee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] The Original</div>
+<div><a href='https://tidal.com/album/188856653' target='_blank'>https://tidal.com/album/188856653</a></div>
+<div>Kim Wan Sun - Last story</div>
+<div>Kim Wan Sun - Tonight</div>
+<div>Kim Wan Sun - Please come to me again</div>
+<div>Kim Wan Sun - Alone in the Backyard</div>
+<div>Kim Wan Sun - Kang Byun Yeon Ga</div>
+<div>Kim Wan Sun - Present</div>
+<div>Kim Wan Sun - Letter</div>
+<div>Kim Wan Sun - a forgotten person</div>
+<div>Kim Wan Sun - An alley of love</div>
+<div>Kim Wan Sun - I will give you everything</div>
+<div>Kim Wan Sun - Now I have to stand alone</div>
+<div>Kim Wan Sun - Hate it</div>
+<div>Kim Wan Sun - Let's forget it</div>
+<div>Kim Wan Sun - The Dance in Rhythm</div>
+<div>Kim Wan Sun - Much bigger sorrow than parting</div>
+<div>Kim Wan Sun - Make the Light Darker</div>
+<div>Kim Wan Sun - It's a good day</div>
+<div>Kim Wan Sun - Pierrot Smiling at Us</div>
+<div>Kim Wan Sun - One spring day</div>
+<div>Kim Wan Sun - small caf- story</div>
+<div>Kim Wan Sun - It's only mine</div>
+<div>Kim Wan Sun - Masquerade</div>
+<div>Kim Wan Sun - monodrama</div>
+<div>Kim Wan Sun - Lost city</div>
+<div>Kim Wan Sun - sorrow</div>
+<div>Kim Wan Sun - He is like wind</div>
+<div>Kim Wan Sun - White rain</div>
+<div>Kim Wan Sun - Odd outing</div>
+<div>Kim Wan Sun - Today</div>
+<div>Kim Wan Sun - Benjamin</div>
+<div>Kim Wan Sun - Can Only Feel</div>
+<div>Kim Wan Sun - Dog</div>
+<div>Kim Wan Sun - Use Me (feat. RAVI)</div>
+<div>Kim Wan Sun - Set Me on Fire (feat. KEBEE)</div>
+<div>Kim Wan Sun - MIR</div>
+<div>Kim Wan Sun - ALIEN</div>
+<div>Kim Wan Sun - It's you</div>
+<div>Kim Wan Sun - Bonus track 1 Use Me (Dj HEAD mix) (Dj HEAD mix)</div>
+<div>Kim Wan Sun - Bonus track 2 Use Me (Dj JAZZ mix) (Dj JAZZ mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188856653' target='_blank'><img src='https://resources.tidal.com/images/68d7d553/fe38/43df/bc17/48e8be2ca349/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Oz On The Moon</div>
+<div><a href='https://tidal.com/album/188856625' target='_blank'>https://tidal.com/album/188856625</a></div>
+<div>Kim Wan Sun - Oz On The Moon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188856625' target='_blank'><img src='https://resources.tidal.com/images/878dfad3/f085/4296/b1dc/6233a9ef9aa1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Jelly Christmas</div>
+<div><a href='https://tidal.com/album/184755082' target='_blank'>https://tidal.com/album/184755082</a></div>
+<div>Kim Wan Sun - Jelly Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184755082' target='_blank'><img src='https://resources.tidal.com/images/5b1ab269/7fb9/4701/a616/d73e30a945b5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Use Me</div>
+<div><a href='https://tidal.com/album/189391007' target='_blank'>https://tidal.com/album/189391007</a></div>
+<div>Kim Wan Sun - Use Me (feat. RAVI)</div>
+<div>Kim Wan Sun - Use Me (DJ HEAD mix from Taiwan)</div>
+<div>Kim Wan Sun - Use Me (DJ Jazz funky mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189391007' target='_blank'><img src='https://resources.tidal.com/images/0ae77e16/cc58/4dcb/bc37/b18d6710afdd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Set Me on Fire</div>
+<div><a href='https://tidal.com/album/189391004' target='_blank'>https://tidal.com/album/189391004</a></div>
+<div>Kim Wan Sun - Set Me on Fire (feat. KEBEE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189391004' target='_blank'><img src='https://resources.tidal.com/images/1f841085/c926/4ed2/b63f/01a003da4669/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] Puppy</div>
+<div><a href='https://tidal.com/album/189391012' target='_blank'>https://tidal.com/album/189391012</a></div>
+<div>Kim Wan Sun - Puppy</div>
+<div>Kim Wan Sun - Puppy (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189391012' target='_blank'><img src='https://resources.tidal.com/images/96e462d8/bbd7/4545/9d5d/6007ff5fa2fe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] ODISSEYA</div>
+<div><a href='https://tidal.com/album/188856699' target='_blank'>https://tidal.com/album/188856699</a></div>
+<div>Kim Wan Sun - MIR</div>
+<div>Kim Wan Sun - ALIEN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188856699' target='_blank'><img src='https://resources.tidal.com/images/857671db/4163/4c19/9419/c4277b4b31c6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Goodbye My Love</div>
+<div><a href='https://tidal.com/album/427026834' target='_blank'>https://tidal.com/album/427026834</a></div>
+<div>김완선, Tiger Jk, Bizzy - GOODBYE MY LOVE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/427026834' target='_blank'><img src='https://resources.tidal.com/images/126dd161/25c8/4a81/a9a3/2315401d90a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] The Beer</div>
+<div><a href='https://tidal.com/album/189473967' target='_blank'>https://tidal.com/album/189473967</a></div>
+<div>Kim Wan Sun - Benjamin</div>
+<div>Kim Wan Sun - Today</div>
+<div>Kim Wan Sun - Can Only Feel</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189473967' target='_blank'><img src='https://resources.tidal.com/images/8eae01c6/767d/41bf/8be8/9925950a3ee1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] rEturN Seventeen</div>
+<div><a href='https://tidal.com/album/305387048' target='_blank'>https://tidal.com/album/305387048</a></div>
+<div>Kim Wan Sun - 서른의 노래</div>
+<div>Kim Wan Sun - 모짜르트 듣는 여자</div>
+<div>Kim Wan Sun - 처음 이별하는 듯</div>
+<div>Kim Wan Sun - Seventeen</div>
+<div>Kim Wan Sun - 산책</div>
+<div>Kim Wan Sun - 정말이지 나는</div>
+<div>Kim Wan Sun - 시간을 삼켜도</div>
+<div>Kim Wan Sun - White Wine</div>
+<div>Kim Wan Sun - 애수</div>
+<div>Kim Wan Sun - 느끼는대로만</div>
+<div>Kim Wan Sun - Do It</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305387048' target='_blank'><img src='https://resources.tidal.com/images/d7ed68b5/3763/4839/9956/241d90de7da7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] Mi Mi Hu Hu</div>
+<div><a href='https://tidal.com/album/16305045' target='_blank'>https://tidal.com/album/16305045</a></div>
+<div>Kim Wan Sun - Mi Mi Hu Hu</div>
+<div>Kim Wan Sun - Yan Bu You Zhong (Album Version)</div>
+<div>Kim Wan Sun - Jie Wo Yi Tiao Shou Pa (Album Version)</div>
+<div>Kim Wan Sun - Ai Qing Wan Sui (Album Version)</div>
+<div>Kim Wan Sun - You Huo (Album Version)</div>
+<div>Kim Wan Sun - Zhe Yi Ci Wo Zhen De Xu Yao Ni Wan Liu (Album Version)</div>
+<div>Kim Wan Sun - Jiu Ai Ba (Album Version)</div>
+<div>Kim Wan Sun - Xu ! Xian Zai Bie Shuo Hua (Album Version)</div>
+<div>Kim Wan Sun - Yin Yue Shi Wo Kuai Le De Shi Jie (Album Version)</div>
+<div>Kim Wan Sun - Duo Ai Wo Yi Dian (Album Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/16305045' target='_blank'><img src='https://resources.tidal.com/images/84964dc2/1110/4ff7/ae2f/02dc28d7d1e3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] 겨울연가 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/225278269' target='_blank'>https://tidal.com/album/225278269</a></div>
+<div>Kim Wan Sun - 보낼수없는사랑</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/225278269' target='_blank'><img src='https://resources.tidal.com/images/595fa6f0/5cb1/4b42/a1f4/3d636f0025f1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] S & Remake</div>
+<div><a href='https://tidal.com/album/223255834' target='_blank'>https://tidal.com/album/223255834</a></div>
+<div>Kim Wan Sun - S</div>
+<div>Kim Wan Sun - 지난이야기 Remake Version</div>
+<div>Kim Wan Sun - Shall We Dance</div>
+<div>Kim Wan Sun - 리듬속의 그 춤을 Remake Version</div>
+<div>Kim Wan Sun - Seduction</div>
+<div>Kim Wan Sun - 애수 Remake Version</div>
+<div>Kim Wan Sun - 그대는 바람처럼 Remake Version</div>
+<div>Kim Wan Sun - 질주</div>
+<div>Kim Wan Sun - Only Love</div>
+<div>Kim Wan Sun - 가장무도회 Remake Version</div>
+<div>Kim Wan Sun - Feel So Good</div>
+<div>Kim Wan Sun - 나홀로 뜰앞에서 Remake Version</div>
+<div>Kim Wan Sun - Shadow</div>
+<div>Kim Wan Sun - 삐에로는 우릴 보고 웃지 Remake Version</div>
+<div>Kim Wan Sun - 모노드라마 Remake Version</div>
+<div>Kim Wan Sun - 보낼수 없는 사랑</div>
+<div>Kim Wan Sun - Another Me</div>
+<div>Kim Wan Sun - 하얀비 Remake Version</div>
+<div>Kim Wan Sun - I Don`t Want To Hear It From You</div>
+<div>Kim Wan Sun - S Chinese Version</div>
+<div>Kim Wan Sun - Seduction Wtse-Han Jae Won Mix Version</div>
+<div>Kim Wan Sun - 질주 Wtse-Han Jae Won Mix Version</div>
+<div>Kim Wan Sun - Feel So Good Wtse-Han Jae Won Mix Version</div>
+<div>Kim Wan Sun - Shall We Dance Wtse-Han Jae Won Mix Version</div>
+<div>Kim Wan Sun - S Wtse-Han Jae Won Mix Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223255834' target='_blank'><img src='https://resources.tidal.com/images/600911af/41e8/42a1/a81e/19877208e5d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1990] Piero laughs at us</div>
+<div><a href='https://tidal.com/album/189474134' target='_blank'>https://tidal.com/album/189474134</a></div>
+<div>Kim Wan Sun - Masquerade</div>
+<div>Kim Wan Sun - My Own</div>
+<div>Kim Wan Sun - Piero laughs at us</div>
+<div>Kim Wan Sun - One Spring Day</div>
+<div>Kim Wan Sun - Last Secret</div>
+<div>Kim Wan Sun - Whrer have you been-</div>
+<div>Kim Wan Sun - Small Caf- Story</div>
+<div>Kim Wan Sun - Mono Drama</div>
+<div>Kim Wan Sun - Lost City</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189474134' target='_blank'><img src='https://resources.tidal.com/images/198b8385/0486/497d/a598/ccc42ee18023/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1988] Too lonely to dance alone</div>
+<div><a href='https://tidal.com/album/189390537' target='_blank'>https://tidal.com/album/189390537</a></div>
+<div>Kim Wan Sun - Too lonely to dance alone</div>
+<div>Kim Wan Sun - Letter</div>
+<div>Kim Wan Sun - That`s you</div>
+<div>Kim Wan Sun - I`ll give you everything</div>
+<div>Kim Wan Sun - Alleyway of love (Side A)</div>
+<div>Kim Wan Sun - Alleyway of love (Side B)</div>
+<div>Kim Wan Sun - Forgotten Person</div>
+<div>Kim Wan Sun - Do you know-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189390537' target='_blank'><img src='https://resources.tidal.com/images/f4a9ecde/44a2/40d0/839d/1856519119fd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1987] Alone in Front of the Yard</div>
+<div><a href='https://tidal.com/album/189474007' target='_blank'>https://tidal.com/album/189474007</a></div>
+<div>Kim Wan Sun - Alone in Front of the Yard</div>
+<div>Kim Wan Sun - Baby, Please Come Back</div>
+<div>Kim Wan Sun - Gift</div>
+<div>Kim Wan Sun - Winter Landscape</div>
+<div>Kim Wan Sun - Anyway, We Are</div>
+<div>Kim Wan Sun - The dance in the rhythm</div>
+<div>Kim Wan Sun - I don`t want to see Sad Face</div>
+<div>Kim Wan Sun - Yellow Bench</div>
+<div>Kim Wan Sun - Riverside Sonata</div>
+<div>Kim Wan Sun - Children of the world</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189474007' target='_blank'><img src='https://resources.tidal.com/images/ed41ec28/1422/498a/ab7b/11d8d8e141cd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1986] Kim Wan Sun 1st Album - Last Story- Tonight</div>
+<div><a href='https://tidal.com/album/189390523' target='_blank'>https://tidal.com/album/189390523</a></div>
+<div>Kim Wan Sun - Last Story</div>
+<div>Kim Wan Sun - Tonight</div>
+<div>Kim Wan Sun - Star and I</div>
+<div>Kim Wan Sun - Why Can`t you say</div>
+<div>Kim Wan Sun - No</div>
+<div>Kim Wan Sun - Spring</div>
+<div>Kim Wan Sun - Why Not Me</div>
+<div>Kim Wan Sun - Solitude</div>
+<div>Kim Wan Sun - I hate That Person</div>
+<div>Kim Wan Sun - That One word</div>
+<div>Kim Wan Sun - Eoddeon Geurim</div>
+<div>Kim Wan Sun - Peaceful World</div>
+<div>Kim Wan Sun - Song Of Purifaction</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189390523' target='_blank'><img src='https://resources.tidal.com/images/2c7b7a10/2da8/4951/8282/836f6040cde5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/2_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ2) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/김완선 (Kim Wan Sun)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
