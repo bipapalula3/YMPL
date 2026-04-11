@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 나훈아 ( Tidal Na Hoon Ah )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 나훈아 ( Tidal Na Hoon Ah )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/d3d5e813/3599/46c6/9b58/9661ce1f51a9/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10642521' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 나훈아</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>나훈아 (Na Hoon Ah) - '갈대의 순정'처럼 애절하게, '울어라 열풍아'처럼 강렬하게, 시대를 노래하는 영원한 오빠</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Na Hoon Ah</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Na Hoon Ah - Singing through the ages with the sorrow of 'Galdae's Pure Heart' and the intensity of 'Cry Out, Storm' – the eternal heartthrob.</div><p>대한민국 트로트 역사의 한 페이지를 장식한 이름, 바로 나훈아입니다. 1960년대 후반부터 현재까지, 그는 특유의 허스키한 목소리와 무대 매너로 수많은 팬들의 마음을 사로잡아 왔습니다. 그의 음악은 단순한 유행을 넘어, 한국인의 정서와 애환을 담아낸 깊은 울림을 선사합니다.</p><p>A name that adorns a page in the history of Korean trot music: Na Hoon Ah. From the late 1960s to the present, he has captivated countless fans with his unique husky voice and stage presence. His music transcends mere trends, delivering a profound resonance that captures the emotions and sorrows of the Korean people.</p><p>✧</p><p>데뷔와 음악적 기반</p><p>나훈아는 1960년대 후반 가요계에 데뷔하여 곧바로 스타덤에 올랐습니다. 그의 음악은 트로트를 기반으로 하며, 팝, 록, 포크 등 다양한 장르의 요소를 융합하여 폭넓은 대중의 사랑을 받았습니다. 특히, 그의 자작곡들은 진솔한 가사와 멜로디로 많은 이들의 공감을 얻었습니다.</p><p>Debut and Musical Foundation</p><p>Na Hoon Ah debuted in the late 1960s and quickly rose to stardom. His music is based on trot, blending elements of various genres such as pop, rock, and folk, earning him widespread public affection. In particular, his self-composed songs gained sympathy from many with their sincere lyrics and melodies.</p><p>✧</p><p>무대와 퍼포먼스</p><p>나훈아는 화려한 무대 매너와 카리스마 넘치는 퍼포먼스로 유명합니다. 그는 무대 위에서 노래뿐만 아니라 연기, 춤 등 다양한 볼거리를 제공하며 관객들을 매료시킵니다. 또한, 파격적인 의상과 무대 연출은 항상 화제를 불러일으키며 그의 공연을 특별하게 만듭니다.</p><p>Stage and Performance</p><p>Na Hoon Ah is famous for his glamorous stage presence and charismatic performances. He captivates audiences by providing not only songs but also acting, dancing, and other attractions on stage. In addition, his unconventional costumes and stage productions always generate buzz, making his performances special.</p><p>✧</p><p>주요 활동과 영향력</p><p>나훈아는 수많은 히트곡을 발표하며 대한민국 가요계에 큰 족적을 남겼습니다. 그의 노래는 단순한 유행가를 넘어, 시대의 아픔과 희망을 담아낸 사회적 메시지를 전달하기도 했습니다. 또한, 그는 후배 가수들에게 많은 영감을 주며 트로트 음악의 발전에 기여했습니다.</p><p>Major Activities and Influence</p><p>Na Hoon Ah has released numerous hit songs, leaving a significant mark on the Korean music scene. His songs go beyond simple popular songs, conveying social messages that capture the pain and hope of the era. He has also inspired many younger singers and contributed to the development of trot music.</p><p>✧</p><p>현재와 미래</p><p>나훈아는 끊임없이 새로운 음악을 시도하며, 현재까지도 활발하게 활동하고 있습니다. 그의 음악은 시대를 초월하여 젊은 세대에게도 깊은 감동을 선사하며, 트로트 음악의 새로운 가능성을 제시합니다. 앞으로도 그는 한국 대중음악사에 길이 남을 아티스트로 기억될 것입니다.</p><p>Present and Future</p><p>Na Hoon Ah continues to experiment with new music and is still active today. His music transcends generations, offering deep emotion to younger audiences and presenting new possibilities for trot music. He will be remembered as an artist who will be long remembered in the history of Korean popular music.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2018] 향수(鄕愁)</div>
+<div><a href='https://tidal.com/album/192641595' target='_blank'>https://tidal.com/album/192641595</a></div>
+<div>나훈아 - 동백아가씨</div>
+<div>나훈아 - 가슴 아프게</div>
+<div>나훈아 - 님</div>
+<div>나훈아 - 울어라 열풍아</div>
+<div>나훈아 - 종점</div>
+<div>나훈아 - 파도</div>
+<div>나훈아 - 갈대의 순정</div>
+<div>나훈아 - 영등포의 밤</div>
+<div>나훈아 - 고향무정</div>
+<div>나훈아 - 충청도 아줌마</div>
+<div>나훈아 - 이별</div>
+<div>나훈아 - 두메산골</div>
+<div>나훈아 - 장녹수</div>
+<div>나훈아 - 남자라는 이유로</div>
+<div>나훈아 - 4박자</div>
+<div>나훈아 - 영영</div>
+<div>나훈아 - 사랑을 위하여</div>
+<div>나훈아 - 애모</div>
+<div>나훈아 - 빗속의 여인</div>
+<div>나훈아 - 립스틱 짙게 바르고</div>
+<div>나훈아 - 낭만에 대하여</div>
+<div>나훈아 - 옥경이</div>
+<div>나훈아 - 돌아와요 부산항에</div>
+<div>나훈아 - 그때 그 사람</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/192641595' target='_blank'><img src='https://resources.tidal.com/images/3ca3249c/6d07/4ea5/8e16/5efc73d77d7c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 아담과 이브처럼---</div>
+<div><a href='https://tidal.com/album/204016608' target='_blank'>https://tidal.com/album/204016608</a></div>
+<div>나훈아 - 아담과 이브처럼 (Solo)</div>
+<div>나훈아 - 아담과 이브처럼 (Duet-Slow)</div>
+<div>나훈아 - 겨울 바다 (Narration-배종옥)</div>
+<div>나훈아 - 아담과 이브처럼 (Narration-배종옥)</div>
+<div>나훈아 - 오가리</div>
+<div>나훈아 - 사랑하고 싶어요</div>
+<div>나훈아 - 테크노 18세 순이</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204016608' target='_blank'><img src='https://resources.tidal.com/images/2db76934/398f/4bd0/9011/05ae31b7e1e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 나훈아(羅勳兒) 전곡집(全曲集) 3</div>
+<div><a href='https://tidal.com/album/204016801' target='_blank'>https://tidal.com/album/204016801</a></div>
+<div>나훈아 - 갈무리</div>
+<div>나훈아 - 무시로</div>
+<div>나훈아 - 영영</div>
+<div>나훈아 - 울긴 왜 울어</div>
+<div>나훈아 - 평양 아줌마</div>
+<div>나훈아 - 청춘을 돌려다오</div>
+<div>나훈아 - 대동강 편지</div>
+<div>나훈아 - 18세 순이</div>
+<div>나훈아 - 잡초</div>
+<div>나훈아 - 사나이 눈물</div>
+<div>나훈아 - 영동부르스</div>
+<div>나훈아 - 건배</div>
+<div>나훈아 - 여자이니까</div>
+<div>나훈아 - 가라지</div>
+<div>나훈아 - 자갈치 아지매</div>
+<div>나훈아 - 사랑</div>
+<div>나훈아 - 노랑 은행잎</div>
+<div>나훈아 - 사랑이 그리울 때</div>
+<div>나훈아 - 첫사랑</div>
+<div>나훈아 - 하얀새</div>
+<div>나훈아 - 까치가 울면</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204016801' target='_blank'><img src='https://resources.tidal.com/images/3c3918ad/bac2/4d91/b9e9/47756a8a90c7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 나훈아(羅勳兒) 전곡집(全曲集) 2</div>
+<div><a href='https://tidal.com/album/204016776' target='_blank'>https://tidal.com/album/204016776</a></div>
+<div>나훈아 - 물레방아 도는데</div>
+<div>나훈아 - 해변의 여인</div>
+<div>나훈아 - 녹슬은 기찻길</div>
+<div>나훈아 - 두줄기 눈물</div>
+<div>나훈아 - 감나무골</div>
+<div>나훈아 - 애정이 꽃피던 시절</div>
+<div>나훈아 - 한백년</div>
+<div>나훈아 - 고향의 그림자</div>
+<div>나훈아 - 흰구름 가는길</div>
+<div>나훈아 - 헤어져도 사랑만은</div>
+<div>나훈아 - 정이란</div>
+<div>나훈아 - 사랑은 주는것</div>
+<div>나훈아 - 눈을 감고 사랑하리</div>
+<div>나훈아 - 연락선</div>
+<div>나훈아 - 사랑도 나그네</div>
+<div>나훈아 - 풋사랑</div>
+<div>나훈아 - 모정의 세월</div>
+<div>나훈아 - 긴세월</div>
+<div>나훈아 - 사랑의 힘</div>
+<div>나훈아 - 님찾아 가는길</div>
+<div>나훈아 - 공항의 두 얼굴</div>
+<div>나훈아 - 후회</div>
+<div>나훈아 - 가는 발길 멈추고</div>
+<div>나훈아 - 잊을수만 있다면</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204016776' target='_blank'><img src='https://resources.tidal.com/images/53d3cac2/1cb8/419c/bfb3/af9539ea4ee6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 나훈아(羅勳兒) 전곡집(全曲集) 1</div>
+<div><a href='https://tidal.com/album/204016750' target='_blank'>https://tidal.com/album/204016750</a></div>
+<div>나훈아 - 님 그리워</div>
+<div>나훈아 - 사랑은 눈물의 씨앗</div>
+<div>나훈아 - 가지마오</div>
+<div>나훈아 - 강촌에 살고 싶네</div>
+<div>나훈아 - 고향역</div>
+<div>나훈아 - 너와 나의 고향</div>
+<div>나훈아 - 잊을수가 있을까</div>
+<div>나훈아 - 찻집의 고독</div>
+<div>나훈아 - 바보같은 사나이</div>
+<div>나훈아 - 낙엽이 가는 길</div>
+<div>나훈아 - 사랑은 장난이 아니랍니다</div>
+<div>나훈아 - 꿈속의 고향</div>
+<div>나훈아 - 행복을 비는 마음</div>
+<div>나훈아 - 오빠</div>
+<div>나훈아 - 못잊을 사랑이기에</div>
+<div>나훈아 - 사랑은 기러기</div>
+<div>나훈아 - 지금도 가고 싶어</div>
+<div>나훈아 - 눈으로만 안녕</div>
+<div>나훈아 - 천리길</div>
+<div>나훈아 - 좋았다 싫어지면</div>
+<div>나훈아 - 즐거운 청춘산맥</div>
+<div>나훈아 - 그정 못잊어</div>
+<div>나훈아 - 긴세월</div>
+<div>나훈아 - 참사랑</div>
+<div>나훈아 - 흰구름</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204016750' target='_blank'><img src='https://resources.tidal.com/images/34d0253a/693f/4c8c/97d1/25240ebee8e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 나훈아(羅勳兒) 2002년 세종문화회관 Live 실황 (Live)</div>
+<div><a href='https://tidal.com/album/204016720' target='_blank'>https://tidal.com/album/204016720</a></div>
+<div>나훈아 - 고향역</div>
+<div>나훈아 - 사랑은 눈물의 씨앗</div>
+<div>나훈아 - 울긴 왜 울어 - 해변의 여인</div>
+<div>나훈아 - 아담과 이브처럼 (Solo)</div>
+<div>나훈아 - 머나먼 고향</div>
+<div>나훈아 - 향수</div>
+<div>나훈아 - 물레방아 도는데</div>
+<div>나훈아 - 강촌에 살고 싶네</div>
+<div>나훈아 - 님 그리워</div>
+<div>나훈아 - 애정이 꽃피던 시절</div>
+<div>나훈아 - 너와 나의 고향</div>
+<div>나훈아 - 라구요</div>
+<div>나훈아 - 녹슬은 기찻길</div>
+<div>나훈아 - 내 삶을 눈물로 채워도</div>
+<div>나훈아 - 사랑</div>
+<div>나훈아 - 테크노 18세 순이</div>
+<div>나훈아 - 찔레꽃</div>
+<div>나훈아 - 희망가</div>
+<div>나훈아 - 누가 울어</div>
+<div>나훈아 - 영영</div>
+<div>나훈아 - 아담과 이브처럼 (duet with 배종옥)</div>
+<div>나훈아 - 장녹수</div>
+<div>나훈아 - 어매</div>
+<div>나훈아 - 청춘을 돌려다오</div>
+<div>나훈아 - 태평가</div>
+<div>나훈아 - 건배</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204016720' target='_blank'><img src='https://resources.tidal.com/images/026dad5f/6dc4/4b2f/aa11/ee7e841b3892/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 나훈아 빅히트 40곡 (나훈아 전곡 모음집)</div>
+<div><a href='https://tidal.com/album/204016679' target='_blank'>https://tidal.com/album/204016679</a></div>
+<div>나훈아 - 가지마오</div>
+<div>나훈아 - 사랑은 눈물의 씨앗</div>
+<div>나훈아 - 님 그리워</div>
+<div>나훈아 - 고향역</div>
+<div>나훈아 - 물레방아 도는데</div>
+<div>나훈아 - 두줄기 눈물</div>
+<div>나훈아 - 너와 나의 고향</div>
+<div>나훈아 - 녹슬은 기찻길</div>
+<div>나훈아 - 애정이 꽃피던 시절</div>
+<div>나훈아 - 바보같은 사나이</div>
+<div>나훈아 - 잊을 수가 있을까</div>
+<div>나훈아 - 강촌에 살고 싶네</div>
+<div>나훈아 - 찻집의 고독</div>
+<div>나훈아 - 청춘을 돌려다오</div>
+<div>나훈아 - 울긴 왜 울어</div>
+<div>나훈아 - 건배</div>
+<div>나훈아 - 18세 순이</div>
+<div>나훈아 - 머나먼 고향</div>
+<div>나훈아 - 대도강 편지</div>
+<div>나훈아 - 해변의 여인</div>
+<div>나훈아 - 여자이니까</div>
+<div>나훈아 - 모정의 세월</div>
+<div>나훈아 - 사나이 눈물</div>
+<div>나훈아 - 헤어져도 사랑만은</div>
+<div>나훈아 - 흰구름 가는 길</div>
+<div>나훈아 - 평양 아줌마</div>
+<div>나훈아 - 낙엽이 가는 길</div>
+<div>나훈아 - 내 삶을 눈물로 채워도</div>
+<div>나훈아 - 영영</div>
+<div>나훈아 - 사랑</div>
+<div>나훈아 - 테크노 18세 순이</div>
+<div>나훈아 - 잡초</div>
+<div>나훈아 - 갈무리</div>
+<div>나훈아 - 지금의 나였더라면</div>
+<div>나훈아 - 가라지</div>
+<div>나훈아 - 소문</div>
+<div>나훈아 - 어매</div>
+<div>나훈아 - 허야</div>
+<div>나훈아 - 무시로</div>
+<div>나훈아 - 보통 여자</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204016679' target='_blank'><img src='https://resources.tidal.com/images/d3d5e813/3599/46c6/9b58/9661ce1f51a9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 나훈아 22년 기념 Best Hit곡(曲)</div>
+<div><a href='https://tidal.com/album/204016649' target='_blank'>https://tidal.com/album/204016649</a></div>
+<div>나훈아 - 무시로</div>
+<div>나훈아 - 청춘을 돌려다오</div>
+<div>나훈아 - 울긴 왜 울어</div>
+<div>나훈아 - 물레방아 도는데</div>
+<div>나훈아 - 님 그리워</div>
+<div>나훈아 - 녹슬은 기찻길</div>
+<div>나훈아 - 18세 순이</div>
+<div>나훈아 - 잡초</div>
+<div>나훈아 - 사랑</div>
+<div>나훈아 - 머나먼 고향</div>
+<div>나훈아 - 사랑은 눈물의 씨앗</div>
+<div>나훈아 - 고향역</div>
+<div>나훈아 - 잊을 수가 있을까</div>
+<div>나훈아 - 대동강 편지</div>
+<div>나훈아 - 바보같은 사나이</div>
+<div>나훈아 - 너와 나의 고향</div>
+<div>나훈아 - 가지마오</div>
+<div>나훈아 - 두줄기 눈물</div>
+<div>나훈아 - 해변의 여인</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204016649' target='_blank'><img src='https://resources.tidal.com/images/3b33b087/6cdd/42e5/b9de/3a0b9fb4c505/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 나훈아 - 벗 (40주년 기념앨범)</div>
+<div><a href='https://tidal.com/album/204016634' target='_blank'>https://tidal.com/album/204016634</a></div>
+<div>나훈아 - 어느 한 여자에게</div>
+<div>나훈아 - 예전 그대로</div>
+<div>나훈아 - 운명은 내 편이 아니었다</div>
+<div>나훈아 - 남자라 울지 못했다</div>
+<div>나훈아 - 팔자</div>
+<div>나훈아 - 소꿉장난</div>
+<div>나훈아 - 어머니</div>
+<div>나훈아 - 행운</div>
+<div>나훈아 - 발코니에 앉아서</div>
+<div>나훈아 - 사모</div>
+<div>나훈아 - 그저</div>
+<div>나훈아 - 준비된 이별</div>
+<div>나훈아 - 고장난 벽시계</div>
+<div>나훈아 - 너도 역시 여자였구나</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204016634' target='_blank'><img src='https://resources.tidal.com/images/38d29cfd/708a/40df/9439/a8fc1f36d2ce/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] New Freestyle (40주년 기념앨범)</div>
+<div><a href='https://tidal.com/album/204016669' target='_blank'>https://tidal.com/album/204016669</a></div>
+<div>나훈아 - 사내</div>
+<div>나훈아 - 홍시 (울 엄마)</div>
+<div>나훈아 - 바로 그대 당신입니다</div>
+<div>나훈아 - 천생연분</div>
+<div>나훈아 - 고향으로 가는 배</div>
+<div>나훈아 - 또래야</div>
+<div>나훈아 - 사랑이 그리울 때</div>
+<div>나훈아 - 사랑은 무죄다</div>
+<div>나훈아 - 아리수 (한강)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204016669' target='_blank'><img src='https://resources.tidal.com/images/dade9198/c572/4dfa/a6d0/a1a50dda1b2c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 사나이는 울고있네 Man is Crying</div>
+<div><a href='https://tidal.com/album/242825921' target='_blank'>https://tidal.com/album/242825921</a></div>
+<div>나훈아 - 사나이는 울고있네 Man is Crying</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/242825921' target='_blank'><img src='https://resources.tidal.com/images/1ffa3d6e/57b6/4ce9/bee0/ffd43dab20ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1980] 나훈아3집 골든20</div>
+<div><a href='https://tidal.com/album/305341125' target='_blank'>https://tidal.com/album/305341125</a></div>
+<div>나훈아 - 한백년</div>
+<div>나훈아 - 최진사댁셋째딸</div>
+<div>나훈아 - 고향아줌마</div>
+<div>나훈아 - 님과함께</div>
+<div>나훈아 - 사랑의힘</div>
+<div>나훈아 - 고향의그소녀</div>
+<div>나훈아 - 두손을잡아요</div>
+<div>나훈아 - 풋사랑</div>
+<div>나훈아 - 당신의마음</div>
+<div>나훈아 - 연락선</div>
+<div>나훈아 - 그대여변치마오</div>
+<div>나훈아 - 이슬비</div>
+<div>나훈아 - 고향이좋아</div>
+<div>나훈아 - 오님아</div>
+<div>나훈아 - 이정표없는거리</div>
+<div>나훈아 - 고향초</div>
+<div>나훈아 - 찻집의고독</div>
+<div>나훈아 - 꿈속의고향</div>
+<div>나훈아 - 고향의이뿐이</div>
+<div>나훈아 - 기적소리만</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305341125' target='_blank'><img src='https://resources.tidal.com/images/00aa943c/a133/48e7/be2b/a2583cd3854e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1980] 나훈아 힛트송 제1집</div>
+<div><a href='https://tidal.com/album/305343844' target='_blank'>https://tidal.com/album/305343844</a></div>
+<div>나훈아 - 님그리워</div>
+<div>나훈아 - 가지마오</div>
+<div>나훈아 - 강촌에 살고싶네</div>
+<div>나훈아 - 너와 나의 고향</div>
+<div>나훈아 - 두줄기 눈물</div>
+<div>나훈아 - 행복을 비는 마음</div>
+<div>나훈아 - 사랑은 눈물의 씨앗</div>
+<div>나훈아 - 고향초</div>
+<div>나훈아 - 찻집의 고독</div>
+<div>나훈아 - 최진사댁 셋째딸</div>
+<div>나훈아 - 낙엽이 가는 길</div>
+<div>나훈아 - 즐거운 청춘산맥</div>
+<div>나훈아 - 고향 아줌마</div>
+<div>나훈아 - 그대여 변치마오</div>
+<div>나훈아 - 눈물의 연평도</div>
+<div>나훈아 - 풋사랑</div>
+<div>나훈아 - 오! 님아</div>
+<div>나훈아 - 고향의 그소녀</div>
+<div>나훈아 - 눈물젖은 두만강</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305343844' target='_blank'><img src='https://resources.tidal.com/images/59b23f10/1f27/4d2d/ae67/0f5d3535b299/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1977] 님 찾아가는 길-두손을 잡아요 님 찾아가는 길-두손을 잡아요</div>
+<div><a href='https://tidal.com/album/255126462' target='_blank'>https://tidal.com/album/255126462</a></div>
+<div>나훈아 - 님 찾아 가는 길 님 찾아 가는 길</div>
+<div>나훈아 - 비야 비야</div>
+<div>나훈아 - 찻집의 고독 찻집의 고독</div>
+<div>나훈아 - 추억의 그림자 추억의 그림자</div>
+<div>나훈아 - 영원히 사랑하리 영원히 사랑하리</div>
+<div>나훈아 - 두손을 잡아요 두손을 잡아요</div>
+<div>나훈아 - 그리움을 알거야 그리움을 알거야</div>
+<div>나훈아 - 머나먼 고향 머나먼 고향</div>
+<div>나훈아 - 옛시절 옛시절</div>
+<div>나훈아 - 그리움을 띄워 보내리 그리움을 띄워 보내리</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/255126462' target='_blank'><img src='https://resources.tidal.com/images/9658b6bf/0445/48fd/870b/32e118b1d415/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/1_TIDAL_Kpop_Artist_Link_N.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄴ1) TIDAL Kpop Artist Link (N)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/나훈아 (Na Hoon Ah)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
