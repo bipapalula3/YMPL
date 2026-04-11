@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 김민종 ( Tidal Kim Min Jong )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 김민종 ( Tidal Kim Min Jong )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/a949738c/4d74/481a/a263/5f38054dc4a7/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/21276068' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/10966758' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a><a href='https://tidal.com/browse/artist/28227383' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 3</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 김민종</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>김민종 – 애절한 발라드로 깊은 밤을 위로하는 목소리, ‘긴 밤’의 그리움과 ‘You're My Life’의 영원한 사랑을 노래하는 배우 겸 가수</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Kim Min Jong</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Kim Min Jong – A voice comforting deep nights with heartfelt ballads, singing of longing in ‘Endless Night’ and eternal love in ‘You're My Life,’ an actor and singer.</div><p>애절한 보이스와 섬세한 감정 표현으로 많은 사랑을 받아온 김민종 님을 소개합니다. 배우로서뿐만 아니라 가수로도 꾸준히 활동하며 다양한 매력을 보여주고 계신데요. 그의 음악은 깊은 감성을 자극하며 오랫동안 많은 이들의 마음속에 자리 잡고 있습니다.</p><p>Introducing Kim Min Jong, who has been loved for his soulful voice and delicate emotional expression. He has been consistently active not only as an actor but also as a singer, showcasing various charms. His music stimulates deep emotions and has long been rooted in the hearts of many.</p><p>✧</p><p>다재다능한 엔터테이너의 시작</p><p>김민종 님은 1990년대 초 드라마와 영화를 통해 배우로서 먼저 대중에게 알려졌습니다. 이후 가수로 데뷔하여 배우 활동과 병행하며 폭넓은 팬층을 확보하게 되었는데요. 그의 다재다능함은 엔터테이너로서 성공적인 커리어를 쌓는 기반이 되었습니다.</p><p>The Beginning of a Versatile Entertainer</p><p>Kim Min Jong first became known to the public as an actor through dramas and movies in the early 1990s. He then debuted as a singer, pursuing both acting and singing careers, securing a wide fan base. His versatility became the foundation for building a successful career as an entertainer.</p><p>✧</p><p>감성 발라드의 정수</p><p>김민종 님의 음악은 주로 애절한 발라드 스타일로, 듣는 이의 감성을 자극하는 깊은 울림을 지니고 있습니다. 특유의 미성과 호소력 짙은 목소리는 그의 음악을 더욱 특별하게 만들어주는데요. 사랑, 이별, 그리움 등 다양한 감정을 진솔하게 담아내어 많은 이들의 공감을 얻고 있습니다.</p><p>The Essence of Emotional Ballads</p><p>Kim Min Jong's music is mainly in the style of heartfelt ballads, with a deep resonance that stimulates the emotions of listeners. His unique soft voice and appealing tone make his music even more special. He honestly expresses various emotions such as love, separation, and longing, gaining empathy from many.</p><p>✧</p><p>꾸준한 활동과 다양한 시도</p><p>김민종 님은 가수로서 꾸준히 앨범을 발표하며 활동을 이어왔습니다. 드라마 OST 참여, 콘서트 개최 등 다양한 방식으로 팬들과 소통하며 음악적 교감을 나누고 있는데요. 또한, 뮤지컬 배우로도 활동 영역을 넓히며 다재다능한 면모를 보여주고 있습니다.</p><p>Consistent Activity and Diverse Attempts</p><p>Kim Min Jong has consistently released albums as a singer and continued his activities. He communicates with fans in various ways, such as participating in drama OSTs and holding concerts, sharing musical rapport. He is also expanding his activities as a musical actor, showing his versatile side.</p><p>✧</p><p>시대를 초월하는 감동</p><p>김민종 님의 음악은 시간이 흘러도 변치 않는 감동을 선사합니다. 그의 진심 어린 목소리와 섬세한 감정 표현은 앞으로도 많은 이들에게 위로와 공감을 전해줄 것으로 기대되는데요. 배우와 가수를 넘나드는 그의 활약을 응원하며, 앞으로 더욱 깊어진 음악 세계를 기대해 봅니다.</p><p>Timeless Emotion</p><p>Kim Min Jong's music offers emotions that do not change over time. His sincere voice and delicate emotional expression are expected to continue to convey comfort and empathy to many. We support his activities that cross between acting and singing, and look forward to an even deeper world of music in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] 긴 밤 Endless Night - SM STATION</div>
+<div><a href='https://tidal.com/album/217126132' target='_blank'>https://tidal.com/album/217126132</a></div>
+<div>KIM MIN JONG - 긴 밤 Endless Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/217126132' target='_blank'><img src='https://resources.tidal.com/images/1d0207a2/d4ed/4dc7/ac2c/92f3ced05c94/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] You're My Life</div>
+<div><a href='https://tidal.com/album/132252307' target='_blank'>https://tidal.com/album/132252307</a></div>
+<div>Kim Minjong - You're My Life</div>
+<div>Kim Minjong - I Am I Am---</div>
+<div>Kim Minjong - I Am Different</div>
+<div>Kim Minjong - White Longing</div>
+<div>Kim Minjong - Rather Than Sadness---</div>
+<div>Kim Minjong - Everytime</div>
+<div>Kim Minjong - Please</div>
+<div>Kim Minjong - That Winter</div>
+<div>Kim Minjong - Tree</div>
+<div>Kim Minjong - Happy Trip</div>
+<div>Kim Minjong - Whenever You Feel Down</div>
+<div>Kim Minjong - Must Be</div>
+<div>Kim Minjong - I Am Different (Dance)</div>
+<div>Kim Minjong - Be Always By My Side</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/132252307' target='_blank'><img src='https://resources.tidal.com/images/0a684855/2022/49f7/b885/4498bcf20e5f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] For Those Who Have Been Hurt</div>
+<div><a href='https://tidal.com/album/132252291' target='_blank'>https://tidal.com/album/132252291</a></div>
+<div>Kim Minjong - Me</div>
+<div>Kim Minjong - Like A Fool</div>
+<div>Kim Minjong - You On The Beach</div>
+<div>Kim Minjong - Bye-Bye-Bye</div>
+<div>Kim Minjong - Tonight</div>
+<div>Kim Minjong - A Favor</div>
+<div>Kim Minjong - Into Sunshine</div>
+<div>Kim Minjong - Do You-</div>
+<div>Kim Minjong - Look!!</div>
+<div>Kim Minjong - I Don't Worry</div>
+<div>Kim Minjong - Checking Up</div>
+<div>Kim Minjong - Beautiful World</div>
+<div>Kim Minjong - Endless Love</div>
+<div>Kim Minjong - For Another Love</div>
+<div>Kim Minjong - Road</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/132252291' target='_blank'><img src='https://resources.tidal.com/images/18d34d6f/4ca7/4549/9dc7/f2e6c8252e6e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 그때, 그 겨울 발라드 - 귀천도애</div>
+<div><a href='https://tidal.com/album/236129612' target='_blank'>https://tidal.com/album/236129612</a></div>
+<div>Kim Minjong - 그때, 그 겨울 발라드 - 귀천도애</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/236129612' target='_blank'><img src='https://resources.tidal.com/images/3ca7205c/bf87/4e2c/8764/8c469cd49502/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] S.M.K 세번째 (가을, 자전거 페달을 힘껏 밟아보자) - 귀천도애</div>
+<div><a href='https://tidal.com/album/236129614' target='_blank'>https://tidal.com/album/236129614</a></div>
+<div>Kim Minjong - S.M.K 세번째 (가을, 자전거 페달을 힘껏 밟아보자) - 귀천도애</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/236129614' target='_blank'><img src='https://resources.tidal.com/images/a7f6b7ed/7dfc/4db8/bdbc/c50a2a8bec29/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] 종려나무 숲 (Original Motion Picture Soundtrack)</div>
+<div><a href='https://tidal.com/album/209573297' target='_blank'>https://tidal.com/album/209573297</a></div>
+<div>김민종 - 좋은 사람 만나요</div>
+<div>김민종 - 그대</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209573297' target='_blank'><img src='https://resources.tidal.com/images/8a93705d/4e86/41f5/87b0/aeed814b2098/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] 원태연의 Love Letter - 착한사랑</div>
+<div><a href='https://tidal.com/album/236129610' target='_blank'>https://tidal.com/album/236129610</a></div>
+<div>Kim Minjong - 원태연의 Love Letter - 착한사랑</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/236129610' target='_blank'><img src='https://resources.tidal.com/images/91905201/858b/454e/a98d/b12e138dd164/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] 이소라의 프로포즈 1집</div>
+<div><a href='https://tidal.com/album/223262998' target='_blank'>https://tidal.com/album/223262998</a></div>
+<div>Kim Minjong - 같은 하늘 아래</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223262998' target='_blank'><img src='https://resources.tidal.com/images/2bfcd271/175a/4f48/a603/4148e92878c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] 애</div>
+<div><a href='https://tidal.com/album/236129670' target='_blank'>https://tidal.com/album/236129670</a></div>
+<div>Kim Minjong - Prologue</div>
+<div>Kim Minjong - 그래도 그대는 나의 영원한 사랑이야</div>
+<div>Kim Minjong - 착한 사랑</div>
+<div>Kim Minjong - 세상 끝에서의 시작</div>
+<div>Kim Minjong - 잊을 수 없는 건</div>
+<div>Kim Minjong - 이제는</div>
+<div>Kim Minjong - 미안해요 사랑해서</div>
+<div>Kim Minjong - 기다릴 수 있는 사랑</div>
+<div>Kim Minjong - 힘겨운 사랑을 위해</div>
+<div>Kim Minjong - 다시 시작된 사랑</div>
+<div>Kim Minjong - 어느날</div>
+<div>Kim Minjong - 같은 하늘아래</div>
+<div>Kim Minjong - 착한사랑  (Bonus Track Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/236129670' target='_blank'><img src='https://resources.tidal.com/images/9e08041b/04f7/49a1/81db/8fd0975241c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1996] 귀천도애</div>
+<div><a href='https://tidal.com/album/236129648' target='_blank'>https://tidal.com/album/236129648</a></div>
+<div>Kim Minjong - Prologue</div>
+<div>Kim Minjong - 귀천도애</div>
+<div>Kim Minjong - 그대 곁에서</div>
+<div>Kim Minjong - 갈 수 없는 하늘</div>
+<div>Kim Minjong - Endless love</div>
+<div>Kim Minjong - 천사가 된 친구</div>
+<div>Kim Minjong - 널 위한 나</div>
+<div>Kim Minjong - 기억해줘</div>
+<div>Kim Minjong - 넌나빠!</div>
+<div>Kim Minjong - 이왕 시작된 인생</div>
+<div>Kim Minjong - …-</div>
+<div>Kim Minjong - 그대와 영원히</div>
+<div>Kim Minjong - 귀천도 Main Title (우운검 Theme)  (Bonus Track Version)</div>
+<div>Kim Minjong - Run I  (Bonus Track Version)</div>
+<div>Kim Minjong - Run II  (Bonus Track Version)</div>
+<div>Kim Minjong - 슬픈 영혼 (좌운검 Theme)  (Bonus Track Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/236129648' target='_blank'><img src='https://resources.tidal.com/images/c92f7256/8e44/49c3/a2d8/721a57b20d01/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/2_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ2) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/김민종 (Kim Min Jong)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
