@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 갓세븐 ( Tidal GOT7 )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 갓세븐 ( Tidal GOT7 )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/f4cff3dd/0246/4074/8599/7c81694fcd86/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6168572' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 갓세븐</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>갓세븐 (GOT7) - 'Miracle'처럼 따뜻한 위로를, 'Phoenix'처럼 강렬한 열정을 노래하는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> GOT7</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>GOT7 - A group singing warm comfort like 'Miracle' and intense passion like 'Phoenix'</div><p>갓세븐은 다채로운 매력으로 글로벌 팬들을 사로잡은 그룹이에요. 멤버들의 개성이 조화롭게 어우러져 독특한 음악 세계를 펼쳐나가고 있죠. 퍼포먼스 실력은 물론, 음악적 역량까지 겸비한 실력파 그룹이랍니다.</p><p>GOT7 is a group that has captivated global fans with its diverse charms. The unique personalities of the members blend harmoniously to create a distinctive musical world. They are a talented group with not only performance skills but also musical capabilities.</p><p>✧</p><p>그룹 탄생</p><p>갓세븐은 JYP 엔터테인먼트에서 야심차게 선보인 다국적 아이돌 그룹이에요. 2014년 데뷔 이후, 멤버들의 뛰어난 비주얼과 실력으로 빠르게 팬덤을 확장해 나갔답니다. 다양한 국적의 멤버 구성은 글로벌 시장을 겨냥한 전략적인 선택이었죠.</p><p>Group Formation</p><p>GOT7 is a multinational idol group ambitiously launched by JYP Entertainment. Since their debut in 2014, they have quickly expanded their fandom with the members' outstanding visuals and skills. The diverse nationalities of the members were a strategic choice targeting the global market.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>갓세븐의 음악은 힙합, R&B, 팝 등 다양한 장르를 아우르는 것이 특징이에요. 강렬한 퍼포먼스와 함께 감성적인 보컬, 랩 실력까지 선보이며 폭넓은 음악적 스펙트럼을 보여주고 있죠. 특히 멤버들이 직접 작사, 작곡에 참여하며 음악적 역량을 발휘하고 있다는 점이 돋보여요.</p><p>Music and Performance</p><p>GOT7's music is characterized by its encompassing of various genres such as hip-hop, R&B, and pop. Along with intense performances, they showcase emotional vocals and rap skills, demonstrating a wide musical spectrum. Notably, the members directly participate in songwriting and composition, showcasing their musical abilities.</p><p>✧</p><p>주요 활동</p><p>갓세븐은 한국을 넘어 아시아, 유럽, 북미 등 전 세계를 무대로 활발하게 활동했어요. 다양한 해외 투어를 통해 글로벌 팬들과 직접 소통하며 인기를 입증했죠. 멤버들은 솔로 활동 및 연기, 예능 등 다방면에서 재능을 발휘하며 활동 영역을 넓히고 있답니다.</p><p>Main Activities</p><p>GOT7 has been actively performing not only in Korea but also on stages around the world, including Asia, Europe, and North America. They proved their popularity by communicating directly with global fans through various overseas tours. The members are expanding their activities by showcasing their talents in various fields such as solo work, acting, and entertainment.</p><p>✧</p><p>미래/의미</p><p>갓세븐은 멤버 각자의 개성과 팀워크를 바탕으로 끊임없이 성장하는 모습을 보여주고 있어요. 앞으로도 다양한 음악적 시도를 통해 더욱 깊이 있는 음악을 선보일 것으로 기대돼요. 그들의 음악은 팬들에게 위로와 희망을 전하며 오랫동안 기억될 거예요.</p><p>Future/Meaning</p><p>GOT7 continues to grow based on the individuality of each member and their teamwork. It is expected that they will showcase even deeper music through various musical attempts in the future. Their music will be remembered for a long time, conveying comfort and hope to fans.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[E] [2018] &ME Edition</div>
+<div><a href='https://tidal.com/album/305151858' target='_blank'>https://tidal.com/album/305151858</a></div>
+<div>GOT7 - Miracle</div>
+<div>GOT7 - Take Me To You</div>
+<div>GOT7 - Come On</div>
+<div>GOT7 - 1-31AM</div>
+<div>GOT7 - Higher</div>
+<div>GOT7 - I Love It</div>
+<div>GOT7 - WOLO</div>
+<div>GOT7 - King(Explicit)</div>
+<div>GOT7 - Think About It</div>
+<div>GOT7 - From Now</div>
+<div>GOT7 - Hunger</div>
+<div>GOT7 - Phoenix</div>
+<div>GOT7 - Lullaby</div>
+<div>GOT7 - Enough</div>
+<div>GOT7 - Save You</div>
+<div>GOT7 - No One Else</div>
+<div>GOT7 - I Am Me</div>
+<div>GOT7 - Sunrise</div>
+<div>GOT7 - OMW</div>
+<div>GOT7 - Made It</div>
+<div>GOT7 - My Youth</div>
+<div>GOT7 - Nobody knows</div>
+<div>GOT7 - Party</div>
+<div>GOT7 - Fine</div>
+<div>GOT7 - Lullaby (English Version)</div>
+<div>GOT7 - Lullaby (Chinese Version)</div>
+<div>GOT7 - Lullaby (Spanish Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305151858' target='_blank'><img src='https://resources.tidal.com/images/c51546d9/c3b4/445c/80d7/cb2bfc0c2aa4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[A] [2022] GOT7</div>
+<div><a href='https://tidal.com/album/230770761' target='_blank'>https://tidal.com/album/230770761</a></div>
+<div>GOT7 - NANANA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230770761' target='_blank'><img src='https://resources.tidal.com/images/89c6a444/669e/433f/8306/9ae6da4e741a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] GOT♡</div>
+<div><a href='https://tidal.com/album/304913625' target='_blank'>https://tidal.com/album/304913625</a></div>
+<div>GOT7 - U Got Me</div>
+<div>GOT7 - A</div>
+<div>GOT7 - Bad Behaviour</div>
+<div>GOT7 - Good Tonight</div>
+<div>GOT7 - Forever Young</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304913625' target='_blank'><img src='https://resources.tidal.com/images/5065d610/7573/44e2/a3e3/4c05924b57c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Breath</div>
+<div><a href='https://tidal.com/album/306308986' target='_blank'>https://tidal.com/album/306308986</a></div>
+<div>GOT7 - Breath</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306308986' target='_blank'><img src='https://resources.tidal.com/images/41db33d4/930b/4b85/a6a9/93958ad019b9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Encore</div>
+<div><a href='https://tidal.com/album/173755740' target='_blank'>https://tidal.com/album/173755740</a></div>
+<div>GOT7 - Encore</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/173755740' target='_blank'><img src='https://resources.tidal.com/images/68ecec9e/db83/42fc/9610/7b02a886dcac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Breath of Love- Last Piece</div>
+<div><a href='https://tidal.com/album/305836628' target='_blank'>https://tidal.com/album/305836628</a></div>
+<div>GOT7 - Breath</div>
+<div>GOT7 - LAST PIECE</div>
+<div>GOT7 - Born Ready</div>
+<div>GOT7 - SPECIAL</div>
+<div>GOT7 - WAVE</div>
+<div>GOT7 - Waiting For You</div>
+<div>GOT7 - Thank You, Sorry</div>
+<div>GOT7 - 1+1</div>
+<div>GOT7 - I Mean It</div>
+<div>GOT7 - We Are Young</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305836628' target='_blank'><img src='https://resources.tidal.com/images/e1a26d6b/20a7/4eb8/96bb/72f3a8785d14/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] DYE</div>
+<div><a href='https://tidal.com/album/305164642' target='_blank'>https://tidal.com/album/305164642</a></div>
+<div>GOT7 - AURA</div>
+<div>GOT7 - CRAZY</div>
+<div>GOT7 - NOT BY THE MOON</div>
+<div>GOT7 - LOVE YOU BETTER</div>
+<div>GOT7 - TRUST MY LOVE</div>
+<div>GOT7 - POISON</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305164642' target='_blank'><img src='https://resources.tidal.com/images/a5c132a1/6c98/4fdc/9b86/d1c179d8b6e0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] THE New Era (Tsujouban)</div>
+<div><a href='https://tidal.com/album/144462307' target='_blank'>https://tidal.com/album/144462307</a></div>
+<div>GOT7 - The New Era</div>
+<div>GOT7 - Shining on You</div>
+<div>GOT7 - SHINING ON YOU</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/144462307' target='_blank'><img src='https://resources.tidal.com/images/cb976d64/9c24/4e76/8507/29a4cffa6154/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Sing For U</div>
+<div><a href='https://tidal.com/album/149296005' target='_blank'>https://tidal.com/album/149296005</a></div>
+<div>GOT7 - Sing For U</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/149296005' target='_blank'><img src='https://resources.tidal.com/images/06367ffa/01c4/456c/a7b3/f52dce3e6a98/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] SPINNING TOP - BETWEEN SECURITY & INSECURITY</div>
+<div><a href='https://tidal.com/album/304846683' target='_blank'>https://tidal.com/album/304846683</a></div>
+<div>GOT7 - 1°</div>
+<div>GOT7 - ECLIPSE</div>
+<div>GOT7 - 끝</div>
+<div>GOT7 - TIME OUT</div>
+<div>GOT7 - 믿어줄래</div>
+<div>GOT7 - PAGE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304846683' target='_blank'><img src='https://resources.tidal.com/images/63919175/8b71/48a4/8b38/22765ed0468b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Love Loop</div>
+<div><a href='https://tidal.com/album/144535828' target='_blank'>https://tidal.com/album/144535828</a></div>
+<div>GOT7 - Love Loop</div>
+<div>GOT7 - Your Space</div>
+<div>GOT7 - Bibouroku</div>
+<div>GOT7 - Karma</div>
+<div>GOT7 - Drunk</div>
+<div>GOT7 - #Summervibes</div>
+<div>GOT7 - Remember Me</div>
+<div>GOT7 - Superman</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/144535828' target='_blank'><img src='https://resources.tidal.com/images/717f3757/86c8/4519/9b63/279aa55df565/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] I Won't Let You Go (Complete Edition)</div>
+<div><a href='https://tidal.com/album/144491243' target='_blank'>https://tidal.com/album/144491243</a></div>
+<div>GOT7 - I Won't Let You Go</div>
+<div>GOT7 - Never Ending Story</div>
+<div>GOT7 - Zero</div>
+<div>GOT7 - Seesaw</div>
+<div>GOT7 - Reborn</div>
+<div>GOT7 - Cold</div>
+<div>GOT7 - 25</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/144491243' target='_blank'><img src='https://resources.tidal.com/images/d82b0afa/7dad/4131/8d7c/7c4e9c7ff2a2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Call My Name</div>
+<div><a href='https://tidal.com/album/304629305' target='_blank'>https://tidal.com/album/304629305</a></div>
+<div>GOT7 - You Calling My Name</div>
+<div>GOT7 - PRAY</div>
+<div>GOT7, Jonas Blue - Now or Never</div>
+<div>GOT7 - THURSDAY</div>
+<div>GOT7 - RUN AWAY</div>
+<div>GOT7 - Crash & Burn</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304629305' target='_blank'><img src='https://resources.tidal.com/images/933cad10/5807/4983/b94c/a3c6563e2e70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] TURN UP(Original Edition)</div>
+<div><a href='https://tidal.com/album/157593717' target='_blank'>https://tidal.com/album/157593717</a></div>
+<div>GOT7 - Turn Up</div>
+<div>GOT7 - Dessert</div>
+<div>GOT7 - Lion Boy</div>
+<div>GOT7 - Flash Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/157593717' target='_blank'><img src='https://resources.tidal.com/images/c249d17e/e301/4c21/b60b/e79d28efdd64/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] THE New Era Special Edition</div>
+<div><a href='https://tidal.com/album/144491109' target='_blank'>https://tidal.com/album/144491109</a></div>
+<div>GOT7 - The New Era</div>
+<div>GOT7 - Shining on You</div>
+<div>GOT7 - Hmmmm</div>
+<div>GOT7 - 2 (Two)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/144491109' target='_blank'><img src='https://resources.tidal.com/images/8208ae92/7f15/4c2e/8376/8a1e3c87bfa1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Present - YOU</div>
+<div><a href='https://tidal.com/album/305662041' target='_blank'>https://tidal.com/album/305662041</a></div>
+<div>GOT7 - Lullaby</div>
+<div>GOT7 - Enough</div>
+<div>GOT7 - Save You</div>
+<div>GOT7 - No One Else</div>
+<div>GOT7 - I Am Me</div>
+<div>GOT7 - Lullaby (English Version)</div>
+<div>GOT7 - Lullaby (Chinese Version)</div>
+<div>GOT7 - Lullaby (Spanish Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305662041' target='_blank'><img src='https://resources.tidal.com/images/0eca58cc/2c3b/408c/89e6/8dfa60155a5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Moriagatteyo (Tsujouban)</div>
+<div><a href='https://tidal.com/album/144778177' target='_blank'>https://tidal.com/album/144778177</a></div>
+<div>GOT7 - Shaking the World</div>
+<div>GOT7 - Yo Moriagatte Yo</div>
+<div>GOT7 - Got Ur Luv</div>
+<div>GOT7 - Laugh Laugh Laugh</div>
+<div>GOT7 - Be My Girl</div>
+<div>GOT7 - Around the World</div>
+<div>GOT7 - Love Train</div>
+<div>GOT7 - Jibberish</div>
+<div>GOT7 - O.M.G</div>
+<div>GOT7 - Angel</div>
+<div>GOT7 - Stay</div>
+<div>GOT7 - So Lucky</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/144778177' target='_blank'><img src='https://resources.tidal.com/images/e984b2c9/5497/4c77/901c/3b4ae4b114f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Moriagatteyo (Shokaiseisanban B)</div>
+<div><a href='https://tidal.com/album/145105113' target='_blank'>https://tidal.com/album/145105113</a></div>
+<div>GOT7 - Shaking the World</div>
+<div>GOT7 - Yo Moriagatte Yo</div>
+<div>GOT7 - Got Ur Luv</div>
+<div>GOT7 - Laugh Laugh Laugh</div>
+<div>GOT7 - Be My Girl</div>
+<div>GOT7 - Around the World</div>
+<div>GOT7 - Love Train</div>
+<div>GOT7 - Jibberish</div>
+<div>GOT7 - O.M.G</div>
+<div>GOT7 - Angel</div>
+<div>GOT7 - Stay</div>
+<div>GOT7 - So Lucky</div>
+<div>GOT7 - Girls Girls Girls Japanese Version</div>
+<div>GOT7 - A Japanese Version</div>
+<div>GOT7 - Stop Stop It Japanese Version</div>
+<div>GOT7 - Just Right Japanese Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/145105113' target='_blank'><img src='https://resources.tidal.com/images/f6d2184d/cf64/41a1/9fec/447000e727fa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] LAUGH LAUGH LAUGH</div>
+<div><a href='https://tidal.com/album/144345134' target='_blank'>https://tidal.com/album/144345134</a></div>
+<div>GOT7 - Laugh Laugh Laugh</div>
+<div>GOT7 - Be My Girl</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/144345134' target='_blank'><img src='https://resources.tidal.com/images/4b6913b2/8f1b/4c3f/852d/1109f089ee8f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] I Won't Let You Go</div>
+<div><a href='https://tidal.com/album/144291988' target='_blank'>https://tidal.com/album/144291988</a></div>
+<div>GOT7 - I Won't Let You Go</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/144291988' target='_blank'><img src='https://resources.tidal.com/images/ca9cc328/b0cb/4d3a/8a55/79a8024e9406/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Hey Yah (Tsujouban)</div>
+<div><a href='https://tidal.com/album/144483803' target='_blank'>https://tidal.com/album/144483803</a></div>
+<div>GOT7 - Hey Yah</div>
+<div>GOT7 - Never Stop</div>
+<div>GOT7 - Let Me Know</div>
+<div>GOT7 - Attention</div>
+<div>GOT7 - Over & Over</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/144483803' target='_blank'><img src='https://resources.tidal.com/images/2d904897/b363/40f0/bf40/5b331be09485/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Hey Yah (Shokaiseisanban)</div>
+<div><a href='https://tidal.com/album/144554183' target='_blank'>https://tidal.com/album/144554183</a></div>
+<div>GOT7 - Hey Yah</div>
+<div>GOT7 - Never Stop</div>
+<div>GOT7 - Let Me Know</div>
+<div>GOT7 - Attention</div>
+<div>GOT7 - Over & Over</div>
+<div>GOT7 - Hanasanakereba---</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/144554183' target='_blank'><img src='https://resources.tidal.com/images/08217b7f/2031/4116/9d4b/b13144b16fe4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Eyes On You</div>
+<div><a href='https://tidal.com/album/305174529' target='_blank'>https://tidal.com/album/305174529</a></div>
+<div>GOT7, Hyolyn - One And Only You</div>
+<div>GOT7 - Look</div>
+<div>GOT7 - The Reason</div>
+<div>GOT7 - Hesitate</div>
+<div>GOT7 - Us</div>
+<div>GOT7 - Thank You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305174529' target='_blank'><img src='https://resources.tidal.com/images/011e935a/a9a4/4def/9e7b/fa972bf7bb35/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] TURN UP</div>
+<div><a href='https://tidal.com/album/157598599' target='_blank'>https://tidal.com/album/157598599</a></div>
+<div>GOT7 - Turn Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/157598599' target='_blank'><img src='https://resources.tidal.com/images/d98e13d4/5a8c/49a6/a91f/e320ef1c825e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] MY SWAGGER</div>
+<div><a href='https://tidal.com/album/211838419' target='_blank'>https://tidal.com/album/211838419</a></div>
+<div>GOT7 - My Swagger</div>
+<div>GOT7 - Meet Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/211838419' target='_blank'><img src='https://resources.tidal.com/images/a8754405/998e/4927/b353/13af6697bcd7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] FLIGHT LOG - ARRIVAL</div>
+<div><a href='https://tidal.com/album/305267910' target='_blank'>https://tidal.com/album/305267910</a></div>
+<div>GOT7 - Never Ever</div>
+<div>GOT7 - Shopping Mall</div>
+<div>GOT7 - Paradise</div>
+<div>GOT7 - Sign</div>
+<div>GOT7 - Go Higher</div>
+<div>GOT7 - Q</div>
+<div>GOT7 - Don’t care</div>
+<div>GOT7 - OUT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305267910' target='_blank'><img src='https://resources.tidal.com/images/3a762cac/5579/4499/be83/9f3e54727abd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 7 for 7</div>
+<div><a href='https://tidal.com/album/305164634' target='_blank'>https://tidal.com/album/305164634</a></div>
+<div>GOT7 - Moon U</div>
+<div>GOT7 - Teenager</div>
+<div>GOT7 - You Are</div>
+<div>GOT7 - Firework</div>
+<div>GOT7 - Remember You</div>
+<div>GOT7 - To Me</div>
+<div>GOT7 - Face</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305164634' target='_blank'><img src='https://resources.tidal.com/images/21fc9232/f71a/43c3/b6ee/b9ac03ae80db/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] FLIGHT LOG - TURBULENCE</div>
+<div><a href='https://tidal.com/album/305174504' target='_blank'>https://tidal.com/album/305174504</a></div>
+<div>GOT7 - skyway</div>
+<div>GOT7 - Hard Carry</div>
+<div>GOT7 - Boom x3</div>
+<div>GOT7 - Prove It</div>
+<div>GOT7 - No Jam</div>
+<div>GOT7 - HEY</div>
+<div>GOT7 - Mayday</div>
+<div>GOT7 - My Home</div>
+<div>GOT7 - Who’s That</div>
+<div>GOT7 - If</div>
+<div>GOT7 - Sick</div>
+<div>GOT7 - Dreamin’</div>
+<div>GOT7 - Let Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305174504' target='_blank'><img src='https://resources.tidal.com/images/e9e32064/c263/4783/9de6/86e5adf3ed77/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] FLIGHT LOG - DEPARTURE</div>
+<div><a href='https://tidal.com/album/305174496' target='_blank'>https://tidal.com/album/305174496</a></div>
+<div>GOT7 - Fly</div>
+<div>GOT7 - Can't</div>
+<div>GOT7 - See The Light</div>
+<div>GOT7 - FISH</div>
+<div>GOT7 - REWIND</div>
+<div>GOT7 - Beggin on my knees</div>
+<div>GOT7 - Something Good</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305174496' target='_blank'><img src='https://resources.tidal.com/images/c4bec463/dfca/4a6c/a1c0/462d45f46e97/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] MAD</div>
+<div><a href='https://tidal.com/album/305639467' target='_blank'>https://tidal.com/album/305639467</a></div>
+<div>GOT7 - If You Do</div>
+<div>GOT7 - Put them up</div>
+<div>GOT7 - Feelin' Good</div>
+<div>GOT7 - GOOD</div>
+<div>GOT7 - Eyes On</div>
+<div>GOT7 - Tic Tic Tok</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305639467' target='_blank'><img src='https://resources.tidal.com/images/e022ce1c/cf05/4ec1/a87d/ad8b30d59494/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] MAD Winter Edition</div>
+<div><a href='https://tidal.com/album/305359932' target='_blank'>https://tidal.com/album/305359932</a></div>
+<div>GOT7 - Confession Song</div>
+<div>GOT7 - Everyday</div>
+<div>GOT7 - To. Star</div>
+<div>GOT7 - If You Do</div>
+<div>GOT7 - Put them up</div>
+<div>GOT7 - Feelin' Good</div>
+<div>GOT7 - GOOD</div>
+<div>GOT7 - Eyes On</div>
+<div>GOT7 - Tic Tic Tok</div>
+<div>GOT7 - If You Do (Stage ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305359932' target='_blank'><img src='https://resources.tidal.com/images/42dab6e0/30e8/4932/afc6/5cce95c4ed26/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] LOVE TRAIN</div>
+<div><a href='https://tidal.com/album/144394144' target='_blank'>https://tidal.com/album/144394144</a></div>
+<div>GOT7 - Love Train</div>
+<div>GOT7 - O.M.G</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/144394144' target='_blank'><img src='https://resources.tidal.com/images/57f1f7aa/4a95/40b6/bf88/ff9676ace92b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Just Right</div>
+<div><a href='https://tidal.com/album/304913607' target='_blank'>https://tidal.com/album/304913607</a></div>
+<div>GOT7 - Just Right</div>
+<div>GOT7 - Before the Full Moon Rises</div>
+<div>GOT7 - My Reaction</div>
+<div>GOT7 - Nice</div>
+<div>GOT7 - Mine</div>
+<div>GOT7 - Back To Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304913607' target='_blank'><img src='https://resources.tidal.com/images/47f747b0/0c06/494a/8cbd/793a242eb029/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Identify</div>
+<div><a href='https://tidal.com/album/305184450' target='_blank'>https://tidal.com/album/305184450</a></div>
+<div>GOT7 - Stop stop it</div>
+<div>GOT7 - Gimme</div>
+<div>GOT7 - Take My Hand</div>
+<div>GOT7 - Magnetic</div>
+<div>GOT7 - Just Tonight</div>
+<div>GOT7 - Turn Up the Music</div>
+<div>GOT7 - Stay</div>
+<div>GOT7 - Moonlight</div>
+<div>GOT7 - She’s a monster</div>
+<div>GOT7 - Girls Girls Girls</div>
+<div>GOT7 - A</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305184450' target='_blank'><img src='https://resources.tidal.com/images/f3354d6f/d9e4/4f2e/b010/7042eb992fc0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Got It-</div>
+<div><a href='https://tidal.com/album/304913614' target='_blank'>https://tidal.com/album/304913614</a></div>
+<div>GOT7 - Hello</div>
+<div>GOT7 - Girls Girls Girls</div>
+<div>GOT7 - I Like You</div>
+<div>GOT7 - Follow Me</div>
+<div>GOT7 - Like Oh</div>
+<div>GOT7 - Playground</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304913614' target='_blank'><img src='https://resources.tidal.com/images/383ee70b/7d6f/43a6/bcaa/69fa9895b14c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] AROUND THE WORLD</div>
+<div><a href='https://tidal.com/album/211838434' target='_blank'>https://tidal.com/album/211838434</a></div>
+<div>GOT7 - Around the World</div>
+<div>GOT7 - So Lucky</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/211838434' target='_blank'><img src='https://resources.tidal.com/images/15f79a37/5e99/4208/abb0/32db8d9f60d1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_GK/1_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ1) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_GK/갓세븐 (GOT7)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
