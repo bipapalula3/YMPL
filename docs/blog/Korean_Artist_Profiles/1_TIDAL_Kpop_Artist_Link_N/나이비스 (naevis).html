@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 나이비스 ( Tidal naevis )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 나이비스 ( Tidal naevis )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/3584aea3/e6ef/485e/b236/c7bbb40ec865/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/39010460' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 나이비스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>나이비스 (nævis) - 섬세한 감각으로 빚어낸 디지털 아리아, 'Sensitive' 속 차가운 듯 따뜻한 위로를 전하는 존재</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> naevis</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>nævis - A digital aria crafted with delicate sensibility, a being delivering cool yet warm comfort in 'Sensitive'</div><p>가상 세계에서 등장한 듯한 신비로운 존재, 나이비스를 소개합니다. 독특한 음색과 감각적인 음악으로 듣는 이의 마음을 사로잡는 아티스트입니다. 그녀의 음악은 마치 꿈속을 유영하는 듯한 몽환적인 경험을 선사합니다.</p><p>Introducing nævis, a mysterious being who seems to have emerged from a virtual world. She is an artist who captivates listeners with her unique tone and sensual music. Her music offers a dreamlike experience as if floating through a dream.</p><p>✧</p><p>그룹 탄생</p><p>나이비스는 현실과 가상 세계를 넘나드는 독특한 콘셉트로 등장했습니다. 그녀의 존재는 단순한 가수를 넘어, 새로운 형태의 아티스트를 제시합니다. 가상과 현실의 경계를 허무는 시도는 음악계에 신선한 바람을 불어넣고 있습니다.</p><p>Group Genesis</p><p>nævis emerged with a unique concept that transcends the boundaries of reality and virtual worlds. Her existence goes beyond a simple singer, presenting a new form of artist. This attempt to break down the boundaries between virtuality and reality is bringing a breath of fresh air into the music industry.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>나이비스의 음악은 섬세한 감정 표현과 실험적인 사운드가 특징입니다. 그녀는 다양한 장르를 넘나들며 자신만의 독특한 스타일을 구축했습니다. 특히, 몽환적인 분위기와 강렬한 비트의 조화는 듣는 이에게 깊은 인상을 남깁니다.</p><p>Music and Performance</p><p>nævis's music is characterized by delicate emotional expression and experimental sounds. She has established her own unique style by crossing various genres. In particular, the harmony between the dreamy atmosphere and the intense beats leaves a deep impression on the listener.</p><p>✧</p><p>주요 활동</p><p>나이비스는 솔로 활동뿐만 아니라 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀왔습니다. 리믹스 작업에 참여하여 원곡과는 또 다른 매력을 선보이기도 합니다. 그녀의 활동은 가상 세계와 현실 세계를 융합하는 새로운 시도로 평가받고 있습니다.</p><p>Key Activities</p><p>nævis has broadened her musical spectrum through collaborations with various artists as well as her solo activities. She also participates in remix work, showcasing a different charm from the original song. Her activities are evaluated as a new attempt to fuse the virtual and real worlds.</p><p>✧</p><p>미래/의미</p><p>나이비스는 앞으로도 더욱 다양한 음악적 시도를 통해 자신만의 세계를 확장해 나갈 것입니다. 그녀의 음악은 단순한 즐거움을 넘어, 새로운 가능성과 상상력을 자극합니다. 가상 아티스트로서 나이비스가 보여줄 미래는 더욱 기대됩니다.</p><p>Future/Meaning</p><p>nævis will continue to expand her world through more diverse musical endeavors in the future. Her music goes beyond simple enjoyment, stimulating new possibilities and imagination. The future that nævis, as a virtual artist, will show is even more anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[A] [2025] Sensitive</div>
+<div><a href='https://tidal.com/album/450222872' target='_blank'>https://tidal.com/album/450222872</a></div>
+<div>nævis - Sensitive</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/450222872' target='_blank'><img src='https://resources.tidal.com/images/7ce731c5/81e6/4803/99e3/460553b883b9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[A] [2024] iScreaM Vol.35 - Done Remix</div>
+<div><a href='https://tidal.com/album/403810101' target='_blank'>https://tidal.com/album/403810101</a></div>
+<div>nævis, IMLAY, 2Spade - Done (IMLAY & 2Spade Remix)</div>
+<div>nævis - Done</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/403810101' target='_blank'><img src='https://resources.tidal.com/images/8512d147/e8b1/4b8d/92c9/49935cfefcec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[A] [2024] Done</div>
+<div><a href='https://tidal.com/album/384717911' target='_blank'>https://tidal.com/album/384717911</a></div>
+<div>nævis - Done</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/384717911' target='_blank'><img src='https://resources.tidal.com/images/68fa4f56/8028/4693/bc7b/00bf167ca584/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/1_TIDAL_Kpop_Artist_Link_N.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄴ1) TIDAL Kpop Artist Link (N)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/나이비스 (naevis)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
