@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 김현성 ( Tidal Kim Hyun Sung )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 김현성 ( Tidal Kim Hyun Sung )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/bdd8ec40/8cbc/443d/acbb/7e0c48422d1f/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10819703' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 김현성</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>김현성 – 시대를 초월하는 서정시인, '이중섭 거'의 애틋함과 '달과 까마귀'의 깊은 사유를 노래하는 음유시인</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Kim Hyun Sung</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Kim Hyun Sung – A Timeless Balladeer, a musical poet who sings the yearning of 'The guy,Lee Jung-Seob' and the deep contemplation of 'Moon And Crow'</div><p>김현성님은 섬세한 감성과 깊이 있는 음악 세계로 오랫동안 많은 사랑을 받아온 가수입니다. 그의 음악은 마치 한 편의 시처럼, 듣는 이의 마음을 잔잔하게 물들이는 힘을 가지고 있어요. 진솔한 가사와 서정적인 멜로디는 김현성님만의 독보적인 매력이랍니다.</p><p>Kim Hyun Sung is a singer who has been loved for a long time for his delicate sensibility and deep musical world. His music, like a poem, has the power to gently color the listener's heart. Sincere lyrics and lyrical melodies are Kim Hyun Sung's unique charm.</p><p>✧</p><p>음악적 여정의 시작</p><p>김현성님은 자신만의 음악적 색깔을 꾸준히 탐구하며 독자적인 길을 걸어왔습니다. 그의 음악은 삶의 풍경과 감정을 섬세하게 담아내며 듣는 이들에게 깊은 공감과 위로를 전해줍니다.</p><p>The Beginning of a Musical Journey</p><p>Kim Hyun Sung has consistently explored his own musical color and has walked his own path. His music delicately captures the landscapes and emotions of life, delivering deep empathy and comfort to listeners.</p><p>✧</p><p>서정적인 음률과 깊이 있는 가사</p><p>김현성님의 음악은 서정적인 멜로디와 진솔한 가사가 어우러져 깊은 감동을 선사합니다. '나의 사랑하는 당신'처럼 사랑과 그리움을 노래하는가 하면, '봄날의 아이들'처럼 따뜻한 시선으로 세상을 바라보기도 합니다.</p><p>Lyrical Melodies and Profound Lyrics</p><p>Kim Hyun Sung's music combines lyrical melodies and sincere lyrics to deliver deep emotion. He sings of love and longing, like in 'my beloved dear', while also looking at the world with a warm gaze, like in 'The Children Of Spring'.</p><p>✧</p><p>삶의 풍경을 담은 노래</p><p>그의 음악은 '제주도에 가면'처럼 아름다운 풍경을 노래하기도 하고, '부산항에 가면'처럼 애틋한 추억을 떠올리게 하기도 합니다. 김현성님의 음악은 우리 삶의 다양한 순간들을 따뜻하게 감싸 안아줍니다.</p><p>Songs Capturing Life's Landscapes</p><p>His music sings of beautiful landscapes, like in 'I miss Jeju island', and evokes tender memories, like in 'At The Busan Port'. Kim Hyun Sung's music warmly embraces the various moments of our lives.</p><p>✧</p><p>앞으로의 음악, 그리고 의미</p><p>앞으로도 김현성님은 진솔한 음악으로 많은 사람들에게 위로와 감동을 선사할 것입니다. 그의 음악은 시대를 초월하여 오랫동안 우리 곁에 머물며, 삶의 아름다움을 노래할 것입니다.</p><p>Future Music and Meaning</p><p>In the future, Kim Hyun Sung will continue to provide comfort and emotion to many people through his sincere music. His music will transcend time and stay with us for a long time, singing of the beauty of life.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2007] The guy Lee Jung Seop</div>
+<div><a href='https://tidal.com/album/215648547' target='_blank'>https://tidal.com/album/215648547</a></div>
+<div>Kim Hyun Sung - The guy,Lee Jung-Seob</div>
+<div>Kim Hyun Sung - Moon And Crow</div>
+<div>Kim Hyun Sung - A Camellia Flower</div>
+<div>Kim Hyun Sung - I miss Jeju island</div>
+<div>Kim Hyun Sung - my beloved dear</div>
+<div>Kim Hyun Sung - My Friend Is</div>
+<div>Kim Hyun Sung - the family leaving for</div>
+<div>Kim Hyun Sung - Ox’s words</div>
+<div>Kim Hyun Sung - This All Yearnings</div>
+<div>Kim Hyun Sung - At The Busan Port</div>
+<div>Kim Hyun Sung - The Man,Lee Jung-Seob (The Song By Lee Su-Jin)</div>
+<div>Kim Hyun Sung - The Children Of Spring</div>
+<div>Kim Hyun Sung - The Opposite Side Of The Sea (The Letter Of Namddok)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215648547' target='_blank'><img src='https://resources.tidal.com/images/f9990845/d6e1/4064/b629/e754979612b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] The Christmas Day</div>
+<div><a href='https://tidal.com/album/215931337' target='_blank'>https://tidal.com/album/215931337</a></div>
+<div>Kim Hyun Sung - THE CHRISTMAS DAY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931337' target='_blank'><img src='https://resources.tidal.com/images/b3c62abc/0bb6/4b22/aa59/efaa2d3588e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] Air</div>
+<div><a href='https://tidal.com/album/102167649' target='_blank'>https://tidal.com/album/102167649</a></div>
+<div>Kim Hyun Sung - 거짓말이야</div>
+<div>Kim Hyun Sung - 고백</div>
+<div>Kim Hyun Sung - 사랑할수 있나요</div>
+<div>Kim Hyun Sung - 하늘 높이</div>
+<div>Kim Hyun Sung - 행복</div>
+<div>Kim Hyun Sung - Forever Love</div>
+<div>Kim Hyun Sung - 차라리 돌아와</div>
+<div>Kim Hyun Sung - 슬럼프</div>
+<div>Kim Hyun Sung - 너의 세상이 될게</div>
+<div>Kim Hyun Sung - Take Me When You Go</div>
+<div>Kim Hyun Sung - 이별의 끝에서</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102167649' target='_blank'><img src='https://resources.tidal.com/images/f094c759/9d5c/4a45/a7ff/9ddb3494e1e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] 현성시대</div>
+<div><a href='https://tidal.com/album/306353127' target='_blank'>https://tidal.com/album/306353127</a></div>
+<div>Kim Hyun Sung - Paradise (Live Version)</div>
+<div>Kim Hyun Sung - 너의 그리움이 나를 찾을 때 (Live Version)</div>
+<div>Kim Hyun Sung - 나의 신부에게</div>
+<div>Kim Hyun Sung - 느낌</div>
+<div>Kim Hyun Sung - Loving You (Live Version)</div>
+<div>Kim Hyun Sung - 슬픈변명</div>
+<div>Kim Hyun Sung - Killer</div>
+<div>Kim Hyun Sung - 너를 위해서 (Acappella Version)</div>
+<div>Kim Hyun Sung - 언젠가</div>
+<div>Kim Hyun Sung - 이해할께 (Live Version)</div>
+<div>Kim Hyun Sung - 기대</div>
+<div>Kim Hyun Sung - 슬픈이유</div>
+<div>Kim Hyun Sung - 나의 손을 잡아줘 (Live Version)</div>
+<div>Kim Hyun Sung - 시네마 시네마</div>
+<div>Kim Hyun Sung - 소원</div>
+<div>Kim Hyun Sung - 너잖아</div>
+<div>Kim Hyun Sung - Heaven (Live Version)</div>
+<div>Kim Hyun Sung - 유죄</div>
+<div>Kim Hyun Sung - 날 (Revival Version)</div>
+<div>Kim Hyun Sung - 잘자요 (Bonus Track Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306353127' target='_blank'><img src='https://resources.tidal.com/images/769a6353/ab91/47b0/b233/26869e0badae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] Soulmate</div>
+<div><a href='https://tidal.com/album/102167689' target='_blank'>https://tidal.com/album/102167689</a></div>
+<div>Kim Hyun Sung - Heaven</div>
+<div>Kim Hyun Sung - 나의 손을 잡아줘</div>
+<div>Kim Hyun Sung - 마지막 이별</div>
+<div>Kim Hyun Sung - 너잖아</div>
+<div>Kim Hyun Sung - Paradise</div>
+<div>Kim Hyun Sung - 느낌</div>
+<div>Kim Hyun Sung - Loving You</div>
+<div>Kim Hyun Sung - 그대 떠난 후에 난</div>
+<div>Kim Hyun Sung - Come to me</div>
+<div>Kim Hyun Sung - 너의 그리움이 나를 찾을 때</div>
+<div>Kim Hyun Sung - 그날 처럼</div>
+<div>Kim Hyun Sung - Hunter</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102167689' target='_blank'><img src='https://resources.tidal.com/images/bdd8ec40/8cbc/443d/acbb/7e0c48422d1f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] 현` Solitude 3</div>
+<div><a href='https://tidal.com/album/306350351' target='_blank'>https://tidal.com/album/306350351</a></div>
+<div>Kim Hyun Sung - 이해할께</div>
+<div>Kim Hyun Sung - 날 버려요</div>
+<div>Kim Hyun Sung - 아름다운 선택</div>
+<div>Kim Hyun Sung - 우리</div>
+<div>Kim Hyun Sung - 기대</div>
+<div>Kim Hyun Sung - 이별지유</div>
+<div>Kim Hyun Sung - Alone</div>
+<div>Kim Hyun Sung - 알고 있지만</div>
+<div>Kim Hyun Sung - 상심</div>
+<div>Kim Hyun Sung - 이별은 다시 사랑으로</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306350351' target='_blank'><img src='https://resources.tidal.com/images/2676cd13/f839/49da/8b73/a7630640208e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Kim Hyun Sung 2 Solo Album</div>
+<div><a href='https://tidal.com/album/306368239' target='_blank'>https://tidal.com/album/306368239</a></div>
+<div>Kim Hyun Sung - Killer</div>
+<div>Kim Hyun Sung - 슬픈 변명</div>
+<div>Kim Hyun Sung - 우리가 함께했던 시간만으로</div>
+<div>Kim Hyun Sung - 이별은 연극처럼</div>
+<div>Kim Hyun Sung - 유죄 (형벌)</div>
+<div>Kim Hyun Sung - 너를 위해</div>
+<div>Kim Hyun Sung - 나의 신부에게</div>
+<div>Kim Hyun Sung - 이불 속에서</div>
+<div>Kim Hyun Sung - 화해</div>
+<div>Kim Hyun Sung - 언젠가</div>
+<div>Kim Hyun Sung - Roller Coaster</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306368239' target='_blank'><img src='https://resources.tidal.com/images/5f00bccc/d0a3/470d/bace/fb2ace7379de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Kim Hyun Sung Vol. 1</div>
+<div><a href='https://tidal.com/album/306367291' target='_blank'>https://tidal.com/album/306367291</a></div>
+<div>Kim Hyun Sung - 너를 위해서…</div>
+<div>Kim Hyun Sung - 시네마 시네마</div>
+<div>Kim Hyun Sung - 소원</div>
+<div>Kim Hyun Sung - 제발 돌아가</div>
+<div>Kim Hyun Sung - 몽중인</div>
+<div>Kim Hyun Sung - 너와 함께라면</div>
+<div>Kim Hyun Sung - 슬픈 이유</div>
+<div>Kim Hyun Sung - 퍼즐게임</div>
+<div>Kim Hyun Sung - 너를 위해서... (Accapella Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306367291' target='_blank'><img src='https://resources.tidal.com/images/5574c68f/c4a9/4e3d/9f9a/a4116b3d6f15/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/2_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ2) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/김현성 (Kim Hyun Sung)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
