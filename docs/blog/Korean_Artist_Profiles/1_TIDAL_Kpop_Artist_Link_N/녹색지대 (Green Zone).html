@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 녹색지대 ( Tidal Green Zone )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 녹색지대 ( Tidal Green Zone )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/51f030ce/1eff/4aec/b5f8/3546cf7f9578/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/22312340' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 녹색지대</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>녹색지대 – ‘사랑을 할꺼야’처럼 청량한 설렘을, ‘준비없는 이별’처럼 깊은 감성을 노래하는 90년대 대표 듀오</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Green Zone</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Green Zone - The quintessential 90s duo singing about refreshing excitement like 'I'm Gonna Love' and profound emotions like 'Unprepared Farewell'</div><p>90년대 가요계를 빛낸 듀오, 녹색지대를 소개합니다. 감미로운 멜로디와 공감되는 가사로 많은 사랑을 받았어요. 그들의 음악은 시간이 흘러도 여전히 우리의 마음속에 깊은 울림을 줍니다.</p><p>Let me introduce Green Zone, a duo that shined in the 90s Korean music scene. They received a lot of love for their sweet melodies and relatable lyrics. Their music continues to resonate deeply in our hearts, even after time has passed.</p><p>✧</p><p>그룹 탄생</p><p>녹색지대는 1990년대 초, 개성 있는 두 보컬로 결성되었어요. 도시적인 감성과 서정적인 멜로디로 대중의 귀를 사로잡았습니다. 그들의 음악은 새로운 시대를 예감하게 하는 신선함을 선사했죠.</p><p>Birth of the Group</p><p>Green Zone was formed in the early 1990s with two distinctive vocalists. They captivated the public with their urban sensibility and lyrical melodies. Their music offered a refreshing feeling that foreshadowed a new era.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>녹색지대의 음악은 사랑과 이별, 그리움 등 다양한 감정을 섬세하게 표현해요. 부드러운 발라드부터 경쾌한 댄스곡까지 폭넓은 장르를 소화하며 다채로운 매력을 선보였습니다. 그들의 하모니는 듣는 이에게 깊은 감동과 위로를 전해주죠.</p><p>Music and Performance</p><p>Green Zone's music delicately expresses various emotions such as love, farewell, and longing. They showcased a diverse appeal by performing a wide range of genres, from soft ballads to cheerful dance songs. Their harmony delivers deep emotion and comfort to the listeners.</p><p>✧</p><p>주요 활동</p><p>녹색지대는 데뷔 이후 수많은 히트곡을 발표하며 90년대 가요계를 풍미했어요. 방송과 콘서트를 통해 활발하게 활동하며 팬들과 소통했습니다. 그들의 음악은 드라마와 영화 OST로도 사용되며 더욱 많은 사랑을 받았죠.</p><p>Main Activities</p><p>Green Zone released numerous hit songs after their debut, dominating the 90s Korean music scene. They actively communicated with fans through broadcasts and concerts. Their music was also used in dramas and movie OSTs, gaining even more love.</p><p>✧</p><p>미래/의미</p><p>녹색지대는 현재까지도 많은 이들에게 추억과 향수를 불러일으키는 그룹입니다. 그들의 음악은 시대를 초월하여 꾸준히 사랑받고 있으며, 앞으로도 영원히 기억될 것입니다. 녹색지대는 한국 가요계에 잊을 수 없는 발자취를 남겼습니다.</p><p>Future/Meaning</p><p>Green Zone is a group that still evokes memories and nostalgia for many people. Their music transcends time and continues to be loved, and they will be remembered forever. Green Zone has left an unforgettable mark on the Korean music scene.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2000] 2001 녹색지대</div>
+<div><a href='https://tidal.com/album/164207992' target='_blank'>https://tidal.com/album/164207992</a></div>
+<div>녹색지대 - 사랑 느낌</div>
+<div>녹색지대 - 외톨이</div>
+<div>녹색지대 - 소중한 사랑</div>
+<div>녹색지대 - Home</div>
+<div>녹색지대 - 부탁해 제발</div>
+<div>녹색지대 - 내안의 그대</div>
+<div>녹색지대 - 내가 잘못 했을꺼야</div>
+<div>녹색지대 - I Know</div>
+<div>녹색지대 - 야누스</div>
+<div>녹색지대 - 사랑 느낌 경음악 Version</div>
+<div>녹색지대 - 사랑을 할꺼야</div>
+<div>녹색지대 - 준비없는 이별</div>
+<div>녹색지대 - 내가 지켜줄께</div>
+<div>녹색지대 - 괜찮아</div>
+<div>녹색지대 - 그래 늦지 않았어</div>
+<div>녹색지대 - 끝없는 사랑</div>
+<div>녹색지대 - 그녀와 나의 이야기</div>
+<div>녹색지대 - 무한 우정</div>
+<div>녹색지대 - 다가갈 수 있도록</div>
+<div>녹색지대 - 美</div>
+<div>녹색지대 - 가을의 전설</div>
+<div>녹색지대 - 조금씩</div>
+<div>녹색지대 - 흔들리지마</div>
+<div>녹색지대 - 용서해 줘</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/164207992' target='_blank'><img src='https://resources.tidal.com/images/0b4cc035/3a31/4bac/a635/478e20de015b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] 녹색지대 Vol.4</div>
+<div><a href='https://tidal.com/album/163383280' target='_blank'>https://tidal.com/album/163383280</a></div>
+<div>녹색지대 - 그래 늦지 않았어</div>
+<div>녹색지대 - 에덴의 동쪽</div>
+<div>녹색지대 - 그녀와 나의 이야기</div>
+<div>녹색지대 - 흔들리지마</div>
+<div>녹색지대 - 애별</div>
+<div>녹색지대 - 조금씩</div>
+<div>녹색지대 - 마지막 휴일</div>
+<div>녹색지대 - 무한 우정</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163383280' target='_blank'><img src='https://resources.tidal.com/images/91200813/c4fd/4fd7/ad7a/cd8b6dd865d1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] 녹색지대Ⅲ</div>
+<div><a href='https://tidal.com/album/164207946' target='_blank'>https://tidal.com/album/164207946</a></div>
+<div>녹색지대 - Prologue(세번째 만남)</div>
+<div>녹색지대 - 흔들리지마</div>
+<div>녹색지대 - 괜찮아</div>
+<div>녹색지대 - 美</div>
+<div>녹색지대 - 조금씩</div>
+<div>녹색지대 - 너 없는 세상에</div>
+<div>녹색지대 - 이젠</div>
+<div>녹색지대 - 다가갈 수 있도록</div>
+<div>녹색지대 - 동상이몽</div>
+<div>녹색지대 - 가을의 전설</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/164207946' target='_blank'><img src='https://resources.tidal.com/images/d5ddaf79/6362/493a/a14c/4a7c88a3002b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] 녹색지대Ⅱ</div>
+<div><a href='https://tidal.com/album/163383232' target='_blank'>https://tidal.com/album/163383232</a></div>
+<div>녹색지대 - 끝없는 사랑</div>
+<div>녹색지대 - 무한 우정</div>
+<div>녹색지대 - 준비 없는 이별</div>
+<div>녹색지대 - 용서해줘</div>
+<div>녹색지대 - 사춘기</div>
+<div>녹색지대 - 내가 지켜줄께</div>
+<div>녹색지대 - 왜 너는</div>
+<div>녹색지대 - 너의 그리움</div>
+<div>녹색지대 - 투정</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163383232' target='_blank'><img src='https://resources.tidal.com/images/51f030ce/1eff/4aec/b5f8/3546cf7f9578/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] 사랑을 할꺼야</div>
+<div><a href='https://tidal.com/album/305344290' target='_blank'>https://tidal.com/album/305344290</a></div>
+<div>녹색지대 - 멋진 연극처럼</div>
+<div>녹색지대 - 사랑을 할꺼야</div>
+<div>녹색지대 - 혼자만의 그리움</div>
+<div>녹색지대 - 슬픈 재회</div>
+<div>녹색지대 - K의 하루</div>
+<div>녹색지대 - 너의 집 앞에 서서</div>
+<div>녹색지대 - 떠나는 너에게</div>
+<div>녹색지대 - 잃어버린 약속</div>
+<div>녹색지대 - 마지막 사랑을위해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305344290' target='_blank'><img src='https://resources.tidal.com/images/101f419b/a155/40df/964c/0b506f1ded29/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/1_TIDAL_Kpop_Artist_Link_N.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄴ1) TIDAL Kpop Artist Link (N)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/녹색지대 (Green Zone)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
