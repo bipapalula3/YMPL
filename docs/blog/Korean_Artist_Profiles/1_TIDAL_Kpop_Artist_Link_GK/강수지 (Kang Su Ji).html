@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 강수지 ( Tidal Kang Su Ji )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 강수지 ( Tidal Kang Su Ji )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/e2816889/a4c7/4f39/b5ef/5d0f1c88eec7/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9830603' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 강수지</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>강수지 - ‘보랏빛 향기’처럼 영원히 기억될, 아련한 첫사랑의 추억을 떠올리게 하는 목소리</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Kang Su Ji</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Kang Su Ji - A voice that evokes the bittersweet memories of first love, forever remembered like 'Violet Fragrance'.</div><p>청순한 이미지와 맑은 음색으로 90년대 초반 가요계를 사로잡았던 강수지님을 소개합니다. 그녀의 음악은 듣는 이로 하여금 마치 한 편의 순정만화를 보는 듯한 설렘과 아련함을 느끼게 해 주는데요. 시대를 초월하는 그녀의 매력 속으로 함께 빠져볼까요?</p><p>Let me introduce Kang Su Ji, who captivated the music scene in the early 90s with her innocent image and clear voice. Her music makes listeners feel the excitement and nostalgia as if they were watching a romance comic. Shall we fall into her timeless charm together?</p><p>✧</p><p>데뷔와 함께 피어난 청춘의 아이콘</p><p>1990년, '보랏빛 향기'로 데뷔한 강수지님은 단숨에 청춘의 아이콘으로 자리매김했습니다. 그녀의 맑고 청아한 목소리는 당시 많은 이들의 마음을 사로잡았고, 가요계에 신선한 바람을 불러일으켰습니다.</p><p>Blooming as a Youth Icon with Debut</p><p>Kang Su Ji, who debuted in 1990 with 'Violet Fragrance,' quickly established herself as an icon of youth. Her clear and pure voice captivated many hearts at the time and brought a fresh breeze to the music scene.</p><p>✧</p><p>섬세한 감성, 그녀만의 음악 세계</p><p>강수지님의 음악은 서정적인 멜로디와 섬세한 가사가 특징입니다. 사랑과 이별, 그리고 삶에 대한 이야기를 그녀만의 감성으로 풀어내어 많은 이들의 공감을 얻었습니다. 그녀의 노래들은 마치 한 편의 시와 같이 아름답고 깊은 울림을 선사합니다.</p><p>Delicate Sensibility, Her Own Musical World</p><p>Kang Su Ji's music is characterized by lyrical melodies and delicate lyrics. She expressed stories about love, separation, and life with her own sensibility, gaining empathy from many. Her songs are beautiful and deeply resonant, like a poem.</p><p>✧</p><p>다채로운 활동, 변함없는 사랑</p><p>가수 활동뿐만 아니라 라디오 DJ, MC, 드라마 출연 등 다양한 분야에서 활약하며 대중과의 꾸준한 소통을 이어왔습니다. 시간이 흘러도 변치 않는 그녀의 청순한 매력은 여전히 많은 사랑을 받고 있습니다.</p><p>Diverse Activities, Unchanging Love</p><p>She has been active in various fields such as radio DJ, MC, and drama appearances, as well as singing activities, and has continued to communicate with the public. Her unchanging innocent charm is still loved by many, even as time passes.</p><p>✧</p><p>추억을 노래하는 영원한 소녀</p><p>강수지님은 앞으로도 그녀만의 감성으로 추억을 노래하며 팬들의 마음속에 영원히 기억될 것입니다. 그녀의 음악은 시간을 초월하여 언제나 우리에게 따뜻한 위로와 설렘을 선물할 것입니다.</p><p>An Eternal Girl Singing Memories</p><p>Kang Su Ji will continue to sing memories with her own sensibility and will be forever remembered in the hearts of fans. Her music transcends time and will always give us warm comfort and excitement.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2010] 사랑+one-겨울愛 - 혼자만의 겨울</div>
+<div><a href='https://tidal.com/album/273710394' target='_blank'>https://tidal.com/album/273710394</a></div>
+<div>강수지 - 사랑+one-겨울愛 - 혼자만의 겨울</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/273710394' target='_blank'><img src='https://resources.tidal.com/images/a6e9df41/32e0/479b/a36e/16d1748c9f21/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Wish</div>
+<div><a href='https://tidal.com/album/273711123' target='_blank'>https://tidal.com/album/273711123</a></div>
+<div>강수지 - Wish…</div>
+<div>강수지 - The Rainy Day</div>
+<div>강수지 - 꿈에서라도</div>
+<div>강수지 - 다시는</div>
+<div>강수지 - 이제야 이별할 수 있어요</div>
+<div>강수지 - 삶은 한번뿐인데</div>
+<div>강수지 - 운명처럼</div>
+<div>강수지 - 기다려줘</div>
+<div>강수지 - 다시 시작된 사랑</div>
+<div>강수지 - Dear My Family</div>
+<div>강수지 - Happy Together</div>
+<div>강수지 - 지난해 겨울</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/273711123' target='_blank'><img src='https://resources.tidal.com/images/aa4a556b/81aa/4f0e/ba5c/b25b10b22b31/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Kissing You</div>
+<div><a href='https://tidal.com/album/273711237' target='_blank'>https://tidal.com/album/273711237</a></div>
+<div>강수지 - 후회</div>
+<div>강수지 - 이제 와 무슨 말을 해</div>
+<div>강수지 - 나만의 그대</div>
+<div>강수지 - 사랑할 때까지</div>
+<div>강수지 - 너를 만났어</div>
+<div>강수지 - 아쉬움의 기억</div>
+<div>강수지 - 이제 와 무슨 말을해</div>
+<div>강수지 - 후회  (New House Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/273711237' target='_blank'><img src='https://resources.tidal.com/images/cbe9f3c1/0e78/4bc6/9ae4/c9c9c3e511fe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] One & Only</div>
+<div><a href='https://tidal.com/album/273710683' target='_blank'>https://tidal.com/album/273710683</a></div>
+<div>강수지 - 하데스 (오르페우스의 눈물)</div>
+<div>강수지 - Anniversary</div>
+<div>강수지 - 심연</div>
+<div>강수지 - 모두 행복하길</div>
+<div>강수지 - 날 믿으면돼  (New Cool Version)</div>
+<div>강수지 - 고백</div>
+<div>강수지 - One & Only</div>
+<div>강수지 - 내일을 약속해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/273710683' target='_blank'><img src='https://resources.tidal.com/images/e2816889/a4c7/4f39/b5ef/5d0f1c88eec7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] Kang Susie Best</div>
+<div><a href='https://tidal.com/album/273711737' target='_blank'>https://tidal.com/album/273711737</a></div>
+<div>강수지 - 시간속의 향기</div>
+<div>강수지 - 친구에게</div>
+<div>강수지 - 소중한 기억들</div>
+<div>강수지 - 애상</div>
+<div>강수지 - 널보내지 않아</div>
+<div>강수지 - 필요한건 시간일뿐</div>
+<div>강수지 - 보라빛 향기</div>
+<div>강수지 - 흩어진 나날들</div>
+<div>강수지 - I Miss You</div>
+<div>강수지 - 아름다운 너에게</div>
+<div>강수지 - 내마음 알겠니</div>
+<div>강수지 - 흔들리지마</div>
+<div>강수지 - 돌아와줘 내게</div>
+<div>강수지 - 사랑했어 너만을</div>
+<div>강수지 - 그때는 알겠지</div>
+<div>강수지 - 혼자만의 겨울</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/273711737' target='_blank'><img src='https://resources.tidal.com/images/627ff294/651a/425b/b80f/c20ee17d5a0c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] Kang Susie 6</div>
+<div><a href='https://tidal.com/album/273711502' target='_blank'>https://tidal.com/album/273711502</a></div>
+<div>강수지 - 널 보내지 않아</div>
+<div>강수지 - 어쩔수 없는 연인</div>
+<div>강수지 - 흔들리지마</div>
+<div>강수지 - 고마운 이별</div>
+<div>강수지 - 용서하지마</div>
+<div>강수지 - 그대가 최고</div>
+<div>강수지 - 너의 친굴 만났지</div>
+<div>강수지 - 슬픔은 너</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/273711502' target='_blank'><img src='https://resources.tidal.com/images/cf0d9850/3217/48ef/8dfb/1fcfe64684f0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] For You</div>
+<div><a href='https://tidal.com/album/273712060' target='_blank'>https://tidal.com/album/273712060</a></div>
+<div>강수지 - 혼자만의 겨울</div>
+<div>강수지 - 필요한건 시간일뿐</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/273712060' target='_blank'><img src='https://resources.tidal.com/images/447138ac/bc6a/48d1/b6c6/fe1f4d660705/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] 아름다운 너에게</div>
+<div><a href='https://tidal.com/album/273711479' target='_blank'>https://tidal.com/album/273711479</a></div>
+<div>강수지 - 아름다운 너에게</div>
+<div>강수지 - 이별이 있기에 사랑은</div>
+<div>강수지 - 마음의 향기</div>
+<div>강수지 - 사랑앞에서</div>
+<div>강수지 - 낯설은 시간</div>
+<div>강수지 - 반딧불</div>
+<div>강수지 - 너를 위한 이별</div>
+<div>강수지 - 남겨진 내게</div>
+<div>강수지 - 그 날까지</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/273711479' target='_blank'><img src='https://resources.tidal.com/images/f2560f6a/0ec9/4145/9300/23bfb1308474/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1993] 강수지4집</div>
+<div><a href='https://tidal.com/album/305394719' target='_blank'>https://tidal.com/album/305394719</a></div>
+<div>강수지 - 사랑했어너만을</div>
+<div>강수지 - 소중한기억들</div>
+<div>강수지 - 널기다리며</div>
+<div>강수지 - 너만을위해</div>
+<div>강수지 - 그때는알겠지</div>
+<div>강수지 - 아름다운시간들</div>
+<div>강수지 - 돌아와줘내게</div>
+<div>강수지 - I Miss You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305394719' target='_blank'><img src='https://resources.tidal.com/images/86233c49/6b60/4864/867b/06ade63ad37c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1990] 강수지 1집</div>
+<div><a href='https://tidal.com/album/102286344' target='_blank'>https://tidal.com/album/102286344</a></div>
+<div>강수지 - 보랏빛향기</div>
+<div>강수지 - 이별이가져온것</div>
+<div>강수지 - 친구에게</div>
+<div>강수지 - 꿈은어디에</div>
+<div>강수지 - 나를기억해줘</div>
+<div>강수지 - 나를사랑하겠어요</div>
+<div>강수지 - 세상사람들</div>
+<div>강수지 - 외로움의계절</div>
+<div>강수지 - 스쳐지나는사연들</div>
+<div>강수지 - 그대에게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102286344' target='_blank'><img src='https://resources.tidal.com/images/7e9d3291/d986/49a1/872d/1cd917ee6a47/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_GK/1_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ1) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_GK/강수지 (Kang Su Ji)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
