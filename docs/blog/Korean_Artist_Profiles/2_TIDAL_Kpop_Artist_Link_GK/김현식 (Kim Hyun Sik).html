@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 김현식 ( Tidal Kim Hyun Sik )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 김현식 ( Tidal Kim Hyun Sik )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/a24f98c2/2e76/40ff/9dd2/ab12984314e2/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5687733' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 김현식</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>김현식 — 영혼을 울리는 목소리, ‘나의 하루는’의 고독과 ‘넋두리’의 애절함을 노래한 영원한 가객</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Kim Hyun Sik</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Kim Hyun Sik — A soul-stirring voice, the eternal singer who sang of the solitude in 'My day is' and the sorrowful longing in 'Grumble'.</div><p>대한민국 가요계의 한 페이지를 장식한 이름, 바로 김현식입니다. 그는 특유의 허스키한 보이스와 깊이 있는 감성으로 수많은 이들의 마음을 사로잡았습니다. 그의 음악은 시대를 초월하여 여전히 많은 사람들에게 깊은 울림을 주고 있습니다.</p><p>A name that decorates a page in Korean pop music history, that is Kim Hyun Sik. He captivated the hearts of many with his unique husky voice and profound emotions. His music transcends time and continues to deeply resonate with many people.</p><p>✧</p><p>음악적 여정의 시작</p><p>김현식은 1980년대, 한국 대중음악계에 혜성처럼 등장했습니다. 그는 언더그라운드 라이브 클럽을 중심으로 활동하며 자신만의 음악 세계를 구축해 나갔습니다. 그의 음악은 단순한 유행을 따르기보다는 삶의 진솔한 감정을 담아내려 노력했습니다.</p><p>The Beginning of a Musical Journey</p><p>Kim Hyun Sik emerged like a comet in the Korean pop music scene in the 1980s. He built his own musical world by performing mainly in underground live clubs. His music strived to capture the sincere emotions of life rather than simply following trends.</p><p>✧</p><p>독보적인 음악 스타일</p><p>그의 음악은 블루스, 록, 포크 등 다양한 장르의 영향을 받았습니다. 특히 그의 허스키하면서도 호소력 짙은 보컬은 듣는 이의 마음을 깊이 파고드는 힘을 지녔습니다. 그는 사랑, 이별, 고독 등 인간의 보편적인 감정을 진솔하게 표현했습니다.</p><p>Unique Musical Style</p><p>His music was influenced by various genres such as blues, rock, and folk. In particular, his husky yet appealing vocals had the power to deeply penetrate the listener's heart. He sincerely expressed universal human emotions such as love, separation, and loneliness.</p><p>✧</p><p>주요 활동과 대표 앨범</p><p>김현식은 생전에 수많은 명곡들을 발표하며 한국 가요사에 뚜렷한 족적을 남겼습니다. 그의 앨범들은 발표 당시뿐만 아니라 시간이 흐른 후에도 꾸준히 사랑받고 있습니다. 그의 음악은 단순한 노래를 넘어, 삶의 깊이를 성찰하게 하는 예술 작품으로 평가받습니다.</p><p>Major Activities and Representative Albums</p><p>Kim Hyun Sik left a distinct mark on Korean pop music history by releasing numerous masterpieces during his lifetime. His albums have been consistently loved not only at the time of their release but also long after. His music is evaluated as a work of art that goes beyond simple songs and reflects on the depth of life.</p><p>✧</p><p>영원한 울림과 의미</p><p>비록 그는 우리 곁을 떠났지만, 그의 음악은 여전히 우리 마음속에 살아 숨 쉬고 있습니다. 김현식은 시대를 초월하는 감동과 깊이 있는 메시지로 영원히 기억될 것입니다. 그의 음악은 앞으로도 많은 사람들에게 위로와 희망을 전해줄 것입니다.</p><p>Eternal Resonance and Meaning</p><p>Although he has left our side, his music still lives and breathes in our hearts. Kim Hyun Sik will be forever remembered for his timeless emotions and profound messages. His music will continue to bring comfort and hope to many people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2014] Music Drama 2</div>
+<div><a href='https://tidal.com/album/117560255' target='_blank'>https://tidal.com/album/117560255</a></div>
+<div>Kim Hyun-Sik - Our life (우리네 인생)</div>
+<div>Kim Hyun-Sik - My day is (나의 하루는)</div>
+<div>Kim Hyun-Sik - Making memory (추억만들기)</div>
+<div>Kim Hyun-Sik - Last station of the farewell (이별의 종착역)</div>
+<div>Kim Hyun-Sik - Flower without scent (향기없는 꽃)</div>
+<div>Kim Hyun-Sik - I can't fall in love (사랑할 수 없어)</div>
+<div>Kim Hyun-Sik - I knew it was wind (바람인줄 알았는데)</div>
+<div>Kim Hyun-Sik - Be mirror (거울이 되어)</div>
+<div>Kim Hyun-Sik - Halleluiah (할렐루야)</div>
+<div>Kim Hyun-Sik - Always you are by my side (언제나 그대 내곁에)</div>
+<div>Kim Hyun-Sik - Grumble (넋두리)</div>
+<div>Kim Hyun-Sik - DownFalling of the moon (달의 몰락)</div>
+<div>Kim Hyun-Sik - Night of the city (도시의 밤)</div>
+<div>Deul Guk Hwa - That's only my world (그것만이 내세상)</div>
+<div>Kim Hyun-Sik - My love by my side (내사랑 내곁에)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117560255' target='_blank'><img src='https://resources.tidal.com/images/82a73e4f/df12/4ad3/b6b7/06f3ecf4b996/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Live</div>
+<div><a href='https://tidal.com/album/117561438' target='_blank'>https://tidal.com/album/117561438</a></div>
+<div>Kim Hyun-Sik - Darkness the starlight (어둠 그 별빛)</div>
+<div>Kim Hyun-Sik - Love song in the rain (빗속의 연가)</div>
+<div>Kim Hyun-Sik - Just You and me (그대와 단둘이서)</div>
+<div>Kim Hyun-Sik - Shape of you (당신의 모습)</div>
+<div>Kim Hyun-Sik - Moody person (변덕쟁이)</div>
+<div>Kim Hyun-Sik - One rainy evening (비오는 어느 저녁)</div>
+<div>Kim Hyun-Sik - Like rain Like music (비처럼 음악처럼)</div>
+<div>Kim Hyun-Sik - Went away (떠나가 버렸네)</div>
+<div>Kim Hyun-Sik - Don't say any word (아무말도 하지말아요)</div>
+<div>Kim Hyun-Sik - Solitude daytime (쓸쓸한 오후)</div>
+<div>Choi Sung-Won - Everyday be with you (매일 그대와)</div>
+<div>Kim Hyun-Sik - Spring Summer Autumn Winter (봄 여름 가을 겨울)</div>
+<div>Kim Hyun-Sik - I knew it was wind (바람인줄 알았는데)</div>
+<div>Kim Hyun-Sik - Reminiscence (회상)</div>
+<div>Kim Hyun-Sik - Shaded road (가리워진 길)</div>
+<div>Kim Hyun-Sik - Winter night of snow drop (눈 내리던 겨울밤)</div>
+<div>Kim Hyun-Sik - I loved you (사랑했어요)</div>
+<div>Kim Hyun-Sik - You and me (그대와 나)</div>
+<div>Kim Hyun-Sik - Just the Two of Us (우리 둘이서)</div>
+<div>Kim Hyun-Sik - While waiting you (너를 기다리며)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117561438' target='_blank'><img src='https://resources.tidal.com/images/95adca89/b961/4075/b4d0/be40819615ff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Best 2</div>
+<div><a href='https://tidal.com/album/117561402' target='_blank'>https://tidal.com/album/117561402</a></div>
+<div>Kim Hyun-Sik - Always you are by my side (언제나 그대 내곁에)</div>
+<div>Kim Hyun-Sik - Dream of the summer night (여름밤의 꿈)</div>
+<div>Kim Hyun-Sik - I can't fall in love (사랑할 수 없어)</div>
+<div>Kim Hyun-Sik - Hug you in my arms (그대 내품에)</div>
+<div>Kim Hyun-Sik - I will be wait for you (기다리겠소)</div>
+<div>Kim Hyun-Sik - Grumble (넋두리)</div>
+<div>Kim Hyun-Sik - My love by my side (내사랑 내곁에)</div>
+<div>Kim Hyun-Sik - Making memory (추억만들기)</div>
+<div>Kim Hyun-Sik - Love love love (사랑 사랑 사랑)</div>
+<div>Kim Hyun-Sik - Last station of the farewell (이별의 종착역)</div>
+<div>Kim Hyun-Sik - Side road (골목길)</div>
+<div>Kim Hyun-Sik - Illusion (환상)</div>
+<div>Kim Hyun-Sik - The first day when we met (우리처음 만난 날)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117561402' target='_blank'><img src='https://resources.tidal.com/images/f33a7154/21d3/4ad7/a637/ab5a07a6f035/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Best 10Songs</div>
+<div><a href='https://tidal.com/album/117559317' target='_blank'>https://tidal.com/album/117559317</a></div>
+<div>Kim Hyun-Sik - Side road (골목길)</div>
+<div>Kim Hyun-Sik - Went away (떠나가 버렸네)</div>
+<div>Kim Hyun-Sik - I loved you (사랑했어요)</div>
+<div>Kim Hyun-Sik - Illusion (환상)</div>
+<div>Kim Hyun-Sik - The firstday when we met (우리 처음 만난 날)</div>
+<div>Kim Hyun-Sik - Spring summer autumn winter (봄 여름 가을 겨울)</div>
+<div>Kim Hyun-Sik - Winter night of snow drop (눈 내리던 겨울 밤)</div>
+<div>Kim Hyun-Sik - Old Street old bench (그 거리 그 벤치)</div>
+<div>Kim Hyun-Sik - I can't fall in love (사랑할 수 없어)</div>
+<div>Kim Hyun-Sik - I will be wait for you (기다리겠소)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117559317' target='_blank'><img src='https://resources.tidal.com/images/735fe709/04eb/41d6/9115/9ce3c91ca4d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Best 1</div>
+<div><a href='https://tidal.com/album/117561336' target='_blank'>https://tidal.com/album/117561336</a></div>
+<div>Kim Hyun-Sik - I loved you (사랑했어요)</div>
+<div>Kim Hyun-Sik - Darkness the starlight (어둠 그 별빛)</div>
+<div>Kim Hyun-Sik - Shape of you (당신의 모습)</div>
+<div>Kim Hyun-Sik - I knew it was wind (바람인줄 알았는데)</div>
+<div>Kim Hyun-Sik - Love song in the rain (빗속의 연가)</div>
+<div>Kim Hyun-Sik - Shaded road (가리워진 길)</div>
+<div>Kim Hyun-Sik - Don't be sad (슬퍼하지 말아요)</div>
+<div>Kim Hyun-Sik - One rainy evening (비오는 어느 저녁)</div>
+<div>Kim Hyun-Sik - So we for now (우리 이제)</div>
+<div>Kim Hyun-Sik - Went away (떠나가 버렸네)</div>
+<div>Kim Hyun-Sik - Like rain like music (비처럼 음악처럼)</div>
+<div>Kim Hyun-Sik - Just You and me (그대와 단둘이서)</div>
+<div>Kim Hyun-Sik - Winter night of snow drop (눈내리던 겨울밤)</div>
+<div>Kim Hyun-Sik - Solitude daytime (쓸쓸한 오후)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117561336' target='_blank'><img src='https://resources.tidal.com/images/9de01292/09ea/4134/a6d6/d99e06dd90e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 6th</div>
+<div><a href='https://tidal.com/album/117559209' target='_blank'>https://tidal.com/album/117559209</a></div>
+<div>Kim Hyun-Sik - My love by my side (내사랑 내곁에)</div>
+<div>Kim Hyun-Sik - My day is (나의 하루는)</div>
+<div>Kim Hyun-Sik - Winter sea (겨울바다)</div>
+<div>Kim Hyun-Sik - I loved you (사랑했어요)</div>
+<div>Kim Hyun-Sik - Making memories (추억 만들기)</div>
+<div>Kim Hyun-Sik - Love love love (사랑 사랑 사랑)</div>
+<div>Kim Hyun-Sik - Last station of the farewell (이별의 종착역)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117559209' target='_blank'><img src='https://resources.tidal.com/images/a24f98c2/2e76/40ff/9dd2/ab12984314e2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 5th</div>
+<div><a href='https://tidal.com/album/117558898' target='_blank'>https://tidal.com/album/117558898</a></div>
+<div>Kim Hyun-Sik - Flower without scent (향기없는 꽃)</div>
+<div>Kim Hyun-Sik - Grumble (넋두리)</div>
+<div>Kim Hyun-Sik - Old Street old bench (그 거리 그 벤치)</div>
+<div>Kim Hyun-Sik - Night of the city (도시의 밤)</div>
+<div>Kim Hyun-Sik - Be mirror (거울이 되어)</div>
+<div>Kim Hyun-Sik - Reunion (재회)</div>
+<div>Kim Hyun-Sik - Place of sharing love (사랑의 나눔이 있는 곳)</div>
+<div>Kim Hyun-Sik - In the solitude of the night (밤의 고독 속에서)</div>
+<div>Kim Hyun-Sik - Halleluiah (할렐루야)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117558898' target='_blank'><img src='https://resources.tidal.com/images/9d559935/a306/4875/b379/c38ce8460d4f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 4th</div>
+<div><a href='https://tidal.com/album/117558653' target='_blank'>https://tidal.com/album/117558653</a></div>
+<div>Kim Hyun-Sik - Always you are by my side (언제나 그대 내곁에)</div>
+<div>Kim Hyun-Sik - Dream of the summer night (여름밤의 꿈)</div>
+<div>Kim Hyun-Sik - Late at night (한밤중에)</div>
+<div>Kim Hyun-Sik - Now (이제는)</div>
+<div>Kim Hyun-Sik - Our life (우리네 인생)</div>
+<div>Kim Hyun-Sik - I can't fall in love (사랑할 수 없어)</div>
+<div>Kim Hyun-Sik - Hug you in my arms (그대 내품에)</div>
+<div>Kim Hyun-Sik - I will be wait for you (기다리겠소)</div>
+<div>Kim Hyun-Sik - The firstday when we met (우리 처음 만난 날)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117558653' target='_blank'><img src='https://resources.tidal.com/images/ce69e2ed/63e4/4335/9c35/7cedf90378f7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 3rd</div>
+<div><a href='https://tidal.com/album/117559420' target='_blank'>https://tidal.com/album/117559420</a></div>
+<div>Kim Hyun-Sik - Love song in the rain (빗속의 연가)</div>
+<div>Kim Hyun-Sik - Shaded road (가리워진 길)</div>
+<div>Kim Hyun-Sik - Don't be sad (슬퍼하지 말아요)</div>
+<div>Kim Hyun-Sik - One rainy evening (비오는 어느 저녁)</div>
+<div>Kim Hyun-Sik - So we for now (우리 이제)</div>
+<div>Kim Hyun-Sik - Went away (떠나가 버렸네)</div>
+<div>Kim Hyun-Sik - Like rain like music (비처럼 음악처럼)</div>
+<div>Kim Hyun-Sik - Just You and me (그대와 단둘이서)</div>
+<div>Kim Hyun-Sik - Winter night of snow drop (눈 내리던 겨울밤)</div>
+<div>Kim Hyun-Sik - Solitude daytime (쓸쓸한 오후)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117559420' target='_blank'><img src='https://resources.tidal.com/images/a1c2c5a6/257f/464f/9802/22a11da9a74e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2014] 2013,October</div>
+<div><a href='https://tidal.com/album/117580592' target='_blank'>https://tidal.com/album/117580592</a></div>
+<div>Kim Hyun-Sik - When lonely night (외로운 밤이면)</div>
+<div>Kim Hyun-Sik - You on the empty field (그대 빈들에)</div>
+<div>Kim Hyun-Sik - When raining on ferry (나루터에 비 내리면)</div>
+<div>Kim Hyun-Sik - Again it's first (다시 처음이라오)</div>
+<div>Kim Hyun-Sik - Embers of love (사랑의 불씨)</div>
+<div>Kim Hyun-Sik - Love song in the rain (빗속의 연가)</div>
+<div>Kim Hyun-Sik - I knew it was wind (바람인줄 알았는데)</div>
+<div>Kim Hyun-Sik - Soo (수)</div>
+<div>Kim Hyun-Sik - Rain (비)</div>
+<div>Kim Hyun-Sik - One rainy evening (비오는 어느 저녁)</div>
+<div>Kim Hyun-Sik - I loved you (사랑했어요)</div>
+<div>Kim Hyun-Sik - Darkness the starlight (어둠 그 별빛)</div>
+<div>Kim Hyun-Sik - Winter night of snow drop (눈 내리던 겨울밤)</div>
+<div>Kim Hyun-Sik - In the wind (이 바람속에서)</div>
+<div>Kim Hyun-Sik - I'm wind cloud (나는 바람 구름)</div>
+<div>Kim Hyun-Sik - When last autumn (지난 가을에)</div>
+<div>Kim Hyun-Sik - So we for now (우리 이제)</div>
+<div>Kim Hyun-Sik - Where is my love (내사랑 어디에)</div>
+<div>Kim Hyun-Sik - While waiting you (너를 기다리며)</div>
+<div>Kim Hyun-Sik - When I feeling lonely (나 외로워지면)</div>
+<div>Kim Hyun-Sik - Went away (떠나가 버렸네)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117580592' target='_blank'><img src='https://resources.tidal.com/images/0c46df53/8971/4bec/a969/6895bba8c25f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Music Drama 1</div>
+<div><a href='https://tidal.com/album/117560803' target='_blank'>https://tidal.com/album/117560803</a></div>
+<div>Kim Hyun-Sik - Love Love Love (사랑 사랑 사랑)</div>
+<div>Kim Hyun-Sik - My love by my side (내사랑 내곁에)</div>
+<div>Kim Hyun-Sik - Shape of you (당신의 모습)</div>
+<div>Kim Hyun-Sik - Spring Summer Autumn Winter (봄 여름 가을 겨울)</div>
+<div>Kim Hyun-Sik - I loved you (사랑했어요)</div>
+<div>Kim Hyun-Sik - Darkness the starlight (어둠 그 별빛)</div>
+<div>Kim Hyun-Sik - Winter sea (겨울바다)</div>
+<div>Kim Hyun-Sik - Side road (골목길)</div>
+<div>Kim Hyun-Sik - Shaded road (가리워진 길)</div>
+<div>Kim Hyun-Sik - Like rain like music (비처럼 음악처럼)</div>
+<div>Kim Hyun-Sik - Always you are by my side (언제나 그대 내곁에)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117560803' target='_blank'><img src='https://resources.tidal.com/images/3fdc06d7/6c77/4cb8/a958/bd94efb1466a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Best 16Songs</div>
+<div><a href='https://tidal.com/album/117560764' target='_blank'>https://tidal.com/album/117560764</a></div>
+<div>Kim Hyun-Sik - I loved you (사랑했어요)</div>
+<div>Kim Hyun-Sik - Reminiscence (회상)</div>
+<div>Kim Hyun-Sik - Darkness the starlight (어둠 그 별빛)</div>
+<div>Kim Hyun-Sik - Before leave (떠나기 전에)</div>
+<div>Kim Hyun-Sik - I knew it was wind (바람인줄 알았는데)</div>
+<div>Kim Hyun-Sik - Shape of you (당신의 모습)</div>
+<div>Kim Hyun-Sik - Don't say any word (아무말도 하지 말아요)</div>
+<div>Kim Hyun-Sik - Moody person (변덕쟁이)</div>
+<div>Kim Hyun-Sik - Love song in the rain (빗속의 연가)</div>
+<div>Kim Hyun-Sik - Shaded road (가리워진 길)</div>
+<div>Kim Hyun-Sik - One rainy evening (비오는 어느 저녁)</div>
+<div>Kim Hyun-Sik - So we for now (우리 이제)</div>
+<div>Kim Hyun-Sik - Went away (떠나가 버렸네)</div>
+<div>Kim Hyun-Sik - Like rain Like music (비처럼 음악처럼)</div>
+<div>Kim Hyun-Sik - Just You and me (그대와 단둘이서)</div>
+<div>Kim Hyun-Sik - Winter night of snow drop (눈 내리던 겨울밤)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117560764' target='_blank'><img src='https://resources.tidal.com/images/9b12b486/6758/43d0/acae/7220a07b8299/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 7th</div>
+<div><a href='https://tidal.com/album/117560562' target='_blank'>https://tidal.com/album/117560562</a></div>
+<div>Kim Hyun-Sik - Kim Hyun-Sik (Live Voice) (김현식)</div>
+<div>Kim Hyun-Sik, Kim Jang-Hoon - Again it's first (다시 처음이라오)</div>
+<div>Kim Hyun-Sik - Embers of love (사랑의 불씨)</div>
+<div>Kim Hyun-Sik - In the wind (이 바람속에서)</div>
+<div>Kim Hyun-Sik, Park Jung-Hoon - First Of May</div>
+<div>Kim Hyun-Sik - Rain</div>
+<div>Kim Hyun-Sik - Again it's first (다시 처음이라오)</div>
+<div>Kim Hyun-Sik - Embers of love (사랑의 불씨)</div>
+<div>Kim Hyun-Sik - In the wind (이 바람속에서)</div>
+<div>Kim Hyun-Sik - First Of May</div>
+<div>Kim Hyun-Sik - Rain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117560562' target='_blank'><img src='https://resources.tidal.com/images/a2316ec4/79a8/49e8/b01b/ea336744c15b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/2_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ2) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/김현식 (Kim Hyun Sik)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
