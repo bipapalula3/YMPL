@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 김광석 ( Tidal Kim Kwang Seok )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 김광석 ( Tidal Kim Kwang Seok )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/ec2a2696/724d/40a3/86b5/3337b41bf589/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10562475' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/11008149' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 김광석</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>‘나의 노래’로 시대의 아픔을 어루만지다, ‘잊어야 한다는 마음으로’ 읊조리는 영원한 청춘의 초상</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Kim Kwang Seok</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Soothing the pain of an era with 'My Song', an eternal portrait of youth whispering 'With a Mind to Forget'</div><p>대한민국 포크 음악의 전설, 김광석님을 아시나요? 그의 노래는 단순한 음악을 넘어, 우리 삶의 희로애락을 담아낸 한 편의 시와 같아요. 깊은 울림을 주는 그의 음악 세계로 함께 떠나볼까요?</p><p>Do you know Kim Kwang Seok, the legend of Korean folk music? His songs are more than just music; they are like poems that capture the joys and sorrows of our lives. Shall we embark on a journey into his deeply resonant musical world?</p><p>✧</p><p>그룹 탄생</p><p>김광석님은 1980년대 포크 그룹 '노래를 찾는 사람들'에서 음악 활동을 시작했어요. 사회 비판적인 메시지를 담은 노래들을 부르며 대중에게 이름을 알리기 시작했답니다. 이후 솔로로 전향하여 자신만의 음악 세계를 구축하게 됩니다.</p><p>The Birth of a Group</p><p>Kim Kwang Seok began his music career in the 1980s with the folk group 'Noreul Channeun Saramdeul' (The People Who Seek Songs). He began to make a name for himself by singing songs with socially critical messages. Later, he went solo and established his own musical world.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그의 음악은 주로 어쿠스틱 기타 반주에 진솔한 목소리를 더한 포크 스타일이에요. 삶의 고뇌와 사랑, 희망을 노래하는 가사는 많은 사람들의 공감을 불러일으켰죠. 소극장 공연을 통해 관객과 직접 소통하며 진심을 전달하는 무대를 선보였습니다.</p><p>Music and Performance</p><p>His music is mainly folk style, adding a sincere voice to acoustic guitar accompaniment. The lyrics, which sing of life's anguish, love, and hope, resonated with many people. He communicated directly with the audience through small theater performances, showcasing a stage that conveyed his sincerity.</p><p>✧</p><p>주요 활동</p><p>김광석님은 '나의 노래', '사랑했지만', '잊어야 한다는 마음으로' 등 수많은 명곡을 남겼어요. 그의 노래들은 시간이 흘러도 여전히 많은 사람들에게 사랑받고 불리고 있답니다. 또한, 다양한 공연과 앨범 발매를 통해 꾸준히 음악 활동을 이어갔습니다.</p><p>Main Activities</p><p>Kim Kwang Seok left behind many famous songs such as 'My Song', 'I Loved You, But', and 'With a Mind to Forget'. His songs are still loved and sung by many people even after time has passed. In addition, he continued his music career through various performances and album releases.</p><p>✧</p><p>미래/의미</p><p>비록 우리 곁을 떠났지만, 김광석님의 음악은 영원히 우리 마음속에 살아 숨 쉴 거예요. 그의 노래는 시대를 초월하여 사람들에게 위로와 공감을 전하며, 앞으로도 오랫동안 기억될 것입니다. 그의 음악은 단순한 노래를 넘어, 삶의 깊이를 성찰하게 하는 예술 작품과 같습니다.</p><p>Future/Meaning</p><p>Although he has left our side, Kim Kwang Seok's music will live on forever in our hearts. His songs transcend generations, conveying comfort and empathy to people, and will be remembered for a long time to come. His music is more than just a song; it is like a work of art that makes us reflect on the depth of life.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2020] An Unsaid Story</div>
+<div><a href='https://tidal.com/album/168065835' target='_blank'>https://tidal.com/album/168065835</a></div>
+<div>Kim Kwang Seok - Friend</div>
+<div>Kim Kwang Seok - a Two-wheeled car</div>
+<div>Kim Kwang Seok - Please wait for me</div>
+<div>Kim Kwang Seok - On the street</div>
+<div>Kim Kwang Seok - I loved you, but---</div>
+<div>Kim Kwang Seok - My Untold Love</div>
+<div>Kim Kwang Seok - Stump</div>
+<div>Kim Kwang Seok - In dust</div>
+<div>Kim Kwang Seok - My song</div>
+<div>Kim Kwang Seok - One-sided Love</div>
+<div>Kim Kwang Seok - With a mind to forget</div>
+<div>Kim Kwang Seok - Tree</div>
+<div>Kim Kwang Seok - In the wilderness</div>
+<div>Kim Kwang Seok - Write a letter in the cloudy autumn sky</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168065835' target='_blank'><img src='https://resources.tidal.com/images/d68f8a1d/9251/453e/9935/b6ee036697ba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 김광석 4집 리마스터링앨범</div>
+<div><a href='https://tidal.com/album/189569806' target='_blank'>https://tidal.com/album/189569806</a></div>
+<div>Kim Kwang Seok - 일어나</div>
+<div>Kim Kwang Seok - 바람이 불어오는 곳</div>
+<div>Kim Kwang Seok - 너무 깊이 생각하지마</div>
+<div>Kim Kwang Seok - 회귀</div>
+<div>Kim Kwang Seok - 너무 아픈 사랑은 사랑이 아니었음을</div>
+<div>Kim Kwang Seok - 서른 즈음에</div>
+<div>Kim Kwang Seok - 혼자 남은 밤</div>
+<div>Kim Kwang Seok - 끊어진 길</div>
+<div>Kim Kwang Seok - 맑고 향기롭게</div>
+<div>Kim Kwang Seok - 자유롭게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189569806' target='_blank'><img src='https://resources.tidal.com/images/ec2a2696/724d/40a3/86b5/3337b41bf589/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 김광석 '나의 노래' BOX SET</div>
+<div><a href='https://tidal.com/album/189580031' target='_blank'>https://tidal.com/album/189580031</a></div>
+<div>Kim Kwang Seok - 내가 필요한 거야</div>
+<div>Kim Kwang Seok - 너에게</div>
+<div>Kim Kwang Seok - 먼지가 되어</div>
+<div>Kim Kwang Seok - 바람과 나</div>
+<div>Kim Kwang Seok - 사랑했지만</div>
+<div>Kim Kwang Seok - 서른 즈음에 (ver.2)</div>
+<div>Kim Kwang Seok - 이등병의 편지</div>
+<div>Kim Kwang Seok - 일어나</div>
+<div>Kim Kwang Seok - 그녀가 처음 울던 날</div>
+<div>Kim Kwang Seok - 꽃</div>
+<div>Kim Kwang Seok - 나의 노래</div>
+<div>Kim Kwang Seok - 내 꿈</div>
+<div>Kim Kwang Seok - 바람이 불어오는 곳</div>
+<div>Kim Kwang Seok - 사랑이라는 이유로 (ver.2)</div>
+<div>Kim Kwang Seok - 이야기 하나 (ver.2)</div>
+<div>Kim Kwang Seok - 이야기 하나</div>
+<div>Kim Kwang Seok - 이젠 떠나가세요</div>
+<div>Kim Kwang Seok - Little Hero</div>
+<div>Kim Kwang Seok - 그대 웃음소리</div>
+<div>Kim Kwang Seok - 나른한 오후 (ver.2)</div>
+<div>Kim Kwang Seok - 너무 깊이 생각하지 마</div>
+<div>Kim Kwang Seok - 두 바퀴로 가는 자동차</div>
+<div>Kim Kwang Seok - 사랑이라는 이유로</div>
+<div>Kim Kwang Seok - 사랑했지만 (ver.2)</div>
+<div>Kim Kwang Seok - 이야기 둘 (ver.2)</div>
+<div>Kim Kwang Seok - 잊어야 한다는 마음으로</div>
+<div>Kim Kwang Seok - 거리에서 (ver.2)</div>
+<div>Kim Kwang Seok - 그날들 (ver.2)</div>
+<div>Kim Kwang Seok - 꽃 (ver.2)</div>
+<div>Kim Kwang Seok - 나른한 오후</div>
+<div>Kim Kwang Seok - 마음의 이야기</div>
+<div>Kim Kwang Seok - 부치지 않은 편지</div>
+<div>Kim Kwang Seok - 슬픈 우연</div>
+<div>Kim Kwang Seok - 잊혀지는 것</div>
+<div>Kim Kwang Seok - 회귀</div>
+<div>Kim Kwang Seok - 그날들 (ver.3)</div>
+<div>Kim Kwang Seok - 너 하나뿐임을</div>
+<div>Kim Kwang Seok - 너무 아픈 사랑은 사랑이 아니었음을</div>
+<div>Kim Kwang Seok - 너에게 (ver.2)</div>
+<div>Kim Kwang Seok - 불행아</div>
+<div>Kim Kwang Seok - 안녕 친구여</div>
+<div>Kim Kwang Seok - 여기서 우리</div>
+<div>Kim Kwang Seok - 외사랑</div>
+<div>Kim Kwang Seok - 잊어야 한다는 마음으로 (ver.2)</div>
+<div>Kim Kwang Seok - 나무</div>
+<div>Kim Kwang Seok - 내 마음의 문을 열어줘</div>
+<div>Kim Kwang Seok - 사랑이라는 이유로 (ver.3)</div>
+<div>Kim Kwang Seok - 서른 즈음에</div>
+<div>Kim Kwang Seok - 슬픈 노래 (ver.2)</div>
+<div>Kim Kwang Seok - 슬픈 노래</div>
+<div>Kim Kwang Seok - 어느 60대 노부부 이야기</div>
+<div>Kim Kwang Seok - 여기에</div>
+<div>Kim Kwang Seok - 혼자 남은 밤 (ver.2)</div>
+<div>Kim Kwang Seok - 거리에서</div>
+<div>Kim Kwang Seok - 그날들</div>
+<div>Kim Kwang Seok - 그대 웃음소리 (ver.3)</div>
+<div>Kim Kwang Seok - 기다려줘</div>
+<div>Kim Kwang Seok - 기대어 앉은 오후에는</div>
+<div>Kim Kwang Seok - 끝나지 않은 노래</div>
+<div>Kim Kwang Seok - 내 사람이여</div>
+<div>Kim Kwang Seok - 이야기 셋 (ver.2)</div>
+<div>Kim Kwang Seok - 혼자 남은 밤</div>
+<div>Kim Kwang Seok - 그대가 기억하는 내 모습</div>
+<div>Kim Kwang Seok - 끊어진 길</div>
+<div>Kim Kwang Seok - 말하지 못한 내 사랑</div>
+<div>Kim Kwang Seok - 바람이 불어오는 곳 (ver.2)</div>
+<div>Kim Kwang Seok - 변해가네</div>
+<div>Kim Kwang Seok - 이야기 둘</div>
+<div>Kim Kwang Seok - 창</div>
+<div>Kim Kwang Seok - 친구</div>
+<div>Kim Kwang Seok - 그건 너의 자신을 사랑하지 않는 때문이야</div>
+<div>Kim Kwang Seok - 그루터기</div>
+<div>Kim Kwang Seok - 녹두꽃</div>
+<div>Kim Kwang Seok - 마음속의 풍경</div>
+<div>Kim Kwang Seok - 맑고 향기롭게</div>
+<div>Kim Kwang Seok - 새장 속의 친구</div>
+<div>Kim Kwang Seok - 이등병의 편지 (ver.2)</div>
+<div>Kim Kwang Seok - 행복의 문</div>
+<div>Kim Kwang Seok - 흐린 가을 하늘에 편지를 써 (ver.2)</div>
+<div>Kim Kwang Seok - 기다려줘 (ver.2)</div>
+<div>Kim Kwang Seok - 기다려줘 (ver.3)</div>
+<div>Kim Kwang Seok - 나의 노래 (ver.2)</div>
+<div>Kim Kwang Seok - 너무 깊이 생각하지 마 (ver.2)</div>
+<div>Kim Kwang Seok - 다시 아침</div>
+<div>Kim Kwang Seok - 아스팔트 열기 속에서</div>
+<div>Kim Kwang Seok - 자유롭게</div>
+<div>Kim Kwang Seok - 포크 메들리 (두 바퀴로 가는 자동차 - 솔개 - 바보처럼 살았군요 - 변해가네 - 나의 노래)</div>
+<div>Kim Kwang Seok - 너무 아픈 사랑은 사랑이 아니었음을 (ver.2)</div>
+<div>Kim Kwang Seok - 사랑했지만 (ver.3)</div>
+<div>Kim Kwang Seok - 이야기 셋</div>
+<div>Kim Kwang Seok - 타는 목마름으로</div>
+<div>Kim Kwang Seok - 흐린 가을 하늘에 편지를 써</div>
+<div>Kim Kwang Seok - 그녀가 처음 울던 날 (ver.2)</div>
+<div>Kim Kwang Seok - 그대 웃음소리 (ver.2)</div>
+<div>Kim Kwang Seok - 이야기 넷 (ver.2)</div>
+<div>Kim Kwang Seok - 광야에서</div>
+<div>Kim Kwang Seok - 두 바퀴로 가는 자동차 (ver.2)</div>
+<div>Kim Kwang Seok - 어느 60대 노부부 이야기 (ver.2)</div>
+<div>Kim Kwang Seok - 너무 아픈 사랑은 사랑이 아니었음을 (ver.3)</div>
+<div>Kim Kwang Seok - 이야기 넷</div>
+<div>Kim Kwang Seok - 나의 노래 (ver.3)</div>
+<div>Kim Kwang Seok - 자유롭게 (ver.2)</div>
+<div>Kim Kwang Seok - 일어나 (ver.2)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189580031' target='_blank'><img src='https://resources.tidal.com/images/5d419da7/8877/4314/8847/eaac5481350e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 2008 leaf Fall-ing IN Love</div>
+<div><a href='https://tidal.com/album/229485225' target='_blank'>https://tidal.com/album/229485225</a></div>
+<div>Kim Gun Mo, 김광석 - 그녀가 처음 울던 날</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/229485225' target='_blank'><img src='https://resources.tidal.com/images/8f20b574/f673/4ff9/9ff1/04f33afcfb5c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] 김광석 Best</div>
+<div><a href='https://tidal.com/album/189571344' target='_blank'>https://tidal.com/album/189571344</a></div>
+<div>Kim Kwang Seok - 나의 노래</div>
+<div>Kim Kwang Seok - 자장가</div>
+<div>Kim Kwang Seok - 말하지 못한 내사랑</div>
+<div>Kim Kwang Seok - 사랑이라는 이유로</div>
+<div>Kim Kwang Seok - 이등병의 편지</div>
+<div>Kim Kwang Seok - 잊어야 한다는 마음으로</div>
+<div>Kim Kwang Seok - 거리에서</div>
+<div>Kim Kwang Seok - 변해가네</div>
+<div>Kim Kwang Seok - 서른 즈음에</div>
+<div>Kim Kwang Seok - 흐린 가을 하늘에 편지를 써</div>
+<div>Kim Kwang Seok - 사랑했지만</div>
+<div>Kim Kwang Seok - 자유롭게</div>
+<div>Kim Kwang Seok - 너에게</div>
+<div>Kim Kwang Seok - 먼지가 되어</div>
+<div>Kim Kwang Seok - 기다려 줘</div>
+<div>Kim Kwang Seok - 외사랑</div>
+<div>Kim Kwang Seok - 슬픈노래</div>
+<div>Kim Kwang Seok - 어느 60대 노부부 이야기</div>
+<div>Kim Kwang Seok - 내 사람이여</div>
+<div>Kim Kwang Seok - 너무 아픈 사랑은 사랑이 아니었음을</div>
+<div>Kim Kwang Seok - 그녀가 처음 울던 날</div>
+<div>Kim Kwang Seok - 나무</div>
+<div>Kim Kwang Seok - 바람이 불어오는 곳</div>
+<div>Kim Kwang Seok - 일어나</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189571344' target='_blank'><img src='https://resources.tidal.com/images/78848eab/d374/4e24/a79b/a38a0d1b670d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Classic</div>
+<div><a href='https://tidal.com/album/229485034' target='_blank'>https://tidal.com/album/229485034</a></div>
+<div>김광석 - 사랑이라는 이유로</div>
+<div>김광석 - 먼지가 되어</div>
+<div>김광석 - 사랑했지만</div>
+<div>김광석 - 외로운 밤</div>
+<div>김광석 - 너에게</div>
+<div>김광석 - 잊어야 한다는 마음으로</div>
+<div>김광석 - 기다려 줘</div>
+<div>김광석 - 나무</div>
+<div>김광석 - 틈</div>
+<div>김광석 - 60대 노부부 이야기</div>
+<div>김광석 - 말하지 못하는 내사랑</div>
+<div>김광석 - 슬픈노래</div>
+<div>김광석 - 두 바퀴로 가는 자동차</div>
+<div>김광석 - 너무 깊이 생각하지 마</div>
+<div>김광석 - 새장속의 친구</div>
+<div>김광석 - 행복의 문</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/229485034' target='_blank'><img src='https://resources.tidal.com/images/cc8292ab/b5b2/43a1/a57a/ac8227333a1f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] 김광석 다시 부르기 II</div>
+<div><a href='https://tidal.com/album/189569881' target='_blank'>https://tidal.com/album/189569881</a></div>
+<div>Kim Kwang Seok - 바람과 나</div>
+<div>Kim Kwang Seok - 그녀가 처음 울던 날</div>
+<div>Kim Kwang Seok - 두 바퀴로 가는 자동차</div>
+<div>Kim Kwang Seok - 잊혀지는 것</div>
+<div>Kim Kwang Seok - 불행아</div>
+<div>Kim Kwang Seok - 어느 60대 노부부 이야기</div>
+<div>Kim Kwang Seok - 내 사람이여</div>
+<div>Kim Kwang Seok - 변해가네</div>
+<div>Kim Kwang Seok - 새장속의 친구</div>
+<div>Kim Kwang Seok - 나의 노래</div>
+<div>Kim Kwang Seok - 너무 아픈 사랑은 사랑이 아니었음을</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189569881' target='_blank'><img src='https://resources.tidal.com/images/cd8ce4bb/e8cd/4cbb/85d1/bcfca257162c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] 김광석 네번째</div>
+<div><a href='https://tidal.com/album/189571395' target='_blank'>https://tidal.com/album/189571395</a></div>
+<div>Kim Kwang Seok - 일어나</div>
+<div>Kim Kwang Seok - 바람이 불어오는 곳</div>
+<div>Kim Kwang Seok - 너무 깊이 생각하지마</div>
+<div>Kim Kwang Seok - 회귀</div>
+<div>Kim Kwang Seok - 너무 아픈 사랑은 사랑이 아니었음을</div>
+<div>Kim Kwang Seok - 서른 즈음에</div>
+<div>Kim Kwang Seok - 혼자 남은 밤</div>
+<div>Kim Kwang Seok - 끊어진 길</div>
+<div>Kim Kwang Seok - 맑고 향기롭게</div>
+<div>Kim Kwang Seok - 자유롭게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189571395' target='_blank'><img src='https://resources.tidal.com/images/6ac1a5dc/84ca/4db1/bbf5/c876942b1c11/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1993] 김광석 다시 부르기 I</div>
+<div><a href='https://tidal.com/album/189569734' target='_blank'>https://tidal.com/album/189569734</a></div>
+<div>Kim Kwang Seok - 이등병의 편지</div>
+<div>Kim Kwang Seok - 사랑이라는 이유로</div>
+<div>Kim Kwang Seok - 사랑했지만</div>
+<div>Kim Kwang Seok - 그날들</div>
+<div>Kim Kwang Seok - 너에게</div>
+<div>Kim Kwang Seok - 슬픈 노래</div>
+<div>Kim Kwang Seok - 거리에서</div>
+<div>Kim Kwang Seok - 말하지 못한 내사랑</div>
+<div>Kim Kwang Seok - 그루터기</div>
+<div>Kim Kwang Seok - 기다려줘</div>
+<div>Kim Kwang Seok - 흐린 가을 하늘에 편지를 써</div>
+<div>Kim Kwang Seok - 그대 웃음소리</div>
+<div>Kim Kwang Seok - 광야에서</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189569734' target='_blank'><img src='https://resources.tidal.com/images/85045cb0/259e/49b9/97ce/53dbfa35cacf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1992] 김광석 3번째 노래모음</div>
+<div><a href='https://tidal.com/album/189571434' target='_blank'>https://tidal.com/album/189571434</a></div>
+<div>Kim Kwang Seok - 나의 노래</div>
+<div>Kim Kwang Seok - 잊어야 한다는 마음으로</div>
+<div>Kim Kwang Seok - 나른한 오후</div>
+<div>Kim Kwang Seok - 외사랑</div>
+<div>Kim Kwang Seok - 나무</div>
+<div>Kim Kwang Seok - 기대어 앉은 오후에는</div>
+<div>Kim Kwang Seok - 그대가 기억하는 내 모습</div>
+<div>Kim Kwang Seok - 행복의 문</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189571434' target='_blank'><img src='https://resources.tidal.com/images/a9481acc/c922/4947/820c/df6965392202/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/2_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ2) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/김광석 (Kim Kwang Seok)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
