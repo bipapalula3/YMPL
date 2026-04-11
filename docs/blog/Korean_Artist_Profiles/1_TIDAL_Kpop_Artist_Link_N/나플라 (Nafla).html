@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 나플라 ( Tidal Nafla )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 나플라 ( Tidal Nafla )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/f87b7b76/f87e/4e82/95a5/3f7f71ece6be/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7709254' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 나플라</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>나플라 (Nafla) – 거침없는 에너지와 진솔한 이야기, 'mobb tang'의 강렬함과 'dreamin''의 섬세함을 넘나드는 래퍼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Nafla</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Nafla - A rapper who balances boundless energy with honest storytelling, navigating the intensity of 'mobb tang' and the subtlety of 'dreamin’'.</div><p>힙합 씬에 강렬한 존재감을 드러내는 나플라를 소개합니다. 그는 독특한 플로우와 에너지 넘치는 래핑으로 많은 팬들의 사랑을 받고 있어요. 자신만의 색깔을 뚜렷하게 보여주는 그의 음악 세계를 함께 알아볼까요?</p><p>Introducing Nafla, a prominent figure in the hip-hop scene. He is loved by many fans for his unique flow and energetic rapping. Shall we explore his musical world, where he clearly shows his own color?</p><p>✧</p><p>독자적인 스타일 구축</p><p>나플라는 데뷔 초부터 자신만의 독특한 랩 스타일을 구축해왔어요. 그는 거친 에너지와 섬세한 감정 표현을 자유자재로 넘나들며, 듣는 이들에게 강렬한 인상을 남기죠. 특유의 발성과 플로우는 그를 다른 래퍼들과 차별화시키는 요소입니다.</p><p>Establishing a Unique Style</p><p>From his debut, Nafla has established his own unique rap style. He freely crosses between raw energy and delicate emotional expression, leaving a strong impression on listeners. His distinctive vocalization and flow are elements that differentiate him from other rappers.</p><p>✧</p><p>음악적 스펙트럼</p><p>그의 음악은 힙합을 기반으로 다양한 장르를 넘나드는 широкий 스펙트럼을 보여줘요. 강렬한 트랩 비트부터 감미로운 R&B 선율까지, 다채로운 시도를 통해 음악적 깊이를 더하고 있어요. 이러한 широкое 스펙트럼은 그의 음악을 더욱 풍성하게 만들어줍니다.</p><p>Musical Spectrum</p><p>His music shows a broad spectrum, crossing various genres based on hip-hop. From intense trap beats to sweet R&B melodies, he adds musical depth through diverse attempts. This wide spectrum makes his music even richer.</p><p>✧</p><p>활발한 활동과 협업</p><p>나플라는 꾸준한 음반 발매는 물론, 다양한 아티스트들과의 협업을 통해 활동 영역을 넓혀왔어요. 팔로알토, 더 콰이엇 등 실력파 래퍼들과의 호흡은 그의 음악적 역량을 더욱 돋보이게 합니다. 또한, Chancellor와 같은 보컬리스트와의 협업은 새로운 음악적 시도를 보여주죠.</p><p>Active Engagements and Collaborations</p><p>Nafla has expanded his activities through steady album releases and collaborations with various artists. His collaborations with talented rappers such as Paloalto and The Quiett further highlight his musical capabilities. Also, his collaborations with vocalists such as Chancellor showcase new musical attempts.</p><p>✧</p><p>앞으로의 행보와 의미</p><p>끊임없이 새로운 음악을 시도하고 자신만의 색깔을 만들어가는 나플라. 그의 음악은 단순한 유행을 쫓기보다는 진솔한 이야기를 담아내려는 노력이 엿보입니다. 앞으로 그가 보여줄 음악 세계는 더욱 깊고 넓어질 것으로 기대됩니다.</p><p>Future Path and Meaning</p><p>Nafla is constantly trying new music and creating his own color. His music shows an effort to capture honest stories rather than simply following trends. It is expected that the musical world he will show in the future will become deeper and wider.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[E] [2021] natural high</div>
+<div><a href='https://tidal.com/album/195445533' target='_blank'>https://tidal.com/album/195445533</a></div>
+<div>Nafla - mobb tang(Explicit)</div>
+<div>Nafla - karma(Explicit)</div>
+<div>Nafla, JUSTHIS - run! (feat. JUSTHIS)(Explicit)</div>
+<div>Nafla - NA to the izzo(Explicit)</div>
+<div>Nafla - shine freestyle(Explicit)</div>
+<div>Nafla, PaloAlto, The Quiett - today also (feat. Paloalto & The Quiett)(Explicit)</div>
+<div>Nafla - highskool(Explicit)</div>
+<div>Nafla - don't fuk wit me(Explicit)</div>
+<div>Nafla, Chancellor - ride or die (feat. Chancellor)(Explicit)</div>
+<div>Nafla - sip slow(Explicit)</div>
+<div>Nafla - blur(Explicit)</div>
+<div>Nafla - dreamin'(Explicit)</div>
+<div>Nafla - paris and tokyo(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/195445533' target='_blank'><img src='https://resources.tidal.com/images/efa08def/9194/4df5/a7a5/9c2ddc962b39/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] merlot</div>
+<div><a href='https://tidal.com/album/175837444' target='_blank'>https://tidal.com/album/175837444</a></div>
+<div>Nafla - merlot(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837444' target='_blank'><img src='https://resources.tidal.com/images/02d65d7e/538b/4127/9db2/a545f483d1fe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] love me (feat. Hoody)</div>
+<div><a href='https://tidal.com/album/175837445' target='_blank'>https://tidal.com/album/175837445</a></div>
+<div>Nafla, hoody - love me (feat. Hoody)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837445' target='_blank'><img src='https://resources.tidal.com/images/b8b855b9/1fc7/4d7c/8603/79ea3b4a2c86/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] burn</div>
+<div><a href='https://tidal.com/album/175837459' target='_blank'>https://tidal.com/album/175837459</a></div>
+<div>Nafla - burn(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837459' target='_blank'><img src='https://resources.tidal.com/images/586f35ed/0516/4be8/99a5/ada35ccf3b59/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] Wu</div>
+<div><a href='https://tidal.com/album/175837382' target='_blank'>https://tidal.com/album/175837382</a></div>
+<div>Nafla - Wu(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837382' target='_blank'><img src='https://resources.tidal.com/images/d6af24c0/b7c8/4506/b7e9/b82a5336b35c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] Stanky</div>
+<div><a href='https://tidal.com/album/175837427' target='_blank'>https://tidal.com/album/175837427</a></div>
+<div>Nafla - Stanky(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837427' target='_blank'><img src='https://resources.tidal.com/images/035b0fa7/a109/4161/bf8f/48284398b33c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] Saturday</div>
+<div><a href='https://tidal.com/album/175837426' target='_blank'>https://tidal.com/album/175837426</a></div>
+<div>Nafla - Saturday(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837426' target='_blank'><img src='https://resources.tidal.com/images/2002311d/19f4/48f6/93e8/a8bf1f0f7156/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] Locked And Loaded (feat. Owen Ovadoz)</div>
+<div><a href='https://tidal.com/album/175837381' target='_blank'>https://tidal.com/album/175837381</a></div>
+<div>Nafla, Owen Ovadoz - Locked And Loaded (feat. Owen Ovadoz)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837381' target='_blank'><img src='https://resources.tidal.com/images/47157956/9389/4213/8938/b292f362284f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] Jail</div>
+<div><a href='https://tidal.com/album/175837385' target='_blank'>https://tidal.com/album/175837385</a></div>
+<div>Nafla - Jail(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837385' target='_blank'><img src='https://resources.tidal.com/images/28899b8c/9115/4ab8/9a34/3587b6c46e04/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[E] [2021] Flower</div>
+<div><a href='https://tidal.com/album/175837415' target='_blank'>https://tidal.com/album/175837415</a></div>
+<div>Nafla - Flower(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837415' target='_blank'><img src='https://resources.tidal.com/images/30689c43/c752/44d7/968d/af053915f07c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] Dopeboy</div>
+<div><a href='https://tidal.com/album/175837357' target='_blank'>https://tidal.com/album/175837357</a></div>
+<div>Nafla - Dopeboy(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837357' target='_blank'><img src='https://resources.tidal.com/images/d288bdf4/5666/443b/abd4/15026f8d8ef4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] B.I.G-</div>
+<div><a href='https://tidal.com/album/175837417' target='_blank'>https://tidal.com/album/175837417</a></div>
+<div>Nafla - B.I.G-(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837417' target='_blank'><img src='https://resources.tidal.com/images/39197910/7a42/449c/ae57/81198568e052/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2020] under the ground (feat. Dean)</div>
+<div><a href='https://tidal.com/album/176046188' target='_blank'>https://tidal.com/album/176046188</a></div>
+<div>Nafla, DEAN - under the ground (feat. Dean)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/176046188' target='_blank'><img src='https://resources.tidal.com/images/3ee02ef7/ed13/47ac/81ed/5c507e99f9a0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2020] u n u, Pt. 2</div>
+<div><a href='https://tidal.com/album/175837461' target='_blank'>https://tidal.com/album/175837461</a></div>
+<div>Nafla, DEAN - under the ground (feat. Dean)(Explicit)</div>
+<div>Nafla - i'm in love(Explicit)</div>
+<div>Nafla, Gaeko, YuZa - someday (feat. Gaeko & Yuza)(Explicit)</div>
+<div>Nafla - soft(Explicit)</div>
+<div>Nafla - far from home(Explicit)</div>
+<div>Nafla, Colde - fate (feat. Colde)(Explicit)</div>
+<div>Nafla, BIBI - show off (feat. BIBI)(Explicit)</div>
+<div>Nafla - burn(Explicit)</div>
+<div>Nafla - slow motion(Explicit)</div>
+<div>Nafla - love business(Explicit)</div>
+<div>Nafla - too much(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837461' target='_blank'><img src='https://resources.tidal.com/images/3c9f499f/62f3/49ba/9597/1c82827141d1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2020] u n u, Pt. 1</div>
+<div><a href='https://tidal.com/album/175837450' target='_blank'>https://tidal.com/album/175837450</a></div>
+<div>Nafla - ice coffee(Explicit)</div>
+<div>Nafla - gucci girl(Explicit)</div>
+<div>Nafla, Owen - apple pie (feat. Owen)(Explicit)</div>
+<div>Nafla - been(Explicit)</div>
+<div>Nafla - merlot(Explicit)</div>
+<div>Nafla, hoody - love me (feat. Hoody)(Explicit)</div>
+<div>Nafla - Saturday(Explicit)</div>
+<div>Nafla - good morning(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837450' target='_blank'><img src='https://resources.tidal.com/images/d7d540b9/3164/455b/a251/3c8f14979a5f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2020] Nae Tat</div>
+<div><a href='https://tidal.com/album/183168602' target='_blank'>https://tidal.com/album/183168602</a></div>
+<div>BLOO, Nafla - Nae Tat(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183168602' target='_blank'><img src='https://resources.tidal.com/images/258683fd/a094/4863/8e10/5063fc17557b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2019] sense</div>
+<div><a href='https://tidal.com/album/182072281' target='_blank'>https://tidal.com/album/182072281</a></div>
+<div>Loopy, Nafla - sense(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072281' target='_blank'><img src='https://resources.tidal.com/images/9b2ce4e2/ed0a/44bf/a6f4/9f56a9dd7ffb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2019] Nergized</div>
+<div><a href='https://tidal.com/album/182072292' target='_blank'>https://tidal.com/album/182072292</a></div>
+<div>Loopy, Nafla - Nergized(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072292' target='_blank'><img src='https://resources.tidal.com/images/ee81f756/796d/4ec5/b2b6/f53ed65d238a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[E] [2019] LooFla</div>
+<div><a href='https://tidal.com/album/182072257' target='_blank'>https://tidal.com/album/182072257</a></div>
+<div>Loopy, Nafla - Atlantis(Explicit)</div>
+<div>Loopy, Nafla - Ex (Alternate Version)(Explicit)</div>
+<div>Loopy, Nafla - Coca Coca(Explicit)</div>
+<div>Loopy, Nafla - Shot(Explicit)</div>
+<div>Loopy, Nafla - Chosen(Explicit)</div>
+<div>Loopy, Nafla - Honey Bomb(Explicit)</div>
+<div>Loopy, Nafla - Ride(Explicit)</div>
+<div>Loopy, Nafla - Runnin' Out of Time(Explicit)</div>
+<div>Loopy, Nafla - Woke Up Like This(Explicit)</div>
+<div>Loopy, Nafla - Johnny Dang(Explicit)</div>
+<div>Loopy, Nafla - ABC(Explicit)</div>
+<div>Loopy, Nafla - Ice King(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072257' target='_blank'><img src='https://resources.tidal.com/images/64fa46e7/9e63/4c2f/a68f/610c9ebfac5e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2019] Ice King</div>
+<div><a href='https://tidal.com/album/182072253' target='_blank'>https://tidal.com/album/182072253</a></div>
+<div>Loopy, Nafla - Ice King(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072253' target='_blank'><img src='https://resources.tidal.com/images/425d71fa/dcdc/414f/8490/316bcbde6da0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2019] FLEX</div>
+<div><a href='https://tidal.com/album/182072286' target='_blank'>https://tidal.com/album/182072286</a></div>
+<div>Loopy, Nafla - FLEX(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072286' target='_blank'><img src='https://resources.tidal.com/images/17fbb009/cead/4ab8/8c68/e33379f42dbd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2019] Ex</div>
+<div><a href='https://tidal.com/album/182072103' target='_blank'>https://tidal.com/album/182072103</a></div>
+<div>Loopy, Nafla - Ex(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072103' target='_blank'><img src='https://resources.tidal.com/images/6d1f88b1/c841/412f/9ac7/2d5898adb30d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2018] Woke Up Like This</div>
+<div><a href='https://tidal.com/album/182072238' target='_blank'>https://tidal.com/album/182072238</a></div>
+<div>Loopy, Nafla - Woke Up Like This(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072238' target='_blank'><img src='https://resources.tidal.com/images/5b4de1d9/4812/4169/808f/83f64b5b48fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2018] Rough World</div>
+<div><a href='https://tidal.com/album/182072189' target='_blank'>https://tidal.com/album/182072189</a></div>
+<div>Loopy, Nafla - Rough World(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072189' target='_blank'><img src='https://resources.tidal.com/images/d32b18b8/29ad/42c2/90bf/78efbd439447/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2017] dime</div>
+<div><a href='https://tidal.com/album/183194925' target='_blank'>https://tidal.com/album/183194925</a></div>
+<div>Nafla - dime(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183194925' target='_blank'><img src='https://resources.tidal.com/images/67eae1ba/9650/4d19/b4b6/16a4d9908e52/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2017] ANGELS</div>
+<div><a href='https://tidal.com/album/175837389' target='_blank'>https://tidal.com/album/175837389</a></div>
+<div>Nafla - jungle(Explicit)</div>
+<div>Nafla - fly high (M&H)(Explicit)</div>
+<div>Nafla - wake up (skit)(Explicit)</div>
+<div>Nafla - kickback(Explicit)</div>
+<div>Nafla - jail(Explicit)</div>
+<div>Nafla - dead tree(Explicit)</div>
+<div>Nafla - friends (skit)(Explicit)</div>
+<div>Nafla, Loopy - gra gra (feat. Loopy)(Explicit)</div>
+<div>Nafla, BLOO - loosies (feat. BLOO)(Explicit)</div>
+<div>Nafla, Loopy - Apple Box(feat. Loopy)(Explicit)</div>
+<div>Nafla - dime(Explicit)</div>
+<div>Nafla - rollin'(Explicit)</div>
+<div>Nafla - taxi (skit)(Explicit)</div>
+<div>Nafla - Angels(Explicit)</div>
+<div>Nafla - smile(Explicit)</div>
+<div>Nafla, Owen Ovadoz - Seoul (feat. Owen Ovadoz)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837389' target='_blank'><img src='https://resources.tidal.com/images/65e6d860/43a3/44a0/8747/9d47afa2321a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2016] new blood</div>
+<div><a href='https://tidal.com/album/175837358' target='_blank'>https://tidal.com/album/175837358</a></div>
+<div>Nafla - takeover(Explicit)</div>
+<div>Nafla, aP - mercy (feat. AP)(Explicit)</div>
+<div>Nafla - kings(Explicit)</div>
+<div>Nafla - maserati(Explicit)</div>
+<div>Nafla, Young West - sue us (feat. Young West)(Explicit)</div>
+<div>Nafla - what you know(Explicit)</div>
+<div>Nafla, Young West - bandana (feat. Young West)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175837358' target='_blank'><img src='https://resources.tidal.com/images/71fb0c50/090a/45df/8b7a/afe11f3028f6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] 계약우정 (Original Television Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/416124598' target='_blank'>https://tidal.com/album/416124598</a></div>
+<div>Nafla - My friend</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/416124598' target='_blank'><img src='https://resources.tidal.com/images/6b43c309/0754/411c/9992/02be336f07f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 115 (feat. pH-1)</div>
+<div><a href='https://tidal.com/album/175806148' target='_blank'>https://tidal.com/album/175806148</a></div>
+<div>Nafla, pH-1 - 115 (feat. pH-1)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175806148' target='_blank'><img src='https://resources.tidal.com/images/30bba91c/27d0/40c2/8010/13b3092a2f22/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] NBA</div>
+<div><a href='https://tidal.com/album/182072255' target='_blank'>https://tidal.com/album/182072255</a></div>
+<div>Nafla, Loopy, BLOO - NBA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072255' target='_blank'><img src='https://resources.tidal.com/images/76d22a97/6ba6/4f85/a97d/e879458f0624/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] I'm the ONE</div>
+<div><a href='https://tidal.com/album/216124461' target='_blank'>https://tidal.com/album/216124461</a></div>
+<div>Nafla, Loopy, Lee Young Ji, Pluma - I'm the ONE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216124461' target='_blank'><img src='https://resources.tidal.com/images/d40b0a64/cd65/4527/8b05/5405ee112c4c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Not Today Christmas</div>
+<div><a href='https://tidal.com/album/182647474' target='_blank'>https://tidal.com/album/182647474</a></div>
+<div>Nafla, Notiks - Not Today Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182647474' target='_blank'><img src='https://resources.tidal.com/images/d6fc7d19/f106/47a4/87e1/a4e66d207654/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/1_TIDAL_Kpop_Artist_Link_N.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄴ1) TIDAL Kpop Artist Link (N)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/나플라 (Nafla)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
