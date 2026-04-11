@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 김요한 ( Tidal Kim Yo Han )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 김요한 ( Tidal Kim Yo Han )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/56b61a04/d7a3/4290/9068/e31b2f69c28e/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/21060938' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 김요한</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>김요한 – 다채로운 색깔로 그려내는 꿈, 'My Destiny' 속 희망처럼, 'Children'의 순수함처럼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Kim Yo Han</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Kim Yo Han – Painting Dreams in Diverse Colors, Like the Hope in 'My Destiny,' and the Purity of 'Children'</div><p>솔로 아티스트 김요한은 다재다능한 매력으로 팬들을 사로잡아요. 다양한 장르를 소화하며 자신만의 음악 세계를 구축해 나가고 있죠. 그의 음악은 듣는 이들에게 위로와 희망을 선물합니다.</p><p>Solo artist Kim Yo Han captivates fans with his versatile charm. He is building his own musical world by mastering various genres. His music offers comfort and hope to listeners.</p><p>✧</p><p>그룹 탄생</p><p>김요한은 그룹 활동을 통해 대중에게 처음 얼굴을 알렸어요. 이후 솔로 아티스트로 변신하여 더욱 폭넓은 음악적 스펙트럼을 보여주고 있죠. 그의 음악 여정은 끊임없는 도전과 성장의 연속입니다.</p><p>Group Origins</p><p>Kim Yo Han first became known to the public through group activities. He then transformed into a solo artist, showcasing an even broader musical spectrum. His musical journey is a continuous series of challenges and growth.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그의 음악은 댄스곡부터 발라드, CCM까지 다양한 장르를 아우르는 것이 특징이에요. 무대 위에서의 퍼포먼스는 에너지 넘치고, 때로는 감성적인 면모를 보여주기도 하죠. 장르에 구애받지 않는 음악적 시도가 돋보입니다.</p><p>Music and Performance</p><p>His music is characterized by its encompassing of various genres, from dance songs to ballads and even CCM. His performances on stage are energetic, and at times, he shows emotional aspects. His musical attempts, unrestricted by genre, stand out.</p><p>✧</p><p>주요 활동</p><p>솔로 앨범 발매 외에도 다양한 콜라보레이션 활동을 통해 음악적 역량을 넓혀가고 있어요. 드라마 OST 참여, 연기 활동 등 다방면에서 활약하며 만능 엔터테이너로서의 면모를 보여주고 있죠. 그의 활동은 늘 새로운 기대감을 불러일으킵니다.</p><p>Key Activities</p><p>In addition to releasing solo albums, he is expanding his musical capabilities through various collaboration activities. He is showing his versatility as an all-around entertainer by participating in drama OSTs and acting. His activities always inspire new expectations.</p><p>✧</p><p>미래/의미</p><p>김요한은 앞으로도 끊임없이 새로운 음악을 선보일 것으로 기대돼요. 진솔한 마음을 담은 음악으로 대중에게 더욱 깊은 공감과 위로를 전할 거예요. 그의 성장은 앞으로도 계속될 것입니다.</p><p>Future/Meaning</p><p>It is expected that Kim Yo Han will continue to present new music in the future. He will convey deeper empathy and comfort to the public with music that contains his sincere heart. His growth will continue in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Goodmorning Monday Vol.1</div>
+<div><a href='https://tidal.com/album/345240017' target='_blank'>https://tidal.com/album/345240017</a></div>
+<div>KIM YO HAN - Daddy and Bicycle</div>
+<div>KIM YO HAN - Children</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/345240017' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Let's Love</div>
+<div><a href='https://tidal.com/album/444180084' target='_blank'>https://tidal.com/album/444180084</a></div>
+<div>CHUU, KIM YO HAN - Let′s Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/444180084' target='_blank'><img src='https://resources.tidal.com/images/980c8f10/88bc/46ae/8ecf/6b265d2e4bf2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Love Catcher in Bali OST Part 3</div>
+<div><a href='https://tidal.com/album/267836990' target='_blank'>https://tidal.com/album/267836990</a></div>
+<div>KIM YO HAN - My Destiny</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/267836990' target='_blank'><img src='https://resources.tidal.com/images/97136cc4/2883/49e4/90c0/b5c3b16db805/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Illusion</div>
+<div><a href='https://tidal.com/album/216534318' target='_blank'>https://tidal.com/album/216534318</a></div>
+<div>KIM YO HAN - DESSERT</div>
+<div>KIM YO HAN - SELFISH</div>
+<div>KIM YO HAN - BAD</div>
+<div>KIM YO HAN - Landing On You</div>
+<div>KIM YO HAN - STAR</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216534318' target='_blank'><img src='https://resources.tidal.com/images/fa4f210b/4991/443a/8602/659788cd2488/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 깨끗한 그릇 -킹덤 빌더- Vol.3</div>
+<div><a href='https://tidal.com/album/289274002' target='_blank'>https://tidal.com/album/289274002</a></div>
+<div>KIM YO HAN - 킹덤 빌더</div>
+<div>KIM YO HAN - 우리는 성도</div>
+<div>KIM YO HAN - 로뎀나무 아래서</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/289274002' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] World is One 2021</div>
+<div><a href='https://tidal.com/album/197230606' target='_blank'>https://tidal.com/album/197230606</a></div>
+<div>CHUU, Eric Bellinger, KIM YO HAN - World is One 2021</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/197230606' target='_blank'><img src='https://resources.tidal.com/images/7d5dda6d/dcbc/403f/bb2d/393d83dca1f0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] A Love So Beautiful (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/216449927' target='_blank'>https://tidal.com/album/216449927</a></div>
+<div>KIM YO HAN - Recently</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216449927' target='_blank'><img src='https://resources.tidal.com/images/89555f6d/e09d/4d96/becd/4a2fc84773c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] NO MORE</div>
+<div><a href='https://tidal.com/album/216145130' target='_blank'>https://tidal.com/album/216145130</a></div>
+<div>KIM YO HAN - No More (Prod. Zion.T)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216145130' target='_blank'><img src='https://resources.tidal.com/images/56b61a04/d7a3/4290/9068/e31b2f69c28e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] I Believe 2020</div>
+<div><a href='https://tidal.com/album/216345380' target='_blank'>https://tidal.com/album/216345380</a></div>
+<div>Bae Jin Young, KIM YO HAN - I Believe</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216345380' target='_blank'><img src='https://resources.tidal.com/images/48767da7/c3ea/4678/b6dc/6dca77c98896/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/2_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ2) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/김요한 (Kim Yo Han)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
