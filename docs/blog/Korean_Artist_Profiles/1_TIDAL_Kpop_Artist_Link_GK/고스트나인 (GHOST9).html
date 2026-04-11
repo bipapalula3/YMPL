@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 고스트나인 ( Tidal GHOST9 )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 고스트나인 ( Tidal GHOST9 )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/e2fce9e5/833e/4c87/a606/e89e4abb52e1/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/21444924' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 고스트나인</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>고스트나인 (GHOST9) - ‘Awesome Day’처럼 청량하게, ‘RUCKUS’처럼 강렬하게, 다채로운 매력으로 무대를 채우는 아홉 개의 별</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> GHOST9</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>GHOST9 - As refreshing as 'Awesome Day,' as intense as 'RUCKUS,' nine stars filling the stage with diverse charms</div><p>강렬한 퍼포먼스와 청량한 매력을 동시에 선보이는 그룹, 고스트나인입니다. 9명의 멤버들은 각자의 개성을 빛내며 한계를 뛰어넘는 음악을 들려주고 있어요. 무대 위에서 펼쳐지는 그들의 이야기에 귀 기울여 보세요.</p><p>GHOST9 is a group that showcases both intense performances and refreshing charm. The nine members shine with their unique personalities and deliver music that transcends boundaries. Listen to their story unfolding on stage.</p><p>✧</p><p>그룹 탄생</p><p>고스트나인은 마루기획에서 야심차게 선보인 보이 그룹입니다. '지구空(공)'이라는 독특한 세계관을 바탕으로 데뷔 전부터 많은 관심을 받았어요. 멤버들은 보컬, 랩, 퍼포먼스 등 다방면에서 뛰어난 실력을 자랑합니다.</p><p>Group Genesis</p><p>GHOST9 is a boy group ambitiously introduced by Maroo Entertainment. They received a lot of attention even before their debut based on the unique worldview of 'Earth Grinding.' The members boast excellent skills in various fields such as vocals, rap, and performance.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>고스트나인의 음악은 힙합, 팝, EDM 등 다양한 장르를 넘나들며 폭넓은 스펙트럼을 보여줍니다. 강렬한 비트와 중독성 있는 멜로디, 그리고 멤버들의 개성이 돋보이는 퍼포먼스가 특징이에요. 특히, 무대 위에서의 에너지 넘치는 모습은 팬들을 사로잡습니다.</p><p>Music and Performance</p><p>GHOST9's music crosses various genres such as hip-hop, pop, and EDM, showcasing a wide spectrum. It is characterized by intense beats, addictive melodies, and performances that highlight the individuality of the members. In particular, their energetic appearance on stage captivates fans.</p><p>✧</p><p>주요 활동</p><p>고스트나인은 데뷔 이후 꾸준히 앨범을 발매하며 활발한 활동을 이어가고 있습니다. 국내뿐만 아니라 해외 팬들과도 적극적으로 소통하며 글로벌 팬덤을 확장해 나가고 있어요. 다양한 방송 및 콘텐츠 출연을 통해 인지도를 높이고 있습니다.</p><p>Key Activities</p><p>GHOST9 has been actively releasing albums since their debut. They are expanding their global fandom by actively communicating with fans not only in Korea but also overseas. They are increasing their recognition through various broadcasts and content appearances.</p><p>✧</p><p>미래/의미</p><p>끊임없이 변화하고 성장하는 고스트나인의 미래는 더욱 기대됩니다. 자신들만의 색깔을 잃지 않으면서도 새로운 시도를 통해 더욱 폭넓은 음악 세계를 펼쳐나갈 거예요. 앞으로 그들이 보여줄 무한한 가능성에 주목해 주세요.</p><p>Future/Meaning</p><p>The future of GHOST9, who are constantly changing and growing, is even more anticipated. They will expand their musical world through new attempts while maintaining their own color. Please pay attention to the infinite possibilities they will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Awesome day</div>
+<div><a href='https://tidal.com/album/366169760' target='_blank'>https://tidal.com/album/366169760</a></div>
+<div>GHOST9 - Awesome day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366169760' target='_blank'><img src='https://resources.tidal.com/images/142d28d0/9666/409b/9f06/655a67550ffa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] ARCADE - O</div>
+<div><a href='https://tidal.com/album/322454563' target='_blank'>https://tidal.com/album/322454563</a></div>
+<div>GHOST9 - Let's Get Lost</div>
+<div>GHOST9 - RUCKUS</div>
+<div>GHOST9 - B.O.M.C. (Bang On My Chest)</div>
+<div>GHOST9 - Rolling Stones</div>
+<div>GHOST9 - Love Parachute</div>
+<div>GHOST9 - Bookmark</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/322454563' target='_blank'><img src='https://resources.tidal.com/images/34fb4555/d7a0/4759/b118/816f171174f0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] ARCADE - V</div>
+<div><a href='https://tidal.com/album/222922058' target='_blank'>https://tidal.com/album/222922058</a></div>
+<div>GHOST9 - Dot</div>
+<div>GHOST9 - X-Ray</div>
+<div>GHOST9 - CHAMPION</div>
+<div>GHOST9 - T.Y.T (Take You There)</div>
+<div>GHOST9 - Always, All ways</div>
+<div>GHOST9 - Stranger</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222922058' target='_blank'><img src='https://resources.tidal.com/images/dc5e99f8/9db6/49a1/a8db/cb494463b8a5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] NOW - Who we are facing</div>
+<div><a href='https://tidal.com/album/206461707' target='_blank'>https://tidal.com/album/206461707</a></div>
+<div>GHOST9 - Milestone (intro)</div>
+<div>GHOST9 - Control</div>
+<div>GHOST9 - TRIANGLE</div>
+<div>GHOST9 - Love Language</div>
+<div>GHOST9 - Dreaming</div>
+<div>GHOST9 - COSMOS</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/206461707' target='_blank'><img src='https://resources.tidal.com/images/63f97a6f/7060/45ee/ad19/c90d0d4a57c4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] NOW - Where we are, here</div>
+<div><a href='https://tidal.com/album/176029887' target='_blank'>https://tidal.com/album/176029887</a></div>
+<div>GHOST9 - Trigger (Intro)</div>
+<div>GHOST9 - SEOUL</div>
+<div>GHOST9 - UNO</div>
+<div>GHOST9 - Starvoy</div>
+<div>GHOST9 - Hide & Seek</div>
+<div>GHOST9 - Monday to Sunday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/176029887' target='_blank'><img src='https://resources.tidal.com/images/4993ba9c/686f/4655/8bcc/19a4ec4f7398/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] NOW - When we are in Love</div>
+<div><a href='https://tidal.com/album/186300060' target='_blank'>https://tidal.com/album/186300060</a></div>
+<div>GHOST9 - On And On (Intro)</div>
+<div>GHOST9 - Up All Night</div>
+<div>GHOST9 - Double Click</div>
+<div>GHOST9 - Trampoline</div>
+<div>GHOST9 - Runaway</div>
+<div>GHOST9 - Antenna</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/186300060' target='_blank'><img src='https://resources.tidal.com/images/25a6b05a/9749/43f9/837a/e16202260521/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] PRE EPISODE 2 - W.ALL</div>
+<div><a href='https://tidal.com/album/189885632' target='_blank'>https://tidal.com/album/189885632</a></div>
+<div>GHOST9 - Peace(Intro)</div>
+<div>GHOST9 - SPLASH</div>
+<div>GHOST9 - W.ALL</div>
+<div>GHOST9 - Red Sign</div>
+<div>GHOST9 - Focus</div>
+<div>GHOST9 - Way to you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189885632' target='_blank'><img src='https://resources.tidal.com/images/aafb7157/3774/409b/a0df/6fb62b716764/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] PRE EPISODE 1 - DOOR</div>
+<div><a href='https://tidal.com/album/189784556' target='_blank'>https://tidal.com/album/189784556</a></div>
+<div>GHOST9 - Vision (Intro)</div>
+<div>GHOST9 - Think of Dawn</div>
+<div>GHOST9 - Reborn</div>
+<div>GHOST9 - It's gonna be hot</div>
+<div>GHOST9 - Lay back</div>
+<div>GHOST9 - Flying at night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189784556' target='_blank'><img src='https://resources.tidal.com/images/3fd72709/9695/4006/a104/6820a2909944/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_GK/1_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ1) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_GK/고스트나인 (GHOST9)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
