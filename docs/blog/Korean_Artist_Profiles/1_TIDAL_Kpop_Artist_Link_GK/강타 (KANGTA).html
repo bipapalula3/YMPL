@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 강타 ( Tidal KANGTA )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 강타 ( Tidal KANGTA )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/bbeb717d/6122/4cf6/8e84/5f9e39de8611/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6459704' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 강타</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>강타 (KANGTA) – 시간을 담은 목소리, '7월의 크리스마스'처럼 따뜻하고 'Slow Dance'처럼 섬세한 감성을 노래하는 영원한 오빠</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> KANGTA</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>KANGTA – A Voice Containing Time, The Eternal 'Oppa' Singing with Warmth like 'Christmas in July' and Delicate Sensibility like 'Slow Dance'</div><p>한국 대중음악계를 대표하는 보컬리스트이자 프로듀서, 강타님을 소개합니다. 섬세한 감성과 깊이 있는 음악 세계로 오랜 시간 동안 사랑받고 계시죠. 그의 음악은 시대를 초월하는 매력을 지니고 있어요.</p><p>Introducing KANGTA, a vocalist and producer who represents the Korean pop music scene. He has been loved for a long time for his delicate sensibility and profound musical world. His music has a timeless charm.</p><p>✧</p><p>그룹 탄생</p><p>강타님은 1996년 그룹 H.O.T.의 메인 보컬로 데뷔하며 센세이션을 일으켰습니다. 당시 H.O.T.는 단순한 아이돌 그룹을 넘어 사회 문화 현상으로 자리매김했었죠. 그의 부드러운 보컬은 수많은 팬들의 마음을 사로잡았습니다.</p><p>Birth of a Group</p><p>KANGTA debuted as the main vocalist of the group H.O.T. in 1996, causing a sensation. At the time, H.O.T. was more than just an idol group; it became a socio-cultural phenomenon. His smooth vocals captivated the hearts of many fans.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>강타님의 음악은 발라드를 기반으로 다양한 장르를 아우르는 폭넓은 스펙트럼을 보여줍니다. 감미로운 목소리는 물론, 작사, 작곡 능력까지 겸비한 싱어송라이터로서의 면모도 돋보이죠. 특유의 감성적인 멜로디와 진솔한 가사는 듣는 이들에게 깊은 울림을 선사합니다.</p><p>Music and Performance</p><p>KANGTA's music showcases a wide spectrum of genres based on ballads. He is also a notable singer-songwriter with his sweet voice, as well as his songwriting and composing abilities. His unique emotional melodies and sincere lyrics resonate deeply with listeners.</p><p>✧</p><p>주요 활동</p><p>솔로 활동을 통해 강타님은 자신만의 음악적 색깔을 더욱 확고히 했습니다. '한 사람'과 같은 대표곡들은 여전히 많은 사랑을 받고 있으며, 꾸준한 앨범 발매와 공연 활동을 통해 팬들과 소통하고 계세요. 또한 후배 가수들과의 협업을 통해 음악적 스펙트럼을 넓혀가고 있습니다.</p><p>Main Activities</p><p>Through his solo activities, KANGTA has further solidified his own musical identity. Representative songs such as 'The One' are still much loved, and he communicates with fans through continuous album releases and performances. He is also expanding his musical spectrum through collaborations with younger artists.</p><p>✧</p><p>미래/의미</p><p>강타님은 앞으로도 끊임없이 새로운 음악을 선보이며 대중과 소통할 것으로 기대됩니다. 그의 음악은 단순한 유행을 넘어, 시대를 초월하는 감동과 위로를 선사하죠. 앞으로 그가 보여줄 음악적 행보가 더욱 기대됩니다.</p><p>Future/Meaning</p><p>KANGTA is expected to continue to present new music and communicate with the public. His music transcends mere trends, offering timeless emotion and comfort. We look forward to the musical journey he will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] When I Close My Eyes - SM STATION</div>
+<div><a href='https://tidal.com/album/289186242' target='_blank'>https://tidal.com/album/289186242</a></div>
+<div>KANGTA, Lee Areum - When I Close My Eyes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/289186242' target='_blank'><img src='https://resources.tidal.com/images/298cc0f3/3e47/4225/b2c8/5720e318bad1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Slow Dance</div>
+<div><a href='https://tidal.com/album/211319715' target='_blank'>https://tidal.com/album/211319715</a></div>
+<div>KANGTA - Slow Dance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/211319715' target='_blank'><img src='https://resources.tidal.com/images/13621069/6ad3/47ab/9d09/43c4a94bb837/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Eyes On You - The 4th Album</div>
+<div><a href='https://tidal.com/album/246263253' target='_blank'>https://tidal.com/album/246263253</a></div>
+<div>KANGTA - Eyes On You 야경</div>
+<div>KANGTA, TAEYONG - Skip</div>
+<div>KANGTA, Paloalto - Love Song</div>
+<div>KANGTA, Heritage - 버킷리스트 Bucket List</div>
+<div>KANGTA - 한 사람 The One</div>
+<div>KANGTA - Persona 2022</div>
+<div>KANGTA - Freezing</div>
+<div>KANGTA - 7월의 크리스마스 Christmas in July</div>
+<div>KANGTA - 아마 Maybe</div>
+<div>KANGTA - Slow Dance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/246263253' target='_blank'><img src='https://resources.tidal.com/images/85bf70ad/a6dc/44b1/975f/c9cef023796a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 자유롭게 날 수 있도록 Free To Fly 2021</div>
+<div><a href='https://tidal.com/album/190052331' target='_blank'>https://tidal.com/album/190052331</a></div>
+<div>KANGTA - 자유롭게 날 수 있도록 Free To Fly 2021</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/190052331' target='_blank'><img src='https://resources.tidal.com/images/5e318bbf/2cd0/4954/966f/cc06b25d1161/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 아마 Maybe</div>
+<div><a href='https://tidal.com/album/200721073' target='_blank'>https://tidal.com/album/200721073</a></div>
+<div>KANGTA - 아마 Maybe</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200721073' target='_blank'><img src='https://resources.tidal.com/images/f6e42a2b/3141/4119/bbf4/7f92b413bdd1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 감기약 Cough Syrup - SM STATION</div>
+<div><a href='https://tidal.com/album/169386632' target='_blank'>https://tidal.com/album/169386632</a></div>
+<div>KANGTA - 감기약 Cough Syrup</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/169386632' target='_blank'><img src='https://resources.tidal.com/images/7466c94d/8161/4c3c/b5b6/60c8cc9f528e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Freezing</div>
+<div><a href='https://tidal.com/album/178016646' target='_blank'>https://tidal.com/album/178016646</a></div>
+<div>KANGTA - Freezing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/178016646' target='_blank'><img src='https://resources.tidal.com/images/5a0ccaea/97fb/4389/a1d6/cd09fd567783/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 7월의 크리스마스 Christmas in July</div>
+<div><a href='https://tidal.com/album/191808442' target='_blank'>https://tidal.com/album/191808442</a></div>
+<div>KANGTA - 7월의 크리스마스 Christmas in July</div>
+<div>KANGTA - 그 해 여름 Memories of Summer 2021</div>
+<div>KANGTA - 7월의 크리스마스 Christmas in July (Chinese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/191808442' target='_blank'><img src='https://resources.tidal.com/images/c3423b34/bd2f/4e23/9201/81a20085e049/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 인형 Doll</div>
+<div><a href='https://tidal.com/album/115279822' target='_blank'>https://tidal.com/album/115279822</a></div>
+<div>KANGTA, WENDY, SEULGI - 인형 Doll</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115279822' target='_blank'><img src='https://resources.tidal.com/images/16143b6a/5d92/46a3/b238/3d5c28c686c6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] Theme Of Prontera (From -The Memory Of Ragnarok-)</div>
+<div><a href='https://tidal.com/album/115280879' target='_blank'>https://tidal.com/album/115280879</a></div>
+<div>KANGTA - Theme Of Prontera (From -The Memory Of Ragnarok-)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115280879' target='_blank'><img src='https://resources.tidal.com/images/3f3e9913/dd4b/42b4/9d26/892888bcebcd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 'Home' Chapter 1</div>
+<div><a href='https://tidal.com/album/115281605' target='_blank'>https://tidal.com/album/115281605</a></div>
+<div>KANGTA - 말했더라면 If I Told Ya</div>
+<div>KANGTA - 단골식당 Diner</div>
+<div>KANGTA - Calling Out For You</div>
+<div>KANGTA - 사랑이 오네요 Love Is Coming</div>
+<div>KANGTA, 영준 of Brown Eyed Soul - 뚜뚜루 Marry You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115281605' target='_blank'><img src='https://resources.tidal.com/images/c027c43b/8e31/40f2/abc7/397eda0c612e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Eternity</div>
+<div><a href='https://tidal.com/album/115285166' target='_blank'>https://tidal.com/album/115285166</a></div>
+<div>KANGTA - 어느날 가슴이 말했다 Eternity</div>
+<div>KANGTA - 너를 닮아 Still With You</div>
+<div>KANGTA - 책갈피 Reminiscence</div>
+<div>KANGTA - 그래서 미안합니다 Since You've Gone</div>
+<div>KANGTA, TAEYEON - 7989</div>
+<div>KANGTA - 가슴에 남아 Still My Heart</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115285166' target='_blank'><img src='https://resources.tidal.com/images/335b7cd2/09d8/4847/93d4/b9c68f8dca92/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] PERSONA - The 3rd Album</div>
+<div><a href='https://tidal.com/album/115286026' target='_blank'>https://tidal.com/album/115286026</a></div>
+<div>KANGTA - 가면 Persona</div>
+<div>KANGTA - 쓰레기 Illusion</div>
+<div>KANGTA - 느리게 걷기 AGAPE</div>
+<div>KANGTA - 마비 Paralysis</div>
+<div>KANGTA - 하루만큼만 Just One Day</div>
+<div>KANGTA - 꿈일 뿐이죠... No More Than My Dream</div>
+<div>KANGTA - 일어나기 Reminiscence＃1</div>
+<div>KANGTA - Blue Snow</div>
+<div>KANGTA, Song Kwang Sik - 그녀의 목소리가 들립니다 Always</div>
+<div>KANGTA - 잠든 기도 Prayer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115286026' target='_blank'><img src='https://resources.tidal.com/images/4ed83caa/c0da/496b/9438/a1974962da32/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] KANGTA 1st Concert Pinetree 20020824 Live</div>
+<div><a href='https://tidal.com/album/115285271' target='_blank'>https://tidal.com/album/115285271</a></div>
+<div>KANGTA - I Love You For Sentimental Reason (Live)</div>
+<div>KANGTA - Opening (Live)</div>
+<div>KANGTA - Dream a Little Dream (Live)</div>
+<div>KANGTA - 스물셋 My Life (Live)</div>
+<div>KANGTA - The Best (Live)</div>
+<div>KANGTA - 북극성 Polaris (Live)</div>
+<div>KANGTA - Blue Moon (Live)</div>
+<div>KANGTA - Wild Flower (Live)</div>
+<div>KANGTA - 빛 Hope (Live)</div>
+<div>KANGTA - 이별후에는 One Snowing Day (Live)</div>
+<div>KANGTA - Doobidub (Live)</div>
+<div>KANGTA - 행복 Full of Happiness (Live)</div>
+<div>KANGTA - 오!그대를 Falling In Love (Live)</div>
+<div>KANGTA - 추억은 기억보다 Memories Ⅱ (Live)</div>
+<div>KANGTA - Happy Happy (Live)</div>
+<div>KANGTA - 사랑은 기억보다 Memories (Live)</div>
+<div>KANGTA - 고백 Confession (Live)</div>
+<div>KANGTA - 상록수 Pine Tree (Live)</div>
+<div>KANGTA - 그해여름 Last Summer Night (Live)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115285271' target='_blank'><img src='https://resources.tidal.com/images/6a097bc0/4703/4c23/a280/d5dd987a7c48/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] Pine Tree - The 2nd Album</div>
+<div><a href='https://tidal.com/album/115286298' target='_blank'>https://tidal.com/album/115286298</a></div>
+<div>KANGTA - 햇살 Spring</div>
+<div>KANGTA - Happy Happy</div>
+<div>KANGTA - 사랑은 기억보다 Memories</div>
+<div>KANGTA - Propose</div>
+<div>KANGTA - 바다 Summer</div>
+<div>KANGTA - 고백 Confession</div>
+<div>KANGTA - THE BEST</div>
+<div>KANGTA - 노을 Autumn</div>
+<div>KANGTA - 추억은 기억보다 Memories#2</div>
+<div>KANGTA - Flower</div>
+<div>KANGTA - 2032 In CUBA</div>
+<div>KANGTA - 눈 Winter</div>
+<div>KANGTA - 야상곡 Nocturne</div>
+<div>KANGTA - 이별 후에는 One Snowing Day</div>
+<div>KANGTA - 상록수 Pine Tree</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115286298' target='_blank'><img src='https://resources.tidal.com/images/7200407e/c7ae/4685/af95/814f049067dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] Polaris - The 1st Album</div>
+<div><a href='https://tidal.com/album/115285804' target='_blank'>https://tidal.com/album/115285804</a></div>
+<div>KANGTA - 오! 그대를 Falling In Love</div>
+<div>KANGTA - 별의 고백(Longing) - Interlude</div>
+<div>KANGTA - 북극성 Polaris</div>
+<div>KANGTA - Thanks God (Thanks 8)</div>
+<div>KANGTA - 스물셋 My Life</div>
+<div>KANGTA - 겨울 Last Winter - 나의 이야기 하나</div>
+<div>KANGTA - In Your Eyes</div>
+<div>KANGTA - 당신이 알고 있던 난... Still---</div>
+<div>KANGTA - Doobidub</div>
+<div>KANGTA - 나...세상...나 I will - 나의 이야기 두울</div>
+<div>KANGTA - 그 해 여름 Late Summer Night</div>
+<div>KANGTA - Blue Moon</div>
+<div>KANGTA - 하얀 얼굴로 With Your White Face</div>
+<div>KANGTA - 오늘 같이 이런 창밖이 좋아 Rainy Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115285804' target='_blank'><img src='https://resources.tidal.com/images/5e3eacf3/bde5/45c7/8210/448ae34c8690/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_GK/1_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ1) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_GK/강타 (KANGTA)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
