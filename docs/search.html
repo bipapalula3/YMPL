@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name='theme-color' content='#111217' />
+  <title>YMPL TIDAL Search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="search.js" defer></script>
+
+  <style>
+    /* ===== 기본 ===== */
+    html {
+      background: #111217; /* 흰 화면 플래시 방지 */
+    }
+
+    body {
+      background: #111217;
+      color: #e6eef6;
+      font-family: Arial, sans-serif;
+
+      padding-top: 2px;
+      padding-left: 16px;
+      padding-right: 16px;
+      padding-bottom: 96px;
+
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+
+    /* h1 크기 */
+    h1 {
+      margin-bottom: 1px;
+      font-size: 18px;
+    }
+
+    /* 다크 UI 입력창 */
+    input {
+      width: 100%;
+      height: 30px;
+      padding: 2px 6px;
+      font-size: 18px;
+      margin-bottom: 18px;
+      border-radius: 4px;
+      border: none;
+      outline: none;
+      box-sizing: border-box;
+
+      background-color: #2b2b2b; /* 다크 그레이 */
+      color: #ffffff;           /* 입력 글자색 */
+    }
+
+    /* placeholder 색상 */
+    input::placeholder {
+      color: #9a9a9a;
+    }
+
+    /* 포커스 시 살짝 밝게 */
+    input:focus {
+      background-color: #333333;
+    }
+
+    /* 🔽 검색 옵션 */
+    .search-options {
+      display: flex;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+
+    .search-options label {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #resultCount {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      margin-bottom: 16px;
+    }
+
+    /* =========================
+       🔹 카드 전체 클릭 링크
+       ========================= */
+
+    .search-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .search-link:hover .search-title {
+      text-decoration: underline;
+    }
+
+    .search-item {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 12px;
+      padding-bottom: 2px;
+      border-bottom: 1px solid #2a2f3a;
+      align-items: flex-start;
+    }
+
+    /* 텍스트 */
+    .search-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search-title {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: bold;
+      font-size: 1rem;
+      line-height: 1.4;
+      color: #93c5fd;
+    }
+
+    .search-preview {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #cbd5e1;
+      margin-top: 6px;
+      white-space: pre-line;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+    }
+
+    /* 커버 */
+    .search-cover {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #1f2937;
+      margin-top: 6px;
+    }
+
+    .search-debug {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    .loading {
+      text-align: center;
+      color: #94a3b8;
+      margin: 16px 0;
+    }
+    
+    /* 🔻 하단 고정 바 */
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      background: #0b0f17; /* 거의 블랙 */
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+
+      z-index: 9998;
+
+      /* 위쪽 경계 살짝 */
+      border-top: 1px solid #1f2937;
+    }
+
+    /* 🔻 앱 하단 네비게이션 바 */
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      height: 52px;
+      background: #000000;
+      display: flex;
+
+      z-index: 9999;
+      border-top: 10px solid #000000;
+    }
+
+    /* 버튼 공통 */
+    .nav-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #e5e7eb;
+
+      font-size: 20px;
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-btn:active {
+      background: #111827;
+    }
+
+    /* 홈 아이콘 */
+    .nav-home img {
+      width: 30px;
+      height: 30px;
+    }
+    
+    /* 🔍 SVG 검색 아이콘 */
+    .nav-search {
+      background: #000000; /* 블랙 버튼 */
+    }
+
+    .search-icon {
+      width: 30px;
+      height: 30px;
+      stroke: #ffffff;     /* 화이트 돋보기 */
+      stroke-width: 1;
+      fill: none;
+    }
+    
+    /* 풀업 배경 */
+    #sheetBackdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 9997;
+    }
+
+    /* 풀업 시트 */
+    .search-sheet {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: -60%;
+      height: 60%;
+      background: #0b0f17;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      transition: bottom 0.25s ease;
+      z-index: 9998;
+      padding: 12px 16px;
+      overflow-y: auto;
+    }
+
+    .search-sheet.open {
+      bottom: 52px; /* 하단바 위 */
+    }
+
+    .sheet-handle {
+      width: 40px;
+      height: 4px;
+      background: #334155;
+      border-radius: 2px;
+      margin: 6px auto 12px;
+      cursor: pointer; 
+      position: relative; 
+    }
+    
+    .sheet-handle::after {
+      content: '';
+      position: absolute;
+      top: -15px; 
+      bottom: -15px; 
+      left: -20px; 
+      right: -20px; 
+    }
+
+    .sheet-title {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+
+    #searchHistoryList li {
+      padding: 2px 2px;   /* 🔥 위아래 간격 줄임 */
+      font-size: 0.9rem; 
+      line-height: 1.2;
+      border-bottom: 1px solid #1f2937;
+      cursor: pointer;
+    }
+
+    #searchHistoryList li:hover {
+      background: #111827;
+    }
+    
+    /* 🎁 보상 검색 강조 */
+    .reward-highlight {
+      color: #B3E5FC;
+      font-weight: 700;
+    }
+
+    .reward-highlight::before {
+      content: "🎁 ";
+    }
+
+  </style>
+  
+  <!-- 🔹 AdSense Loader (웹에서만 사용) -->
+  <script>
+    if (!location.search.includes("from=app") && window.ADS_ENABLED) {
+      const s = document.createElement("script");
+      s.async = true;
+      s.src =
+        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1954623157146783";
+      s.crossOrigin = "anonymous";
+      document.head.appendChild(s);
+    }
+  </script>
+</head>
+
+<body>
+<!-- 🔽 디버그 토글 -->
+<div class="search-options" id="debugOptions">
+  <label>
+    <input type="checkbox" id="debugToggle" />
+    score 디버그
+  </label>
+</div>
+
+<div id="resultCount"></div>
+
+<ul id="result"></ul>
+
+<div id="loading" class="loading" style="display:none;">Loading...</div>
+
+<!-- 🔒 개발자 모드 체크 -->
+<script>
+  (function () {
+    const params = new URLSearchParams(location.search);
+    const isDev = params.get('dev') === '1009';
+
+    if (!isDev) {
+      const debug = document.getElementById('debugOptions');
+      if (debug) debug.style.display = 'none';
+    }
+  })();
+</script>
+
+<!-- 🔹 페이지 이동 페이드 처리 -->
+<script>
+document.addEventListener("click", function (e) {
+  const link = e.target.closest(".search-link");
+  if (!link) return;
+
+  const href = link.getAttribute("href");
+  if (!href || href.startsWith("#")) return;
+  
+  /* ✅ 외부 도메인이면 fade 적용 안 함 */
+  try {
+    const url = new URL(href, location.href);
+    if (url.origin !== location.origin) return;
+  } catch (e) {
+    return;
+  }
+  
+  e.preventDefault();
+
+  // 페이드 아웃
+  document.body.classList.add("page-fade-out");
+
+  // 🔹 80ms 딜레이 후 이동
+  setTimeout(() => {
+    location.href = href;
+  }, 80);
+});
+
+/* ✅ 핵심: 뒤로가기 복구 */
+window.addEventListener("pageshow", function () {
+  document.body.classList.remove("page-fade-out");
+});
+</script>
+
+<div class="bottom-nav" id="bottomNav" style="display:none;">
+  <button class="nav-btn nav-home" id="navHome">
+    <img src="icon80.png" alt="home">
+  </button>
+  <button class="nav-btn nav-search" id="navSearch" aria-label="search">
+    <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true">
+      <circle cx="11" cy="11" r="6"></circle>
+      <line x1="16" y1="16" x2="21" y2="21"></line>
+    </svg>
+  </button>
+  <button class="nav-btn" id="navPrev">◁</button>
+  <button class="nav-btn" id="navNext">▷</button>
+</div>
+
+<!-- 🔍 검색 히스토리 풀업 -->
+<div id="searchSheet" class="search-sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">최근 검색</div>
+  <ul id="searchHistoryList"></ul>
+</div>
+<div id="sheetBackdrop"></div>
+
+</body>
+</html>
