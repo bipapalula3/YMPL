@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 거북이 ( Tidal Turtle )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 거북이 ( Tidal Turtle )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/323bf8d8/c3f9/4bae/93a5/383ba8b5434f/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/4139569' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 거북이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>정겹고 신나는 멜로디로 희망과 위로를 전하는, ‘빙고’처럼 듣는 이 모두를 웃음짓게 만드는 에너지</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Turtle</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Delivering hope and comfort with familiar and exciting melodies, an energy that makes everyone smile like in 'Bingo'.</div><p>듣기만 해도 어깨를 들썩이게 만드는 그룹, 거북이입니다. 밝고 긍정적인 에너지로 가득한 음악은 언제나 우리에게 힘을 주었죠. 신나는 멜로디와 공감되는 가사로 오랫동안 사랑받는 그룹입니다.</p><p>This is the group that makes you want to dance just by listening, Turtle. Their music, full of bright and positive energy, has always given us strength. They are a group that has been loved for a long time for their exciting melodies and relatable lyrics.</p><p>✧</p><p>그룹의 탄생</p><p>2000년대 초, 차트를 점령하며 등장한 거북이는 독특한 팀 구성으로 주목받았어요. 터틀맨의 리드 아래, 지이와 금비의 조화로운 목소리가 더해져 특별한 시너지를 만들어냈죠. 이들은 단순한 인기를 넘어, 대중에게 친근하게 다가가는 음악으로 깊은 인상을 남겼습니다.</p><p>The Birth of the Group</p><p>Appearing in the early 2000s and dominating the charts, Turtle drew attention with its unique team composition. Under the leadership of Turtleman, the harmonious voices of Ji-i and Geumbi created a special synergy. They went beyond simple popularity, leaving a deep impression on the public with music that was easily accessible.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>거북이의 음악은 긍정적인 메시지와 쉬운 멜로디가 특징입니다. 누구나 따라 부르기 쉬운 노래들은 듣는 이에게 즐거움과 희망을 전달하죠. 무대 위에서의 활기 넘치는 퍼포먼스는 그들의 음악을 더욱 돋보이게 했습니다.</p><p>Music and Performance</p><p>Turtle's music is characterized by positive messages and easy melodies. The songs, which are easy for anyone to sing along to, deliver joy and hope to the listener. Their energetic performances on stage further enhanced their music.</p><p>✧</p><p>주요 활동</p><p>수많은 히트곡을 발표하며 대중적인 인기를 얻은 거북이는 방송과 공연을 통해 활발하게 활동했어요. 그들의 노래는 각종 예능 프로그램과 광고에 삽입되며 더욱 친숙하게 다가갔습니다. 밝고 유쾌한 이미지로 많은 사랑을 받았죠.</p><p>Key Activities</p><p>Releasing numerous hit songs and gaining popular recognition, Turtle actively engaged in broadcasting and performances. Their songs were inserted into various entertainment programs and advertisements, making them even more familiar. They were loved for their bright and cheerful image.</p><p>✧</p><p>미래/의미</p><p>시간이 흘렀지만, 거북이의 음악은 여전히 많은 사람들에게 기억되고 있습니다. 그들의 노래는 힘든 시기를 겪는 이들에게 위로와 용기를 주는 존재로 남아있죠. 긍정적인 에너지와 희망을 노래한 거북이의 음악은 앞으로도 오랫동안 사랑받을 것입니다.</p><p>Future/Meaning</p><p>Although time has passed, Turtle's music is still remembered by many people. Their songs remain a source of comfort and courage to those going through difficult times. Turtle's music, which sang of positive energy and hope, will continue to be loved for a long time to come.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2004] Turtles- 3</div>
+<div>Turtles - Turtles Free 3-1</div>
+<div>Turtles - How Many</div>
+<div>Turtles - From Now On</div>
+<div>Turtles - Bingo (ASSA)</div>
+<div>Turtles - Why Didn't Tell Me</div>
+<div>Turtles - Thank You</div>
+<div>Turtles - Turtles Free 3-2</div>
+<div>Turtles - Aji and Yangi</div>
+<div>Turtles - If I Am You</div>
+<div>Turtles - Certainly Not</div>
+<div>Turtles - Missed</div>
+<div>Turtles - You're Not Alone</div>
+<div>Turtles - Turtles Free 3-3</div>
+<div>&nbsp;</div>
+<div>[2019] Ring Your Bells</div>
+<div><a href='https://tidal.com/album/102187878' target='_blank'>https://tidal.com/album/102187878</a></div>
+<div>Turtles - Ring Your Bells</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102187878' target='_blank'><img src='https://resources.tidal.com/images/59eab1dd/1ac4/4dd4/ac06/bf14b775b7f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Superman</div>
+<div><a href='https://tidal.com/album/271110011' target='_blank'>https://tidal.com/album/271110011</a></div>
+<div>Turtles - Superman (Feat. 류경상)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/271110011' target='_blank'><img src='https://resources.tidal.com/images/13ea1731/8be1/4f3b/971f/4407d9b111f7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] 거북이 사요!!</div>
+<div><a href='https://tidal.com/album/168658680' target='_blank'>https://tidal.com/album/168658680</a></div>
+<div>Turtles - Turtles Free 4-1</div>
+<div>Turtles - 우습단 말야</div>
+<div>Turtles - 비행기</div>
+<div>Turtles - 다시는</div>
+<div>Turtles - 야</div>
+<div>Turtles - 반쪽에게</div>
+<div>Turtles - 여행이야</div>
+<div>Turtles - 10년전으로</div>
+<div>Turtles - Remember Me</div>
+<div>Turtles - 이사</div>
+<div>Turtles - 꼭</div>
+<div>Turtles - Turtles Free 4-2</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168658680' target='_blank'><img src='https://resources.tidal.com/images/323bf8d8/c3f9/4bae/93a5/383ba8b5434f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] Land of Turtles</div>
+<div><a href='https://tidal.com/album/34420363' target='_blank'>https://tidal.com/album/34420363</a></div>
+<div>Turtles - Cocktail Love</div>
+<div>Turtles - If You Come into My Heart</div>
+<div>Turtles - Four Seasons</div>
+<div>Turtles - Come On</div>
+<div>Turtles - Bingo (ASSA)</div>
+<div>Turtles - Let's Boogie</div>
+<div>Turtles - What Happen</div>
+<div>Turtles - How Many</div>
+<div>Turtles - Go Boogi</div>
+<div>Turtles - Inside and Outside</div>
+<div>Turtles - If I Am You</div>
+<div>Turtles - I Am</div>
+<div>Turtles - Turtle Feet</div>
+<div>Turtles - Aji and Yangi</div>
+<div>Turtles - Missed</div>
+<div>Turtles - You're Not Alone</div>
+<div>Turtles - From Now On</div>
+<div>Turtles - Thank You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/34420363' target='_blank'><img src='https://resources.tidal.com/images/c2520320/6de5/4220/817e/5ec6a1992cb4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] Turtles 2</div>
+<div><a href='https://tidal.com/album/175909314' target='_blank'>https://tidal.com/album/175909314</a></div>
+<div>Turtles - Turtles Free 1</div>
+<div>Turtles - I Am</div>
+<div>Turtles - 10Years Has Passed</div>
+<div>Turtles - Come On</div>
+<div>Turtles - What Happen</div>
+<div>Turtles - Guardian Angel</div>
+<div>Turtles - Turtles Free 2</div>
+<div>Turtles - Don't Kidding Me</div>
+<div>Turtles - Turtle Feet</div>
+<div>Turtles - Go Boogi</div>
+<div>Turtles - Inside and Outside</div>
+<div>Turtles - To General</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175909314' target='_blank'><img src='https://resources.tidal.com/images/d9ea0cc7/8112/4316/868e/70e67d3675f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] Go! Boogie!</div>
+<div><a href='https://tidal.com/album/99670739' target='_blank'>https://tidal.com/album/99670739</a></div>
+<div>Turtles - Turtles Free I</div>
+<div>Turtles - Lets 북이</div>
+<div>Turtles - 사계 Hiphop version</div>
+<div>Turtles - 사랑하는 그대여</div>
+<div>Turtles - 순한 사랑</div>
+<div>Turtles - 향기로운 추억</div>
+<div>Turtles - 너 없이</div>
+<div>Turtles - Turtles Free II</div>
+<div>Turtles - You Can Do It</div>
+<div>Turtles - 나 어때</div>
+<div>Turtles - Real Love</div>
+<div>Turtles - 비오는 날</div>
+<div>Turtles - 사계 House Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/99670739' target='_blank'><img src='https://resources.tidal.com/images/47ff8644/fbb2/4910/9a11/a9e91e48c259/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_GK/1_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ1) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_GK/거북이 (Turtle)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
