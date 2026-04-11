@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 김종욱 ( Tidal Kim Jong Uk )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 김종욱 ( Tidal Kim Jong Uk )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/b6b9e4fa/7f87/4604/8cf4/6d08f161eaba/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10809115' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 김종욱</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>애절한 목소리로 전하는 사랑과 이별의 노래, '나쁜 남자'부터 '그대만이'까지 깊은 감성을 담아내는 발라드 가수</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Kim Jong Uk</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A ballad singer who conveys songs of love and farewell with a sorrowful voice, delivering deep emotions from 'Bad Man' to 'Only You'.</div><p>김종욱은 섬세한 감정 표현과 호소력 짙은 목소리로 듣는 이의 마음을 사로잡는 가수입니다. 그의 음악은 사랑의 기쁨과 슬픔, 이별의 아픔을 진솔하게 담아내 많은 이들에게 깊은 공감을 선사합니다. 발라드를 통해 자신만의 음악 세계를 구축하며 꾸준히 활동을 이어가고 있습니다.</p><p>Kim Jong Uk is a singer who captivates listeners with his delicate emotional expression and appealing voice. His music honestly captures the joy and sorrow of love, and the pain of parting, providing deep resonance to many. He continues to build his own musical world through ballads and consistently pursues his career.</p><p>✧</p><p>음악적 시작</p><p>김종욱은 특유의 감성적인 보컬을 바탕으로 가요계에 데뷔했습니다. 그의 음악은 데뷔 초부터 애절한 멜로디와 현실적인 가사로 주목받으며 많은 사랑을 받았습니다. 꾸준한 음악 활동을 통해 자신만의 색깔을 확고히 했습니다.</p><p>Musical Beginning</p><p>Kim Jong Uk debuted in the music industry with his unique emotional vocals. His music has been loved since his debut for its sorrowful melodies and realistic lyrics. He has solidified his own style through consistent musical activities.</p><p>✧</p><p>깊이 있는 음악 세계</p><p>그의 음악은 주로 사랑과 이별을 주제로 하며, 섬세한 감정선을 따라가는 멜로디가 특징입니다. 때로는 격정적인 감정을 폭발시키기도 하고, 때로는 잔잔하게 마음을 어루만지기도 합니다. 다양한 감정 표현을 통해 듣는 이들에게 깊은 울림을 전달합니다.</p><p>Profound Musical World</p><p>His music mainly revolves around the themes of love and farewell, characterized by melodies that follow delicate emotional lines. Sometimes he explodes with passionate emotions, and sometimes he gently caresses the heart. He delivers a deep resonance to listeners through various emotional expressions.</p><p>✧</p><p>주요 활동 발자취</p><p>김종욱은 꾸준한 음반 발매와 더불어 다양한 공연 활동을 통해 팬들과 소통해왔습니다. 드라마 OST 참여를 통해 더욱 폭넓은 대중에게 그의 음악을 알리기도 했습니다. 그의 음악은 듣는 이들에게 깊은 감동과 위로를 선사하며 꾸준히 사랑받고 있습니다.</p><p>Key Activities and Achievements</p><p>Kim Jong Uk has communicated with fans through consistent album releases and various performances. He has also introduced his music to a wider audience through participation in drama OSTs. His music continues to be loved, providing deep emotion and comfort to listeners.</p><p>✧</p><p>앞으로의 음악 여정</p><p>앞으로도 김종욱은 특유의 감성적인 발라드를 통해 더욱 깊어진 음악 세계를 선보일 것으로 기대됩니다. 그의 진솔한 음악은 많은 이들에게 위로와 공감을 전하며 오랫동안 사랑받을 것입니다. 꾸준한 활동을 통해 더욱 성장하는 그의 모습을 기대해봅니다.</p><p>Future Musical Journey</p><p>Kim Jong Uk is expected to showcase an even deeper musical world through his unique emotional ballads in the future. His sincere music will provide comfort and empathy to many and will be loved for a long time. We look forward to his continued growth through consistent activities.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2008] For A Long Time--</div>
+<div><a href='https://tidal.com/album/102011154' target='_blank'>https://tidal.com/album/102011154</a></div>
+<div>김종욱 - 나쁜 남자</div>
+<div>김종욱 - 귀를 막아도 눈을 감아도</div>
+<div>김종욱 - 실연</div>
+<div>김종욱 - 가난한 사랑</div>
+<div>김종욱 - 언젠간 우리의 이비가 그치면</div>
+<div>김종욱 - 이별이 즐거워</div>
+<div>김종욱 - 다시 친구로</div>
+<div>김종욱 - 너만 있다면</div>
+<div>김종욱 - Call On Me</div>
+<div>김종욱 - 안돼</div>
+<div>김종욱 - 나쁜 남자 Ballade Version</div>
+<div>김종욱 - 그대만이</div>
+<div>김종욱 - 널 버리면</div>
+<div>김종욱 - 10분이 지난 후</div>
+<div>김종욱 - 바바부 바바부</div>
+<div>김종욱 - 하루를 묻는다</div>
+<div>김종욱 - 시간이 갈수록</div>
+<div>김종욱 - 가끔 남자란건</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102011154' target='_blank'><img src='https://resources.tidal.com/images/b6b9e4fa/7f87/4604/8cf4/6d08f161eaba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/2_TIDAL_Kpop_Artist_Link_GK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄱ2) TIDAL Kpop Artist Link (GK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_GK/김종욱 (Kim Jong Uk)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
