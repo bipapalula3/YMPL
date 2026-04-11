@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 나이아이 ( Tidal NINE.i )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 나이아이 ( Tidal NINE.i )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4461d7c7/8d1e/4404/89e1/7823befb7505/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/31436625' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 나이아이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>나인아이 (NINE.i) – 미지의 세계를 탐험하는 아홉 개의 시선, '파라다이스'를 향한 끊임없는 갈망을 노래하는 아이돌 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> NINE.i</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>NINE.i – Nine perspectives exploring the unknown, an idol group singing about the endless longing for 'Paradise'</div><p>9인조 보이그룹 나인아이(NINE.i)는 멤버 각자의 개성과 다채로운 음악적 색깔로 무한한 가능성을 보여주고 있어요. 독특한 콘셉트와 완성도 높은 퍼포먼스로 팬들의 마음을 사로잡으며 활발하게 활동하고 있습니다. 앞으로 그들이 보여줄 음악적 스펙트럼에 더욱 기대가 되네요.</p><p>The 9-member boy group NINE.i is demonstrating endless possibilities with each member's individuality and diverse musical colors. They are actively captivating fans with their unique concept and high-quality performances. I am even more excited about the musical spectrum they will show in the future.</p><p>✧</p><p>그룹 탄생</p><p>나인아이는 아이엔터테인먼트에서 야심차게 선보인 그룹이에요. 멤버들은 오랜 연습 기간을 거쳐 각자의 잠재력과 팀워크를 다져왔습니다. 그 결과, 데뷔 전부터 탄탄한 팬덤을 확보하며 성공적인 시작을 알렸죠.</p><p>Group Genesis</p><p>NINE.i is a group ambitiously introduced by iEntertainment. The members have honed their individual potential and teamwork through a long period of training. As a result, they secured a solid fan base even before their debut, signaling a successful start.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>나인아이의 음악은 몽환적인 분위기와 강렬한 사운드를 넘나드는 폭넓은 스펙트럼을 자랑해요. 청춘의 사랑과 아픔, 미래에 대한 열망 등 다양한 주제를 자신들만의 스타일로 풀어내죠. 에너지 넘치는 퍼포먼스는 보는 이로 하여금 깊은 인상을 남긴답니다.</p><p>Music and Performance</p><p>NINE.i's music boasts a wide spectrum, ranging from dreamy atmospheres to intense sounds. They express various themes such as youthful love and pain, and the desire for the future in their own style. Their energetic performances leave a deep impression on viewers.</p><p>✧</p><p>주요 활동</p><p>나인아이는 데뷔 이후 꾸준히 앨범을 발매하며 활발한 음악 활동을 이어가고 있어요. 국내외 다양한 무대에 오르며 팬들과 소통하고 있으며, 예능 프로그램 출연 등을 통해 다재다능한 면모를 보여주고 있습니다. 앞으로의 활동이 더욱 기대되는 그룹입니다.</p><p>Key Activities</p><p>Since their debut, NINE.i has been consistently releasing albums and continuing their active musical activities. They communicate with fans by performing on various stages both domestically and internationally, and show their versatility through appearances on entertainment programs. They are a group whose future activities are highly anticipated.</p><p>✧</p><p>미래/의미</p><p>나인아이는 끊임없이 새로운 시도를 통해 음악적 성장을 거듭하며, 팬들에게 긍정적인 에너지를 전달하고자 해요. 그들은 앞으로 더욱 다양한 음악적 스펙트럼을 보여주며 글로벌 팬들에게 사랑받는 아티스트로 성장할 것입니다. 나인아이의 미래를 응원합니다!</p><p>Future/Meaning</p><p>NINE.i aims to deliver positive energy to fans by constantly making new attempts and continuing their musical growth. They will show an even more diverse musical spectrum in the future and grow into artists loved by global fans. We support NINE.i's future!</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 蜃気楼 (MIRAGE)</div>
+<div><a href='https://tidal.com/album/402605639' target='_blank'>https://tidal.com/album/402605639</a></div>
+<div>NINE.i - 蜃気楼 (MIRAGE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/402605639' target='_blank'><img src='https://resources.tidal.com/images/10b44ccb/e94a/4a5b/80f8/9fade1fde7ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 크리스마스처럼</div>
+<div><a href='https://tidal.com/album/360396023' target='_blank'>https://tidal.com/album/360396023</a></div>
+<div>NINE.i - Disc1 - 크리스마스처럼</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/360396023' target='_blank'><img src='https://resources.tidal.com/images/b7f83cde/fa6a/4aa7/85e6/7eb8bc5a4a40/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] NEW MIND</div>
+<div><a href='https://tidal.com/album/360394742' target='_blank'>https://tidal.com/album/360394742</a></div>
+<div>NINE.i - 하나</div>
+<div>NINE.i - Turn it off</div>
+<div>NINE.i - 미친 듯이</div>
+<div>NINE.i - Power up</div>
+<div>NINE.i - Hurt</div>
+<div>NINE.i - Highschool Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/360394742' target='_blank'><img src='https://resources.tidal.com/images/91ae3997/0dee/40a3/ae0e/0dd6121bc232/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] NEVERLAND</div>
+<div><a href='https://tidal.com/album/360394461' target='_blank'>https://tidal.com/album/360394461</a></div>
+<div>NINE.i - NEVERLAND</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/360394461' target='_blank'><img src='https://resources.tidal.com/images/742b9404/0672/4bce/a88d/6476fef15c66/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] NINE.i The 2nd Mini Album [I (Pt.1)]</div>
+<div><a href='https://tidal.com/album/360394659' target='_blank'>https://tidal.com/album/360394659</a></div>
+<div>NINE.i - I live as _ _ _ _ _ _ _ _ _ _</div>
+<div>NINE.i - Young Boy</div>
+<div>NINE.i - Paradise</div>
+<div>NINE.i - Love</div>
+<div>NINE.i - Loner</div>
+<div>NINE.i - I AM</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/360394659' target='_blank'><img src='https://resources.tidal.com/images/b1d03f65/84b3/4ef5/bc7b/98eb0d29c358/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] NEW WORLD</div>
+<div><a href='https://tidal.com/album/360394784' target='_blank'>https://tidal.com/album/360394784</a></div>
+<div>NINE.i - iNTRO</div>
+<div>NINE.i - Parallel Universe</div>
+<div>NINE.i - BEAUTY iNSIDE</div>
+<div>NINE.i - Wasted Youth</div>
+<div>NINE.i - Daze Days</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/360394784' target='_blank'><img src='https://resources.tidal.com/images/a8235de5/23d7/4573/aad0/48eb8aceb14e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/1_TIDAL_Kpop_Artist_Link_N.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄴ1) TIDAL Kpop Artist Link (N)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_N/나이아이 (NINE.i)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
