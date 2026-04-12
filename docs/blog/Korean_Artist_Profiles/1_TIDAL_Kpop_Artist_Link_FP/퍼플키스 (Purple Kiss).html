@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 퍼플키스 ( Tidal Purple Kiss )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 퍼플키스 ( Tidal Purple Kiss )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/52c20488/6959/479f/ba0d/b027da6900b5/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/4208972' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 퍼플키스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>퍼플키스(Purple Kiss) - 다채로운 색깔로 빚어낸 몽환적인 세계, 'Sweet Nightmare'의 달콤한 악몽과 'BBB'의 강렬한 외침</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Purple Kiss</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Purple Kiss - A dreamlike world crafted with diverse colors, from the sweet nightmare of 'Sweet Nightmare' to the intense cry of 'BBB'.</div><p>매혹적인 매력으로 가득한 그룹, 퍼플키스(Purple Kiss)를 소개합니다. 멤버 각자의 뛰어난 재능과 독특한 음악 스타일이 어우러져 특별한 시너지를 만들어내고 있어요. 이들은 음악을 통해 리스너들을 자신들만의 환상적인 세계로 초대합니다.</p><p>Introducing Purple Kiss, a group filled with captivating charm. The outstanding talents and unique musical styles of each member create a special synergy. Through their music, they invite listeners into their own fantastic world.</p><p>✧</p><p>그룹의 탄생과 매력</p><p>퍼플키스는 탄탄한 실력을 바탕으로 데뷔 전부터 많은 관심을 받았어요. 멤버들은 보컬, 댄스, 작사, 작곡 등 다양한 분야에서 뛰어난 역량을 보여주며, 완성형 그룹으로서의 면모를 과시합니다. 이들의 다재다능함은 퍼플키스만의 독창적인 음악 세계를 구축하는 데 큰 역할을 하고 있어요.</p><p>The Birth and Charm of the Group</p><p>Purple Kiss received a lot of attention even before their debut, based on their solid skills. The members demonstrate outstanding capabilities in various fields such as vocals, dance, songwriting, and composition, showcasing their image as a complete group. Their versatility plays a significant role in building Purple Kiss's unique musical world.</p><p>✧</p><p>음악과 퍼포먼스의 조화</p><p>퍼플키스의 음악은 몽환적인 분위기와 강렬한 사운드가 공존하는 것이 특징입니다. 다양한 장르를 소화하며 자신들만의 색깔로 재해석하는 능력이 돋보여요. 무대 위에서의 퍼포먼스 또한 음악의 분위기를 더욱 극대화하며, 보는 이들을 압도하는 몰입감을 선사합니다.</p><p>Harmony of Music and Performance</p><p>Purple Kiss's music is characterized by a coexistence of dreamy atmosphere and intense sound. They excel at digesting various genres and reinterpreting them in their own style. Their performance on stage also maximizes the atmosphere of the music, providing an overwhelming sense of immersion for viewers.</p><p>✧</p><p>폭넓은 활동 스펙트럼</p><p>음반 발매뿐만 아니라, 퍼플키스는 다채로운 콘텐츠를 통해 팬들과 소통하고 있어요. 커버 영상, 자체 제작 콘텐츠 등을 통해 멤버들의 개성과 매력을 보여주며 팬심을 사로잡고 있습니다. 이러한 활발한 활동은 퍼플키스를 더욱 친근하고 매력적인 그룹으로 만들어주고 있습니다.</p><p>Wide Spectrum of Activities</p><p>In addition to releasing albums, Purple Kiss communicates with fans through various content. They showcase the individuality and charm of the members through cover videos, self-produced content, and more, captivating fans' hearts. These active engagements make Purple Kiss an even more approachable and attractive group.</p><p>✧</p><p>미래를 향한 발걸음</p><p>퍼플키스는 앞으로 더욱 다양한 음악적 시도를 통해 자신들만의 독창적인 색깔을 확고히 할 것으로 기대됩니다. 끊임없이 성장하고 변화하는 모습을 보여주며, 글로벌 팬들의 마음을 사로잡을 준비를 하고 있어요. 이들의 음악이 앞으로 어떤 감동과 울림을 선사할지 기대해도 좋을 것 같습니다.</p><p>Steps Towards the Future</p><p>Purple Kiss is expected to solidify their unique color through more diverse musical experiments in the future. They are preparing to capture the hearts of global fans by showing constant growth and change. It will be exciting to see what kind of emotions and resonance their music will bring in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] ON THE VIOLET</div>
+<div><a href='https://tidal.com/album/373269162' target='_blank'>https://tidal.com/album/373269162</a></div>
+<div>PURPLE KISS - BBB - Japanese ver. -</div>
+<div>PURPLE KISS - Pretty Psycho - Japanese ver. -</div>
+<div>PURPLE KISS - 7HEAVEN - Japanese ver. -</div>
+<div>PURPLE KISS - So Far So Good - Japanese ver. -</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/373269162' target='_blank'><img src='https://resources.tidal.com/images/19e23524/7a11/4ed2/a279/31bae9e5fb21/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] HEADWAY</div>
+<div><a href='https://tidal.com/album/394877891' target='_blank'>https://tidal.com/album/394877891</a></div>
+<div>PURPLE KISS - Intro - Concrete Jungle</div>
+<div>PURPLE KISS - ON MY BIKE</div>
+<div>PURPLE KISS - Sweet Nightmare</div>
+<div>PURPLE KISS - Encore</div>
+<div>PURPLE KISS - Light the way</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/394877891' target='_blank'><img src='https://resources.tidal.com/images/d2c4a909/5426/4dab/b2db/9773d6f606c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] BXX</div>
+<div><a href='https://tidal.com/album/352090505' target='_blank'>https://tidal.com/album/352090505</a></div>
+<div>PURPLE KISS - Intro - Crush</div>
+<div>PURPLE KISS - BBB</div>
+<div>PURPLE KISS - BITTER SWEET</div>
+<div>PURPLE KISS - Toy Boy</div>
+<div>PURPLE KISS - Heart Attack</div>
+<div>PURPLE KISS - Voyager</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352090505' target='_blank'><img src='https://resources.tidal.com/images/353c4ef5/3461/4399/aad5/306a325b110b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] FESTA</div>
+<div><a href='https://tidal.com/album/314589612' target='_blank'>https://tidal.com/album/314589612</a></div>
+<div>PURPLE KISS - 7HEAVEN</div>
+<div>PURPLE KISS - Biscuit</div>
+<div>PURPLE KISS - Mistake</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/314589612' target='_blank'><img src='https://resources.tidal.com/images/7e459547/f0c4/43f9/b476/3f4384e13daa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] DEAR VIOLET</div>
+<div><a href='https://tidal.com/album/355905519' target='_blank'>https://tidal.com/album/355905519</a></div>
+<div>PURPLE KISS - Sweet Juice -Japanese ver.-</div>
+<div>PURPLE KISS - Nerdy -Japanese ver.-</div>
+<div>PURPLE KISS - memeM -Japanese ver.-</div>
+<div>PURPLE KISS - tonari</div>
+<div>PURPLE KISS - Zombie -Japanese ver.-</div>
+<div>PURPLE KISS - Ponzona -Japanese ver.-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/355905519' target='_blank'><img src='https://resources.tidal.com/images/304280e3/e930/413c/98dd/9397a8a82a6f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Cabin Fever</div>
+<div><a href='https://tidal.com/album/276828214' target='_blank'>https://tidal.com/album/276828214</a></div>
+<div>PURPLE KISS - Intro - Save Me</div>
+<div>PURPLE KISS - Sweet Juice</div>
+<div>PURPLE KISS - T4ke</div>
+<div>PURPLE KISS - Autopilot</div>
+<div>PURPLE KISS - agit</div>
+<div>PURPLE KISS - So Far So Good</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/276828214' target='_blank'><img src='https://resources.tidal.com/images/acadbbdc/a0d1/4008/ae4f/64225328258d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] memeM</div>
+<div><a href='https://tidal.com/album/222922119' target='_blank'>https://tidal.com/album/222922119</a></div>
+<div>PURPLE KISS - Intro - Illusion</div>
+<div>PURPLE KISS - memeM</div>
+<div>PURPLE KISS - Oh My Gosh</div>
+<div>PURPLE KISS - Pretty Psycho</div>
+<div>PURPLE KISS - JOAH</div>
+<div>PURPLE KISS - Hate me, Hurt me, Love me</div>
+<div>PURPLE KISS - Cursor</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222922119' target='_blank'><img src='https://resources.tidal.com/images/918bc9c5/f233/4e39/8deb/b7d195b29746/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Geekyland</div>
+<div><a href='https://tidal.com/album/239529919' target='_blank'>https://tidal.com/album/239529919</a></div>
+<div>PURPLE KISS - Intro - Bye Bye Bully</div>
+<div>PURPLE KISS - Nerdy</div>
+<div>PURPLE KISS - FireFlower</div>
+<div>PURPLE KISS - Can't stop dreamin'</div>
+<div>PURPLE KISS - Love Is Dead</div>
+<div>PURPLE KISS - SuMMer RaiN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/239529919' target='_blank'><img src='https://resources.tidal.com/images/58840572/d234/4cd6/a7bd/28477d9e60dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] My My</div>
+<div><a href='https://tidal.com/album/216503675' target='_blank'>https://tidal.com/album/216503675</a></div>
+<div>PURPLE KISS - My My</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216503675' target='_blank'><img src='https://resources.tidal.com/images/2bb73cb3/9152/42ff/b825/0a18bc077a61/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] LULUPOP PROJECT 'FIND YOU'</div>
+<div><a href='https://tidal.com/album/343608684' target='_blank'>https://tidal.com/album/343608684</a></div>
+<div>PURPLE KISS, LULUPOP DAISY - FIND YOU</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343608684' target='_blank'><img src='https://resources.tidal.com/images/a03762eb/1701/4c5d/b3ac/352726791b1d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] INTO VIOLET</div>
+<div><a href='https://tidal.com/album/216248060' target='_blank'>https://tidal.com/album/216248060</a></div>
+<div>PURPLE KISS - Intro - Crown</div>
+<div>PURPLE KISS - Ponzona</div>
+<div>PURPLE KISS - Can We Talk Again</div>
+<div>PURPLE KISS - Skip Skip</div>
+<div>PURPLE KISS - Hello</div>
+<div>PURPLE KISS - My Heart Skip a Beat</div>
+<div>PURPLE KISS - Period</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216248060' target='_blank'><img src='https://resources.tidal.com/images/f726dab0/f497/4aab/afff/7f9d18adc3ce/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] HIDE & SEEK</div>
+<div><a href='https://tidal.com/album/216345740' target='_blank'>https://tidal.com/album/216345740</a></div>
+<div>PURPLE KISS - Zombie</div>
+<div>PURPLE KISS - 2am</div>
+<div>PURPLE KISS - Cast pearls before swine</div>
+<div>PURPLE KISS - So WhY</div>
+<div>PURPLE KISS - Twinkle</div>
+<div>PURPLE KISS - ZzZz</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216345740' target='_blank'><img src='https://resources.tidal.com/images/b6ccf239/7add/4a15/b249/08cbe307565b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Can We Talk Again</div>
+<div><a href='https://tidal.com/album/216216934' target='_blank'>https://tidal.com/album/216216934</a></div>
+<div>PURPLE KISS - Can We Talk Again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216216934' target='_blank'><img src='https://resources.tidal.com/images/b82d89d6/7d5a/4502/91e1/2c8edecc0135/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] My Heart Skip a Beat</div>
+<div><a href='https://tidal.com/album/216465492' target='_blank'>https://tidal.com/album/216465492</a></div>
+<div>PURPLE KISS - My Heart Skip a Beat</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216465492' target='_blank'><img src='https://resources.tidal.com/images/4c36d0a5/71c8/406a/b993/72d525bb7726/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_FP/1_TIDAL_Kpop_Artist_Link_FP.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅍ1) TIDAL Kpop Artist Link (FP)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_FP/퍼플키스 (Purple Kiss)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
