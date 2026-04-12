@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 원스타 (OneSTAR) - 임한별 ( Tidal 원스타_OneSTAR_-_임한별 )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 원스타 (OneSTAR) - 임한별 ( Tidal 원스타_OneSTAR_-_임한별 )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 원스타 (OneSTAR) - 임한별</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>애절한 감성으로 마음을 적시는 목소리, ‘My Dream, My Love’처럼 꿈결같은 사랑을 노래하는 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 원스타_OneSTAR_-_임한별</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A voice that touches the heart with soulful emotion, a vocalist who sings of dreamlike love like in ‘My Dream, My Love’</div><p>섬세한 감정 표현과 호소력 짙은 목소리로 듣는 이의 마음을 사로잡는 가수, 원스타 (OneSTAR)님을 소개합니다. 임한별이라는 이름으로도 잘 알려진 그는 깊은 감성을 담아낸 음악들로 많은 사랑을 받고 있어요. 그의 음악은 듣는 이에게 진한 여운과 감동을 선사합니다.</p><p>Introducing OneSTAR, an artist who captivates listeners with delicate emotional expression and a compelling voice. Also known as Lim Han-byeol, he is beloved for his music filled with deep emotion. His music offers listeners a profound resonance and inspiration.</p><p>✧</p><p>그룹 탄생</p><p>원스타는 임한별 님의 음악적 정체성을 담아낸 이름입니다. 솔로 아티스트로서 자신만의 색깔을 보여주며 대중들에게 깊은 인상을 남겼어요. 그는 다양한 음악적 시도를 통해 끊임없이 변화하고 발전하는 모습을 보여주고 있습니다.</p><p>Group Origin</p><p>OneSTAR is a name that embodies Lim Han-byeol's musical identity. As a solo artist, he has left a deep impression on the public by showcasing his unique style. He is constantly changing and developing through various musical endeavors.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>원스타의 음악은 주로 발라드 장르에 기반을 두고 있으며, 사랑과 이별, 그리움 등 다양한 감정을 섬세하게 표현합니다. 그의 뛰어난 가창력은 곡의 감성을 극대화하여 듣는 이로 하여금 깊은 공감을 불러일으킵니다. 때로는 웅장하고, 때로는 잔잔한 그의 음악은 다채로운 매력을 지니고 있습니다.</p><p>Music and Performance</p><p>OneSTAR's music is mainly based on the ballad genre, delicately expressing various emotions such as love, separation, and longing. His exceptional vocal ability maximizes the emotion of the song, evoking deep empathy from the listener. Sometimes grand, sometimes serene, his music possesses a diverse charm.</p><p>✧</p><p>주요 활동</p><p>원스타는 꾸준한 음원 발매와 더불어 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀왔습니다. 드라마 OST 참여, 공연 등 활발한 활동을 통해 대중과의 접점을 늘리고 있습니다. 특유의 감성적인 보이스는 다양한 장르의 음악과 조화를 이루며 새로운 시너지를 창출하고 있습니다.</p><p>Main Activities</p><p>OneSTAR has broadened his musical spectrum through consistent music releases and collaborations with various artists. He is increasing his contact with the public through active engagements such as participating in drama OSTs and performing in concerts. His unique emotional voice harmonizes with various genres of music, creating new synergies.</p><p>✧</p><p>미래/의미</p><p>원스타는 앞으로도 진정성 있는 음악으로 대중들의 마음을 어루만질 것으로 기대됩니다. 그의 음악은 단순한 노래를 넘어, 듣는 이에게 위로와 공감, 그리고 희망을 전달하는 매개체가 될 것입니다. 원스타의 음악 여정은 계속해서 우리에게 깊은 감동과 울림을 선사할 것입니다.</p><p>Future/Meaning</p><p>It is expected that OneSTAR will continue to touch the hearts of the public with his genuine music. His music will be more than just songs; it will be a medium for conveying comfort, empathy, and hope to the listener. OneSTAR's musical journey will continue to provide us with deep emotion and resonance.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] The Queen Who Crowns OST Part.3</div>
+<div><a href='https://tidal.com/album/413541091' target='_blank'>https://tidal.com/album/413541091</a></div>
+<div>OneSTAR - My Dream, My Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/413541091' target='_blank'><img src='https://resources.tidal.com/images/060fdedf/ce59/4c05/bd92/62d26c6fc315/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] H.Y.B. Project - Your Song, My Voice #1 ‘Reason’</div>
+<div><a href='https://tidal.com/album/421729049' target='_blank'>https://tidal.com/album/421729049</a></div>
+<div>OneSTAR - Reason (feat. Shin Yong Jae)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/421729049' target='_blank'><img src='https://resources.tidal.com/images/7eddc705/97e2/4074/b38e/09d49653fffc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Чужими стали</div>
+<div><a href='https://tidal.com/album/340263941' target='_blank'>https://tidal.com/album/340263941</a></div>
+<div>OneSTAR - A Song For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340263941' target='_blank'><img src='https://resources.tidal.com/images/f73e3e52/be85/4b78/9a4e/e388b233ea3a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Pray</div>
+<div><a href='https://tidal.com/album/346233537' target='_blank'>https://tidal.com/album/346233537</a></div>
+<div>OneSTAR, Espero - Pray</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346233537' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Lonely Night</div>
+<div><a href='https://tidal.com/album/381630405' target='_blank'>https://tidal.com/album/381630405</a></div>
+<div>OneSTAR - Lonely Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381630405' target='_blank'><img src='https://resources.tidal.com/images/0e6537d3/564f/4cdb/b2bd/2f1c348d1bdf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] It Was Love</div>
+<div><a href='https://tidal.com/album/362799114' target='_blank'>https://tidal.com/album/362799114</a></div>
+<div>OneSTAR - It Was Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/362799114' target='_blank'><img src='https://resources.tidal.com/images/ed33e352/6bd9/4d53/99a4/2db86fa4cab7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Every day, Every Moment</div>
+<div><a href='https://tidal.com/album/372947371' target='_blank'>https://tidal.com/album/372947371</a></div>
+<div>OneSTAR - Every day, Every Moment</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372947371' target='_blank'><img src='https://resources.tidal.com/images/e72fe8b8/9415/46af/bf6e/caf1c9f8167a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Would You Marry Me_</div>
+<div><a href='https://tidal.com/album/293754373' target='_blank'>https://tidal.com/album/293754373</a></div>
+<div>OneSTAR - Would You Marry Me-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/293754373' target='_blank'><img src='https://resources.tidal.com/images/872e04af/ec56/45f6/95bc/fb79d1645bf2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] The Reason (From _The story of Park’s marriage contract_ Original Television Sountrack, Pt. 2)</div>
+<div><a href='https://tidal.com/album/331536003' target='_blank'>https://tidal.com/album/331536003</a></div>
+<div>OneSTAR - The Reason</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/331536003' target='_blank'><img src='https://resources.tidal.com/images/bad74d92/98c1/4885/a5b3/76e0eae054a0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] The Heavenly Idol (Original Television Soundtrack), Pt.3</div>
+<div><a href='https://tidal.com/album/279276183' target='_blank'>https://tidal.com/album/279276183</a></div>
+<div>OneSTAR - Please</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/279276183' target='_blank'><img src='https://resources.tidal.com/images/9f2042bc/4671/4544/a7ad/420273606cda/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Our love is like a movie (Our Secret Diary X Onestar)</div>
+<div><a href='https://tidal.com/album/327464920' target='_blank'>https://tidal.com/album/327464920</a></div>
+<div>OneSTAR - Our love is like a movie (Our Secret Diary X Onest</div>
+<div>OneSTAR - Our love is like a movie (Our Secret Diary X Onest</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/327464920' target='_blank'><img src='https://resources.tidal.com/images/b607f2cb/9c53/4e02/8640/ddb5b3f020f9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] King of Karaoke_ VS SEMI FINAL</div>
+<div><a href='https://tidal.com/album/335356758' target='_blank'>https://tidal.com/album/335356758</a></div>
+<div>Hong seung min, OneSTAR - Mother</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/335356758' target='_blank'><img src='https://resources.tidal.com/images/729d2641/71ca/454c/88df/f4fbf70f49ae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Hello It's Me (Re_WIND 4MEN Vol.05)</div>
+<div><a href='https://tidal.com/album/346778048' target='_blank'>https://tidal.com/album/346778048</a></div>
+<div>OneSTAR - Hello It′s Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346778048' target='_blank'><img src='https://resources.tidal.com/images/b68e3c34/8f20/4f5f/a097/aaf24ffe8fd6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Hailey's On It! (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/297940921' target='_blank'>https://tidal.com/album/297940921</a></div>
+<div>OneSTAR - I'll Never Lose You Baby</div>
+<div>OneSTAR - Dance (Da Da Da Da)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297940921' target='_blank'><img src='https://resources.tidal.com/images/0a3ab9ed/c8f0/4f25/9ab8/b4d5b544b4ff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Don't Think You're Alone</div>
+<div><a href='https://tidal.com/album/298737465' target='_blank'>https://tidal.com/album/298737465</a></div>
+<div>OneSTAR - Don't Think You're Alone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/298737465' target='_blank'><img src='https://resources.tidal.com/images/3b50cf18/cce6/4e9a/8c8d/6cfccc9c15e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Broke up today</div>
+<div><a href='https://tidal.com/album/318640655' target='_blank'>https://tidal.com/album/318640655</a></div>
+<div>OneSTAR - Broke up today (Feat. TANAKA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318640655' target='_blank'><img src='https://resources.tidal.com/images/36a16eed/6b1b/42b0/9f6d/ffb6724cb67e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Because I Don't Love You</div>
+<div><a href='https://tidal.com/album/286939720' target='_blank'>https://tidal.com/album/286939720</a></div>
+<div>OneSTAR - Because I Don't Love You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/286939720' target='_blank'><img src='https://resources.tidal.com/images/f3302b89/e2d2/41ce/8548/57582ebbb230/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] All That We Loved (Original Television Soundtrack, Pt. 1)</div>
+<div><a href='https://tidal.com/album/291794965' target='_blank'>https://tidal.com/album/291794965</a></div>
+<div>OneSTAR - Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/291794965' target='_blank'><img src='https://resources.tidal.com/images/b61ad8bd/8ce6/4a2e/aec4/7c6150e85d73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] We Got Lost</div>
+<div><a href='https://tidal.com/album/262689652' target='_blank'>https://tidal.com/album/262689652</a></div>
+<div>OneSTAR - We Got Lost</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/262689652' target='_blank'><img src='https://resources.tidal.com/images/6644508a/353c/4775/b4cd/bad1aa7d7dac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Show Window _ The Queen's House (Original Soundtrack), Pt.7</div>
+<div><a href='https://tidal.com/album/346640452' target='_blank'>https://tidal.com/album/346640452</a></div>
+<div>OneSTAR - Tears</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346640452' target='_blank'><img src='https://resources.tidal.com/images/862208ee/a582/4d88/9653/b1c4b13c8034/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] On A Rainy Night</div>
+<div><a href='https://tidal.com/album/235440527' target='_blank'>https://tidal.com/album/235440527</a></div>
+<div>OneSTAR - On A Rainy Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/235440527' target='_blank'><img src='https://resources.tidal.com/images/7aa930a5/7b69/441b/9480/18682d78b4e5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] My First Love (Would You Marry Me)</div>
+<div><a href='https://tidal.com/album/254122729' target='_blank'>https://tidal.com/album/254122729</a></div>
+<div>Huh Gak, 2F (Shin Yong Jae & Kim Won Joo), OneSTAR - My First Love (Would You Marry Me)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/254122729' target='_blank'><img src='https://resources.tidal.com/images/f598c0ff/4b85/4c1f/a12e/ff263e2d199d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Malofafakufa</div>
+<div><a href='https://tidal.com/album/222466710' target='_blank'>https://tidal.com/album/222466710</a></div>
+<div>OneSTAR - Malofafakufa</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222466710' target='_blank'><img src='https://resources.tidal.com/images/e4bef9bf/e3db/4664/a544/fcfbb89b169f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Love Alone (CURTAIN CALL (Original Soundtrack) Part.6)</div>
+<div><a href='https://tidal.com/album/262098668' target='_blank'>https://tidal.com/album/262098668</a></div>
+<div>OneSTAR - Love Alone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/262098668' target='_blank'><img src='https://resources.tidal.com/images/1142c720/68a7/47d4/a0a6/0dcd3ee6a501/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] How About Me (re;code Episode Ⅹ)</div>
+<div><a href='https://tidal.com/album/225142251' target='_blank'>https://tidal.com/album/225142251</a></div>
+<div>OneSTAR, PARK WOO JIN - How About Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/225142251' target='_blank'><img src='https://resources.tidal.com/images/bfd5938d/b82a/4d44/9554/87dbf7ba48fd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Get Ready To Leave</div>
+<div><a href='https://tidal.com/album/254792922' target='_blank'>https://tidal.com/album/254792922</a></div>
+<div>OneSTAR - Get Ready To Leave</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/254792922' target='_blank'><img src='https://resources.tidal.com/images/6e10aa82/171b/4e77/91cf/aa09f851849d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Beautiful Memories</div>
+<div><a href='https://tidal.com/album/346719923' target='_blank'>https://tidal.com/album/346719923</a></div>
+<div>OneSTAR - Beautiful Memories</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346719923' target='_blank'><img src='https://resources.tidal.com/images/bdbcaa36/4e1e/4666/8884/3a9c98ebb9d2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Votiz vol.2</div>
+<div><a href='https://tidal.com/album/216375611' target='_blank'>https://tidal.com/album/216375611</a></div>
+<div>Lim Hanbyul, Lee Hyuk - Prayer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216375611' target='_blank'><img src='https://resources.tidal.com/images/bd020760/9f1b/4dea/b119/723dda33329d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Shiny Star(Original)</div>
+<div><a href='https://tidal.com/album/203184666' target='_blank'>https://tidal.com/album/203184666</a></div>
+<div>OneSTAR - Shiny Star(Original)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/203184666' target='_blank'><img src='https://resources.tidal.com/images/6b45714e/7f5d/4b4c/8dc5/564a7358fdf0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] September 24th</div>
+<div><a href='https://tidal.com/album/216278880' target='_blank'>https://tidal.com/album/216278880</a></div>
+<div>OneSTAR - The Way To Say Goodbye</div>
+<div>OneSTAR - I Can't Take My Eyes Off You</div>
+<div>OneSTAR - September 24th</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216278880' target='_blank'><img src='https://resources.tidal.com/images/577d83c9/1fe1/472f/adbc/b8cbc5744dee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Mr. Queen (Original Television Soundtrack), Pt. 8</div>
+<div><a href='https://tidal.com/album/172518993' target='_blank'>https://tidal.com/album/172518993</a></div>
+<div>OneSTAR - Like a star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/172518993' target='_blank'><img src='https://resources.tidal.com/images/e329d536/4d5d/4318/a374/48559cfe0d75/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Love Your Everything (Police University (Original Soundtrack) Part.4)</div>
+<div><a href='https://tidal.com/album/216278981' target='_blank'>https://tidal.com/album/216278981</a></div>
+<div>OneSTAR - Love Your Everything</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216278981' target='_blank'><img src='https://resources.tidal.com/images/4c563a32/98ab/44cb/bc03/901def33f937/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] How To Be Thirty (Original Soundtrack) Part.5</div>
+<div><a href='https://tidal.com/album/216216380' target='_blank'>https://tidal.com/album/216216380</a></div>
+<div>OneSTAR - What Should I Do</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216216380' target='_blank'><img src='https://resources.tidal.com/images/c25bc6a6/fb43/45f0/86de/78e35bea7768/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Heart of you, Story of you (Hope that it's you X Onestar)</div>
+<div><a href='https://tidal.com/album/216277249' target='_blank'>https://tidal.com/album/216277249</a></div>
+<div>OneSTAR - Heart of you, Story of you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216277249' target='_blank'><img src='https://resources.tidal.com/images/5fb19d0d/e8b5/4d92/8335/3fb6a18da430/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] This Song</div>
+<div><a href='https://tidal.com/album/189874858' target='_blank'>https://tidal.com/album/189874858</a></div>
+<div>OneSTAR - This Song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189874858' target='_blank'><img src='https://resources.tidal.com/images/e27c7b58/e416/4aee/880d/09379818c987/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] The King _ Eternal Monarch, Pt. 13 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196157568' target='_blank'>https://tidal.com/album/196157568</a></div>
+<div>OneSTAR, KIM JAE HWAN - You′re My End and My Beginning</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196157568' target='_blank'><img src='https://resources.tidal.com/images/16869bea/f8eb/40a6/a231/8d885dcedbeb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Hello</div>
+<div><a href='https://tidal.com/album/216487260' target='_blank'>https://tidal.com/album/216487260</a></div>
+<div>OneSTAR - Hello</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216487260' target='_blank'><img src='https://resources.tidal.com/images/2e1a9a12/1a7a/46a2/9078/e9091cfebda9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Good Love</div>
+<div><a href='https://tidal.com/album/189556168' target='_blank'>https://tidal.com/album/189556168</a></div>
+<div>OneSTAR - Good Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189556168' target='_blank'><img src='https://resources.tidal.com/images/d0da83f0/4614/4ca8/a288/9566989dfd57/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Alice (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/341667806' target='_blank'>https://tidal.com/album/341667806</a></div>
+<div>OneSTAR - The Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/341667806' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] When the Camellia Blooms (Original Television Soundtrack) Pt.4</div>
+<div><a href='https://tidal.com/album/201065137' target='_blank'>https://tidal.com/album/201065137</a></div>
+<div>OneSTAR - You Are As Pretty As A Flower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/201065137' target='_blank'><img src='https://resources.tidal.com/images/ed9dbe8f/798e/4748/9b10/7842a6d118a2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] The Way To Say Goodbye</div>
+<div><a href='https://tidal.com/album/189154540' target='_blank'>https://tidal.com/album/189154540</a></div>
+<div>OneSTAR - The Way To Say Goodbye</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189154540' target='_blank'><img src='https://resources.tidal.com/images/d416c9a9/e67a/482e/9ef0/e47f26787de9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] May We Bye (Feat. CHEN)</div>
+<div><a href='https://tidal.com/album/189217772' target='_blank'>https://tidal.com/album/189217772</a></div>
+<div>OneSTAR - May We Bye (Feat. CHEN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189217772' target='_blank'><img src='https://resources.tidal.com/images/3549ebbd/2c0d/4f09/98eb/ecfc3fc06e3a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] I can't take my eyes off you _ Serenade</div>
+<div><a href='https://tidal.com/album/189537174' target='_blank'>https://tidal.com/album/189537174</a></div>
+<div>OneSTAR - I can't take my eyes off you</div>
+<div>OneSTAR - Serenade</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189537174' target='_blank'><img src='https://resources.tidal.com/images/98b39441/4071/4fef/95f2/a9db6ad6308f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] A Tearful Farewell</div>
+<div><a href='https://tidal.com/album/189154557' target='_blank'>https://tidal.com/album/189154557</a></div>
+<div>OneSTAR - A Tearful Farewell</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189154557' target='_blank'><img src='https://resources.tidal.com/images/8deea266/fcc7/435b/aeb9/a0d10a1744ea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The Third Charm (Original Television Soundtrack), Pt. 5</div>
+<div><a href='https://tidal.com/album/188639652' target='_blank'>https://tidal.com/album/188639652</a></div>
+<div>OneSTAR - Hee Jae</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188639652' target='_blank'><img src='https://resources.tidal.com/images/31932857/033e/42ba/b825/b16599d8933c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Ovelha Negra</div>
+<div><a href='https://tidal.com/album/98175753' target='_blank'>https://tidal.com/album/98175753</a></div>
+<div>OneSTAR - Ovelha Negra</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98175753' target='_blank'><img src='https://resources.tidal.com/images/e160ad26/ded0/4ebd/8b33/2df51585e83e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Больно дышать</div>
+<div><a href='https://tidal.com/album/142462245' target='_blank'>https://tidal.com/album/142462245</a></div>
+<div>SCPD Titan Music, OneSTAR - Больно дышать</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142462245' target='_blank'><img src='https://resources.tidal.com/images/2a52f870/a1e8/489c/8ce8/9213e25b73f3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/원스타 (OneSTAR) - 임한별_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
