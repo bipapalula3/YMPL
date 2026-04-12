@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 전소연 ( Tidal JEON SOYEON )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 전소연 ( Tidal JEON SOYEON )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/3e7faa41/35d0/47ed/8745/10501f168385/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/21515000' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 전소연</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>전소연 (JEON SOYEON) – 거침없는 에너지와 독창적인 음악 세계, ‘NANRINA’의 강렬함과 ‘BEAM BEAM’의 개성을 담아내는 아티스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> JEON SOYEON</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>JEON SOYEON – An artist with boundless energy and a unique musical world, capturing the intensity of 'NANRINA' and the individuality of 'BEAM BEAM'.</div><p>힙합 씬에 강렬한 존재감을 드러내는 전소연은 뛰어난 랩 실력과 프로듀싱 능력으로 자신만의 음악적 색깔을 구축했어요. 걸그룹 (여자)아이들의 리더로서, 솔로 아티스트로서 다재다능한 면모를 보여주며 많은 사랑을 받고 있답니다. 그녀의 음악은 끊임없이 변화하고 진화하며 대중에게 신선한 충격을 선사합니다.</p><p>Jeon Soyeon, a powerful presence in the hip-hop scene, has established her own musical style with outstanding rap skills and producing abilities. As the leader of the girl group (G)I-DLE and as a solo artist, she is loved for showing her versatile side. Her music constantly changes and evolves, giving the public a fresh shock.</p><p>✧</p><p>그룹 탄생과 성장</p><p>전소연은 걸그룹 (여자)아이들의 리더로서 그룹의 음악적 방향성을 제시하고 있어요. 데뷔곡부터 직접 프로듀싱에 참여하며 그룹의 색깔을 만들어가는 데 핵심적인 역할을 담당하고 있답니다. 그룹 활동을 통해 쌓은 경험은 솔로 아티스트로서의 성장에 큰 밑거름이 되었어요.</p><p>Group Formation and Growth</p><p>As the leader of the girl group (G)I-DLE, Jeon Soyeon presents the group's musical direction. She has been involved in producing since the debut song and plays a key role in creating the group's identity. The experience gained through group activities has become a great foundation for her growth as a solo artist.</p><p>✧</p><p>음악 및 퍼포먼스 스타일</p><p>전소연의 음악은 힙합을 기반으로 다양한 장르를 넘나드는 실험적인 시도가 돋보여요. 강렬한 랩 플로우와 개성 넘치는 보컬, 무대를 장악하는 카리스마 넘치는 퍼포먼스가 특징이랍니다. 그녀만의 독특한 스타일은 듣는 이들에게 강렬한 인상을 남기며 끊임없이 새로운 음악적 경험을 제공합니다.</p><p>Music and Performance Style</p><p>Jeon Soyeon's music stands out for its experimental attempts that cross various genres based on hip-hop. It features intense rap flows, unique vocals, and charismatic performances that dominate the stage. Her unique style leaves a strong impression on listeners and constantly provides new musical experiences.</p><p>✧</p><p>주요 활동과 영향력</p><p>솔로 앨범 발매뿐만 아니라 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀가고 있어요. 'CODE KUNST', 'BIBI', 'Colde' 등 다양한 아티스트와 함께 작업하며 자신만의 음악적 색깔을 더욱 확장하고 있답니다. 그녀의 음악은 젊은 세대에게 큰 영향을 미치며, 새로운 트렌드를 만들어내는 데 기여하고 있습니다.</p><p>Key Activities and Influence</p><p>She is expanding her musical spectrum through solo album releases as well as collaborations with various artists. She is further expanding her musical color by working with various artists such as 'CODE KUNST', 'BIBI', and 'Colde'. Her music has a great influence on the younger generation and contributes to creating new trends.</p><p>✧</p><p>미래와 음악적 의미</p><p>끊임없이 새로운 음악적 시도를 감행하는 전소연의 미래는 더욱 기대가 됩니다. 자신만의 색깔을 잃지 않으면서도 대중과의 소통을 잊지 않는 그녀의 음악은 앞으로도 많은 사람들에게 영감을 줄 거예요. 그녀의 음악은 단순한 유행을 넘어, 시대를 반영하는 예술 작품으로 기억될 것입니다.</p><p>Future and Musical Significance</p><p>Jeon Soyeon's future, who is constantly making new musical attempts, is even more anticipated. Her music, which does not lose her own color but does not forget communication with the public, will continue to inspire many people. Her music will be remembered as a work of art that reflects the times, going beyond simple trends.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] A-MOONO-KE</div>
+<div><a href='https://tidal.com/album/424306030' target='_blank'>https://tidal.com/album/424306030</a></div>
+<div>JEON SOYEON - A-MOONO-KE (I’m OK)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/424306030' target='_blank'><img src='https://resources.tidal.com/images/51fc9b15/fe3d/4d94/839e/9563e7d9189f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] [Vol.125] You Hee yul's Sketchbook With you _ 81th Voice 'Sketchbook X SOYEON ((G)I-DLE)'</div>
+<div><a href='https://tidal.com/album/217536308' target='_blank'>https://tidal.com/album/217536308</a></div>
+<div>JEON SOYEON - A Little Lovin</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/217536308' target='_blank'><img src='https://resources.tidal.com/images/16e4c515/ee80/4a22/84da/9b92e6c88389/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] [Vol.124] You Hee yul's Sketchbook With you _ 81th Voice 'Sketchbook X SOYEON ((G)I-DLE)'</div>
+<div><a href='https://tidal.com/album/217014030' target='_blank'>https://tidal.com/album/217014030</a></div>
+<div>JEON SOYEON - NANRINA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/217014030' target='_blank'><img src='https://resources.tidal.com/images/786a807e/48c9/4e50/a9ad/f8cddc0957ad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] The Ball Is Round</div>
+<div><a href='https://tidal.com/album/244277979' target='_blank'>https://tidal.com/album/244277979</a></div>
+<div>CODE KUNST, Woo, JEON SOYEON - The Ball Is Round (with FIFA OLP)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/244277979' target='_blank'><img src='https://resources.tidal.com/images/92975546/9385/4791/9629/763659e735e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Now On, Showtime! (Original Television Soundtrack) - 'FREAK SHOW'</div>
+<div><a href='https://tidal.com/album/310129875' target='_blank'>https://tidal.com/album/310129875</a></div>
+<div>JEON SOYEON - FREAK SHOW</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/310129875' target='_blank'><img src='https://resources.tidal.com/images/625b37d4/9b46/4ce4/aa3d/e35673e88b8d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Ah-dda, It's delicious (Shake Shack Korea)</div>
+<div><a href='https://tidal.com/album/424306048' target='_blank'>https://tidal.com/album/424306048</a></div>
+<div>JEON SOYEON - Ah-dda, It's delicious (Shake Shack Korea)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/424306048' target='_blank'><img src='https://resources.tidal.com/images/d7e6aad9/9174/4a55/a310/041e71b88b68/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Windy</div>
+<div><a href='https://tidal.com/album/189209209' target='_blank'>https://tidal.com/album/189209209</a></div>
+<div>JEON SOYEON - BEAM BEAM(Explicit)</div>
+<div>JEON SOYEON - Weather</div>
+<div>JEON SOYEON - Quit</div>
+<div>JEON SOYEON - Psycho</div>
+<div>JEON SOYEON, BIBI, Lee Young Ji - Is this bad b------ number-(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189209209' target='_blank'><img src='https://resources.tidal.com/images/0ef8d357/e909/4f0b/bd9a/5f95ad6db1b6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] New Vision</div>
+<div><a href='https://tidal.com/album/202785859' target='_blank'>https://tidal.com/album/202785859</a></div>
+<div>Colde, JEON SOYEON - New Vision</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/202785859' target='_blank'><img src='https://resources.tidal.com/images/10117a98/2070/4a43/bebd/f61864d7cc74/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Idle song</div>
+<div><a href='https://tidal.com/album/215946258' target='_blank'>https://tidal.com/album/215946258</a></div>
+<div>JEON SOYEON - Idle song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215946258' target='_blank'><img src='https://resources.tidal.com/images/57280649/a26e/42b7/a77a/66ddcdc382b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] Jelly</div>
+<div><a href='https://tidal.com/album/216016006' target='_blank'>https://tidal.com/album/216016006</a></div>
+<div>JEON SOYEON - Jelly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216016006' target='_blank'><img src='https://resources.tidal.com/images/a4a6ca7b/f7d5/491b/bfe7/373390f5cda5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/1_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ1) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/전소연 (JEON SOYEON)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
