@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 유엔 ( Tidal UN )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 유엔 ( Tidal UN )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/1ea2f361/54a1/4eb1/9524/3438252f93ae/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10413663 ---------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/26362705' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 유엔</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>유엔 (UN) – '그녀에게' 속삭이듯 전하는 사랑, '눈물아 제발' 멈추지 않는 감성, 시간을 넘어선 듀엣의 향수</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> UN</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>UN – Love whispered in 'To Her,' unwavering emotion in 'Tears, Please,' the nostalgia of a timeless duet.</div><p>2000년대 초반, 감미로운 멜로디와 섬세한 감성으로 가요계를 물들였던 듀오, 유엔(UN)을 기억하시나요? 김정훈과 최정원으로 이루어진 유엔은 독특한 음악 색깔과 매력적인 비주얼로 많은 사랑을 받았어요. 그들의 음악은 시간이 흘러도 여전히 우리의 마음속에 아련한 추억으로 남아있답니다.</p><p>Do you remember UN, the duo that colored the music scene in the early 2000s with sweet melodies and delicate emotions? Composed of Kim Jeong-hoon and Choi Jeong-won, UN was loved for their unique musical style and charming visuals. Their music remains a lingering memory in our hearts, even after time has passed.</p><p>✧</p><p>그룹 탄생</p><p>유엔은 2000년 데뷔하여 단숨에 대중의 이목을 사로잡았어요. 김정훈의 부드러운 보컬과 최정원의 매력적인 음색은 완벽한 조화를 이루며, 새로운 듀엣 시대를 열었다고 해도 과언이 아니랍니다. 당시 신선한 컨셉과 세련된 음악 스타일은 젊은 세대에게 큰 반향을 일으켰어요.</p><p>Group Formation</p><p>UN debuted in 2000 and immediately captured the public's attention. Kim Jeong-hoon's soft vocals and Choi Jeong-won's charming tone created a perfect harmony, arguably opening a new era for duets. At the time, their fresh concept and sophisticated musical style resonated greatly with the younger generation.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>유엔의 음악은 주로 서정적인 발라드를 기반으로 하지만, 댄스곡에서도 그들의 매력을 엿볼 수 있어요. 감성적인 가사와 멜로디는 듣는 이로 하여금 아련한 첫사랑의 기억을 떠올리게 하죠. 무대 위에서의 퍼포먼스 또한 깔끔하고 세련된 이미지를 보여주며 팬들의 마음을 사로잡았답니다.</p><p>Music and Performance</p><p>UN's music is mainly based on lyrical ballads, but their charm can also be seen in dance songs. The emotional lyrics and melodies evoke memories of a faint first love in the listener. Their on-stage performances also captivated fans with their clean and sophisticated image.</p><p>✧</p><p>주요 활동</p><p>유엔은 데뷔 후 '그녀에게', '평생', '선물' 등 수많은 히트곡을 발표하며 큰 성공을 거두었어요. 각종 음악 차트 1위를 석권하며 가요계의 중심으로 자리매김했죠. 또한, 멤버들은 음악 활동 외에도 드라마, 영화, 예능 등 다양한 분야에서 활약하며 다재다능한 면모를 보여주기도 했답니다.</p><p>Main Activities</p><p>After their debut, UN achieved great success by releasing numerous hit songs such as 'To Her,' 'Forever,' and 'Gift.' They topped various music charts and established themselves as a central figure in the music industry. In addition to their music activities, the members also showcased their versatility by participating in various fields such as dramas, movies, and entertainment shows.</p><p>✧</p><p>미래/의미</p><p>유엔은 짧은 활동 기간에도 불구하고 가요계에 뚜렷한 족적을 남겼어요. 그들의 음악은 여전히 많은 사람들에게 사랑받고 있으며, 듀엣 음악의 새로운 가능성을 제시했다는 평가를 받고 있답니다. 유엔의 음악은 시대를 초월하여 우리의 감성을 자극하는 힘을 가지고 있어요.</p><p>Future/Meaning</p><p>Despite their short period of activity, UN left a distinct mark on the music industry. Their music is still loved by many people and is praised for suggesting new possibilities for duet music. UN's music has the power to stimulate our emotions beyond time.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2005] 그녀에게</div>
+<div><a href='https://tidal.com/album/102167916' target='_blank'>https://tidal.com/album/102167916</a></div>
+<div>UN - Intro</div>
+<div>UN - 그녀에게</div>
+<div>UN - 눈물아 제발</div>
+<div>UN - Late at Night</div>
+<div>UN - 넌 친구- 난 연인!</div>
+<div>UN - No No No</div>
+<div>UN - 사랑해요 당신이 날 생각하지 않는 시간에도</div>
+<div>UN - 희망사항</div>
+<div>UN - 별의 동화</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102167916' target='_blank'><img src='https://resources.tidal.com/images/87256202/cd20/463e/8520/5b13141571b2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] Sweet & Strong</div>
+<div><a href='https://tidal.com/album/188895931' target='_blank'>https://tidal.com/album/188895931</a></div>
+<div>김정훈 - Feeling</div>
+<div>김정훈 - 유리 (唯俚 - 비록 슬퍼진다 하더라도)</div>
+<div>김정훈 - 나의 신부에게</div>
+<div>김정훈 - 서약</div>
+<div>김정훈 - Thank You</div>
+<div>김정훈 - 아침</div>
+<div>최정원 - 사랑을 믿어</div>
+<div>최정원 - 니가 여자로 느껴져</div>
+<div>최정원 - 말하자면</div>
+<div>최정원 - Summer Story</div>
+<div>최정원 - 전화번호 주면 안돼요--</div>
+<div>최정원 - White Dream In Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188895931' target='_blank'><img src='https://resources.tidal.com/images/67fe8714/a315/49ac/a7c8/eb3383207739/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] Extreme Happiness</div>
+<div><a href='https://tidal.com/album/102011328' target='_blank'>https://tidal.com/album/102011328</a></div>
+<div>유엔 - 전화번호 주면 안돼요</div>
+<div>유엔 - 흰눈이 내리면</div>
+<div>유엔 - Miracle</div>
+<div>유엔 - 아침</div>
+<div>유엔 - Crazy for you</div>
+<div>유엔 - 나의 사랑 나의 신부</div>
+<div>유엔 - Tell Me By Your Eyes</div>
+<div>유엔 - Full Moon</div>
+<div>유엔 - 작별</div>
+<div>유엔 - 항해</div>
+<div>유엔 - 오늘도 뿌듯한</div>
+<div>유엔 - 그대를 보내며</div>
+<div>유엔 - 라라라~</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102011328' target='_blank'><img src='https://resources.tidal.com/images/1765ba68/fa4e/42cb/851a/55f44ab87318/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] Traveling You</div>
+<div><a href='https://tidal.com/album/102167764' target='_blank'>https://tidal.com/album/102167764</a></div>
+<div>UN - 여름의 끝에서</div>
+<div>UN - 파도</div>
+<div>UN - Coin</div>
+<div>UN - 40 Days</div>
+<div>UN - 선물</div>
+<div>UN - 착각</div>
+<div>UN - 후... (오늘도 버릇처럼 그녀 생각을 하다)</div>
+<div>UN - Wait For Me</div>
+<div>UN - We Will Be Together</div>
+<div>UN - Every Day, Every Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102167764' target='_blank'><img src='https://resources.tidal.com/images/1ea2f361/54a1/4eb1/9524/3438252f93ae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] VOICE MAIL</div>
+<div><a href='https://tidal.com/album/102168092' target='_blank'>https://tidal.com/album/102168092</a></div>
+<div>UN - Intro</div>
+<div>UN - Voice Mail</div>
+<div>UN - 휴식</div>
+<div>UN - You Are The One</div>
+<div>UN - Take It Higher</div>
+<div>UN - 가</div>
+<div>UN - 평생</div>
+<div>UN - 내 마음을 뺏어봐</div>
+<div>UN - 애원</div>
+<div>UN - 미움 없는 이별</div>
+<div>UN - Outro</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102168092' target='_blank'><img src='https://resources.tidal.com/images/8f264255/2343/4f72/9d33/21400c3f10ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/유엔 (UN)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
