@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 일렉트로보이즈 ( Tidal Electroboyz )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 일렉트로보이즈 ( Tidal Electroboyz )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/fc838ef5/cd11/4e2f/8b7f/64006ce05efd/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/4360672' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 일렉트로보이즈</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>톡톡 튀는 사운드와 재치 있는 가사로 무장한, '부릉부릉' 질주하는 청춘의 에너지와 '선글라스' 아래 숨겨진 반전 매력을 선보이는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Electroboyz</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Armed with catchy sounds and witty lyrics, a group that showcases the energetic spirit of youth speeding in 'Boong Boong' and the hidden charm beneath 'Sunglasses'.</div><p>개성 넘치는 매력으로 무대를 장악하는 일렉트로보이즈를 소개합니다! 신나는 음악과 트렌디한 스타일로 많은 사랑을 받고 있는데요. 듣는 순간 어깨를 들썩이게 만드는 에너지를 느껴보세요.</p><p>Introducing Electroboyz, who dominate the stage with their unique charm! They are widely loved for their exciting music and trendy style. Feel the energy that makes you want to dance the moment you hear them.</p><p>✧</p><p>그룹의 탄생과 개성</p><p>일렉트로보이즈는 프로듀서 용감한 형제가 발굴한 실력파 힙합 그룹이에요. 각 멤버의 개성이 뚜렷하고, 음악 스타일 또한 다채로운 매력을 뽐내고 있습니다. 데뷔 초부터 독특한 콘셉트로 주목받으며 팬층을 확보했답니다.</p><p>The Birth and Individuality of the Group</p><p>Electroboyz is a talented hip-hop group discovered by producer Brave Brothers. Each member has a distinct personality, and their musical style also boasts a variety of charms. They have garnered attention since their debut with a unique concept and secured a strong fan base.</p><p>✧</p><p>음악적 스타일과 퍼포먼스</p><p>일렉트로보이즈의 음악은 힙합을 기반으로 일렉트로닉, 팝 등 다양한 장르를 융합한 것이 특징이에요. 중독성 강한 멜로디와 공감 가는 가사로 듣는 이들을 사로잡습니다. 무대 위에서는 에너지 넘치는 퍼포먼스를 선보이며 보는 재미를 더하고 있어요.</p><p>Musical Style and Performance</p><p>Electroboyz's music is characterized by a fusion of various genres such as electronic and pop, based on hip-hop. They captivate listeners with addictive melodies and relatable lyrics. On stage, they deliver energetic performances that add to the fun of watching.</p><p>✧</p><p>다채로운 활동과 협업</p><p>일렉트로보이즈는 꾸준한 음반 발매와 더불어 다양한 아티스트들과의 협업을 통해 음악적 스펙트럼을 넓혀왔습니다. 서인영, 사무엘 등 다양한 보컬리스트들과의 조화로운 콜라보를 선보였어요. 또한, 예능 프로그램 출연 등 다양한 활동으로 대중과의 소통을 이어가고 있습니다.</p><p>Diverse Activities and Collaborations</p><p>Electroboyz has expanded their musical spectrum through continuous album releases and collaborations with various artists. They have showcased harmonious collaborations with various vocalists such as Seo In-young and Samuel. They also continue to communicate with the public through various activities such as appearing on entertainment programs.</p><p>✧</p><p>앞으로의 행보와 의미</p><p>끊임없이 새로운 시도를 통해 변화를 추구하는 일렉트로보이즈. 앞으로 어떤 음악과 퍼포먼스로 팬들을 즐겁게 해줄지 기대가 됩니다. 그들의 음악은 단순한 즐거움을 넘어, 청춘의 에너지와 공감을 선사하는 매개체가 될 것입니다.</p><p>Future Steps and Meaning</p><p>Electroboyz constantly seek change through continuous new attempts. It is exciting to see what kind of music and performances they will bring to their fans in the future. Their music will go beyond simple enjoyment and serve as a medium that conveys the energy and empathy of youth.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2016] SUNGLASSES</div>
+<div><a href='https://tidal.com/album/230953505' target='_blank'>https://tidal.com/album/230953505</a></div>
+<div>일렉트로보이즈, Seo Inyoung - 선글라스</div>
+<div>일렉트로보이즈 - 부릉부릉</div>
+<div>일렉트로보이즈, Samuel - 샤넬백</div>
+<div>일렉트로보이즈 - Wait A Minute</div>
+<div>일렉트로보이즈 - Turn It Up</div>
+<div>일렉트로보이즈 - 골목길</div>
+<div>일렉트로보이즈 - Kissing In The Rain</div>
+<div>일렉트로보이즈 - 24시간</div>
+<div>일렉트로보이즈 - 다이아몬드</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230953505' target='_blank'><img src='https://resources.tidal.com/images/fc838ef5/cd11/4e2f/8b7f/64006ce05efd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 다이아몬드</div>
+<div><a href='https://tidal.com/album/230953618' target='_blank'>https://tidal.com/album/230953618</a></div>
+<div>일렉트로보이즈 - 다이아몬드</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230953618' target='_blank'><img src='https://resources.tidal.com/images/00c9549c/20ae/4257/9754/83fe0b1d3e07/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 뱅뱅사거리</div>
+<div><a href='https://tidal.com/album/230975766' target='_blank'>https://tidal.com/album/230975766</a></div>
+<div>일렉트로보이즈 - 뱅뱅사거리</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230975766' target='_blank'><img src='https://resources.tidal.com/images/6280c91f/a35f/4b4f/bcf8/15a02555d924/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 올해가 가고</div>
+<div><a href='https://tidal.com/album/219552400' target='_blank'>https://tidal.com/album/219552400</a></div>
+<div>일렉트로보이즈, Brave Girls, 빅스타, Joha - 올해가 가고</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219552400' target='_blank'><img src='https://resources.tidal.com/images/76543872/f276/4f62/8931/d505adca2f70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 비가 와</div>
+<div><a href='https://tidal.com/album/230981098' target='_blank'>https://tidal.com/album/230981098</a></div>
+<div>일렉트로보이즈 - 비가 와</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230981098' target='_blank'><img src='https://resources.tidal.com/images/cbbfd88a/ddfd/4dc1/9686/a5ee6b700acb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 떨려요</div>
+<div><a href='https://tidal.com/album/227116944' target='_blank'>https://tidal.com/album/227116944</a></div>
+<div>Joha, 일렉트로보이즈 - 떨려요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/227116944' target='_blank'><img src='https://resources.tidal.com/images/8ec9d578/d377/4351/9263/f6c0115afe61/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 더 트루스</div>
+<div><a href='https://tidal.com/album/230981106' target='_blank'>https://tidal.com/album/230981106</a></div>
+<div>일렉트로보이즈 - New Beginning</div>
+<div>일렉트로보이즈, Taewan - 딱 걸렸어</div>
+<div>일렉트로보이즈 - Hiphop Chick</div>
+<div>일렉트로보이즈 - 나인걸</div>
+<div>일렉트로보이즈, 안재숙 - MaMa</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230981106' target='_blank'><img src='https://resources.tidal.com/images/edbadb2f/8ed7/4919/842a/f10e3a13c6fb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] In Love</div>
+<div><a href='https://tidal.com/album/219552504' target='_blank'>https://tidal.com/album/219552504</a></div>
+<div>일렉트로보이즈, Nana - Ma Boy 3</div>
+<div>일렉트로보이즈, JC지은 - Ride With Me</div>
+<div>일렉트로보이즈, 승희 - Love</div>
+<div>일렉트로보이즈 - Good Night</div>
+<div>일렉트로보이즈 - Hot</div>
+<div>일렉트로보이즈 - 이랬으면 좋겠어</div>
+<div>일렉트로보이즈 - No.1</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219552504' target='_blank'><img src='https://resources.tidal.com/images/b433f85b/8d03/4e59/abfc/15e8b241ea6b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 데려다 줄게</div>
+<div><a href='https://tidal.com/album/219552469' target='_blank'>https://tidal.com/album/219552469</a></div>
+<div>일렉트로보이즈 - 데려다 줄게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219552469' target='_blank'><img src='https://resources.tidal.com/images/71210bf3/5701/4739/83a8/3a6d0a46ccd8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2012] 개가수</div>
+<div><a href='https://tidal.com/album/230981618' target='_blank'>https://tidal.com/album/230981618</a></div>
+<div>일렉트로보이즈, 개파르타 - My Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230981618' target='_blank'><img src='https://resources.tidal.com/images/046ff32c/b4d0/452b/bd64/81c310d630a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] ELECTRIFY</div>
+<div><a href='https://tidal.com/album/219552474' target='_blank'>https://tidal.com/album/219552474</a></div>
+<div>일렉트로보이즈 - 그냥</div>
+<div>일렉트로보이즈, 백지영 - 웃을까 말까</div>
+<div>일렉트로보이즈 - 결혼 해줄래</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219552474' target='_blank'><img src='https://resources.tidal.com/images/8038d188/142b/42bc/bb85/354838044ecb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Break Up</div>
+<div><a href='https://tidal.com/album/230954115' target='_blank'>https://tidal.com/album/230954115</a></div>
+<div>이기광, Brave Brothers, 일렉트로보이즈 - Break Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230954115' target='_blank'><img src='https://resources.tidal.com/images/9f4f3175/2cd5/4ddd/a827/4766d7f7c4be/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] ELECTROBOYZ _ FIRSTSINGLE</div>
+<div><a href='https://tidal.com/album/219552487' target='_blank'>https://tidal.com/album/219552487</a></div>
+<div>일렉트로보이즈, 호란 - 전화가 오네</div>
+<div>일렉트로보이즈, GALACTIKA- - 어제밤</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219552487' target='_blank'><img src='https://resources.tidal.com/images/f6d5402a/497c/4c42/9e96/fce6d499c331/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/5_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ5) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/일렉트로보이즈 (Electroboyz)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
