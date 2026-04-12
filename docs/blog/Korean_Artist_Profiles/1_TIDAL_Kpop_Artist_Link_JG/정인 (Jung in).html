@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 정인 ( Tidal Jung in )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 정인 ( Tidal Jung in )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/388008c0/f851/43a2/9f49/93385c5b643a/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7490876' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/19866364' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 정인</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>정인 (Jung In) - 애절한 목소리로 빚어낸 진심, '장마'처럼 촉촉한 감성을 노래하는 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jung in</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Jung In - A vocalist who crafts sincerity with a heartrending voice, singing emotions as tender as 'Rainy Season'</div><p>독보적인 음색과 깊은 감성으로 듣는 이의 마음을 사로잡는 가수 정인을 소개합니다. 그녀의 음악은 단순한 노래를 넘어, 진솔한 이야기와 섬세한 감정 표현으로 깊은 울림을 선사해요. 삶의 다양한 순간들을 녹여낸 정인의 음악 세계로 함께 떠나볼까요?</p><p>Introducing Jung In, a singer who captivates listeners with her unique tone and deep emotion. Her music transcends simple songs, delivering profound resonance through sincere stories and delicate emotional expressions. Shall we embark on a journey into Jung In's musical world, where various moments of life are captured?</p><p>✧</p><p>그룹 탄생</p><p>정인은 솔로 가수로 데뷔하기 전, G-Fla라는 그룹에서 활동하며 음악 여정을 시작했어요. 다양한 음악적 시도를 통해 자신만의 색깔을 찾아나가는 과정이었죠. 이러한 경험은 이후 그녀의 음악적 깊이를 더하는 밑거름이 되었답니다.</p><p>Origin as a Group</p><p>Before debuting as a solo artist, Jung In began her musical journey in a group called G-Fla. It was a process of finding her own color through various musical endeavors. This experience became the foundation for adding depth to her music later on.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>정인의 음악은 R&B, 소울, 힙합 등 다양한 장르를 아우르며, 특유의 허스키하면서도 매력적인 보이스가 돋보여요. 그녀의 노래는 사랑, 이별, 그리움 등 인간의 보편적인 감정을 진솔하게 담아내 듣는 이들에게 깊은 공감을 불러일으키죠. 때로는 강렬하게, 때로는 섬세하게 감정을 표현하는 그녀의 보컬은 듣는 이의 마음을 움직이는 힘을 가지고 있습니다.</p><p>Music and Performance</p><p>Jung In's music encompasses various genres such as R&B, soul, and hip-hop, highlighting her unique husky and charming voice. Her songs sincerely capture universal human emotions such as love, separation, and longing, evoking deep empathy in listeners. Her vocals, sometimes powerful and sometimes delicate, have the power to move the hearts of listeners.</p><p>✧</p><p>주요 활동</p><p>정인은 솔로 앨범 발매뿐만 아니라 다양한 아티스트와의 콜라보레이션을 통해 폭넓은 음악 스펙트럼을 보여주고 있어요. 윤종신과의 듀엣곡 '오르막길'은 많은 사람들에게 큰 사랑을 받았으며, 드라마 OST 참여 등 다양한 활동을 통해 대중과의 접점을 넓혀가고 있답니다. 그녀의 꾸준한 음악 활동은 앞으로가 더욱 기대되게 만들죠.</p><p>Main Activities</p><p>Jung In showcases a wide musical spectrum through solo album releases as well as collaborations with various artists. Her duet song 'After the uphill road' with Yoon Jong Shin was greatly loved by many, and she is expanding her connection with the public through various activities such as participating in drama OSTs. Her continuous musical activities make the future even more anticipated.</p><p>✧</p><p>미래/의미</p><p>정인의 음악은 단순한 유행을 쫓기보다는, 진심을 담아 오랫동안 사랑받는 음악을 추구하는 듯해요. 그녀의 목소리는 삶의 희로애락을 담아내며, 듣는 이들에게 위로와 공감을 전하죠. 앞으로도 그녀만의 독보적인 음악 세계를 통해 더욱 많은 사람들에게 감동과 위안을 선사할 것으로 기대됩니다.</p><p>Future/Meaning</p><p>Jung In's music seems to pursue music that is loved for a long time with sincerity, rather than chasing simple trends. Her voice captures the joys and sorrows of life, conveying comfort and empathy to listeners. It is expected that she will continue to deliver emotion and comfort to more people through her unique musical world in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Witness</div>
+<div><a href='https://tidal.com/album/358213272' target='_blank'>https://tidal.com/album/358213272</a></div>
+<div>Jung in - Witness</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/358213272' target='_blank'><img src='https://resources.tidal.com/images/7e60301b/0d95/4f0e/a99b/b410c7ee9b01/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Songstealer - Rose Blossom</div>
+<div><a href='https://tidal.com/album/361981150' target='_blank'>https://tidal.com/album/361981150</a></div>
+<div>Jung in - Rose Blossom</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/361981150' target='_blank'><img src='https://resources.tidal.com/images/5d389195/a3f2/4781/a1f1/eebbac642f7e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Queen of Divorce (Original Television Soundtrack) Pt.3</div>
+<div><a href='https://tidal.com/album/346282752' target='_blank'>https://tidal.com/album/346282752</a></div>
+<div>Jung in - Disc1 - Lean On Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346282752' target='_blank'><img src='https://resources.tidal.com/images/e4c71485/046c/454b/aa24/87931be46089/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] [THE SEASONS Vol. 3] _Choi Jung Hoon's Midnight Park_ ReːWake x Jung-In</div>
+<div><a href='https://tidal.com/album/300545806' target='_blank'>https://tidal.com/album/300545806</a></div>
+<div>Jung in - Foolish (Nerd)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/300545806' target='_blank'><img src='https://resources.tidal.com/images/976c6280/a8f8/4025/9c80/522168c6f193/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Wherever you are</div>
+<div><a href='https://tidal.com/album/318119430' target='_blank'>https://tidal.com/album/318119430</a></div>
+<div>Jung in - Wherever you are</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318119430' target='_blank'><img src='https://resources.tidal.com/images/0b221835/32dd/4ac7/9cbb/883614b37a5f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Queen of masks (Original Television Soundtrack), Pt. 3</div>
+<div><a href='https://tidal.com/album/306148273' target='_blank'>https://tidal.com/album/306148273</a></div>
+<div>Jung in - Ain't No Joke</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306148273' target='_blank'><img src='https://resources.tidal.com/images/1f9cbc39/6f18/408d/8573/a05d75df2f63/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] One drop a day (Original Soundtrack), Pt. 1</div>
+<div><a href='https://tidal.com/album/312793914' target='_blank'>https://tidal.com/album/312793914</a></div>
+<div>Jung in - Water & You & Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/312793914' target='_blank'><img src='https://resources.tidal.com/images/11893f8c/0ca1/4788/b67a/d7633c0eed5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Love Obsession</div>
+<div><a href='https://tidal.com/album/334729929' target='_blank'>https://tidal.com/album/334729929</a></div>
+<div>Jung in - Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334729929' target='_blank'><img src='https://resources.tidal.com/images/bf613ee1/05b3/4e9f/9e03/de1ac351b207/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] It is Rainy Day</div>
+<div><a href='https://tidal.com/album/304054797' target='_blank'>https://tidal.com/album/304054797</a></div>
+<div>Jung in - It is Rainy Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304054797' target='_blank'><img src='https://resources.tidal.com/images/9c701732/2e50/48d7/8e0a/27915717bf27/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] 오 마이 웨딩 OST Part.4</div>
+<div><a href='https://tidal.com/album/255865423' target='_blank'>https://tidal.com/album/255865423</a></div>
+<div>Jung in - 축하해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/255865423' target='_blank'><img src='https://resources.tidal.com/images/e75afbde/cc28/4c70/8485/79ed96cddda2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] track by YOON_ After the uphill road</div>
+<div><a href='https://tidal.com/album/264932712' target='_blank'>https://tidal.com/album/264932712</a></div>
+<div>Jung in, Yoon Jong Shin - track by YOON- After the uphill road</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/264932712' target='_blank'><img src='https://resources.tidal.com/images/dd996cfd/8b39/48fa/9cfd/3553afdb9123/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] SOMETHING LIKE THAT (2022)</div>
+<div><a href='https://tidal.com/album/306191089' target='_blank'>https://tidal.com/album/306191089</a></div>
+<div>Jung in - SOMETHING LIKE THAT (2022)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306191089' target='_blank'><img src='https://resources.tidal.com/images/13490df6/dd89/4b3f/b96e/59a4a4cee109/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Refresh project</div>
+<div><a href='https://tidal.com/album/248537265' target='_blank'>https://tidal.com/album/248537265</a></div>
+<div>Jung in - You complete me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/248537265' target='_blank'><img src='https://resources.tidal.com/images/4f9e1c60/e210/4a2c/84d2/78b6219117a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Follow My Heart (Gongzza X Jung-In) [Original Soundtrack]</div>
+<div><a href='https://tidal.com/album/346709118' target='_blank'>https://tidal.com/album/346709118</a></div>
+<div>Jung in - Follow My Heart</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346709118' target='_blank'><img src='https://resources.tidal.com/images/e43988d6/3b59/4157/acb9/7227dc38cdb6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] The Road_ The Tragedy of One OST Part 2</div>
+<div><a href='https://tidal.com/album/196051249' target='_blank'>https://tidal.com/album/196051249</a></div>
+<div>Jung in - Find The Way</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196051249' target='_blank'><img src='https://resources.tidal.com/images/810ea9bf/9937/441e/823f/ba66a4b5887f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Start Dating (Original Drama Soundtrack, Pt. 1)</div>
+<div><a href='https://tidal.com/album/407724163' target='_blank'>https://tidal.com/album/407724163</a></div>
+<div>Jung in - blah blah</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/407724163' target='_blank'><img src='https://resources.tidal.com/images/ab222f25/776e/4ffd/aaf7/82d606340452/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Raniny Season (Feat. YOUNG JUN of Brown Eyed Soul)</div>
+<div><a href='https://tidal.com/album/216278195' target='_blank'>https://tidal.com/album/216278195</a></div>
+<div>Jung in - Raniny Season (Feat. YOUNG JUN of Brown Eyed Soul)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216278195' target='_blank'><img src='https://resources.tidal.com/images/cdeec3b7/6a46/498b/8fa1/0e3bf02164d2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Muchness</div>
+<div><a href='https://tidal.com/album/216375767' target='_blank'>https://tidal.com/album/216375767</a></div>
+<div>Jung in - Muchness</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216375767' target='_blank'><img src='https://resources.tidal.com/images/d603c60d/5986/4920/83cf/45412badf5b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] CLEF CREW Project. take three</div>
+<div><a href='https://tidal.com/album/343950703' target='_blank'>https://tidal.com/album/343950703</a></div>
+<div>Jung in - Unspeakable</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343950703' target='_blank'><img src='https://resources.tidal.com/images/3da31cc1/d0cc/4813/8ac2/8e5d1b851486/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Begin Again Open Mic Episode.15</div>
+<div><a href='https://tidal.com/album/254605187' target='_blank'>https://tidal.com/album/254605187</a></div>
+<div>Jung in - 사랑 그 깊은 곳</div>
+<div>Jung in - 말하는대로</div>
+<div>Jung in - 위로</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/254605187' target='_blank'><img src='https://resources.tidal.com/images/bb507f8e/4014/4791/aca5/b1298058f8d6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Begin Again Open Mic Episode.14</div>
+<div><a href='https://tidal.com/album/254605200' target='_blank'>https://tidal.com/album/254605200</a></div>
+<div>Jung in - 오르막길</div>
+<div>Car, The Garden, Jung in - Little By Little</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/254605200' target='_blank'><img src='https://resources.tidal.com/images/01313085/5024/409a/96aa/2c5405165eb9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Zombie Detective (Original Television Soundtrack) Pt. 5</div>
+<div><a href='https://tidal.com/album/168587780' target='_blank'>https://tidal.com/album/168587780</a></div>
+<div>Jung in - Thank you and sorry</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168587780' target='_blank'><img src='https://resources.tidal.com/images/2ba90663/fe53/4906/9eea/8dbf5734a4aa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] IF YOU</div>
+<div><a href='https://tidal.com/album/161563081' target='_blank'>https://tidal.com/album/161563081</a></div>
+<div>Jung in, 민경 - IF YOU</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/161563081' target='_blank'><img src='https://resources.tidal.com/images/68796cc2/15d3/488d/9ba0/e5117eac2095/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] HAECHI (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/339880390' target='_blank'>https://tidal.com/album/339880390</a></div>
+<div>Jung in - One Sided Love Affair</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339880390' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Deep Love</div>
+<div><a href='https://tidal.com/album/216094976' target='_blank'>https://tidal.com/album/216094976</a></div>
+<div>Jung in - Deep Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216094976' target='_blank'><img src='https://resources.tidal.com/images/9cbefcdb/2ae1/4455/8954/ac640546b639/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] CONFESSION Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/107681872' target='_blank'>https://tidal.com/album/107681872</a></div>
+<div>Jung in - The End</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/107681872' target='_blank'><img src='https://resources.tidal.com/images/1dde67f3/ab37/4fd9/8c9f/df3ba44e07a0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 키스 먼저 할까요_ Should We Kiss First_ (Original Television Soundtrack), Pt. 6</div>
+<div><a href='https://tidal.com/album/115280035' target='_blank'>https://tidal.com/album/115280035</a></div>
+<div>Jung in - 우연처럼 Coincidence</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115280035' target='_blank'><img src='https://resources.tidal.com/images/c8a8beb0/95a9/4283/9cd9/d21584a50d34/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] attention</div>
+<div><a href='https://tidal.com/album/188821437' target='_blank'>https://tidal.com/album/188821437</a></div>
+<div>Eden, Jung in - attention</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188821437' target='_blank'><img src='https://resources.tidal.com/images/d6dfd995/548d/45c3/a069/eff3a09c2d01/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Your Honor (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/339855846' target='_blank'>https://tidal.com/album/339855846</a></div>
+<div>Jung in - Comfort</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339855846' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Difference</div>
+<div><a href='https://tidal.com/album/216215969' target='_blank'>https://tidal.com/album/216215969</a></div>
+<div>Jung in - Difference</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216215969' target='_blank'><img src='https://resources.tidal.com/images/f45020cf/1670/438a/9b66/2be21ff4b57f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] The Coldness (Monthly Project 2017 December Yoon Jong Shin)</div>
+<div><a href='https://tidal.com/album/189569532' target='_blank'>https://tidal.com/album/189569532</a></div>
+<div>Yoon Jong Shin, Jung in - The Coldness (Monthly Project 2017 December Yoon J</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189569532' target='_blank'><img src='https://resources.tidal.com/images/54ddfff6/6153/42d6/83d7/221dfdbd1421/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Avengers' Social Club, Pt. 1 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196137521' target='_blank'>https://tidal.com/album/196137521</a></div>
+<div>Jung in - Believe In A Miracle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137521' target='_blank'><img src='https://resources.tidal.com/images/8c92ff1b/5431/4ffa/8f92/35dd8edda975/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] rare</div>
+<div><a href='https://tidal.com/album/215946087' target='_blank'>https://tidal.com/album/215946087</a></div>
+<div>Jung in - beatle beatle</div>
+<div>Jung in - UUU</div>
+<div>Jung in - talktalk (Feat. San E)</div>
+<div>Jung in - Ion</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215946087' target='_blank'><img src='https://resources.tidal.com/images/fa685fb8/3798/4b98/9944/1de28f0b355c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Yong-pal (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/216512367' target='_blank'>https://tidal.com/album/216512367</a></div>
+<div>Jung in - Actullay, I'm…</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216512367' target='_blank'><img src='https://resources.tidal.com/images/4164b6ac/6d0a/4301/8da8/bb8fb635d3ff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Town Bar</div>
+<div><a href='https://tidal.com/album/216007153' target='_blank'>https://tidal.com/album/216007153</a></div>
+<div>Huhgak, Jung in - Town Bar</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216007153' target='_blank'><img src='https://resources.tidal.com/images/475cd148/ad11/4e94/9ea1/4843b504afdd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 고교처세왕 OST Part 2 (tvN 월화드라마)</div>
+<div><a href='https://tidal.com/album/196094801' target='_blank'>https://tidal.com/album/196094801</a></div>
+<div>Jung in - 살다가보면</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196094801' target='_blank'><img src='https://resources.tidal.com/images/7ed8fa8a/8005/47eb/94bf/3a4b7e95204e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2014] Jung In&Gary Digital Single _Your scent_</div>
+<div><a href='https://tidal.com/album/216051806' target='_blank'>https://tidal.com/album/216051806</a></div>
+<div>Jung in, gary - Your scent</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216051806' target='_blank'><img src='https://resources.tidal.com/images/4fb547d8/3625/4ce7/aeea/6d23509ffa7f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Jung In&Gary Digital Single _Bicycle_</div>
+<div><a href='https://tidal.com/album/216048065' target='_blank'>https://tidal.com/album/216048065</a></div>
+<div>Jung in, gary - Bicycle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216048065' target='_blank'><img src='https://resources.tidal.com/images/1e4c1e58/57cc/4359/bc34/ad41859c8299/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Her</div>
+<div><a href='https://tidal.com/album/305856178' target='_blank'>https://tidal.com/album/305856178</a></div>
+<div>Jung in - phooey,</div>
+<div>Jung in - Truism</div>
+<div>Jung in - Don't say that</div>
+<div>Jung in - Let's take a walk (feat. GARY)</div>
+<div>Jung in - OK-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305856178' target='_blank'><img src='https://resources.tidal.com/images/2347a3c2/461d/4f88/ae55/6566140a8c4c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Autumn Lady</div>
+<div><a href='https://tidal.com/album/196092015' target='_blank'>https://tidal.com/album/196092015</a></div>
+<div>Jung in - Love Fool</div>
+<div>Jung in - Nerd</div>
+<div>Jung in - Autumn Guy</div>
+<div>Jung in - Love Train</div>
+<div>Jung in - JJAJAN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196092015' target='_blank'><img src='https://resources.tidal.com/images/81632ce2/a13d/4ccd/827d/4b5d388cbaaa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 노무현을 노래하다 Pt. 2 - 345 pm</div>
+<div><a href='https://tidal.com/album/241314036' target='_blank'>https://tidal.com/album/241314036</a></div>
+<div>Jung in - 노무현을 노래하다 Pt. 2 - 345 pm</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/241314036' target='_blank'><img src='https://resources.tidal.com/images/f2246e9f/8190/4fae/a30f/4b8482cbc16b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Uphill Road (Monthly Project 2012 June Yoon Jong Shin)</div>
+<div><a href='https://tidal.com/album/372645010' target='_blank'>https://tidal.com/album/372645010</a></div>
+<div>Jung in, Yoon Jong Shin - Uphill Road (Monthly Project 2012 June Yoon Jong S</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372645010' target='_blank'><img src='https://resources.tidal.com/images/c52afa57/7291/4c56/ad3a/0d79b4cac65f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Melody Remedy</div>
+<div><a href='https://tidal.com/album/305856714' target='_blank'>https://tidal.com/album/305856714</a></div>
+<div>Jung in - Because---</div>
+<div>정인 Jung In - Because---</div>
+<div>Jung in - Rainy Season</div>
+<div>정인 Jung In - 장마 Rainy Season</div>
+<div>Jung in - Kiss Me</div>
+<div>정인 Jung In - Kiss Me</div>
+<div>Jung in - Chul Su & Mimi (feat. Gill & Supreme Team)</div>
+<div>정인 Jung In - 철수와 미미 Chul Su & Mimi (feat. 길 Gill of 리ᄊ</div>
+<div>Jung in - New Year Special</div>
+<div>정인 Jung In - 연말특수 New Year Special</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305856714' target='_blank'><img src='https://resources.tidal.com/images/6753799a/8797/4e8e/98bb/74a3216c8d84/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 정인 Jung In from Andromeda</div>
+<div><a href='https://tidal.com/album/143617508' target='_blank'>https://tidal.com/album/143617508</a></div>
+<div>정인 Jung In - Show! (feat. Alex of Clazziquai & Tablo of Epik Hi</div>
+<div>정인 Jung In - 살아가는 동안에 While Alive</div>
+<div>정인 Jung In - 미워요 I Hate You</div>
+<div>정인 Jung In - Girls on Shock (feat. Enzo.B & 하주연 Ha JooYeon</div>
+<div>정인 Jung In - 고마워 Thank You (feat. 남자친구 Boyfriend)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/143617508' target='_blank'><img src='https://resources.tidal.com/images/fdac20e8/0940/4e01/86cd/2f26a57ca46a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 정인 From Andromeda</div>
+<div><a href='https://tidal.com/album/305856190' target='_blank'>https://tidal.com/album/305856190</a></div>
+<div>Jung in - Show! (feat. Alex & Tablo)</div>
+<div>Jung in - While Alive</div>
+<div>Jung in - Girls On Shock (feat. Enzo.B & Ha JooYeon)</div>
+<div>Jung in - Thank You (feat. Boyfriend)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305856190' target='_blank'><img src='https://resources.tidal.com/images/388008c0/f851/43a2/9f49/93385c5b643a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2010] Road for Hope</div>
+<div><a href='https://tidal.com/album/215930881' target='_blank'>https://tidal.com/album/215930881</a></div>
+<div>Park Shinyang, Jung in - 들리나요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215930881' target='_blank'><img src='https://resources.tidal.com/images/14e6760d/1bfb/4ab1/bc6b/3a6885c6ce85/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/1_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ1) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/정인 (Jung in)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
