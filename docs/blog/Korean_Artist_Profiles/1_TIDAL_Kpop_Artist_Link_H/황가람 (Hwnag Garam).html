@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 황가람 ( Tidal Hwnag Garam )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 황가람 ( Tidal Hwnag Garam )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/e585fe8c/8fc6/4181/bd38/cbc9c7b39e18/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/45362311' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 황가람</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>황가람 – 짙은 그리움과 아련한 후회를 노래하는 섬세한 감성 보컬리스트, ‘가지 말라고’ 외침 속에 담긴 애절함</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Hwnag Garam</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Hwang Garam – A delicate emotional vocalist singing of deep longing and faint regret, the plaintive cry of 'Don't Leave Me'</div><p>섬세한 감성과 호소력 짙은 목소리로 듣는 이의 마음을 어루만지는 황가람님을 소개합니다. 그의 음악은 잊혀지지 않는 사랑의 기억과 아련한 슬픔을 담아내어 깊은 공감을 자아냅니다. 마치 한 편의 영화를 보는 듯한 그의 노래는 오랫동안 당신의 마음에 잔잔한 파동을 일으킬 거예요.</p><p>Introducing Hwang Garam, whose delicate emotions and appealing voice caress the hearts of listeners. His music captures unforgettable memories of love and faint sorrow, creating deep empathy. Like watching a movie, his songs will leave a lasting, gentle ripple in your heart.</p><p>✧</p><p>음악적 여정의 시작</p><p>황가람님은 특유의 감성적인 보컬과 섬세한 표현력으로 자신만의 음악 세계를 구축해왔습니다. 그는 다양한 감정선을 건드리는 음악을 통해 리스너들에게 깊은 울림을 전달하고 있습니다. 그의 음악은 단순한 노래를 넘어, 듣는 이의 마음속 깊은 곳에 자리 잡는 특별한 경험을 선사합니다.</p><p>The Beginning of a Musical Journey</p><p>Hwang Garam has built his own musical world with his unique emotional vocals and delicate expressiveness. He delivers deep resonance to listeners through music that touches various emotional lines. His music goes beyond a simple song, providing a special experience that settles deep within the listener's heart.</p><p>✧</p><p>애절함과 그리움의 노래</p><p>그의 음악은 주로 사랑과 이별, 그리움과 후회 등 인간의 보편적인 감정을 섬세하게 그려냅니다. 특히 '가지 말라고'와 같은 곡에서는 떠나가는 사랑에 대한 애절한 감정을 절절하게 표현하여 듣는 이의 가슴을 먹먹하게 합니다. 그의 진솔한 감정 표현은 많은 이들에게 공감과 위로를 선사합니다.</p><p>Songs of Yearning and Longing</p><p>His music delicately portrays universal human emotions such as love, separation, longing, and regret. In particular, songs like 'Don't Leave Me' express the heartbreaking feeling of a departing love, leaving listeners with a heavy heart. His sincere expression of emotion offers empathy and comfort to many.</p><p>✧</p><p>다채로운 음악적 스펙트럼</p><p>황가람님은 발라드뿐만 아니라 다양한 장르를 넘나들며 자신만의 음악적 색깔을 보여주고 있습니다. 그는 섬세한 감정 표현과 더불어 몽환적인 분위기, 그리고 때로는 강렬한 에너지까지 선보이며 폭넓은 음악적 스펙트럼을 자랑합니다. 그의 음악은 끊임없이 변화하고 발전하며, 듣는 이에게 새로운 감동을 선사합니다.</p><p>A Diverse Musical Spectrum</p><p>Hwang Garam showcases his own musical color by crossing various genres beyond ballads. He boasts a wide musical spectrum, showcasing delicate emotional expression, dreamy atmospheres, and sometimes intense energy. His music is constantly changing and evolving, offering new inspiration to listeners.</p><p>✧</p><p>앞으로의 행보와 의미</p><p>앞으로 황가람님은 더욱 깊어진 감성과 폭넓은 음악적 역량을 바탕으로 우리에게 더욱 다채로운 음악을 선사할 것입니다. 그의 음악은 단순한 듣는 즐거움을 넘어, 우리의 삶과 감정을 더욱 풍요롭게 만들어주는 소중한 선물이 될 것입니다. 그의 진심 어린 음악은 앞으로도 많은 사람들에게 깊은 감동과 위로를 전해줄 것입니다.</p><p>Future Direction and Meaning</p><p>In the future, Hwang Garam will offer us even more diverse music based on his deepened emotions and broad musical capabilities. His music will be a precious gift that goes beyond simple listening pleasure, enriching our lives and emotions. His heartfelt music will continue to deliver deep inspiration and comfort to many people.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] If the World Turns Against You (세상이 그대를 속일지라도)</div>
+<div><a href='https://tidal.com/album/430409527' target='_blank'>https://tidal.com/album/430409527</a></div>
+<div>Hwang Karam - If the World Turns Against You (세상이 그대를 속일지라도)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/430409527' target='_blank'><img src='https://resources.tidal.com/images/aeb2a546/f7a1/45e3/925a/84576c626c27/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] I Miss You So Much</div>
+<div><a href='https://tidal.com/album/416940057' target='_blank'>https://tidal.com/album/416940057</a></div>
+<div>Hwang Karam - I Miss You So Much</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/416940057' target='_blank'><img src='https://resources.tidal.com/images/0629dae0/ad72/460f/83ed/4ef5b688f203/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 미녀와 순정남 (Original Television Soundtrack), Pt. 14</div>
+<div><a href='https://tidal.com/album/411460144' target='_blank'>https://tidal.com/album/411460144</a></div>
+<div>Hwang Karam - 가지 말라고</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/411460144' target='_blank'><img src='https://resources.tidal.com/images/64a29c8f/be06/4ca9/bc1f/db60b78154b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] your name</div>
+<div><a href='https://tidal.com/album/367224114' target='_blank'>https://tidal.com/album/367224114</a></div>
+<div>Hwang Karam - your name</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/367224114' target='_blank'><img src='https://resources.tidal.com/images/ffc4f236/faa3/4645/95a6/9680aaa289af/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] always</div>
+<div><a href='https://tidal.com/album/363694844' target='_blank'>https://tidal.com/album/363694844</a></div>
+<div>Hwang Karam - always</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/363694844' target='_blank'><img src='https://resources.tidal.com/images/b4282724/89e8/48a4/b4aa/754f19301181/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Sad Spring</div>
+<div><a href='https://tidal.com/album/342460112' target='_blank'>https://tidal.com/album/342460112</a></div>
+<div>Hwang Karam - Sad Spring</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/342460112' target='_blank'><img src='https://resources.tidal.com/images/df7707f5/b424/4f24/8dcf/4bfacd89d24e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] More than yesterday</div>
+<div><a href='https://tidal.com/album/377040779' target='_blank'>https://tidal.com/album/377040779</a></div>
+<div>Hwang Karam - More than yesterday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/377040779' target='_blank'><img src='https://resources.tidal.com/images/cc32af8a/b81e/4c87/843e/d8aaba918ae2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Like a Miracle</div>
+<div><a href='https://tidal.com/album/358805235' target='_blank'>https://tidal.com/album/358805235</a></div>
+<div>Hwang Karam - Like a Miracle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/358805235' target='_blank'><img src='https://resources.tidal.com/images/cb58d717/6f46/44ab/97d1/09535027e795/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] I`m Firefly</div>
+<div><a href='https://tidal.com/album/394601249' target='_blank'>https://tidal.com/album/394601249</a></div>
+<div>Hwang Karam - I`m Firefly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/394601249' target='_blank'><img src='https://resources.tidal.com/images/e67425ac/6a11/4960/a459/35af0e9429e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] I Can`t breathe without you</div>
+<div><a href='https://tidal.com/album/383649207' target='_blank'>https://tidal.com/album/383649207</a></div>
+<div>Hwang Karam - I Can`t breathe without you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383649207' target='_blank'><img src='https://resources.tidal.com/images/a63944d1/7d47/4d51/922a/efd66a39c922/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 오, 보이! (Original Television Soundtrack), Pt. 7</div>
+<div><a href='https://tidal.com/album/415551270' target='_blank'>https://tidal.com/album/415551270</a></div>
+<div>Hwang Karam - 미련</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/415551270' target='_blank'><img src='https://resources.tidal.com/images/65f07408/8c72/4373/af11/9d324bc64a07/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 빨강 구두 (Original Television Soundtrack), Pt. 3</div>
+<div><a href='https://tidal.com/album/411922122' target='_blank'>https://tidal.com/album/411922122</a></div>
+<div>Hwang Karam - 심장도 지워야 잊나봐</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/411922122' target='_blank'><img src='https://resources.tidal.com/images/e6083588/477c/437d/aa12/05be8617afd2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 미친 사랑</div>
+<div><a href='https://tidal.com/album/411922146' target='_blank'>https://tidal.com/album/411922146</a></div>
+<div>Hwang Karam - 미친 사랑</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/411922146' target='_blank'><img src='https://resources.tidal.com/images/061b28de/ca97/4127/868a/0d6644537654/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 마음이 떠난 그대</div>
+<div><a href='https://tidal.com/album/411888897' target='_blank'>https://tidal.com/album/411888897</a></div>
+<div>Hwang Karam - 마음이 떠난 그대</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/411888897' target='_blank'><img src='https://resources.tidal.com/images/14a15acb/ec7d/4fa1/9a10/4292daf9828a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 가슴을 때려온다</div>
+<div><a href='https://tidal.com/album/415596265' target='_blank'>https://tidal.com/album/415596265</a></div>
+<div>Hwang Karam - 가슴을 때려온다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/415596265' target='_blank'><img src='https://resources.tidal.com/images/a3a359fd/d801/4a96/b795/97a6fe1c71f9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 위험한 약속 (Original Television Soundtrack), Pt. 15</div>
+<div><a href='https://tidal.com/album/412642689' target='_blank'>https://tidal.com/album/412642689</a></div>
+<div>Hwang Karam - 미치도록 네가 그립다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412642689' target='_blank'><img src='https://resources.tidal.com/images/b3e68163/b659/44c7/8036/8078f44f583b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 우아한 모녀 (Original Television Soundtrack), Pt. 12</div>
+<div><a href='https://tidal.com/album/416150412' target='_blank'>https://tidal.com/album/416150412</a></div>
+<div>Hwang Karam - 나를 위해 울지마</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/416150412' target='_blank'><img src='https://resources.tidal.com/images/1c5c2b97/df05/4270/a5f9/849f3d09154c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 누가 뭐래도 (Original Television Soundtrack), Pt. 13</div>
+<div><a href='https://tidal.com/album/420449048' target='_blank'>https://tidal.com/album/420449048</a></div>
+<div>Hwang Karam - 후회</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/420449048' target='_blank'><img src='https://resources.tidal.com/images/2b5d1cc7/24ae/4b86/95b5/1d82aefcc648/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] 꽃길만 걸어요(Original Television Soundtrack), Pt. 29</div>
+<div><a href='https://tidal.com/album/413081240' target='_blank'>https://tidal.com/album/413081240</a></div>
+<div>Hwang Karam - 고마운 사람에게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/413081240' target='_blank'><img src='https://resources.tidal.com/images/80f31741/e49f/481c/9f1c/99ea72bc9346/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 태양의 계절 (Original Television Soundtrack), Pt. 5</div>
+<div><a href='https://tidal.com/album/414899234' target='_blank'>https://tidal.com/album/414899234</a></div>
+<div>Hwang Karam - 사랑 웃기지마</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/414899234' target='_blank'><img src='https://resources.tidal.com/images/fb152c8c/9c5f/45a3/8b74/a9885e3830b4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/1_TIDAL_Kpop_Artist_Link_H.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅎ1) TIDAL Kpop Artist Link (H)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/황가람 (Hwnag Garam)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
