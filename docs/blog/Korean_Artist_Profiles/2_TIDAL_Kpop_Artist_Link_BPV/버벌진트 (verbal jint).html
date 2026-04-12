@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 버벌진트 ( Tidal verbal jint )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 버벌진트 ( Tidal verbal jint )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/f839e798/3f7e/4997/8bc4/5665e65e3260/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/4488851' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 버벌진트</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>버벌진트 (Verbal Jint) - 라임의 연금술사, '좋아보여'의 섬세한 감성과 'Samba Bakja 2025'의 실험 정신을 엮어내는 이야기꾼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> verbal jint</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Verbal Jint - The Alchemist of Rhyme, a storyteller weaving the delicate emotions of 'You Look Good' with the experimental spirit of 'Samba Bakja 2025'.</div><p>한국 힙합 씬의 혁신적인 선구자, 버벌진트님을 소개합니다. 그는 독창적인 라임과 플로우, 그리고 진솔한 가사로 많은 사랑을 받아왔어요. 끊임없이 변화를 추구하며 새로운 시도를 두려워하지 않는 그의 음악 세계를 함께 탐험해 볼까요?</p><p>Introducing Verbal Jint, an innovative pioneer in the Korean hip-hop scene. He has been loved for his unique rhymes and flows, as well as his genuine lyrics. Shall we explore his musical world, where he constantly seeks change and isn't afraid of new attempts?</p><p>✧</p><p>언어의 마술사</p><p>버벌진트님은 데뷔 초부터 뛰어난 작사 능력과 독특한 라임 구사로 주목받았어요. 그의 음악은 단순한 랩을 넘어, 마치 한 편의 시를 읽는 듯한 인상을 주곤 합니다. 그는 언어를 자유자재로 다루며 자신만의 스타일을 구축해왔습니다.</p><p>The Wizard of Words</p><p>Verbal Jint has been noted for his exceptional songwriting skills and unique rhyme schemes since his debut. His music goes beyond simple rap, often giving the impression of reading a poem. He has built his own style by manipulating language with freedom.</p><p>✧</p><p>장르를 넘나드는 실험</p><p>그는 힙합이라는 장르 안에서 끊임없이 새로운 시도를 감행해왔어요. 재즈, R&B, 팝 등 다양한 장르와의 융합을 통해 독창적인 사운드를 만들어냅니다. 버벌진트님은 안주하지 않고 끊임없이 변화하는 음악적 스펙트럼을 보여줍니다.</p><p>Experimentation Across Genres</p><p>He has constantly made new attempts within the genre of hip-hop. He creates original sounds by fusing various genres such as jazz, R&B, and pop. Verbal Jint shows a constantly changing musical spectrum without settling down.</p><p>✧</p><p>꾸준한 활동과 영향력</p><p>버벌진트님은 솔로 활동뿐만 아니라 다양한 아티스트들과의 협업을 통해 꾸준히 음악 활동을 이어오고 있어요. 그의 음악은 많은 후배 뮤지션들에게 영감을 주었으며, 한국 힙합 씬의 발전에 큰 영향을 미쳤습니다. 그는 자신만의 음악적 색깔을 확고히 하며 대중과 소통하고 있습니다.</p><p>Constant Activity and Influence</p><p>Verbal Jint has been consistently active in music, not only through solo activities but also through collaborations with various artists. His music has inspired many younger musicians and has had a great impact on the development of the Korean hip-hop scene. He solidifies his own musical color and communicates with the public.</p><p>✧</p><p>앞으로의 행보, 그리고 의미</p><p>앞으로 버벌진트님이 어떤 새로운 음악을 들려줄지 기대가 됩니다. 그는 끊임없는 실험 정신과 진솔한 음악으로 앞으로도 많은 이들에게 영감을 줄 것입니다. 그의 음악은 단순한 유행을 넘어, 시대를 초월하는 가치를 지니고 있다고 생각해요.</p><p>Future Steps, and Meaning</p><p>I'm looking forward to seeing what new music Verbal Jint will bring to us in the future. He will continue to inspire many people with his constant experimental spirit and genuine music. I believe his music transcends simple trends and has a timeless value.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] HAPPY END</div>
+<div><a href='https://tidal.com/album/411696782' target='_blank'>https://tidal.com/album/411696782</a></div>
+<div>Verbal Jint - BTS (Behind The Scenes)</div>
+<div>Verbal Jint, Bewhy - Money Rap (Feat. BewhY)</div>
+<div>Verbal Jint, Khundi Panda - Curious (Feat. Khundi Panda)</div>
+<div>Verbal Jint - TONY KAKU</div>
+<div>Verbal Jint, UV - The River (Feat. UV)</div>
+<div>Verbal Jint - Put Me To The Test</div>
+<div>Verbal Jint - TIMING</div>
+<div>Verbal Jint - Semen Analysis</div>
+<div>Verbal Jint - SAMBAKJA 2025</div>
+<div>Verbal Jint, Lynn Sung - Kitchen Rap (Feat. Lynn Sung)</div>
+<div>Verbal Jint - SHIFTIN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/411696782' target='_blank'><img src='https://resources.tidal.com/images/ac35d8cc/65c0/4ac0/96ff/87a4a4954b67/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] BTS</div>
+<div><a href='https://tidal.com/album/403807796' target='_blank'>https://tidal.com/album/403807796</a></div>
+<div>Verbal Jint - BTS (Behind The Scenes)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/403807796' target='_blank'><img src='https://resources.tidal.com/images/b95c63b4/0823/4572/a9ab/7b4c63dad668/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 좋아보여 2023 (feat. 검정치마)</div>
+<div><a href='https://tidal.com/album/294182430' target='_blank'>https://tidal.com/album/294182430</a></div>
+<div>Verbal Jint - 좋아보여 2023 (feat. 검정치마)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/294182430' target='_blank'><img src='https://resources.tidal.com/images/bbc1dadb/8219/4aa4/be91/bda40c205fa6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] got to be U 2023 (feat. Vincent Blue)</div>
+<div><a href='https://tidal.com/album/304460880' target='_blank'>https://tidal.com/album/304460880</a></div>
+<div>Verbal Jint - got to be U 2023 (feat. Vincent Blue)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304460880' target='_blank'><img src='https://resources.tidal.com/images/40ce3687/1727/436c/b476/dd9dea0e7c91/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] K-XY _ INFP</div>
+<div><a href='https://tidal.com/album/314568630' target='_blank'>https://tidal.com/album/314568630</a></div>
+<div>Verbal Jint - Food</div>
+<div>Verbal Jint, Minyoung - Waiting For The Food (Feat. Minyoung)</div>
+<div>Verbal Jint - Come Together</div>
+<div>Verbal Jint, Damini - Friendzone (Feat. DAMINI)</div>
+<div>Verbal Jint - LDH</div>
+<div>Verbal Jint, Swervy - Self-destruction (Feat. Swervy)</div>
+<div>Verbal Jint, Jung in - Bad Morning (Feat. Jung In)</div>
+<div>Verbal Jint, Uneducated Kid - Actress-Actor (Feat. UNEDUCATED KID)</div>
+<div>Verbal Jint, YODAYOUNG - The Right (Feat. YODAYOUNG)</div>
+<div>Verbal Jint - 5 days in</div>
+<div>Verbal Jint, Layone - Between The Lines (Feat. Layone)</div>
+<div>Verbal Jint, SANCHEZ - Too Different (Feat. Sanchez)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/314568630' target='_blank'><img src='https://resources.tidal.com/images/813ed219/87d2/4a27/9070/0f4093eedb90/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Rebuild The World</div>
+<div><a href='https://tidal.com/album/230954674' target='_blank'>https://tidal.com/album/230954674</a></div>
+<div>Verbal Jint, BILL STAX, gary - Rebuild The World (feat. 개리 & BILL STAX)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230954674' target='_blank'><img src='https://resources.tidal.com/images/8af84a2c/4847/4300/9289/16fd51d2a7a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] TEN PROJECT Part.1</div>
+<div><a href='https://tidal.com/album/183194950' target='_blank'>https://tidal.com/album/183194950</a></div>
+<div>Verbal Jint, Hanhae, Wonstein - Good Morning (feat. Wonstein)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183194950' target='_blank'><img src='https://resources.tidal.com/images/69ffc084/369f/4d21/8b3b/92c48a286dc3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Say It Over</div>
+<div><a href='https://tidal.com/album/193269491' target='_blank'>https://tidal.com/album/193269491</a></div>
+<div>Verbal Jint, Bumkey, Boombastic - Say It Over</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/193269491' target='_blank'><img src='https://resources.tidal.com/images/8279d21b/1a8e/402c/b729/741aa8222481/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Inflection Point</div>
+<div><a href='https://tidal.com/album/179427579' target='_blank'>https://tidal.com/album/179427579</a></div>
+<div>Verbal Jint - Gone for a Minute</div>
+<div>Verbal Jint - Hey VJ</div>
+<div>Verbal Jint - Pedestrian Flow (feat. Isobel Kim)</div>
+<div>Verbal Jint - Open Letter (feat. Hwa Young)(Explicit)</div>
+<div>Verbal Jint - What Am I to Do (feat. curv moon)</div>
+<div>Verbal Jint - Dark Side (feat. lIlBOI)(Explicit)</div>
+<div>Verbal Jint - Public Figure (feat. Swings & Han Yo Han)(Explicit)</div>
+<div>Verbal Jint - You Think I Don't Know (feat. JUSTHIS)(Explicit)</div>
+<div>Verbal Jint - The Nines(Explicit)</div>
+<div>Verbal Jint - Youth</div>
+<div>Verbal Jint - Cold World (feat. Mommy Son)</div>
+<div>Verbal Jint - My G-Wagen (feat. SUPERBEE)(Explicit)</div>
+<div>Verbal Jint - Discord (feat. BIG Naughty)</div>
+<div>Verbal Jint - Inflection Point Outro(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/179427579' target='_blank'><img src='https://resources.tidal.com/images/9cd9a208/fcd5/4218/b576/5f481a8c19af/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Dark Side</div>
+<div><a href='https://tidal.com/album/189886234' target='_blank'>https://tidal.com/album/189886234</a></div>
+<div>Verbal Jint - Dark Side (feat. lIlBOI)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189886234' target='_blank'><img src='https://resources.tidal.com/images/ef92b450/01e7/44c7/a399/3e52a5876352/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Cold World</div>
+<div><a href='https://tidal.com/album/189841810' target='_blank'>https://tidal.com/album/189841810</a></div>
+<div>Verbal Jint - Cold World (feat. Mommy Son)</div>
+<div>Verbal Jint - Music to Attract money</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189841810' target='_blank'><img src='https://resources.tidal.com/images/92be38ad/2525/452b/bd8e/45a2c59ce43a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 2020 VISION (feat. YANGHONGWON)</div>
+<div><a href='https://tidal.com/album/189483734' target='_blank'>https://tidal.com/album/189483734</a></div>
+<div>Verbal Jint - 2020 VISION (feat. YANGHONGWON)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189483734' target='_blank'><img src='https://resources.tidal.com/images/a67e4100/56ab/40c6/9c55/fdc44af1e7f4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 20 Acapellas</div>
+<div><a href='https://tidal.com/album/189536346' target='_blank'>https://tidal.com/album/189536346</a></div>
+<div>Verbal Jint - VJ in 2020 VISION (BPM102)</div>
+<div>Verbal Jint - VJ in The Greatest (BPM95)</div>
+<div>Verbal Jint - VJ in Hey VJ (BPM93)</div>
+<div>Verbal Jint - VJ in GabBoonSa (BPM100)</div>
+<div>Verbal Jint - VJ in Let It Snow (BPM98)</div>
+<div>Verbal Jint - VJ in Girlfriend (BPM158)</div>
+<div>Verbal Jint - VJ in December (BPM150)</div>
+<div>Verbal Jint - VJ in November Thoughts (BPM177)</div>
+<div>Verbal Jint - VJ in August Report (BPM110)</div>
+<div>Verbal Jint - VJ in September and October (BPM120)</div>
+<div>Verbal Jint - VJ in July Report (BPM110)</div>
+<div>Verbal Jint - VJ in June Report (BPM110)</div>
+<div>Verbal Jint - VJ in The Chase Revisited (BPM123)</div>
+<div>Verbal Jint - VJ in True Or False Revisited (BPM136)</div>
+<div>Verbal Jint - VJ in Stressin Me (BPM75)</div>
+<div>Verbal Jint - VJ in April Blessings (BPM155)</div>
+<div>Verbal Jint - VJ in March Report (BPM110)</div>
+<div>Verbal Jint - VJ in February Report (BPM110)</div>
+<div>Verbal Jint - VJ in January Report (BPM110)</div>
+<div>Verbal Jint - VJ in Ice (BPM84)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189536346' target='_blank'><img src='https://resources.tidal.com/images/692f5ce3/1cd4/42fa/9914/6dec441deade/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Year End Report</div>
+<div><a href='https://tidal.com/album/189462415' target='_blank'>https://tidal.com/album/189462415</a></div>
+<div>Verbal Jint - December (feat. Dbo)</div>
+<div>Verbal Jint - November Thoughts</div>
+<div>Verbal Jint - August Report</div>
+<div>Verbal Jint - September and October</div>
+<div>Verbal Jint - July Report</div>
+<div>Verbal Jint - June Report</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189462415' target='_blank'><img src='https://resources.tidal.com/images/451a1171/8931/474e/80dd/88ecca3daf17/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] The Chase Revisited</div>
+<div><a href='https://tidal.com/album/189205420' target='_blank'>https://tidal.com/album/189205420</a></div>
+<div>Verbal Jint - The Chase Revisited</div>
+<div>Verbal Jint - True Or False Revisited</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189205420' target='_blank'><img src='https://resources.tidal.com/images/cbb61c58/eae7/4a0c/bc58/c26aa77d1aad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Is It Music Or Is It A Report</div>
+<div><a href='https://tidal.com/album/189183431' target='_blank'>https://tidal.com/album/189183431</a></div>
+<div>Verbal Jint - January Report</div>
+<div>Verbal Jint - February Report</div>
+<div>Verbal Jint - March Report</div>
+<div>Verbal Jint - April Blessings</div>
+<div>Verbal Jint - Stressin Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189183431' target='_blank'><img src='https://resources.tidal.com/images/3af7b940/c401/417b/baa6/8f2528466096/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Hey VJ</div>
+<div><a href='https://tidal.com/album/189052812' target='_blank'>https://tidal.com/album/189052812</a></div>
+<div>Verbal Jint - Hey VJ</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189052812' target='_blank'><img src='https://resources.tidal.com/images/85b58e6a/abbe/43b3/b290/bdf084651368/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] GabBoonSa</div>
+<div><a href='https://tidal.com/album/185253313' target='_blank'>https://tidal.com/album/185253313</a></div>
+<div>Verbal Jint, Han Yo Han, Jang sukhoon - GabBoonSa (feat. Han Yo Han & Jang SukHoon)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185253313' target='_blank'><img src='https://resources.tidal.com/images/9de72fd9/194f/4a3c/b252/414eed48e023/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Trainee Girl _ Girlfriend</div>
+<div><a href='https://tidal.com/album/185253309' target='_blank'>https://tidal.com/album/185253309</a></div>
+<div>Verbal Jint, MXM - Trainee Girl (feat. MXM)</div>
+<div>Verbal Jint, Sik-K - Girlfriend (feat. Sik-K)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185253309' target='_blank'><img src='https://resources.tidal.com/images/fcbd901c/8f12/4ba8/bf7f/c11518749a8e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Self-Suggestion</div>
+<div><a href='https://tidal.com/album/185244917' target='_blank'>https://tidal.com/album/185244917</a></div>
+<div>Verbal Jint, Superbee - Self-Suggestion (feat. SUPERBEE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185244917' target='_blank'><img src='https://resources.tidal.com/images/a977bf3b/d42f/45fe/afbe/dd899eb43026/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] No Excuses</div>
+<div><a href='https://tidal.com/album/186893042' target='_blank'>https://tidal.com/album/186893042</a></div>
+<div>Verbal Jint, Babylon - Break (feat. Babylon)</div>
+<div>Verbal Jint, Yein - Sober (feat. YEIN)</div>
+<div>Verbal Jint, Superbee - Self-Suggestion (feat. SUPERBEE)</div>
+<div>Verbal Jint - Regrets</div>
+<div>Verbal Jint - Enough</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/186893042' target='_blank'><img src='https://resources.tidal.com/images/ebc25bc4/1fc8/4041/b677/815bf049be5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Let It Snow</div>
+<div><a href='https://tidal.com/album/185253304' target='_blank'>https://tidal.com/album/185253304</a></div>
+<div>Verbal Jint, Bumkey - Let It Snow (feat. BUMKEY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185253304' target='_blank'><img src='https://resources.tidal.com/images/96befeec/7cbb/4718/81cc/2d7b237f3172/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] I Wanna Know</div>
+<div><a href='https://tidal.com/album/185244887' target='_blank'>https://tidal.com/album/185244887</a></div>
+<div>Verbal Jint - OGinmydream</div>
+<div>Verbal Jint, Car, The Garden - I Wanna Know (feat. CAR, THE GARDEN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185244887' target='_blank'><img src='https://resources.tidal.com/images/975894d3/3f81/4916/9759/7b34a4050445/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 17 Acapellas</div>
+<div><a href='https://tidal.com/album/185244899' target='_blank'>https://tidal.com/album/185244899</a></div>
+<div>Verbal Jint - VJ in Beatiful Life- BPM95</div>
+<div>Verbal Jint - VJ in Zero- BPM91(Explicit)</div>
+<div>Verbal Jint - VJ in YNF - BPM94</div>
+<div>Verbal Jint - VJ in Ring Ring Ring- BPM72</div>
+<div>Verbal Jint - VJ in Pinocchio- BPM105</div>
+<div>Verbal Jint - VJ in Trophy- BPM70</div>
+<div>Verbal Jint - VJ in Self-Suggestion- BPM61</div>
+<div>Verbal Jint - VJ in 4am- BPM110</div>
+<div>Verbal Jint - VJ in Crazy- BPM104</div>
+<div>Verbal Jint - VJ in 10- BPM90</div>
+<div>Verbal Jint - VJ in Beautiful Life- BPM100</div>
+<div>Verbal Jint - VJ in WYA- BPM93</div>
+<div>Verbal Jint - VJ in Grey- BPM85</div>
+<div>Verbal Jint - VJ in Sunshine- BPM70</div>
+<div>Verbal Jint - VJ in Lazyday- BPM63</div>
+<div>Verbal Jint - VJ in Royalty- BPM84.71</div>
+<div>Verbal Jint - VJ in Changed- BPM90</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185244899' target='_blank'><img src='https://resources.tidal.com/images/ca3dac7b/10fc/40eb/8957/1dda84dfcbc7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] The Chase _ True or False</div>
+<div><a href='https://tidal.com/album/185245842' target='_blank'>https://tidal.com/album/185245842</a></div>
+<div>Verbal Jint - The Chase</div>
+<div>Verbal Jint - True or False</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185245842' target='_blank'><img src='https://resources.tidal.com/images/bf08c8bc/410c/4b35/bb53/fba0fe13979f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Sunshine</div>
+<div><a href='https://tidal.com/album/66018249' target='_blank'>https://tidal.com/album/66018249</a></div>
+<div>Verbal Jint, Chancellor - Sunshine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/66018249' target='_blank'><img src='https://resources.tidal.com/images/f390eb25/9fb1/4198/8aa9/663440f33dcb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Read My Mind</div>
+<div><a href='https://tidal.com/album/185244861' target='_blank'>https://tidal.com/album/185244861</a></div>
+<div>Verbal Jint, Yang Da Il - Read My Mind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185244861' target='_blank'><img src='https://resources.tidal.com/images/ee724070/8429/4edb/9e25/1b47e7fa5508/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2015] Yeoja</div>
+<div><a href='https://tidal.com/album/184695374' target='_blank'>https://tidal.com/album/184695374</a></div>
+<div>Verbal Jint, Sanchez - Good Times</div>
+<div>Verbal Jint, Sanchez - Favorite!</div>
+<div>Verbal Jint, Sanchez, Stella Jang - Spot The Difference (feat. Stella Jang)</div>
+<div>Verbal Jint, Sanchez, KANG MIN KYUNG - My Type 2.5 (feat. Kang Min Kyung)</div>
+<div>Verbal Jint, Sanchez, Bumkey - Doin' It (feat. BUMKEY)</div>
+<div>Verbal Jint, Sanchez, Le - Body 2 Body (feat. LE)</div>
+<div>Verbal Jint, Sanchez - Good Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184695374' target='_blank'><img src='https://resources.tidal.com/images/6362821f/6f00/4945/a5ae/41cbdcbccd08/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] My Type 2</div>
+<div><a href='https://tidal.com/album/184695427' target='_blank'>https://tidal.com/album/184695427</a></div>
+<div>Verbal Jint, KANG MIN KYUNG, SANCHEZ - My Type 2 (feat. Kang Min Kyung & Sanchez)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184695427' target='_blank'><img src='https://resources.tidal.com/images/0acd501e/e5ee/4910/964e/90f41cb40d55/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] GO HARD Part 1 _ 양가치</div>
+<div><a href='https://tidal.com/album/189088758' target='_blank'>https://tidal.com/album/189088758</a></div>
+<div>Verbal Jint - Rewind</div>
+<div>Verbal Jint - 시발점 (feat. Beenzino)(Explicit)</div>
+<div>Verbal Jint - 90년대로부터</div>
+<div>Verbal Jint - Brand New Day (feat. TAEWAN)</div>
+<div>Verbal Jint - 세입자flow</div>
+<div>Verbal Jint - 보통사람 (feat. BlackNut)(Explicit)</div>
+<div>Verbal Jint - 세상이 완벽했다면 (feat. TAEYEON)</div>
+<div>Verbal Jint - 아포가또 (feat. Sanchez)</div>
+<div>Verbal Jint - 현자타임(Explicit)</div>
+<div>Verbal Jint - 나대나(Explicit)</div>
+<div>Verbal Jint - 희귀종 (feat. YDG)</div>
+<div>Verbal Jint - Fast Forward</div>
+<div>Verbal Jint - 건물주flow</div>
+<div>Verbal Jint - Karma (feat. Lil cham)(Explicit)</div>
+<div>Verbal Jint - Fear</div>
+<div>Verbal Jint - Seoul State of Mind (feat. Gaeko, Basick, Tablo)(Explicit)</div>
+<div>Verbal Jint - 좌절좌절열매 (feat. eSNa)</div>
+<div>Verbal Jint - 언어장벽(Explicit)</div>
+<div>Verbal Jint - The Grind, Pt. 2 (feat. Jerry.k)</div>
+<div>Verbal Jint - My Bentley</div>
+<div>Verbal Jint - Gone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189088758' target='_blank'><img src='https://resources.tidal.com/images/b7d9f039/0100/43f8/91d8/daac7d7268eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Doin' It</div>
+<div><a href='https://tidal.com/album/184695426' target='_blank'>https://tidal.com/album/184695426</a></div>
+<div>Verbal Jint, Sanchez, Bumkey - Doin' It (feat. BUMKEY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184695426' target='_blank'><img src='https://resources.tidal.com/images/1d1cdf2f/0977/4b56/ad26/cdcd5331b32d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 희귀종</div>
+<div><a href='https://tidal.com/album/189111722' target='_blank'>https://tidal.com/album/189111722</a></div>
+<div>Verbal Jint - Rare Breed (feat. YDG)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189111722' target='_blank'><img src='https://resources.tidal.com/images/3f025813/24b4/4290/bd56/3426d5afe470/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 반도의흔한랩퍼</div>
+<div><a href='https://tidal.com/album/189111424' target='_blank'>https://tidal.com/album/189111424</a></div>
+<div>Verbal Jin - Just Another Rapper (feat. San E & Swings)</div>
+<div>Verbal Jint - Just Another Rapper</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189111424' target='_blank'><img src='https://resources.tidal.com/images/5ea7cd9f/4758/4678/afc6/839368c505d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] If It Ain't Love</div>
+<div><a href='https://tidal.com/album/189133639' target='_blank'>https://tidal.com/album/189133639</a></div>
+<div>Verbal Jint - If It Ain't Love (feat. AILEE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189133639' target='_blank'><img src='https://resources.tidal.com/images/8621a355/3b6a/4b32/8747/b8ce855421ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Good Start</div>
+<div><a href='https://tidal.com/album/189052670' target='_blank'>https://tidal.com/album/189052670</a></div>
+<div>Verbal Jint - Good Start (feat. Kang Min Hee)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189052670' target='_blank'><img src='https://resources.tidal.com/images/8de9bc04/760c/4874/b9da/bc182d7db369/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] DEUX 20th ANNIVERSARY TRIBUTE ALBUM (Original Soundtrack) Part 6</div>
+<div><a href='https://tidal.com/album/216079361' target='_blank'>https://tidal.com/album/216079361</a></div>
+<div>Bumkey, Verbal Jint - Only for you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216079361' target='_blank'><img src='https://resources.tidal.com/images/fef629eb/7749/4bb2/a513/0575063b453e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2012] 크리스마스를 부탁해</div>
+<div><a href='https://tidal.com/album/189079295' target='_blank'>https://tidal.com/album/189079295</a></div>
+<div>Verbal Jint - 크리스마스를 부탁해 (feat. Shin Seung Hun)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189079295' target='_blank'><img src='https://resources.tidal.com/images/f5b06a86/a0ed/4711/addb/3bfa0049be39/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 굿모닝</div>
+<div><a href='https://tidal.com/album/189140939' target='_blank'>https://tidal.com/album/189140939</a></div>
+<div>Verbal Jint - 굿모닝 (feat. 10cm)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189140939' target='_blank'><img src='https://resources.tidal.com/images/99394a34/e35a/4204/b3c6/0f298247d118/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 가을냄새</div>
+<div><a href='https://tidal.com/album/189117809' target='_blank'>https://tidal.com/album/189117809</a></div>
+<div>Verbal Jint - 가을냄새 (feat. Eddy Kim)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189117809' target='_blank'><img src='https://resources.tidal.com/images/b70703d4/df63/4b03/b279/c61dd34a1a67/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Walking In The Rain</div>
+<div><a href='https://tidal.com/album/189033777' target='_blank'>https://tidal.com/album/189033777</a></div>
+<div>Verbal Jint - Walking In The Rain (feat. BUMKEY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189033777' target='_blank'><img src='https://resources.tidal.com/images/7ccbd7f0/b8d3/4544/8bd2/5d5263770d10/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] The Thousandth Man (Original Soundtrack) Part.5</div>
+<div><a href='https://tidal.com/album/216151668' target='_blank'>https://tidal.com/album/216151668</a></div>
+<div>Verbal Jint, As One - Closer Closer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216151668' target='_blank'><img src='https://resources.tidal.com/images/aef18fbb/0bca/40d5/9361/d619f1663d7e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Classic</div>
+<div><a href='https://tidal.com/album/189052804' target='_blank'>https://tidal.com/album/189052804</a></div>
+<div>Verbal Jint - Classic</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189052804' target='_blank'><img src='https://resources.tidal.com/images/3b69107c/647c/4da2/a1a9/4c5a7949d7a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 10 Years of Misinterpretation Part I</div>
+<div><a href='https://tidal.com/album/336225846' target='_blank'>https://tidal.com/album/336225846</a></div>
+<div>Verbal Jint - Odog (Intro)</div>
+<div>Verbal Jint - Life Music</div>
+<div>Verbal Jint - Perfect Day (feat. IVY)</div>
+<div>Verbal Jint - Good Morning (feat. Kwon Jeong Yeol)</div>
+<div>Verbal Jint - Happy Birthday (feat. As One)</div>
+<div>Verbal Jint - Got to Be U (feat. Si Jin)</div>
+<div>Verbal Jint - You Deserve Better (Beautiful Enough) [feat. Sanchez]</div>
+<div>Verbal Jint - Raindrops (feat. Psycoban)</div>
+<div>Verbal Jint - She's Gone</div>
+<div>Verbal Jint - From Boys to Men 2013 (feat. Zion, Hanhae)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/336225846' target='_blank'><img src='https://resources.tidal.com/images/a0850073/fe88/4a7c/8a29/be68e6a62eca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 넌 내게 모욕감을 줬어 (feat. KOONTA)</div>
+<div><a href='https://tidal.com/album/189148119' target='_blank'>https://tidal.com/album/189148119</a></div>
+<div>Verbal Jint - 넌 내게 모욕감을 줬어 (feat. KOONTA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189148119' target='_blank'><img src='https://resources.tidal.com/images/1570997b/6953/4fe8/9fb3/ecf3275687ba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 감사감사</div>
+<div><a href='https://tidal.com/album/189148258' target='_blank'>https://tidal.com/album/189148258</a></div>
+<div>Verbal Jint - 감사감사 (feat. Linus' Blanket)</div>
+<div>Verbal Jint - 고맙고맙 (feat. Zion.T)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189148258' target='_blank'><img src='https://resources.tidal.com/images/9848cb28/a94c/4dd6/9ee1/711cbf913048/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2011] Go Easy</div>
+<div><a href='https://tidal.com/album/189148160' target='_blank'>https://tidal.com/album/189148160</a></div>
+<div>Verbal Jint - 원숭이띠 미혼남 (feat. ZICO)</div>
+<div>Verbal Jint - 좋아보여 (feat. The Black Skirts)</div>
+<div>Verbal Jint - 넌 내게 모욕감을 줬어 (feat. KOONTA)</div>
+<div>Verbal Jint - 우아한년 2012 (feat. San E, Okasian)</div>
+<div>Verbal Jint - 긍정의 힘</div>
+<div>Verbal Jint - Want You Back (feat. Nodo)</div>
+<div>Verbal Jint - Luv Songz (feat. TAEWAN)</div>
+<div>Verbal Jint - 약속해 약속해 2012 (feat. Jo Hyun Ah)</div>
+<div>Verbal Jint - 어베일러블 (feat. lady Jane)</div>
+<div>Verbal Jint - 깨알같아</div>
+<div>Verbal Jint - My Audi (feat. The Quiett)</div>
+<div>Verbal Jint - 우리존재 화이팅</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189148160' target='_blank'><img src='https://resources.tidal.com/images/de3605f4/a591/4225/a8c6/0291ae414bfc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Go Easy 0.5</div>
+<div><a href='https://tidal.com/album/184695434' target='_blank'>https://tidal.com/album/184695434</a></div>
+<div>Verbal Jint, G.NA - I Promise... Promise (feat. G.NA)</div>
+<div>Verbal Jint, 빈지노 (Beenzino), Deb - How Dare Do You Pour a Oil or Something (feat. Deb & Beenzino)</div>
+<div>Verbal Jint, Sang Chu - Elegant Bitch (feat. Sang Chu)(Explicit)</div>
+<div>Verbal Jint - Take Care of Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184695434' target='_blank'><img src='https://resources.tidal.com/images/2011b060/cce1/40de/87e5/67a96360714c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Available (feat. Lady Jane)</div>
+<div><a href='https://tidal.com/album/184695432' target='_blank'>https://tidal.com/album/184695432</a></div>
+<div>Verbal Jint, Lady Jane - Available (feat. Lady Jane)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184695432' target='_blank'><img src='https://resources.tidal.com/images/1233299d/07bb/4f74/a2f4/3c6d2f3f4257/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Poem for People Dreaming</div>
+<div><a href='https://tidal.com/album/222493832' target='_blank'>https://tidal.com/album/222493832</a></div>
+<div>Verbal Jint, RHYMER, In Hoe Koo Of M.A.C - Poem for People Dreaming (feat. In Hoe Koo Of M.A.C)</div>
+<div>Huh In Chang - Diary of SeongBok</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222493832' target='_blank'><img src='https://resources.tidal.com/images/191374b5/c31d/422e/b1d1/88040ba628e0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 2 The Hard Way</div>
+<div><a href='https://tidal.com/album/216094077' target='_blank'>https://tidal.com/album/216094077</a></div>
+<div>Cho PD, Verbal Jint - Map Music (Feat. ZICO)</div>
+<div>Cho PD, Verbal Jint - Super Hero</div>
+<div>Cho PD, Verbal Jint - Man Up (Feat. Park mi kyung)</div>
+<div>Cho PD, Verbal Jint - Origin of Species (Feat. SWINGS, 블록버스터)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216094077' target='_blank'><img src='https://resources.tidal.com/images/1b480807/0a70/4029/b044/960c830b66f9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] The Good Die Young</div>
+<div><a href='https://tidal.com/album/189161453' target='_blank'>https://tidal.com/album/189161453</a></div>
+<div>Verbal Jint - 56 Bars</div>
+<div>Verbal Jint - 무간도 (feat. Realslow)</div>
+<div>Verbal Jint - Searchin' (feat. The Quiett)</div>
+<div>Verbal Jint - 을지로 5가 (양고기 찬가)</div>
+<div>Verbal Jint - Yessir (feat. Jo Hyun Ah)</div>
+<div>Verbal Jint - Ordinary (feat. Rimi)</div>
+<div>Verbal Jint - Check The Rhime</div>
+<div>Verbal Jint - 삼박자 2010</div>
+<div>Verbal Jint - 안녕이라고 말하지 마</div>
+<div>Verbal Jint - Quiz Show (feat. LISA)</div>
+<div>Verbal Jint - R.E.S.P.E.C.T-</div>
+<div>Verbal Jint - Dramas of Life (feat. Beenzino)</div>
+<div>Verbal Jint - 나쁜 교육 (feat. Tiger JK)</div>
+<div>Verbal Jint - La Strada</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189161453' target='_blank'><img src='https://resources.tidal.com/images/bc3029c8/f317/4f4f/af79/4b7821eaed67/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 누명</div>
+<div><a href='https://tidal.com/album/344324008' target='_blank'>https://tidal.com/album/344324008</a></div>
+<div>Verbal Jint - 투올더힙합키즈 투 (Simo Rmx)(Explicit)</div>
+<div>Verbal Jint - 편견</div>
+<div>Verbal Jint - 누명</div>
+<div>Verbal Jint - 투올더힙합키즈 투 (Bamduck Rmx)(Explicit)</div>
+<div>Verbal Jint - 선고</div>
+<div>Verbal Jint - 투올더힙합키즈 투 (Magnum Propaganda Rmx By Psycoban)(Explicit)</div>
+<div>Verbal Jint - 망명(Explicit)</div>
+<div>Verbal Jint - 투올더힙합키즈 투 (Siren Rmx)(Explicit)</div>
+<div>Verbal Jint - Make Up Sex (Ja Rmx)(Explicit)</div>
+<div>Verbal Jint - 망각</div>
+<div>Verbal Jint - 2008 대한민국 (feat. San, Swings, Gehrith Isle)(Explicit)</div>
+<div>Verbal Jint - 내리막 (Ja Rmx)</div>
+<div>Verbal Jint - Favorite (feat. Kebee, The Quiett) (Rmx)</div>
+<div>Verbal Jint - 역사의 간지</div>
+<div>Verbal Jint - Tight이란 낱말의 존재이유</div>
+<div>Verbal Jint - 투올더힙합키즈 투 (Quaalude Rmx)(Explicit)</div>
+<div>Verbal Jint - 1219 Epiphany</div>
+<div>Verbal Jint - 개꼬장 (El Jamic Rmx)(Explicit)</div>
+<div>Verbal Jint - Ad Hoc (feat. Youngcook, 12MB)(Explicit)</div>
+<div>Verbal Jint - 투올더힙합키즈 투 (The Quiett Rmx)(Explicit)</div>
+<div>Verbal Jint - Get 2 Know U (Rmx)</div>
+<div>Verbal Jint - 배후 (feat. B-Soap, Youngcook)(Explicit)</div>
+<div>Verbal Jint - 일 수도 있다는 식으로 살다가 죽음을 맞이함</div>
+<div>Verbal Jint - 투올더힙합키즈 투 (D′anne Michelle Rmx)(Explicit)</div>
+<div>Verbal Jint - Want You (feat. INC, VON)</div>
+<div>Verbal Jint - Circles (feat. B-Soap, NUCK, Warmman, Jo Hyun Ah)</div>
+<div>Verbal Jint - Losing My Love</div>
+<div>Verbal Jint - How Long</div>
+<div>Verbal Jint - Leavin′ (feat. MC Meta, E SENS, Jo Hyun Ah)</div>
+<div>Verbal Jint - 자고가요</div>
+<div>Verbal Jint - Drunk</div>
+<div>Verbal Jint - The Grind</div>
+<div>Verbal Jint - 불</div>
+<div>Verbal Jint - 사자에서 어린아이로</div>
+<div>Verbal Jint - 여여</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344324008' target='_blank'><img src='https://resources.tidal.com/images/cb001197/f3ec/4f22/838a/a06220fc4353/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] 무명</div>
+<div><a href='https://tidal.com/album/344326286' target='_blank'>https://tidal.com/album/344326286</a></div>
+<div>Verbal Jint - 투올더힙합키즈 투</div>
+<div>Verbal Jint - 시간 (feat. Von)</div>
+<div>Verbal Jint - Trouble (feat. B-soap & E SENS)</div>
+<div>Verbal Jint - Overclass 2007 (feat. Nodo, Pb, JA, Youngcook, Warmman, Steady B, Von, Giant, B-soap & KJun)</div>
+<div>Verbal Jint - 무비스타</div>
+<div>Verbal Jint - 삼박자</div>
+<div>Verbal Jint - Unused Piece for Ten Ten Club</div>
+<div>Verbal Jint - 개꼬장</div>
+<div>Verbal Jint - Cold As Ice (feat. Swings & Warmman)</div>
+<div>Verbal Jint - 90년대에게</div>
+<div>Verbal Jint - 투올더힙합키즈 투 (a capella)</div>
+<div>Verbal Jint - 삼박자 (a capella)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344326286' target='_blank'><img src='https://resources.tidal.com/images/fa39c95d/a8ef/4650/82d9/aa5015bdf663/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] Favorite</div>
+<div><a href='https://tidal.com/album/189198680' target='_blank'>https://tidal.com/album/189198680</a></div>
+<div>Verbal Jint - 합꿍</div>
+<div>Verbal Jint - Favorite (feat. Dynamicduo)</div>
+<div>Verbal Jint - Interlude</div>
+<div>Verbal Jint - 내리막 (feat. Tablo, Mithra Jin)(Explicit)</div>
+<div>Verbal Jint - Make Up Sex (feat. K Jun)(Explicit)</div>
+<div>Verbal Jint - 소인배</div>
+<div>Verbal Jint - 엉덩이가 닮았네 (feat. Matilda Fung)</div>
+<div>Verbal Jint - Unused Piece For Cultwo Show</div>
+<div>Verbal Jint, K Jun - 다 같이 춤을 춰 (With K Jun)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189198680' target='_blank'><img src='https://resources.tidal.com/images/984ed347/f06a/4f5a/a884/b97e03aadbc1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2001] Modern Rhymes XX</div>
+<div><a href='https://tidal.com/album/195356253' target='_blank'>https://tidal.com/album/195356253</a></div>
+<div>Verbal Jint - Overclass (Remastered)</div>
+<div>Verbal Jint - Interlude (Remastered)</div>
+<div>Verbal Jint - Love & Hip-Hop (feat. Whee Sung) (Remasterd)</div>
+<div>Verbal Jint - Radio (Remastered)</div>
+<div>Verbal Jint - Drama (Remastered)</div>
+<div>Verbal Jint - What U Write 4 (feat. P-Type & The Illest I.L.L.S.) (Remastered)</div>
+<div>Verbal Jint - History In The Making (Remastered)</div>
+<div>Verbal Jint - 80 Seasons</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/195356253' target='_blank'><img src='https://resources.tidal.com/images/7d5e8845/4129/471c/99d3/f8f5e310ee2e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] Modern Rhymes EP</div>
+<div><a href='https://tidal.com/album/197844253' target='_blank'>https://tidal.com/album/197844253</a></div>
+<div>Verbal Jint - Overclass(Explicit)</div>
+<div>Verbal Jint - Interlude</div>
+<div>Verbal Jint - Love & Hip-Hop (Feat. Wheesung)</div>
+<div>Verbal Jint - Radio</div>
+<div>Verbal Jint - Drama(Explicit)</div>
+<div>Verbal Jint - What U Write 4 (Feat. P-Type & The illest I.L.L.S.)</div>
+<div>Verbal Jint - History In The Making</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/197844253' target='_blank'><img src='https://resources.tidal.com/images/6dc6b01e/23c0/4325/a1ce/6ee4f3f89154/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/2_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ2) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/버벌진트 (verbal jint)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
