@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 조이 ( Tidal Joy )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 조이 ( Tidal Joy )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/10c3928e/c1be/4258/9c08/4e3d4d85ca75/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/29347684' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 조이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>조이 (Joy) – 상큼한 음색으로 물들이는 다채로운 감성 팔레트, '안녕 (Hello)'의 따스함과 'Je T'aime'의 사랑스러움을 담아</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Joy</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Joy – A vibrant palette of emotions painted with a refreshing voice, capturing the warmth of 'Hello' and the loveliness of 'Je T'aime'.</div><p>레드벨벳의 멤버로서, 그리고 솔로 아티스트로서 자신만의 음악 세계를 구축해나가고 있는 조이님을 소개합니다. 그녀의 음악은 풋풋한 설렘부터 깊은 감성까지 다양한 색깔을 담고 있어 듣는 이로 하여금 기분 좋은 미소를 짓게 만들어요. 조이님만의 매력적인 음색과 표현력은 앞으로 그녀가 보여줄 음악적 행보를 더욱 기대하게 합니다.</p><p>Introducing Joy, a member of Red Velvet and a solo artist who is building her own unique musical world. Her music encompasses a variety of colors, from youthful excitement to deep emotions, bringing a pleasant smile to the listener's face. Joy's charming voice and expressiveness make us look forward to her future musical journey.</p><p>✧</p><p>그룹 탄생과 빛나는 시작</p><p>조이님은 그룹 레드벨벳으로 데뷔하여 상큼하고 발랄한 매력으로 대중에게 눈도장을 찍었어요. 그룹 활동을 통해 다양한 콘셉트를 소화하며 탄탄한 음악적 기반을 다졌답니다. 레드벨벳으로서 보여준 다채로운 모습들은 솔로 아티스트로서의 가능성을 더욱 기대하게 만들었습니다.</p><p>Group Origins and a Brilliant Start</p><p>Joy debuted as a member of Red Velvet, capturing the public's attention with her fresh and lively charm. Through group activities, she mastered various concepts and built a solid musical foundation. The diverse aspects she showed as Red Velvet made us look forward to her potential as a solo artist even more.</p><p>✧</p><p>음악적 스펙트럼과 섬세한 표현</p><p>솔로곡들을 통해 조이님은 자신만의 음악적 색깔을 더욱 뚜렷하게 드러내고 있어요. 리메이크 곡에서는 원곡의 감성을 살리면서도 자신만의 개성을 더해 새로운 매력을 선사하죠. 또한, 다양한 콜라보레이션을 통해 폭넓은 음악적 스펙트럼을 보여주고 있습니다.</p><p>Musical Spectrum and Delicate Expression</p><p>Through her solo songs, Joy is further revealing her own musical color. In remake songs, she preserves the emotions of the original while adding her own personality to present a new charm. In addition, she is showing a wide range of musical spectrum through various collaborations.</p><p>✧</p><p>주요 활동과 다재다능한 면모</p><p>음악 활동 외에도 조이님은 다양한 분야에서 활약하며 다재다능한 면모를 보여주고 있어요. 드라마 OST 참여를 통해 연기뿐만 아니라 음악으로도 대중과 소통하고 있습니다. 예능 프로그램 출연을 통해 밝고 긍정적인 에너지를 전달하며 많은 사랑을 받고 있답니다.</p><p>Main Activities and Versatile Aspects</p><p>In addition to music activities, Joy is active in various fields, showing her versatile aspects. Through participating in drama OSTs, she is communicating with the public through music as well as acting. She is also receiving a lot of love for delivering bright and positive energy through appearing on variety shows.</p><p>✧</p><p>미래와 음악이 지닌 의미</p><p>앞으로 조이님은 더욱 다양한 음악적 시도를 통해 자신만의 색깔을 더욱 깊게 만들어갈 것으로 기대됩니다. 그녀의 음악은 듣는 이들에게 위로와 행복을 전하며 긍정적인 영향력을 행사할 거예요. 조이님의 음악 여정이 앞으로도 더욱 빛나기를 응원합니다.</p><p>The Future and the Meaning of Music</p><p>It is expected that Joy will further deepen her own color through more diverse musical attempts in the future. Her music will deliver comfort and happiness to listeners, exerting a positive influence. We support Joy's musical journey to shine even brighter in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] My Lips Like Warm Coffee (The Last 10 Years X JOY, BIG Naughty)</div>
+<div><a href='https://tidal.com/album/363453330' target='_blank'>https://tidal.com/album/363453330</a></div>
+<div>JOY, BIG Naughty - My Lips Like Warm Coffee</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/363453330' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Blue night song</div>
+<div><a href='https://tidal.com/album/346801430' target='_blank'>https://tidal.com/album/346801430</a></div>
+<div>JOY, Ha Dong Qn - Blue night song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346801430' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] World Peace Project Vol.2</div>
+<div><a href='https://tidal.com/album/255508610' target='_blank'>https://tidal.com/album/255508610</a></div>
+<div>JOY, Wonstein - Love Song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/255508610' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 안녕 Hello - Special Album</div>
+<div><a href='https://tidal.com/album/185390974' target='_blank'>https://tidal.com/album/185390974</a></div>
+<div>JOY - 안녕 Hello</div>
+<div>JOY - Je T'aime</div>
+<div>JOY - Day By Day</div>
+<div>JOY, Paul Kim - 좋을텐데 If Only</div>
+<div>JOY - Happy Birthday To You</div>
+<div>JOY - 그럴때마다 Be There For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185390974' target='_blank'><img src='https://resources.tidal.com/images/10c3928e/c1be/4258/9c08/4e3d4d85ca75/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Why isn't love always easy_ (Romance 101 X JOY)</div>
+<div><a href='https://tidal.com/album/216215220' target='_blank'>https://tidal.com/album/216215220</a></div>
+<div>JOY - Why isn't love always easy- (Romance 101 X JOY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216215220' target='_blank'><img src='https://resources.tidal.com/images/af6d79fb/be5b/4deb/9bd7/192222ee845c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Je T'aime</div>
+<div><a href='https://tidal.com/album/184980330' target='_blank'>https://tidal.com/album/184980330</a></div>
+<div>JOY - Je T’aime</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184980330' target='_blank'><img src='https://resources.tidal.com/images/65c65373/1564/405a/8114/d4db0d6aab36/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] HOSPITAL PLAYLIST OST Part 2</div>
+<div><a href='https://tidal.com/album/196154261' target='_blank'>https://tidal.com/album/196154261</a></div>
+<div>JOY - Introduce me a good person</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196154261' target='_blank'><img src='https://resources.tidal.com/images/08c2ceca/03ca/4dd8/ae8e/03d69f0b94e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The Ghost Detective (Original Television Soundtrack), Pt. 6</div>
+<div><a href='https://tidal.com/album/196143481' target='_blank'>https://tidal.com/album/196143481</a></div>
+<div>JOY, MARK - Dream Me</div>
+<div>JOY, MARK - Dream Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143481' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Tempted (Original Soundtrack) Part.2</div>
+<div><a href='https://tidal.com/album/216045082' target='_blank'>https://tidal.com/album/216045082</a></div>
+<div>JOY - OMG!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216045082' target='_blank'><img src='https://resources.tidal.com/images/8b30a7cc/6762/4009/99e8/bbc6463f15e3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] 그녀는 거짓말을 너무 사랑해 OST Part 9 (tvN 월화드라마)</div>
+<div><a href='https://tidal.com/album/196134777' target='_blank'>https://tidal.com/album/196134777</a></div>
+<div>JOY - 내게 오는 길</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196134777' target='_blank'><img src='https://resources.tidal.com/images/62b4d822/c9ca/4b75/bbfe/4c0febbe3624/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 그녀는 거짓말을 너무 사랑해 OST Part 8 (tvN 월화드라마)</div>
+<div><a href='https://tidal.com/album/196134580' target='_blank'>https://tidal.com/album/196134580</a></div>
+<div>JOY - 너를 기다리는 법</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196134580' target='_blank'><img src='https://resources.tidal.com/images/3759f7f8/9aa8/4e0d/80d8/96ed3865b4c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 그녀는 거짓말을 너무 사랑해 OST Part 5 (tvN 월화드라마)</div>
+<div><a href='https://tidal.com/album/196133907' target='_blank'>https://tidal.com/album/196133907</a></div>
+<div>JOY - Shiny Boy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196133907' target='_blank'><img src='https://resources.tidal.com/images/fffa609f/62b7/4de0/ab79/3774cfb72892/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 그녀는 거짓말을 너무 사랑해 OST Part 4 (tvN 월화드라마)</div>
+<div><a href='https://tidal.com/album/196133868' target='_blank'>https://tidal.com/album/196133868</a></div>
+<div>JOY - 요즘 너 말야</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196133868' target='_blank'><img src='https://resources.tidal.com/images/f4866a65/b04e/45bf/9c80/d838b5ace9e5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 그녀는 거짓말을 너무 사랑해 OST Part 2 (tvN 월화드라마)</div>
+<div><a href='https://tidal.com/album/196133432' target='_blank'>https://tidal.com/album/196133432</a></div>
+<div>JOY - 괜찮아, 난 (Feat. 이현우)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196133432' target='_blank'><img src='https://resources.tidal.com/images/a7747ed9/e472/43df/bf93/ef66f474775e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 그녀는 거짓말을 너무 사랑해 OST Part 1 (tvN 월화드라마)</div>
+<div><a href='https://tidal.com/album/196133081' target='_blank'>https://tidal.com/album/196133081</a></div>
+<div>JOY - 여우야</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196133081' target='_blank'><img src='https://resources.tidal.com/images/98b5c9f5/4a24/48a9/9d34/b2db856d7199/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] My Flower</div>
+<div><a href='https://tidal.com/album/193239749' target='_blank'>https://tidal.com/album/193239749</a></div>
+<div>JOY - My Flower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/193239749' target='_blank'><img src='https://resources.tidal.com/images/72ef4213/435c/49b6/858f/0113ad7b1e75/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 이별을 배웠어 Always In My Heart</div>
+<div><a href='https://tidal.com/album/115281374' target='_blank'>https://tidal.com/album/115281374</a></div>
+<div>Lim Seul Ong, JOY - 이별을 배웠어 Always In My Heart</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115281374' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Inkigayo Music Crush Part.4</div>
+<div><a href='https://tidal.com/album/339878717' target='_blank'>https://tidal.com/album/339878717</a></div>
+<div>DOYOUNG, JOY - First Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339878717' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/조이 (Joy)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
