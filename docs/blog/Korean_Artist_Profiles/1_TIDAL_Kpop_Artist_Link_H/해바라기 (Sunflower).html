@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 해바라기 ( Tidal Sunflower )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 해바라기 ( Tidal Sunflower )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/2900c3e7/fa8b/4799/8b96/071cea27ac70/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10608688' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 해바라기</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>해바라기 - 따뜻한 위로와 희망을 노래하는 영원한 친구, ‘사랑해’의 진심과 ‘행복을 주는 사람’의 긍정을 전하는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Sunflower</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Sunflower - Eternal friends singing of warm comfort and hope, delivering the sincerity of 'I Love You' and the positivity of 'A Person Who Gives Happiness'.</div><p>해바라기는 오랜 시간 동안 우리 곁에서 따뜻한 노래를 불러온 그룹입니다. 그들의 음악은 삶의 애환과 희망을 담아내며 많은 사람들에게 위로와 공감을 전해줍니다. 포크 음악의 아름다운 선율과 진솔한 가사로 감동을 선사하는 해바라기를 만나보세요.</p><p>Sunflower is a group that has been singing warm songs by our side for a long time. Their music conveys comfort and empathy to many people, capturing the joys and sorrows of life and hope. Meet Sunflower, who delivers emotion with the beautiful melody and sincere lyrics of folk music.</p><p>✧</p><p>그룹 탄생</p><p>해바라기는 1970년대 후반, 대학생들을 중심으로 결성되었습니다. 초기에는 캠퍼스 그룹사운드로서 활동하며 청춘의 낭만을 노래했어요. 그들의 음악은 젊음의 열정과 자유로운 정신을 담아냈습니다.</p><p>Group Formation</p><p>Sunflower was formed in the late 1970s, mainly by university students. Initially, they were active as a campus group sound, singing about the romance of youth. Their music captured the passion and free spirit of youth.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>해바라기의 음악은 서정적인 멜로디와 따뜻한 가사가 특징입니다. 포크를 기반으로 다양한 장르를 융합하여 편안하고 듣기 좋은 음악을 선보입니다. 특히, 그들의 하모니는 듣는 이들에게 깊은 감동과 평안함을 선사합니다.</p><p>Music and Performance</p><p>Sunflower's music is characterized by lyrical melodies and warm lyrics. Based on folk music, they blend various genres to present comfortable and easy-to-listen music. In particular, their harmony offers deep emotion and peace to listeners.</p><p>✧</p><p>주요 활동</p><p>해바라기는 수많은 히트곡을 발표하며 대중적인 사랑을 받았습니다. 꾸준한 음반 발매와 공연 활동을 통해 팬들과 소통하고 있어요. 그들의 음악은 세대를 초월하여 많은 사람들에게 기억되고 불려지고 있습니다.</p><p>Key Activities</p><p>Sunflower has released numerous hit songs and received popular love. They communicate with fans through consistent album releases and performances. Their music transcends generations and is remembered and sung by many people.</p><p>✧</p><p>미래/의미</p><p>해바라기는 앞으로도 변함없이 따뜻하고 희망찬 노래를 들려줄 것입니다. 그들의 음악은 지친 사람들에게 위로를, 힘든 세상에 용기를 주는 역할을 할 것입니다. 해바라기는 영원히 우리 곁에서 함께할 음악적 동반자입니다.</p><p>Future/Meaning</p><p>Sunflower will continue to deliver warm and hopeful songs without change in the future. Their music will serve to comfort tired people and give courage to a difficult world. Sunflower is a musical companion who will always be with us.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2014] 해바라기가 드리는 추억이야기</div>
+<div><a href='https://tidal.com/album/274659154' target='_blank'>https://tidal.com/album/274659154</a></div>
+<div>해바라기 - 연가</div>
+<div>해바라기 - 등대지기</div>
+<div>해바라기 - 석별의 정</div>
+<div>해바라기 - 노래는 즐겁다</div>
+<div>해바라기 - 나는 못난이</div>
+<div>해바라기 - 선구자</div>
+<div>해바라기 - 사랑해</div>
+<div>해바라기 - 정든 그 노래</div>
+<div>해바라기 - 토요일 밤에</div>
+<div>해바라기 - 짝사랑</div>
+<div>해바라기 - 언덕에 올라</div>
+<div>해바라기 - 비둘기 집</div>
+<div>해바라기 - 과수원 길</div>
+<div>해바라기 - 고향의 봄</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/274659154' target='_blank'><img src='https://resources.tidal.com/images/ea527dc3/a31b/4aa3/b4ee/6f32e4e2b172/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 해바라기 힛트 컬렉션</div>
+<div><a href='https://tidal.com/album/274660488' target='_blank'>https://tidal.com/album/274660488</a></div>
+<div>해바라기 - 고개를 숙인 사람</div>
+<div>해바라기 - 떠날 사람 보낼 사람</div>
+<div>해바라기 - 마음 쉬는 곳에</div>
+<div>해바라기 - 안녕 내 사랑</div>
+<div>해바라기 - 지금은 헤어져도</div>
+<div>해바라기 - 사랑의 시</div>
+<div>해바라기 - 바람 되고 낙엽 되어</div>
+<div>해바라기 - 섬 소년</div>
+<div>해바라기 - 이젠 사랑 할 수 있어요</div>
+<div>해바라기 - 어서 말을 해</div>
+<div>해바라기 - 모두가 사랑이예요</div>
+<div>해바라기 - 갈 수 없는 나라</div>
+<div>해바라기 - 행복을 주는 사람</div>
+<div>해바라기 - 구름, 들꽃, 돌, 연인</div>
+<div>해바라기 - 마음 깊은 곳에 그대로를</div>
+<div>해바라기 - 사랑은 언제나 그 자리에</div>
+<div>해바라기 - 내 마음의 보석상자</div>
+<div>해바라기 - 너</div>
+<div>해바라기 - 님은 사랑이예요</div>
+<div>해바라기 - 세상 가장 밝은 곳에서 가장 빛나는 목</div>
+<div>해바라기 - 헤어지고 난 후에</div>
+<div>해바라기 - 도시의 밤 풍경은</div>
+<div>해바라기 - 슬픔만은 아니겠죠</div>
+<div>해바라기 - 날이 가면</div>
+<div>해바라기 - 바람이 불어오면</div>
+<div>해바라기 - 사랑이예요</div>
+<div>해바라기 - 사랑의 눈동자</div>
+<div>해바라기 - 그저 바라 볼 수만 있어도</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/274660488' target='_blank'><img src='https://resources.tidal.com/images/fc2369ea/477a/47b0/b87c/24355c4c7fb1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 해바라기 베스트 컬렉션</div>
+<div><a href='https://tidal.com/album/276576815' target='_blank'>https://tidal.com/album/276576815</a></div>
+<div>해바라기 - 너</div>
+<div>해바라기 - 모두가 사랑이예요</div>
+<div>해바라기 - 사랑은 언제나 그 자리에</div>
+<div>해바라기 - 어서 말을 해</div>
+<div>해바라기 - 이젠 사랑 할 수 있어요</div>
+<div>해바라기 - 지금은 헤어져도</div>
+<div>해바라기 - 내 마음의 보석상자</div>
+<div>해바라기 - 사랑의 시</div>
+<div>해바라기 - 갈 수 없는 나라</div>
+<div>해바라기 - 떠날 사람 보낼 사람</div>
+<div>해바라기 - 마음 쉬는 곳에</div>
+<div>해바라기 - 슬픔만은 아니겠죠</div>
+<div>해바라기 - 오며 가며</div>
+<div>해바라기 - 행복을 주는 사람</div>
+<div>해바라기 - 고개를 숙인 사람</div>
+<div>해바라기 - 헤어지고 난 후에</div>
+<div>해바라기 - 행복</div>
+<div>해바라기 - 오랜 침묵은 깨어지고</div>
+<div>해바라기 - 여름방학</div>
+<div>해바라기 - 안녕 내 사랑</div>
+<div>해바라기 - 사랑이예요</div>
+<div>해바라기 - 바람이 불어오면</div>
+<div>해바라기 - 구름, 들꽃, 돌, 연인</div>
+<div>해바라기 - 그 날 이후</div>
+<div>해바라기 - 그대를 사랑하는 거예요</div>
+<div>해바라기 - 님은 사랑이예요</div>
+<div>해바라기 - 님에게</div>
+<div>해바라기 - 여름</div>
+<div>해바라기 - 나는 그대 품 안에</div>
+<div>해바라기 - 섬 소년</div>
+<div>해바라기 - 바람 되고 낙엽 되어</div>
+<div>해바라기 - 나는 오직 그대일 뿐</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/276576815' target='_blank'><img src='https://resources.tidal.com/images/20d933ef/f5ae/4d60/8fc3/acb9dfd88fe6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 해바라기 오리지날 베스트</div>
+<div><a href='https://tidal.com/album/265838240' target='_blank'>https://tidal.com/album/265838240</a></div>
+<div>해바라기 - 내 마음의 보석 상자</div>
+<div>해바라기 - 이젠 사랑 할 수 있어요</div>
+<div>해바라기 - 모두가 사랑이에요</div>
+<div>해바라기 - 어서 말을 해</div>
+<div>해바라기 - 갈 수 없는 나라</div>
+<div>해바라기 - 행복을 주는 사람</div>
+<div>해바라기 - 떠날 사람 보낼 사람</div>
+<div>해바라기 - 지금은 헤어져도</div>
+<div>해바라기 - 사랑의 시</div>
+<div>해바라기 - 사랑은 언제나 그 자리에</div>
+<div>해바라기 - 슬픔만은 아니겠죠</div>
+<div>해바라기 - 너</div>
+<div>해바라기 - 연가</div>
+<div>해바라기 - 섬 소년</div>
+<div>해바라기 - 바람 되어 낙엽 되어</div>
+<div>해바라기 - 안녕 내 사랑</div>
+<div>해바라기 - 산사람</div>
+<div>해바라기 - 마음 깊은 곳에 그대로를</div>
+<div>해바라기 - 마음속에 피는 사랑이여</div>
+<div>해바라기 - 잊혀진 그리움</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/265838240' target='_blank'><img src='https://resources.tidal.com/images/2900c3e7/fa8b/4799/8b96/071cea27ac70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 원음으로 다시 듣고 싶다 해바라기 Golden Best</div>
+<div><a href='https://tidal.com/album/265829642' target='_blank'>https://tidal.com/album/265829642</a></div>
+<div>해바라기 - 모두가 사랑이에요</div>
+<div>해바라기 - 행복을 주는 사람</div>
+<div>해바라기 - 내 마음의 보석 상자</div>
+<div>해바라기 - 떠날사람 보낼사람</div>
+<div>해바라기 - 나는 못난이</div>
+<div>해바라기 - 이젠 사랑 할 수 있어요</div>
+<div>해바라기 - 과수원길</div>
+<div>해바라기 - 사랑의 시</div>
+<div>해바라기 - 갈 수 없는 나라</div>
+<div>해바라기 - 바람되어 낙엽되어</div>
+<div>해바라기 - 나의 사랑 클레멘타인</div>
+<div>해바라기 - 안녕 내 사랑</div>
+<div>해바라기 - 언덕에 올라</div>
+<div>해바라기 - 지금은 헤어져도</div>
+<div>해바라기 - 비둘기 집</div>
+<div>해바라기 - 어서 말을 해</div>
+<div>해바라기 - 산사람</div>
+<div>해바라기 - 이별의 노래</div>
+<div>해바라기 - 사랑은 언제나 그 자리에</div>
+<div>해바라기 - 저 빗속으로</div>
+<div>해바라기 - 마음 깊은 곳에 그대로를</div>
+<div>해바라기 - 사랑의 기쁨</div>
+<div>해바라기 - 목장길 따라</div>
+<div>해바라기 - 슬픔만은 아니겠죠</div>
+<div>해바라기 - 마음속에 피는 사랑이여</div>
+<div>해바라기 - 사랑노래</div>
+<div>해바라기 - 너</div>
+<div>해바라기 - 즐거운 나의집</div>
+<div>해바라기 - 구름 들꽃 돌 여인</div>
+<div>해바라기 - 섬소년</div>
+<div>해바라기 - 여름</div>
+<div>해바라기 - 연가</div>
+<div>해바라기 - 님은 사랑이예요</div>
+<div>해바라기 - 잊혀진 그리움</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/265829642' target='_blank'><img src='https://resources.tidal.com/images/d62f9b1e/cfbf/4062/9aba/fe12869a70ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 오리지날 해바라기 베스트 컬렉션</div>
+<div><a href='https://tidal.com/album/274657910' target='_blank'>https://tidal.com/album/274657910</a></div>
+<div>해바라기 - 사랑의 시</div>
+<div>해바라기 - 과수원 길</div>
+<div>해바라기 - 모두가 사랑이예요</div>
+<div>해바라기 - 연가</div>
+<div>해바라기 - 행복을 주는 사람</div>
+<div>해바라기 - 등대지기</div>
+<div>해바라기 - 고개를 숙인 사람</div>
+<div>해바라기 - 토요일 밤에</div>
+<div>해바라기 - 갈 수 없는 나라</div>
+<div>해바라기 - 고향의 봄</div>
+<div>해바라기 - 마음 쉬는 곳에</div>
+<div>해바라기 - 석별의 정</div>
+<div>해바라기 - 저 빗 속으로</div>
+<div>해바라기 - 선구자</div>
+<div>해바라기 - 오며 가며</div>
+<div>해바라기 - 목장길 따라</div>
+<div>해바라기 - 여름 방학</div>
+<div>해바라기 - 노래는 즐겁다</div>
+<div>해바라기 - 바람 되고 낙엽 되어</div>
+<div>해바라기 - 사랑해</div>
+<div>해바라기 - 나그네 길</div>
+<div>해바라기 - 나는 못난이</div>
+<div>해바라기 - 나의 사랑 클레멘타인</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/274657910' target='_blank'><img src='https://resources.tidal.com/images/91b42871/b915/4ba3/ad46/6849cca72b61/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] 사랑1 Love 1</div>
+<div><a href='https://tidal.com/album/246788980' target='_blank'>https://tidal.com/album/246788980</a></div>
+<div>해바라기 - 사랑의 발걸음 Steps of Love</div>
+<div>해바라기 - 멋져요 멋져요 Wonderful Wonderful</div>
+<div>해바라기 - 내 마음의 보석상자 Jewel Box of My Heart</div>
+<div>해바라기 - 어서 말을 해 Tell Them Already</div>
+<div>해바라기 - 사랑이에요 It's Love</div>
+<div>해바라기 - 사랑으로 With Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/246788980' target='_blank'><img src='https://resources.tidal.com/images/ad9692a0/5536/4c7a/ab9e/6ee464a78be6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] 아름다운 약속 Beautiful Promise</div>
+<div><a href='https://tidal.com/album/250848685' target='_blank'>https://tidal.com/album/250848685</a></div>
+<div>해바라기 - Intro Intro</div>
+<div>해바라기 - 나 없어도 Without Me</div>
+<div>해바라기 - 아름다운 약속 Beautiful Promise</div>
+<div>해바라기 - 슬픔만은 아니겠죠 Not Only Sadness</div>
+<div>해바라기 - 내 자유 돌려줘요 Give My Freedom Back</div>
+<div>해바라기 - 나 없어도(Acoustic Ver.) Without Me (Acoustic Ver.)</div>
+<div>해바라기 - 아름다운 약속(Acoustic Ver.) Beautiful Promise(Acoustic</div>
+<div>해바라기 - 슬픔만은 아니겠죠(Acoustic Ver.) Not Only Sadness(Acoustic</div>
+<div>해바라기 - 내 자유 돌려줘요(Acoustic Ver.) Give My Freedom Back(Acou</div>
+<div>해바라기 - 나 없어도(피아노 연주곡) Without Me (Piano Ver.)</div>
+<div>해바라기 - Outro(나 없어도)(피아노 연주곡) Outro(Without Me)(Piano)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/250848685' target='_blank'><img src='https://resources.tidal.com/images/1233b246/4293/48e5/afab/6ec5fe63c5e6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/1_TIDAL_Kpop_Artist_Link_H.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅎ1) TIDAL Kpop Artist Link (H)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/해바라기 (Sunflower)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
