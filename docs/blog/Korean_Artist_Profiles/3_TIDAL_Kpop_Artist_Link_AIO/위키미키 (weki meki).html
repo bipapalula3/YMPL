@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 위키미키 ( Tidal weki meki )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 위키미키 ( Tidal weki meki )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/eba85ecf/1852/4327/a210/24858a3879e8/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10172813' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 위키미키</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>위키미키 (Weki Meki) - 다채로운 스펙트럼으로 빛나는 소녀들, 'DAZZLE DAZZLE'처럼 눈부신 매력으로 무대를 물들이다</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> weki meki</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Weki Meki - Girls shining with a diverse spectrum, coloring the stage with dazzling charms like 'DAZZLE DAZZLE'.</div><p>에너지 넘치는 퍼포먼스와 다채로운 음악 스타일로 팬들을 사로잡는 위키미키를 소개합니다! 개성 강한 멤버들의 조합은 무대 위에서 폭발적인 시너지를 만들어내죠. 팔색조 매력을 지닌 그녀들의 음악 세계로 함께 떠나볼까요?</p><p>Let us introduce Weki Meki, captivating fans with their energetic performances and diverse music styles! The combination of unique members creates explosive synergy on stage. Shall we embark on a journey into their world of music, full of diverse charms?</p><p>✧</p><p>그룹 탄생</p><p>위키미키는 2017년 데뷔하여 탄탄한 실력과 톡톡 튀는 매력으로 주목받기 시작했어요. 멤버들의 다재다능함은 그룹의 컨셉 소화력을 높이며, 다양한 모습을 보여주는 데 기여했죠. 데뷔 전부터 쌓아온 경험은 위키미키를 더욱 단단하게 만들었답니다.</p><p>Group Formation</p><p>Weki Meki debuted in 2017 and quickly gained attention for their solid skills and bubbly charm. The versatility of the members enhances the group's ability to pull off various concepts, contributing to showcasing diverse images. The experience accumulated before their debut has made Weki Meki even stronger.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>위키미키는 틴크러쉬 콘셉트를 기반으로 다양한 장르를 소화하며 음악적 스펙트럼을 넓혀왔어요. 강렬한 퍼포먼스와 섬세한 감정 표현은 무대를 더욱 풍성하게 만들죠. 멤버들의 개성이 돋보이는 보컬과 랩은 듣는 재미를 더해줍니다.</p><p>Music and Performance</p><p>Weki Meki has expanded their musical spectrum by taking on various genres based on the teen crush concept. Intense performances and delicate emotional expressions enrich the stage. The distinctive vocals and rap of the members add to the enjoyment of listening.</p><p>✧</p><p>주요 활동</p><p>앨범 발매뿐만 아니라, 예능, 연기 등 다양한 분야에서 활약하며 대중과의 접점을 넓혀가고 있어요. 멤버들은 각자의 재능을 살려 솔로 활동을 통해 새로운 매력을 선보이기도 하죠. 끊임없는 도전은 위키미키를 더욱 성장하게 만드는 원동력이 됩니다.</p><p>Key Activities</p><p>In addition to releasing albums, they are expanding their reach to the public by actively participating in various fields such as entertainment shows and acting. Members showcase new charms through solo activities, making use of their individual talents. Constant challenges are the driving force behind Weki Meki's continued growth.</p><p>✧</p><p>미래/의미</p><p>위키미키는 앞으로도 끊임없이 변화하고 발전하는 모습을 보여줄 것으로 기대됩니다. 그녀들의 음악은 팬들에게 에너지와 위로를 전하며, 긍정적인 영향력을 행사하죠. 앞으로 위키미키가 보여줄 무한한 가능성에 주목해주세요!</p><p>Future/Meaning</p><p>Weki Meki is expected to continue to change and develop in the future. Their music conveys energy and comfort to fans, exerting a positive influence. Please pay attention to the infinite possibilities that Weki Meki will show in the future!</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] CoinciDestiny</div>
+<div><a href='https://tidal.com/album/368943998' target='_blank'>https://tidal.com/album/368943998</a></div>
+<div>Weki Meki - CoinciDestiny</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/368943998' target='_blank'><img src='https://resources.tidal.com/images/9b086cf3/5de6/4659/8640/ed529ec03ea6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] MIRACLE (Original Television Soundtrack) Pt. 4</div>
+<div><a href='https://tidal.com/album/230621794' target='_blank'>https://tidal.com/album/230621794</a></div>
+<div>Weki Meki - Between Us Two</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230621794' target='_blank'><img src='https://resources.tidal.com/images/26636653/00ab/45da/9332/324afeca4555/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Becoming Witch, Pt. 4</div>
+<div><a href='https://tidal.com/album/363487084' target='_blank'>https://tidal.com/album/363487084</a></div>
+<div>Weki Meki - Now or Never</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/363487084' target='_blank'><img src='https://resources.tidal.com/images/f14591a8/b05c/46bb/b39a/c96fdb70dc04/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] I AM ME.</div>
+<div><a href='https://tidal.com/album/216375978' target='_blank'>https://tidal.com/album/216375978</a></div>
+<div>Weki Meki - Siesta</div>
+<div>Weki Meki - Who am I</div>
+<div>Weki Meki - Luminous</div>
+<div>Weki Meki - Sweet Winter</div>
+<div>Weki Meki - First Dream</div>
+<div>Weki Meki - One Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216375978' target='_blank'><img src='https://resources.tidal.com/images/87caa514/8cba/419a/a85f/27e093207a3d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Weki Meki Digital Single [DAZZLE DAZZLE]</div>
+<div><a href='https://tidal.com/album/216123802' target='_blank'>https://tidal.com/album/216123802</a></div>
+<div>Weki Meki - DAZZLE DAZZLE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216123802' target='_blank'><img src='https://resources.tidal.com/images/367aea42/e5eb/4f97/94a1/529cbc822676/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Weki Meki 4th Mini Album [NEW RULES]</div>
+<div><a href='https://tidal.com/album/216249463' target='_blank'>https://tidal.com/album/216249463</a></div>
+<div>Weki Meki - COOL</div>
+<div>Weki Meki - Sweet Dreams</div>
+<div>Weki Meki - D-DAY</div>
+<div>Weki Meki - Just Us</div>
+<div>Weki Meki - 100 FACTS (COOL Eng. Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216249463' target='_blank'><img src='https://resources.tidal.com/images/db4a3286/3ee8/435d/a7c1/31adf18e74a9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Weki Meki 3rd Mini Album [HIDE and SEEK]</div>
+<div><a href='https://tidal.com/album/216253505' target='_blank'>https://tidal.com/album/216253505</a></div>
+<div>Weki Meki - OOPSY</div>
+<div>Weki Meki - Moya Moya</div>
+<div>Weki Meki - The Paradise</div>
+<div>Weki Meki - Youniverse</div>
+<div>Weki Meki - DAZZLE DAZZLE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216253505' target='_blank'><img src='https://resources.tidal.com/images/4d54f4ad/3eda/4248/9b13/886ad9e5d123/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] The Girls Running on the SANMAGIYET-GIL</div>
+<div><a href='https://tidal.com/album/216465541' target='_blank'>https://tidal.com/album/216465541</a></div>
+<div>Weki Meki - The Girls Running on the SANMAGIYET-GIL</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216465541' target='_blank'><img src='https://resources.tidal.com/images/8e97f6a5/aa83/4176/ae47/f95bd56135b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] WEEK END LOL</div>
+<div><a href='https://tidal.com/album/216280016' target='_blank'>https://tidal.com/album/216280016</a></div>
+<div>Weki Meki - Tiki-Taka (99%)</div>
+<div>Weki Meki - Picky Picky</div>
+<div>Weki Meki - Whatever U Want</div>
+<div>Weki Meki - Petal fortune</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216280016' target='_blank'><img src='https://resources.tidal.com/images/2afaca19/3b75/4148/8be7/6fd31d7f9c5d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] LOCK END LOL</div>
+<div><a href='https://tidal.com/album/216279943' target='_blank'>https://tidal.com/album/216279943</a></div>
+<div>Weki Meki - Picky Picky</div>
+<div>Weki Meki - Whatever U Want</div>
+<div>Weki Meki - Petal fortune</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216279943' target='_blank'><img src='https://resources.tidal.com/images/afb44959/5b80/4576/8900/df9839d4d1b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Sugar Man2 Part.12</div>
+<div><a href='https://tidal.com/album/216097525' target='_blank'>https://tidal.com/album/216097525</a></div>
+<div>Weki Meki - One More Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216097525' target='_blank'><img src='https://resources.tidal.com/images/123ff6b6/dc19/4392/9dbc/cfbaac1fb7b8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Lucky</div>
+<div><a href='https://tidal.com/album/216280324' target='_blank'>https://tidal.com/album/216280324</a></div>
+<div>Weki Meki - Lucky</div>
+<div>Weki Meki - La La La</div>
+<div>Weki Meki - Iron Boy</div>
+<div>Weki Meki - Metronome</div>
+<div>Weki Meki - Color Me</div>
+<div>Weki Meki - Butterfly (2018 PyeongChang Winter Olympics Specia</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216280324' target='_blank'><img src='https://resources.tidal.com/images/0dc97c45/a46b/4cf2/8db6/548195902080/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] KISS, KICKS</div>
+<div><a href='https://tidal.com/album/216279933' target='_blank'>https://tidal.com/album/216279933</a></div>
+<div>Weki Meki - Crush</div>
+<div>Weki Meki - True Valentine</div>
+<div>Weki Meki - Dear-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216279933' target='_blank'><img src='https://resources.tidal.com/images/6a9b9668/cf49/468b/add0/ae5d1ec61bc9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Butterfly (2018 PyeongChang Winter Olympics Special)</div>
+<div><a href='https://tidal.com/album/216279873' target='_blank'>https://tidal.com/album/216279873</a></div>
+<div>Weki Meki - Butterfly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216279873' target='_blank'><img src='https://resources.tidal.com/images/29909202/72cb/4f0f/8e14/f1f9fc4c1b54/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] WEME</div>
+<div><a href='https://tidal.com/album/216280247' target='_blank'>https://tidal.com/album/216280247</a></div>
+<div>Weki Meki - I don't like your Girlfriend</div>
+<div>Weki Meki - Stay with Me</div>
+<div>Weki Meki - iTeen Girls Special</div>
+<div>Weki Meki - Neverland</div>
+<div>Weki Meki - My World</div>
+<div>Weki Meki - Fantastic</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216280247' target='_blank'><img src='https://resources.tidal.com/images/4ad5c5c4/cb2d/4034/a8aa/d86b95e433ff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/위키미키 (weki meki)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
