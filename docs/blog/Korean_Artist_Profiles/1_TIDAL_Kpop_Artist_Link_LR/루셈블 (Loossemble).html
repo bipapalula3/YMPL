@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 루셈블 ( Tidal Loossemble )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 루셈블 ( Tidal Loossemble )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/63169037/1af8/4482/81aa/b49b5b22afbf/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/41906899' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 루셈블</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>루셈블 (Loossemble) - 자유로운 항해를 시작하는 소녀들, 'FANATICISM'의 강렬함과 'Cotton Candy'의 달콤함을 담아</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Loossemble</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Loossemble - Girls embarking on a free voyage, capturing the intensity of 'FANATICISM' and the sweetness of 'Cotton Candy'.</div><p>새로운 이름으로 다시 뭉친 다섯 소녀, 루셈블입니다. 이전의 인연을 넘어, 자신들만의 색깔로 더 넓은 음악 세계를 향해 나아가려 해요. 다채로운 매력과 음악적 스펙트럼으로 팬들의 마음을 사로잡을 준비가 되어있답니다.</p><p>Five girls reunited under a new name, Loossemble. Beyond their previous ties, they aim to explore a broader musical world with their unique colors. They are ready to captivate fans with their diverse charms and musical spectrum.</p><p>✧</p><p>그룹 탄생</p><p>루셈블은 단순히 재결합한 그룹이 아닌, 새로운 시작을 알리는 이름입니다. 멤버들은 기존의 틀을 벗어나 더욱 자유롭고 주체적인 음악 활동을 펼치고자 의기투합했어요. 팬들과 함께 만들어갈 앞으로의 이야기가 더욱 기대됩니다.</p><p>Birth of the Group</p><p>Loossemble is not just a reunited group, but a name that signifies a new beginning. The members have come together with the intention of breaking away from existing molds and pursuing more free and independent musical activities. The stories they will create with their fans in the future are highly anticipated.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>루셈블의 음악은 몽환적인 분위기와 강렬한 퍼포먼스가 조화롭게 어우러집니다. 때로는 부드러운 멜로디로, 때로는 강렬한 비트로 청자들을 사로잡는 매력을 지니고 있어요. 그녀들의 무대는 마치 한 편의 이야기를 보는 듯한 몰입감을 선사합니다.</p><p>Music and Performance</p><p>Loossemble's music harmoniously blends dreamy atmospheres with intense performances. They possess the charm to captivate listeners with soft melodies and powerful beats. Their stage performances provide an immersive experience, like watching a story unfold.</p><p>✧</p><p>주요 활동</p><p>루셈블은 데뷔 이후 꾸준히 음악 활동을 이어가며 팬들과 소통하고 있습니다. 앨범 발매뿐만 아니라, 다양한 플랫폼을 통해 멤버들의 개성과 매력을 보여주는 콘텐츠를 선보이고 있어요. 앞으로 더욱 활발한 활동을 통해 글로벌 팬덤을 확장해 나갈 것으로 기대됩니다.</p><p>Main Activities</p><p>Since their debut, Loossemble has consistently engaged in musical activities and communicated with their fans. In addition to album releases, they showcase the members' personalities and charms through content on various platforms. They are expected to expand their global fandom through more active endeavors in the future.</p><p>✧</p><p>미래/의미</p><p>루셈블은 단순한 아이돌 그룹을 넘어, 자신들만의 음악적 색깔을 만들어가는 아티스트로 성장할 것입니다. 그녀들의 음악은 꿈을 향해 나아가는 모든 이들에게 희망과 용기를 전달하는 메시지가 될 것입니다. 루셈블의 미래를 함께 응원하며 지켜봐 주세요.</p><p>Future/Meaning</p><p>Loossemble will grow beyond a simple idol group and develop into artists who create their own unique musical colors. Their music will serve as a message of hope and courage to all those striving towards their dreams. Please support and watch over Loossemble's future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] TTYL</div>
+<div><a href='https://tidal.com/album/382437499' target='_blank'>https://tidal.com/album/382437499</a></div>
+<div>Loossemble - FANATICISM</div>
+<div>Loossemble - TTYL</div>
+<div>Loossemble - Cotton Candy</div>
+<div>Loossemble - Confessions</div>
+<div>Loossemble - Hocus Pocus</div>
+<div>Loossemble - Secret Diary</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382437499' target='_blank'><img src='https://resources.tidal.com/images/2272530c/ee69/433e/aa24/4de5b73fdb19/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] One Of A Kind</div>
+<div><a href='https://tidal.com/album/355338286' target='_blank'>https://tidal.com/album/355338286</a></div>
+<div>Loossemble - Intro (A butterfly's signal)</div>
+<div>Loossemble - Girls’ Night</div>
+<div>Loossemble - Moonlight</div>
+<div>Loossemble - Boomerang</div>
+<div>Loossemble - He Said I Said</div>
+<div>Loossemble - Truman Show</div>
+<div>Loossemble - Starlight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/355338286' target='_blank'><img src='https://resources.tidal.com/images/83ed891e/724c/4e9c/950b/8e36df02cb20/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Loossemble</div>
+<div><a href='https://tidal.com/album/314782176' target='_blank'>https://tidal.com/album/314782176</a></div>
+<div>Loossemble - Intro Searching for their friends</div>
+<div>Loossemble - Sensitive</div>
+<div>Loossemble - Real world</div>
+<div>Loossemble - Colouring</div>
+<div>Loossemble - Newtopia</div>
+<div>Loossemble - Strawberry soda</div>
+<div>Loossemble - Day by day</div>
+<div>Loossemble - Sensitive (English Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/314782176' target='_blank'><img src='https://resources.tidal.com/images/83a06592/f79a/4f32/95fc/d3c1cecf3d97/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/1_TIDAL_Kpop_Artist_Link_LR.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄹ1) TIDAL Kpop Artist Link (LR)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/루셈블 (Loossemble)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
