@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 자이언티 ( Tidal zion.t )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 자이언티 ( Tidal zion.t )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/91612ae8/052b/46ef/b427/085698e20f42/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5021818' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 자이언티</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>자이언티 (Zion.T) – 독특한 음색으로 빚어낸 'Unlove'의 슬픔, 'Happy End-'의 몽환적인 여운</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> zion.t</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Zion.T – Crafting the sorrow of 'Unlove' with a unique voice, and the dreamy lingering of 'Happy End-'</div><p>독특한 음색과 트렌디한 감각으로 대중과 평단을 사로잡은 아티스트, 자이언티를 소개합니다. 그는 자신만의 색깔로 다양한 장르를 넘나들며 음악적 스펙트럼을 넓혀왔어요. 자이언티의 음악 세계로 함께 떠나볼까요?</p><p>Introducing Zion.T, an artist who has captivated both the public and critics with his unique voice and trendy sensibility. He has expanded his musical spectrum by crossing various genres with his own style. Shall we embark on a journey into Zion.T's musical world?</p><p>✧</p><p>솔로 아티스트로의 시작</p><p>자이언티는 2011년 싱글 앨범 'Click Me'로 데뷔하여 자신만의 음악 세계를 구축하기 시작했어요. 그는 데뷔 초부터 독특한 음색과 개성 있는 스타일로 주목받으며, 자신만의 음악적 색깔을 확고히 해나갔답니다. 이후 다양한 싱글과 앨범을 통해 자신만의 입지를 다져나갔습니다.</p><p>Beginning as a Solo Artist</p><p>Zion.T debuted in 2011 with the single album 'Click Me' and began building his own musical world. From the beginning, he gained attention for his unique tone and distinctive style, solidifying his own musical identity. Since then, he has solidified his position through various singles and albums.</p><p>✧</p><p>음악적 스타일과 퍼포먼스</p><p>자이언티의 음악은 R&B, 힙합, 소울 등 다양한 장르를 아우르며, 특유의 감각적인 멜로디와 진솔한 가사가 특징이에요. 그는 실험적인 사운드와 독특한 보컬 스타일을 통해 자신만의 음악적 개성을 드러내죠. 무대 위에서는 자유로운 퍼포먼스와 섬세한 감정 표현으로 관객들을 사로잡습니다.</p><p>Musical Style and Performance</p><p>Zion.T's music encompasses various genres such as R&B, hip-hop, and soul, characterized by his unique, sensual melodies and sincere lyrics. He reveals his own musical personality through experimental sounds and a distinctive vocal style. On stage, he captivates the audience with his free-spirited performance and delicate expression of emotions.</p><p>✧</p><p>주요 활동과 협업</p><p>자이언티는 솔로 활동뿐만 아니라 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀왔어요. 그는 아이유, AKMU 등 다양한 뮤지션들과 함께 작업하며 새로운 시너지를 창출해냈죠. 이러한 협업을 통해 그는 대중적인 인기를 얻는 동시에 음악적 깊이를 더해갔습니다.</p><p>Major Activities and Collaborations</p><p>Zion.T has expanded his musical spectrum not only through solo activities but also through collaborations with various artists. He has created new synergy by working with various musicians such as IU and AKMU. Through these collaborations, he gained popularity and deepened his musicality.</p><p>✧</p><p>미래와 의미</p><p>끊임없이 새로운 시도를 두려워하지 않는 자이언티는 앞으로도 더욱 다양한 음악적 도전을 이어갈 것으로 기대됩니다. 그의 음악은 단순한 유행을 넘어, 듣는 이들에게 깊은 감동과 위로를 선사하죠. 앞으로 그가 보여줄 음악 세계가 더욱 기대되는 이유입니다.</p><p>Future and Meaning</p><p>Zion.T, who is not afraid of constantly trying new things, is expected to continue his diverse musical challenges in the future. His music goes beyond mere trends, delivering deep emotion and comfort to listeners. This is why we are even more excited about the musical world he will show us in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] LIVE CLASSIC _ paradise(with LOTTE CASTLE)</div>
+<div><a href='https://tidal.com/album/379593597' target='_blank'>https://tidal.com/album/379593597</a></div>
+<div>Zion.T, sokodomo - LIVE CLASSIC - paradise(with LOTTE CASTLE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/379593597' target='_blank'><img src='https://resources.tidal.com/images/0dbe7f9b/eb75/439a/b6ff/c8cdfa553c64/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Zip</div>
+<div><a href='https://tidal.com/album/332821408' target='_blank'>https://tidal.com/album/332821408</a></div>
+<div>Zion.T - How To Use (intro)</div>
+<div>Zion.T - UNLOVE (prod. HONNE)</div>
+<div>Zion.T - Stranger</div>
+<div>Zion.T - The Things I Love (feat. Benny Benack III)</div>
+<div>Zion.T - V (Peace) (feat. AKMU)</div>
+<div>Zion.T - NOT FOR SALE</div>
+<div>Zion.T - Invisible man</div>
+<div>Zion.T - Thank u (feat. Yun Seokcheol)</div>
+<div>Zion.T - Dolphin</div>
+<div>Zion.T - Happy End-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/332821408' target='_blank'><img src='https://resources.tidal.com/images/72959f79/78fb/416e/85ae/794f0fe8fec5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] WORLD STOP TURNING (feat. Warren Hue)</div>
+<div><a href='https://tidal.com/album/319430076' target='_blank'>https://tidal.com/album/319430076</a></div>
+<div>1999 WRITE THE FUTURE, Rich Brian, Zion.T, Warren - WORLD STOP TURNING (feat. Warren Hue)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/319430076' target='_blank'><img src='https://resources.tidal.com/images/a40c87db/6a54/4abe/a005/6a84ade7df66/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Creamppang</div>
+<div><a href='https://tidal.com/album/182513834' target='_blank'>https://tidal.com/album/182513834</a></div>
+<div>Sumin, Zion.T - Creamppang</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182513834' target='_blank'><img src='https://resources.tidal.com/images/f210b564/100d/4a58/9daa/8aab1946d5f6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] A Gift!</div>
+<div><a href='https://tidal.com/album/210087694' target='_blank'>https://tidal.com/album/210087694</a></div>
+<div>Zion.T - A Gift!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210087694' target='_blank'><img src='https://resources.tidal.com/images/dc1b36ae/b02e/4492/ab88/dc40ca6d46c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 20th century peoples</div>
+<div><a href='https://tidal.com/album/199189911' target='_blank'>https://tidal.com/album/199189911</a></div>
+<div>Zion.T, Kang Seungwon - 20th century peoples</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/199189911' target='_blank'><img src='https://resources.tidal.com/images/ef334c90/0c3a/40de/bbc6/0e48492c6913/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] The King _ Eternal Monarch, Pt. 1 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196154662' target='_blank'>https://tidal.com/album/196154662</a></div>
+<div>Zion.T - I Just Want To Stay With You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196154662' target='_blank'><img src='https://resources.tidal.com/images/50fe8afb/048c/4bda/a9ec/72d4dbd33db7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] May</div>
+<div><a href='https://tidal.com/album/160033529' target='_blank'>https://tidal.com/album/160033529</a></div>
+<div>Zion.T - May</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/160033529' target='_blank'><img src='https://resources.tidal.com/images/1c010d6d/a487/4f30/82e9/30ee429a3d57/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] ZZZ</div>
+<div><a href='https://tidal.com/album/160033328' target='_blank'>https://tidal.com/album/160033328</a></div>
+<div>Zion.T - Ideal</div>
+<div>Zion.T - Hello Tutorial (Feat. SEULGI of Red Velvet)</div>
+<div>Zion.T - My Luv</div>
+<div>Zion.T - Malla Gang (Feat. E SENS)</div>
+<div>Zion.T - Uh Huh</div>
+<div>Zion.T - Sleep Talk (Feat. OHHYUK)</div>
+<div>Zion.T - Untold Story</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/160033328' target='_blank'><img src='https://resources.tidal.com/images/203da052/81ce/4cc9/83f6/4770f8a6a677/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Prison Playbook, Pt. 9 (Original Telvision Soundtrack)</div>
+<div><a href='https://tidal.com/album/196138304' target='_blank'>https://tidal.com/album/196138304</a></div>
+<div>Zion.T - Those Days (without you)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196138304' target='_blank'><img src='https://resources.tidal.com/images/b621e19b/b24c/41ab/a498/04dd0c5da279/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] OO</div>
+<div><a href='https://tidal.com/album/160033126' target='_blank'>https://tidal.com/album/160033126</a></div>
+<div>Zion.T - Cinema</div>
+<div>Zion.T - The Song</div>
+<div>Zion.T - Comedian</div>
+<div>Zion.T - Sorry (Feat. Beenzino)</div>
+<div>Zion.T - The Bad Guys</div>
+<div>Zion.T - Complex (Feat. G-DRAGON)</div>
+<div>Zion.T - Wishes (2015)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/160033126' target='_blank'><img src='https://resources.tidal.com/images/2ec360b4/6cbc/4605/876e/7398d4441798/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Show Me the Money 5 Special</div>
+<div><a href='https://tidal.com/album/196116457' target='_blank'>https://tidal.com/album/196116457</a></div>
+<div>Zion.T - Knock</div>
+<div>KUSH & Zion.T - Machine Gun</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196116457' target='_blank'><img src='https://resources.tidal.com/images/231db9ce/8671/43cb/bef1/860105f68d65/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Zero Gravity</div>
+<div><a href='https://tidal.com/album/216010106' target='_blank'>https://tidal.com/album/216010106</a></div>
+<div>Zion.T - Zero Gravity</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216010106' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Young</div>
+<div><a href='https://tidal.com/album/196140986' target='_blank'>https://tidal.com/album/196140986</a></div>
+<div>Zion.T, Crush - Just</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140986' target='_blank'><img src='https://resources.tidal.com/images/20d7aed5/8c5c/4041/b204/0af9b77a76a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] No Make Up</div>
+<div><a href='https://tidal.com/album/196141014' target='_blank'>https://tidal.com/album/196141014</a></div>
+<div>Zion.T - No Make Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141014' target='_blank'><img src='https://resources.tidal.com/images/2ca6b1a7/1edc/4ff5/b163/6060918d6170/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Eat</div>
+<div><a href='https://tidal.com/album/196141012' target='_blank'>https://tidal.com/album/196141012</a></div>
+<div>Zion.T - Eat</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141012' target='_blank'><img src='https://resources.tidal.com/images/980f3640/ee5f/44a8/a25d/12ff7745bf9e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Yanghwa BRDG</div>
+<div><a href='https://tidal.com/album/196141007' target='_blank'>https://tidal.com/album/196141007</a></div>
+<div>Zion.T - Yanghwa BRDG</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141007' target='_blank'><img src='https://resources.tidal.com/images/8e3fd090/3978/4d89/b2b0/0a385cbacfed/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Pinocchio (Original Television Soundtrack), Pt. 6</div>
+<div><a href='https://tidal.com/album/196098117' target='_blank'>https://tidal.com/album/196098117</a></div>
+<div>Zion.T - Kiss Me</div>
+<div>Zion.T - Kiss Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196098117' target='_blank'><img src='https://resources.tidal.com/images/6a29b86d/8233/4e99/8fa5/d57fb98d3782/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] Two melodies</div>
+<div><a href='https://tidal.com/album/196140991' target='_blank'>https://tidal.com/album/196140991</a></div>
+<div>Zion.T, Crush - Two melodies (Feat. Crush)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140991' target='_blank'><img src='https://resources.tidal.com/images/dc8a911d/f7b6/4baa/9659/52dc823d8796/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] SNOW</div>
+<div><a href='https://tidal.com/album/160033137' target='_blank'>https://tidal.com/album/160033137</a></div>
+<div>Zion.T - Snow (Feat. Lee Moon Sae)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/160033137' target='_blank'><img src='https://resources.tidal.com/images/6ce0b028/7453/4bb5/9442/fb6056badf3b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Red Light</div>
+<div><a href='https://tidal.com/album/321164013' target='_blank'>https://tidal.com/album/321164013</a></div>
+<div>Zion.T - O</div>
+<div>Zion.T, Verbal Jint - Doop (Feat. Verbal Jint)</div>
+<div>Zion.T - DoDo</div>
+<div>Zion.T, 빈지노 (Beenzino) - She (Feat. Beenzino)</div>
+<div>Zion.T - Neon</div>
+<div>Zion.T, Gaeko - Babay</div>
+<div>Zion.T, YDG - Global warming (Feat. YDG)</div>
+<div>Zion.T, Crush - Two melodies (Feat. Crush)</div>
+<div>Zion.T, Dok2 - Click Me (2013) (Feat. Dok2)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/321164013' target='_blank'><img src='https://resources.tidal.com/images/6208a411/29e6/4b27/a47c/9059a8c181c8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Mirrorball</div>
+<div><a href='https://tidal.com/album/196141002' target='_blank'>https://tidal.com/album/196141002</a></div>
+<div>Zion.T - Spin Spin</div>
+<div>Zion.T - Modern Boy</div>
+<div>Zion.T - Miss Kim</div>
+<div>Zion.T - Madame</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141002' target='_blank'><img src='https://resources.tidal.com/images/e0c17707/15b2/46ca/9466/3a2f82b4cc40/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Jealousy (KIA Carnival Commercial Song)</div>
+<div><a href='https://tidal.com/album/160033652' target='_blank'>https://tidal.com/album/160033652</a></div>
+<div>Zion.T - Jealousy (KIA Carnival Commercial Song)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/160033652' target='_blank'><img src='https://resources.tidal.com/images/62871a90/bf37/420a/8f37/fc4d0c43e86a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] We Love Tapsonic, Pt.5</div>
+<div><a href='https://tidal.com/album/189088551' target='_blank'>https://tidal.com/album/189088551</a></div>
+<div>Zion.T - 보통</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189088551' target='_blank'><img src='https://resources.tidal.com/images/16ca13d3/f0d4/48fa/8bb7/bb1684fd5d83/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Click Me (Feat. Dok2)</div>
+<div><a href='https://tidal.com/album/204512062' target='_blank'>https://tidal.com/album/204512062</a></div>
+<div>Zion.T - Click Me (Feat. Dok2)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204512062' target='_blank'><img src='https://resources.tidal.com/images/159b1d5d/7aa3/4c99/a075/33f49d24a299/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/1_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ1) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/자이언티 (zion.t)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
