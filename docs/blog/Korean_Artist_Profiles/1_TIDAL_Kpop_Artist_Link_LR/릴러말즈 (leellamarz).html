@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 릴러말즈 ( Tidal leellamarz )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 릴러말즈 ( Tidal leellamarz )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4f1da51c/3ecf/4349/b864/c2c312979ec8/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/8915536' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 릴러말즈</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>릴러말즈 (leellamarz) - 자유로운 에너지와 솔직한 감성으로 무대를 물들이는 아티스트, 'Moshpit' 속 열정과 'OUT OF MY SIGHT'의 진솔함</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> leellamarz</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Leellamarz - An artist who fills the stage with free-spirited energy and honest emotions, the passion in 'Moshpit' and the sincerity of 'OUT OF MY SIGHT'.</div><p>힙합씬에 신선한 바람을 불어넣는 아티스트, 릴러말즈를 소개합니다. 그는 특유의 에너지 넘치는 음악과 솔직한 가사로 많은 사랑을 받고 있어요. 다양한 아티스트들과의 협업을 통해 끊임없이 새로운 시도를 보여주는 뮤지션입니다.</p><p>Let me introduce Leellamarz, an artist who brings a fresh breeze to the hip-hop scene. He is much loved for his unique, energetic music and honest lyrics. He is a musician who constantly shows new attempts through collaborations with various artists.</p><p>✧</p><p>그룹 탄생</p><p>릴러말즈는 NSW yoon, Street Baby 등 다양한 크루들과 함께 음악적 시너지를 만들어 왔습니다. 이들은 함께 파티를 즐기는 듯한 자유분방한 분위기를 연출하며, 힙합씬에 새로운 활력을 불어넣고 있습니다. 끈끈한 팀워크는 그의 음악적 기반이 되어주고 있어요.</p><p>Group Formation</p><p>Leellamarz has created musical synergy with various crews such as NSW yoon and Street Baby. Together, they create a free-spirited atmosphere like enjoying a party, injecting new vitality into the hip-hop scene. Their strong teamwork is the foundation of his music.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그의 음악은 강렬한 비트와 중독성 있는 멜로디가 특징입니다. 무대 위에서 릴러말즈는 넘치는 에너지와 자유로운 퍼포먼스를 선보이며 관객들을 사로잡습니다. 특히 다양한 피처링진과의 호흡은 곡의 완성도를 높이는 데 기여하고 있어요.</p><p>Music and Performance</p><p>His music is characterized by strong beats and addictive melodies. On stage, Leellamarz captivates audiences with his overflowing energy and free performances. In particular, his chemistry with various featured artists contributes to the perfection of the songs.</p><p>✧</p><p>주요 활동</p><p>릴러말즈는 꾸준한 음원 발매와 공연 활동을 통해 팬들과 소통하고 있습니다. 그는 'Can't stop', 'Wave' 등 다양한 곡들을 통해 자신만의 음악 세계를 구축해 나가고 있어요. 또한, 여러 아티스트들과의 협업을 통해 스펙트럼을 넓히고 있습니다.</p><p>Key Activities</p><p>Leellamarz communicates with fans through continuous music releases and performances. He is building his own musical world through various songs such as 'Can't stop' and 'Wave'. He is also broadening his spectrum through collaborations with various artists.</p><p>✧</p><p>미래/의미</p><p>릴러말즈는 앞으로도 솔직하고 개성 넘치는 음악으로 대중들에게 다가갈 것입니다. 그는 자신만의 색깔을 잃지 않으면서도 끊임없이 변화하고 성장하는 모습을 보여줄 거예요. 그의 음악은 힙합씬에 신선한 자극을 주는 존재로 자리매김할 것입니다.</p><p>Future/Meaning</p><p>Leellamarz will continue to approach the public with honest and unique music. He will show a continuously changing and growing figure without losing his own color. His music will establish itself as a fresh stimulus in the hip-hop scene.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[E] [2023] DAYDATE</div>
+<div><a href='https://tidal.com/album/287403704' target='_blank'>https://tidal.com/album/287403704</a></div>
+<div>Leellamarz, NSW yoon, Street Baby - Can’t stop</div>
+<div>Leellamarz, NSW yoon, Street Baby - Wave(Explicit)</div>
+<div>Leellamarz, NSW yoon, Street Baby, Skinny Brown, Blasé, Lil Moshpit - Moshpit (Feat. Skinny Brown, Blase, Lil Moshpit)(Explicit)</div>
+<div>Leellamarz, NSW yoon, Street Baby, Skinny Brown - Rap lesson (Feat. Skinny Brown)</div>
+<div>Leellamarz, NSW yoon, Street Baby - We like to party</div>
+<div>Leellamarz, NSW yoon, Street Baby, Haon, Sik-K - Money dance (Feat. HAON, Sik-K)</div>
+<div>Leellamarz, NSW yoon, Street Baby, ZENE THE ZILLA, Hash Swan - Pay (Feat. ZENE THE ZILLA, Hash Swan)(Explicit)</div>
+<div>Leellamarz, Sik-K - Tsunami (Feat. Sik-K)</div>
+<div>Leellamarz, NSW yoon, Street Baby, Skinny Brown - Still alive (Feat. Skinny Brown)</div>
+<div>Leellamarz, NSW yoon, Street Baby - Good night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287403704' target='_blank'><img src='https://resources.tidal.com/images/956f12c9/7927/44d6/aba7/c9966c4826e3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] VIOLINIST2</div>
+<div><a href='https://tidal.com/album/209111739' target='_blank'>https://tidal.com/album/209111739</a></div>
+<div>Leellamarz, Gist, Inmo Yang - CTRL+Z (Feat. GIST, Inmo Yang)(Explicit)</div>
+<div>Leellamarz - OUT OF MY SIGHT</div>
+<div>Leellamarz - Left hand to Right hand</div>
+<div>Leellamarz, MILENA - a single word (Feat. Milena)</div>
+<div>Leellamarz - This is not what I want</div>
+<div>Leellamarz - Intermission (Skit)</div>
+<div>Leellamarz - Selfish</div>
+<div>Leellamarz, Keem Hyo-Eun, The Quiett - Sisi La Famille (Feat. KEEM HYO-EUN, The Quiett)(Explicit)</div>
+<div>Leellamarz, Inmo Yang - Intermezzo for 2 Violins (Feat. Inmo Yang)</div>
+<div>Leellamarz - 30 minutes</div>
+<div>Leellamarz - Without You (Encore)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209111739' target='_blank'><img src='https://resources.tidal.com/images/59e3015f/8cba/4e40/bad5/e06211ddf3c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2020] CATCH ME IF YOU CAN</div>
+<div><a href='https://tidal.com/album/196164752' target='_blank'>https://tidal.com/album/196164752</a></div>
+<div>Leellamarz - CATCH ME IF YOU CAN(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196164752' target='_blank'><img src='https://resources.tidal.com/images/e3a8ddc2/2547/4c0c/bc22/d068ad2961a3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2017] Y</div>
+<div><a href='https://tidal.com/album/196148758' target='_blank'>https://tidal.com/album/196148758</a></div>
+<div>Leellamarz - Star</div>
+<div>Leellamarz - Tunnel</div>
+<div>Leellamarz - Friends(Explicit)</div>
+<div>Leellamarz - 1 for the MUSIC</div>
+<div>Leellamarz, Superbee, Urban Fisher - What you want (Feat. Superbee, Urb Fisher)</div>
+<div>Leellamarz - Complex(Explicit)</div>
+<div>Leellamarz - G G Y</div>
+<div>Leellamarz - X (Acapella Version)</div>
+<div>Leellamarz - Y</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196148758' target='_blank'><img src='https://resources.tidal.com/images/c9726eb3/9e85/43ff/bfb1/5a0f4f14f76f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] [B]</div>
+<div><a href='https://tidal.com/album/340172891' target='_blank'>https://tidal.com/album/340172891</a></div>
+<div>Leellamarz, MEENOI - Talk tomorrow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340172891' target='_blank'><img src='https://resources.tidal.com/images/6c9bf3ed/2131/4df7/a6cc/3ccfa6d8156c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] STILL YOUNG BOY L</div>
+<div><a href='https://tidal.com/album/346643449' target='_blank'>https://tidal.com/album/346643449</a></div>
+<div>Leellamarz - Two Pills</div>
+<div>Leellamarz - Japan</div>
+<div>Leellamarz, Sik-K - Fucked (Feat. Sik-K)</div>
+<div>Leellamarz, Sik-K, Haon - Desert Flower (Feat. Sik-K, HAON)</div>
+<div>Leellamarz, Trade L - Miss Me (Feat. TRADE L)</div>
+<div>Leellamarz, Chan - Can′t you see me- (Feat. Chan)</div>
+<div>Leellamarz, Camo - I Like U (Feat. CAMO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346643449' target='_blank'><img src='https://resources.tidal.com/images/dd360cd1/67aa/45ee/956e/5b3e6fcf4989/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Let me go to heaven</div>
+<div><a href='https://tidal.com/album/346227590' target='_blank'>https://tidal.com/album/346227590</a></div>
+<div>Leellamarz - Let me go to heaven</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346227590' target='_blank'><img src='https://resources.tidal.com/images/88b3d5c7/dfd4/4dbc/b80e/1046894803e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] L&B</div>
+<div><a href='https://tidal.com/album/346222059' target='_blank'>https://tidal.com/album/346222059</a></div>
+<div>Leellamarz, Young B - Hell yea</div>
+<div>Leellamarz, Young B - Let off steam</div>
+<div>Leellamarz, Young B - Rise and fall</div>
+<div>Leellamarz, Young B, The Quiett, Gist - On the top (Feat. The Quiett, Gist)</div>
+<div>Leellamarz, Young B, Street Baby - L&B (Feat. Street Baby)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346222059' target='_blank'><img src='https://resources.tidal.com/images/4f1da51c/3ecf/4349/b864/c2c312979ec8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 3=1</div>
+<div><a href='https://tidal.com/album/346424573' target='_blank'>https://tidal.com/album/346424573</a></div>
+<div>Leellamarz, Sik-K, Haon - Trap Talk</div>
+<div>Leellamarz, Sik-K, Haon - Haidilao</div>
+<div>Leellamarz, Sik-K, Haon - My Dawgs</div>
+<div>Leellamarz, Sik-K, Haon - YO MA</div>
+<div>Leellamarz, Sik-K, Haon - NDA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346424573' target='_blank'><img src='https://resources.tidal.com/images/564a7128/49cb/4e11/8c43/2f8e152d7e92/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] [A]</div>
+<div><a href='https://tidal.com/album/336232248' target='_blank'>https://tidal.com/album/336232248</a></div>
+<div>Leellamarz, MEENOI - Mind Games</div>
+<div>Leellamarz, MEENOI - Bus Stop</div>
+<div>Leellamarz, MEENOI - Love Is</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/336232248' target='_blank'><img src='https://resources.tidal.com/images/34a2e1f8/f727/4353/bffb/66eca21a2242/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Vroong</div>
+<div><a href='https://tidal.com/album/285512334' target='_blank'>https://tidal.com/album/285512334</a></div>
+<div>Leellamarz, NSW yoon, Street Baby - Vroong</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/285512334' target='_blank'><img src='https://resources.tidal.com/images/fb3a5a7e/c74c/4e10/b614/f16881b5c3ae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] On the street</div>
+<div><a href='https://tidal.com/album/310308312' target='_blank'>https://tidal.com/album/310308312</a></div>
+<div>Leellamarz, ASH ISLAND - On the street (Feat. ASH ISLAND)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/310308312' target='_blank'><img src='https://resources.tidal.com/images/aa6c23ef/71b0/46bc/a929/6aee4d019692/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Life is Once</div>
+<div><a href='https://tidal.com/album/324093443' target='_blank'>https://tidal.com/album/324093443</a></div>
+<div>Leellamarz - Hangover</div>
+<div>Leellamarz, ASH ISLAND - On the street (Feat. ASH ISLAND)</div>
+<div>Leellamarz, MEENOI - I don′t know a single thing (Feat. meenoi)</div>
+<div>Leellamarz - Nice Man</div>
+<div>Leellamarz, Street Baby - Russian Roulette (Feat. Street Baby)</div>
+<div>Leellamarz, CHANGMO - B--ch (Feat. CHANGMO)</div>
+<div>Leellamarz - Mr. complain</div>
+<div>Leellamarz - 20’s</div>
+<div>Leellamarz, Gist, Jayci Yucca - Boys Like Girls (Feat. Gist, Jayci yucca)</div>
+<div>Leellamarz - RAPSTAR</div>
+<div>Leellamarz, Sik-K - Masquerade Ball (Feat. Sik-K)</div>
+<div>Leellamarz - Life is</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/324093443' target='_blank'><img src='https://resources.tidal.com/images/f0df2cdc/c40e/499f/bf42/f6419a9db13b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] I don’t know a single thing</div>
+<div><a href='https://tidal.com/album/315771037' target='_blank'>https://tidal.com/album/315771037</a></div>
+<div>Leellamarz, MEENOI - I don’t know a single thing (Feat. meenoi)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/315771037' target='_blank'><img src='https://resources.tidal.com/images/87e6853d/e7b0/445a/a3ee/1bac50ea5953/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] TOYSTORY3</div>
+<div><a href='https://tidal.com/album/229922986' target='_blank'>https://tidal.com/album/229922986</a></div>
+<div>Leellamarz, TOIL - STORY</div>
+<div>Leellamarz, TOIL - Last Chance (Feat. YUMDDA)</div>
+<div>Leellamarz, TOIL - Don′t do That</div>
+<div>Leellamarz, TOIL - Seperation Anxiety (Feat. JAEHA)</div>
+<div>Leellamarz, TOIL - Never Ending Story (Feat. Dynamicduo)</div>
+<div>Leellamarz, TOIL - Aftermath (Feat. GARY)</div>
+<div>Leellamarz, TOIL - B.B.B (Feat. The Quiett)</div>
+<div>Leellamarz, TOIL - Flower Age (Feat. MC META)</div>
+<div>Leellamarz, TOIL - 1,2,3</div>
+<div>Leellamarz, TOIL - 2AM (Feat. CAMO)</div>
+<div>Leellamarz, TOIL - Zero Coke (Feat. Skinny Brown)</div>
+<div>Leellamarz, TOIL - Iris</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/229922986' target='_blank'><img src='https://resources.tidal.com/images/88821e1e/f26f/412c/ab11/bbe46526e516/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Self Isolation (feat. Paloalto)</div>
+<div><a href='https://tidal.com/album/306311495' target='_blank'>https://tidal.com/album/306311495</a></div>
+<div>TOIL, Leellamarz - Self Isolation (feat. Paloalto)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306311495' target='_blank'><img src='https://resources.tidal.com/images/7668d2f9/8569/4ff0/a64a/a790018f3712/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] MaRz&B</div>
+<div><a href='https://tidal.com/album/254100768' target='_blank'>https://tidal.com/album/254100768</a></div>
+<div>Leellamarz, BIG Naughty - Number (Feat. BIG Naughty)</div>
+<div>Leellamarz, Gist - Uncomfortable (Feat. Gist)</div>
+<div>Leellamarz - Ex</div>
+<div>Leellamarz - Chrome Hearts</div>
+<div>Leellamarz, DUT2 - Down (Feat. DUT2)</div>
+<div>Leellamarz - Muse</div>
+<div>Leellamarz, Sik-K - Meet me at the London (Feat. Sik-K)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/254100768' target='_blank'><img src='https://resources.tidal.com/images/db164690/895b/4aaa/81e0/91c531dde322/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Freedom</div>
+<div><a href='https://tidal.com/album/238431213' target='_blank'>https://tidal.com/album/238431213</a></div>
+<div>Leellamarz, DUT2 - Freedom (Feat. DUT2) (Prod. Way Ched)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/238431213' target='_blank'><img src='https://resources.tidal.com/images/cd7fc1c2/2ac7/4d54/9c4b/5f306e5a229c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] City Lights</div>
+<div><a href='https://tidal.com/album/247279944' target='_blank'>https://tidal.com/album/247279944</a></div>
+<div>Leellamarz, Hash Swan - City Lights (Feat. Hash Swan)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/247279944' target='_blank'><img src='https://resources.tidal.com/images/16fd6816/4d98/4416/9c3b/005bacd8c020/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Act (feat. Joe Layne, Leellamarz & Spray)</div>
+<div><a href='https://tidal.com/album/389456567' target='_blank'>https://tidal.com/album/389456567</a></div>
+<div>Apro, Joe Layne, Leellamarz, Spray - Act (feat. Joe Layne, Leellamarz & Spray)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/389456567' target='_blank'><img src='https://resources.tidal.com/images/ecc98f69/ff0a/4898/82c8/3efe137cd50b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] [L]</div>
+<div><a href='https://tidal.com/album/196164981' target='_blank'>https://tidal.com/album/196164981</a></div>
+<div>Leellamarz - GOODMORNING FREESTYLE</div>
+<div>Leellamarz - DOCTOR</div>
+<div>Leellamarz, Sik-K - 0(YOUNG) (Feat. Sik-K)</div>
+<div>Leellamarz - LOVE</div>
+<div>Leellamarz, Owen - SING A SONG WRITER (Feat. Owen)</div>
+<div>Leellamarz, The Quiett - DREAM (Feat. The Quiett)</div>
+<div>Leellamarz - TOO BAD</div>
+<div>Leellamarz - BAD TRIP</div>
+<div>Leellamarz - FLASH BACK</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196164981' target='_blank'><img src='https://resources.tidal.com/images/dd04e7fe/980d/44ca/b686/e84930133aab/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] [L] [DELUXE]</div>
+<div><a href='https://tidal.com/album/196165557' target='_blank'>https://tidal.com/album/196165557</a></div>
+<div>Leellamarz - FIRST TRIP</div>
+<div>Leellamarz - 777 (Feat. CAMO)</div>
+<div>Leellamarz - GOODMORNING FREESTYLE</div>
+<div>Leellamarz - DOCTOR</div>
+<div>Leellamarz - 0(YOUNG) (Feat. Sik-K)</div>
+<div>Leellamarz - LOVE</div>
+<div>Leellamarz - SING A SONG WRITER (Feat. Owen)</div>
+<div>Leellamarz - DREAM (Feat. The Quiett)</div>
+<div>Leellamarz - CATCH ME IF YOU CAN</div>
+<div>Leellamarz - TOO BAD (Feat. JUSTHIS)</div>
+<div>Leellamarz - BAD TRIP</div>
+<div>Leellamarz - I DON’T</div>
+<div>Leellamarz - FLASH BACK</div>
+<div>Leellamarz - HAVE A GOOD TRIP</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196165557' target='_blank'><img src='https://resources.tidal.com/images/3fc80f1d/11c0/4992/b6d8/022107730970/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] When it rains</div>
+<div><a href='https://tidal.com/album/196169327' target='_blank'>https://tidal.com/album/196169327</a></div>
+<div>Leellamarz - When it rains (Feat. sogumm) (Prod. BOYCOLD)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196169327' target='_blank'><img src='https://resources.tidal.com/images/66b8127b/2c61/4055/a346/cffcac8b9688/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Last Waltz</div>
+<div><a href='https://tidal.com/album/206281334' target='_blank'>https://tidal.com/album/206281334</a></div>
+<div>Leellamarz - Last Waltz</div>
+<div>Leellamarz - Button</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/206281334' target='_blank'><img src='https://resources.tidal.com/images/459cdcc4/5e59/4225/abe9/f77109281b45/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Black & White Film</div>
+<div><a href='https://tidal.com/album/196170081' target='_blank'>https://tidal.com/album/196170081</a></div>
+<div>Leellamarz - when i was your man (Prod. BOYCOLD)</div>
+<div>Leellamarz - Black & White Film (Prod. BOYCOLD)</div>
+<div>Leellamarz - i (Feat. Jung Yup) (Prod. BOYCOLD)</div>
+<div>Leellamarz - Don′t cry (Feat. george) (Prod. BOYCOLD)</div>
+<div>Leellamarz - Like the first time</div>
+<div>Leellamarz - When it rains (Feat. sogumm) (Prod. BOYCOLD)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196170081' target='_blank'><img src='https://resources.tidal.com/images/9032f3aa/dc63/43a7/938c/d792bf38eb39/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] TOYSTORY2</div>
+<div><a href='https://tidal.com/album/196155064' target='_blank'>https://tidal.com/album/196155064</a></div>
+<div>Leellamarz - Seong-San HERO</div>
+<div>Leellamarz - 9 THANG</div>
+<div>Leellamarz - FUXX THAT SHXX! (Feat. lIlBOI, TakeOne)</div>
+<div>Leellamarz - GONE (Feat. Paloalto)</div>
+<div>Leellamarz - BREAK UP</div>
+<div>Leellamarz - Hey Lady (Feat. ZENE THE ZILLA, MUSHVENOM)</div>
+<div>Leellamarz - Nombre (Feat. Skinny Brown, Sik-K)</div>
+<div>Leellamarz - Human Addict (Feat. youra)</div>
+<div>Leellamarz - why you live in the mirror-</div>
+<div>Leellamarz - BUTTERFLY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196155064' target='_blank'><img src='https://resources.tidal.com/images/05ddccf5/c160/48cf/8719/0497f2b8e7ba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] SINSA</div>
+<div><a href='https://tidal.com/album/196160659' target='_blank'>https://tidal.com/album/196160659</a></div>
+<div>Leellamarz - SINSA (Feat. Gaeko, JUSTHIS)</div>
+<div>Leellamarz - Bambooclub freestyle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196160659' target='_blank'><img src='https://resources.tidal.com/images/1b93c285/1691/4b00/a468/02f083423d57/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] RUN</div>
+<div><a href='https://tidal.com/album/196158835' target='_blank'>https://tidal.com/album/196158835</a></div>
+<div>Leellamarz - RUN</div>
+<div>Leellamarz - DONE (Feat. Jayci Yucca, Skinny Brown)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196158835' target='_blank'><img src='https://resources.tidal.com/images/63502890/3a80/4ff1/aab7/ced23562708e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] PRISON BREAK</div>
+<div><a href='https://tidal.com/album/196164625' target='_blank'>https://tidal.com/album/196164625</a></div>
+<div>Leellamarz - INTRO</div>
+<div>Leellamarz - SILENCE (Feat. Sik-K)</div>
+<div>Leellamarz - WHY YOU MAD</div>
+<div>Leellamarz - TOP DAWG</div>
+<div>Leellamarz - DON′T CARE (feat. Loco)</div>
+<div>Leellamarz - CHOP IT UP (Feat. Hoody)</div>
+<div>Leellamarz - SO FAR</div>
+<div>Leellamarz - PRISON BREAK (Feat. Sik-K)</div>
+<div>Leellamarz - FANCY (Feat. Skinny Brown)</div>
+<div>Leellamarz - OUTRO (2018)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196164625' target='_blank'><img src='https://resources.tidal.com/images/81a6687e/2b96/4be8/aacf/a9a713fcfecd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Human Addict</div>
+<div><a href='https://tidal.com/album/196154029' target='_blank'>https://tidal.com/album/196154029</a></div>
+<div>Leellamarz, TOIL - Human Addict (Feat. youra) (Prod. TOIL)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196154029' target='_blank'><img src='https://resources.tidal.com/images/2ca2dfbf/0869/475d/8879/5419c4a75278/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] GONE</div>
+<div><a href='https://tidal.com/album/196154315' target='_blank'>https://tidal.com/album/196154315</a></div>
+<div>Leellamarz, TOIL - GONE (Feat. Paloalto) (Prod. TOIL)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196154315' target='_blank'><img src='https://resources.tidal.com/images/ca5d66ee/1c0a/4338/907f/33a6e7ae5b0a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] DOPE</div>
+<div><a href='https://tidal.com/album/196158702' target='_blank'>https://tidal.com/album/196158702</a></div>
+<div>Leellamarz - 629-6</div>
+<div>Leellamarz - DOPE (Feat. KEEM HYO-EUN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196158702' target='_blank'><img src='https://resources.tidal.com/images/2450e552/610e/4365/8f26/dc0e52a6915a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] BAMBOOCLUB[B]</div>
+<div><a href='https://tidal.com/album/196160834' target='_blank'>https://tidal.com/album/196160834</a></div>
+<div>Leellamarz - HIGH</div>
+<div>Leellamarz - DDONGDDONG (Feat. GOLDBUUDA)</div>
+<div>Leellamarz - WHAT THEY WANT (Feat. Sik-K)</div>
+<div>Leellamarz - STAGE (Feat. HOON, 100KGOLD)</div>
+<div>Leellamarz - HIT IT UP (Feat. Kid Milli)</div>
+<div>Leellamarz - LIT (Feat. VINXEN)</div>
+<div>Leellamarz - TRY (Feat. CAMO)</div>
+<div>Leellamarz - WHOO (Feat. ZENE THE ZILLA)</div>
+<div>Leellamarz - 9. RACE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196160834' target='_blank'><img src='https://resources.tidal.com/images/77a02530/5ba1/47a0/9eba/91d67db15f19/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] BAMBOOCLUB[A]</div>
+<div><a href='https://tidal.com/album/196159077' target='_blank'>https://tidal.com/album/196159077</a></div>
+<div>Leellamarz - BAMBOOCLUB (Feat. SUMIN)</div>
+<div>Leellamarz - Where my friends at</div>
+<div>Leellamarz - swing (Feat. The Quiett)</div>
+<div>Leellamarz - LINE (Feat. g1nger)</div>
+<div>Leellamarz - Together (Interlude)</div>
+<div>Leellamarz - goodforyou (Feat. ASH ISLAND)</div>
+<div>Leellamarz - Friday night</div>
+<div>Leellamarz - Reset (Feat. Hash Swan)</div>
+<div>Leellamarz - Feather (Feat. Urban Fisher)</div>
+<div>Leellamarz - RUN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196159077' target='_blank'><img src='https://resources.tidal.com/images/80877594/c81b/4c46/9230/737111c9c957/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] so i call it love</div>
+<div><a href='https://tidal.com/album/196147290' target='_blank'>https://tidal.com/album/196147290</a></div>
+<div>Leellamarz - so i call it love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196147290' target='_blank'><img src='https://resources.tidal.com/images/3e7a930f/97f2/4901/a676/5d0501a373a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] nambu bus terminal</div>
+<div><a href='https://tidal.com/album/196148776' target='_blank'>https://tidal.com/album/196148776</a></div>
+<div>Leellamarz - nambu bus terminal</div>
+<div>Leellamarz - thx for being here for me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196148776' target='_blank'><img src='https://resources.tidal.com/images/a133ea49/a6ee/4f51/8df1/f6a2a516ab74/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] [ LEELLAMARZ ] IS DIFFERENT-</div>
+<div><a href='https://tidal.com/album/196151450' target='_blank'>https://tidal.com/album/196151450</a></div>
+<div>Leellamarz - I THINK</div>
+<div>Leellamarz - VS</div>
+<div>Leellamarz - …</div>
+<div>Leellamarz - W.T.F</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196151450' target='_blank'><img src='https://resources.tidal.com/images/fccd56aa/3a45/4bd1/8a30/f2a442348bf7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] SPRING BREAK</div>
+<div><a href='https://tidal.com/album/196146613' target='_blank'>https://tidal.com/album/196146613</a></div>
+<div>Leellamarz, Jaegone - night sky</div>
+<div>Leellamarz, Jaegone - mist</div>
+<div>Leellamarz, Jaegone - NY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196146613' target='_blank'><img src='https://resources.tidal.com/images/d273e05a/3bc8/400b/b53b/36dbf6fbafee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] ROOM SERVICE</div>
+<div><a href='https://tidal.com/album/216095653' target='_blank'>https://tidal.com/album/216095653</a></div>
+<div>GroovyRoom, Leellamarz - Room Service</div>
+<div>GroovyRoom, Leellamarz - City Life</div>
+<div>GroovyRoom, Leellamarz - In my Room</div>
+<div>GroovyRoom, Leellamarz - Color (Feat. youra)</div>
+<div>GroovyRoom, Leellamarz - Pass (Feat. Sik-K)</div>
+<div>GroovyRoom, Leellamarz - Facetime</div>
+<div>GroovyRoom, Leellamarz - Pick up your phone (Feat. MOON)</div>
+<div>GroovyRoom, Leellamarz - Kick that (Feat. Jay Park)</div>
+<div>GroovyRoom, Leellamarz - WILD WILD</div>
+<div>GroovyRoom, Leellamarz - Violinist Freestyle</div>
+<div>GroovyRoom, Leellamarz - Counting (Feat. Kid Milli, The Quiett)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216095653' target='_blank'><img src='https://resources.tidal.com/images/43fb45f4/6120/43a0/8218/140e03dbe968/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Pretty Woman</div>
+<div><a href='https://tidal.com/album/196146697' target='_blank'>https://tidal.com/album/196146697</a></div>
+<div>Leellamarz - Pretty Woman</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196146697' target='_blank'><img src='https://resources.tidal.com/images/114fdc79/e311/457d/8c91/b146fd29aa92/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] NO!</div>
+<div><a href='https://tidal.com/album/196151654' target='_blank'>https://tidal.com/album/196151654</a></div>
+<div>Leellamarz - NO!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196151654' target='_blank'><img src='https://resources.tidal.com/images/990cc2b0/d35c/49fc/aec6/2256847a6827/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Marz 2 Moon</div>
+<div><a href='https://tidal.com/album/196145878' target='_blank'>https://tidal.com/album/196145878</a></div>
+<div>Leellamarz - Rain Shower</div>
+<div>Leellamarz - Time Capsule</div>
+<div>Leellamarz - cold</div>
+<div>Leellamarz - THX</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196145878' target='_blank'><img src='https://resources.tidal.com/images/e9209f9c/0d51/41a5/a8f7/ecc609557bdf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] MARZ 2 AMBITION</div>
+<div><a href='https://tidal.com/album/196148513' target='_blank'>https://tidal.com/album/196148513</a></div>
+<div>Leellamarz - TRUE</div>
+<div>Leellamarz - CHOICE</div>
+<div>Leellamarz - COLD</div>
+<div>Leellamarz - AMBITION</div>
+<div>Leellamarz - 1</div>
+<div>Leellamarz - W SIGNS UP</div>
+<div>Leellamarz - JHONCNOW</div>
+<div>Leellamarz - BROKEN</div>
+<div>Leellamarz - WINNIN</div>
+<div>Leellamarz - DRUNK</div>
+<div>Leellamarz - IZAKAYA</div>
+<div>Leellamarz - FEEL</div>
+<div>Leellamarz - PERFECT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196148513' target='_blank'><img src='https://resources.tidal.com/images/bd7e398a/cb61/4f0e/9d22/2fc82b187c13/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] FUXX WITH ME</div>
+<div><a href='https://tidal.com/album/196146409' target='_blank'>https://tidal.com/album/196146409</a></div>
+<div>Leellamarz - FUXX WITH ME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196146409' target='_blank'><img src='https://resources.tidal.com/images/d067314f/9d6a/4efa/80e0/af82aac94fbc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Dingo X Ambition Musik</div>
+<div><a href='https://tidal.com/album/216147027' target='_blank'>https://tidal.com/album/216147027</a></div>
+<div>CHANGMO, Hash Swan, ASH ISLAND, Keem Hyoeun, Leellamarz, The Quiett - Beer (Prod.Way Ched)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216147027' target='_blank'><img src='https://resources.tidal.com/images/880af0d3/7d0f/4b2b/9ac0/82043ac8fc48/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] 두 개였으면 해 Another Body</div>
+<div><a href='https://tidal.com/album/196143589' target='_blank'>https://tidal.com/album/196143589</a></div>
+<div>Leellamarz - Another Body</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143589' target='_blank'><img src='https://resources.tidal.com/images/91bad5dd/17ad/43fd/8fab/ae15e7ae8b4f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] YOU</div>
+<div><a href='https://tidal.com/album/196148768' target='_blank'>https://tidal.com/album/196148768</a></div>
+<div>Leellamarz - YOU</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196148768' target='_blank'><img src='https://resources.tidal.com/images/05e694b3/4811/471e/880a/c9f8ef5b313f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] VIOLINIST</div>
+<div><a href='https://tidal.com/album/196144433' target='_blank'>https://tidal.com/album/196144433</a></div>
+<div>Leellamarz - You</div>
+<div>Leellamarz - When You Are Alone</div>
+<div>Leellamarz - Trip</div>
+<div>Leellamarz - Another Body</div>
+<div>Leellamarz - Lie</div>
+<div>Leellamarz - Ice</div>
+<div>Leellamarz - Senorita</div>
+<div>Leellamarz - LALALA</div>
+<div>Leellamarz - Please</div>
+<div>Leellamarz - Rainbow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196144433' target='_blank'><img src='https://resources.tidal.com/images/2ca82b5f/534d/4a45/8201/f941799d24e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Trip</div>
+<div><a href='https://tidal.com/album/196142944' target='_blank'>https://tidal.com/album/196142944</a></div>
+<div>Leellamarz - Trip</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142944' target='_blank'><img src='https://resources.tidal.com/images/3773844d/5d74/406d/9212/afe0819dadc7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Toystory</div>
+<div><a href='https://tidal.com/album/196143084' target='_blank'>https://tidal.com/album/196143084</a></div>
+<div>Leellamarz, TOIL - today</div>
+<div>Leellamarz, TOIL - molla</div>
+<div>Leellamarz, TOIL - LOVE</div>
+<div>Leellamarz, TOIL - Missed Call</div>
+<div>Leellamarz, TOIL - Way</div>
+<div>Leellamarz, TOIL - Airplane</div>
+<div>Leellamarz, TOIL - Long Way</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143084' target='_blank'><img src='https://resources.tidal.com/images/2b23d365/ffde/4efc/a5b0/84151d636171/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Never Know</div>
+<div><a href='https://tidal.com/album/196143448' target='_blank'>https://tidal.com/album/196143448</a></div>
+<div>Leellamarz - Never Know</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143448' target='_blank'><img src='https://resources.tidal.com/images/6222bf31/3325/4bf6/ab2c/390f3173f65c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Marz 2 Mercury</div>
+<div><a href='https://tidal.com/album/196144940' target='_blank'>https://tidal.com/album/196144940</a></div>
+<div>Leellamarz - R.Y.G (red, yellow, green)</div>
+<div>Leellamarz - Wanna</div>
+<div>Leellamarz - ÷ (Obelus)</div>
+<div>Leellamarz - Jungle</div>
+<div>Leellamarz - HRMS (Mercury)</div>
+<div>Leellamarz - scatter</div>
+<div>Leellamarz - tomorrow</div>
+<div>Leellamarz - Life is beautiful</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196144940' target='_blank'><img src='https://resources.tidal.com/images/8f34b043/af7b/4bb6/967e/2f4f15e0d911/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Made It</div>
+<div><a href='https://tidal.com/album/196145483' target='_blank'>https://tidal.com/album/196145483</a></div>
+<div>Leellamarz - Made it</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196145483' target='_blank'><img src='https://resources.tidal.com/images/351a3fa6/65c3/402e/9fa6/22caac6bbfad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] MARZ 2 VENUS</div>
+<div><a href='https://tidal.com/album/196143516' target='_blank'>https://tidal.com/album/196143516</a></div>
+<div>Leellamarz - no more</div>
+<div>Leellamarz - fucked up</div>
+<div>Leellamarz - 31</div>
+<div>Leellamarz - If I got money</div>
+<div>Leellamarz - PALACE</div>
+<div>Leellamarz - Never Know</div>
+<div>Leellamarz - SAKURA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143516' target='_blank'><img src='https://resources.tidal.com/images/1df7d5af/a882/4aed/984b/8fb1ba1d44b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] MARZ 2 EARTH</div>
+<div><a href='https://tidal.com/album/196145821' target='_blank'>https://tidal.com/album/196145821</a></div>
+<div>Leellamarz - take off</div>
+<div>Leellamarz - goodmorning</div>
+<div>Leellamarz - adi</div>
+<div>Leellamarz - mayday</div>
+<div>Leellamarz - yzzr</div>
+<div>Leellamarz - made it (feat. SUPERBEE)</div>
+<div>Leellamarz - taekwondo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196145821' target='_blank'><img src='https://resources.tidal.com/images/88dcd488/b6ec/4369/bf50/7e966d35d763/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Baboo</div>
+<div><a href='https://tidal.com/album/196145155' target='_blank'>https://tidal.com/album/196145155</a></div>
+<div>Leellamarz - Black hole</div>
+<div>Leellamarz - Baboo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196145155' target='_blank'><img src='https://resources.tidal.com/images/18e8497a/2669/48ac/af9f/24218972a8e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] , (Comma)</div>
+<div><a href='https://tidal.com/album/196144671' target='_blank'>https://tidal.com/album/196144671</a></div>
+<div>Leellamarz - Best</div>
+<div>Leellamarz - Something is Everything</div>
+<div>Leellamarz - Sameday</div>
+<div>Leellamarz - Sell It</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196144671' target='_blank'><img src='https://resources.tidal.com/images/7eb133b6/e5a7/4369/8bd7/6a8593a0463d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/1_TIDAL_Kpop_Artist_Link_LR.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄹ1) TIDAL Kpop Artist Link (LR)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/릴러말즈 (leellamarz)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
