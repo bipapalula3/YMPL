@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이재민 ( Tidal Lee Jae Min )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이재민 ( Tidal Lee Jae Min )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/c01cb58c/4704/4add/a87e/fb5d1cf446a6/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10277260' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이재민</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>이재민 - 애절한 보이스로 빚어낸 사랑과 이별의 풍경, ‘여인심곡’의 깊은 울림과 ‘빙빙’의 애틋한 회상</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lee Jae Min</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Lee Jae Min - A landscape of love and parting crafted with a sorrowful voice, the deep resonance of 'Yeoin Simgok' and the tender reminiscence of 'Bingbing'.</div><p>깊은 감성으로 마음을 울리는 가수, 이재민입니다. 그의 음악은 사랑과 이별의 아픔을 섬세하게 그려내 많은 이들의 공감을 얻고 있어요. 특유의 애절한 보이스는 듣는 이로 하여금 깊은 감정에 빠져들게 합니다.</p><p>Lee Jae Min is a singer who touches hearts with deep emotion. His music delicately portrays the pain of love and parting, resonating with many. His unique sorrowful voice immerses listeners in profound feelings.</p><p>✧</p><p>음악적 시작</p><p>이재민은 오랜 시간 음악 활동을 통해 자신만의 독특한 음악 세계를 구축해 왔어요. 그의 음악은 다양한 감정을 솔직하게 표현하며 듣는 이들에게 깊은 공감을 선사합니다. 시간이 흘러도 변치 않는 감동을 주는 그의 음악은 많은 이들에게 사랑받고 있습니다.</p><p>Musical Beginnings</p><p>Lee Jae Min has built his own unique musical world through years of musical activity. His music honestly expresses various emotions, offering deep resonance to listeners. His music, which gives unchanging emotion even after time passes, is loved by many.</p><p>✧</p><p>감성적인 음악 세계</p><p>이재민의 음악은 주로 사랑과 이별, 그리움과 같은 감정을 다루고 있어요. 그의 곡들은 애절한 멜로디와 가슴을 파고드는 가사로 이루어져 있습니다. 특히, 그의 보컬은 곡의 감성을 극대화하며 듣는 이의 마음을 움직입니다.</p><p>Emotional Musical World</p><p>Lee Jae Min's music mainly deals with emotions such as love, parting, and longing. His songs consist of sorrowful melodies and heart-wrenching lyrics. In particular, his vocals maximize the emotion of the song and move the listener's heart.</p><p>✧</p><p>주요 음악 활동</p><p>이재민은 꾸준한 음악 활동을 통해 다양한 무대에서 팬들과 소통하고 있어요. 그의 음악은 라디오나 방송을 통해서도 많은 사람들에게 알려져 있습니다. 앞으로도 그는 자신만의 음악 색깔을 담은 다양한 작품을 선보일 것으로 기대됩니다.</p><p>Main Musical Activities</p><p>Lee Jae Min communicates with fans on various stages through constant musical activities. His music is also known to many people through radio or broadcasting. In the future, he is expected to present various works with his own musical color.</p><p>✧</p><p>미래와 의미</p><p>이재민의 음악은 단순한 유행을 따르기보다는 깊은 감정과 진솔한 이야기를 담고 있습니다. 그의 음악은 듣는 이들에게 위로와 공감을 주며 오랫동안 기억될 거예요. 앞으로도 그의 음악이 더욱 많은 사람들에게 사랑받기를 기대합니다.</p><p>Future and Meaning</p><p>Lee Jae Min's music contains deep emotions and sincere stories rather than simply following trends. His music provides comfort and empathy to listeners and will be remembered for a long time. We look forward to his music being loved by more people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] 이재민의 36기념 여인심곡</div>
+<div><a href='https://tidal.com/album/337088270' target='_blank'>https://tidal.com/album/337088270</a></div>
+<div>이재민 - 여인심곡</div>
+<div>이재민 - 다정한 연인</div>
+<div>이재민 - 우리의 사랑을</div>
+<div>이재민 - 그칠줄 모르는 눈물</div>
+<div>이재민 - 그 님</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/337088270' target='_blank'><img src='https://resources.tidal.com/images/fa7099ff/a264/458f/9d2e/14b3a660de4e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 누가 뭐래도 (Original Television Soundtrack), Pt. 20</div>
+<div><a href='https://tidal.com/album/419849914' target='_blank'>https://tidal.com/album/419849914</a></div>
+<div>이재민 - 또 운다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/419849914' target='_blank'><img src='https://resources.tidal.com/images/6f8a13fc/e200/457a/8800/dd56c2502589/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] 묻지마</div>
+<div><a href='https://tidal.com/album/94238986' target='_blank'>https://tidal.com/album/94238986</a></div>
+<div>이재민 - 묻지마</div>
+<div>이재민 - 빙빙</div>
+<div>이재민 - 골목길</div>
+<div>이재민 - 제 여인의 이름은</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/94238986' target='_blank'><img src='https://resources.tidal.com/images/c053b88a/63a6/4843/af3e/4bf070f4b43a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1990] Lee Jae Min Best.1</div>
+<div><a href='https://tidal.com/album/226677798' target='_blank'>https://tidal.com/album/226677798</a></div>
+<div>이재민 - Dear To Me</div>
+<div>이재민 - Paper Airplane</div>
+<div>이재민 - Moonlight Love</div>
+<div>이재민 - When It Rains Like This</div>
+<div>이재민 - Alleyway</div>
+<div>이재민 - Little Street Corner</div>
+<div>이재민 - Your Face</div>
+<div>이재민 - Small Whale</div>
+<div>이재민 - The Memory Of That Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/226677798' target='_blank'><img src='https://resources.tidal.com/images/d75809ae/3ba4/4322/b159/19743dc07201/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1987] 제 연인의 이름은</div>
+<div><a href='https://tidal.com/album/397077207' target='_blank'>https://tidal.com/album/397077207</a></div>
+<div>이재민 - 파란엽서</div>
+<div>이재민 - 슬픈약속</div>
+<div>이재민 - 해변의 길손</div>
+<div>이재민 - 휘파람을 불어요</div>
+<div>이재민 - 커튼을 내려줘요</div>
+<div>이재민 - 슬픈약속(경음악)</div>
+<div>이재민 - 제 연인의 이름은</div>
+<div>이재민 - 지난여름 너무 야릇했었지</div>
+<div>이재민 - 혼자있는 밤</div>
+<div>이재민 - 골목길</div>
+<div>이재민 - 결혼행진곡</div>
+<div>이재민 - 생일축가</div>
+<div>이재민 - 결혼축가</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397077207' target='_blank'><img src='https://resources.tidal.com/images/c01cb58c/4704/4add/a87e/fb5d1cf446a6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/5_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ5) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/이재민 (Lee Jae Min)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
