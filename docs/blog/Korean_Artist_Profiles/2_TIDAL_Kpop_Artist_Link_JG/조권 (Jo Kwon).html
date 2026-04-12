@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 조권 ( Tidal Jo Kwon )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 조권 ( Tidal Jo Kwon )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/d11f40ed/1590/4821/9ac1/5c25a382e8a1/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6017027' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 조권</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>조권 (Jo Kwon) - 발라드부터 댄스까지, 솔직한 감정으로 무대를 채우는 팔색조 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jo Kwon</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Jo Kwon - From ballads to dance, a versatile vocalist who fills the stage with honest emotions.</div><p>개성 넘치는 보이스와 퍼포먼스로 늘 새로운 모습을 보여주는 조권님! 특유의 감성으로 발라드는 물론, 파워풀한 댄스곡까지 소화하는 모습이 정말 인상적이에요. 끊임없이 도전하는 그의 음악 여정을 함께 따라가 볼까요?</p><p>Jo Kwon always shows a new side with his unique voice and performance! It's impressive how he handles ballads with his unique sensibility, as well as powerful dance songs. Shall we follow his musical journey of constant challenge?</p><p>✧</p><p>그룹 탄생</p><p>조권님은 2008년 그룹 2AM으로 데뷔하여 뛰어난 가창력으로 많은 사랑을 받았어요. 감성적인 발라드곡들을 통해 깊은 울림을 선사하며 대중의 마음을 사로잡았죠. 그룹 활동을 통해 쌓은 탄탄한 기본기는 솔로 활동의 밑거름이 되었답니다.</p><p>Group Origins</p><p>Jo Kwon debuted in 2008 as a member of the group 2AM and received much love for his outstanding singing ability. He captured the hearts of the public by delivering deep resonance through emotional ballad songs. The solid foundation built through group activities became the basis for his solo activities.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>조권님의 음악은 발라드에만 머무르지 않고 다양한 장르를 넘나드는 것이 특징이에요. 댄스곡에서는 파워풀하고 에너지 넘치는 퍼포먼스를 보여주며 무대를 압도하죠. 그는 음악뿐만 아니라 뮤지컬, 예능 등 다양한 분야에서 활약하며 다재다능한 면모를 뽐내고 있어요.</p><p>Music and Performance</p><p>Jo Kwon's music is characterized by crossing various genres, not just sticking to ballads. In dance songs, he overwhelms the stage with powerful and energetic performances. He is active in various fields such as musicals and entertainment, as well as music, showing off his versatile side.</p><p>✧</p><p>주요 활동</p><p>솔로 아티스트로서 조권님은 자신만의 음악적 색깔을 확고히 해나가고 있어요. 솔직하고 진솔한 가사를 통해 듣는 이들의 공감을 얻고 있죠. 다양한 콜라보레이션 활동을 통해 음악적 스펙트럼을 넓히며 끊임없이 성장하는 모습을 보여주고 있답니다.</p><p>Main Activities</p><p>As a solo artist, Jo Kwon is solidifying his own musical color. He gains the sympathy of listeners through honest and sincere lyrics. He is constantly growing, expanding his musical spectrum through various collaboration activities.</p><p>✧</p><p>미래/의미</p><p>조권님은 앞으로도 솔직하고 진솔한 음악으로 대중과 소통할 것으로 기대돼요. 끊임없는 도전과 변화를 통해 더욱 성장하는 아티스트가 될 거라 믿어요. 그의 음악은 우리에게 위로와 용기를 주며 오랫동안 기억될 거예요.</p><p>Future/Meaning</p><p>Jo Kwon is expected to communicate with the public with honest and sincere music in the future. I believe he will become an artist who grows further through constant challenges and changes. His music will give us comfort and courage and will be remembered for a long time.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Confession of a friend</div>
+<div><a href='https://tidal.com/album/361056856' target='_blank'>https://tidal.com/album/361056856</a></div>
+<div>Jo Kwon - Confession of a friend</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/361056856' target='_blank'><img src='https://resources.tidal.com/images/ac3cbdab/5ba6/4617/bca6/a89cf2736e2d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] The Day of Confession</div>
+<div><a href='https://tidal.com/album/303767531' target='_blank'>https://tidal.com/album/303767531</a></div>
+<div>Jo Kwon - The Day of Confession</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303767531' target='_blank'><img src='https://resources.tidal.com/images/2e86bfe3/1e47/4760/a4c7/3f4906c43682/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 5th Degree</div>
+<div><a href='https://tidal.com/album/315865421' target='_blank'>https://tidal.com/album/315865421</a></div>
+<div>Fudasca, Jo Kwon, David Hugo - 5th Degree</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/315865421' target='_blank'><img src='https://resources.tidal.com/images/441ffdb8/ed5a/44c0/a432/b0039a2d8a45/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Greetings</div>
+<div><a href='https://tidal.com/album/244713565' target='_blank'>https://tidal.com/album/244713565</a></div>
+<div>SunYe, Jo Kwon - Greetings</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/244713565' target='_blank'><img src='https://resources.tidal.com/images/e4d42e77/edbe/4e02/97a8/1f9610162ad9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] First Page</div>
+<div><a href='https://tidal.com/album/216465435' target='_blank'>https://tidal.com/album/216465435</a></div>
+<div>SunYe, Jo Kwon - First Page</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216465435' target='_blank'><img src='https://resources.tidal.com/images/942fea27/a9d5/4e09/bc7f/ad1863a922fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Crosswalk</div>
+<div><a href='https://tidal.com/album/304030798' target='_blank'>https://tidal.com/album/304030798</a></div>
+<div>Jo Kwon - Crosswalk</div>
+<div>Jo Kwon - fine</div>
+<div>Jo Kwon - flutter</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304030798' target='_blank'><img src='https://resources.tidal.com/images/aae9b083/d80c/424a/910a/7d802ec2e620/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Born to be Wild (Feat. JYP)</div>
+<div><a href='https://tidal.com/album/115281304' target='_blank'>https://tidal.com/album/115281304</a></div>
+<div>HYOYEON, MIN, Jo Kwon - Born to be Wild (Feat. JYP)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115281304' target='_blank'><img src='https://resources.tidal.com/images/81ad6b29/776a/4089/91ee/fe00052146c9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Temptation Pt. 3 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/97015635' target='_blank'>https://tidal.com/album/97015635</a></div>
+<div>Jo Kwon, FEI - One Summer Night Korean Version</div>
+<div>Jo Kwon, FEI - One Summer Night English Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/97015635' target='_blank'><img src='https://resources.tidal.com/images/40a85a08/c4ab/4aab/aa79/082594797733/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] I'm Da One</div>
+<div><a href='https://tidal.com/album/303686472' target='_blank'>https://tidal.com/album/303686472</a></div>
+<div>Jo Kwon, Yankie - Awesome Girl</div>
+<div>Jo Kwon, j-hope - Animal (Radio Edit)</div>
+<div>Jo Kwon, Zion.T - I`m Da One</div>
+<div>Jo Kwon - Lipstick</div>
+<div>Jo Kwon - Who`s Loving You Now</div>
+<div>Jo Kwon - Wingardium Leviosa</div>
+<div>Jo Kwon, Jeong JinWoon - Something `Bout You</div>
+<div>Jo Kwon, Miso - Heaven</div>
+<div>Jo Kwon - Just A Kiss</div>
+<div>Jo Kwon, j-hope - Animal</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303686472' target='_blank'><img src='https://resources.tidal.com/images/d11f40ed/1590/4821/9ac1/5c25a382e8a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/조권 (Jo Kwon)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
