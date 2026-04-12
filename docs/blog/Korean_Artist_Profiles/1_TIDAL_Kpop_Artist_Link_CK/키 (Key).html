@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 키 ( Tidal Key )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 키 ( Tidal Key )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/1b631512/2782/4f02/9ae4/51611c427cb8/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/28933684' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 키</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>키 (KEY) - '가솔린'처럼 강렬하게, 'I Know'처럼 섬세하게, 다채로운 매력을 담아내는 음악적 스펙트럼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Key</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>KEY - As intense as 'Gasoline,' as delicate as 'I Know,' a musical spectrum filled with diverse charms.</div><p>만능 엔터테이너라는 수식어가 아깝지 않은 아티스트, 키를 소개합니다. 그룹 활동뿐만 아니라 솔로 아티스트로서도 독보적인 존재감을 드러내고 있어요. 그의 음악은 실험적인 시도와 대중성을 동시에 잡아내며 많은 사랑을 받고 있습니다.</p><p>Introducing Key, an artist who truly deserves the title of all-around entertainer. He demonstrates a unique presence not only in group activities but also as a solo artist. His music captures both experimental attempts and popularity, earning him much love.</p><p>✧</p><p>그룹 탄생과 성장</p><p>키는 그룹 멤버로서 데뷔하여 뛰어난 재능을 인정받았습니다. 다채로운 콘셉트를 소화하며 그룹의 음악적 스펙트럼을 넓히는 데 기여했어요. 무대 위 카리스마 넘치는 모습 뒤에 숨겨진 노력과 열정이 팬들을 사로잡았습니다.</p><p>Birth and Growth of the Group</p><p>Key debuted as a member of a group and was recognized for his outstanding talent. He contributed to expanding the group's musical spectrum by taking on a variety of concepts. The effort and passion hidden behind his charismatic stage presence captivated fans.</p><p>✧</p><p>음악 및 퍼포먼스 스타일</p><p>키의 음악은 팝, R&B, 댄스 등 다양한 장르를 아우르는 것이 특징입니다. 그는 퍼포먼스에서도 뛰어난 역량을 발휘하며 보는 이들을 압도합니다. 실험적인 사운드와 트렌디한 감각이 돋보이는 음악을 선보이고 있어요.</p><p>Music and Performance Style</p><p>Key's music is characterized by encompassing various genres such as pop, R&B, and dance. He also demonstrates outstanding capabilities in performance, overwhelming viewers. He presents music that stands out with experimental sounds and trendy sensibilities.</p><p>✧</p><p>주요 활동과 솔로 커리어</p><p>솔로 아티스트로서 키는 자신만의 음악적 색깔을 확고히 했습니다. 앨범마다 새로운 콘셉트를 시도하며 끊임없이 변화하는 모습을 보여주고 있어요. 음악뿐만 아니라 패션, 예능 등 다양한 분야에서 활약하며 다재다능한 면모를 뽐내고 있습니다.</p><p>Major Activities and Solo Career</p><p>As a solo artist, Key has solidified his own musical color. He attempts new concepts with each album, constantly showing a changing appearance. He is active not only in music but also in various fields such as fashion and entertainment, boasting his versatile talent.</p><p>✧</p><p>미래와 음악적 의미</p><p>키는 앞으로도 다양한 음악적 시도를 통해 팬들에게 새로운 즐거움을 선사할 것으로 기대됩니다. 자신만의 독창적인 스타일을 구축하며 음악계에 긍정적인 영향을 미칠 거예요. 그의 음악은 끊임없이 변화하고 성장하는 아티스트의 모습을 보여줍니다.</p><p>Future and Musical Significance</p><p>It is expected that Key will continue to provide new enjoyment to fans through various musical attempts in the future. He will build his own unique style and have a positive impact on the music scene. His music shows the image of an artist who is constantly changing and growing.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Tongue Tied</div>
+<div><a href='https://tidal.com/album/370692129' target='_blank'>https://tidal.com/album/370692129</a></div>
+<div>KEY - Tongue Tied</div>
+<div>KEY - Fresh</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/370692129' target='_blank'><img src='https://resources.tidal.com/images/0c9a5c5d/31e8/4fa5/a2ad/35c884cd0af2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Pleasure Shop - The 3rd Mini Album</div>
+<div><a href='https://tidal.com/album/387139229' target='_blank'>https://tidal.com/album/387139229</a></div>
+<div>KEY - Pleasure Shop</div>
+<div>KEY - Overthink</div>
+<div>KEY - Golden</div>
+<div>KEY - I Know</div>
+<div>KEY - Going Up</div>
+<div>KEY - Novacaine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/387139229' target='_blank'><img src='https://resources.tidal.com/images/542b6b74/fd76/4252/b54e/9043511db3a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Killer - The 2nd Album Repackage</div>
+<div><a href='https://tidal.com/album/275249042' target='_blank'>https://tidal.com/album/275249042</a></div>
+<div>KEY - Killer</div>
+<div>KEY - Heartless</div>
+<div>KEY - 가솔린 Gasoline</div>
+<div>KEY - Bound</div>
+<div>KEY, JENO - Villain</div>
+<div>KEY - Easy</div>
+<div>KEY - Burn</div>
+<div>KEY - Guilty Pleasure</div>
+<div>KEY - G.O.A.T (Greatest Of All Time)</div>
+<div>KEY - I Can’t Sleep</div>
+<div>KEY - Ain’t Gonna Dance</div>
+<div>KEY - Another Life</div>
+<div>KEY - Delight</div>
+<div>KEY - Proud</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/275249042' target='_blank'><img src='https://resources.tidal.com/images/2d0424ac/b6e0/4bb8/b740/986f594f9d2e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Good & Great - The 2nd Mini Album</div>
+<div><a href='https://tidal.com/album/314421892' target='_blank'>https://tidal.com/album/314421892</a></div>
+<div>KEY - Good & Great</div>
+<div>KEY - Can't Say Goodbye</div>
+<div>KEY - Intoxicating</div>
+<div>KEY - Live Without You</div>
+<div>KEY - CoolAs</div>
+<div>KEY - Mirror, Mirror</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/314421892' target='_blank'><img src='https://resources.tidal.com/images/1b42e2cf/4bfd/49ab/9345/7c46cd64f5bc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Gasoline - The 2nd Album</div>
+<div><a href='https://tidal.com/album/244893062' target='_blank'>https://tidal.com/album/244893062</a></div>
+<div>KEY - 가솔린 Gasoline</div>
+<div>KEY - Bound</div>
+<div>KEY, JENO - Villain</div>
+<div>KEY - Burn</div>
+<div>KEY - Guilty Pleasure</div>
+<div>KEY - G.O.A.T (Greatest Of All Time)</div>
+<div>KEY - I Can’t Sleep</div>
+<div>KEY - Ain’t Gonna Dance</div>
+<div>KEY - Another Life</div>
+<div>KEY - Delight</div>
+<div>KEY - Proud</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/244893062' target='_blank'><img src='https://resources.tidal.com/images/2dbf3ea7/4244/437e/b850/3d30e56f0dc5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Hate that...</div>
+<div><a href='https://tidal.com/album/195177542' target='_blank'>https://tidal.com/album/195177542</a></div>
+<div>KEY, TAEYEON - Hate that---</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/195177542' target='_blank'><img src='https://resources.tidal.com/images/78c39e39/1954/48c8/a37e/90ced4aa110c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] BAD LOVE - The 1st Mini Album</div>
+<div><a href='https://tidal.com/album/198641596' target='_blank'>https://tidal.com/album/198641596</a></div>
+<div>KEY - BAD LOVE</div>
+<div>KEY - Yellow Tape</div>
+<div>KEY, TAEYEON - Hate that…</div>
+<div>KEY - Helium 헬륨</div>
+<div>KEY - Saturday Night</div>
+<div>KEY - Eighteen (End Of My World)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/198641596' target='_blank'><img src='https://resources.tidal.com/images/35ce5a25/abc7/4791/a730/5904128e272f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] I Wanna Be - The 1st Album Repackage</div>
+<div><a href='https://tidal.com/album/115277957' target='_blank'>https://tidal.com/album/115277957</a></div>
+<div>KEY, Soyeon - I Wanna Be (feat. SOYEON of (G)I-DLE)</div>
+<div>KEY - Show Me</div>
+<div>KEY, Crush - 센 척 안 해 One of Those Nights (feat. Crush)</div>
+<div>KEY - Good Good</div>
+<div>KEY - Honest</div>
+<div>KEY, Soyou - Forever Yours (feat. SOYOU)</div>
+<div>KEY - Imagine</div>
+<div>KEY - Chemicals</div>
+<div>KEY, Vinxen - I Will Fight (feat. VINXEN)</div>
+<div>KEY - Easy To Love</div>
+<div>KEY - 미워 The Duty of Love</div>
+<div>KEY - This Life</div>
+<div>KEY, Hanhae - Cold (feat. HANHAE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115277957' target='_blank'><img src='https://resources.tidal.com/images/063709f7/d42b/45d0/93ec/52870f1afc9b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Cold (feat. HANHAE)</div>
+<div><a href='https://tidal.com/album/115278087' target='_blank'>https://tidal.com/album/115278087</a></div>
+<div>KEY, Hanhae - Cold (feat. HANHAE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115278087' target='_blank'><img src='https://resources.tidal.com/images/aa915785/5ba1/4d98/af31/f7cd84bf2323/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Hologram</div>
+<div><a href='https://tidal.com/album/101043739' target='_blank'>https://tidal.com/album/101043739</a></div>
+<div>KEY - Hologram</div>
+<div>KEY, Coco - Why Are You Here</div>
+<div>KEY - Power</div>
+<div>KEY - City Girl</div>
+<div>KEY - Gunjouno Yoru -One Of Those Nights- (Japanese Vers</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/101043739' target='_blank'><img src='https://resources.tidal.com/images/1928bdc0/fc4f/42f8/9622/7b5e5d02595e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Forever Yours (feat. SOYOU)</div>
+<div><a href='https://tidal.com/album/115279456' target='_blank'>https://tidal.com/album/115279456</a></div>
+<div>KEY, Soyou - Forever Yours (feat. SOYOU)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115279456' target='_blank'><img src='https://resources.tidal.com/images/727d065b/1e83/4340/99e8/f1aac0524ad1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] FACE - The 1st Album</div>
+<div><a href='https://tidal.com/album/115279399' target='_blank'>https://tidal.com/album/115279399</a></div>
+<div>KEY, Crush - 센 척 안 해 (One of Those Nights) (feat. Crush)</div>
+<div>KEY - Good Good</div>
+<div>KEY - Honest</div>
+<div>KEY, Soyou - Forever Yours (feat. SOYOU)</div>
+<div>KEY - Imagine</div>
+<div>KEY - Chemicals</div>
+<div>KEY, Vinxen - I Will Fight (feat. VINXEN)</div>
+<div>KEY - Easy To Love</div>
+<div>KEY - 미워 (The Duty of Love)</div>
+<div>KEY - This Life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115279399' target='_blank'><img src='https://resources.tidal.com/images/c85b2371/5338/4c3e/884b/8a53b46a9637/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Magic Adventures OST</div>
+<div><a href='https://tidal.com/album/115282749' target='_blank'>https://tidal.com/album/115282749</a></div>
+<div>KEY - Key of Secret</div>
+<div>KEY - Key of Magic (Ending A.G Ver)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115282749' target='_blank'><img src='https://resources.tidal.com/images/7e996f49/6ab4/4a0f/82f5/996d0bfc63db/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] COOL (From “taxteam38”), Pt. 2</div>
+<div><a href='https://tidal.com/album/115281502' target='_blank'>https://tidal.com/album/115281502</a></div>
+<div>KEY, DOYOUNG - COOL (From “taxteam38”)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115281502' target='_blank'><img src='https://resources.tidal.com/images/2636e956/e97d/4e7d/8f23/010a23e87b47/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/1_TIDAL_Kpop_Artist_Link_CK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅋ1) TIDAL Kpop Artist Link (CK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/키 (Key)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
