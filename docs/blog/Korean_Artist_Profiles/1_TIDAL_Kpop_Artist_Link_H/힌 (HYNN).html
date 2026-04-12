@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 힌 ( Tidal HYNN )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 힌 ( Tidal HYNN )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/50662d45/b094/4959/81df/6feffd339721/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/17060468' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 힌</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>HYNN(힌) - 애절한 보이스로 짙은 감성을 노래하는, '차가워진 너의 눈빛에' 담긴 슬픔을 섬세하게 표현하는 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> HYNN</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>HYNN - A vocalist who sings deep emotions with a mournful voice, delicately expressing the sadness contained in 'Unspoken Goodbye'</div><p>섬세한 감정 표현과 폭발적인 가창력으로 듣는 이의 마음을 사로잡는 HYNN(힌)은 독보적인 음색을 자랑하는 보컬리스트입니다. 그녀의 음악은 깊은 슬픔과 아련한 그리움을 담아내며, 듣는 이들에게 진한 여운을 남깁니다. 호소력 짙은 목소리는 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여줍니다.</p><p>HYNN captures listeners' hearts with her delicate emotional expressions and explosive singing ability, boasting a unique vocal tone. Her music contains deep sadness and faint longing, leaving a lasting impression. Her appealing voice covers various genres, showcasing a wide musical spectrum.</p><p>✧</p><p>음악적 여정의 시작</p><p>HYNN(힌)은 뛰어난 가창력을 바탕으로 데뷔 초부터 주목받으며 음악계에 등장했습니다. 그녀는 자신만의 음악적 색깔을 확고히 하며 꾸준히 활동 영역을 넓혀가고 있습니다. 다양한 프로젝트 참여와 컬래버레이션을 통해 음악적 역량을 더욱 발전시켜 나가고 있습니다.</p><p>The Beginning of a Musical Journey</p><p>HYNN emerged into the music scene, receiving attention from her debut with outstanding singing ability. She is steadily expanding her activities while firmly establishing her own musical style. Through various project participations and collaborations, she continues to develop her musical capabilities.</p><p>✧</p><p>감성적인 보컬과 다채로운 음악</p><p>HYNN(힌)의 음악은 애절한 발라드부터 팝, 록까지 다양한 장르를 아우릅니다. 그녀는 특유의 섬세한 감정 표현과 폭발적인 가창력을 통해 곡의 분위기를 극대화합니다. 특히 이별의 아픔과 그리움을 노래하는 곡들은 많은 이들의 공감을 얻으며 사랑받고 있습니다.</p><p>Emotional Vocals and Diverse Music</p><p>HYNN's music encompasses various genres from mournful ballads to pop and rock. She maximizes the atmosphere of the song through her unique delicate emotional expression and explosive singing ability. In particular, songs that sing of the pain of separation and longing are loved by many, gaining empathy.</p><p>✧</p><p>꾸준한 활동과 성장</p><p>HYNN(힌)은 OST 참여, 방송 출연 등 다양한 활동을 통해 대중과의 접점을 넓혀가고 있습니다. 그녀는 끊임없이 새로운 음악적 시도를 하며 자신만의 영역을 구축하고 있습니다. 앞으로 그녀가 보여줄 음악적 성장이 더욱 기대됩니다.</p><p>Constant Activity and Growth</p><p>HYNN is expanding her contact with the public through various activities such as OST participation and broadcasting appearances. She is constantly making new musical attempts and building her own area. Her future musical growth is highly anticipated.</p><p>✧</p><p>음악이 주는 위로와 공감</p><p>HYNN(힌)의 음악은 단순한 노래를 넘어, 듣는 이들에게 깊은 위로와 공감을 선사합니다. 그녀의 진심이 담긴 목소리는 많은 이들의 마음을 어루만지며 감동을 전합니다. 앞으로도 그녀의 음악이 더욱 많은 사람들에게 희망과 용기를 주기를 기대합니다.</p><p>Comfort and Empathy from Music</p><p>HYNN's music goes beyond a simple song, offering deep comfort and empathy to listeners. Her sincere voice touches and moves the hearts of many. We hope that her music will continue to give hope and courage to more people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Unspoken Goodbye</div>
+<div><a href='https://tidal.com/album/411719364' target='_blank'>https://tidal.com/album/411719364</a></div>
+<div>HYNN - Unspoken Goodbye</div>
+<div>HYNN - Longing For The One I Lost</div>
+<div>HYNN - Sunset Song</div>
+<div>HYNN - Glowing Light</div>
+<div>HYNN - Farewell</div>
+<div>HYNN - 大人になっていくかも</div>
+<div>HYNN - 粉紅的天空</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/411719364' target='_blank'><img src='https://resources.tidal.com/images/2b42c00f/4c9b/4949/9460/df30820723b6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] The Fiery Priest 2 (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/397910902' target='_blank'>https://tidal.com/album/397910902</a></div>
+<div>HYNN - Fighter (Feat. nochexintoma)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397910902' target='_blank'><img src='https://resources.tidal.com/images/ea9ac694/c0df/4034/a007/1ddeca0b8743/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Sunset Song</div>
+<div><a href='https://tidal.com/album/393039751' target='_blank'>https://tidal.com/album/393039751</a></div>
+<div>HYNN - Sunset Song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/393039751' target='_blank'><img src='https://resources.tidal.com/images/3370e8fc/873f/474b/8bf7/a8221e26c73c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Nothing Uncovered, Pt. 1 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/351784462' target='_blank'>https://tidal.com/album/351784462</a></div>
+<div>HYNN - Memory</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/351784462' target='_blank'><img src='https://resources.tidal.com/images/9a7ae2aa/d395/4f9b/b844/2c022209a5ea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Love dust</div>
+<div><a href='https://tidal.com/album/396346010' target='_blank'>https://tidal.com/album/396346010</a></div>
+<div>KASSY, Lee Ye Joon, Eb, HYNN - Love dust</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/396346010' target='_blank'><img src='https://resources.tidal.com/images/53f8e0b7/14b5/4108/a45c/e629c7a39da5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Longing For The One I Lost</div>
+<div><a href='https://tidal.com/album/404534394' target='_blank'>https://tidal.com/album/404534394</a></div>
+<div>HYNN - Longing For The One I Lost</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/404534394' target='_blank'><img src='https://resources.tidal.com/images/a0c7c28c/a8a8/4a8e/b56b/27c85e1848bc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] If It Were Me</div>
+<div><a href='https://tidal.com/album/399239309' target='_blank'>https://tidal.com/album/399239309</a></div>
+<div>HYNN - If It Were Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/399239309' target='_blank'><img src='https://resources.tidal.com/images/cfa44f2d/3c39/4b22/a293/d5f541ff762c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Glowing Light</div>
+<div><a href='https://tidal.com/album/367011778' target='_blank'>https://tidal.com/album/367011778</a></div>
+<div>HYNN - Glowing Light</div>
+<div>HYNN - Glowing Light (Sped Up)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/367011778' target='_blank'><img src='https://resources.tidal.com/images/5503e2cb/19b7/4b6d/8119/3d4b9993fe72/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] GO FOR IT</div>
+<div><a href='https://tidal.com/album/375183723' target='_blank'>https://tidal.com/album/375183723</a></div>
+<div>HYNN - GO FOR IT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/375183723' target='_blank'><img src='https://resources.tidal.com/images/654645c5/041d/4728/827c/3db757181b8a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] Doctor Slump (Original Television Soundtrack) Pt.2</div>
+<div><a href='https://tidal.com/album/342888416' target='_blank'>https://tidal.com/album/342888416</a></div>
+<div>HYNN - Not alone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/342888416' target='_blank'><img src='https://resources.tidal.com/images/5bfa3a7f/2486/42de/8613/435a2ec1b1d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] [THE SEASONS VolⅡ. 9] [AKMU's Long day Long night] ReːWake x HYNN</div>
+<div><a href='https://tidal.com/album/328458886' target='_blank'>https://tidal.com/album/328458886</a></div>
+<div>HYNN - White night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/328458886' target='_blank'><img src='https://resources.tidal.com/images/9ac2ef12/e2ca/4d24/a0ab/1fee0aa93e57/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] SUMMER HAZE</div>
+<div><a href='https://tidal.com/album/310138974' target='_blank'>https://tidal.com/album/310138974</a></div>
+<div>HYNN - EUROPA</div>
+<div>HYNN - GRAND BLUE</div>
+<div>HYNN - Josee</div>
+<div>HYNN - BLUE BIRD</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/310138974' target='_blank'><img src='https://resources.tidal.com/images/d7afc098/4473/418b/99d2/450dbfadd661/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] KING THE LAND (Original Television Soundtrack), Pt.6</div>
+<div><a href='https://tidal.com/album/304473991' target='_blank'>https://tidal.com/album/304473991</a></div>
+<div>HYNN - You Are My</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304473991' target='_blank'><img src='https://resources.tidal.com/images/ffeca4ad/c469/42e2/8646/7b045a135036/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Heaven</div>
+<div><a href='https://tidal.com/album/294894241' target='_blank'>https://tidal.com/album/294894241</a></div>
+<div>HYNN - Heaven</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/294894241' target='_blank'><img src='https://resources.tidal.com/images/163c1137/89f3/44c2/b81b/bd21822b31a0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] EUROPA</div>
+<div><a href='https://tidal.com/album/306853250' target='_blank'>https://tidal.com/album/306853250</a></div>
+<div>HYNN - EUROPA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306853250' target='_blank'><img src='https://resources.tidal.com/images/990160bc/ae40/431a/8125/c779c6abcf12/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] As Autumn Brings Cold Wind</div>
+<div><a href='https://tidal.com/album/320012058' target='_blank'>https://tidal.com/album/320012058</a></div>
+<div>HYNN - As Autumn Brings Cold Wind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/320012058' target='_blank'><img src='https://resources.tidal.com/images/8ea1bb80/57f5/4a72/bc5c/1622d1c11940/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] The Story of Us</div>
+<div><a href='https://tidal.com/album/252404391' target='_blank'>https://tidal.com/album/252404391</a></div>
+<div>HYNN - The Story of Us</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/252404391' target='_blank'><img src='https://resources.tidal.com/images/c7d6afc0/4c91/4cf9/8df5/66bef7c19e36/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] The Season of Love</div>
+<div><a href='https://tidal.com/album/222441100' target='_blank'>https://tidal.com/album/222441100</a></div>
+<div>Lee Minhyuk, HYNN - The Season of Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222441100' target='_blank'><img src='https://resources.tidal.com/images/01a7e4c4/f0a3/4d5b/9de7/fa79f019822e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] NEW FESTA EPISODE.5</div>
+<div><a href='https://tidal.com/album/236676599' target='_blank'>https://tidal.com/album/236676599</a></div>
+<div>HYNN - The Lonely Bloom Stands Alone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/236676599' target='_blank'><img src='https://resources.tidal.com/images/2822bd80/1181/43f5/90c6/b78df59206bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Hidden Singer7 - Episode. 6</div>
+<div><a href='https://tidal.com/album/250490898' target='_blank'>https://tidal.com/album/250490898</a></div>
+<div>HYNN - A thought on an autumn night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/250490898' target='_blank'><img src='https://resources.tidal.com/images/036f6b3f/0fdb/42f4/b23f/831a4fe0e774/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] First of all</div>
+<div><a href='https://tidal.com/album/262290488' target='_blank'>https://tidal.com/album/262290488</a></div>
+<div>HYNN - Sweet Love (Feat. Yangpa)</div>
+<div>HYNN - You Are My Life</div>
+<div>HYNN - My Love (Duet. Car, the garden) (Remastered)</div>
+<div>HYNN - Orpheus (Feat. Jo Gwangil)</div>
+<div>HYNN - RUN</div>
+<div>HYNN - Orpheus (Sleepless Night Ver.)</div>
+<div>HYNN - The Story of Us</div>
+<div>HYNN - No More Goodbyes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/262290488' target='_blank'><img src='https://resources.tidal.com/images/235f30b5/66bd/45ac/997d/c33221923978/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] With and Without You</div>
+<div><a href='https://tidal.com/album/216181135' target='_blank'>https://tidal.com/album/216181135</a></div>
+<div>HYNN - With and Without You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216181135' target='_blank'><img src='https://resources.tidal.com/images/570de842/8b89/403e/bad1/61ee72cad39e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Weekends without you (Duet with Kim Jae Hwan)</div>
+<div><a href='https://tidal.com/album/216277867' target='_blank'>https://tidal.com/album/216277867</a></div>
+<div>HYNN - Weekends without you (Duet with KIM JAE HWAN)</div>
+<div>HYNN - Weekends without you (Duet with KIM JAE HWAN) (Ins</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216277867' target='_blank'><img src='https://resources.tidal.com/images/7d9db12c/b0d7/4daf/9c05/fd7462850141/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] To You</div>
+<div><a href='https://tidal.com/album/216277917' target='_blank'>https://tidal.com/album/216277917</a></div>
+<div>HYNN, Car, The Garden - My Love (Duet with Car the garden)</div>
+<div>HYNN, Jungkey - To You (Prod. JUNGKEY)</div>
+<div>HYNN - If I---</div>
+<div>HYNN - Promenade</div>
+<div>HYNN - Lullaby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216277917' target='_blank'><img src='https://resources.tidal.com/images/6522b060/03cc/41e5/96c1/d41c083c0abc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] I Wish</div>
+<div><a href='https://tidal.com/album/199630174' target='_blank'>https://tidal.com/album/199630174</a></div>
+<div>HYNN - I Wish</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/199630174' target='_blank'><img src='https://resources.tidal.com/images/cb7445a8/3418/455b/85be/fb1ec9f74684/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] HOSPITAL PLAYLIST Season2, Pt. 11 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/197844347' target='_blank'>https://tidal.com/album/197844347</a></div>
+<div>HYNN - Running in the sky</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/197844347' target='_blank'><img src='https://resources.tidal.com/images/e38e9b74/d2c4/4206/971b/f572c29a42c8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Begin Again Open Mic Episode.22</div>
+<div><a href='https://tidal.com/album/254605219' target='_blank'>https://tidal.com/album/254605219</a></div>
+<div>HYNN - 그런일은</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/254605219' target='_blank'><img src='https://resources.tidal.com/images/36a8713a/43b1/42ae/8222/09d80a980971/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Begin Again Open Mic Episode.16</div>
+<div><a href='https://tidal.com/album/254605180' target='_blank'>https://tidal.com/album/254605180</a></div>
+<div>HYNN - 너였다면</div>
+<div>HYNN - 차가워진 이 바람엔 우리가 써있어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/254605180' target='_blank'><img src='https://resources.tidal.com/images/ca5feb62/0a3b/426e/98e9/ab0427e203d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] When I tell you goodbye</div>
+<div><a href='https://tidal.com/album/216142633' target='_blank'>https://tidal.com/album/216142633</a></div>
+<div>HYNN - The flower from where you passed</div>
+<div>HYNN - When I tell you goodbye</div>
+<div>HYNN - TO.DAY</div>
+<div>HYNN - Colors of my dream (Feat. 20)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216142633' target='_blank'><img src='https://resources.tidal.com/images/94b14963/5335/4da0/bd17/8cfaa810360d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] TALE OF THE NINE TAILED OST Part 6</div>
+<div><a href='https://tidal.com/album/196163349' target='_blank'>https://tidal.com/album/196163349</a></div>
+<div>HYNN - Love already bloomed in my heart--</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196163349' target='_blank'><img src='https://resources.tidal.com/images/69a545cf/bcd5/434d/8a8d/62db5d4c8aef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Just Do This One Time</div>
+<div><a href='https://tidal.com/album/159535881' target='_blank'>https://tidal.com/album/159535881</a></div>
+<div>HYNN - Just Do This One Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/159535881' target='_blank'><img src='https://resources.tidal.com/images/e158c741/b43a/4cd7/a6e2/bae42201e990/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] no you, no me</div>
+<div><a href='https://tidal.com/album/189324617' target='_blank'>https://tidal.com/album/189324617</a></div>
+<div>NC.A, HYNN - no you, no me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189324617' target='_blank'><img src='https://resources.tidal.com/images/e64d2733/43de/44c5/a351/e8b6e050cfe5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] The Lonely Bloom Stands Alone</div>
+<div><a href='https://tidal.com/album/216212260' target='_blank'>https://tidal.com/album/216212260</a></div>
+<div>HYNN - The Lonely Bloom Stands Alone</div>
+<div>HYNN - Ballade for Spring (With NILE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216212260' target='_blank'><img src='https://resources.tidal.com/images/b8ac59bd/1aa4/4f20/beac/2449a1cc4284/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Moodeomdeom</div>
+<div><a href='https://tidal.com/album/188858229' target='_blank'>https://tidal.com/album/188858229</a></div>
+<div>HYNN - Moodeomdeom</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188858229' target='_blank'><img src='https://resources.tidal.com/images/55704e48/8400/4a5c/8bc3/46c657f21d97/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Bad Love</div>
+<div><a href='https://tidal.com/album/216140436' target='_blank'>https://tidal.com/album/216140436</a></div>
+<div>HYNN - Snow Flakes</div>
+<div>HYNN - Bad Love</div>
+<div>HYNN - Last Train</div>
+<div>HYNN - Dear My Friends</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216140436' target='_blank'><img src='https://resources.tidal.com/images/3a284e20/ef0b/45e0/b2cf/0aeff0e0fc05/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 사의찬미 OST Part.3</div>
+<div><a href='https://tidal.com/album/189387580' target='_blank'>https://tidal.com/album/189387580</a></div>
+<div>HYNN - Falling in love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189387580' target='_blank'><img src='https://resources.tidal.com/images/acc06c9b/2cb7/413c/ab5a/7196a30d3a28/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Twisted</div>
+<div><a href='https://tidal.com/album/189387190' target='_blank'>https://tidal.com/album/189387190</a></div>
+<div>HYNN - Twisted (feat. Shin Jongwook)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189387190' target='_blank'><img src='https://resources.tidal.com/images/4a1bba96/95a0/42ca/ae20/9d0bad799de0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] LET ME OUT</div>
+<div><a href='https://tidal.com/album/216016837' target='_blank'>https://tidal.com/album/216016837</a></div>
+<div>HYNN - LET ME OUT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216016837' target='_blank'><img src='https://resources.tidal.com/images/5a0ff11f/7cd0/4594/8996/0d1f97bee409/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Happy Marry</div>
+<div><a href='https://tidal.com/album/189389075' target='_blank'>https://tidal.com/album/189389075</a></div>
+<div>HYNN - Happy Marry (feat. Cheon Seokman, Bluemangtto)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189389075' target='_blank'><img src='https://resources.tidal.com/images/71660d9e/8dd9/4fa8/a9d0/7336b2fba13c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Rain after breakup</div>
+<div><a href='https://tidal.com/album/194104644' target='_blank'>https://tidal.com/album/194104644</a></div>
+<div>HYNN - Rain after breakup (feat. Cho Minwook)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/194104644' target='_blank'><img src='https://resources.tidal.com/images/d4341553/f48c/482e/b530/f75c1814e2ff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] I loved you</div>
+<div><a href='https://tidal.com/album/194103870' target='_blank'>https://tidal.com/album/194103870</a></div>
+<div>HYNN - I loved you (feat. Han Ye)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/194103870' target='_blank'><img src='https://resources.tidal.com/images/f876851f/a83d/4bd7/b67a/0b36d18656d2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/1_TIDAL_Kpop_Artist_Link_H.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅎ1) TIDAL Kpop Artist Link (H)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/힌 (HYNN)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
