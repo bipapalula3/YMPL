@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 예나 ( Tidal YENA )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 예나 ( Tidal YENA )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/83c6e7c6/0a65/4619/b95f/63863c66f53a/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/30234811' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 예나</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>YENA (예나) - 다채로운 색깔로 솔직한 감정을 노래하는 아티스트, 'Hate Rodrigo'의 톡톡 튀는 에너지와 'Love War'의 섬세한 감정선을 넘나들다</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> YENA</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>YENA - An artist who sings honest emotions with diverse colors, crossing the bubbly energy of 'Hate Rodrigo' and the delicate emotional lines of 'Love War'.</div><p>솔직하고 다재다능한 매력으로 팬들을 사로잡는 아티스트 YENA, 그녀의 음악은 늘 새로운 시도와 진솔한 감정 표현으로 가득 차 있습니다. 무대 위에서의 퍼포먼스 뿐만 아니라, 작사, 작곡에도 참여하며 자신만의 음악 세계를 구축해 나가고 있어요. 팔색조 매력을 가진 YENA의 이야기에 함께 빠져볼까요?</p><p>YENA is an artist who captivates fans with her honest and versatile charm. Her music is always full of new attempts and sincere emotional expression. She participates not only in stage performances but also in songwriting, building her own musical world. Shall we dive into the story of YENA, who has a variety of charms?</p><p>✧</p><p>그룹 탄생</p><p>YENA는 아이즈원(IZ*ONE)이라는 그룹을 통해 대중들에게 처음 얼굴을 알렸습니다. 그룹 활동을 통해 쌓은 경험을 바탕으로 솔로 아티스트로서의 가능성을 보여주기 시작했어요. 다양한 콘셉트를 소화하며 자신만의 색깔을 찾아가는 여정을 시작했습니다.</p><p>Birth of a Group</p><p>YENA first became known to the public through the group IZ*ONE. Based on the experience accumulated through group activities, she began to show her potential as a solo artist. She started her journey to find her own color by digesting various concepts.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>YENA의 음악은 팝 펑크, 댄스 팝 등 다양한 장르를 아우르며 폭넓은 음악적 스펙트럼을 자랑합니다. 특히, 솔직하고 직설적인 가사는 많은 이들의 공감을 얻으며 그녀만의 강점으로 자리 잡았습니다. 무대 위에서의 에너지 넘치는 퍼포먼스는 보는 이들을 사로잡는 매력이 있습니다.</p><p>Music and Performance</p><p>YENA's music encompasses various genres such as pop punk and dance pop, boasting a wide musical spectrum. In particular, honest and straightforward lyrics have gained sympathy from many and have become her unique strength. Her energetic performance on stage is captivating.</p><p>✧</p><p>주요 활동</p><p>솔로 데뷔 이후, YENA는 꾸준히 앨범을 발매하며 자신만의 음악적 색깔을 확고히 해나가고 있습니다. 다양한 아티스트와의 협업을 통해 음악적 역량을 넓히는 동시에, 예능 프로그램 등 다양한 분야에서 활약하며 대중적인 인기를 얻고 있습니다. 그녀의 끊임없는 도전은 앞으로의 활동을 더욱 기대하게 만듭니다.</p><p>Main Activities</p><p>Since her solo debut, YENA has been steadily releasing albums, solidifying her own musical color. While expanding her musical capabilities through collaborations with various artists, she is also gaining popularity in various fields such as entertainment programs. Her continuous challenges make us look forward to her future activities even more.</p><p>✧</p><p>미래/의미</p><p>YENA는 솔직하고 당당한 매력으로 자신만의 음악적 색깔을 만들어가는 아티스트입니다. 끊임없는 음악적 시도와 진솔한 이야기들을 통해 앞으로 더욱 성장해 나갈 그녀의 모습을 기대해 봅니다. YENA의 음악은 앞으로도 많은 사람들에게 공감과 위로를 전하며 오랫동안 사랑받을 것입니다.</p><p>Future/Meaning</p><p>YENA is an artist who creates her own musical color with her honest and confident charm. We look forward to her future growth through constant musical attempts and sincere stories. YENA's music will continue to resonate with and comfort many people and will be loved for a long time.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] NEMONEMO</div>
+<div><a href='https://tidal.com/album/388530846' target='_blank'>https://tidal.com/album/388530846</a></div>
+<div>YENA - NEMONEMO</div>
+<div>YENA - Sugar</div>
+<div>YENA - It was love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/388530846' target='_blank'><img src='https://resources.tidal.com/images/422f9982/4db4/4f15/8255/65f754c38aaa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] GOOD MORNING</div>
+<div><a href='https://tidal.com/album/338964593' target='_blank'>https://tidal.com/album/338964593</a></div>
+<div>YENA - Good Morning</div>
+<div>YENA - Good Girls in the Dark</div>
+<div>YENA - Damn U</div>
+<div>YENA - The Ugly Duckling</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/338964593' target='_blank'><img src='https://resources.tidal.com/images/82ba2a42/7504/453a/b1fb/5a186689c86c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Love War</div>
+<div><a href='https://tidal.com/album/271114372' target='_blank'>https://tidal.com/album/271114372</a></div>
+<div>YENA - Intro ; Love is over</div>
+<div>YENA - Wash Away</div>
+<div>YENA, BE′O - Love War (Feat. BE′O)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/271114372' target='_blank'><img src='https://resources.tidal.com/images/0afa38eb/8d91/43c7/8b47/d110475f0655/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] HATE XX</div>
+<div><a href='https://tidal.com/album/300885414' target='_blank'>https://tidal.com/album/300885414</a></div>
+<div>YENA - BAD HOBBY</div>
+<div>YENA, Yuqi - Hate Rodrigo (Feat. YUQI)</div>
+<div>YENA - WICKED LOVE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/300885414' target='_blank'><img src='https://resources.tidal.com/images/25e07672/2ef7/4af2/bf62/ee3682b1b7e6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] ˣ‿ˣ (SMiLEY)</div>
+<div><a href='https://tidal.com/album/212491002' target='_blank'>https://tidal.com/album/212491002</a></div>
+<div>YENA - Before Anyone Else</div>
+<div>YENA - SMILEY(Feat. BIBI)</div>
+<div>YENA - Lxxk 2 U</div>
+<div>YENA - PRETTY BOYS</div>
+<div>YENA - VACAY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/212491002' target='_blank'><img src='https://resources.tidal.com/images/7be3063d/0330/4bf6/aa0c/54fdbc8bb2a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] SMARTPHONE</div>
+<div><a href='https://tidal.com/album/240034760' target='_blank'>https://tidal.com/album/240034760</a></div>
+<div>YENA - Make U Smile</div>
+<div>YENA - SMARTPHONE</div>
+<div>YENA - WithOrWithOut</div>
+<div>YENA - Lemon-Aid</div>
+<div>YENA - U</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/240034760' target='_blank'><img src='https://resources.tidal.com/images/fd6d102e/6cad/4766/be05/ebf65c17ae8c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/예나 (YENA)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
