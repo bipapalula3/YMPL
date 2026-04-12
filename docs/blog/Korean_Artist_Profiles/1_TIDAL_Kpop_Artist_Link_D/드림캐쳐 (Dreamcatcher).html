@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 드림캐쳐 ( Tidal Dreamcatcher )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 드림캐쳐 ( Tidal Dreamcatcher )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/81218ef4/10c4/494e/9308/d02eeb9cca85/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/3586846' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 드림캐쳐</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>드림캐쳐 - 악몽을 넘어 꿈을 노래하는 소녀들, 'JUSTICE'의 강렬함과 'My Christmas Sweet Love'의 따뜻함으로 다채로운 매력을 선사하는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Dreamcatcher</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Dreamcatcher - The girls who sing dreams beyond nightmares, a group presenting diverse charms with the intensity of 'JUSTICE' and the warmth of 'My Christmas Sweet Love'.</div><p>독특한 콘셉트와 탄탄한 음악성으로 글로벌 팬들을 사로잡은 드림캐쳐를 소개합니다. 강렬한 록 사운드와 몽환적인 분위기가 어우러진 음악은 한 번 들으면 잊을 수 없는 매력을 선사하죠. 끊임없이 새로운 시도를 하는 이들의 이야기에 함께 귀 기울여 볼까요?</p><p>Introducing Dreamcatcher, who has captivated global fans with their unique concept and solid musicality. Their music, which blends intense rock sounds and dreamy atmospheres, offers an unforgettable charm. Shall we listen to the story of these artists who are constantly trying new things?</p><p>✧</p><p>그룹의 탄생</p><p>드림캐쳐는 기존 걸그룹에서 리브랜딩을 통해 새롭게 태어났습니다. 악몽을 콘셉트로 한 독특한 세계관과 스토리는 데뷔 초부터 큰 화제를 모았죠. 멤버들은 변화를 두려워하지 않고 자신들만의 색깔을 만들어나가기 시작했어요.</p><p>The Birth of the Group</p><p>Dreamcatcher was reborn through rebranding from an existing girl group. The unique worldview and storyline based on nightmares have been a hot topic since their debut. The members were not afraid of change and began to create their own color.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>드림캐쳐의 음악은 록, 메탈 등 다양한 장르를 융합한 독특한 스타일을 선보입니다. 파워풀한 퍼포먼스와 강렬한 사운드는 이들의 음악을 더욱 돋보이게 하죠. 멤버들의 뛰어난 가창력과 퍼포먼스 실력은 무대를 압도하는 카리스마를 선사합니다.</p><p>Music and Performance</p><p>Dreamcatcher's music showcases a unique style that blends various genres such as rock and metal. Powerful performances and intense sounds further enhance their music. The members' outstanding singing and performance skills provide overwhelming charisma on stage.</p><p>✧</p><p>주요 활동</p><p>드림캐쳐는 꾸준한 앨범 발매와 콘서트를 통해 팬들과 소통하고 있습니다. 국내뿐만 아니라 해외 투어를 통해 글로벌 팬덤을 확장해 나가고 있죠. 다양한 방송 출연과 콘텐츠 제작으로 팬들에게 더욱 가까이 다가가고 있습니다.</p><p>Main Activities</p><p>Dreamcatcher communicates with fans through continuous album releases and concerts. They are expanding their global fandom through overseas tours as well as in Korea. They are getting closer to fans through various broadcast appearances and content production.</p><p>✧</p><p>미래/의미</p><p>드림캐쳐는 앞으로도 독창적인 음악과 퍼포먼스를 통해 더욱 성장해 나갈 것입니다. 끊임없는 도전과 실험정신으로 K팝 씬에 새로운 바람을 불어넣을 것으로 기대됩니다. 이들의 음악은 단순한 즐거움을 넘어, 꿈과 희망을 이야기하며 많은 이들에게 영감을 줄 것입니다.</p><p>Future/Meaning</p><p>Dreamcatcher will continue to grow through original music and performances in the future. It is expected that they will bring a new wave to the K-pop scene with constant challenges and experimental spirit. Their music will go beyond mere enjoyment, telling stories of dreams and hopes and inspiring many.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] [VirtuouS]</div>
+<div><a href='https://tidal.com/album/374388726' target='_blank'>https://tidal.com/album/374388726</a></div>
+<div>Dreamcatcher - Intro - 7' Dreamcatcher</div>
+<div>Dreamcatcher - JUSTICE</div>
+<div>Dreamcatcher - STΦMP!</div>
+<div>Dreamcatcher - 2 Rings</div>
+<div>Dreamcatcher - Fireflies</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/374388726' target='_blank'><img src='https://resources.tidal.com/images/f587f21c/ba24/4e74/ae2d/5e05b5672fd7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] [My Christmas Sweet Love]</div>
+<div><a href='https://tidal.com/album/407008974' target='_blank'>https://tidal.com/album/407008974</a></div>
+<div>Dreamcatcher - My Christmas Sweet Love</div>
+<div>Dreamcatcher - Jazz Bar (Carol ver.)</div>
+<div>Dreamcatcher - Wonderland (Carol ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/407008974' target='_blank'><img src='https://resources.tidal.com/images/fd1f9ce8/c890/4cfb/b684/04280da146fb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] [Luck Inside 7 Doors] (2024 Concert Ver.)</div>
+<div><a href='https://tidal.com/album/348879991' target='_blank'>https://tidal.com/album/348879991</a></div>
+<div>Dreamcatcher - Lullaby (2024 Concert Ver.)</div>
+<div>Dreamcatcher - The curse of the Spider (2024 Concert Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/348879991' target='_blank'><img src='https://resources.tidal.com/images/2499a049/1b47/416a/b3d2/510770b5264b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] [VillainS]</div>
+<div><a href='https://tidal.com/album/330512759' target='_blank'>https://tidal.com/album/330512759</a></div>
+<div>Dreamcatcher - Intro - This My Fashion</div>
+<div>Dreamcatcher - OOTD</div>
+<div>Dreamcatcher - Rising</div>
+<div>Dreamcatcher - Shatter</div>
+<div>Dreamcatcher - We Are Young</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/330512759' target='_blank'><img src='https://resources.tidal.com/images/1cf1d80f/4eb6/4c43/aa2a/3633abd303d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] [REASON]</div>
+<div><a href='https://tidal.com/album/346840522' target='_blank'>https://tidal.com/album/346840522</a></div>
+<div>Dreamcatcher - REASON</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346840522' target='_blank'><img src='https://resources.tidal.com/images/843aff39/90eb/44f0/82a7/58c0a9e3761b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] [BONVOYAGE (Farewell Ver.)]</div>
+<div><a href='https://tidal.com/album/316184982' target='_blank'>https://tidal.com/album/316184982</a></div>
+<div>Dreamcatcher - BONVOYAGE (Farewell Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/316184982' target='_blank'><img src='https://resources.tidal.com/images/92b2dd0c/d16b/4b87/b00d/e3f3bc8bd29a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] [Apocalypse - From us]</div>
+<div><a href='https://tidal.com/album/296543826' target='_blank'>https://tidal.com/album/296543826</a></div>
+<div>Dreamcatcher - Intro - From us</div>
+<div>Dreamcatcher - BONVOYAGE</div>
+<div>Dreamcatcher - DEMIAN</div>
+<div>Dreamcatcher - Propose</div>
+<div>Dreamcatcher - To. You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296543826' target='_blank'><img src='https://resources.tidal.com/images/974397b1/34f2/4e37/b7a2/44d200f94b73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] [Apocalypse - Save us]</div>
+<div><a href='https://tidal.com/album/346845603' target='_blank'>https://tidal.com/album/346845603</a></div>
+<div>Dreamcatcher - Intro - Save us</div>
+<div>Dreamcatcher - Locked Inside A Door</div>
+<div>Dreamcatcher - MAISON</div>
+<div>Dreamcatcher - Starlight</div>
+<div>Dreamcatcher - Together</div>
+<div>Dreamcatcher - Always</div>
+<div>Dreamcatcher - Skit - The seven doors</div>
+<div>Dreamcatcher - Cherry (Real Miracle) (JI U SOLO)</div>
+<div>Dreamcatcher - No Dot (SU A SOLO)</div>
+<div>Dreamcatcher - Entrancing (SIYEON SOLO)</div>
+<div>Dreamcatcher - Winter (HANDONG SOLO)</div>
+<div>Dreamcatcher - For (YOOHYEON SOLO)</div>
+<div>Dreamcatcher - Beauty Full (DAMI SOLO)</div>
+<div>Dreamcatcher - Playground (GAHYEON SOLO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346845603' target='_blank'><img src='https://resources.tidal.com/images/3c9001a0/b9e5/4599/9884/249ce927e1b5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] [Apocalypse - Follow us]</div>
+<div><a href='https://tidal.com/album/346840783' target='_blank'>https://tidal.com/album/346840783</a></div>
+<div>Dreamcatcher - Intro - Chaotical X</div>
+<div>Dreamcatcher - VISION</div>
+<div>Dreamcatcher - Fairytale</div>
+<div>Dreamcatcher - Some Love</div>
+<div>Dreamcatcher - Rainy Day</div>
+<div>Dreamcatcher - Outro - Mother Nature</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346840783' target='_blank'><img src='https://resources.tidal.com/images/ea686438/d699/40d6/a576/f58419f17246/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] [Summer Holiday]</div>
+<div><a href='https://tidal.com/album/346841213' target='_blank'>https://tidal.com/album/346841213</a></div>
+<div>Dreamcatcher - Intro</div>
+<div>Dreamcatcher - BEcause</div>
+<div>Dreamcatcher - Airplane</div>
+<div>Dreamcatcher - Whistle</div>
+<div>Dreamcatcher - Alldaylong</div>
+<div>Dreamcatcher - A Heart of Sunflower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346841213' target='_blank'><img src='https://resources.tidal.com/images/f2713525/cf66/49a0/a5ff/d10374756530/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] [Dystopia - Road to Utopia]</div>
+<div><a href='https://tidal.com/album/309030956' target='_blank'>https://tidal.com/album/309030956</a></div>
+<div>Dreamcatcher - Intro</div>
+<div>Dreamcatcher - Odd Eye</div>
+<div>Dreamcatcher - Wind Blows</div>
+<div>Dreamcatcher - Poison Love</div>
+<div>Dreamcatcher - 4 Memory</div>
+<div>Dreamcatcher - New days</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309030956' target='_blank'><img src='https://resources.tidal.com/images/32744d03/4fc1/4121/9788/07e8864b3af8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] [Dystopia - Lose Myself]</div>
+<div><a href='https://tidal.com/album/309034365' target='_blank'>https://tidal.com/album/309034365</a></div>
+<div>Dreamcatcher - Intro</div>
+<div>Dreamcatcher - BOCA</div>
+<div>Dreamcatcher - Break The Wall</div>
+<div>Dreamcatcher - Can't get you out of my mind</div>
+<div>Dreamcatcher - Dear</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309034365' target='_blank'><img src='https://resources.tidal.com/images/c3f7f7e9/d8de/498b/b3c7/35f04ccd3df7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] R.o.S.E BLUE</div>
+<div><a href='https://tidal.com/album/216466468' target='_blank'>https://tidal.com/album/216466468</a></div>
+<div>Dreamcatcher - R.o.S.E BLUE (Prod. ESTi)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216466468' target='_blank'><img src='https://resources.tidal.com/images/af56910c/366e/4e81/a07d/7283d5c5a01c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 1st Album [Dystopia - The Tree of Language]</div>
+<div><a href='https://tidal.com/album/309086723' target='_blank'>https://tidal.com/album/309086723</a></div>
+<div>Dreamcatcher - Intro</div>
+<div>Dreamcatcher - Scream</div>
+<div>Dreamcatcher - Tension</div>
+<div>Dreamcatcher - Red Sun</div>
+<div>Dreamcatcher - Black Or White</div>
+<div>Dreamcatcher - Jazz Bar</div>
+<div>Dreamcatcher - SAHARA</div>
+<div>Dreamcatcher - In The Frozen</div>
+<div>Dreamcatcher - Daybreak</div>
+<div>Dreamcatcher - Full Moon</div>
+<div>Dreamcatcher - Over the Sky</div>
+<div>Dreamcatcher - Outro</div>
+<div>Dreamcatcher - Paradise</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309086723' target='_blank'><img src='https://resources.tidal.com/images/b6ea626b/5c6a/4d31/a3f1/d1b60adb9c23/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] The End of Nightmare</div>
+<div><a href='https://tidal.com/album/309037762' target='_blank'>https://tidal.com/album/309037762</a></div>
+<div>Dreamcatcher - Intro</div>
+<div>Dreamcatcher - PIRI</div>
+<div>Dreamcatcher - Diamond</div>
+<div>Dreamcatcher - And there was no one left</div>
+<div>Dreamcatcher - Daydream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309037762' target='_blank'><img src='https://resources.tidal.com/images/5995bb68/8f3d/4379/9d0a/f924093f27ad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Raid of Dream</div>
+<div><a href='https://tidal.com/album/309036497' target='_blank'>https://tidal.com/album/309036497</a></div>
+<div>Dreamcatcher - Intro</div>
+<div>Dreamcatcher - Deja Vu</div>
+<div>Dreamcatcher - The curse of the Spider</div>
+<div>Dreamcatcher - Silent Night</div>
+<div>Dreamcatcher - Polaris</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309036497' target='_blank'><img src='https://resources.tidal.com/images/bd0ecb08/18a6/4e6a/95f5/1413090be1f3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Over the Sky</div>
+<div><a href='https://tidal.com/album/309039916' target='_blank'>https://tidal.com/album/309039916</a></div>
+<div>Dreamcatcher - Over the Sky</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309039916' target='_blank'><img src='https://resources.tidal.com/images/958c3bbb/ccad/4283/a111/f11a49d1c5d1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Nightmare - Escape The ERA</div>
+<div><a href='https://tidal.com/album/343813128' target='_blank'>https://tidal.com/album/343813128</a></div>
+<div>Dreamcatcher - INSIDE-OUTSIDE (Intro)</div>
+<div>Dreamcatcher - YOU AND I</div>
+<div>Dreamcatcher - Mayday</div>
+<div>Dreamcatcher - Which a star</div>
+<div>Dreamcatcher - Scar</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343813128' target='_blank'><img src='https://resources.tidal.com/images/a42ec65a/1aa4/4336/a78e/047d2f806f43/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Full Moon</div>
+<div><a href='https://tidal.com/album/343812249' target='_blank'>https://tidal.com/album/343812249</a></div>
+<div>Dreamcatcher - Full Moon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343812249' target='_blank'><img src='https://resources.tidal.com/images/ea267af3/0c30/41fa/ae64/33f1376cc32c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Alone In The City</div>
+<div><a href='https://tidal.com/album/309040933' target='_blank'>https://tidal.com/album/309040933</a></div>
+<div>Dreamcatcher - Intro</div>
+<div>Dreamcatcher - What</div>
+<div>Dreamcatcher - Wonderland</div>
+<div>Dreamcatcher - Trap</div>
+<div>Dreamcatcher - July 7th</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309040933' target='_blank'><img src='https://resources.tidal.com/images/ef40b724/e884/48b8/bbb8/95fb2a2c8e92/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 악몽·Fall asleep in the mirror</div>
+<div><a href='https://tidal.com/album/343810156' target='_blank'>https://tidal.com/album/343810156</a></div>
+<div>Dreamcatcher - My Toys (Intro)</div>
+<div>Dreamcatcher - GOOD NIGHT</div>
+<div>Dreamcatcher - Lullaby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343810156' target='_blank'><img src='https://resources.tidal.com/images/9005b05e/76da/4e8b/a237/a688bba4f470/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 악몽</div>
+<div><a href='https://tidal.com/album/343661304' target='_blank'>https://tidal.com/album/343661304</a></div>
+<div>Dreamcatcher - Welcome to Dream (Intro)</div>
+<div>Dreamcatcher - Chase Me</div>
+<div>Dreamcatcher - Emotion</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343661304' target='_blank'><img src='https://resources.tidal.com/images/b571a4c6/afe8/4893/8070/af7f28cbfa7e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Prequel</div>
+<div><a href='https://tidal.com/album/343811441' target='_blank'>https://tidal.com/album/343811441</a></div>
+<div>Dreamcatcher - Before & After (Intro)</div>
+<div>Dreamcatcher - Fly high</div>
+<div>Dreamcatcher - Wake up</div>
+<div>Dreamcatcher - Sleep-walking</div>
+<div>Dreamcatcher - 괜찮아!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343811441' target='_blank'><img src='https://resources.tidal.com/images/c72877a2/c12e/4ff1/84df/7e89f4a80e26/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_D/1_TIDAL_Kpop_Artist_Link_D.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄷ1) TIDAL Kpop Artist Link (D)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_D/드림캐쳐 (Dreamcatcher)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
