@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 소울다이브 ( Tidal Soul Dive )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 소울다이브 ( Tidal Soul Dive )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/688f89b9/c0a6/4797/a106/513d4b7fbc7b/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9357227' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/21107638' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 소울다이브</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>소울다이브 (Soul Dive) – 힙합의 깊은 곳에서 길을 잃은 듯 헤매는 이들을 위한 위로, 'Missing' 속 애절한 감성</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Soul Dive</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Soul Dive – Comfort for those lost in the depths of hip-hop, the heartbreaking emotion in 'Missing'</div><p>힙합이라는 장르 안에서 끊임없이 새로운 시도를 보여주는 소울다이브를 소개합니다. 세 멤버 넋업샨, 디테오, 지토는 각자의 개성을 뚜렷하게 드러내며 팀의 독창적인 색깔을 만들어가고 있어요. 그들의 음악은 듣는 이들에게 깊은 공감과 위로를 전달합니다.</p><p>Introducing Soul Dive, a group that constantly showcases new attempts within the hip-hop genre. The three members, Nuck, D.Theo, and Zito, clearly express their individuality and create the team's unique color. Their music conveys deep empathy and comfort to listeners.</p><p>✧</p><p>그룹의 탄생과 음악적 여정</p><p>소울다이브는 언더그라운드 힙합 씬에서 실력을 다져온 세 명의 래퍼, 넋업샨, 디테오, 지토가 만나 탄생했습니다. 각자의 뚜렷한 개성을 바탕으로, 힙합이라는 틀 안에서 다양한 음악적 시도를 선보이며 자신들만의 영역을 구축해 왔어요. 그들의 음악적 여정은 끊임없는 도전과 실험 정신으로 가득 차 있습니다.</p><p>The Birth and Musical Journey of the Group</p><p>Soul Dive was formed by three rappers, Nuck, D.Theo, and Zito, who honed their skills in the underground hip-hop scene. Based on their distinct personalities, they have built their own territory by showcasing various musical attempts within the framework of hip-hop. Their musical journey is full of constant challenges and a spirit of experimentation.</p><p>✧</p><p>음악 및 퍼포먼스 스타일</p><p>소울다이브의 음악은 힙합을 기반으로 하지만, 다양한 장르와의 융합을 통해 폭넓은 스펙트럼을 보여줍니다. 강렬한 랩은 물론, 감성적인 보컬과 멜로디를 더하여 듣는 이들의 귀를 사로잡습니다. 무대 위에서의 에너지 넘치는 퍼포먼스 또한 그들의 음악을 더욱 돋보이게 하는 요소입니다.</p><p>Music and Performance Style</p><p>Soul Dive's music is based on hip-hop, but it shows a wide spectrum through fusion with various genres. Captivating listeners with intense rapping, as well as emotional vocals and melodies. Their energetic performance on stage is also an element that makes their music stand out even more.</p><p>✧</p><p>주요 활동과 음악적 특징</p><p>소울다이브는 꾸준한 음반 발매와 공연 활동을 통해 팬들과 소통하며 음악적 깊이를 더해왔습니다. 사회 비판적인 메시지를 담은 곡부터 개인적인 감정을 솔직하게 표현한 곡까지, 다양한 주제를 다루는 폭넓은 음악적 스펙트럼을 자랑합니다. 특히, 진솔한 가사와 공감대를 형성하는 멜로디는 그들의 음악이 가진 가장 큰 매력입니다.</p><p>Major Activities and Musical Characteristics</p><p>Soul Dive has been communicating with fans through steady album releases and performances, adding to their musical depth. From songs with social criticism to songs that honestly express personal feelings, they boast a broad musical spectrum covering various themes. In particular, honest lyrics and empathetic melodies are the greatest charm of their music.</p><p>✧</p><p>미래와 그들의 음악이 가진 의미</p><p>소울다이브는 앞으로도 힙합이라는 장르 안에서 끊임없이 새로운 시도를 하며 자신들만의 음악 세계를 확장해 나갈 것입니다. 그들의 음악은 단순한 듣는 즐거움을 넘어, 삶에 대한 고민과 희망을 이야기하며 듣는 이들에게 깊은 울림을 선사합니다. 소울다이브의 음악은 앞으로도 많은 이들에게 위로와 공감을 전하는 매개체가 될 것입니다.</p><p>The Future and the Meaning of Their Music</p><p>Soul Dive will continue to make new attempts within the hip-hop genre and expand their own musical world. Their music goes beyond mere listening pleasure, telling stories of life's concerns and hopes, and giving listeners a deep resonance. Soul Dive's music will continue to be a medium of comfort and empathy for many people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2017] 의문의 일승 OST Part.2</div>
+<div><a href='https://tidal.com/album/153533314' target='_blank'>https://tidal.com/album/153533314</a></div>
+<div>소울 다이브(Soul Dive) - 의문의 일승</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/153533314' target='_blank'><img src='https://resources.tidal.com/images/bc4d90de/72a5/49e3/a59e/69673a98c57a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Show Me the Money2 Final</div>
+<div><a href='https://tidal.com/album/196090886' target='_blank'>https://tidal.com/album/196090886</a></div>
+<div>Soul Dive - Missing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196090886' target='_blank'><img src='https://resources.tidal.com/images/0aab646a/117d/43a9/83f6/b234cf69e2d4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Show Me the Money 2, Pt. 2</div>
+<div><a href='https://tidal.com/album/196090709' target='_blank'>https://tidal.com/album/196090709</a></div>
+<div>Soul Dive, Wutan, Sungsoo Lee - Please Wait (Feat. Sungsoo Lee of HarryBigButton)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196090709' target='_blank'><img src='https://resources.tidal.com/images/e350a652/41d8/4eb7/9345/013d37255519/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Night is Young</div>
+<div><a href='https://tidal.com/album/196091217' target='_blank'>https://tidal.com/album/196091217</a></div>
+<div>Soul Dive - Night Is Young</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196091217' target='_blank'><img src='https://resources.tidal.com/images/05f49d4a/4680/46e2/b11c/a3c9460b31e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/1_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ1) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/소울다이브 (Soul Dive)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
