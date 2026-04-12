@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 동물원 ( Tidal zoo )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 동물원 ( Tidal zoo )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/ad2eb868/c011/4e06/875a/1bc579028cef/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/19481' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/22028720' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 동물원</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>동물원 (Zoo) - '널 사랑하겠어'의 따뜻한 고백, '오늘은'의 소소한 행복을 노래하는 영원한 친구</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> zoo</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Zoo - Eternal friends singing warm confessions like 'I Will Love You' and small joys like 'Today'</div><p>80년대 후반, 캠퍼스에서 시작된 아름다운 하모니, 동물원입니다. 소박한 노랫말과 편안한 멜로디로 우리의 일상을 따스하게 감싸 안아주는 음악을 들려주죠. 시간이 흘러도 변치 않는 감동을 선사하는 그들의 이야기에 귀 기울여 보세요.</p><p>Zoo, a beautiful harmony that began on campus in the late 80s. They deliver music that warmly embraces our daily lives with simple lyrics and comfortable melodies. Listen to their story, which offers unchanging emotions even as time passes.</p><p>✧</p><p>그룹 탄생</p><p>동물원은 대학 캠퍼스에서 음악을 사랑하는 젊은이들이 모여 결성되었어요. 포크 음악을 기반으로, 일상적인 이야기를 진솔하게 풀어내는 음악으로 많은 사랑을 받았죠. 멤버 교체는 있었지만, 그들의 음악적 색깔은 꾸준히 이어져 왔답니다.</p><p>Group Formation</p><p>Zoo was formed by young music lovers on a university campus. Based on folk music, they gained much love for their music that honestly expressed everyday stories. Although there have been member changes, their musical color has remained consistent.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>동물원의 음악은 편안하고 서정적인 멜로디가 특징이에요. 사랑, 우정, 일상 속의 작은 행복과 고민들을 솔직하게 담아낸 가사가 공감을 자아내죠. 꾸밈없는 목소리와 어쿠스틱 악기들의 조화는 듣는 이에게 따뜻한 위로를 전해줍니다.</p><p>Music and Performance</p><p>Zoo's music is characterized by comfortable and lyrical melodies. The lyrics, which honestly capture love, friendship, and the small joys and worries of everyday life, evoke empathy. The unadorned voices and the harmony of acoustic instruments convey warm comfort to the listener.</p><p>✧</p><p>주요 활동</p><p>동물원은 데뷔 이후 꾸준히 음반을 발표하고 콘서트를 통해 팬들과 소통해 왔어요. '널 사랑하겠어', '거리에서' 등 수많은 히트곡을 탄생시키며 대중적인 인기를 얻었죠. 다양한 방송 출연과 공연 활동을 통해 폭넓은 팬층을 확보하고 있습니다.</p><p>Main Activities</p><p>Zoo has consistently released albums and communicated with fans through concerts since their debut. They gained popular appeal by creating numerous hit songs such as 'I Will Love You' and 'On the Street'. They have secured a wide fan base through various television appearances and performances.</p><p>✧</p><p>미래/의미</p><p>동물원은 앞으로도 변함없이 우리의 삶 속에서 함께 웃고 울 수 있는 음악을 들려줄 거예요. 그들의 음악은 단순한 노래를 넘어, 따뜻한 위로와 희망을 전하는 메시지로서 우리 곁에 영원히 남을 것입니다. 시간이 흘러도 변치 않는 그들의 음악을 기대해 주세요.</p><p>Future/Meaning</p><p>Zoo will continue to deliver music that allows us to laugh and cry together in our lives. Their music goes beyond simple songs and will remain with us forever as a message of warm comfort and hope. Please look forward to their timeless music.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2011] 널 사랑하겠어</div>
+<div><a href='https://tidal.com/album/160911206' target='_blank'>https://tidal.com/album/160911206</a></div>
+<div>12월 愛 동물원 - 널 사랑하겠어</div>
+<div>12월 愛 동물원 - 널 사랑하겠어 2</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/160911206' target='_blank'><img src='https://resources.tidal.com/images/da8e6e71/7e3e/40b4/9a39/042e2114e587/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] 아홉번째 발자국</div>
+<div><a href='https://tidal.com/album/308364263' target='_blank'>https://tidal.com/album/308364263</a></div>
+<div>Zoo - 단순한 남자</div>
+<div>Zoo - 비에 젖는 정원</div>
+<div>Zoo - 세상에 내가 태어나 제일 잘한 일</div>
+<div>Zoo - 오늘은</div>
+<div>Zoo - 슬프지 않은 건 꿈을 꾸는 일보다도 더욱 중요해</div>
+<div>Zoo - 신혼일기</div>
+<div>Zoo - 오늘도 하늘을 본다</div>
+<div>Zoo - 피터팬</div>
+<div>Zoo - 남자들이란</div>
+<div>Zoo - 내 눈을 가만히 바라 봐 거기에 있어</div>
+<div>Zoo - 새장 속의 친구</div>
+<div>Zoo - 어리석은 사랑의 노래</div>
+<div>Zoo - 긴 그림자</div>
+<div>Zoo - 알 수 없는 일</div>
+<div>Zoo - 기억 속으로</div>
+<div>Zoo - 첫 추운 바람에 가슴을 쓸며</div>
+<div>Zoo - 당신의 이미지</div>
+<div>Zoo - 수줍던 날의 이야기</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308364263' target='_blank'><img src='https://resources.tidal.com/images/c5876405/aac9/428e/8cbe/373c899b5995/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] 동물원 일곱번째</div>
+<div><a href='https://tidal.com/album/308360057' target='_blank'>https://tidal.com/album/308360057</a></div>
+<div>Zoo - 사랑니</div>
+<div>Zoo - 사랑은</div>
+<div>Zoo - 그대를 사랑해요</div>
+<div>Zoo - 투명인간</div>
+<div>Zoo - 오랜 희망</div>
+<div>Zoo - 잃어버린 나</div>
+<div>Zoo - 별</div>
+<div>Zoo - 그리운 우리동네</div>
+<div>Zoo - 길</div>
+<div>Zoo - 포스터</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308360057' target='_blank'><img src='https://resources.tidal.com/images/28e290d6/690d/4945/9336/52183450eed6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] In Concert (Live)</div>
+<div><a href='https://tidal.com/album/308361932' target='_blank'>https://tidal.com/album/308361932</a></div>
+<div>Zoo - 언제나 마음은</div>
+<div>Zoo - 시청앞 지하철 역에서</div>
+<div>Zoo - 유리로 만든 배</div>
+<div>Zoo - 혜화동</div>
+<div>Zoo - 이별하던 날</div>
+<div>Zoo - 우리가 세상에 길들기 시작한 후부터</div>
+<div>Zoo - 귀 기울여요</div>
+<div>Zoo - 백마에서</div>
+<div>Zoo - 다시 제자리로</div>
+<div>Zoo - 미남이다</div>
+<div>Zoo - 표정</div>
+<div>Zoo - 변해가네</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308361932' target='_blank'><img src='https://resources.tidal.com/images/246d3e5e/fb41/4cc6/b6a7/c8761d1c123d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1991] 동물원 네번째 노래모음</div>
+<div><a href='https://tidal.com/album/308366168' target='_blank'>https://tidal.com/album/308366168</a></div>
+<div>Zoo - 아침이면</div>
+<div>Zoo - 우리 이야기</div>
+<div>Zoo - 내 잘못이었어</div>
+<div>Zoo - 다시 제자리로</div>
+<div>Zoo - 그대 흔적이 사라질 때까지</div>
+<div>Zoo - 옛 정거장</div>
+<div>Zoo - 먼 훗날 그대에게</div>
+<div>Zoo - 명화극장′을 본 후</div>
+<div>Zoo - 다시 꿈을 꾸기 시작하란 의미일까</div>
+<div>Zoo - 바람부는 저녁에</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308366168' target='_blank'><img src='https://resources.tidal.com/images/4ba4a914/67d9/4fbb/8dff/991c593a1dd0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_D/1_TIDAL_Kpop_Artist_Link_D.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄷ1) TIDAL Kpop Artist Link (D)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_D/동물원 (zoo)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
