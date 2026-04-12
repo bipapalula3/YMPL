@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 슈퍼주니어디앤이 ( Tidal Super Junior D&E )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 슈퍼주니어디앤이 ( Tidal Super Junior D&E )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/34c09018/533e/475e/a749/2098a5afdae1/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6679095' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 슈퍼주니어디앤이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>함께 만들어가는 청춘의 멜로디, 'Like That'처럼 자유로운 에너지와 'Beautiful star'처럼 빛나는 감성을 노래하는 듀오</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Super Junior D&E</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A duo singing melodies of youth, with the free energy of 'Like That' and the sparkling emotions of 'Beautiful star'.</div><p>슈퍼주니어의 동해와 은혁, 두 멤버의 시너지가 돋보이는 유닛, 슈퍼주니어-D&E를 소개합니다! 다채로운 음악적 스펙트럼과 무대 위에서의 에너지 넘치는 모습으로 팬들을 사로잡고 있는데요. 함께 만들어가는 그들의 음악 세계로 빠져볼까요?</p><p>Introducing Super Junior-D&E, a unit showcasing the synergy of Super Junior members Donghae and Eunhyuk! They captivate fans with their diverse musical spectrum and energetic performances on stage. Shall we dive into their world of music created together?</p><p>✧</p><p>특별한 만남, 유닛의 탄생</p><p>슈퍼주니어-D&E는 슈퍼주니어의 멤버 동해와 은혁이 결성한 유닛입니다. 두 사람은 오랜 시간 함께 활동하며 쌓아온 음악적 교감을 바탕으로 새로운 음악적 시너지를 창출하고 있습니다. 그들의 조합은 팬들에게 늘 신선하고 다채로운 매력을 선사하고 있어요.</p><p>A Special Encounter, The Birth of a Unit</p><p>Super Junior-D&E is a unit formed by Super Junior members Donghae and Eunhyuk. Based on the musical rapport they have built over a long period of working together, the two create new musical synergy. Their combination always offers fans a fresh and diverse charm.</p><p>✧</p><p>음악과 퍼포먼스의 조화</p><p>슈퍼주니어-D&E는 댄스, 팝, R&B 등 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여줍니다. 무대 위에서는 에너지 넘치는 퍼포먼스와 완벽한 호흡으로 팬들의 시선을 사로잡습니다. 음악과 퍼포먼스의 완벽한 조화는 슈퍼주니어-D&E만의 강점이라고 할 수 있어요.</p><p>Harmony of Music and Performance</p><p>Super Junior-D&E showcases a wide musical spectrum, covering various genres such as dance, pop, and R&B. On stage, they captivate fans with energetic performances and perfect synchronization. The perfect harmony of music and performance is a unique strength of Super Junior-D&E.</p><p>✧</p><p>끊임없는 활동과 성장</p><p>슈퍼주니어-D&E는 꾸준한 음반 발매와 콘서트 투어를 통해 팬들과 소통하고 있습니다. 멤버들은 작사, 작곡, 프로듀싱 등 음악 작업 전반에 참여하며 음악적 역량을 꾸준히 발전시켜왔습니다. 솔로 활동과 유닛 활동을 병행하며 다재다능한 면모를 보여주고 있어요.</p><p>Continuous Activities and Growth</p><p>Super Junior-D&E communicates with fans through consistent album releases and concert tours. The members have continuously developed their musical capabilities by participating in all aspects of music production, including writing lyrics, composing, and producing. They show their versatile side by pursuing both solo and unit activities.</p><p>✧</p><p>앞으로의 행보, 그리고 의미</p><p>슈퍼주니어-D&E는 앞으로도 다양한 음악적 시도를 통해 새로운 모습을 보여줄 것으로 기대됩니다. 팬들과 함께 만들어가는 추억과 음악은 그들에게 소중한 의미를 지니고 있을 것입니다. 앞으로도 그들의 음악이 많은 사람들에게 행복과 즐거움을 선사하길 기대해봅니다.</p><p>Future Steps and Meaning</p><p>Super Junior-D&E is expected to show new sides through various musical experiments in the future. The memories and music they create with fans will hold precious meaning for them. We hope that their music will continue to bring happiness and joy to many people.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 约定 (with SIWON, ZHOUMI, RYEOWOOK, KYUHYUN)</div>
+<div><a href='https://tidal.com/album/378447286' target='_blank'>https://tidal.com/album/378447286</a></div>
+<div>SUPER JUNIOR-D&E, Choi Siwon, ZHOUMI, RYEOWOOK, KYUHYUN - 约定 (with SIWON, ZHOUMI, RYEOWOOK, KYUHYUN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/378447286' target='_blank'><img src='https://resources.tidal.com/images/b0f24345/c2e6/455d/93e6/e4600bcd8911/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] YOU&ME</div>
+<div><a href='https://tidal.com/album/374617232' target='_blank'>https://tidal.com/album/374617232</a></div>
+<div>SUPER JUNIOR-D&E - Like That</div>
+<div>SUPER JUNIOR-D&E - You&Me</div>
+<div>SUPER JUNIOR-D&E - You&Me</div>
+<div>SUPER JUNIOR-D&E - 24Lovers</div>
+<div>SUPER JUNIOR-D&E - Beautiful star</div>
+<div>SUPER JUNIOR-D&E - Te-wo-hutte</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/374617232' target='_blank'><img src='https://resources.tidal.com/images/92849d54/3901/47d2/9a21/02a91089df0e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Like That</div>
+<div><a href='https://tidal.com/album/355524704' target='_blank'>https://tidal.com/album/355524704</a></div>
+<div>SUPER JUNIOR-D&E - Like That</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/355524704' target='_blank'><img src='https://resources.tidal.com/images/6e3b67ae/31bc/423b/be85/e503d6cce765/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Jingle Jingle</div>
+<div><a href='https://tidal.com/album/406494567' target='_blank'>https://tidal.com/album/406494567</a></div>
+<div>SUPER JUNIOR-D&E - Jingle Jingle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406494567' target='_blank'><img src='https://resources.tidal.com/images/2dd9b3c0/b3c9/4dd5/ba6a/b4d3d099214e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] INEVITABLE</div>
+<div><a href='https://tidal.com/album/388319525' target='_blank'>https://tidal.com/album/388319525</a></div>
+<div>SUPER JUNIOR-D&E - Go High</div>
+<div>SUPER JUNIOR-D&E - Break</div>
+<div>SUPER JUNIOR-D&E - Run Away</div>
+<div>SUPER JUNIOR-D&E - Only You</div>
+<div>SUPER JUNIOR-D&E - Eau De Perfume</div>
+<div>SUPER JUNIOR-D&E - Plausible Theory</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/388319525' target='_blank'><img src='https://resources.tidal.com/images/851053d2/f416/4bf5/8fdf/e7c597d73124/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Bokurano Story</div>
+<div><a href='https://tidal.com/album/383650550' target='_blank'>https://tidal.com/album/383650550</a></div>
+<div>SUPER JUNIOR-D&E - Bokurano Story</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383650550' target='_blank'><img src='https://resources.tidal.com/images/a66bdb3c/5243/47a8/9f4a/7452103f6dc2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 606</div>
+<div><a href='https://tidal.com/album/352764138' target='_blank'>https://tidal.com/album/352764138</a></div>
+<div>SUPER JUNIOR-D&E - GGB</div>
+<div>SUPER JUNIOR-D&E - ROSE</div>
+<div>SUPER JUNIOR-D&E - Hang Over</div>
+<div>SUPER JUNIOR-D&E - Twisted</div>
+<div>SUPER JUNIOR-D&E - New Balance</div>
+<div>SUPER JUNIOR-D&E - Missing Pieces</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352764138' target='_blank'><img src='https://resources.tidal.com/images/cce7b6aa/2f4f/4035/a8b9/9db11d052423/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Need U</div>
+<div><a href='https://tidal.com/album/207149280' target='_blank'>https://tidal.com/album/207149280</a></div>
+<div>SUPER JUNIOR-D&E - Need U</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/207149280' target='_blank'><img src='https://resources.tidal.com/images/72e7fe81/16d1/4623/952c/357905dd492d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] COUNTDOWN - The 1st Album</div>
+<div><a href='https://tidal.com/album/202539518' target='_blank'>https://tidal.com/album/202539518</a></div>
+<div>SUPER JUNIOR-D&E - ZERO</div>
+<div>SUPER JUNIOR-D&E - Beautiful Liar</div>
+<div>SUPER JUNIOR-D&E - 멀리 Far away</div>
+<div>SUPER JUNIOR-D&E - 느낌적인 느낌 Feel That Feelin’</div>
+<div>SUPER JUNIOR-D&E - La La La</div>
+<div>SUPER JUNIOR-D&E - Have a Nice Day</div>
+<div>SUPER JUNIOR-D&E - Muse</div>
+<div>SUPER JUNIOR-D&E - Share My Love</div>
+<div>SUPER JUNIOR-D&E - Home</div>
+<div>SUPER JUNIOR-D&E - ZERO (English Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/202539518' target='_blank'><img src='https://resources.tidal.com/images/c1d22bbb/5550/468f/afff/9362f4458847/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] BAD BLOOD - The 4th Mini Album</div>
+<div><a href='https://tidal.com/album/153868375' target='_blank'>https://tidal.com/album/153868375</a></div>
+<div>SUPER JUNIOR-D&E - B.A.D</div>
+<div>SUPER JUNIOR-D&E - Contact</div>
+<div>SUPER JUNIOR-D&E - 오늘이 지나고 나면 To you, Tomorrow</div>
+<div>SUPER JUNIOR-D&E - Change 變花</div>
+<div>SUPER JUNIOR-D&E - Off Line</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/153868375' target='_blank'><img src='https://resources.tidal.com/images/bf82b9b5/0d8c/43fc/adbc/185ce6dab771/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] DANGER - The 3rd Mini Album</div>
+<div><a href='https://tidal.com/album/115277782' target='_blank'>https://tidal.com/album/115277782</a></div>
+<div>SUPER JUNIOR-D&E - Danger</div>
+<div>SUPER JUNIOR-D&E - Jungle</div>
+<div>SUPER JUNIOR-D&E - Gloomy</div>
+<div>SUPER JUNIOR-D&E - Watch Out</div>
+<div>SUPER JUNIOR-D&E - Dreamer</div>
+<div>SUPER JUNIOR-D&E - Sunrise (Korean Version)</div>
+<div>SUPER JUNIOR-D&E - If You (Korean Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115277782' target='_blank'><img src='https://resources.tidal.com/images/34c72550/1df2/42a8/a927/e7f9efbe1ff3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 'Bout You - The 2nd Mini Album</div>
+<div><a href='https://tidal.com/album/115278254' target='_blank'>https://tidal.com/album/115278254</a></div>
+<div>SUPER JUNIOR-D&E - 머리부터 발끝까지 'Bout you</div>
+<div>SUPER JUNIOR-D&E - RUM DEE DEE</div>
+<div>SUPER JUNIOR-D&E - 여름밤 I love it</div>
+<div>SUPER JUNIOR-D&E - Livin' In</div>
+<div>SUPER JUNIOR-D&E - 백야(白夜) Evanesce Ⅱ</div>
+<div>SUPER JUNIOR-D&E - 지독하게 Lost</div>
+<div>SUPER JUNIOR-D&E - Illusion (Obsessed)</div>
+<div>SUPER JUNIOR-D&E - Victory (Special Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115278254' target='_blank'><img src='https://resources.tidal.com/images/1057dfcf/03be/4dae/a1b2/7b2dfda8b83d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] The Beat Goes On</div>
+<div><a href='https://tidal.com/album/115289379' target='_blank'>https://tidal.com/album/115289379</a></div>
+<div>SUPER JUNIOR-D&E - The Beat Goes On</div>
+<div>SUPER JUNIOR-D&E - 너는 나만큼 Growing Pains</div>
+<div>SUPER JUNIOR-D&E - Sweater & Jeans</div>
+<div>SUPER JUNIOR-D&E - Breaking Up</div>
+<div>SUPER JUNIOR-D&E - Lights, Camera, Action!</div>
+<div>SUPER JUNIOR-D&E - 촉이 와 Can You Feel It-</div>
+<div>SUPER JUNIOR-D&E - Mother</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115289379' target='_blank'><img src='https://resources.tidal.com/images/7711f79a/34b8/4e96/aeb1/0f5ae04882ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 아직도 난 Still You</div>
+<div><a href='https://tidal.com/album/115284488' target='_blank'>https://tidal.com/album/115284488</a></div>
+<div>SUPER JUNIOR-D&E - 아직도 난 Still You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115284488' target='_blank'><img src='https://resources.tidal.com/images/ac2cfb38/1f1c/4381/ada9/7e006f1270d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 떴다 오빠 Oppa, Oppa</div>
+<div><a href='https://tidal.com/album/115285481' target='_blank'>https://tidal.com/album/115285481</a></div>
+<div>SUPER JUNIOR-D&E - 첫사랑 First Love</div>
+<div>SUPER JUNIOR-D&E - 떴다 오빠 Oppa Oppa</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115285481' target='_blank'><img src='https://resources.tidal.com/images/45ef0e1f/e058/44d4/873c/5b3c2f0bc533/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/슈퍼주니어디앤이 (Super Junior D&E)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
