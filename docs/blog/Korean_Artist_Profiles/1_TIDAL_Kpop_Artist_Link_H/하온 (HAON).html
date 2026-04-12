@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 하온 ( Tidal HAON )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 하온 ( Tidal HAON )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/8217c18d/df48/4f7e/bfda/4940a6ecae04/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9711462 ------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 하온</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>새로운 물결을 일으키는 소년, 'Hood'의 자유로움과 'Tulip'의 섬세함을 담아내는 래퍼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> HAON</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A boy creating a new wave, a rapper capturing the freedom of 'Hood' and the delicacy of 'Tulip'</div><p>힙합씬에 신선한 바람을 불어넣는 아티스트, 하온(HAON)을 소개합니다. 본명은 김하온이며, 독특한 음악 스타일과 철학적인 가사로 많은 이들의 주목을 받고 있어요. 자신만의 색깔로 끊임없이 변화를 시도하는 그의 음악 세계로 함께 떠나볼까요?</p><p>Let me introduce HAON, an artist bringing a fresh breeze to the hip-hop scene. His real name is Kim Haon, and he is gaining attention for his unique musical style and philosophical lyrics. Shall we embark on a journey into his musical world, where he constantly attempts to change with his own color?</p><p>✧</p><p>자유로운 영혼의 탄생</p><p>하온은 어린 나이에 힙합 오디션 프로그램에서 우승하며 대중에게 이름을 알렸어요. 그는 틀에 얽매이지 않는 자유로운 스타일과 독창적인 랩으로 심사위원과 시청자들을 사로잡았죠. 데뷔 이후에도 꾸준히 자신만의 음악적 색깔을 탐구하며 성장하는 모습을 보여주고 있습니다.</p><p>The Birth of a Free Spirit</p><p>HAON made his name known to the public by winning a hip-hop audition program at a young age. He captivated judges and viewers with his unconstrained, free style and original rap. Since his debut, he has consistently explored his own musical color and shown growth.</p><p>✧</p><p>음악과 퍼포먼스, 경계를 넘나들다</p><p>하온의 음악은 힙합을 기반으로 다양한 장르를 융합하는 시도를 보여줘요. 그는 강렬한 비트 위에 자신만의 철학적인 메시지를 담아내며, 듣는 이들에게 깊은 인상을 남기죠. 무대 위에서의 에너지 넘치는 퍼포먼스 또한 그의 음악을 더욱 돋보이게 하는 요소입니다.</p><p>Transcending Boundaries: Music and Performance</p><p>HAON's music shows attempts to fuse various genres based on hip-hop. He delivers his own philosophical messages on top of intense beats, leaving a deep impression on listeners. His energetic performance on stage is also an element that makes his music stand out even more.</p><p>✧</p><p>다채로운 활동 스펙트럼</p><p>하온은 솔로 활동뿐만 아니라 다양한 아티스트들과의 협업을 통해 음악적 스펙트럼을 넓혀가고 있어요. 그는 여러 컴필레이션 앨범에 참여하며 자신의 존재감을 드러내고, 끊임없이 새로운 음악적 시도를 감행하죠. 이러한 활동들은 하온을 더욱 다재다능한 아티스트로 만들어주고 있습니다.</p><p>A Spectrum of Diverse Activities</p><p>HAON is expanding his musical spectrum not only through solo activities but also through collaborations with various artists. He participates in several compilation albums, revealing his presence and constantly attempting new musical endeavors. These activities make HAON an even more versatile artist.</p><p>✧</p><p>미래를 향한 끊임없는 성장</p><p>하온은 앞으로도 자신만의 음악적 색깔을 더욱 뚜렷하게 만들어갈 것으로 기대됩니다. 그는 끊임없는 실험과 도전을 통해 힙합씬에 새로운 방향을 제시하고, 많은 이들에게 영감을 주는 아티스트로 성장할 거예요. 그의 음악이 앞으로 어떤 이야기를 들려줄지 기대하며 응원합니다.</p><p>Continuous Growth Towards the Future</p><p>It is expected that HAON will further clarify his own musical color in the future. He will present a new direction in the hip-hop scene through constant experimentation and challenges, and grow into an artist who inspires many. We look forward to and support what stories his music will tell in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] STUDY GROUP (Music from the Tving Original Series), Pt. 3</div>
+<div><a href='https://tidal.com/album/413083492' target='_blank'>https://tidal.com/album/413083492</a></div>
+<div>Haon - Hood</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/413083492' target='_blank'><img src='https://resources.tidal.com/images/62acdcf6/6369/4bf4/985a/8551dbc0fe2d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] RAP_PUBLIC Block 3 MIXTAPE '〈3'</div>
+<div><a href='https://tidal.com/album/422876888' target='_blank'>https://tidal.com/album/422876888</a></div>
+<div>Roh Yun Ha, Haon, Yang Kyle, Chaboom, James An, SI - Oh Shit</div>
+<div>REDDY, Yang Kyle, Haon, James An, Chaboom - Where Is My Money</div>
+<div>Yang Kyle, Haon, Roh Yun Ha, REDDY, James An, BBUL - Zero to Hundred</div>
+<div>Haon, Roh Yun Ha, Yang Kyle, BBULKUP, James An, RE - Pulse</div>
+<div>Yang Kyle, Haon, Roh Yun Ha, REDDY, Chaboom, James - Back and Forth Freestyle</div>
+<div>Yang Kyle, Haon, Roh Yun Ha, REDDY - On Me</div>
+<div>REDDY, BBULKUP, James An, Yang Kyle, Haon - Turn</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/422876888' target='_blank'><img src='https://resources.tidal.com/images/4647227c/d6d2/4718/acec/7063d4078232/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Mode et Vision (feat. Siwah)</div>
+<div><a href='https://tidal.com/album/428060286' target='_blank'>https://tidal.com/album/428060286</a></div>
+<div>Haon, Siwah - Mode et Vision (feat. Siwah)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/428060286' target='_blank'><img src='https://resources.tidal.com/images/4f7af279/e641/4197/9e92/b3e34ec469e3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Gold Chain</div>
+<div><a href='https://tidal.com/album/429994002' target='_blank'>https://tidal.com/album/429994002</a></div>
+<div>Haon, Yanghongwon - Gold Chain (feat.  YANGHONGWON)</div>
+<div>Haon - Tulip</div>
+<div>Haon - It Is What It Is</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/429994002' target='_blank'><img src='https://resources.tidal.com/images/9dcf5a9a/e038/4792/b4f0/1ac424ca1ce4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 我怀旧</div>
+<div><a href='https://tidal.com/album/377470855' target='_blank'>https://tidal.com/album/377470855</a></div>
+<div>Haon - Pourin’(Explicit)</div>
+<div>Haon - Symmetry</div>
+<div>Haon - OoMa</div>
+<div>Haon, CHANGMO - BASTARD (feat. CHANGMO)(Explicit)</div>
+<div>Haon - PBNJ</div>
+<div>Haon, Sik-K - Fall in Love (feat. Sik-K)(Explicit)</div>
+<div>Haon, Dean - Smoke Again (feat. DEAN)(Explicit)</div>
+<div>Haon - Anthem</div>
+<div>Haon - Rabies(Explicit)</div>
+<div>Haon, The Quiett - Chill (feat. The Quiett)(Explicit)</div>
+<div>Haon - Bubble Boy</div>
+<div>Haon, Rad Museum - Blunder (feat. Rad Museum)(Explicit)</div>
+<div>Haon - Over You</div>
+<div>Haon - Wish(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/377470855' target='_blank'><img src='https://resources.tidal.com/images/4485820b/15bf/45af/9731/365e788f942c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 别让自己停下</div>
+<div><a href='https://tidal.com/album/386029183' target='_blank'>https://tidal.com/album/386029183</a></div>
+<div>Leellamarz, Sik-K, Haon - Trap Talk</div>
+<div>Leellamarz, Sik-K, Haon - Haidilao</div>
+<div>Leellamarz, Sik-K, Haon - My Dawgs</div>
+<div>Leellamarz, Sik-K, Haon - YO MA</div>
+<div>Leellamarz, Sik-K, Haon - NDA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/386029183' target='_blank'><img src='https://resources.tidal.com/images/3b21ac94/6ad4/447c/993e/d19a7afa1727/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Skrr (feat. GISELLE)</div>
+<div><a href='https://tidal.com/album/400238397' target='_blank'>https://tidal.com/album/400238397</a></div>
+<div>Haon, Giselle - Skrr (feat. GISELLE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/400238397' target='_blank'><img src='https://resources.tidal.com/images/7ef0f07d/75c6/4890/bf1d/bd129da92dd3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] RAP_PUBLIC MASK OFF Special</div>
+<div><a href='https://tidal.com/album/396114584' target='_blank'>https://tidal.com/album/396114584</a></div>
+<div>Loopy - RAP-PUBLIC FREESTYLE</div>
+<div>Haon - W</div>
+<div>Hash Swan - Mask on</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/396114584' target='_blank'><img src='https://resources.tidal.com/images/4f173bfd/4098/4f47/9b42/223ea226a81d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] KCTAPE, Vol. 2</div>
+<div><a href='https://tidal.com/album/377533867' target='_blank'>https://tidal.com/album/377533867</a></div>
+<div>Haon, Vangdale, Sik-K - TASTE (feat. Tabber)(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - LOVE IN THE AIR(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - WATER IS A LIE(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - 8AM NAMSAN FREESTYLE(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - R.O.K (RECIPE of KC) (feat. Leellamarz)(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - MOSQUIT(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - TO.PUSSBOY</div>
+<div>Haon, Vangdale, Sik-K - SOME MORE</div>
+<div>Haon, Vangdale, Sik-K - SHOT (feat. ShyboiiTobii)(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - A24(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/377533867' target='_blank'><img src='https://resources.tidal.com/images/cef9e947/9783/4cdc/b2bc/a2507aedece2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] KCTAPE, Vol. 1</div>
+<div><a href='https://tidal.com/album/364203072' target='_blank'>https://tidal.com/album/364203072</a></div>
+<div>Haon, Vangdale, Sik-K - X(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - GIOTL</div>
+<div>Haon, Vangdale, Sik-K - HELLA DOPE (feat. icecream drum, Leellamarz, White</div>
+<div>Haon, Vangdale, Sik-K - GO DJ (feat. Jibin)</div>
+<div>Haon, Vangdale, Sik-K - CYBERTRUCK BEASTMODE(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - BEAT THE CASE(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - I LIKE IT (feat. Leellamarz)(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - SOHOHOUSE PARIS(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - WHAT THE DEAL (feat. Coogie)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/364203072' target='_blank'><img src='https://resources.tidal.com/images/7647bee8/f298/49c5/a82d/0fac99de75b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] KC (BUST IT DOWN) (feat. Leellamarz)</div>
+<div><a href='https://tidal.com/album/343138344' target='_blank'>https://tidal.com/album/343138344</a></div>
+<div>Sik-K, Haon - KC (BUST IT DOWN) (feat. Leellamarz)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343138344' target='_blank'><img src='https://resources.tidal.com/images/297e1d99/5a2c/4575/a5ad/e7cff0751782/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Over You</div>
+<div><a href='https://tidal.com/album/329101588' target='_blank'>https://tidal.com/album/329101588</a></div>
+<div>Haon - Over You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/329101588' target='_blank'><img src='https://resources.tidal.com/images/ef30259f/c22a/4a64/a4cc/e31e0cff7a8e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] DAY OFF</div>
+<div><a href='https://tidal.com/album/315982356' target='_blank'>https://tidal.com/album/315982356</a></div>
+<div>Sik-K, Haon - DAY OFF</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/315982356' target='_blank'><img src='https://resources.tidal.com/images/3ea9b29a/0233/4c06/b743/d799289120e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] ALBUM ON THE WAY!</div>
+<div><a href='https://tidal.com/album/306159038' target='_blank'>https://tidal.com/album/306159038</a></div>
+<div>Sik-K, Haon - SHAWTY WANNA WAIT</div>
+<div>Sik-K, Haon - CRASH MERCEDES(Explicit)</div>
+<div>Sik-K, Haon - BITCH BOY (feat. Leellamarz)(Explicit)</div>
+<div>Sik-K, Haon - MAYBE I'M KCRAZY(Explicit)</div>
+<div>Sik-K, Haon - BALACLAVA BABIES (feat. Blase)(Explicit)</div>
+<div>Sik-K, Haon - POV- GOD (feat. Ourealgoat, ShyboiiTobii)(Explicit)</div>
+<div>Sik-K, Haon - I CAN'T SEE YOU(Explicit)</div>
+<div>Sik-K, Haon - ABU DHABI D-DAY FREESTYLE (feat. Theo)(Explicit)</div>
+<div>Sik-K, Haon - LOCKED-IN(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306159038' target='_blank'><img src='https://resources.tidal.com/images/7effeb70/d1a6/4776/bc91/f9fd8e755deb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Flower</div>
+<div><a href='https://tidal.com/album/196145968' target='_blank'>https://tidal.com/album/196145968</a></div>
+<div>Haon, AVIN - FLOWER (Prod. by AVIN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196145968' target='_blank'><img src='https://resources.tidal.com/images/a5886c84/8398/4715/8d05/2d77a09f17ae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Dingo X H1GHR MUSIC</div>
+<div><a href='https://tidal.com/album/216123597' target='_blank'>https://tidal.com/album/216123597</a></div>
+<div>Sik-K, Haon, pH-1, Woodie Gochild, Jay Park, Groov - GIDDY UP (Prod. GroovyRoom)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216123597' target='_blank'><img src='https://resources.tidal.com/images/6fcb5636/b586/405e/802a/0be1d91b098d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] BwB</div>
+<div><a href='https://tidal.com/album/196148657' target='_blank'>https://tidal.com/album/196148657</a></div>
+<div>Haon - BwB</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196148657' target='_blank'><img src='https://resources.tidal.com/images/e652f307/8efc/4b59/869a/00d63f247507/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] TRAVEL_ NOAH</div>
+<div><a href='https://tidal.com/album/196142746' target='_blank'>https://tidal.com/album/196142746</a></div>
+<div>Haon - NOAH</div>
+<div>Haon - LOVE ! DANCE !</div>
+<div>Haon - WHACHUWANT</div>
+<div>Haon - GOOD NIGHT</div>
+<div>Haon - NYLON</div>
+<div>Haon - OOOOOOL</div>
+<div>Haon - INTRO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142746' target='_blank'><img src='https://resources.tidal.com/images/8217c18d/df48/4f7e/bfda/4940a6ecae04/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] School Rapper2 Winner</div>
+<div><a href='https://tidal.com/album/196140532' target='_blank'>https://tidal.com/album/196140532</a></div>
+<div>Haon - Graduation (From School Rapper2 Winner)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140532' target='_blank'><img src='https://resources.tidal.com/images/bcc63606/6da0/453d/ac8d/5e612b2fb3a5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] LOVE ! DANCE !</div>
+<div><a href='https://tidal.com/album/196141660' target='_blank'>https://tidal.com/album/196141660</a></div>
+<div>Haon - LOVE ! DANCE !</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141660' target='_blank'><img src='https://resources.tidal.com/images/20c5bac4/6a0c/49a4/aa10/a123dfd5ace3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Good Luck</div>
+<div><a href='https://tidal.com/album/408896664' target='_blank'>https://tidal.com/album/408896664</a></div>
+<div>Woodie Gochild, Haon, Sik-K, pH-1 - KITKAT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/408896664' target='_blank'><img src='https://resources.tidal.com/images/0d302f5b/ff59/4a85/b152/5fc8970f187b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/1_TIDAL_Kpop_Artist_Link_H.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅎ1) TIDAL Kpop Artist Link (H)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/하온 (HAON)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
