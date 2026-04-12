@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 임영웅 ( Tidal Lim Young Woong )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 임영웅 ( Tidal Lim Young Woong )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/87f52b23/728d/45d0/84fa/3ab5974bc674/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/20125863' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 임영웅</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>‘사랑은 늘 도망가’의 애절함과 ‘모래 알갱이’의 깊은 울림, 감성을 노래하는 이야기꾼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lim Young Woong</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A storyteller who sings with emotion, capturing the heartache of ‘Love Always Runs Away’ and the profound resonance of ‘A Grain of Sand.’</div><p>국민적인 사랑을 받는 가수 임영웅은 깊은 감성과 진솔한 목소리로 많은 이들의 마음을 사로잡았어요. 트로트를 넘어 다양한 장르를 소화하며 자신만의 음악 세계를 구축하고 있죠. 그의 음악은 단순한 노래를 넘어, 삶의 희로애락을 담아낸 이야기와 같아요.</p><p>Singer Lim Young Woong, beloved by the nation, has captured the hearts of many with his deep emotions and sincere voice. He transcends the boundaries of trot music, creating his own musical world by embracing various genres. His music is more than just songs; it is like a story that captures the joys and sorrows of life.</p><p>✧</p><p>시작의 발걸음</p><p>오디션 프로그램에서 우승하며 대중에게 이름을 알린 임영웅은 데뷔 후 꾸준히 음악 활동을 이어왔어요. 그의 진정성 있는 모습과 뛰어난 가창력은 빠르게 팬덤을 형성하는 데 큰 역할을 했죠. 이후 다양한 방송 활동과 공연을 통해 더욱 폭넓은 사랑을 받게 되었답니다.</p><p>The First Steps</p><p>Lim Young Woong, who became known to the public after winning an audition program, has consistently pursued his music career since his debut. His sincerity and outstanding singing ability played a major role in quickly building a fandom. Since then, he has gained even wider love through various broadcasting activities and performances.</p><p>✧</p><p>다채로운 음악 세계</p><p>임영웅은 트로트뿐만 아니라 발라드, 팝 등 다양한 장르를 넘나들며 음악적 스펙트럼을 넓혀가고 있어요. 섬세한 감정 표현과 깊이 있는 목소리는 어떤 장르의 곡이라도 자신만의 스타일로 소화해내는 강점을 보여주죠. 그의 음악은 듣는 이들에게 위로와 공감을 선사하며 깊은 감동을 안겨준답니다.</p><p>A Diverse Musical World</p><p>Lim Young Woong is expanding his musical spectrum by crossing various genres such as ballads and pop, as well as trot. His delicate emotional expression and deep voice show his strength in digesting any genre of song in his own style. His music offers comfort and empathy to listeners, bringing deep emotion.</p><p>✧</p><p>빛나는 주요 활동</p><p>정규 앨범 발매와 더불어 전국 투어 콘서트를 성공적으로 개최하며 끊임없는 활동을 이어가고 있어요. 드라마 OST 참여, 예능 프로그램 출연 등 다양한 분야에서 활약하며 대중과의 소통을 넓혀가고 있죠. 그의 음악은 음원 차트 상위권을 휩쓸며 많은 사랑을 받고 있답니다.</p><p>Shining Main Activities</p><p>He is continuing his constant activities by successfully holding national tour concerts along with the release of regular albums. He is expanding communication with the public by playing an active role in various fields such as participating in drama OSTs and appearing on entertainment programs. His music is sweeping the top of the music charts and receiving a lot of love.</p><p>✧</p><p>앞으로의 발걸음</p><p>끊임없는 음악적 도전과 성장을 통해 앞으로 보여줄 모습이 더욱 기대되는 아티스트입니다. 진심을 담은 그의 노래는 앞으로도 많은 사람들에게 위로와 감동을 전하며 오랫동안 사랑받을 거예요. 임영웅의 음악 여정은 현재 진행형이며, 그의 미래는 더욱 밝게 빛날 것이라고 믿습니다.</p><p>Future Steps</p><p>He is an artist whose future performances are highly anticipated through constant musical challenges and growth. His heartfelt songs will continue to bring comfort and emotion to many people and will be loved for a long time. Lim Young Woong's musical journey is ongoing, and I believe his future will shine even brighter.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Heavenly Ever After</div>
+<div><a href='https://tidal.com/album/428982180' target='_blank'>https://tidal.com/album/428982180</a></div>
+<div>Lim Young Woong - Heavenly Ever After</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/428982180' target='_blank'><img src='https://resources.tidal.com/images/050d093f/40d3/4e7a/b506/5b159a2760db/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Warmth</div>
+<div><a href='https://tidal.com/album/361737021' target='_blank'>https://tidal.com/album/361737021</a></div>
+<div>Lim Young Woong - Home</div>
+<div>Lim Young Woong - Warmth</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/361737021' target='_blank'><img src='https://resources.tidal.com/images/4d8f6f0c/f326/4a7b/b9c6/4ad250fd074a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Grain of Sand</div>
+<div><a href='https://tidal.com/album/307093573' target='_blank'>https://tidal.com/album/307093573</a></div>
+<div>Lim Young Woong - Grain of Sand</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/307093573' target='_blank'><img src='https://resources.tidal.com/images/2a49b2e5/01bc/4442/a6c4/93a57e238ef9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Do or Die</div>
+<div><a href='https://tidal.com/album/320840195' target='_blank'>https://tidal.com/album/320840195</a></div>
+<div>Lim Young Woong - Do or Die</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/320840195' target='_blank'><img src='https://resources.tidal.com/images/eabdb13b/2360/4701/bf4d/6628f94907bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Polaroid</div>
+<div><a href='https://tidal.com/album/306304253' target='_blank'>https://tidal.com/album/306304253</a></div>
+<div>Lim Young Woong - London Boy</div>
+<div>Lim Young Woong - Polaroid</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306304253' target='_blank'><img src='https://resources.tidal.com/images/69c80731/c370/464e/ae51/fd0fdf189aef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] IM HERO</div>
+<div><a href='https://tidal.com/album/306315830' target='_blank'>https://tidal.com/album/306315830</a></div>
+<div>Lim Young Woong - If We Ever Meet Again</div>
+<div>Lim Young Woong - Rainbow</div>
+<div>Lim Young Woong - Lovely Touch</div>
+<div>Lim Young Woong - Our Blues, Our Life</div>
+<div>Lim Young Woong - Father</div>
+<div>Lim Young Woong - A bientot</div>
+<div>Lim Young Woong - Love Station</div>
+<div>Lim Young Woong - Nest</div>
+<div>Lim Young Woong - I Love You</div>
+<div>Lim Young Woong - Love Letter</div>
+<div>Lim Young Woong - Loving You</div>
+<div>Lim Young Woong - A Psalm of Life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306315830' target='_blank'><img src='https://resources.tidal.com/images/7e62b9ef/0980/4256/8009/94f3e749ef08/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Young Lady And Gentleman (Original Television Soundtrack) Pt.2</div>
+<div><a href='https://tidal.com/album/200493042' target='_blank'>https://tidal.com/album/200493042</a></div>
+<div>Lim Young Woong - Love Always Run Away</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200493042' target='_blank'><img src='https://resources.tidal.com/images/cb0c4c37/723d/47eb/9809/4e5c22703422/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Thanks for You _ My Starry Love</div>
+<div><a href='https://tidal.com/album/259008699' target='_blank'>https://tidal.com/album/259008699</a></div>
+<div>Lim Young Woong - My Starry Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/259008699' target='_blank'><img src='https://resources.tidal.com/images/b6b602e4/a8da/407f/9836/a59a284b50a2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] My Starry Love</div>
+<div><a href='https://tidal.com/album/216248427' target='_blank'>https://tidal.com/album/216248427</a></div>
+<div>Lim Young Woong - My Starry Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216248427' target='_blank'><img src='https://resources.tidal.com/images/30361737/61f5/4c6a/9a7d/f7c0170a1eab/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] 트로트의 신</div>
+<div><a href='https://tidal.com/album/184471413' target='_blank'>https://tidal.com/album/184471413</a></div>
+<div>박서진 - 사랑할 나이</div>
+<div>임영웅 - 계단 말고 엘리베이터</div>
+<div>박서진 - 밀어밀어</div>
+<div>임영웅 - 사랑에 취하다</div>
+<div>박서진 - 항구의 남자</div>
+<div>임영웅 - 남자의 인생</div>
+<div>박서진 - 황진이</div>
+<div>임영웅 - 미운 사랑</div>
+<div>박서진 - 나무꾼</div>
+<div>임영웅 - 거참 말 많네</div>
+<div>박서진 - 천년지기</div>
+<div>임영웅 - 안동역에서</div>
+<div>박서진 - 말하고 삽시다</div>
+<div>임영웅 - 비벼요</div>
+<div>박서진 - 뿐이고</div>
+<div>임영웅 - 보약 같은 친구</div>
+<div>박서진 - 청춘고백</div>
+<div>임영웅 - 사랑의 할증</div>
+<div>박서진 - 사랑님</div>
+<div>임영웅 - 곰배령</div>
+<div>박서진 - 순이야</div>
+<div>임영웅 - 오늘밤</div>
+<div>박서진 - 빵빵</div>
+<div>임영웅 - 내 나이가 어때서</div>
+<div>박서진 - 내 꿈을 향해서</div>
+<div>임영웅 - 잔치국수</div>
+<div>박서진 - 무조건</div>
+<div>임영웅 - 노래방</div>
+<div>박서진 - 보릿고개</div>
+<div>임영웅 - 사랑하고 싶을 땐</div>
+<div>박서진 - 너 때문에 살아</div>
+<div>임영웅 - 묻지 마세요</div>
+<div>박서진 - 사랑의 계산기</div>
+<div>임영웅 - 시계바늘</div>
+<div>박서진 - 바람개비</div>
+<div>임영웅 - 남자는 말합니다</div>
+<div>박서진 - 세월 이길 장사 있나</div>
+<div>임영웅 - 두 바퀴</div>
+<div>박서진 - 고향역</div>
+<div>임영웅 - 남행열차</div>
+<div>박서진 - 맞다 맞다 니 말이 맞다</div>
+<div>임영웅 - 당신이 좋아</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184471413' target='_blank'><img src='https://resources.tidal.com/images/1f3861d9/909b/4be0/a336/397c72bb2feb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Trust in Me (Piano by Cho Youngsoo)</div>
+<div><a href='https://tidal.com/album/216139873' target='_blank'>https://tidal.com/album/216139873</a></div>
+<div>Lim Young Woong - Trust in Me (Piano by Cho Youngsoo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216139873' target='_blank'><img src='https://resources.tidal.com/images/c7f58439/99e8/4cb5/bc03/64ee85fdea70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Mr. Trot WINNER SONG</div>
+<div><a href='https://tidal.com/album/216141706' target='_blank'>https://tidal.com/album/216141706</a></div>
+<div>Lim Young Woong - Trust in me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216141706' target='_blank'><img src='https://resources.tidal.com/images/df928fb7/8115/4765/9ce1/3d8055d642f1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] HERO</div>
+<div><a href='https://tidal.com/album/216251608' target='_blank'>https://tidal.com/album/216251608</a></div>
+<div>Lim Young Woong - HERO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216251608' target='_blank'><img src='https://resources.tidal.com/images/7a2595a7/0f0a/4ab4/8b2a/36458b19d3be/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Elevator</div>
+<div><a href='https://tidal.com/album/169744228' target='_blank'>https://tidal.com/album/169744228</a></div>
+<div>Lim Young Woong - Elevator</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/169744228' target='_blank'><img src='https://resources.tidal.com/images/f6ec3b58/7068/44ad/9352/2654bd457064/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/5_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ5) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/임영웅 (Lim Young Woong)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
