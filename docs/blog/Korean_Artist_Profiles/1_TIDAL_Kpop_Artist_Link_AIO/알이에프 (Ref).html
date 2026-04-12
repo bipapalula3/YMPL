@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 알이에프 ( Tidal R.ef )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 알이에프 ( Tidal R.ef )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/e455d866/ba43/4c96/981e/cfefce9d78b7/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5688144' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 알이에프</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>R.ef – 'One More Time'의 짜릿함과 '이별 공식'의 애절함을 담아낸, 시대를 앞서간 댄스 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> R.ef</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>R.ef - A pioneering dance group that captured the thrill of 'One More Time' and the sorrow of 'Farewell Formula'.</div><p>1990년대 가요계를 강타했던 R.ef는 혁신적인 음악과 스타일로 많은 사랑을 받았어요. 댄스 음악을 기반으로 다양한 장르를 융합하며 새로운 트렌드를 만들어냈죠. 그들의 음악은 여전히 많은 사람들에게 추억과 향수를 불러일으키고 있답니다.</p><p>R.ef, who took the Korean music scene by storm in the 1990s, was loved for their innovative music and style. They created new trends by fusing various genres based on dance music. Their music still evokes memories and nostalgia for many.</p><p>✧</p><p>그룹 탄생</p><p>R.ef는 1990년대 초, 이성욱, 박철우, 성대현 세 멤버로 결성되었어요. 데뷔 초부터 강렬한 댄스 퍼포먼스와 세련된 음악으로 주목받기 시작했죠. 그들은 당시 가요계에 신선한 바람을 불러일으켰답니다.</p><p>Formation of the Group</p><p>R.ef was formed in the early 1990s with members Lee Sung-wook, Park Chul-woo, and Sung Dae-hyun. From their debut, they began to attract attention with their intense dance performances and sophisticated music. They brought a breath of fresh air to the music scene at the time.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>R.ef의 음악은 댄스, 힙합, R&B 등 다양한 장르를 넘나들며 독특한 사운드를 구축했어요. 특히, 중독성 강한 멜로디와 파워풀한 퍼포먼스는 그들의 트레이드마크였죠. 무대 위에서 보여주는 에너지 넘치는 모습은 팬들을 열광하게 만들었답니다.</p><p>Music and Performance</p><p>R.ef's music crossed various genres such as dance, hip-hop, and R&B, creating a unique sound. In particular, their addictive melodies and powerful performances were their trademarks. Their energetic performances on stage made fans go wild.</p><p>✧</p><p>주요 활동</p><p>'One More Time', '이별 공식', '고요 속의 외침' 등 수많은 히트곡을 발표하며 90년대 가요계를 휩쓸었어요. 각종 음악 방송에서 1위를 차지하고, 연말 가요 시상식에서도 큰 활약을 펼쳤죠. 그들의 음악은 시대를 초월하여 현재까지도 많은 사랑을 받고 있답니다.</p><p>Key Activities</p><p>They swept through the music scene in the 90s with numerous hit songs such as 'One More Time', 'Farewell Formula', and 'Cry in silence'. They topped various music shows and played a major role in year-end music awards ceremonies. Their music transcends time and is still loved by many today.</p><p>✧</p><p>미래/의미</p><p>R.ef는 단순한 댄스 그룹을 넘어, 한국 대중음악사에 큰 족적을 남겼어요. 그들의 음악적 시도와 열정은 후배 뮤지션들에게도 큰 영감을 주고 있죠. 앞으로도 R.ef의 음악은 영원히 기억될 거예요.</p><p>Future/Meaning</p><p>R.ef went beyond being just a dance group and left a significant mark on Korean popular music history. Their musical experiments and passion continue to inspire younger musicians. R.ef's music will be remembered forever.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2013] 왜이래</div>
+<div><a href='https://tidal.com/album/189051916' target='_blank'>https://tidal.com/album/189051916</a></div>
+<div>R.ef - One More Time</div>
+<div>R.ef - 왜이래</div>
+<div>R.ef - 사랑을 모르나봐, Pt. 2 (feat. See Hyeon)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189051916' target='_blank'><img src='https://resources.tidal.com/images/c71bd5fe/237d/492a/bab6/aa390b7fba26/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] It's R.ef</div>
+<div><a href='https://tidal.com/album/241198351' target='_blank'>https://tidal.com/album/241198351</a></div>
+<div>R.ef - 사랑을 모르나봐 (feat. 은지원)</div>
+<div>R.ef - 사랑공식</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/241198351' target='_blank'><img src='https://resources.tidal.com/images/a5be61e1/df20/4141/8611/88dd75d47c6e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] The Last</div>
+<div><a href='https://tidal.com/album/280293890' target='_blank'>https://tidal.com/album/280293890</a></div>
+<div>R.ef - Remember</div>
+<div>R.ef - Cry in silence</div>
+<div>R.ef - Swear to the skt</div>
+<div>R.ef - Footprint</div>
+<div>R.ef - Jazz</div>
+<div>R.ef - Late Love</div>
+<div>R.ef - Break Beat</div>
+<div>R.ef - Abyss</div>
+<div>R.ef - Heartbroken (Hip-Hop Ver.)</div>
+<div>R.ef - Heartbroken (Ballad Ver.)</div>
+<div>R.ef - Guardian Angel</div>
+<div>R.ef - Separation Formula</div>
+<div>R.ef - Fever 48 °</div>
+<div>R.ef - As much as you---</div>
+<div>R.ef - Never Ending Story</div>
+<div>R.ef - Brilliant Love</div>
+<div>R.ef - Closing Ment</div>
+<div>R.ef - Waiting for resurrection</div>
+<div>R.ef - The Deaf Sky</div>
+<div>R.ef - Forever With You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/280293890' target='_blank'><img src='https://resources.tidal.com/images/02880406/0d8f/4fd5/8d89/bb894cc09f93/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Forever</div>
+<div><a href='https://tidal.com/album/280272380' target='_blank'>https://tidal.com/album/280272380</a></div>
+<div>R.ef - The Deaf Sky</div>
+<div>R.ef - Never Ending Story</div>
+<div>R.ef - Swear to the skt---</div>
+<div>R.ef - As much as you</div>
+<div>R.ef - Guardian Angel</div>
+<div>R.ef - For so long</div>
+<div>R.ef - Always</div>
+<div>R.ef - Happy Sadness</div>
+<div>R.ef - In the name of Friendship</div>
+<div>R.ef - Waiting for resurrection---</div>
+<div>R.ef - Outro</div>
+<div>R.ef - The Deaf Sky (Radio Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/280272380' target='_blank'><img src='https://resources.tidal.com/images/c93fb5cb/7bad/4881/8f73/02118ed59d7b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Free Ruff Eazy Flava III</div>
+<div><a href='https://tidal.com/album/280288275' target='_blank'>https://tidal.com/album/280288275</a></div>
+<div>R.ef - Freetro</div>
+<div>R.ef - Abyss</div>
+<div>R.ef - Last Leaf</div>
+<div>R.ef - 나의 형제</div>
+<div>R.ef - 아침에 떠나</div>
+<div>R.ef - 彷湟 Ⅱ</div>
+<div>R.ef - One Side---</div>
+<div>R.ef - Fever 48 °</div>
+<div>R.ef - Disclosure</div>
+<div>R.ef - Late Love</div>
+<div>R.ef - Outro</div>
+<div>R.ef - Heartbroken</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/280288275' target='_blank'><img src='https://resources.tidal.com/images/b889f15d/1441/4ca8/9077/c3729ecf7976/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] Second & Half</div>
+<div><a href='https://tidal.com/album/280283298' target='_blank'>https://tidal.com/album/280283298</a></div>
+<div>R.ef - None</div>
+<div>R.ef - Memories In Fall</div>
+<div>R.ef - Brilliant Love (Classic Ver.)</div>
+<div>R.ef - Second Time of Travel</div>
+<div>R.ef - Good-Bye My Friend</div>
+<div>R.ef - Rumors</div>
+<div>R.ef - Walking through Mind (Jungle Ver.)</div>
+<div>R.ef - Jazz (New Jazz Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/280283298' target='_blank'><img src='https://resources.tidal.com/images/07c33044/0b39/4d80/b242/c7b7509def88/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] Back To The Black</div>
+<div><a href='https://tidal.com/album/280285520' target='_blank'>https://tidal.com/album/280285520</a></div>
+<div>R.ef - Intro (Back To The Black)</div>
+<div>R.ef - Walking through Mind</div>
+<div>R.ef - Friendship</div>
+<div>R.ef - Who are you to do so</div>
+<div>R.ef - Jazz</div>
+<div>R.ef - Brilliant Love (Broken heart2)</div>
+<div>R.ef - Forbidden U-Turn</div>
+<div>R.ef - Wandering</div>
+<div>R.ef - In loneliness</div>
+<div>R.ef - I can't see you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/280285520' target='_blank'><img src='https://resources.tidal.com/images/b038d9c3/6b07/4f5e/b6ac/2fe538b4c3fa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] Rave Effect</div>
+<div><a href='https://tidal.com/album/280276587' target='_blank'>https://tidal.com/album/280276587</a></div>
+<div>R.ef - Intro</div>
+<div>R.ef - Separation Formula</div>
+<div>R.ef - Heartbroken</div>
+<div>R.ef - Not lovers</div>
+<div>R.ef - Sad misunderstanding</div>
+<div>R.ef - Cry in silence</div>
+<div>R.ef - Extra</div>
+<div>R.ef - We were friends</div>
+<div>R.ef - Drawing paper</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/280276587' target='_blank'><img src='https://resources.tidal.com/images/e455d866/ba43/4c96/981e/cfefce9d78b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/1_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ1) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/알이에프 (R.ef)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
