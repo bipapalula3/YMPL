@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 설 ( Tidal SURL )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 설 ( Tidal SURL )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/1625f0fc/4fc3/44f8/aa75/dd9d10245dff/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10316255' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 설</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>설 (SURL) – 몽환적인 사운드로 청춘의 단면을 섬세하게 그려내는, 'ringringring'의 울림과 'NEW WORLD'의 새로운 시작을 노래하는 밴드</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> SURL</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>SURL – A band delicately portraying the facets of youth with dreamy sounds, singing the echo of 'ringringring' and the new beginning of 'NEW WORLD'</div><p>섬세한 감성으로 청춘의 고민과 희망을 노래하는 밴드, 설 (SURL)을 소개합니다. 이들은 독특한 사운드와 진솔한 가사로 많은 이들의 공감을 얻고 있어요. 설만의 음악 세계로 함께 떠나볼까요?</p><p>Let me introduce SURL, a band that sings about the worries and hopes of youth with delicate emotions. They resonate with many through their unique sound and sincere lyrics. Shall we embark on a musical journey into SURL's world?</p><p>✧</p><p>그룹 탄생</p><p>설은 2018년, 멤버들의 음악적 교류를 통해 탄생했어요. 각자의 개성이 뚜렷한 멤버들이 모여 설만의 독창적인 색깔을 만들어냈습니다. 이들의 만남은 단순한 팀 결성을 넘어, 새로운 음악적 가능성을 탐색하는 시작이었죠.</p><p>The Birth of the Band</p><p>SURL was formed in 2018 through the members' musical exchange. The members, each with distinct personalities, came together to create SURL's unique color. Their meeting was more than just forming a team; it was the beginning of exploring new musical possibilities.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>설의 음악은 몽환적인 사운드와 깊이 있는 가사가 특징이에요. 이들은 록을 기반으로 다양한 장르를 넘나들며 실험적인 시도를 멈추지 않아요. 무대 위에서의 에너지 넘치는 퍼포먼스 역시 설의 음악을 더욱 돋보이게 하는 요소랍니다.</p><p>Music and Performance</p><p>SURL's music is characterized by dreamy sounds and profound lyrics. They constantly experiment, crossing various genres based on rock. Their energetic performances on stage are also elements that further highlight SURL's music.</p><p>✧</p><p>주요 활동</p><p>설은 데뷔 이후 꾸준히 음악 활동을 이어오며, 다양한 페스티벌과 공연에 참여했어요. 독창적인 음악 스타일로 국내외 팬들에게 깊은 인상을 남겼습니다. 앞으로 이들이 어떤 음악적 행보를 보여줄지 기대가 됩니다.</p><p>Key Activities</p><p>Since their debut, SURL has consistently pursued music activities, participating in various festivals and performances. They have left a deep impression on fans both domestically and internationally with their unique musical style. It's exciting to see what musical path they will take in the future.</p><p>✧</p><p>미래/의미</p><p>설은 단순한 밴드를 넘어, 청춘의 감정을 대변하는 하나의 상징이 되고자 해요. 이들의 음악은 듣는 이들에게 위로와 공감을 선사하며, 깊은 여운을 남깁니다. 앞으로 설이 만들어갈 음악 세계는 더욱 확장될 것이라 기대됩니다.</p><p>Future/Meaning</p><p>SURL aims to be more than just a band; they want to become a symbol representing the emotions of youth. Their music offers comfort and empathy to listeners, leaving a deep impression. It is expected that the musical world SURL will create in the future will continue to expand.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] ringringring</div>
+<div><a href='https://tidal.com/album/363458821' target='_blank'>https://tidal.com/album/363458821</a></div>
+<div>SURL - ringringring</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/363458821' target='_blank'><img src='https://resources.tidal.com/images/1afa2841/791c/4b1f/a67d/89416ae3415d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] XYRUP</div>
+<div><a href='https://tidal.com/album/395123418' target='_blank'>https://tidal.com/album/395123418</a></div>
+<div>SURL - NEW WORLD-</div>
+<div>SURL - SIX SEVEN</div>
+<div>SURL - HYPNOSIS</div>
+<div>SURL - DETOX</div>
+<div>SURL - FOREST (Mountain and Elevator)</div>
+<div>SURL - ringringring</div>
+<div>SURL - CAVEMAN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/395123418' target='_blank'><img src='https://resources.tidal.com/images/39fd5d19/33ef/408f/b19b/a73b6ef12934/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Synaptic Signals</div>
+<div><a href='https://tidal.com/album/385477694' target='_blank'>https://tidal.com/album/385477694</a></div>
+<div>SURL - Synaptic Signals</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/385477694' target='_blank'><img src='https://resources.tidal.com/images/ad02adcb/c0ed/4be0/beb5/e6feb7f6b84d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Humming For Sunset</div>
+<div><a href='https://tidal.com/album/385704706' target='_blank'>https://tidal.com/album/385704706</a></div>
+<div>SURL, QLER - Humming For Sunset</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/385704706' target='_blank'><img src='https://resources.tidal.com/images/923a82b8/d4c3/4b66/a8a5/5999f82f5ca3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] HYPNOSIS</div>
+<div><a href='https://tidal.com/album/354027875' target='_blank'>https://tidal.com/album/354027875</a></div>
+<div>SURL - HYPNOSIS</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/354027875' target='_blank'><img src='https://resources.tidal.com/images/ca0faf33/d94d/49ff/80df/39adbed66729/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Dry Flower (Thai ver.)</div>
+<div><a href='https://tidal.com/album/371620493' target='_blank'>https://tidal.com/album/371620493</a></div>
+<div>SURL - Dry Flower (Thai ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/371620493' target='_blank'><img src='https://resources.tidal.com/images/c7174e67/33a4/49ba/abf0/6e0d329bd408/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Accidental Collision</div>
+<div><a href='https://tidal.com/album/369740685' target='_blank'>https://tidal.com/album/369740685</a></div>
+<div>SURL - Accidental Collision</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/369740685' target='_blank'><img src='https://resources.tidal.com/images/efae15db/a90a/4e6a/b640/c01d4ab0af40/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Echoes of the Void</div>
+<div><a href='https://tidal.com/album/329657248' target='_blank'>https://tidal.com/album/329657248</a></div>
+<div>SURL - Echoes of the void</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/329657248' target='_blank'><img src='https://resources.tidal.com/images/cb3c637e/5d84/4d78/8292/2ff025f24452/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] of us</div>
+<div><a href='https://tidal.com/album/255094037' target='_blank'>https://tidal.com/album/255094037</a></div>
+<div>SURL - Rope</div>
+<div>SURL - What You Say</div>
+<div>SURL - Every Day</div>
+<div>SURL - Firework</div>
+<div>SURL - You’re Fire</div>
+<div>SURL - WHAT TIME IS IT NOW-</div>
+<div>SURL - Walking In Dream</div>
+<div>SURL - Dongsan</div>
+<div>SURL - Fall</div>
+<div>SURL - Around</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/255094037' target='_blank'><img src='https://resources.tidal.com/images/46120ecc/8ff8/4231/8f83/a529992f24f3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] GREAT SEOUL INVASION Section 6</div>
+<div><a href='https://tidal.com/album/248372519' target='_blank'>https://tidal.com/album/248372519</a></div>
+<div>SURL - NO JAM (Feat. jerd, Q the trumpet, HAH, Gwak Jinseok, Kim Minsu, Lafic)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/248372519' target='_blank'><img src='https://resources.tidal.com/images/852b65ac/bc0c/4ec2/99fa/24a1e37aa422/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Around</div>
+<div><a href='https://tidal.com/album/223928805' target='_blank'>https://tidal.com/album/223928805</a></div>
+<div>SURL - Around</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223928805' target='_blank'><img src='https://resources.tidal.com/images/7f5546b3/b685/4c65/825e/76a687a87a9b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Inspector Koo (Original Television Soundtrack, Pt. 3)</div>
+<div><a href='https://tidal.com/album/204532416' target='_blank'>https://tidal.com/album/204532416</a></div>
+<div>SURL - Watch Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204532416' target='_blank'><img src='https://resources.tidal.com/images/99aea5e9/8949/46c9/a303/49406d939a10/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Beside</div>
+<div><a href='https://tidal.com/album/191223343' target='_blank'>https://tidal.com/album/191223343</a></div>
+<div>SURL - Beside</div>
+<div>SURL - Colors</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/191223343' target='_blank'><img src='https://resources.tidal.com/images/8a2d68c1/9744/4fce/862b/3f2e3cfbb7f0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Ferris Wheel</div>
+<div><a href='https://tidal.com/album/189580409' target='_blank'>https://tidal.com/album/189580409</a></div>
+<div>SURL - Ferris Wheel</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189580409' target='_blank'><img src='https://resources.tidal.com/images/d0a626b0/e6ad/483c/8cb5/bb9a93359a00/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Don't Say No</div>
+<div><a href='https://tidal.com/album/189884622' target='_blank'>https://tidal.com/album/189884622</a></div>
+<div>SURL - Don't Say No (Feat. Jay Park)</div>
+<div>SURL - Silence(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189884622' target='_blank'><img src='https://resources.tidal.com/images/d94f219c/fdb8/463b/9271/2938c6c231c7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Cheering song for you</div>
+<div><a href='https://tidal.com/album/189833899' target='_blank'>https://tidal.com/album/189833899</a></div>
+<div>SURL - Shine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189833899' target='_blank'><img src='https://resources.tidal.com/images/dd2df768/cf11/4d07/90e7/08bd865261ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] LIKE (Original Webdrama Soundtrack), Pt. 1</div>
+<div><a href='https://tidal.com/album/266828261' target='_blank'>https://tidal.com/album/266828261</a></div>
+<div>SURL - Dancing on the Rooftop</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/266828261' target='_blank'><img src='https://resources.tidal.com/images/77067b64/bb31/4604/a2ca/f3ee0e244041/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] I Know</div>
+<div><a href='https://tidal.com/album/189324644' target='_blank'>https://tidal.com/album/189324644</a></div>
+<div>SURL - Aloha My Love</div>
+<div>SURL - Dry Flower</div>
+<div>SURL - Hot Air Balloon</div>
+<div>SURL - Not OK</div>
+<div>SURL - Road</div>
+<div>SURL - People</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189324644' target='_blank'><img src='https://resources.tidal.com/images/8f5107b3/b473/495b/bc39/0c05cb719261/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] Cilla</div>
+<div><a href='https://tidal.com/album/189183019' target='_blank'>https://tidal.com/album/189183019</a></div>
+<div>SURL - Cilla</div>
+<div>SURL - Dead Man</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189183019' target='_blank'><img src='https://resources.tidal.com/images/509fcb79/de32/4eba/8107/ec165c43ccb8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Aren't You_</div>
+<div><a href='https://tidal.com/album/188719926' target='_blank'>https://tidal.com/album/188719926</a></div>
+<div>SURL - 9subways</div>
+<div>SURL - The Lights Behind You</div>
+<div>SURL - Snow</div>
+<div>SURL - Candy</div>
+<div>SURL - Like Feathers</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188719926' target='_blank'><img src='https://resources.tidal.com/images/eaf1b654/d8c0/4e1e/89aa/a3381d766e4f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/1_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ1) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/설 (SURL)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
