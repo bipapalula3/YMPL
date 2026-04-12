@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 조성모 ( Tidal Jo Sung Mo )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 조성모 ( Tidal Jo Sung Mo )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/3a0727c0/831a/44d4/98ab/47abef5a55cd/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5670543' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 조성모</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>조성모 – 애절한 발라드로 90년대를 물들인 목소리, 'To Heaven'의 슬픔과 '후회'의 깊이를 노래하는 영원한 발라더</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jo Sung Mo</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Jo Sung Mo – A voice that colored the 90s with heartfelt ballads, an eternal balladeer singing the sorrow of 'To Heaven' and the depth of 'Regret'.</div><p>90년대 후반, 대한민국 가요계에 혜성처럼 등장한 발라드 가수, 조성모를 소개합니다. 특유의 애절한 목소리와 감성적인 멜로디는 수많은 이들의 마음을 사로잡았죠. 그의 음악은 단순한 유행을 넘어, 시대의 감성을 대변하는 아이콘이 되었습니다.</p><p>Let me introduce Jo Sung Mo, a ballad singer who emerged like a comet in the late 90s in the Korean music scene. His unique, sorrowful voice and emotional melodies captivated the hearts of many. His music has become an icon representing the sensibilities of an era, beyond mere trends.</p><p>✧</p><p>발라드의 새로운 지평을 열다</p><p>조성모는 데뷔와 동시에 폭발적인 인기를 얻으며 발라드 음악의 새로운 시대를 열었습니다. 뮤직비디오를 드라마타이즈 형식으로 제작하여 음악 외적인 볼거리를 제공하며 대중의 시선을 사로잡았죠. 그의 성공은 이후 많은 가수들에게 영향을 미치며, 발라드 시장의 성장에 기여했습니다.</p><p>Opening a New Horizon for Ballads</p><p>Jo Sung Mo gained explosive popularity upon his debut, opening a new era for ballad music. He captured the public's attention by producing music videos in a dramatized format, providing visual attractions beyond the music. His success influenced many singers afterward and contributed to the growth of the ballad market.</p><p>✧</p><p>감성을 자극하는 음악 세계</p><p>그의 음악은 사랑과 이별, 그리움 등 보편적인 감정을 섬세하게 표현하고 있습니다. 특히 조성모 특유의 호소력 짙은 목소리는 듣는 이들의 감정을 더욱 깊게 파고들죠. ‘세상의 이별’이나 ‘슬픈 기대’처럼, 그의 노래는 여전히 많은 사람들의 기억 속에 남아 있습니다.</p><p>A Musical World Stimulating Emotions</p><p>His music delicately expresses universal emotions such as love, separation, and longing. In particular, Jo Sung Mo's unique appealing voice penetrates the emotions of listeners even more deeply. Like 'Farewell of the World' or 'Sad Expectation,' his songs still remain in the memories of many people.</p><p>✧</p><p>다양한 음악적 시도</p><p>조성모는 발라드 외에도 팝, 록 등 다양한 장르에 도전하며 음악적 스펙트럼을 넓혀왔습니다. 리메이크 앨범을 통해 기존 곡을 자신만의 스타일로 재해석하기도 했죠. 이러한 시도는 그를 단순히 발라드 가수가 아닌, 다재다능한 아티스트로 자리매김하게 했습니다.</p><p>Diverse Musical Attempts</p><p>Jo Sung Mo has broadened his musical spectrum by challenging various genres such as pop and rock in addition to ballads. He also reinterpreted existing songs in his own style through remake albums. These attempts have established him not just as a ballad singer, but as a versatile artist.</p><p>✧</p><p>시대를 초월하는 감동</p><p>시간이 흘러도 조성모의 음악은 여전히 많은 사람들에게 깊은 감동과 위로를 선사합니다. 그의 노래는 단순한 유행을 넘어, 시대를 초월하는 가치를 지니고 있죠. 앞으로도 그의 음악이 오랫동안 사랑받으며, 우리들의 마음속에 영원히 기억되기를 바랍니다.</p><p>Timeless Emotion</p><p>Even as time passes, Jo Sung Mo's music continues to provide deep emotion and comfort to many people. His songs transcend mere trends and possess timeless value. I hope his music will be loved for a long time and be forever remembered in our hearts.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 조성모의 라이브 콘서트</div>
+<div><a href='https://tidal.com/album/367018264' target='_blank'>https://tidal.com/album/367018264</a></div>
+<div>Jo Sung Mo - 세상의 이별</div>
+<div>Jo Sung Mo - 슬픈 기대</div>
+<div>Jo Sung Mo - I love you for sentimental reasons(Laura Fygi)</div>
+<div>Jo Sung Mo - 밤이면 밤마다</div>
+<div>Jo Sung Mo - 후회</div>
+<div>Jo Sung Mo - To heaven (천국으로보낸 편지)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/367018264' target='_blank'><img src='https://resources.tidal.com/images/0d085777/9398/4aef/96ac/e3c6967fe013/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 달빛 경주</div>
+<div><a href='https://tidal.com/album/200309778' target='_blank'>https://tidal.com/album/200309778</a></div>
+<div>Jo Sung Mo - 달빛 경주</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200309778' target='_blank'><img src='https://resources.tidal.com/images/cb6ca3b1/37bb/4356/a0a0/ad9e4d22a3b8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 여름아 부탁해 (Original Television Soundtrack), Pt. 3</div>
+<div><a href='https://tidal.com/album/420973413' target='_blank'>https://tidal.com/album/420973413</a></div>
+<div>Jo Sung Mo - 기다린 날도 지워질 날도</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/420973413' target='_blank'><img src='https://resources.tidal.com/images/d7e0d916/0d70/4c43/9b75/97e1b29e74b9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Home for Summer Pt. 3 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/189388350' target='_blank'>https://tidal.com/album/189388350</a></div>
+<div>Jo Sung Mo - Days of longing, days to be forgotten</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189388350' target='_blank'><img src='https://resources.tidal.com/images/e4802e85/e339/43c0/b36c/db83c0513b49/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 하나뿐인 내편 (Original Television Soundtrack), Pt. 16</div>
+<div><a href='https://tidal.com/album/416374898' target='_blank'>https://tidal.com/album/416374898</a></div>
+<div>Jo Sung Mo - 매일 사랑 매일 이별 매일 그리움</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/416374898' target='_blank'><img src='https://resources.tidal.com/images/b8e38608/4031/4047/8a0f/17c1b8db37d6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The Third Charm (Original Television Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/188610120' target='_blank'>https://tidal.com/album/188610120</a></div>
+<div>Jo Sung Mo - Maybe We Are</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188610120' target='_blank'><img src='https://resources.tidal.com/images/5d0575c2/acf3/41b7/83a0/ee79105ae60c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] My Only One (KBS 2TV DRAMA) OST Part.16</div>
+<div><a href='https://tidal.com/album/189389139' target='_blank'>https://tidal.com/album/189389139</a></div>
+<div>Jo Sung Mo - Love, Everyday Goodbye and Missing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189389139' target='_blank'><img src='https://resources.tidal.com/images/cdb0faad/b894/4dde/8c71/54891070fd85/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Wind of Change</div>
+<div><a href='https://tidal.com/album/381013565' target='_blank'>https://tidal.com/album/381013565</a></div>
+<div>Jo Sung Mo - 유나야 Intro</div>
+<div>Jo Sung Mo - 유나야</div>
+<div>Jo Sung Mo - 첫사랑</div>
+<div>Jo Sung Mo - 나의 여신</div>
+<div>Jo Sung Mo - 너무 아프다고</div>
+<div>Jo Sung Mo - 나를 봐</div>
+<div>Jo Sung Mo - 추억의 책장</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381013565' target='_blank'><img src='https://resources.tidal.com/images/88a030bb/427a/4102/9ea6/5d2286d0d794/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] My First</div>
+<div><a href='https://tidal.com/album/30139179' target='_blank'>https://tidal.com/album/30139179</a></div>
+<div>Jo Sung Mo - Mr. Flower</div>
+<div>Jo Sung Mo - Thousand Kiss</div>
+<div>Jo Sung Mo - Tears in My Eyes</div>
+<div>Jo Sung Mo - As Time Goes By</div>
+<div>Jo Sung Mo - Unspoken Word</div>
+<div>Jo Sung Mo - Morning</div>
+<div>Jo Sung Mo - Gracie</div>
+<div>Jo Sung Mo - A Festival</div>
+<div>Jo Sung Mo - Be with Me</div>
+<div>Jo Sung Mo - I Need You</div>
+<div>Jo Sung Mo - Will You Marry Me</div>
+<div>Jo Sung Mo - The First Night</div>
+<div>Jo Sung Mo - One Love</div>
+<div>Jo Sung Mo - My Friend</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/30139179' target='_blank'><img src='https://resources.tidal.com/images/471cf084/f303/49dd/9e74/e400446796ad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2014] JO SUNG MO’s Special Single</div>
+<div><a href='https://tidal.com/album/216048959' target='_blank'>https://tidal.com/album/216048959</a></div>
+<div>Jo Sung Mo - Beautiful Girl</div>
+<div>Jo Sung Mo - Rumor In The City</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216048959' target='_blank'><img src='https://resources.tidal.com/images/b9f380c8/2622/4f54/b7ba/ecc96f0fd67f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Endless Love (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/339833175' target='_blank'>https://tidal.com/album/339833175</a></div>
+<div>Jo Sung Mo - I love you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339833175' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 결혼의 여신 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/217228660' target='_blank'>https://tidal.com/album/217228660</a></div>
+<div>Jo Sung Mo - Someday Ballad Version</div>
+<div>Jo Sung Mo - Someday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/217228660' target='_blank'><img src='https://resources.tidal.com/images/ff67371c/233f/4099/a5cb/131eb2da2415/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 커피하우스 (Original Television Soundtrack) Pt.1</div>
+<div><a href='https://tidal.com/album/189707228' target='_blank'>https://tidal.com/album/189707228</a></div>
+<div>Jo Sung Mo - 웃을께</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189707228' target='_blank'><img src='https://resources.tidal.com/images/812b1cca/2fad/47a6/be0f/e3e30aacd7bc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 바람의 화원 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/184928468' target='_blank'>https://tidal.com/album/184928468</a></div>
+<div>Jo Sung Mo - 바람의 노래</div>
+<div>Jo Sung Mo - 그리움(이루어질 수 없는...)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184928468' target='_blank'><img src='https://resources.tidal.com/images/3bbc819e/0040/4b56/a344/7666aeee9c16/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] 눈의 여왕 Love Theme Original Television Soundtrack</div>
+<div><a href='https://tidal.com/album/124653346' target='_blank'>https://tidal.com/album/124653346</a></div>
+<div>Jo Sung Mo - 사랑.. 눈물겹다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/124653346' target='_blank'><img src='https://resources.tidal.com/images/d0e7eceb/86ec/4d33/ae19/3f8bf6e71ac8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] 가인 (歌人)</div>
+<div><a href='https://tidal.com/album/224369908' target='_blank'>https://tidal.com/album/224369908</a></div>
+<div>Jo Sung Mo - 피아노</div>
+<div>Jo Sung Mo - 내 것이라면</div>
+<div>Jo Sung Mo - 왜</div>
+<div>Jo Sung Mo - 차라리</div>
+<div>Jo Sung Mo - 사랑할 때 버려야 할 몇가지</div>
+<div>Jo Sung Mo - 사랑은 항상 다시 오죠</div>
+<div>Jo Sung Mo - 버릇처럼</div>
+<div>Jo Sung Mo - 그대뿐이어서</div>
+<div>Jo Sung Mo - 사랑하세요</div>
+<div>Jo Sung Mo - 어느 개인 날</div>
+<div>Jo Sung Mo - 파트너</div>
+<div>Jo Sung Mo - 네 멋대로 해라</div>
+<div>Jo Sung Mo - 천사를 위한 발라드</div>
+<div>Jo Sung Mo - Fly Me to the Moon (Intro)</div>
+<div>Jo Sung Mo - Fly Me to the Moon (Tribute to Frank Sinatra)</div>
+<div>Jo Sung Mo - Outro</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/224369908' target='_blank'><img src='https://resources.tidal.com/images/43264a3c/0cae/4dcf/92ba/57a1672ca5ae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] Classic</div>
+<div><a href='https://tidal.com/album/294894534' target='_blank'>https://tidal.com/album/294894534</a></div>
+<div>Jo Sung Mo - 가시나무</div>
+<div>Jo Sung Mo - The Way</div>
+<div>Jo Sung Mo - 깊은 밤을 날아서</div>
+<div>Jo Sung Mo - 1004</div>
+<div>Jo Sung Mo - 늘 지금처럼</div>
+<div>Jo Sung Mo - 진</div>
+<div>Jo Sung Mo - 잃어버린 우산</div>
+<div>Jo Sung Mo - 너를 사랑하고도</div>
+<div>Jo Sung Mo - 입영열차 안에서</div>
+<div>Jo Sung Mo - 춘천가는 기차</div>
+<div>Jo Sung Mo - 비창</div>
+<div>Jo Sung Mo - 미소를 띄우며 너를 보낸 그 모습처럼</div>
+<div>Jo Sung Mo - 세월이 가면</div>
+<div>Jo Sung Mo - 그 아픔까지 사랑한거야</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/294894534' target='_blank'><img src='https://resources.tidal.com/images/36734d3e/cf57/46f0/bcbb/de8fa0cf56a9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] 이소라의 프로포즈 1집</div>
+<div><a href='https://tidal.com/album/223262998' target='_blank'>https://tidal.com/album/223262998</a></div>
+<div>Jo Sung Mo - 미소속에 비친 그대</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223262998' target='_blank'><img src='https://resources.tidal.com/images/2bfcd271/175a/4f48/a603/4148e92878c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1999] For Your Soul</div>
+<div><a href='https://tidal.com/album/262328915' target='_blank'>https://tidal.com/album/262328915</a></div>
+<div>Jo Sung Mo - For Your Soul (슬픈 영혼식)</div>
+<div>Jo Sung Mo - 상처(像處)</div>
+<div>Jo Sung Mo - You ＆ I (Slow)</div>
+<div>Jo Sung Mo - 화살기도</div>
+<div>Jo Sung Mo - Sweet Baby</div>
+<div>Jo Sung Mo - Evergreen</div>
+<div>Jo Sung Mo - Nightmare</div>
+<div>Jo Sung Mo - Love Song</div>
+<div>Jo Sung Mo - You ＆ I (Fast)</div>
+<div>Jo Sung Mo - 야상곡</div>
+<div>Jo Sung Mo - 마지막 일기</div>
+<div>Jo Sung Mo - Rainy Dreams</div>
+<div>Jo Sung Mo - For Your Soul (Video Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/262328915' target='_blank'><img src='https://resources.tidal.com/images/c5185475/4f28/462f/b44c/b6473fb7dfac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] To Heaven</div>
+<div><a href='https://tidal.com/album/299475578' target='_blank'>https://tidal.com/album/299475578</a></div>
+<div>Jo Sung Mo - To Heaven</div>
+<div>Jo Sung Mo - 후회</div>
+<div>Jo Sung Mo - 불멸의 사랑</div>
+<div>Jo Sung Mo - 세상의 이별</div>
+<div>Jo Sung Mo - 마지막 까지</div>
+<div>Jo Sung Mo - 슬픈기대</div>
+<div>Jo Sung Mo - 마지막 까지 (Ballad)</div>
+<div>Jo Sung Mo - Best</div>
+<div>Jo Sung Mo - Two Men Story</div>
+<div>Jo Sung Mo - To Heaven (Reprise)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/299475578' target='_blank'><img src='https://resources.tidal.com/images/3a0727c0/831a/44d4/98ab/47abef5a55cd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/조성모 (Jo Sung Mo)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
