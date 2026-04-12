@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 스윙스 ( Tidal Swings )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 스윙스 ( Tidal Swings )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/f96b6e6d/184f/4f67/990f/7a749d246c4d/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6164431 ---' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 스윙스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>스윙스 (Swings) - 'Groovy'한 에너지와 진솔함, 힙합 씬의 논쟁적인 아이콘이자 끊임없이 진화하는 아티스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Swings</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Swings - 'Groovy' energy and sincerity, a controversial icon of the hip-hop scene and an ever-evolving artist</div><p>대한민국 힙합 씬에서 독보적인 존재감을 자랑하는 스윙스! 그는 거침없는 랩 실력과 솔직한 가사로 많은 팬들의 사랑을 받고 있어요. 끊임없이 변화를 시도하며 자신만의 음악 세계를 구축해나가고 있답니다.</p><p>Swings boasts an unrivaled presence in the Korean hip-hop scene! He is loved by many fans for his unrestrained rap skills and honest lyrics. He is constantly trying to change and building his own musical world.</p><p>✧</p><p>힙합 괴물의 탄생</p><p>스윙스는 독특한 플로우와 강력한 랩 스킬로 데뷔 초부터 힙합 팬들의 주목을 받았어요. 그는 자신감 넘치는 태도와 개성 강한 음악 스타일로 빠르게 입지를 다졌답니다. 끊임없이 새로운 시도를 하며 자신만의 영역을 넓혀가는 모습이 인상적이에요.</p><p>The Birth of a Hip-Hop Monster</p><p>Swings gained attention from hip-hop fans from his debut with his unique flow and powerful rap skills. He quickly established himself with his confident attitude and distinctive musical style. His continuous attempts to innovate and expand his own realm are impressive.</p><p>✧</p><p>음악적 스펙트럼과 퍼포먼스</p><p>스윙스의 음악은 특정 장르에 얽매이지 않고 다양한 스타일을 넘나드는 것이 특징이에요. 그는 강렬한 랩은 물론, 감성적인 보컬과 멜로디를 선보이며 폭넓은 음악적 스펙트럼을 보여줘요. 무대 위에서 뿜어져 나오는 그의 에너지와 카리스마는 관객들을 압도한답니다.</p><p>Musical Spectrum and Performance</p><p>Swings' music is characterized by its ability to cross various styles without being bound by a specific genre. He showcases a broad musical spectrum, presenting intense rap as well as emotional vocals and melodies. The energy and charisma he exudes on stage overwhelm the audience.</p><p>✧</p><p>논쟁과 성장의 발자취</p><p>스윙스는 때로는 논란의 중심에 서기도 하지만, 자신의 생각을 솔직하게 표현하는 것을 두려워하지 않아요. 이러한 솔직함은 그의 음악에 고스란히 담겨 팬들에게 진정성으로 다가가죠. 끊임없는 자기반성과 성장을 통해 더욱 깊이 있는 음악을 선보이고 있답니다.</p><p>The Footsteps of Controversy and Growth</p><p>Swings sometimes finds himself at the center of controversy, but he is not afraid to express his thoughts honestly. This honesty is reflected in his music and resonates with fans. He continues to showcase deeper music through constant self-reflection and growth.</p><p>✧</p><p>힙합 씬의 현재진행형 아이콘</p><p>스윙스는 앞으로도 끊임없이 변화하고 발전하는 모습을 보여줄 것으로 기대돼요. 그는 힙합 씬에 새로운 영감을 불어넣고, 자신만의 독창적인 음악 세계를 더욱 확장해나갈 거예요. 그의 음악 여정은 현재진행형이며, 앞으로 어떤 모습을 보여줄지 더욱 기대가 됩니다.</p><p>An Ongoing Icon of the Hip-Hop Scene</p><p>Swings is expected to continue to show a constantly changing and developing image. He will breathe new inspiration into the hip-hop scene and further expand his unique musical world. His musical journey is ongoing, and we look forward to seeing what he will show us in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Fire</div>
+<div><a href='https://tidal.com/album/425874622' target='_blank'>https://tidal.com/album/425874622</a></div>
+<div>Swings - Keep Going 2</div>
+<div>Swings - The Zone(Explicit)</div>
+<div>Swings - Still Swings(Explicit)</div>
+<div>Swings - Blues Freestyle(Explicit)</div>
+<div>Swings - Go(Explicit)</div>
+<div>Swings - Love It (Feat. INJAE)(Explicit)</div>
+<div>Swings - Peace</div>
+<div>Swings - Groovy(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/425874622' target='_blank'><img src='https://resources.tidal.com/images/4f724743/69f2/45eb/921f/c25f69d6387a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Upgrade V</div>
+<div><a href='https://tidal.com/album/349803140' target='_blank'>https://tidal.com/album/349803140</a></div>
+<div>Swings - JO JUNGSIK Doesn’t Seem To Like Me</div>
+<div>Swings - FOREVER (Prod. producerX)(Explicit)</div>
+<div>Swings - HALLELUJAH (Feat. OKASHII) (Prod. Danny Hong)(Explicit)</div>
+<div>Swings - PORN FLICK (Feat. YANGHONGWON, Street Baby) (Prod. Matt)(Explicit)</div>
+<div>Swings - BEAST MODE (Feat. Chillin Homie, DAMINI) (Prod. Black Nut, Matt)</div>
+<div>Swings - THE FUTURE (Feat. Raf Sandou) (Prod. SHREDDED)(Explicit)</div>
+<div>Swings - FOREVER IN THE AIR (Prod. Wiz World)</div>
+<div>Swings - CONCERTA FREESTYLE (Prod. hyeminsong)</div>
+<div>Swings - HAHA MENTORING SWINGS</div>
+<div>Swings - WORK(Explicit)</div>
+<div>Swings - 1st GENERATION (Prod. Jeffrey White)</div>
+<div>Swings - ALL DAY (Feat. Yoon Da Hye) (Prod. sAewoo)</div>
+<div>Swings - SAME O SAME O (Feat. MASON HOME, Ksmartboi, Yoon Da Hye) (Prod. Matt)</div>
+<div>Swings - GOT YOU (Feat. THAMA) (Prod. Crush, shinjihang, Jeffrey White)</div>
+<div>Swings - CAN YOU HEAR ME- 2024 (Feat. Crush) (Prod. YEOHO)</div>
+<div>Swings - JUMP (Prod. shinjihang)(Explicit)</div>
+<div>Swings - TO YOU, TO ME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/349803140' target='_blank'><img src='https://resources.tidal.com/images/b25b9181/ead8/42f3/b3eb/88e921aed82c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Monthly AP - March, 2024</div>
+<div><a href='https://tidal.com/album/354259347' target='_blank'>https://tidal.com/album/354259347</a></div>
+<div>Swings, INJAE, Yoon Da Hye - My Zone (Prod. tuna.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/354259347' target='_blank'><img src='https://resources.tidal.com/images/da740fcd/d486/4042/b933/b109208fdc27/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Monthly AP - September, 2.0</div>
+<div><a href='https://tidal.com/album/318637488' target='_blank'>https://tidal.com/album/318637488</a></div>
+<div>Swings - Korean Copycat</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318637488' target='_blank'><img src='https://resources.tidal.com/images/a30d8794/ace1/470b/9f1d/efcaf46e3b73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Upgrade Ⅳ</div>
+<div><a href='https://tidal.com/album/216141483' target='_blank'>https://tidal.com/album/216141483</a></div>
+<div>Swings - The Dance</div>
+<div>Swings - Stay Fresh</div>
+<div>Swings - Limit (Feat. Bassagong)</div>
+<div>Swings - I Love You</div>
+<div>Swings - Camera Freestyle</div>
+<div>Swings - You Should Know</div>
+<div>Swings - You Don't Know (Feat. JUSTHIS)</div>
+<div>Swings - Mental Of Winner (Feat. Lil tachi)</div>
+<div>Swings - My Heaven (Feat. YUNHWAY, Jhnovr)</div>
+<div>Swings - Like A Boxer</div>
+<div>Swings - Still Got Love (Feat. Gaeko)</div>
+<div>Swings - Nothing Is Impossible (Feat. C JAMM)</div>
+<div>Swings - I Am A (Functional) Alcoholic</div>
+<div>Swings - Super Real</div>
+<div>Swings - Break Your Face (Feat. Owen)</div>
+<div>Swings - Your Energy (Feat. YUNHWAY, Han Yo Han)</div>
+<div>Swings - 5, 4, 3, 2, 1</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216141483' target='_blank'><img src='https://resources.tidal.com/images/0d470cfc/b453/4aa1/9b50/340cbc66c3d4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Whistle</div>
+<div><a href='https://tidal.com/album/216146929' target='_blank'>https://tidal.com/album/216146929</a></div>
+<div>Swings, Han Yo Han - Whistle (Feat. nafla, CHANGMO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216146929' target='_blank'><img src='https://resources.tidal.com/images/efb2f0ee/4971/4805/98b4/d72b6eeb9c93/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Stuck Together</div>
+<div><a href='https://tidal.com/album/216142804' target='_blank'>https://tidal.com/album/216142804</a></div>
+<div>Swings, Han Yo Han - Fake Rock Star (Feat. NO-EL)</div>
+<div>Swings, Han Yo Han - Usain Bolt (Feat. Young B)</div>
+<div>Swings, Han Yo Han - Whistle (Feat. nafla, CHANGMO)</div>
+<div>Swings, Han Yo Han - Tough</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216142804' target='_blank'><img src='https://resources.tidal.com/images/c0c40d99/c97b/4548/8490/97aac62e5603/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Mood Swings (Remastered)</div>
+<div><a href='https://tidal.com/album/215976305' target='_blank'>https://tidal.com/album/215976305</a></div>
+<div>Swings - Thank Yous & Sorrys</div>
+<div>Swings - Everybody Hates Swings</div>
+<div>Swings - I'mma Overcome</div>
+<div>Swings - Hate You</div>
+<div>Swings - Mathematical Madness (Feat. Verbal Jint)</div>
+<div>Swings - My Ballad</div>
+<div>Swings - Hangover</div>
+<div>Swings - Run Away</div>
+<div>Swings - Jealousy</div>
+<div>Swings - I Don't Give A Fuck</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215976305' target='_blank'><img src='https://resources.tidal.com/images/bea650f3/ab9f/4200/ba0e/b77d2011d382/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Affirmations From Swings</div>
+<div><a href='https://tidal.com/album/216255454' target='_blank'>https://tidal.com/album/216255454</a></div>
+<div>Swings - Wealth Affirmations</div>
+<div>Swings - Gratitude Affirmations</div>
+<div>Swings - I AM Affirmations</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216255454' target='_blank'><img src='https://resources.tidal.com/images/f303383b/d776/40b8/b4b5/4f134979cf90/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Upgrade III</div>
+<div><a href='https://tidal.com/album/216045260' target='_blank'>https://tidal.com/album/216045260</a></div>
+<div>Swings - Upgrade III (Prod. By Kim Sin)</div>
+<div>Swings - Jon Snow (Feat. DEAN) (Prod. By Lnb)</div>
+<div>Swings - Shit Is Real (Feat. The Quiett, GIRIBOY, Kid Milli) (Prod. By IOAH)</div>
+<div>Swings - 2007 (Prod. By IOAH)</div>
+<div>Swings - Master Mind (Prod. By Squabby Doo)</div>
+<div>Swings - Young CEO (Feat. Bully Da Ba$tard) (Prod. By Squabby Doo)</div>
+<div>Swings - Octagon (Feat. NO-EL) (Prod. By IOAH)</div>
+<div>Swings - Behind Closed Doors (Feat. Tommy Strate) (Prod. By Offair)</div>
+<div>Swings - Wave (Prod. By Kim Sin)</div>
+<div>Swings - Gotnolingual</div>
+<div>Swings - Visit You (Feat. Colde) (Prod. By IOAH)</div>
+<div>Swings - Medical Records (Prod. By GRAY)</div>
+<div>Swings - Holy (Prod. By Genius Nochang)</div>
+<div>Swings - Everday Intro</div>
+<div>Swings - Everday (Feat. Verbal Jint) (Prod. By IOAH)</div>
+<div>Swings - The End</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216045260' target='_blank'><img src='https://resources.tidal.com/images/f96b6e6d/184f/4f67/990f/7a749d246c4d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Upgrade 0</div>
+<div><a href='https://tidal.com/album/216016986' target='_blank'>https://tidal.com/album/216016986</a></div>
+<div>Swings - Tumor (Prod. By sAewoo)</div>
+<div>Swings - Basic (Feat. YUNHWAY) (Prod. By sAewoo)</div>
+<div>Swings - Yea Yea (Feat. Jhnovr) (Prod. By sAewoo)</div>
+<div>Swings - The Winning Side (Feat. Kid Milli) (Prod. By sAewoo)</div>
+<div>Swings - Self Talk (Prod. By sAewoo)</div>
+<div>Swings - Round & Round (Prod. By sAewoo)</div>
+<div>Swings - Nanana (Feat. Han Yo Han) (Prod. By sAewoo)</div>
+<div>Swings - Nothing Lasts Forever (Prod. By sAewoo)</div>
+<div>Swings - Better Days (Prod. By sAewoo)</div>
+<div>Swings - Like You (Prod. By sAewoo)</div>
+<div>Swings - Diamond (Prod. By sAewoo)</div>
+<div>Swings - Life (Prod. By sAewoo)</div>
+<div>Swings - Thank You, World (Prod. By sAewoo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216016986' target='_blank'><img src='https://resources.tidal.com/images/53b73794/8be1/4150/888f/7d626dfe2d05/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The Intr0</div>
+<div><a href='https://tidal.com/album/215971288' target='_blank'>https://tidal.com/album/215971288</a></div>
+<div>Swings - Effortless (Feat. YUNHWAY) (Prod. By sAewoo)</div>
+<div>Swings - Eyes On Me (Prod. By sAewoo)</div>
+<div>Swings - Social Media Detoxifying Love (Prod. By sAewoo)</div>
+<div>Swings - I Like That (Prod. By sAewoo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215971288' target='_blank'><img src='https://resources.tidal.com/images/e2ccb67a/8637/452e/bd21/f492d0bb0722/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Keep Going</div>
+<div><a href='https://tidal.com/album/216017074' target='_blank'>https://tidal.com/album/216017074</a></div>
+<div>Swings - Keep Going (Feat. BewhY, nafla, ZICO) (Prod. By IOAH)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216017074' target='_blank'><img src='https://resources.tidal.com/images/5daef49d/5170/4bf3/8ee5/ee63be28cc89/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Dingo X Indigo Music</div>
+<div><a href='https://tidal.com/album/216120457' target='_blank'>https://tidal.com/album/216120457</a></div>
+<div>Giriboy, Kid Milli, NO-EL, Swings - flex (Prod. By GIRIBOY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216120457' target='_blank'><img src='https://resources.tidal.com/images/7725428d/1962/4ae8/953f/331a1ba40729/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Crumbs Mixtape Vol.1</div>
+<div><a href='https://tidal.com/album/216123155' target='_blank'>https://tidal.com/album/216123155</a></div>
+<div>Swings - Oh Shit (Feat. Nochang, Kid Milli) (Prod. By Nochang)</div>
+<div>Swings - Real Talk (Prod. By IOAH)</div>
+<div>Swings - Special (Prod. By IOAH)</div>
+<div>Swings - Perfect (Feat. Uneducated Kid) (Prod. By Kim Sin)</div>
+<div>Swings - The Art Of Not Giving A Fuck (Prod. By IOAH)</div>
+<div>Swings - You Know (Prod. By Offair)</div>
+<div>Swings - The Uninvited (Prod. By Offair)</div>
+<div>Swings - Lucy (Prod. By IOAH)</div>
+<div>Swings - Unbreakable (Feat. Woo Won Jae) (Prod. By IOAH)</div>
+<div>Swings - Shut The Fuck Up (Feat. Bully Da Ba$tard) (Prod. By Offair)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216123155' target='_blank'><img src='https://resources.tidal.com/images/76c8e8cb/55e5/4811/acc4/943556d565e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Umm Umm</div>
+<div><a href='https://tidal.com/album/216011361' target='_blank'>https://tidal.com/album/216011361</a></div>
+<div>Jimmy Paige, Giriboy, BlackNut, BILL STAX, NOCHANG, Swings - Umm Umm</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216011361' target='_blank'><img src='https://resources.tidal.com/images/04e878ca/a339/49a1/8b67/837541247f1e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] In The End</div>
+<div><a href='https://tidal.com/album/216094227' target='_blank'>https://tidal.com/album/216094227</a></div>
+<div>Swings - In The End (Feat. JUSTHIS) (Prod. By Nochang)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216094227' target='_blank'><img src='https://resources.tidal.com/images/8d3f6337/dbd2/42f0/9cb4/6609a1bb2a3a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Clock Out</div>
+<div><a href='https://tidal.com/album/216075503' target='_blank'>https://tidal.com/album/216075503</a></div>
+<div>Swings - Clock Out (Feat. Jay Park, Crush)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216075503' target='_blank'><img src='https://resources.tidal.com/images/c02de1c9/6687/4f02/8fec/edff4cd1166a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] [Levitate 3] Mixtape</div>
+<div><a href='https://tidal.com/album/216009533' target='_blank'>https://tidal.com/album/216009533</a></div>
+<div>Swings - The Difference in Caliber 3</div>
+<div>Swings - Black</div>
+<div>Swings - The Creation of Reality</div>
+<div>Swings - Feelin' Myself</div>
+<div>Swings - Take Off (Feat. XQ)</div>
+<div>Swings - Getting Better (Feat. Forrest, Kid Milli, Kyu Young, Changstarr)</div>
+<div>Swings - Boss (Feat. BewhY)</div>
+<div>Swings - Follow Me</div>
+<div>Swings - Natural (Feat. Lovey)</div>
+<div>Swings - Hallelujah</div>
+<div>Swings - Beautiful</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216009533' target='_blank'><img src='https://resources.tidal.com/images/baa45b19/024b/4df1/a382/95709d9e7f10/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] [Levitate 1] Mixtape</div>
+<div><a href='https://tidal.com/album/216009792' target='_blank'>https://tidal.com/album/216009792</a></div>
+<div>Swings - The Difference in Caliber</div>
+<div>Swings - Original Energy (Feat. VASCO, C Jamm)</div>
+<div>Swings - Money</div>
+<div>Swings - The Nail that Stuck Out</div>
+<div>Swings - 92 (Feat. Black Nut)</div>
+<div>Swings - Watch (Feat. Black Nut)</div>
+<div>Swings - 2015 is Also My Year (Feat. BEWHY)</div>
+<div>Swings - A-Uh-Ah (Feat. Vasco, C Jamm)</div>
+<div>Swings - You Can't Say a Thing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216009792' target='_blank'><img src='https://resources.tidal.com/images/295cf084/840a/4ec1/8a67/b154af540664/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Your Soul</div>
+<div><a href='https://tidal.com/album/216011293' target='_blank'>https://tidal.com/album/216011293</a></div>
+<div>Swings - Your Soul</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216011293' target='_blank'><img src='https://resources.tidal.com/images/2ac5ef5b/0872/4d9a/a739/b49ea6a2f059/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Mood Swings II Part. 3 _ Psychotherapy</div>
+<div><a href='https://tidal.com/album/216011119' target='_blank'>https://tidal.com/album/216011119</a></div>
+<div>Swings - Doo Doo</div>
+<div>Swings - On My Way (Feat. GRAY&BewhY)</div>
+<div>Swings - 24</div>
+<div>Swings - Your Soul</div>
+<div>Swings - Yuk JiDam</div>
+<div>Swings - No Answer</div>
+<div>Swings - (Bonus Track) More</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216011119' target='_blank'><img src='https://resources.tidal.com/images/8a146915/a26d/4693/b080/d0af21a06d56/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Levitate 2</div>
+<div><a href='https://tidal.com/album/216009875' target='_blank'>https://tidal.com/album/216009875</a></div>
+<div>Swings - The Difference in Caliber 2</div>
+<div>Swings - Never-dying Pig</div>
+<div>Swings - The Next Level (Feat. G2)</div>
+<div>Swings - The Tipping Point (Feat. C Jamm, BewhY)</div>
+<div>Swings - Gift (Feat. Don Mills)</div>
+<div>Swings - I Don't</div>
+<div>Swings - My Little Brothers (Feat. C Jamm)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216009875' target='_blank'><img src='https://resources.tidal.com/images/8c0a0cdc/c542/42d1/bb2f/4db973baffc5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 회색도시 (2014 월간 윤종신 9월호)</div>
+<div><a href='https://tidal.com/album/189567074' target='_blank'>https://tidal.com/album/189567074</a></div>
+<div>Yoon Jong Shin, Swings - 회색도시 (2014 월간 윤종신 9월호)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189567074' target='_blank'><img src='https://resources.tidal.com/images/a4bcc983/602f/4275/8dfb/bf41b2748dbc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 역주행</div>
+<div><a href='https://tidal.com/album/196094918' target='_blank'>https://tidal.com/album/196094918</a></div>
+<div>Swings - 역주행 (Feat. Dok2 & 천재노창)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196094918' target='_blank'><img src='https://resources.tidal.com/images/8b9b3e41/e699/4531/816d/aac5882466bf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Vintage Swings</div>
+<div><a href='https://tidal.com/album/196097291' target='_blank'>https://tidal.com/album/196097291</a></div>
+<div>Swings - Sexy Pig Forever</div>
+<div>Swings - My Ballad</div>
+<div>Swings - U Alright-</div>
+<div>Swings - Damn 2014</div>
+<div>Swings - Got your back 2014</div>
+<div>Swings - I′ll be there 2014</div>
+<div>Swings - F--k me 2014</div>
+<div>Swings - Rap star</div>
+<div>Swings - Shine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196097291' target='_blank'><img src='https://resources.tidal.com/images/0bb4a123/a5c5/440a/aaee/4b3e8e9b2709/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Rap Star</div>
+<div><a href='https://tidal.com/album/196096499' target='_blank'>https://tidal.com/album/196096499</a></div>
+<div>Swings - Rap Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196096499' target='_blank'><img src='https://resources.tidal.com/images/b33f3ade/d1fb/4bba/bcf6/77048071f02b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2014] Rain Showers</div>
+<div><a href='https://tidal.com/album/215931756' target='_blank'>https://tidal.com/album/215931756</a></div>
+<div>Swings, Giriboy, Cjamm - Rain Showers</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931756' target='_blank'><img src='https://resources.tidal.com/images/f5ae9589/e0d1/4abe/93a8/d26b753987c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Pool Party</div>
+<div><a href='https://tidal.com/album/196095315' target='_blank'>https://tidal.com/album/196095315</a></div>
+<div>Swings - Pool Party</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196095315' target='_blank'><img src='https://resources.tidal.com/images/64fbb3da/5ddf/45de/a0a0/76709dde703b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Mood Swings II, Pt. 2_ Obsessive Compulsive Disorder</div>
+<div><a href='https://tidal.com/album/196095130' target='_blank'>https://tidal.com/album/196095130</a></div>
+<div>Swings - I am what I am</div>
+<div>Swings - A Promise to you</div>
+<div>Swings - Her Number</div>
+<div>Swings - Gravity</div>
+<div>Swings - The Wrong Way</div>
+<div>Swings - I Can′t Stop Thinking</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196095130' target='_blank'><img src='https://resources.tidal.com/images/6a38c287/7ccc/4a49/ae25/bddba72bafbc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Mood Swings II, Pt. 1_ Major Depression</div>
+<div><a href='https://tidal.com/album/188891590' target='_blank'>https://tidal.com/album/188891590</a></div>
+<div>Swings - Go Home(Explicit)</div>
+<div>Swings, GRAY - Victorious 2 (feat. Gray)(Explicit)</div>
+<div>Swings, LOVEY - Major Depression (feat. Lovey)(Explicit)</div>
+<div>Swings - I Need a Break</div>
+<div>Swings, Brother Su - Take Care of Me (feat. Brother Su)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188891590' target='_blank'><img src='https://resources.tidal.com/images/f8c65e53/fd4b/4c47/9ed9/4bd07a1160c9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Just</div>
+<div><a href='https://tidal.com/album/215973902' target='_blank'>https://tidal.com/album/215973902</a></div>
+<div>Swings, Giriboy, BILL STAX, C Jamm, NOCHANG - Just</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215973902' target='_blank'><img src='https://resources.tidal.com/images/8fbc8586/e388/4ce1/a518/e88136d6c7ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Hongkiyoung #2</div>
+<div><a href='https://tidal.com/album/215973814' target='_blank'>https://tidal.com/album/215973814</a></div>
+<div>Swings, Giriboy, NOCHANG - Hongkiyoung #2</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215973814' target='_blank'><img src='https://resources.tidal.com/images/e5f06336/5d94/4153/90cb/14aa2bf96223/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Fallin`</div>
+<div><a href='https://tidal.com/album/188891585' target='_blank'>https://tidal.com/album/188891585</a></div>
+<div>Swings, Jay Park - Fallin' (feat. Jay Park)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188891585' target='_blank'><img src='https://resources.tidal.com/images/6a1c71e9/47d9/46ae/9f6e/41532572c409/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Be Right Back</div>
+<div><a href='https://tidal.com/album/196097878' target='_blank'>https://tidal.com/album/196097878</a></div>
+<div>Swings - Be Right Back</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196097878' target='_blank'><img src='https://resources.tidal.com/images/076d17c4/544a/427c/a9bf/2ea39fd71466/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 줄래 (feat. Seo In Guk)</div>
+<div><a href='https://tidal.com/album/189033511' target='_blank'>https://tidal.com/album/189033511</a></div>
+<div>Swings - 줄래 (feat. Seo In Guk)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189033511' target='_blank'><img src='https://resources.tidal.com/images/7cc1febc/43e9/4d54/9210/56cae3f1875d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] Swings #1 Mixtape Vol.II</div>
+<div><a href='https://tidal.com/album/189140291' target='_blank'>https://tidal.com/album/189140291</a></div>
+<div>Swings - Fly Back</div>
+<div>Swings - No Mercy(Explicit)</div>
+<div>Swings - Still Not Over (feat. BlackNut, Nochang)(Explicit)</div>
+<div>Swings - 못 이겨 (feat. GRAY)(Explicit)</div>
+<div>Swings - Love Yourself</div>
+<div>Swings - The King Is Back II(Explicit)</div>
+<div>Swings - My Way (feat. Lovey)</div>
+<div>Swings - 듣고 있어-</div>
+<div>Swings - 2 Cool 4 School(Explicit)</div>
+<div>Swings - Confessions (feat. ELO)</div>
+<div>Swings - 야 그냥 해 (feat. DEEPFLOW)(Explicit)</div>
+<div>Swings - 양아치 (feat. BlackNut, GIRIBOY)</div>
+<div>Swings - 국초세대</div>
+<div>Swings - 자신감 과다증(Explicit)</div>
+<div>Swings - 갑(Explicit)</div>
+<div>Swings - 엄지 두 개 (feat. Lovey, BrotherSu)</div>
+<div>Swings - 답답해</div>
+<div>Swings - 정복</div>
+<div>Swings - 28살 쯤에</div>
+<div>Swings - Hard to Understand (feat. Nochang)</div>
+<div>Swings - Let Me Be Me(Explicit)</div>
+<div>Swings - 내 몸이 불 타 오르고 있어 (19세 Version)(Explicit)</div>
+<div>Swings - 김윤석(Explicit)</div>
+<div>Swings - 찢어 (feat. BlackNut)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189140291' target='_blank'><img src='https://resources.tidal.com/images/356cf02d/c2ae/4443/ad45/ed2ea1d1dc8f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Incarnation of money (Original Soundtrack) Pt.5</div>
+<div><a href='https://tidal.com/album/215783374' target='_blank'>https://tidal.com/album/215783374</a></div>
+<div>P-Type, Swings - Money (Feat. Kang min hee of Miss $)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215783374' target='_blank'><img src='https://resources.tidal.com/images/e868d5e1/c798/4abb/8294/2d953d5e9a8c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] A Real Lady</div>
+<div><a href='https://tidal.com/album/189051688' target='_blank'>https://tidal.com/album/189051688</a></div>
+<div>Swings - A Real Lady (feat. Beenzino, GRAY, Zion.T)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189051688' target='_blank'><img src='https://resources.tidal.com/images/1fd900ea/50a6/4391/82ba/7cb7e7631fbf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] We Love Tapsonic, Pt.6</div>
+<div><a href='https://tidal.com/album/189088500' target='_blank'>https://tidal.com/album/189088500</a></div>
+<div>Swings - Grab a Girl</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189088500' target='_blank'><img src='https://resources.tidal.com/images/a78d3723/bba8/421f/a9d9/4b1baf5b9885/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Lonely</div>
+<div><a href='https://tidal.com/album/166228790' target='_blank'>https://tidal.com/album/166228790</a></div>
+<div>Swings - Lonely (feat. Yoon Jong Shin)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/166228790' target='_blank'><img src='https://resources.tidal.com/images/63900456/18b9/4905/99f8/e0012dabbe85/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Upgrade II</div>
+<div><a href='https://tidal.com/album/215931772' target='_blank'>https://tidal.com/album/215931772</a></div>
+<div>Swings - The King Is Back</div>
+<div>Swings - Now, It's Your Turn (Feat. Vasco)</div>
+<div>Swings - It`s Just Music</div>
+<div>Swings - Forget about Work (Feat. Dok2, The Quiett, Dana)</div>
+<div>Swings - Change`D` The Game (Feat. Verbal Jint)</div>
+<div>Swings - Blow You Away</div>
+<div>Swings - Don't Piss Me Off (Feat. Big Tray)</div>
+<div>Swings - For The Hustlers</div>
+<div>Swings - From Street Punk To Hustler</div>
+<div>Swings - Touch You</div>
+<div>Swings - You Wanna Be A Star- (Feat. Cho PD)</div>
+<div>Swings - Spit a Punchline Ⅱ</div>
+<div>Swings - Be Gone, Then (Feat. Zion.T)</div>
+<div>Swings - It's All Good (Feat. Tyra)</div>
+<div>Swings - Welcome To The Jungle (Feat. B-Free)</div>
+<div>Swings - My First Life Review</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931772' target='_blank'><img src='https://resources.tidal.com/images/8f9382b0/4f48/410e/97dc/f5c7808130e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] The King Is Back</div>
+<div><a href='https://tidal.com/album/215931810' target='_blank'>https://tidal.com/album/215931810</a></div>
+<div>Swings - The King Is Back</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931810' target='_blank'><img src='https://resources.tidal.com/images/169c7f57/1569/4320/8d9e/621dc9a1d7cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Swings Rising</div>
+<div><a href='https://tidal.com/album/215931808' target='_blank'>https://tidal.com/album/215931808</a></div>
+<div>Swings - Swings Rising</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931808' target='_blank'><img src='https://resources.tidal.com/images/cbdd377e/f80a/4baa/96c7/1089474b1005/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] It's All Good</div>
+<div><a href='https://tidal.com/album/215931796' target='_blank'>https://tidal.com/album/215931796</a></div>
+<div>Swings - It's All Good (Feat. Tyra)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931796' target='_blank'><img src='https://resources.tidal.com/images/e1ea12d9/444a/4fc5/90a2/d1b3a9959d82/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2011] I`ll Be There</div>
+<div><a href='https://tidal.com/album/215931806' target='_blank'>https://tidal.com/album/215931806</a></div>
+<div>Swings - I'll Be There (Feat. Jay Park)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931806' target='_blank'><img src='https://resources.tidal.com/images/a279ea29/8a4d/4645/9283/84ad056a7c79/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] I'm Strong</div>
+<div><a href='https://tidal.com/album/215931799' target='_blank'>https://tidal.com/album/215931799</a></div>
+<div>Swings - I'm Strong (Feat. Rimi, Optical Eyez XL)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931799' target='_blank'><img src='https://resources.tidal.com/images/6b61c3e5/b008/4c87/84aa/7850999285d4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Arrogant Bastard</div>
+<div><a href='https://tidal.com/album/215931789' target='_blank'>https://tidal.com/album/215931789</a></div>
+<div>Swings - Arrogant Bastard</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931789' target='_blank'><img src='https://resources.tidal.com/images/ca785171/78e0/44bd/911a/c5d56db0be51/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Growing Pains</div>
+<div><a href='https://tidal.com/album/208957272' target='_blank'>https://tidal.com/album/208957272</a></div>
+<div>Swings - Intro (Implosion Therapy)(Explicit)</div>
+<div>Swings - Feel Me</div>
+<div>Swings - 나한테 그러지 마 (feat. The Quiett)(Explicit)</div>
+<div>Swings - Grow Up (feat. 단아)</div>
+<div>Swings - 대충 이런 간지 (feat. Beatbox DG)</div>
+<div>Swings - Keep It Fresh</div>
+<div>Swings - 다 똑같아(Explicit)</div>
+<div>Swings - Would You Still Love Me</div>
+<div>Swings - Femme Fatale (feat. Tyra, Beenzino)</div>
+<div>Swings - Normal (feat. Rimi)</div>
+<div>Swings - 고마워</div>
+<div>Swings - Real Hip Hop (feat. Beat Box Ami)</div>
+<div>Swings - Swings Talking (Skit)</div>
+<div>Swings - 내가 최고야(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208957272' target='_blank'><img src='https://resources.tidal.com/images/0ddfcec6/d47c/4057/9039/8833a9820606/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 500Bombs</div>
+<div><a href='https://tidal.com/album/208898509' target='_blank'>https://tidal.com/album/208898509</a></div>
+<div>Swings - 500Bombs(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208898509' target='_blank'><img src='https://resources.tidal.com/images/019d4c3b/4745/4ffd/9585/85c8e16c2c45/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Upgrade</div>
+<div><a href='https://tidal.com/album/215931758' target='_blank'>https://tidal.com/album/215931758</a></div>
+<div>Swings - Intro</div>
+<div>Swings - Upgrade</div>
+<div>Swings - Want (Feat. Cho Hyun Ah)</div>
+<div>Swings - Slow Down</div>
+<div>Swings - I Wanna (Feat. Crybaby)</div>
+<div>Swings - My Flow</div>
+<div>Swings - I`ll Be There (Feat. Crybaby)</div>
+<div>Swings - ABCs Alliteration</div>
+<div>Swings - Spit a Punchline (Feat. Verbal Jint, The Quiett, Warmman, Deepflow)</div>
+<div>Swings - Swings Is Like</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931758' target='_blank'><img src='https://resources.tidal.com/images/0521a023/790b/4059/938c/b9f0e2c330cd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/스윙스 (Swings)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
