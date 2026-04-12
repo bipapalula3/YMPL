@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 오왠 ( Tidal O.WHEN )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 오왠 ( Tidal O.WHEN )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/6e836b71/51e9/4a4b/a925/68f7f8f1445e/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9809821' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 오왠</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>오왠 (O.WHEN) – 'Rest Of My Life'처럼 잔잔한 위로를, 'Special Story'처럼 따뜻한 감성을 전하는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> O.WHEN</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>O.WHEN – A singer-songwriter who delivers gentle comfort like 'Rest Of My Life' and warm emotions like 'Special Story'.</div><p>섬세한 감성으로 듣는 이의 마음을 어루만지는 싱어송라이터 오왠입니다. 그의 음악은 일상 속 작은 이야기들을 따뜻한 멜로디와 진솔한 가사로 풀어내 많은 이들에게 공감을 얻고 있습니다. 부드러운 음색과 편안한 분위기는 오왠만의 매력이라고 할 수 있죠.</p><p>O.WHEN is a singer-songwriter who touches the hearts of listeners with delicate emotions. His music resonates with many, unraveling small stories from everyday life with warm melodies and heartfelt lyrics. His soft voice and comfortable atmosphere are unique charms of O.WHEN.</p><p>✧</p><p>음악적 시작</p><p>오왠은 독특한 음색과 깊이 있는 감성으로 데뷔 초부터 주목받기 시작했어요. 그의 음악은 포크, 팝, R&B 등 다양한 장르의 영향을 받아 섬세하면서도 다채로운 사운드를 선보입니다. 꾸준한 음악 활동을 통해 자신만의 색깔을 확고히 해나가고 있습니다.</p><p>Musical Beginnings</p><p>O.WHEN began to gain attention from his debut days with his unique tone and profound emotions. His music is influenced by various genres such as folk, pop, and R&B, showcasing delicate yet diverse sounds. He is steadily solidifying his own style through continuous musical activities.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>오왠의 음악은 편안함 속에서 깊은 울림을 주는 것이 특징입니다. 그의 보컬은 듣는 이의 감성을 자극하며, 섬세하게 짜여진 악기 편곡은 곡의 완성도를 높입니다. 라이브 공연에서는 그의 음악적 진가를 더욱 느낄 수 있다고 해요.</p><p>Music and Performance</p><p>O.WHEN's music is characterized by a deep resonance within comfort. His vocals stimulate the emotions of listeners, and the delicately arranged instrumentals enhance the completeness of the songs. His musical worth can be even more felt in live performances.</p><p>✧</p><p>주요 활동</p><p>오왠은 꾸준한 싱글 발매와 EP, 정규 앨범을 통해 폭넓은 음악적 스펙트럼을 보여주고 있습니다. 다양한 드라마 OST 참여는 물론, 다른 아티스트와의 협업을 통해 새로운 시도를 이어가고 있어요. 그의 음악은 듣는 이들에게 깊은 감동과 위로를 선사합니다.</p><p>Key Activities</p><p>O.WHEN showcases a wide musical spectrum through consistent single releases, EPs, and full-length albums. He continues to try new things through participation in various drama OSTs and collaborations with other artists. His music offers deep emotion and comfort to listeners.</p><p>✧</p><p>미래와 의미</p><p>앞으로도 오왠은 자신만의 음악적 색깔을 더욱 깊이 있게 표현해 나갈 것으로 기대됩니다. 그의 진솔한 음악은 많은 이들에게 위로와 공감을 주며, 앞으로도 오랫동안 사랑받을 것이라고 생각해요. 그의 음악 여정을 계속 응원하며 지켜봐 주세요.</p><p>Future and Meaning</p><p>It is expected that O.WHEN will continue to express his own musical color more deeply in the future. His sincere music provides comfort and empathy to many, and it is believed that he will be loved for a long time to come. Please continue to support and watch his musical journey.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] The Scandal of Chun Hwa (TVING Original Soundtrack), Pt. 4</div>
+<div><a href='https://tidal.com/album/419341972' target='_blank'>https://tidal.com/album/419341972</a></div>
+<div>O.WHEN - Rest Of My Life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/419341972' target='_blank'><img src='https://resources.tidal.com/images/8ad518b1/f961/4bdd/bc2d/bf6b57368d2f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Special story</div>
+<div><a href='https://tidal.com/album/429948158' target='_blank'>https://tidal.com/album/429948158</a></div>
+<div>O.WHEN - Special story</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/429948158' target='_blank'><img src='https://resources.tidal.com/images/ecc6f2a0/c6be/4c86/91c6/c4b5c866d95f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Closely far away</div>
+<div><a href='https://tidal.com/album/415881234' target='_blank'>https://tidal.com/album/415881234</a></div>
+<div>O.WHEN - Closely far away</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/415881234' target='_blank'><img src='https://resources.tidal.com/images/342041be/f2f0/48c4/ae73/aeb40180d0ee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Buried Hearts (Original Television Soundtrack) Pt. 5</div>
+<div><a href='https://tidal.com/album/424896167' target='_blank'>https://tidal.com/album/424896167</a></div>
+<div>O.WHEN - Think Of Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/424896167' target='_blank'><img src='https://resources.tidal.com/images/6ba57b22/5762/47ef/b5b4/b1a6fb010f07/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] all of my love</div>
+<div><a href='https://tidal.com/album/373601194' target='_blank'>https://tidal.com/album/373601194</a></div>
+<div>O.WHEN - all of my love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/373601194' target='_blank'><img src='https://resources.tidal.com/images/d7c4b708/974f/402a/9c5c/a8cfbc9edf5e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] My Happy Ending (Original Television Sountrack, Pt. 2)</div>
+<div><a href='https://tidal.com/album/337882221' target='_blank'>https://tidal.com/album/337882221</a></div>
+<div>O.WHEN - Take A Rest</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/337882221' target='_blank'><img src='https://resources.tidal.com/images/680aa849/1f4d/41e0/98f6/705d03490069/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Mean For You</div>
+<div><a href='https://tidal.com/album/361967034' target='_blank'>https://tidal.com/album/361967034</a></div>
+<div>O.WHEN, aden - Mean For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/361967034' target='_blank'><img src='https://resources.tidal.com/images/e2382550/91a9/457e/b66e/60d093c20f63/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Like Flowers in Sand, Pt. 3 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/338792830' target='_blank'>https://tidal.com/album/338792830</a></div>
+<div>O.WHEN - My Most Beautiful Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/338792830' target='_blank'><img src='https://resources.tidal.com/images/ef320ecc/4934/47ba/9d38/a22b3edc97ff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Letter to You (O.WHEN X The Daechi Scandal)</div>
+<div><a href='https://tidal.com/album/370662997' target='_blank'>https://tidal.com/album/370662997</a></div>
+<div>O.WHEN - Letter to You (O.WHEN X The Daechi Scandal)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/370662997' target='_blank'><img src='https://resources.tidal.com/images/54519b74/81fa/43aa/82a3/b0b79f9743a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] Breathe with you</div>
+<div><a href='https://tidal.com/album/340014565' target='_blank'>https://tidal.com/album/340014565</a></div>
+<div>O.WHEN - Breathe with you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340014565' target='_blank'><img src='https://resources.tidal.com/images/84f70615/afce/4eb1/9a0c/a8363d469284/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] The Heavenly Idol (Original Television Soundtrack), Pt.2</div>
+<div><a href='https://tidal.com/album/278243402' target='_blank'>https://tidal.com/album/278243402</a></div>
+<div>O.WHEN - In Those Days</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278243402' target='_blank'><img src='https://resources.tidal.com/images/1ef96979/3dd5/43cd/9bc3/144275d67f4c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Remake . A</div>
+<div><a href='https://tidal.com/album/303255512' target='_blank'>https://tidal.com/album/303255512</a></div>
+<div>O.WHEN - River Flows In You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303255512' target='_blank'><img src='https://resources.tidal.com/images/d3c14797/8e8e/456f/972a/b9c0275e6444/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Present</div>
+<div><a href='https://tidal.com/album/323812581' target='_blank'>https://tidal.com/album/323812581</a></div>
+<div>O.WHEN - Picnic</div>
+<div>O.WHEN - Stay the same</div>
+<div>O.WHEN - Cause it's first time</div>
+<div>O.WHEN - Picture</div>
+<div>O.WHEN - How are you today</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/323812581' target='_blank'><img src='https://resources.tidal.com/images/39215feb/548a/46f3/8389/19e49d0e6e9d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Only You</div>
+<div><a href='https://tidal.com/album/346796267' target='_blank'>https://tidal.com/album/346796267</a></div>
+<div>O.WHEN - Only You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346796267' target='_blank'><img src='https://resources.tidal.com/images/0eb347fc/606f/44da/8fbf/68709bb047cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] More Than Words</div>
+<div><a href='https://tidal.com/album/315607068' target='_blank'>https://tidal.com/album/315607068</a></div>
+<div>O.WHEN - More Than Words</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/315607068' target='_blank'><img src='https://resources.tidal.com/images/ac8886f6/dcff/44d9/92f4/a17fbca49de5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Moon in the day, Pt. 1 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346542497' target='_blank'>https://tidal.com/album/346542497</a></div>
+<div>O.WHEN - Stay With Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346542497' target='_blank'><img src='https://resources.tidal.com/images/694ebe82/cc58/4d49/9732/b7e36d64389c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Goodbye</div>
+<div><a href='https://tidal.com/album/333075894' target='_blank'>https://tidal.com/album/333075894</a></div>
+<div>O.WHEN - Goodbye</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/333075894' target='_blank'><img src='https://resources.tidal.com/images/d9882989/e6a4/4b2e/83ef/4da7b02b9c9b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Deep Sleep</div>
+<div><a href='https://tidal.com/album/346814968' target='_blank'>https://tidal.com/album/346814968</a></div>
+<div>O.WHEN - Deep Sleep</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346814968' target='_blank'><img src='https://resources.tidal.com/images/62f02e37/a581/438e/864d/6e80fa2b8445/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] Dear Love</div>
+<div><a href='https://tidal.com/album/346775916' target='_blank'>https://tidal.com/album/346775916</a></div>
+<div>O.WHEN - Dear Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346775916' target='_blank'><img src='https://resources.tidal.com/images/aa9d851c/ec03/48c2/b440/e52f770d6e61/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Call It Love, Pt. 4 (Original Soundtrack from the Disney+ Original Series)</div>
+<div><a href='https://tidal.com/album/346796062' target='_blank'>https://tidal.com/album/346796062</a></div>
+<div>Choi Yu Ree - Love Without Pain</div>
+<div>OOHYO - Walk Slow</div>
+<div>O.WHEN - Calling the Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346796062' target='_blank'><img src='https://resources.tidal.com/images/787a7717/46fe/405b/a820/a014a20ff642/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] empty</div>
+<div><a href='https://tidal.com/album/346753505' target='_blank'>https://tidal.com/album/346753505</a></div>
+<div>O.WHEN - empty</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346753505' target='_blank'><img src='https://resources.tidal.com/images/59e7d30b/08d0/42cf/b961/d3d77e2eb0f1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Today's Webtoon (Original Television Soundtrack) Pt. 3</div>
+<div><a href='https://tidal.com/album/306284780' target='_blank'>https://tidal.com/album/306284780</a></div>
+<div>O.WHEN - 오늘의 너</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306284780' target='_blank'><img src='https://resources.tidal.com/images/f3607a9a/14c9/4210/a9b8/4bb150af0036/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] The Golden Spoon (Original Television Soundtrack, Pt. 4)</div>
+<div><a href='https://tidal.com/album/253527577' target='_blank'>https://tidal.com/album/253527577</a></div>
+<div>O.WHEN - Be there (Male Ver.)</div>
+<div>Ki myu - Be there (Female Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/253527577' target='_blank'><img src='https://resources.tidal.com/images/96a0e1dc/fb6b/4914/a9fc/cf1391d4df54/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Someone's playlist #10</div>
+<div><a href='https://tidal.com/album/366447462' target='_blank'>https://tidal.com/album/366447462</a></div>
+<div>O.WHEN - overwrite</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366447462' target='_blank'><img src='https://resources.tidal.com/images/ee218305/631d/4aa1/a6fa/00ee9c5c3dd6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Secret Lovers (Original Television Soundtrack), Pt.4</div>
+<div><a href='https://tidal.com/album/243978553' target='_blank'>https://tidal.com/album/243978553</a></div>
+<div>O.WHEN - Propose</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/243978553' target='_blank'><img src='https://resources.tidal.com/images/998529d0/eb33/41cc/86f6/3e2fabe0a158/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Once Upon a Small Town (Original Television Soundtrack), Pt.2</div>
+<div><a href='https://tidal.com/album/247315809' target='_blank'>https://tidal.com/album/247315809</a></div>
+<div>O.WHEN - Sunset Village</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/247315809' target='_blank'><img src='https://resources.tidal.com/images/c991b8ca/d12f/4c1d/a9cc/c7fa0ae2165f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Love Interference 2022 (Original Television Soundtrack), Pt.15</div>
+<div><a href='https://tidal.com/album/237041464' target='_blank'>https://tidal.com/album/237041464</a></div>
+<div>O.WHEN - Only Longing Grows</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237041464' target='_blank'><img src='https://resources.tidal.com/images/54f846e0/2245/4a15/8f65/6ef11046b2f9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Independence2</div>
+<div><a href='https://tidal.com/album/346703249' target='_blank'>https://tidal.com/album/346703249</a></div>
+<div>O.WHEN - Bye</div>
+<div>O.WHEN - Aya</div>
+<div>O.WHEN - Chorus</div>
+<div>O.WHEN - Scar</div>
+<div>O.WHEN - Rain</div>
+<div>O.WHEN - Shall We Dance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346703249' target='_blank'><img src='https://resources.tidal.com/images/9cd421a6/aad9/4e4d/a384/ee9fca4745e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Calling</div>
+<div><a href='https://tidal.com/album/346665386' target='_blank'>https://tidal.com/album/346665386</a></div>
+<div>O.WHEN - Calling</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346665386' target='_blank'><img src='https://resources.tidal.com/images/43031874/54b6/45e3/87ad/11408a5aa407/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Better Now</div>
+<div><a href='https://tidal.com/album/346728948' target='_blank'>https://tidal.com/album/346728948</a></div>
+<div>O.WHEN - Better Now</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346728948' target='_blank'><img src='https://resources.tidal.com/images/46109657/318c/45b6/b100/68bd162ca1fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] independence1</div>
+<div><a href='https://tidal.com/album/346581983' target='_blank'>https://tidal.com/album/346581983</a></div>
+<div>O.WHEN - stress</div>
+<div>O.WHEN - gold</div>
+<div>O.WHEN - some of time</div>
+<div>O.WHEN - 99(Explicit)</div>
+<div>O.WHEN - omyo</div>
+<div>O.WHEN - ok</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346581983' target='_blank'><img src='https://resources.tidal.com/images/90cc0d3b/b1fb/4e7b/81eb/75d2f372f427/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Stillness</div>
+<div><a href='https://tidal.com/album/216217045' target='_blank'>https://tidal.com/album/216217045</a></div>
+<div>O.WHEN - Stillness</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216217045' target='_blank'><img src='https://resources.tidal.com/images/e4b94038/cad4/4b24/982a/555bdc44b11c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Mood Night</div>
+<div><a href='https://tidal.com/album/216214981' target='_blank'>https://tidal.com/album/216214981</a></div>
+<div>O.WHEN - Shelter</div>
+<div>O.WHEN - Stay The Same</div>
+<div>O.WHEN - As Your Mind Goes</div>
+<div>O.WHEN - Album</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216214981' target='_blank'><img src='https://resources.tidal.com/images/dedd4b26/cf7b/45db/ac63/897b9c82d5ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 이대로 괜찮을까 No regret (HUSH Original Television Soundtrack), Pt.3</div>
+<div><a href='https://tidal.com/album/166580570' target='_blank'>https://tidal.com/album/166580570</a></div>
+<div>O.WHEN - 이대로 괜찮을까 No regret (HUSH Original Television Sound</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/166580570' target='_blank'><img src='https://resources.tidal.com/images/8837c316/cf6a/4279/abd2/b43b406ea6c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Lonely</div>
+<div><a href='https://tidal.com/album/216143124' target='_blank'>https://tidal.com/album/216143124</a></div>
+<div>O.WHEN - Lonely</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216143124' target='_blank'><img src='https://resources.tidal.com/images/d7c53b46/9188/4bef/8f4a/3cd05c50215e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] From the day we loved to the day we said goodbye</div>
+<div><a href='https://tidal.com/album/216123745' target='_blank'>https://tidal.com/album/216123745</a></div>
+<div>O.WHEN - Love You</div>
+<div>O.WHEN - Can't Hold You</div>
+<div>O.WHEN - Someone Like Me</div>
+<div>O.WHEN - Lonely</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216123745' target='_blank'><img src='https://resources.tidal.com/images/b5de693b/735d/4f30/95b0/d29311a7bac9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] When the Camellia Blooms (Original Television Soundtrack) Pt.2</div>
+<div><a href='https://tidal.com/album/201065109' target='_blank'>https://tidal.com/album/201065109</a></div>
+<div>O.WHEN - Loser</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/201065109' target='_blank'><img src='https://resources.tidal.com/images/9cabb37a/a056/42a9/b145/2ee73a888416/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Tiny bits of life Part.11</div>
+<div><a href='https://tidal.com/album/216095402' target='_blank'>https://tidal.com/album/216095402</a></div>
+<div>O.WHEN - The Night, Gloomy Wind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216095402' target='_blank'><img src='https://resources.tidal.com/images/f31d03a0/2de7/408f/9eb1/86bb224b92b3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] ROOM O</div>
+<div><a href='https://tidal.com/album/216145602' target='_blank'>https://tidal.com/album/216145602</a></div>
+<div>O.WHEN - 29 Years Old</div>
+<div>O.WHEN - Oh My!</div>
+<div>O.WHEN - Please Tear Up</div>
+<div>O.WHEN - Call Me Now</div>
+<div>O.WHEN - Would Not</div>
+<div>O.WHEN - I'll Be Your Night</div>
+<div>O.WHEN - Something To Tell</div>
+<div>O.WHEN - One Lukewarm Night</div>
+<div>O.WHEN - Movie Star</div>
+<div>O.WHEN - Good Night (Remastered)</div>
+<div>O.WHEN - Late Evening Early Dawn (Remastered)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216145602' target='_blank'><img src='https://resources.tidal.com/images/52d59b16/611f/4bc3/814b/a567b9963f09/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] One Lukewarm Night</div>
+<div><a href='https://tidal.com/album/216010329' target='_blank'>https://tidal.com/album/216010329</a></div>
+<div>O.WHEN - One Lukewarm Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216010329' target='_blank'><img src='https://resources.tidal.com/images/32a80011/7de5/4f61/a824/739edbc8810f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Angel's last mission _ love (Original Television Soundtrack), Pt.5</div>
+<div><a href='https://tidal.com/album/248816289' target='_blank'>https://tidal.com/album/248816289</a></div>
+<div>O.WHEN - STAY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/248816289' target='_blank'><img src='https://resources.tidal.com/images/0d827ee8/53cc/487f/a401/9c1046cb15f4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 시를 잊은 그대에게 (Original Television Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/417673240' target='_blank'>https://tidal.com/album/417673240</a></div>
+<div>O.WHEN - Feeling</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/417673240' target='_blank'><img src='https://resources.tidal.com/images/97d55a13/2998/4906/b728/9d50e857f71a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] When It Loves</div>
+<div><a href='https://tidal.com/album/215967530' target='_blank'>https://tidal.com/album/215967530</a></div>
+<div>O.WHEN - Well I Say</div>
+<div>O.WHEN - Cause It's First Time</div>
+<div>O.WHEN - You're Beautiful</div>
+<div>O.WHEN - Dream</div>
+<div>O.WHEN - Fall In Love (Remastered)</div>
+<div>O.WHEN - No One Else (Remastered)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215967530' target='_blank'><img src='https://resources.tidal.com/images/22e72547/0652/4b30/bd54/6a7812b8de14/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Picture</div>
+<div><a href='https://tidal.com/album/216049802' target='_blank'>https://tidal.com/album/216049802</a></div>
+<div>O.WHEN - Picture</div>
+<div>O.WHEN - The end of autumn</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216049802' target='_blank'><img src='https://resources.tidal.com/images/0a37b7d6/cc07/47e4/88dd/8d86b0898099/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] My Mister, Pt. 6 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196140665' target='_blank'>https://tidal.com/album/196140665</a></div>
+<div>Vincent Blue - Rainbow (Band Version)</div>
+<div>O.WHEN - Rainbow (Acoustic Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140665' target='_blank'><img src='https://resources.tidal.com/images/ffad6b28/f6cd/46ce/b17d/911cdabc80eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Encounter, Pt. 5 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196145703' target='_blank'>https://tidal.com/album/196145703</a></div>
+<div>O.WHEN - Heartbeat</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196145703' target='_blank'><img src='https://resources.tidal.com/images/1fa42bfe/af56/4a08/a70f/3589aa9211a5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Suspicious Partner (Original Soundtrack) Part.2</div>
+<div><a href='https://tidal.com/album/339883100' target='_blank'>https://tidal.com/album/339883100</a></div>
+<div>O.WHEN - How To Say</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339883100' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] No one else</div>
+<div><a href='https://tidal.com/album/215944601' target='_blank'>https://tidal.com/album/215944601</a></div>
+<div>O.WHEN - No one else</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215944601' target='_blank'><img src='https://resources.tidal.com/images/1d3ac05d/d809/4996/b136/fb3e41988f67/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Fall In Love</div>
+<div><a href='https://tidal.com/album/216010732' target='_blank'>https://tidal.com/album/216010732</a></div>
+<div>O.WHEN - Fall In Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216010732' target='_blank'><img src='https://resources.tidal.com/images/b9a659fc/f71f/47ba/8ca0/7eee67227067/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] When I Begin</div>
+<div><a href='https://tidal.com/album/216014416' target='_blank'>https://tidal.com/album/216014416</a></div>
+<div>O.WHEN - Wonder Hole</div>
+<div>O.WHEN - Today</div>
+<div>O.WHEN - Someday</div>
+<div>O.WHEN - Picnic</div>
+<div>O.WHEN - Monologue</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216014416' target='_blank'><img src='https://resources.tidal.com/images/8c9a8b9b/9e17/4726/89dc/b27e42dffe4a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] FantastiC (Original Soundtrack) Part.6</div>
+<div><a href='https://tidal.com/album/216010001' target='_blank'>https://tidal.com/album/216010001</a></div>
+<div>O.WHEN - Ordinary days</div>
+<div>YOONWON - Honestly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216010001' target='_blank'><img src='https://resources.tidal.com/images/8017fb45/dc8b/45b9/bd7b/60b49d06ef8a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Call Me Now</div>
+<div><a href='https://tidal.com/album/216014474' target='_blank'>https://tidal.com/album/216014474</a></div>
+<div>O.WHEN - Call Me Now</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216014474' target='_blank'><img src='https://resources.tidal.com/images/f353b316/814b/4e1b/b56a/d504a9097b70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/오왠 (O.WHEN)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
