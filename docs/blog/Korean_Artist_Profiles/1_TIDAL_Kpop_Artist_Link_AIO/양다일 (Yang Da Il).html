@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 양다일 ( Tidal Yang Da Il )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 양다일 ( Tidal Yang Da Il )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/251b102a/b6ba/4582/95d0/38ae3d9f8700/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7711270' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/10877973' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 양다일</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>감성적인 밤의 속삭임, '긴 밤'과 '어바웃 유'로 전하는 섬세한 사랑의 이야기</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Yang Da Il</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Emotional Night Whispers, Delicate Love Stories Told Through 'a long night' and 'about you'</div><p>섬세한 감성으로 듣는 이의 마음을 어루만지는 가수, 양다일님을 소개합니다. 그의 음악은 사랑과 이별, 그리고 일상 속의 작은 감정들을 솔직하게 담아내 많은 공감을 얻고 있어요. 부드러운 목소리와 진솔한 가사로 깊은 울림을 주는 그의 음악 세계로 함께 떠나볼까요?</p><p>Introducing Yang Da Il, an artist who soothes the hearts of listeners with his delicate emotions. His music honestly captures love, farewells, and the small emotions of everyday life, resonating with many. Shall we embark on a journey into his musical world, which offers deep resonance with his soft voice and sincere lyrics?</p><p>✧</p><p>음악적 시작</p><p>양다일님은 특정한 그룹의 탄생 배경을 갖고 있지는 않지만, 꾸준한 음악 활동을 통해 자신만의 색깔을 확립해왔어요. 솔로 아티스트로서 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여주고 있습니다. 그의 음악 여정은 섬세한 감정 표현과 깊이 있는 음악적 탐구로 채워져 있어요.</p><p>Musical Beginnings</p><p>Yang Da Il does not have a specific group origin, but he has established his own unique style through consistent musical activities. As a solo artist, he shows a wide musical spectrum by performing various genres. His musical journey is filled with delicate emotional expression and in-depth musical exploration.</p><p>✧</p><p>감성적인 음악 세계</p><p>양다일님의 음악은 주로 R&B와 발라드 장르에 기반을 두고 있으며, 특유의 감미로운 보컬과 섬세한 감정 표현이 돋보여요. 사랑과 이별의 순간들을 현실적으로 그려내는 가사는 많은 이들의 공감을 불러일으키죠. 그의 음악은 듣는 이로 하여금 자신의 감정을 되돌아보게 하는 힘을 가지고 있습니다.</p><p>Emotional Musical World</p><p>Yang Da Il's music is mainly based on the R&B and ballad genres, and is notable for its unique sweet vocals and delicate emotional expression. The lyrics realistically depicting moments of love and farewell evoke empathy from many. His music has the power to make listeners reflect on their own emotions.</p><p>✧</p><p>주요 활동과 특징</p><p>양다일님은 꾸준한 음원 발매와 더불어 다양한 드라마 OST 작업에 참여하며 활동 영역을 넓혀왔습니다. 콜라보레이션에도 적극적으로 참여하여 다양한 아티스트들과의 시너지를 보여주고 있어요. 그의 음악은 깊은 밤 혼자 듣기 좋은, 잔잔하면서도 감성적인 분위기를 자아냅니다.</p><p>Main Activities and Characteristics</p><p>Yang Da Il has expanded his field of activity by consistently releasing music and participating in various drama OST projects. He also actively participates in collaborations, showing synergy with various artists. His music creates a calm and emotional atmosphere, perfect for listening alone late at night.</p><p>✧</p><p>앞으로의 음악과 의미</p><p>앞으로도 양다일님은 진솔한 감정을 담은 음악으로 대중에게 깊은 울림을 선사할 것으로 기대됩니다. 그의 음악은 단순한 유행을 따르는 것이 아닌, 오랫동안 사람들의 마음속에 남는 깊이 있는 메시지를 전달하려 노력해요. 그의 음악적 성장이 더욱 기대되는 이유입니다.</p><p>Future Music and Meaning</p><p>It is expected that Yang Da Il will continue to provide deep resonance to the public with music containing sincere emotions. His music strives to deliver a profound message that remains in people's hearts for a long time, rather than simply following trends. This is why his musical growth is even more anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] a long night</div>
+<div><a href='https://tidal.com/album/419386719' target='_blank'>https://tidal.com/album/419386719</a></div>
+<div>Yang Da Il - a long night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/419386719' target='_blank'><img src='https://resources.tidal.com/images/34b36973/177a/4712/8bf4/e62c92e3e0d2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] One Summer Night</div>
+<div><a href='https://tidal.com/album/432123460' target='_blank'>https://tidal.com/album/432123460</a></div>
+<div>Yang Dail - One Summer Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/432123460' target='_blank'><img src='https://resources.tidal.com/images/474ef6b1/eda8/4e7b/882e/1eb47adb8728/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Alone</div>
+<div><a href='https://tidal.com/album/412619025' target='_blank'>https://tidal.com/album/412619025</a></div>
+<div>Yang Da Il - Alone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412619025' target='_blank'><img src='https://resources.tidal.com/images/92568bdf/cfe9/4602/b0b8/991a9516722e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 이별은 사랑 곁에 (Farewell is with love)</div>
+<div><a href='https://tidal.com/album/354882853' target='_blank'>https://tidal.com/album/354882853</a></div>
+<div>Yang Da Il - 이별은 사랑 곁에 (Farewell is with love)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/354882853' target='_blank'><img src='https://resources.tidal.com/images/362f213e/c2e0/4147/8a18/f2002910fc3d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] about you</div>
+<div><a href='https://tidal.com/album/386877462' target='_blank'>https://tidal.com/album/386877462</a></div>
+<div>Yang Da Il - about you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/386877462' target='_blank'><img src='https://resources.tidal.com/images/f0571085/ba60/4021/801a/3a614e45a77d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] The Midnight Studio, Pt. 2 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/351788755' target='_blank'>https://tidal.com/album/351788755</a></div>
+<div>Yang Da Il - Press Rewind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/351788755' target='_blank'><img src='https://resources.tidal.com/images/8bc4ab4b/411a/4cc2/a00e/56d0d083d5b2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] My insecure</div>
+<div><a href='https://tidal.com/album/402442185' target='_blank'>https://tidal.com/album/402442185</a></div>
+<div>Yang Da Il - Stop Loving You</div>
+<div>Yang Da Il - about you</div>
+<div>Yang Da Il - page</div>
+<div>Yang Da Il - this love is gold</div>
+<div>Yang Da Il - Love me</div>
+<div>Yang Da Il - FRIDAY</div>
+<div>Yang Da Il - Through the night</div>
+<div>Yang Da Il - A call away</div>
+<div>Yang Da Il - Call me more sometimes</div>
+<div>Yang Da Il - Curtain Call</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/402442185' target='_blank'><img src='https://resources.tidal.com/images/ce90d81a/b803/4460/b53d/5743419e7df2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Dilemma (Killer Peter X Yang Da Il) [Original Webtoon Soundtrack]</div>
+<div><a href='https://tidal.com/album/392394601' target='_blank'>https://tidal.com/album/392394601</a></div>
+<div>Yang Dail - Dilemma</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/392394601' target='_blank'><img src='https://resources.tidal.com/images/67a5216d/6884/402e/961b/86a576c927ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Call me more sometimes</div>
+<div><a href='https://tidal.com/album/393846424' target='_blank'>https://tidal.com/album/393846424</a></div>
+<div>Yang Da Il - Call me more sometimes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/393846424' target='_blank'><img src='https://resources.tidal.com/images/b7eb2d8f/2ce5/431c/b870/5c7edb14fac4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] talks about blossoms</div>
+<div><a href='https://tidal.com/album/285504131' target='_blank'>https://tidal.com/album/285504131</a></div>
+<div>Yang Da Il - Flower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/285504131' target='_blank'><img src='https://resources.tidal.com/images/6c4a5d80/e88f/4dcb/9afc/a6d7174cf1f3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] all of my life (Veiled Musician X Yang Da Il with Itaewon-dong)</div>
+<div><a href='https://tidal.com/album/328128906' target='_blank'>https://tidal.com/album/328128906</a></div>
+<div>Yang Da Il - all of my life (Veiled Musician X Yang Da Il with</div>
+<div>Yang Da Il - all of my life (Veiled Musician X Yang Da Il with</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/328128906' target='_blank'><img src='https://resources.tidal.com/images/b718bce9/7374/4f81/a5a9/2f996d1c8a24/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] When we broke up</div>
+<div><a href='https://tidal.com/album/346724606' target='_blank'>https://tidal.com/album/346724606</a></div>
+<div>Yang Da Il - When we broke up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346724606' target='_blank'><img src='https://resources.tidal.com/images/f8595100/137a/4490/8e8a/c6495977c50c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Things I can't say</div>
+<div><a href='https://tidal.com/album/321105295' target='_blank'>https://tidal.com/album/321105295</a></div>
+<div>Yang Da Il - Things I can't say</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/321105295' target='_blank'><img src='https://resources.tidal.com/images/328a149e/b926/480c/9f7f/f04cabbcc350/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Move On</div>
+<div><a href='https://tidal.com/album/308158391' target='_blank'>https://tidal.com/album/308158391</a></div>
+<div>Yang Da Il - Dear you, From me</div>
+<div>Yang Da Il - Love</div>
+<div>Yang Da Il - Love (Full Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308158391' target='_blank'><img src='https://resources.tidal.com/images/3e99ec83/f73a/40f1/bbec/de2a6cf75c7e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] May I love you</div>
+<div><a href='https://tidal.com/album/271575448' target='_blank'>https://tidal.com/album/271575448</a></div>
+<div>Yang Da Il - May I love you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/271575448' target='_blank'><img src='https://resources.tidal.com/images/f0ffe810/dce2/4df7/8f10/aa7d79354a43/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Marry Me (My love X Yang Da Il)</div>
+<div><a href='https://tidal.com/album/305844773' target='_blank'>https://tidal.com/album/305844773</a></div>
+<div>Yang Da Il - Marry Me (My love X Yang Da Il)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305844773' target='_blank'><img src='https://resources.tidal.com/images/4b7580a5/3a42/4079/a608/8804363404fb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Long time no see (Original Television Soundtrack From _The Witch Store Reopening_)</div>
+<div><a href='https://tidal.com/album/314453520' target='_blank'>https://tidal.com/album/314453520</a></div>
+<div>Yang Da Il - Long time no see</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/314453520' target='_blank'><img src='https://resources.tidal.com/images/dc0e53cc/3b5a/4bf0/a683/66b721c231f2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Langrisser Mobile (Original Game Soundtrack) - Salvation</div>
+<div><a href='https://tidal.com/album/296090943' target='_blank'>https://tidal.com/album/296090943</a></div>
+<div>Yang Da Il - Salvation</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296090943' target='_blank'><img src='https://resources.tidal.com/images/c6f12327/bfd8/40aa/8484/6809ff59d161/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] I feel</div>
+<div><a href='https://tidal.com/album/279863195' target='_blank'>https://tidal.com/album/279863195</a></div>
+<div>Yang Da Il - I feel</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/279863195' target='_blank'><img src='https://resources.tidal.com/images/d47fb61a/703c/459f/a509/848aa12de8f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Don't Leave 2023</div>
+<div><a href='https://tidal.com/album/329327016' target='_blank'>https://tidal.com/album/329327016</a></div>
+<div>Yang Da Il - Don't Leave 2023</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/329327016' target='_blank'><img src='https://resources.tidal.com/images/6bd21a46/36d7/4b91/9ec7/166486ad0d3d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Battle for Happiness, Pt. 4 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346836321' target='_blank'>https://tidal.com/album/346836321</a></div>
+<div>Yang Da Il - Behind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346836321' target='_blank'><img src='https://resources.tidal.com/images/2aa46349/d0e6/40e7/b103/2a6e1fe8f26f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] BRANDNEW YEAR 2023 'White Christmas'</div>
+<div><a href='https://tidal.com/album/333821514' target='_blank'>https://tidal.com/album/333821514</a></div>
+<div>Bumkey, Muzie, Yang Da Il, Vincent Blue, JEON WOON - White Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/333821514' target='_blank'><img src='https://resources.tidal.com/images/8f8a7115/505f/41f3/a065/e426592e7eb6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 言葉にできない _ KOTOBANIDEKINAI</div>
+<div><a href='https://tidal.com/album/212490735' target='_blank'>https://tidal.com/album/212490735</a></div>
+<div>Yang Da Il - 言葉にできない - KOTOBANIDEKINAI</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/212490735' target='_blank'><img src='https://resources.tidal.com/images/75b8d8d0/fce1/4928/9e18/01d19d3b0acf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] You can do that (One of a Kind Romance)</div>
+<div><a href='https://tidal.com/album/216112845' target='_blank'>https://tidal.com/album/216112845</a></div>
+<div>Yang Da Il - You can do that (One of a Kind Romance)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216112845' target='_blank'><img src='https://resources.tidal.com/images/15808ef0/8cf8/405f/ab72/c9ebfe97a47e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Wish I could tell you</div>
+<div><a href='https://tidal.com/album/263137836' target='_blank'>https://tidal.com/album/263137836</a></div>
+<div>Yang Da Il - Wish I could tell you</div>
+<div>Yang Da Il - I cannot live without you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263137836' target='_blank'><img src='https://resources.tidal.com/images/19371e94/41da/47bd/9457/4f96fd5c510e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Themselves (Original Soundtrack) Chapter. 3</div>
+<div><a href='https://tidal.com/album/267833817' target='_blank'>https://tidal.com/album/267833817</a></div>
+<div>Yang Da Il - 아낌없이 주고 싶어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/267833817' target='_blank'><img src='https://resources.tidal.com/images/5b2c2a71/46a8/4ec4/a0b3/873f77113dc0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] LOVE IS</div>
+<div><a href='https://tidal.com/album/238432005' target='_blank'>https://tidal.com/album/238432005</a></div>
+<div>Yang Da Il - LOVE IS(PROD.ROCOBERRY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/238432005' target='_blank'><img src='https://resources.tidal.com/images/7cc6bc51/4311/4dfb/b055/996437a38311/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] BRANDNEW YEAR 2022 'BRANDNEW V1S1ON'</div>
+<div><a href='https://tidal.com/album/267473314' target='_blank'>https://tidal.com/album/267473314</a></div>
+<div>AB6IX, BDC, YOUNITE - HUGS</div>
+<div>Bumkey, Kebee, Hanhae, Yang Da Il, JEON WOONG, Dey - SNOW SNOW SNOW</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/267473314' target='_blank'><img src='https://resources.tidal.com/images/af923fbb/4414/4698/9a0f/944ab204e0d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] A Glass of Soju</div>
+<div><a href='https://tidal.com/album/220974778' target='_blank'>https://tidal.com/album/220974778</a></div>
+<div>Yang Da Il - A Glass of Soju</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/220974778' target='_blank'><img src='https://resources.tidal.com/images/2e0666db/6a3d/4958/b37f/fcb4d3915d32/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] our joys and sadnesses</div>
+<div><a href='https://tidal.com/album/170867386' target='_blank'>https://tidal.com/album/170867386</a></div>
+<div>Yang Da Il - Loss</div>
+<div>Yang Da Il - Hurt</div>
+<div>Yang Da Il - Joy</div>
+<div>Yang Da Il - Sometimes</div>
+<div>Yang Da Il - Nothin' Without You</div>
+<div>Yang Da Il - Understand</div>
+<div>Yang Da Il - At Last</div>
+<div>Yang Da Il - My Love</div>
+<div>Yang Da Il - Alone</div>
+<div>Yang Da Il - Say No More</div>
+<div>Yang Da Il - Counting The Nights</div>
+<div>Yang Da Il - Darling</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170867386' target='_blank'><img src='https://resources.tidal.com/images/2cc8128e/8f64/4dbb/b062/4a63834fe6b3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Where the stars rised (Bunny and Guys X Yang Da Il)</div>
+<div><a href='https://tidal.com/album/216181508' target='_blank'>https://tidal.com/album/216181508</a></div>
+<div>Yang Da Il - Where the stars rised (Bunny and Guys X Yang Da Il</div>
+<div>Yang Da Il - Where the stars rised (Bunny and Guys X Yang Da Il</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216181508' target='_blank'><img src='https://resources.tidal.com/images/0816a250/1789/47cd/b9b4/6cb71b757ec8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Ocean Waves with KozyPop</div>
+<div><a href='https://tidal.com/album/193613600' target='_blank'>https://tidal.com/album/193613600</a></div>
+<div>Yang Da Il, Nive - Ocean Waves (feat. NIve)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/193613600' target='_blank'><img src='https://resources.tidal.com/images/0ec96c10/3d74/4d85/9119/b76b15e63f8c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] MY ROOMMATE IS A GUMIHO, Pt. 6 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/334928254' target='_blank'>https://tidal.com/album/334928254</a></div>
+<div>Yang Dail - Next to you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334928254' target='_blank'><img src='https://resources.tidal.com/images/67f27bc6/8895/4461/8f1c/ab030a3654f1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Lovers of the Red Sky (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/216376744' target='_blank'>https://tidal.com/album/216376744</a></div>
+<div>Yang Da Il - YOU & I</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216376744' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] HOME (TEN PROJECT, Pt. 5)</div>
+<div><a href='https://tidal.com/album/197635502' target='_blank'>https://tidal.com/album/197635502</a></div>
+<div>Yang Da Il, Bumkey - HOME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/197635502' target='_blank'><img src='https://resources.tidal.com/images/14b61c34/efe4/4449/8250/d471db77f396/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Begin Again Open Mic Episode.8</div>
+<div><a href='https://tidal.com/album/254564091' target='_blank'>https://tidal.com/album/254564091</a></div>
+<div>Yang Da Il - Paris in the rain</div>
+<div>Yang Da Il - High</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/254564091' target='_blank'><img src='https://resources.tidal.com/images/30259048/223b/4bcc/b4f4/b47a839588f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] BRANDNEW YEAR 2021 'TEN_ The Ever New BRANDNEW'</div>
+<div><a href='https://tidal.com/album/209833842' target='_blank'>https://tidal.com/album/209833842</a></div>
+<div>Bumkey, Hanhae, Yang Da Il, AB6IX, BDC, Kanto, Gre - HAPPY BRANDNEW YEAR</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209833842' target='_blank'><img src='https://resources.tidal.com/images/4380e3b2/76f4/4c66/966d/f653a7306f90/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Absence</div>
+<div><a href='https://tidal.com/album/204394787' target='_blank'>https://tidal.com/album/204394787</a></div>
+<div>Yang Da Il - Absence</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204394787' target='_blank'><img src='https://resources.tidal.com/images/820440ee/1555/4218/bdde/cbfced99fab9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] understand</div>
+<div><a href='https://tidal.com/album/139110568' target='_blank'>https://tidal.com/album/139110568</a></div>
+<div>Yang Da Il - understand</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/139110568' target='_blank'><img src='https://resources.tidal.com/images/66e2e61e/f6e3/4655/b2ba/008193341d70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] TALE OF THE NINE TAILED OST Part 4</div>
+<div><a href='https://tidal.com/album/196163091' target='_blank'>https://tidal.com/album/196163091</a></div>
+<div>Yang Da Il - Diary of Dawn</div>
+<div>Hong Dae Sung - The Legend of the Fox (Tale of the Nine Tailed Ope</div>
+<div>Hong Dae Sung - Moonchild Ballad (Score Ver.)</div>
+<div>Hong Dae Sung - Parting at the River of Three Crossings</div>
+<div>Hong Dae Sung - The Fox′s Wedding Day</div>
+<div>Hong Dae Sung - The Uninvited</div>
+<div>Hong Dae Sung - I Waited For You</div>
+<div>Hong Dae Sung - The Nine Tailed Fox</div>
+<div>Hong Dae Sung - Lightning Bugs</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196163091' target='_blank'><img src='https://resources.tidal.com/images/c430a7d7/75a7/4e95/b1a9/d1a3f6ef28a3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Sometimes</div>
+<div><a href='https://tidal.com/album/167602900' target='_blank'>https://tidal.com/album/167602900</a></div>
+<div>Yang Da Il - Sometimes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167602900' target='_blank'><img src='https://resources.tidal.com/images/7e2bc63b/8ef2/4522/977e/d042eec42c8b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Romantic Doctor 2 (Original Television Soundtrack) Pt.5</div>
+<div><a href='https://tidal.com/album/305890758' target='_blank'>https://tidal.com/album/305890758</a></div>
+<div>Yang Da Il - 사랑 이토록 어려운 말</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305890758' target='_blank'><img src='https://resources.tidal.com/images/77146787/ee60/4e64/860f/e0e80e9a34de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Darling</div>
+<div><a href='https://tidal.com/album/163334138' target='_blank'>https://tidal.com/album/163334138</a></div>
+<div>Yang Da Il - Darling</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163334138' target='_blank'><img src='https://resources.tidal.com/images/f59f0cb0/fa2b/48c7/afa0/f48f128d63a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] skepticism</div>
+<div><a href='https://tidal.com/album/108213995' target='_blank'>https://tidal.com/album/108213995</a></div>
+<div>Yang Da Il - I'd Love To, But I Have My Hands Full At The Momen</div>
+<div>Yang Da Il - Tonight</div>
+<div>Yang Da Il - They Don't Know</div>
+<div>Yang Da Il - Dreams</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/108213995' target='_blank'><img src='https://resources.tidal.com/images/24dc703f/c214/4549/9a82/0bfb7831ee1b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] My Love</div>
+<div><a href='https://tidal.com/album/112841050' target='_blank'>https://tidal.com/album/112841050</a></div>
+<div>Yang Da Il - My Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/112841050' target='_blank'><img src='https://resources.tidal.com/images/f53ba13f/65c3/4201/90ab/2d7d4f8a4eba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] Memories of the Alhambra, Pt. 5 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196145829' target='_blank'>https://tidal.com/album/196145829</a></div>
+<div>Yang Da Il - I′m Here</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196145829' target='_blank'><img src='https://resources.tidal.com/images/5863a2cc/9648/440a/a0cd/b2f5d7d59a4c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Hotel del Luna (Original Television Soundtrack) Pt.4</div>
+<div><a href='https://tidal.com/album/305861519' target='_blank'>https://tidal.com/album/305861519</a></div>
+<div>Yang Da Il - 너만 너만 너만</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305861519' target='_blank'><img src='https://resources.tidal.com/images/9c1dd388/5211/4bff/9e52/e5c0b37726a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Goodbye list</div>
+<div><a href='https://tidal.com/album/216143506' target='_blank'>https://tidal.com/album/216143506</a></div>
+<div>Kim Na Young, Yang Da Il - Goodbye list</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216143506' target='_blank'><img src='https://resources.tidal.com/images/cb33e6b1/b051/4145/b3c2/7c3eb47630f2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Dingo X Yang Da Il & Vincent Blue</div>
+<div><a href='https://tidal.com/album/268851279' target='_blank'>https://tidal.com/album/268851279</a></div>
+<div>Yang Da Il, Vincent Blue - With me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/268851279' target='_blank'><img src='https://resources.tidal.com/images/208c9132/5149/4ef0/bb13/d03986acd717/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] one summer</div>
+<div><a href='https://tidal.com/album/91169359' target='_blank'>https://tidal.com/album/91169359</a></div>
+<div>Yang Da Il, WENDY - one summer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/91169359' target='_blank'><img src='https://resources.tidal.com/images/d51649dc/c03e/4ac7/8970/948bc45606ae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Tempted (Original Soundtrack) Part.4</div>
+<div><a href='https://tidal.com/album/216043893' target='_blank'>https://tidal.com/album/216043893</a></div>
+<div>Yang Da Il - With you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216043893' target='_blank'><img src='https://resources.tidal.com/images/2e2c6a9f/5016/407b/90e7/b290853d2b21/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] LALA (Live Again, Love Again) [Original Motion Picture Soundtrack], Pt. 4</div>
+<div><a href='https://tidal.com/album/188792907' target='_blank'>https://tidal.com/album/188792907</a></div>
+<div>San E, Yang Dail - It was you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188792907' target='_blank'><img src='https://resources.tidal.com/images/7a7c39a3/7675/42f1/a8f1/2af52479eb3f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Cinematic Love</div>
+<div><a href='https://tidal.com/album/77229176' target='_blank'>https://tidal.com/album/77229176</a></div>
+<div>Yang Da Il, DOKYEOM - Cinematic Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/77229176' target='_blank'><img src='https://resources.tidal.com/images/dc49ae59/6a38/4528/b08d/bac7cbbb2d54/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Unspoken</div>
+<div><a href='https://tidal.com/album/70501899' target='_blank'>https://tidal.com/album/70501899</a></div>
+<div>Yang Da Il - Unspoken</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/70501899' target='_blank'><img src='https://resources.tidal.com/images/a54b5d8f/d1bc/4f5c/b847/909b05a3f323/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] The Bride of Habaek 2017 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196136382' target='_blank'>https://tidal.com/album/196136382</a></div>
+<div>Yang Da Il - The Reason Why</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196136382' target='_blank'><img src='https://resources.tidal.com/images/c35272ad/7fd2/41cd/ade4/486f21899f4b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] MBC 드라마 병원선 OST Part.3</div>
+<div><a href='https://tidal.com/album/284229171' target='_blank'>https://tidal.com/album/284229171</a></div>
+<div>Yang Da Il - Touch Of Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/284229171' target='_blank'><img src='https://resources.tidal.com/images/8d8133aa/9836/435e/b750/171ce1cd2f5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] How R U_</div>
+<div><a href='https://tidal.com/album/72124707' target='_blank'>https://tidal.com/album/72124707</a></div>
+<div>Candle, Yang Da Il - How R U-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/72124707' target='_blank'><img src='https://resources.tidal.com/images/f7220bb8/ad4a/4763/bf5b/971a9bfbb971/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Cinematic Love</div>
+<div><a href='https://tidal.com/album/216094332' target='_blank'>https://tidal.com/album/216094332</a></div>
+<div>Yang Da Il, DOKYEOM - Cinematic Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216094332' target='_blank'><img src='https://resources.tidal.com/images/3f637e47/f8a7/4aaa/a776/fb8150082342/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Us</div>
+<div><a href='https://tidal.com/album/66635167' target='_blank'>https://tidal.com/album/66635167</a></div>
+<div>Yang Da Il, Kang Min Hee - In The Silence (feat. Kang Min Hee)</div>
+<div>Yang Da Il - The Fault In Our Stars</div>
+<div>Yang Da Il - Don't Leave</div>
+<div>Yang Da Il - Awaken</div>
+<div>Yang Da Il, Baek Ji Woong - Wish I Knew (feat. Baek Ji Woong)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/66635167' target='_blank'><img src='https://resources.tidal.com/images/e8e7f17e/3488/4ac1/b9f2/2a9d7353d8cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Say</div>
+<div><a href='https://tidal.com/album/59883145' target='_blank'>https://tidal.com/album/59883145</a></div>
+<div>Yang Da Il, Chancellor - One Step Backward (feat. Chancellor)</div>
+<div>Yang Da Il - She Didn't Love Me</div>
+<div>Yang Da Il, U Sung Eun - See, You (feat. U Sung Eun)</div>
+<div>Yang Da Il - As A Matter Of Face</div>
+<div>Yang Da Il, Solar - Loveagain (feat. Solar)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/59883145' target='_blank'><img src='https://resources.tidal.com/images/eedda91f/fbee/4b20/811d/0334edff691b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Read My Mind</div>
+<div><a href='https://tidal.com/album/185244861' target='_blank'>https://tidal.com/album/185244861</a></div>
+<div>Verbal Jint, Yang Da Il - Read My Mind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185244861' target='_blank'><img src='https://resources.tidal.com/images/ee724070/8429/4edb/9e25/1b47e7fa5508/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Merry Summer</div>
+<div><a href='https://tidal.com/album/189148071' target='_blank'>https://tidal.com/album/189148071</a></div>
+<div>Seo In YOUNG, Lee Seok Hoon, BrotherSu, Woo Tae Wo - 우리의 밤은 당신의 낮보다 아름답다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189148071' target='_blank'><img src='https://resources.tidal.com/images/e2138269/a6e0/4145/b034/bfa8bda26874/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Loveagain (feat. Solar of MAMAMOO)</div>
+<div><a href='https://tidal.com/album/58878345' target='_blank'>https://tidal.com/album/58878345</a></div>
+<div>Yang Da Il, Solar - Loveagain (feat. Solar)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/58878345' target='_blank'><img src='https://resources.tidal.com/images/9bfb9666/703e/40d1/b179/963209684eaf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] And Then</div>
+<div><a href='https://tidal.com/album/188891750' target='_blank'>https://tidal.com/album/188891750</a></div>
+<div>Yang Da Il, Hyolyn - And Then</div>
+<div>Yang Da Il, Hyorin - And Then</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188891750' target='_blank'><img src='https://resources.tidal.com/images/05e54c15/e7a8/46f7/9267/51fddc843211/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] You</div>
+<div><a href='https://tidal.com/album/188891752' target='_blank'>https://tidal.com/album/188891752</a></div>
+<div>Yang Da Il - You</div>
+<div>Yang Da Il, Candle - Stay With You (feat. Candle)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188891752' target='_blank'><img src='https://resources.tidal.com/images/871cbbb3/769e/46f0/b912/183e02a3a594/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] We're Diffenrent</div>
+<div><a href='https://tidal.com/album/188891746' target='_blank'>https://tidal.com/album/188891746</a></div>
+<div>Yang Da Il, Jungkey - We're Different</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188891746' target='_blank'><img src='https://resources.tidal.com/images/61554540/9c6a/4942/b6b2/e5532231681a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Play</div>
+<div><a href='https://tidal.com/album/188619725' target='_blank'>https://tidal.com/album/188619725</a></div>
+<div>Kang Min Hee, Yang Da Il, San E - Play (feat. San E)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188619725' target='_blank'><img src='https://resources.tidal.com/images/149959ac/6cd8/4aed/b341/21056d7e6921/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/1_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ1) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/양다일 (Yang Da Il)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
