@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 트리플에스 ( Tidal tripleS )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 트리플에스 ( Tidal tripleS )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/864d8150/74c9/44ce/90f4/487cfcbebc74/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/35354877' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 트리플에스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>트리플에스 (tripleS) – 다채로운 가능성이 모여 만들어가는 새로운 세계, 'Tokimetique'처럼 설렘 가득한 만남과 성장을 담아내는 아이돌</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> tripleS</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>tripleS – A new world created by diverse possibilities, an idol group capturing exciting encounters and growth, just like 'Tokimetique'.</div><p>새로운 형태의 아이돌, 트리플에스(tripleS)를 소개합니다! 팬들의 참여로 만들어지는 그룹인 만큼, 예측 불가능한 매력이 넘쳐흐르죠. 그녀들의 음악과 이야기에 귀 기울여 보세요.</p><p>Let me introduce you to a new type of idol, tripleS! As a group created with fan participation, they are full of unpredictable charm. Listen to their music and stories.</p><p>✧</p><p>그룹 탄생</p><p>트리플에스는 독특한 시스템으로 탄생했어요. 팬들이 직접 유닛을 결정하고 활동 방향을 정하는 '참여형 아이돌'이라는 점이 특별하죠. 이들의 시작은 언제나 흥미진진한 기대감을 안겨줍니다.</p><p>Birth of the Group</p><p>tripleS was born through a unique system. It's special because they are a 'participatory idol' group where fans directly decide on units and activity directions. Their beginning always brings exciting anticipation.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>트리플에스의 음악은 다채로운 색깔을 지니고 있어요. 상큼하고 발랄한 팝부터 몽환적인 분위기의 곡까지, 폭넓은 스펙트럼을 선보이죠. 퍼포먼스 역시 음악의 매력을 극대화하는 요소입니다.</p><p>Music and Performance</p><p>tripleS' music has a variety of colors. From refreshing and lively pop to dreamy tracks, they showcase a wide spectrum. Performance is also an element that maximizes the charm of their music.</p><p>✧</p><p>주요 활동</p><p>트리플에스는 다양한 유닛 활동을 통해 팬들을 만나고 있습니다. 'DIMENSION'이라는 독특한 활동 방식을 통해 새로운 조합과 음악을 선보이죠. 앞으로 어떤 모습으로 우리를 놀라게 할지 기대됩니다.</p><p>Key Activities</p><p>tripleS meets fans through various unit activities. They showcase new combinations and music through a unique activity method called 'DIMENSION'. I'm excited to see what they will surprise us with in the future.</p><p>✧</p><p>미래/의미</p><p>트리플에스는 팬들과 함께 만들어가는 미래를 꿈꾸고 있어요. 단순한 아이돌 그룹을 넘어, 팬들과 소통하며 성장하는 새로운 문화를 만들어갈 것입니다. 그녀들의 여정을 함께 응원해주세요.</p><p>Future/Meaning</p><p>tripleS is dreaming of a future created with fans. Beyond a simple idol group, they will create a new culture of communicating and growing with fans. Please support their journey together.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] Tokimetique</div>
+<div><a href='https://tidal.com/album/495156355' target='_blank'>https://tidal.com/album/495156355</a></div>
+<div>tripleS - Tokimetique</div>
+<div>tripleS - Tokimetique TV Edit</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/495156355' target='_blank'><img src='https://resources.tidal.com/images/3ee48506/c139/42b4/93c1/bf5ca1978ed7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] tripleS hatch! SecretHimitsuBimil</div>
+<div><a href='https://tidal.com/album/460599842' target='_blank'>https://tidal.com/album/460599842</a></div>
+<div>tripleS - Password</div>
+<div>tripleS - Headphones</div>
+<div>tripleS - Tokimetique</div>
+<div>tripleS - TOKYO</div>
+<div>tripleS - Oshare</div>
+<div>tripleS - Untitled</div>
+<div>tripleS - ### (hatch! Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/460599842' target='_blank'><img src='https://resources.tidal.com/images/cbdcdd31/568a/4cea/91c5/2108775f3659/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] tripleS hatch! Password</div>
+<div><a href='https://tidal.com/album/458405033' target='_blank'>https://tidal.com/album/458405033</a></div>
+<div>tripleS - Password</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/458405033' target='_blank'><img src='https://resources.tidal.com/images/b94c61a3/4972/4a7b/89a1/887119e4f0f0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] msnz Beyond Beauty</div>
+<div><a href='https://tidal.com/album/473664097' target='_blank'>https://tidal.com/album/473664097</a></div>
+<div>tripleS - Magic Shine New Zone</div>
+<div>tripleS - Fly Up</div>
+<div>tripleS - Cameo Love</div>
+<div>tripleS - Bubble Gum Girl</div>
+<div>tripleS - Q&A</div>
+<div>tripleS - Christmas Alone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/473664097' target='_blank'><img src='https://resources.tidal.com/images/2d632a05/ab59/4f85/953f/c71236d46896/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] msnz Beyond Beauty (Dolby Atmos)</div>
+<div><a href='https://tidal.com/album/475937910' target='_blank'>https://tidal.com/album/475937910</a></div>
+<div>tripleS - Magic Shine New Zone</div>
+<div>tripleS - Fly Up</div>
+<div>tripleS - Cameo Love</div>
+<div>tripleS - Bubble Gum Girl</div>
+<div>tripleS - Q&A</div>
+<div>tripleS - Christmas Alone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/475937910' target='_blank'><img src='https://resources.tidal.com/images/78885dc8/db33/4263/a79c/df23e2d7cd30/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Rising -Japanese Version-</div>
+<div><a href='https://tidal.com/album/428205504' target='_blank'>https://tidal.com/album/428205504</a></div>
+<div>tripleS - Rising -Japanese Version-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/428205504' target='_blank'><img src='https://resources.tidal.com/images/ffb0ea69/ad65/4c5a/823e/52591f66e836/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Girls Never Die -Japanese Version-</div>
+<div><a href='https://tidal.com/album/428205393' target='_blank'>https://tidal.com/album/428205393</a></div>
+<div>tripleS - Girls Never Die -Japanese Version-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/428205393' target='_blank'><img src='https://resources.tidal.com/images/c16aeff6/4da5/4296/b712/102414e1ecbc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] ASSEMBLE25</div>
+<div><a href='https://tidal.com/album/435117854' target='_blank'>https://tidal.com/album/435117854</a></div>
+<div>tripleS - @%</div>
+<div>tripleS - Are You Alive</div>
+<div>tripleS - Detective Soseol</div>
+<div>tripleS - Firework Diary</div>
+<div>tripleS - Love Child</div>
+<div>tripleS - Persona</div>
+<div>tripleS - Too Hot</div>
+<div>tripleS - Diablo</div>
+<div>tripleS - Friend Zone</div>
+<div>tripleS - Love2Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/435117854' target='_blank'><img src='https://resources.tidal.com/images/06820d24/aeab/4ac0/9a7f/68b2da18ce68/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] ASSEMBLE25</div>
+<div><a href='https://tidal.com/album/431380531' target='_blank'>https://tidal.com/album/431380531</a></div>
+<div>tripleS - @% (Alpha Percent)</div>
+<div>tripleS - 깨어 (Are You Alive)</div>
+<div>tripleS - 추리소설 (Detective Soseol)</div>
+<div>tripleS - 어제 우리 불꽃놀이 (Firework Diary)</div>
+<div>tripleS - Love Child</div>
+<div>tripleS - Persona</div>
+<div>tripleS - Too Hot</div>
+<div>tripleS - Diablo</div>
+<div>tripleS - Friend Zone</div>
+<div>tripleS - Love2Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431380531' target='_blank'><img src='https://resources.tidal.com/images/392fed18/1fb5/484b/afad/dbc2aceefe90/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] tripleS hatch! Untitled</div>
+<div><a href='https://tidal.com/album/397705124' target='_blank'>https://tidal.com/album/397705124</a></div>
+<div>tripleS - Untitled</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397705124' target='_blank'><img src='https://resources.tidal.com/images/0ab6ce05/93f6/4dac/ac0f/34da00fb2fd9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Visonary Vision Performante (Dolby Atmos Version)</div>
+<div><a href='https://tidal.com/album/395103796' target='_blank'>https://tidal.com/album/395103796</a></div>
+<div>tripleS - Visual Virtue</div>
+<div>tripleS - Hit the Floor</div>
+<div>tripleS - Choom</div>
+<div>tripleS - Éclair</div>
+<div>tripleS - 연애소설 (Love Soseol)</div>
+<div>tripleS - Atmosphere (VV Ver.)</div>
+<div>tripleS - 12 Rings</div>
+<div>tripleS - Vision</div>
+<div>tripleS - Bionic Power</div>
+<div>tripleS - Visionary Vision</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/395103796' target='_blank'><img src='https://resources.tidal.com/images/965b609c/f5da/4837/9025/0118dcb7d317/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Visionary Vision Performante</div>
+<div><a href='https://tidal.com/album/392479399' target='_blank'>https://tidal.com/album/392479399</a></div>
+<div>tripleS - Visual Virtue</div>
+<div>tripleS - Hit the Floor</div>
+<div>tripleS - Choom</div>
+<div>tripleS - Éclair</div>
+<div>tripleS - 연애소설 (Love Soseol)</div>
+<div>tripleS - Atmosphere (VV Ver.)</div>
+<div>tripleS - 12 Rings</div>
+<div>tripleS - Vision</div>
+<div>tripleS - Bionic Power</div>
+<div>tripleS - Visionary Vision</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/392479399' target='_blank'><img src='https://resources.tidal.com/images/cf7a71df/b439/40e8/8259/a0b2c9a746d2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Polaroid</div>
+<div><a href='https://tidal.com/album/399710546' target='_blank'>https://tidal.com/album/399710546</a></div>
+<div>tripleS - Polaroid (by NaKyoung, Mayu, ShiOn, ChaeWon)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/399710546' target='_blank'><img src='https://resources.tidal.com/images/f2256c8a/eb33/4998/8cbf/9aa0ad023265/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Glow Inner Dance</div>
+<div><a href='https://tidal.com/album/369137523' target='_blank'>https://tidal.com/album/369137523</a></div>
+<div>tripleS - Inner Dance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/369137523' target='_blank'><img src='https://resources.tidal.com/images/c7040530/7236/476b/9cf6/244bc434e9f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Dreaming (Shooting Stars X tripleS)</div>
+<div><a href='https://tidal.com/album/401911680' target='_blank'>https://tidal.com/album/401911680</a></div>
+<div>tripleS - Dreaming (by YooYeon, YuBin, DaHyun, ShiOn)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/401911680' target='_blank'><img src='https://resources.tidal.com/images/83ea5699/b1b2/4ff3/887d/0e0af6f26215/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Aria Structure Of Sadness</div>
+<div><a href='https://tidal.com/album/353585472' target='_blank'>https://tidal.com/album/353585472</a></div>
+<div>tripleS - Door</div>
+<div>tripleS - 첫 이별 (Farewell My First)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353585472' target='_blank'><img src='https://resources.tidal.com/images/15468743/301d/4318/8a2b/f610a75806bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] ASSEMBLE24</div>
+<div><a href='https://tidal.com/album/362002402' target='_blank'>https://tidal.com/album/362002402</a></div>
+<div>tripleS - S</div>
+<div>tripleS - Girls Never Die</div>
+<div>tripleS - Heart Raider</div>
+<div>tripleS - Midnight Flower</div>
+<div>tripleS - White Soul Sneakers</div>
+<div>tripleS - Chiyu</div>
+<div>tripleS - 24</div>
+<div>tripleS - Beyond the Beyond</div>
+<div>tripleS - Non Scale</div>
+<div>tripleS - Dimension</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/362002402' target='_blank'><img src='https://resources.tidal.com/images/717c16c4/0a4c/4a3f/bff4/ebb2fc155325/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] ASSEMBLE24 (Dolby)</div>
+<div><a href='https://tidal.com/album/362403138' target='_blank'>https://tidal.com/album/362403138</a></div>
+<div>tripleS - S</div>
+<div>tripleS - Girls Never Die</div>
+<div>tripleS - Heart Raider</div>
+<div>tripleS - Midnight Flower</div>
+<div>tripleS - White Soul Sneakers</div>
+<div>tripleS - Chiyu</div>
+<div>tripleS - 24</div>
+<div>tripleS - Beyond the Beyond</div>
+<div>tripleS - Non Scale</div>
+<div>tripleS - Dimension</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/362403138' target='_blank'><img src='https://resources.tidal.com/images/b09493b0/5792/492d/b67a/bdfe47f6234f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] ###</div>
+<div><a href='https://tidal.com/album/375393291' target='_blank'>https://tidal.com/album/375393291</a></div>
+<div>tripleS - ###</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/375393291' target='_blank'><img src='https://resources.tidal.com/images/9ef49f11/5d18/40cd/9a4b/4decfc1e7e4a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] NXT Just Do It</div>
+<div><a href='https://tidal.com/album/353585470' target='_blank'>https://tidal.com/album/353585470</a></div>
+<div>tripleS - Just Do It</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353585470' target='_blank'><img src='https://resources.tidal.com/images/b29e1881/9965/4271/a75d/bb34ff14f4b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] LOVElution ↀ</div>
+<div><a href='https://tidal.com/album/353591920' target='_blank'>https://tidal.com/album/353591920</a></div>
+<div>tripleS - &#8576;</div>
+<div>tripleS - Girls' Capitalism</div>
+<div>tripleS - 복합성 (Complexity)</div>
+<div>tripleS - Black Soul Dress</div>
+<div>tripleS - Seoul Sonyo Sound</div>
+<div>tripleS - Cry Baby</div>
+<div>tripleS - Speed Love</div>
+<div>tripleS - Number 8</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353591920' target='_blank'><img src='https://resources.tidal.com/images/c5b5fb66/1c49/4bad/9196/19bbf6dc8067/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] EVOLution ⟡</div>
+<div><a href='https://tidal.com/album/353585454' target='_blank'>https://tidal.com/album/353585454</a></div>
+<div>tripleS - &#10209;</div>
+<div>tripleS - Invincible</div>
+<div>tripleS - Rhodanthe</div>
+<div>tripleS - Heavy Metal Wings</div>
+<div>tripleS - 미열 37.5</div>
+<div>tripleS - Moto Princess</div>
+<div>tripleS - Oui</div>
+<div>tripleS - Enhanced Flower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353585454' target='_blank'><img src='https://resources.tidal.com/images/9bbb476e/a049/42f6/ba2e/27dd4db00577/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Acid Eyes Cherry Gene</div>
+<div><a href='https://tidal.com/album/353585372' target='_blank'>https://tidal.com/album/353585372</a></div>
+<div>tripleS - Cherry Gene 'Baddest Mix'</div>
+<div>tripleS - Cherry Gene 'Hy-Fluid Mix'</div>
+<div>tripleS - Cherry Gene 'Testarossa Mix'</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353585372' target='_blank'><img src='https://resources.tidal.com/images/4dd454cb/1d65/40fd/b3f3/52faae837395/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] ASSEMBLE</div>
+<div><a href='https://tidal.com/album/353585338' target='_blank'>https://tidal.com/album/353585338</a></div>
+<div>tripleS - Beam</div>
+<div>tripleS - Before the Rise</div>
+<div>tripleS - Rising</div>
+<div>tripleS - Colorful</div>
+<div>tripleS - The Baddest</div>
+<div>tripleS - New Look</div>
+<div>tripleS - Chowall</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353585338' target='_blank'><img src='https://resources.tidal.com/images/c129a7bd/b528/4628/aa40/924bf81c4ea4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] +(KR) ystal Eyes Touch+</div>
+<div><a href='https://tidal.com/album/353585355' target='_blank'>https://tidal.com/album/353585355</a></div>
+<div>tripleS - Touch+</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353585355' target='_blank'><img src='https://resources.tidal.com/images/c2b5709a/7f2d/4fb6/a196/04adb4b29b71/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] +(KR) ystal Eyes AESTHETIC</div>
+<div><a href='https://tidal.com/album/353585463' target='_blank'>https://tidal.com/album/353585463</a></div>
+<div>tripleS - Cherry 100%</div>
+<div>tripleS - Cherry Talk</div>
+<div>tripleS - Touch</div>
+<div>tripleS - (숨겨 봐봐) Hide & Seek</div>
+<div>tripleS - Deja-Vu</div>
+<div>tripleS - Dimension (KRE Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353585463' target='_blank'><img src='https://resources.tidal.com/images/b7aa982d/e1f2/4d53/90c3/87dd13f655fe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Acid Angel from Asia ACCESS</div>
+<div><a href='https://tidal.com/album/353585331' target='_blank'>https://tidal.com/album/353585331</a></div>
+<div>tripleS - Access</div>
+<div>tripleS - Generation</div>
+<div>tripleS - Rolex</div>
+<div>tripleS - 찰나 (Charla)</div>
+<div>tripleS - Dimension (AAA Ver.)</div>
+<div>tripleS - +(82)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353585331' target='_blank'><img src='https://resources.tidal.com/images/f07e7146/3a87/4c71/8a95/defd9154b39e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_T/1_TIDAL_Kpop_Artist_Link_T.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅌ1) TIDAL Kpop Artist Link (T)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_T/트리플에스 (tripleS)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
