@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 유브이 ( Tidal UV )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 유브이 ( Tidal UV )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/6fcb26ba/14e6/4c8c/9cf1/7281d9c4c950/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/4439279 ---------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 유브이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>유브이 (UV) – 예측불허 코믹 듀오, '쿨하지 못해 미안해'의 솔직함과 'Vely Vely'의 다국적 도전으로 웃음을 선사하는 팀</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> UV</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>UV – An unpredictable comedic duo, delivering laughter with the honesty of 'Sorry For Not Being Cool' and the multinational challenge of 'Vely Vely'.</div><p>독특한 콘셉트와 병맛 코드로 무장한 유브이는 단순한 음악 그룹을 넘어선 컬처 아이콘이에요. 유세윤과 뮤지로 이루어진 이 듀오는 예측 불가능한 음악과 퍼포먼스로 대중을 사로잡고 있답니다. 그들의 음악은 듣는 이들에게 신선한 충격과 유쾌한 웃음을 동시에 선사하죠.</p><p>Armed with a unique concept and quirky humor, UV is more than just a music group; they are a cultural icon. This duo, consisting of Yoo Se-yoon and Muzie, captivates the public with their unpredictable music and performances. Their music provides listeners with both fresh shock and pleasant laughter.</p><p>✧</p><p>그룹 탄생</p><p>개그맨 유세윤과 음악 프로듀서 뮤지의 만남은 그 자체로 하나의 코미디였어요. 엉뚱한 상상력과 음악적 재능이 결합된 유브이는 기존 음악 시장에 신선한 바람을 불어넣었죠. 이들의 조합은 단순한 프로젝트 그룹을 넘어, 독자적인 영역을 구축했답니다.</p><p>Group Formation</p><p>The meeting of comedian Yoo Se-yoon and music producer Muzie was a comedy in itself. UV, combining whimsical imagination and musical talent, brought a breath of fresh air to the existing music market. Their combination has gone beyond a simple project group to establish its own unique territory.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>유브이의 음악은 장르를 넘나드는 실험 정신이 돋보여요. 댄스, 락, 발라드 등 다양한 장르를 자신들만의 코믹한 스타일로 재해석하죠. 뮤직비디오 역시 독특한 연출과 패러디로 가득 차 있어 보는 재미를 더한답니다.</p><p>Music and Performance</p><p>UV's music stands out with its experimental spirit that transcends genres. They reinterpret various genres such as dance, rock, and ballad in their own unique comedic style. The music videos are also full of unique directing and parodies, adding to the fun of watching.</p><p>✧</p><p>주요 활동</p><p>유브이는 '쿨하지 못해 미안해', '집행유예' 등 발표하는 곡마다 큰 화제를 모았어요. 음악 활동 외에도 방송, 광고 등 다양한 분야에서 활약하며 대중적인 인기를 얻고 있죠. 특히, 유튜브 채널을 통해 꾸준히 새로운 콘텐츠를 선보이며 팬들과 소통하고 있답니다.</p><p>Key Activities</p><p>UV has garnered great attention with each song they release, including 'Sorry For Not Being Cool' and 'Probation'. In addition to music activities, they are gaining popular appeal by working in various fields such as broadcasting and advertising. In particular, they are constantly introducing new content through their YouTube channel and communicating with fans.</p><p>✧</p><p>미래/의미</p><p>유브이는 앞으로도 예측 불가능한 음악과 퍼포먼스로 대중에게 즐거움을 선사할 것으로 기대돼요. 단순한 웃음을 넘어, 사회적 메시지를 담은 음악을 선보이며 긍정적인 영향력을 발휘할 가능성도 보여주고 있죠. 그들의 독창적인 행보는 앞으로도 많은 이들에게 영감을 줄 거예요.</p><p>Future/Meaning</p><p>UV is expected to continue to bring joy to the public with their unpredictable music and performances. Beyond simple laughter, they are also showing the potential to exert a positive influence by presenting music with social messages. Their original 행보 will continue to inspire many people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] עננים ונדל_ן</div>
+<div><a href='https://tidal.com/album/433841711' target='_blank'>https://tidal.com/album/433841711</a></div>
+<div>UV - Sakurada</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/433841711' target='_blank'><img src='https://resources.tidal.com/images/d7a4f987/6e51/42ea/8bf3/9795a89074a0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] מאמי אני ראפר (Live Session)</div>
+<div><a href='https://tidal.com/album/405448215' target='_blank'>https://tidal.com/album/405448215</a></div>
+<div>UV - Are U Crazy- (Feat. Song Jin Woo) (Prod. SPACECOWB</div>
+<div>UV - Are U Crazy- (Feat. Song Jin Woo) (Prod. SPACECOWB</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/405448215' target='_blank'><img src='https://resources.tidal.com/images/44684542/7043/428c/821b/56c27ab44538/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] You are so cool (Feat. YOO BYUNG JAE, Jonathan)</div>
+<div><a href='https://tidal.com/album/397655614' target='_blank'>https://tidal.com/album/397655614</a></div>
+<div>UV - You are so cool (Feat. YOO BYUNG JAE, Jonathan)</div>
+<div>UV - You are so cool (Feat. YOO BYUNG JAE, Jonathan) (I</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397655614' target='_blank'><img src='https://resources.tidal.com/images/245e779c/14ff/4c60/9103/506b20f3a89b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Screwed up</div>
+<div><a href='https://tidal.com/album/349229113' target='_blank'>https://tidal.com/album/349229113</a></div>
+<div>UV - Screwed up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/349229113' target='_blank'><img src='https://resources.tidal.com/images/a21d246f/ee6b/48c4/ab17/4e43cc6df7fb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] סוף.</div>
+<div><a href='https://tidal.com/album/318773538' target='_blank'>https://tidal.com/album/318773538</a></div>
+<div>UV - HeungBo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318773538' target='_blank'><img src='https://resources.tidal.com/images/a57ba565/ca47/450b/9114/590304c049e0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] אוירה להשכיר</div>
+<div><a href='https://tidal.com/album/303673701' target='_blank'>https://tidal.com/album/303673701</a></div>
+<div>UV, Tei - comb honey Celebrity</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303673701' target='_blank'><img src='https://resources.tidal.com/images/52e1df4e/e1d1/4b9c/a9de/fad67a5ff7bf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Vely Vely</div>
+<div><a href='https://tidal.com/album/331300029' target='_blank'>https://tidal.com/album/331300029</a></div>
+<div>UV - Vely Vely</div>
+<div>UV - Vely Vely (ENG Ver.)</div>
+<div>UV - Vely Vely (JPN Ver.)</div>
+<div>UV - Vely Vely (CHN Ver.)</div>
+<div>UV - Vely Vely (ESP Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/331300029' target='_blank'><img src='https://resources.tidal.com/images/d0d25d47/412b/467c/85b6/f5147bc7d328/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] UV Bang Room.1</div>
+<div><a href='https://tidal.com/album/346770676' target='_blank'>https://tidal.com/album/346770676</a></div>
+<div>UV, KCM - Happy birthday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346770676' target='_blank'><img src='https://resources.tidal.com/images/fcd8b0d0/383f/466c/8ef4/d7f0e50243a5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Shaggy Cut</div>
+<div><a href='https://tidal.com/album/290646463' target='_blank'>https://tidal.com/album/290646463</a></div>
+<div>UV, Yoo Byungjae, Jonathan - Shaggy Cut (Feat. Yoo Byungjae, Jonathan)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/290646463' target='_blank'><img src='https://resources.tidal.com/images/0b01a28a/6a47/4645/a521/ce43ae7a0049/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] 내 낡은 자전거 Riding</div>
+<div><a href='https://tidal.com/album/222147009' target='_blank'>https://tidal.com/album/222147009</a></div>
+<div>UV, Choi Siwon - 내 낡은 자전거 Riding</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222147009' target='_blank'><img src='https://resources.tidal.com/images/9cf6f1fe/dcbb/4962/9f9a/db4bd00ae41f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Too Close, I’m Sorry (Feat. KWON INHA)</div>
+<div><a href='https://tidal.com/album/196167666' target='_blank'>https://tidal.com/album/196167666</a></div>
+<div>UV - Too Close, I’m Sorry (Feat. KWON INHA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196167666' target='_blank'><img src='https://resources.tidal.com/images/30dead67/246a/4867/a56f/44b7a1006dea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] קסם</div>
+<div><a href='https://tidal.com/album/154919875' target='_blank'>https://tidal.com/album/154919875</a></div>
+<div>UV - JUNGMIN BRO (Feat. KIMJUNGMIN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/154919875' target='_blank'><img src='https://resources.tidal.com/images/f948dbed/a269/45c3/b960/fd96941d8f1b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Fine Dust</div>
+<div><a href='https://tidal.com/album/196147010' target='_blank'>https://tidal.com/album/196147010</a></div>
+<div>UV - Fine Dust</div>
+<div>UV - Fine Dust</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196147010' target='_blank'><img src='https://resources.tidal.com/images/1cb9f1a5/3b3f/4583/92be/d4b286288717/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Death tension</div>
+<div><a href='https://tidal.com/album/196149880' target='_blank'>https://tidal.com/album/196149880</a></div>
+<div>UV - Death tension</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196149880' target='_blank'><img src='https://resources.tidal.com/images/7194387f/847e/4d5b/bb9c/062dc580533d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Who Am I</div>
+<div><a href='https://tidal.com/album/196143298' target='_blank'>https://tidal.com/album/196143298</a></div>
+<div>UV - Who Am I</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143298' target='_blank'><img src='https://resources.tidal.com/images/fa3cef61/ab04/4861/b45b/91486e3fe530/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] How Much_</div>
+<div><a href='https://tidal.com/album/196144387' target='_blank'>https://tidal.com/album/196144387</a></div>
+<div>UV - How Much-</div>
+<div>UV - How Much-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196144387' target='_blank'><img src='https://resources.tidal.com/images/f8ecb1b7/41df/4fe8/9dd4/2eb0a4caf4c3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Bigforest (Original Television Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/196143493' target='_blank'>https://tidal.com/album/196143493</a></div>
+<div>UV - Daerim</div>
+<div>UV - Daerim</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143493' target='_blank'><img src='https://resources.tidal.com/images/7aae99a3/2e9e/4299/89e0/232f7a1d2291/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Another Mother</div>
+<div><a href='https://tidal.com/album/196140734' target='_blank'>https://tidal.com/album/196140734</a></div>
+<div>UV - Another Mother</div>
+<div>UV - Another Mother</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140734' target='_blank'><img src='https://resources.tidal.com/images/4d3b48b9/c18f/4502/96fe/ace589761bae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] Za Bro</div>
+<div><a href='https://tidal.com/album/196137691' target='_blank'>https://tidal.com/album/196137691</a></div>
+<div>UV - Za Bro</div>
+<div>UV - Za Bro (Acapella Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137691' target='_blank'><img src='https://resources.tidal.com/images/d0f32fa1/df25/4bff/87ba/7f33e99625e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] JOHAN BRO</div>
+<div><a href='https://tidal.com/album/196136971' target='_blank'>https://tidal.com/album/196136971</a></div>
+<div>UV - JOHAN BRO</div>
+<div>UV - JOHAN BRO (Acapella)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196136971' target='_blank'><img src='https://resources.tidal.com/images/83cbec42/2d17/487f/8524/0d57037ad3c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Flashback</div>
+<div><a href='https://tidal.com/album/79206583' target='_blank'>https://tidal.com/album/79206583</a></div>
+<div>UV - Flashback (Original Mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/79206583' target='_blank'><img src='https://resources.tidal.com/images/dba07e57/0bfc/4343/99dd/b55109084d53/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Oh Yes (Feat. Lee Sang Min)</div>
+<div><a href='https://tidal.com/album/216122044' target='_blank'>https://tidal.com/album/216122044</a></div>
+<div>UV - Oh Yes (Feat. Lee Sang Min)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216122044' target='_blank'><img src='https://resources.tidal.com/images/87d7feb5/1694/4bf0/b85c/783718fdc9a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Grilled Shell</div>
+<div><a href='https://tidal.com/album/216121744' target='_blank'>https://tidal.com/album/216121744</a></div>
+<div>UV - Grilled Shell</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216121744' target='_blank'><img src='https://resources.tidal.com/images/bcadde4d/0a37/4f5c/a51f/4ec5fcee0a66/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] No Way</div>
+<div><a href='https://tidal.com/album/196091050' target='_blank'>https://tidal.com/album/196091050</a></div>
+<div>UV - No Way</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196091050' target='_blank'><img src='https://resources.tidal.com/images/75672913/22ed/40a5/9cea/65dff4227c17/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Because Of You</div>
+<div><a href='https://tidal.com/album/215783104' target='_blank'>https://tidal.com/album/215783104</a></div>
+<div>UV - Because Of You (Feat. Sung Hoon of Brown Eyed Soul</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215783104' target='_blank'><img src='https://resources.tidal.com/images/2d26f53b/ecfb/48b0/b5ad/6f07e45168be/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 와라! 편의점 (Original Webcomic Soundtrack) Pt. 2 - 편의점</div>
+<div><a href='https://tidal.com/album/218738959' target='_blank'>https://tidal.com/album/218738959</a></div>
+<div>UV - 와라! 편의점 (Original Webcomic Soundtrack) Pt. 2 - 편의점</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/218738959' target='_blank'><img src='https://resources.tidal.com/images/cdeef0bc/5802/446d/aefa/fb45118409d7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Mom</div>
+<div><a href='https://tidal.com/album/292453088' target='_blank'>https://tidal.com/album/292453088</a></div>
+<div>UV - Mom (feat. YEO UN JA)</div>
+<div>UV - Success (feat. JYP)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/292453088' target='_blank'><img src='https://resources.tidal.com/images/ddc60243/f40d/4b45/82a5/dcf50a1a0a05/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2010] Do You Wanna Be Cool_</div>
+<div><a href='https://tidal.com/album/292452567' target='_blank'>https://tidal.com/album/292452567</a></div>
+<div>UV - Incheon Park</div>
+<div>UV - No Cool I'm Sorry</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/292452567' target='_blank'><img src='https://resources.tidal.com/images/ab936986/a008/4707/aa18/67f42cac222a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Celebrity D.C</div>
+<div><a href='https://tidal.com/album/292453210' target='_blank'>https://tidal.com/album/292453210</a></div>
+<div>UV - Celebrity D.C</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/292453210' target='_blank'><img src='https://resources.tidal.com/images/276eeaf7/3258/458c/be63/21c87f89154e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Back To The Dance</div>
+<div><a href='https://tidal.com/album/292452881' target='_blank'>https://tidal.com/album/292452881</a></div>
+<div>UV - Intro (Hey Jean)</div>
+<div>UV - 999 (feat. Sofia)</div>
+<div>UV - Back To The Dance</div>
+<div>UV - Skit</div>
+<div>UV - Game</div>
+<div>UV - I'm Cool (feat. Yumi)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/292452881' target='_blank'><img src='https://resources.tidal.com/images/5183d994/8471/4c9f/b003/9999c6acbda3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/유브이 (UV)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
