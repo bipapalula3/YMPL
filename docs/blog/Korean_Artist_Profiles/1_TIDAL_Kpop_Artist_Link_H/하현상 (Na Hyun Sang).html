@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 하현상 ( Tidal Na Hyun Sang )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 하현상 ( Tidal Na Hyun Sang )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4dc27e40/f250/4b54/8955/3c54030a82d3/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/15802335' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 하현상</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>하현상 – 섬세한 감성으로 빚어낸 음악, ‘Lost’ 속 방황과 ‘Wait for me’의 애절함을 노래하는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Na Hyun Sang</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Ha Hyun Sang – A singer-songwriter crafting music with delicate emotions, singing of the wandering in ‘Lost’ and the heartfelt longing in ‘Wait for me’</div><p>독특한 음색과 깊이 있는 감성으로 듣는 이의 마음을 사로잡는 아티스트, 하현상입니다. 그는 자신만의 색깔로 다양한 음악적 스펙트럼을 펼쳐 보이며 많은 사랑을 받고 있어요. 그의 음악은 마치 한 편의 시처럼 섬세하고 아름다운 감정들을 담아내고 있습니다.</p><p>Ha Hyun Sang is an artist who captivates listeners with his unique voice and profound emotions. He is widely loved for showcasing a diverse musical spectrum with his own distinctive style. His music, like a delicate poem, captures beautiful and intricate emotions.</p><p>✧</p><p>그룹 탄생</p><p>하현상은 JTBC '슈퍼밴드'를 통해 대중에게 처음 이름을 알렸습니다. 그는 뛰어난 음악적 재능과 매력적인 보이스로 심사위원과 시청자들의 마음을 사로잡았어요. 이후 그룹 'Hoppipolla'의 멤버로 활동하며 더욱 폭넓은 음악적 역량을 선보였습니다.</p><p>Group Formation</p><p>Ha Hyun Sang first became known to the public through JTBC's 'Superband.' He captivated the hearts of judges and viewers with his outstanding musical talent and charming voice. Later, as a member of the group 'Hoppipolla,' he showcased an even broader range of musical capabilities.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>하현상의 음악은 서정적인 가사와 몽환적인 분위기가 특징입니다. 그는 주로 섬세한 감정선과 내면의 고독을 노래하며 깊은 공감을 불러일으킵니다. 그의 퍼포먼스는 진솔한 감정 표현과 독특한 음색이 어우러져 깊은 인상을 남깁니다.</p><p>Music and Performance</p><p>Ha Hyun Sang's music is characterized by lyrical lyrics and a dreamy atmosphere. He primarily sings about delicate emotional lines and inner solitude, evoking deep empathy. His performances leave a lasting impression through a blend of sincere emotional expression and a unique vocal tone.</p><p>✧</p><p>주요 활동</p><p>하현상은 솔로 활동뿐만 아니라 다양한 드라마 OST에 참여하며 꾸준히 음악 활동을 이어가고 있습니다. 그는 자신만의 감성으로 드라마의 분위기를 더욱 깊게 만들며 시청자들의 몰입도를 높이는 데 기여하고 있어요. 또한, 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀가고 있습니다.</p><p>Main Activities</p><p>Ha Hyun Sang has been consistently pursuing his music career, not only through solo activities but also by participating in various drama OSTs. He contributes to enhancing viewers' immersion by deepening the atmosphere of dramas with his unique sensibility. He is also expanding his musical spectrum through collaborations with various artists.</p><p>✧</p><p>미래/의미</p><p>하현상은 앞으로도 자신만의 음악 세계를 더욱 깊고 넓게 펼쳐나갈 것으로 기대됩니다. 그의 음악은 듣는 이들에게 위로와 공감을 전하며 오랫동안 기억될 것입니다. 진솔한 음악적 행보를 통해 더욱 많은 사람들에게 감동을 선사할 그의 미래가 기대됩니다.</p><p>Future/Meaning</p><p>Ha Hyun Sang is expected to further expand his unique musical world in the future. His music will be remembered for a long time, offering comfort and empathy to listeners. His sincere musical journey promises to inspire even more people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Lost</div>
+<div><a href='https://tidal.com/album/425134232' target='_blank'>https://tidal.com/album/425134232</a></div>
+<div>Ha Hyun Sang - Lost</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/425134232' target='_blank'><img src='https://resources.tidal.com/images/b03bebf4/1af5/427e/b2ac/79cae930e531/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Cat</div>
+<div><a href='https://tidal.com/album/431233310' target='_blank'>https://tidal.com/album/431233310</a></div>
+<div>Ha Hyun Sang - Cat</div>
+<div>Ha Hyun Sang - Wait for me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431233310' target='_blank'><img src='https://resources.tidal.com/images/d341c663/202b/4c8a/8454/dd8e6ba8312e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] With All My Heart</div>
+<div><a href='https://tidal.com/album/338062440' target='_blank'>https://tidal.com/album/338062440</a></div>
+<div>Ha Hyun Sang - Tell me it is love</div>
+<div>Ha Hyun Sang - Pain</div>
+<div>Ha Hyun Sang - Where am I</div>
+<div>Ha Hyun Sang - Snowflake</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/338062440' target='_blank'><img src='https://resources.tidal.com/images/22daa8cb/8912/4b2b/8b1a/f6e47d6592e5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Elegy</div>
+<div><a href='https://tidal.com/album/393856826' target='_blank'>https://tidal.com/album/393856826</a></div>
+<div>Ha Hyun Sang - Flight</div>
+<div>Ha Hyun Sang - Scent</div>
+<div>Ha Hyun Sang - Seasonal rain</div>
+<div>Ha Hyun Sang - On the quiet</div>
+<div>Ha Hyun Sang - Ode</div>
+<div>Ha Hyun Sang - Reason</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/393856826' target='_blank'><img src='https://resources.tidal.com/images/9776f530/31fd/4742/aff4/4cae3e359316/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Cinderella at 2AM OST Part 3</div>
+<div><a href='https://tidal.com/album/383913349' target='_blank'>https://tidal.com/album/383913349</a></div>
+<div>Ha Hyun Sang - Sailing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383913349' target='_blank'><img src='https://resources.tidal.com/images/aaef4371/c6e9/4643/959a/e8625d7b3104/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Wherever you are</div>
+<div><a href='https://tidal.com/album/322160208' target='_blank'>https://tidal.com/album/322160208</a></div>
+<div>Ha Hyun Sang - Wherever you are</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/322160208' target='_blank'><img src='https://resources.tidal.com/images/a76cd86e/7c2a/40b7/af47/ad6e6098b7ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Time and Trace</div>
+<div><a href='https://tidal.com/album/290401060' target='_blank'>https://tidal.com/album/290401060</a></div>
+<div>Ha Hyun Sang - Melancholy</div>
+<div>Ha Hyun Sang - You Know</div>
+<div>Ha Hyun Sang - Time and Trace</div>
+<div>Ha Hyun Sang - One Day</div>
+<div>Ha Hyun Sang - The Boy′s Chamber</div>
+<div>Ha Hyun Sang - Laputa</div>
+<div>Ha Hyun Sang - Darkday</div>
+<div>Ha Hyun Sang - Good Night</div>
+<div>Ha Hyun Sang - The Way Home</div>
+<div>Ha Hyun Sang - Same Old Song</div>
+<div>Ha Hyun Sang - Wave</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/290401060' target='_blank'><img src='https://resources.tidal.com/images/d2f3de46/f3fa/480c/835e/e2fcec696b9b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] My Perfect Stranger OST Part.3</div>
+<div><a href='https://tidal.com/album/294905644' target='_blank'>https://tidal.com/album/294905644</a></div>
+<div>Ha Hyun Sang - Like You Was To Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/294905644' target='_blank'><img src='https://resources.tidal.com/images/c56d4686/ee5a/4d61/9938/c2da6acb0b53/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Dream OST</div>
+<div><a href='https://tidal.com/album/291148072' target='_blank'>https://tidal.com/album/291148072</a></div>
+<div>Ha Hyun Sang - Dream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/291148072' target='_blank'><img src='https://resources.tidal.com/images/6eaf50f0/f039/4b03/856d/b55696b8669f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] Crash Course in Romance OST Part 5</div>
+<div><a href='https://tidal.com/album/275871753' target='_blank'>https://tidal.com/album/275871753</a></div>
+<div>Ha Hyun Sang - Alright</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/275871753' target='_blank'><img src='https://resources.tidal.com/images/bda6e246/3e3c/4c8d/9847/0f784879e25d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] By My Side</div>
+<div><a href='https://tidal.com/album/285796397' target='_blank'>https://tidal.com/album/285796397</a></div>
+<div>Ha Hyun Sang, Etham - By My Side</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/285796397' target='_blank'><img src='https://resources.tidal.com/images/cc5449de/6cbd/4c4b/aaaa/6e6959822671/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Behind you touch OST Part 7</div>
+<div><a href='https://tidal.com/album/317327077' target='_blank'>https://tidal.com/album/317327077</a></div>
+<div>Ha Hyun Sang - Please</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/317327077' target='_blank'><img src='https://resources.tidal.com/images/4ed8cb37/c0a1/43ce/bba5/d965d5bc0b04/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] When Winter Comes</div>
+<div><a href='https://tidal.com/album/266909800' target='_blank'>https://tidal.com/album/266909800</a></div>
+<div>Ha Hyun Sang - When Winter Comes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/266909800' target='_blank'><img src='https://resources.tidal.com/images/9698ba85/7fae/40af/bb6b/2f7a8a4e6147/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Rookie Cops (Original Television Soundtrack) Pt. 3</div>
+<div><a href='https://tidal.com/album/215564830' target='_blank'>https://tidal.com/album/215564830</a></div>
+<div>Ha Hyun Sang - My Sunlight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215564830' target='_blank'><img src='https://resources.tidal.com/images/e208383e/211c/437c/895e/1fbcbc4f602e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] My Liberation Notes OST Part 5</div>
+<div><a href='https://tidal.com/album/225746067' target='_blank'>https://tidal.com/album/225746067</a></div>
+<div>Ha Hyun Sang - Be My Birthday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/225746067' target='_blank'><img src='https://resources.tidal.com/images/a5486013/9db9/4428/9b68/d903b279ae97/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Mental Coach Jegal OST Part 2</div>
+<div><a href='https://tidal.com/album/249241262' target='_blank'>https://tidal.com/album/249241262</a></div>
+<div>Ha Hyun Sang - Dear You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/249241262' target='_blank'><img src='https://resources.tidal.com/images/a15617ab/83d4/4c5a/b6c3/21f63a5d8c3c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Living the moment of love</div>
+<div><a href='https://tidal.com/album/229922971' target='_blank'>https://tidal.com/album/229922971</a></div>
+<div>Ha Hyun Sang - MAGIC</div>
+<div>Ha Hyun Sang - Night Walk</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/229922971' target='_blank'><img src='https://resources.tidal.com/images/0f9748f7/db3d/4e88/a5e7/26e42107a6ad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Begin Again Open MIC EPISODE. 38 - Everybody's Changing</div>
+<div><a href='https://tidal.com/album/306303653' target='_blank'>https://tidal.com/album/306303653</a></div>
+<div>Ha Hyun Sang - Begin Again Open MIC EPISODE. 38 - Everybody's Cha</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306303653' target='_blank'><img src='https://resources.tidal.com/images/fba51472/16a8/4302/9e8d/68830bff856a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] ADAMAS OST Part 4</div>
+<div><a href='https://tidal.com/album/243547197' target='_blank'>https://tidal.com/album/243547197</a></div>
+<div>Ha Hyun Sang - By Your Side</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/243547197' target='_blank'><img src='https://resources.tidal.com/images/857953ce/7da3/4453/a485/d18f5116cefd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 너는 나의 봄 OST Part 3</div>
+<div><a href='https://tidal.com/album/191221643' target='_blank'>https://tidal.com/album/191221643</a></div>
+<div>Ha Hyun Sang - Still Wonder</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/191221643' target='_blank'><img src='https://resources.tidal.com/images/e6047c60/4f81/455d/9ebe/daeb20e257c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Navillera OST Part 4</div>
+<div><a href='https://tidal.com/album/196167730' target='_blank'>https://tidal.com/album/196167730</a></div>
+<div>Ha Hyun Sang - Heal You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196167730' target='_blank'><img src='https://resources.tidal.com/images/a2e2c159/1881/4748/aa34/9691d7d0382c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Late Night Movie</div>
+<div><a href='https://tidal.com/album/196167496' target='_blank'>https://tidal.com/album/196167496</a></div>
+<div>Ha Hyun Sang - Late Night Movie</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196167496' target='_blank'><img src='https://resources.tidal.com/images/2817acfc/6a14/4780/bfe2/1bd2001b383f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Every moment with you (Your playlist X Ha Hyunsang)</div>
+<div><a href='https://tidal.com/album/216375732' target='_blank'>https://tidal.com/album/216375732</a></div>
+<div>Ha Hyun Sang - Every moment with you (Your playlist X Ha Hyunsang</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216375732' target='_blank'><img src='https://resources.tidal.com/images/73568069/90b1/4df1/ace8/b2663cf0e1b0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Dali and Cocky Prince (Original Television Soundtrack) Pt.4</div>
+<div><a href='https://tidal.com/album/199630074' target='_blank'>https://tidal.com/album/199630074</a></div>
+<div>Ha Hyun Sang - With You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/199630074' target='_blank'><img src='https://resources.tidal.com/images/c92cfec4/93c3/4d1d/806b/f48720ca2632/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Calibrate</div>
+<div><a href='https://tidal.com/album/208513225' target='_blank'>https://tidal.com/album/208513225</a></div>
+<div>Ha Hyun Sang - Highway</div>
+<div>Ha Hyun Sang - Lighthouse</div>
+<div>Ha Hyun Sang - Blue Alley</div>
+<div>Ha Hyun Sang - Dead Bird</div>
+<div>Ha Hyun Sang - Bring Me Back</div>
+<div>Ha Hyun Sang - A Letter From Someone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208513225' target='_blank'><img src='https://resources.tidal.com/images/175e5e43/f26a/4c65/a114/9e4d2c9f2db2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Burning Sunset</div>
+<div><a href='https://tidal.com/album/197844087' target='_blank'>https://tidal.com/album/197844087</a></div>
+<div>Ha Hyun Sang - Burning Sunset</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/197844087' target='_blank'><img src='https://resources.tidal.com/images/cbe2b3ed/08e7/42c1/a4db/65d9bcb005c8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] A Love So Beautiful (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/216502907' target='_blank'>https://tidal.com/album/216502907</a></div>
+<div>Ha Hyun Sang - Day and night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216502907' target='_blank'><img src='https://resources.tidal.com/images/9d775647/e85f/445a/8eb3/34433b286efc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] 영혼수선공 OST Part.2 Soul Mechanic Drama O.S.T Part.2</div>
+<div><a href='https://tidal.com/album/142521840' target='_blank'>https://tidal.com/album/142521840</a></div>
+<div>Ha Hyun Sang - 우리 둘, 서로의 위로가 되어 Lean on me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142521840' target='_blank'><img src='https://resources.tidal.com/images/826c58f6/0102/4cc4/a032/af7283338e49/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] The Edge</div>
+<div><a href='https://tidal.com/album/205504347' target='_blank'>https://tidal.com/album/205504347</a></div>
+<div>Ha Hyun Sang - Intro- Rise</div>
+<div>Ha Hyun Sang - Nostalgia (Feat. Rohann)</div>
+<div>Ha Hyun Sang - A Book of Love</div>
+<div>Ha Hyun Sang - Not okay</div>
+<div>Ha Hyun Sang - Close</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/205504347' target='_blank'><img src='https://resources.tidal.com/images/a8e378fa/6c04/4ef8/9e08/8b9a8e82b32c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] A PIECE OF YOUR MIND OST Part 1</div>
+<div><a href='https://tidal.com/album/196154403' target='_blank'>https://tidal.com/album/196154403</a></div>
+<div>Ha Hyun Sang - Slowly Fall</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196154403' target='_blank'><img src='https://resources.tidal.com/images/56b08236/9e7a/454f/9e31/32979c6c657d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 3108</div>
+<div><a href='https://tidal.com/album/196163434' target='_blank'>https://tidal.com/album/196163434</a></div>
+<div>Ha Hyun Sang - 3108</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196163434' target='_blank'><img src='https://resources.tidal.com/images/78928467/5ae1/4685/9395/61a4b7946d8e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] US</div>
+<div><a href='https://tidal.com/album/196151527' target='_blank'>https://tidal.com/album/196151527</a></div>
+<div>Ha Hyun Sang - US</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196151527' target='_blank'><img src='https://resources.tidal.com/images/b38ef77e/3535/4083/9be5/2cd1eb1a8224/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Be Melodramatic (Original Television Soundtrack), Pt. 5</div>
+<div><a href='https://tidal.com/album/196149782' target='_blank'>https://tidal.com/album/196149782</a></div>
+<div>Ha Hyun Sang - Moonlight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196149782' target='_blank'><img src='https://resources.tidal.com/images/afe4b21e/75a1/4f80/815c/0d0ef9434d2f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] My Poor Lonely Heart</div>
+<div><a href='https://tidal.com/album/147862057' target='_blank'>https://tidal.com/album/147862057</a></div>
+<div>Ha Hyun Sang - Dawn</div>
+<div>Ha Hyun Sang - Where Are You Now</div>
+<div>Ha Hyun Sang - Gone Tonight</div>
+<div>Ha Hyun Sang - Koh Samed</div>
+<div>Ha Hyun Sang - Break Down</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/147862057' target='_blank'><img src='https://resources.tidal.com/images/39167c01/ccc7/46c4/825a/c7eefc94c5c3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Mr. Sunshine, Pt. 7 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196142515' target='_blank'>https://tidal.com/album/196142515</a></div>
+<div>Ha Hyun Sang - Becoming the Wind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142515' target='_blank'><img src='https://resources.tidal.com/images/81107d5c/5f6b/4407/bc70/30d5aba9b462/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Dawn</div>
+<div><a href='https://tidal.com/album/185881993' target='_blank'>https://tidal.com/album/185881993</a></div>
+<div>Ha Hyun Sang - Dawn</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185881993' target='_blank'><img src='https://resources.tidal.com/images/57cdd031/a63a/4c94/983a/5aacda8be4bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/1_TIDAL_Kpop_Artist_Link_H.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅎ1) TIDAL Kpop Artist Link (H)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/하현상 (Na Hyun Sang)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
