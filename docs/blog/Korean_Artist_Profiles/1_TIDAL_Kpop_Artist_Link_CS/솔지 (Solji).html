@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 솔지 ( Tidal Solji )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 솔지 ( Tidal Solji )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/d626c6c0/c15c/40b8/b275/7583f72c4cb5/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6890342' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 솔지</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>솔지 (Solji) - 깊은 감성으로 노래하는, ‘서쪽 하늘’의 짙은 그리움과 ‘La Festa’의 화려한 축제를 담아내는 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Solji</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Solji - A vocalist who sings with deep emotion, capturing the intense longing of 'Western Sky' and the splendid festival of 'La Festa'.</div><p>폭넓은 음악적 스펙트럼과 깊은 감성으로 대중의 마음을 사로잡는 솔지입니다. 그녀의 음악은 다채로운 장르를 넘나들며, 특유의 호소력 짙은 보이스로 듣는 이들에게 깊은 울림을 선사합니다. 솔지는 끊임없이 새로운 음악적 시도를 통해 자신만의 색깔을 만들어가고 있습니다.</p><p>Solji captivates the public with her broad musical spectrum and deep emotions. Her music transcends various genres, and her unique, appealing voice deeply resonates with listeners. Solji is constantly creating her own style through new musical endeavors.</p><p>✧</p><p>그룹 탄생</p><p>솔지는 뛰어난 가창력으로 인정받으며 그룹의 메인 보컬로 데뷔했습니다. 그녀의 안정적인 보컬은 그룹의 음악적 완성도를 높이는 데 크게 기여했습니다. 다양한 음악적 시도 속에서도 솔지는 자신만의 독보적인 음색을 유지하며 대중의 사랑을 받았습니다.</p><p>Group Formation</p><p>Solji debuted as the main vocalist of her group, recognized for her exceptional singing ability. Her stable vocals greatly contributed to enhancing the group's musical completeness. Despite various musical experiments, Solji maintained her unique tone and was loved by the public.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>솔지의 음악은 발라드, 댄스, R&B 등 다양한 장르를 아우르며 폭넓은 음악적 스펙트럼을 보여줍니다. 그녀는 뛰어난 가창력뿐만 아니라 섬세한 감정 표현으로 곡의 몰입도를 높입니다. 무대 위에서의 퍼포먼스 또한 강렬하면서도 아름다운 매력을 선보입니다.</p><p>Music and Performance</p><p>Solji's music encompasses various genres such as ballads, dance, and R&B, showcasing a wide musical spectrum. She enhances the immersion of her songs not only with her outstanding singing ability but also with her delicate emotional expression. Her performance on stage also presents an intense yet beautiful charm.</p><p>✧</p><p>주요 활동</p><p>솔지는 그룹 활동 외에도 솔로 앨범 발표, OST 참여, 다양한 방송 활동 등 다방면에서 활약하고 있습니다. 특히 솔로곡들을 통해 자신만의 음악적 색깔을 더욱 뚜렷하게 드러내고 있습니다. 또한, 다른 아티스트와의 협업을 통해 새로운 음악적 시너지를 창출하고 있습니다.</p><p>Main Activities</p><p>In addition to group activities, Solji is active in various fields such as releasing solo albums, participating in OSTs, and various broadcasting activities. In particular, she is more clearly revealing her own musical color through solo songs. She is also creating new musical synergy through collaborations with other artists.</p><p>✧</p><p>미래/의미</p><p>솔지는 앞으로도 끊임없는 음악적 도전을 통해 더욱 깊이 있는 음악을 선보일 것으로 기대됩니다. 그녀의 음악은 단순한 즐거움을 넘어, 듣는 이들에게 위로와 공감을 선사할 것입니다. 솔지는 자신만의 음악적 색깔을 더욱 확고히 하며, 대중에게 오랫동안 사랑받는 아티스트로 남을 것입니다.</p><p>Future/Meaning</p><p>Solji is expected to present even deeper music through continuous musical challenges in the future. Her music will provide comfort and empathy to listeners, going beyond simple enjoyment. Solji will solidify her own musical color and remain a beloved artist for a long time.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] La Festa</div>
+<div><a href='https://tidal.com/album/414915170' target='_blank'>https://tidal.com/album/414915170</a></div>
+<div>Solji - La Festa</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/414915170' target='_blank'><img src='https://resources.tidal.com/images/b6891d37/ed9c/4016/9669/3f2c1f257baf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] If you're gonna hurt me like this</div>
+<div><a href='https://tidal.com/album/424344535' target='_blank'>https://tidal.com/album/424344535</a></div>
+<div>Solji - If you're gonna hurt me like this</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/424344535' target='_blank'><img src='https://resources.tidal.com/images/5dca721b/05c1/4c27/afaa/78c69a20bd01/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Western Sky</div>
+<div><a href='https://tidal.com/album/357420348' target='_blank'>https://tidal.com/album/357420348</a></div>
+<div>Solji - Western Sky</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/357420348' target='_blank'><img src='https://resources.tidal.com/images/a2758421/56da/4a66/bf46/7b68de1d936b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Night Road in Hannam-dong</div>
+<div><a href='https://tidal.com/album/386124136' target='_blank'>https://tidal.com/album/386124136</a></div>
+<div>Solji - Night Road in Hannam-dong</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/386124136' target='_blank'><img src='https://resources.tidal.com/images/43e36ceb/72e7/4b5b/a27f/298ae0e64374/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] RockRockparty Part.3</div>
+<div><a href='https://tidal.com/album/313190605' target='_blank'>https://tidal.com/album/313190605</a></div>
+<div>Solji - So far away</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/313190605' target='_blank'><img src='https://resources.tidal.com/images/9ccb5bd3/44b3/422f/8446/7c447a52e1c9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] One ring</div>
+<div><a href='https://tidal.com/album/334101843' target='_blank'>https://tidal.com/album/334101843</a></div>
+<div>Solji - One ring</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334101843' target='_blank'><img src='https://resources.tidal.com/images/d90e6184/b6b2/4312/a591/f0b8f7d3ba43/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Miracle</div>
+<div><a href='https://tidal.com/album/270920813' target='_blank'>https://tidal.com/album/270920813</a></div>
+<div>Solji - Miracle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/270920813' target='_blank'><img src='https://resources.tidal.com/images/be3d4d98/414b/457b/a778/3da156ae266f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Into My Playlist Pt. 3</div>
+<div><a href='https://tidal.com/album/346426737' target='_blank'>https://tidal.com/album/346426737</a></div>
+<div>Solji - Something Like That</div>
+<div>Layone - 160</div>
+<div>KEN - Jasmine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346426737' target='_blank'><img src='https://resources.tidal.com/images/6f52f4d5/f8a0/4854/95b8/68ab0b60899a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] The days we were us</div>
+<div><a href='https://tidal.com/album/261856974' target='_blank'>https://tidal.com/album/261856974</a></div>
+<div>Solji - The days we were us</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/261856974' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Tales Runner [Multiverse and Dimension Authority] (Original Soundtrack) PART. 1 Knight (Knight for Fight)</div>
+<div><a href='https://tidal.com/album/264995092' target='_blank'>https://tidal.com/album/264995092</a></div>
+<div>Solji - Knight (Knight for Fight)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/264995092' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] It's all the same</div>
+<div><a href='https://tidal.com/album/244262216' target='_blank'>https://tidal.com/album/244262216</a></div>
+<div>Solji - It's all the same</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/244262216' target='_blank'><img src='https://resources.tidal.com/images/d1643d57/7406/40ca/bd4d/b452f0701ec1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] I believed it was love</div>
+<div><a href='https://tidal.com/album/346734139' target='_blank'>https://tidal.com/album/346734139</a></div>
+<div>Solji - I believed it was love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346734139' target='_blank'><img src='https://resources.tidal.com/images/81efe305/ddee/4338/bd19/645de0c4beb0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] First Letter</div>
+<div><a href='https://tidal.com/album/218257569' target='_blank'>https://tidal.com/album/218257569</a></div>
+<div>Solji - Fade away</div>
+<div>Solji - Pillow</div>
+<div>Solji - Breaking up</div>
+<div>Solji - Have a good day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/218257569' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Waste of emotions</div>
+<div><a href='https://tidal.com/album/200605018' target='_blank'>https://tidal.com/album/200605018</a></div>
+<div>Solji - Waste of emotions</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200605018' target='_blank'><img src='https://resources.tidal.com/images/0f22180c/8830/425c/bdce/4eac141238b4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Remember my love (Bunny and Guys X Solji)</div>
+<div><a href='https://tidal.com/album/216255799' target='_blank'>https://tidal.com/album/216255799</a></div>
+<div>Solji - Remember my love (Bunny and Guys X Solji)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216255799' target='_blank'><img src='https://resources.tidal.com/images/9a9221d7/2831/472f/a27a/f714aad9caa4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Mad for Each Other (Original Soundtrack), Pt. 3</div>
+<div><a href='https://tidal.com/album/343591634' target='_blank'>https://tidal.com/album/343591634</a></div>
+<div>Solji - This Comfort</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343591634' target='_blank'><img src='https://resources.tidal.com/images/dc56a33c/8ef7/4260/b838/ae885a5ee656/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 18 again, Pt. 4 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/334928809' target='_blank'>https://tidal.com/album/334928809</a></div>
+<div>Solji - One Person</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334928809' target='_blank'><img src='https://resources.tidal.com/images/cf84c8f8/027c/4c94/8a44/43d83c42d0c6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] The Trace You Left (The Spies Who Loved Me (Original Soundtrack) Part.5)</div>
+<div><a href='https://tidal.com/album/216465475' target='_blank'>https://tidal.com/album/216465475</a></div>
+<div>Solji - The Trace You Left</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216465475' target='_blank'><img src='https://resources.tidal.com/images/e980fc49/95a5/4efd/9686/f8f44b056a50/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Rains again</div>
+<div><a href='https://tidal.com/album/216122776' target='_blank'>https://tidal.com/album/216122776</a></div>
+<div>Solji - Rains again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216122776' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Forest (Original Soundtrack) Part.6</div>
+<div><a href='https://tidal.com/album/216487372' target='_blank'>https://tidal.com/album/216487372</a></div>
+<div>Solji - Walking On This Street</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216487372' target='_blank'><img src='https://resources.tidal.com/images/78390067/81a7/48c2/b410/0c1fb26170d4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 하자있는 인간들 (Original Television Soundtrack) Pt. 5</div>
+<div><a href='https://tidal.com/album/305872560' target='_blank'>https://tidal.com/album/305872560</a></div>
+<div>Solji - Even Not Knowing If It Hurts</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305872560' target='_blank'><img src='https://resources.tidal.com/images/d025fe9d/54b9/40de/9083/d9afb876ac5f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 퍼퓸 (Original Television Soundtrack), Pt. 1</div>
+<div><a href='https://tidal.com/album/422170542' target='_blank'>https://tidal.com/album/422170542</a></div>
+<div>Solji - 손 닿을 만큼</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/422170542' target='_blank'><img src='https://resources.tidal.com/images/2dbb4139/a387/42ca/ae73/770d1762fa83/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Perfume (KBS 2TV Drama) OST Part.1</div>
+<div><a href='https://tidal.com/album/188857855' target='_blank'>https://tidal.com/album/188857855</a></div>
+<div>Solji - Within arms reach all along</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188857855' target='_blank'><img src='https://resources.tidal.com/images/1a907877/243f/45ed/b2ce/750ff2f3e3ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The Time of Angels</div>
+<div><a href='https://tidal.com/album/353849356' target='_blank'>https://tidal.com/album/353849356</a></div>
+<div>Solji - 남아있는 시간을 위하여</div>
+<div>Solji - 마법의 설탕 두 조각</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353849356' target='_blank'><img src='https://resources.tidal.com/images/04aa5986/3b17/4095/add3/371393db4e4d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Take Me Away</div>
+<div><a href='https://tidal.com/album/353792993' target='_blank'>https://tidal.com/album/353792993</a></div>
+<div>Solji - 나는 생각이 너무 많아</div>
+<div>Solji - 내가 소홀했던 것들</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353792993' target='_blank'><img src='https://resources.tidal.com/images/4a439a6b/8da4/4b23/8900/4b4eb186f5b0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 돈꽃 (Original Television Soundtrack), Pt.2</div>
+<div><a href='https://tidal.com/album/189672184' target='_blank'>https://tidal.com/album/189672184</a></div>
+<div>Hani, Solji - Flame</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189672184' target='_blank'><img src='https://resources.tidal.com/images/c16823a7/dc30/4046/8446/a046837edcf2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Sweet Stranger and Me, Pt. 5 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/67179174' target='_blank'>https://tidal.com/album/67179174</a></div>
+<div>Solji - You & Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/67179174' target='_blank'><img src='https://resources.tidal.com/images/98fa604b/6efb/46f0/b99b/21accb3419b4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] Old Memory</div>
+<div><a href='https://tidal.com/album/188575946' target='_blank'>https://tidal.com/album/188575946</a></div>
+<div>Solji - 사랑했던 날</div>
+<div>Solji - 종로에서 (feat. PK Heman)</div>
+<div>Solji - 조금만 사랑했다면</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188575946' target='_blank'><img src='https://resources.tidal.com/images/afc8f08e/4f58/45e2/ab88/bf53db70c03e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Don't Worry Music, Vol. 1</div>
+<div><a href='https://tidal.com/album/56371512' target='_blank'>https://tidal.com/album/56371512</a></div>
+<div>Solji, Yu Jaehwan, Jung Hyungdon - Today with You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/56371512' target='_blank'><img src='https://resources.tidal.com/images/2255c2fa/8c58/4a81/b054/a117d126babc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] We Shouldn't Have Met Each Other</div>
+<div><a href='https://tidal.com/album/176490452' target='_blank'>https://tidal.com/album/176490452</a></div>
+<div>Welldone potato, Solji - We Shouldn't Have Met Each Other</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/176490452' target='_blank'><img src='https://resources.tidal.com/images/6ebdee2a/7d83/45a8/a113/03738ee906f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] 2comfortable</div>
+<div><a href='https://tidal.com/album/189433345' target='_blank'>https://tidal.com/album/189433345</a></div>
+<div>Solji - You are a fool</div>
+<div>Solji - out of hatred (feat. SUHO)</div>
+<div>Solji - The day I loved you</div>
+<div>Solji - Don't</div>
+<div>Solji - Smile</div>
+<div>iRO - she (New Vocal ver.)</div>
+<div>iRO - love is hard</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189433345' target='_blank'><img src='https://resources.tidal.com/images/5ba3e889/e0b3/4f3b/bbc2/d8b40083bd22/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] The Day I Loved You</div>
+<div><a href='https://tidal.com/album/189448633' target='_blank'>https://tidal.com/album/189448633</a></div>
+<div>Solji - The day I loved you</div>
+<div>Solji - The day I loved you (String ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189448633' target='_blank'><img src='https://resources.tidal.com/images/edc041ce/8e33/4317/916e/8fed99cc696b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Challenge</div>
+<div><a href='https://tidal.com/album/189448565' target='_blank'>https://tidal.com/album/189448565</a></div>
+<div>Solji - The day I loved you</div>
+<div>Solji, SUHO - out of hatred (feat. SUHO)</div>
+<div>Solji - Smile</div>
+<div>Solji - Don't</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189448565' target='_blank'><img src='https://resources.tidal.com/images/c71ebc77/45f1/436a/a46e/6463801a3238/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] At Jongno (Remake)</div>
+<div><a href='https://tidal.com/album/189448662' target='_blank'>https://tidal.com/album/189448662</a></div>
+<div>Solji - At Jong-Ro (feat. PK Heman)</div>
+<div>Solji - I'll Give You My Love</div>
+<div>Solji - If I have Loved Little More</div>
+<div>Solji - At Jongno (Chinese ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189448662' target='_blank'><img src='https://resources.tidal.com/images/b3d8a8b1/a9c5/4d91/b9d0/d34587a0d26b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] As the first feeling (Remake Pt.2)</div>
+<div><a href='https://tidal.com/album/189448642' target='_blank'>https://tidal.com/album/189448642</a></div>
+<div>Solji - As the first feeling</div>
+<div>Solji, PK Hye Man - At Jongno (feat. PK Hye Man)</div>
+<div>Solji - I'll Give You My Love</div>
+<div>Solji - If I have Loved Little More</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189448642' target='_blank'><img src='https://resources.tidal.com/images/9e00da4f/2636/4413/a1f4/a33f96b15a8b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/1_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ1) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/솔지 (Solji)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
