@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 장혜진 ( Tidal Jang Hye Jin )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 장혜진 ( Tidal Jang Hye Jin )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4edda4c6/cc39/459a/a15b/1acf8982d422/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5889247' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 장혜진</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>애절한 보이스로 전하는 깊은 감성, '아름다운 날들' 속 오래된 사진처럼 변치 않는 감동을 선사하는 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jang Hye Jin</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A diva delivering profound emotions with a heart-wrenching voice, offering timeless感动 like an old photograph in 'Beautiful Days'.</div><p>대한민국 대표 여성 보컬리스트, 장혜진님을 소개합니다. 그녀는 섬세한 감정 표현과 폭발적인 가창력으로 오랫동안 사랑받아 왔습니다. 깊은 울림을 주는 그녀의 음악 세계로 함께 떠나볼까요?</p><p>Let me introduce Jang Hye Jin, one of Korea's leading female vocalists. She has been loved for her delicate emotional expression and explosive singing ability for a long time. Shall we embark on a journey into her deeply resonating musical world?</p><p>✧</p><p>데뷔와 음악적 여정</p><p>장혜진님은 1991년 데뷔 이후, 독보적인 음색과 뛰어난 가창력으로 대중의 마음을 사로잡았습니다. 발라드를 중심으로 다양한 장르를 소화하며 폭넓은 음악 스펙트럼을 보여주셨죠. 그녀의 음악은 늘 진솔한 감정으로 가득 차 있습니다.</p><p>Debut and Musical Journey</p><p>Since her debut in 1991, Jang Hye Jin has captivated the public with her unique tone and outstanding singing ability. Centered around ballads, she has showcased a wide range of musical spectra by taking on various genres. Her music is always full of sincere emotions.</p><p>✧</p><p>감성 보컬과 음악 스타일</p><p>장혜진님의 음악은 애절한 감성과 깊은 울림이 특징입니다. 그녀의 목소리는 듣는 이로 하여금 슬픔, 그리움, 사랑 등 다양한 감정을 느끼게 하죠. 때로는 짙은 호소력으로, 때로는 섬세한 감정 표현으로 감동을 선사합니다.</p><p>Emotional Vocals and Music Style</p><p>Jang Hye Jin's music is characterized by heart-wrenching emotions and deep resonance. Her voice allows listeners to feel a variety of emotions, including sadness, longing, and love. Sometimes with intense appeal, sometimes with delicate emotional expression, she delivers感动.</p><p>✧</p><p>주요 활동과 대표곡</p><p>수많은 히트곡을 발표하며 꾸준히 활동을 이어오고 계십니다. '아름다운 날들', '꿈속에선 언제나', '내게로' 등은 그녀의 대표적인 발라드 명곡들이죠. 다양한 드라마 OST 참여와 콜라보레이션을 통해 폭넓은 활동을 보여주셨습니다.</p><p>Main Activities and Representative Songs</p><p>She has continued to be active, releasing numerous hit songs. 'Beautiful Days,' 'Always in Dreams,' and 'Come to Me' are some of her representative ballad masterpieces. She has shown a wide range of activities through participation in various drama OSTs and collaborations.</p><p>✧</p><p>앞으로의 음악과 의미</p><p>장혜진님의 음악은 시대를 초월하는 감동을 선사하며 많은 이들에게 위로와 공감을 전합니다. 앞으로도 그녀만의 깊은 감성으로 오랫동안 사랑받는 음악을 들려주시길 기대합니다. 그녀의 음악은 우리에게 영원한 '아름다운 선물'이 될 것입니다.</p><p>Future Music and Meaning</p><p>Jang Hye Jin's music delivers timeless感動 and conveys comfort and empathy to many. We look forward to her continuing to present music that will be loved for a long time with her own deep emotions. Her music will be an eternal 'beautiful gift' to us.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Songstealer - Hopeless Romantic</div>
+<div><a href='https://tidal.com/album/366537080' target='_blank'>https://tidal.com/album/366537080</a></div>
+<div>Jang Hye Jin - Hopeless Romantic</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366537080' target='_blank'><img src='https://resources.tidal.com/images/62ef7da1/8c79/47e3/883c/9aae55649242/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Love Wind</div>
+<div><a href='https://tidal.com/album/406514210' target='_blank'>https://tidal.com/album/406514210</a></div>
+<div>Jang Hye Jin - Love Wind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406514210' target='_blank'><img src='https://resources.tidal.com/images/29092666/b918/44c7/a398/3ceea7650e0e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Beside you (Better Days X Jang Hye-Jin)</div>
+<div><a href='https://tidal.com/album/388296794' target='_blank'>https://tidal.com/album/388296794</a></div>
+<div>Jang Hye Jin - Beside you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/388296794' target='_blank'><img src='https://resources.tidal.com/images/e7981f38/19af/4d2b/876c/eeba3796e13c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] The Night</div>
+<div><a href='https://tidal.com/album/346817342' target='_blank'>https://tidal.com/album/346817342</a></div>
+<div>Jang Hye Jin - The Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346817342' target='_blank'><img src='https://resources.tidal.com/images/68a7f446/3c6f/4ead/92e1/60812476cd9c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] West Sea</div>
+<div><a href='https://tidal.com/album/216254958' target='_blank'>https://tidal.com/album/216254958</a></div>
+<div>Jang Hye Jin, Han Dong Geun - West Sea</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216254958' target='_blank'><img src='https://resources.tidal.com/images/84ba9b22/2c6f/4ec9/aecf/a41b09e01bc0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Unfinished Job Pt. 1</div>
+<div><a href='https://tidal.com/album/271782915' target='_blank'>https://tidal.com/album/271782915</a></div>
+<div>Ha Dong Qn, Jang Hye Jin - Special Thanks To (prod. LA박피디)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/271782915' target='_blank'><img src='https://resources.tidal.com/images/4d2b1e29/d4f8/45e1/9b11/67f567438a24/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Graceful friends (Original Television Soundtrack) Pt. 3</div>
+<div><a href='https://tidal.com/album/149887399' target='_blank'>https://tidal.com/album/149887399</a></div>
+<div>Jang Hye Jin - Where are you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/149887399' target='_blank'><img src='https://resources.tidal.com/images/9e69708a/3bb1/4fe3/8a1b/f2d50574166f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Love affair in the afternoon, Pt. 1 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/346692784' target='_blank'>https://tidal.com/album/346692784</a></div>
+<div>Jang Hye Jin - Bubble</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346692784' target='_blank'><img src='https://resources.tidal.com/images/6116a81b/62da/4b0a/88b2/19b9c81cbdee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] JESUS IS MY LIFE</div>
+<div><a href='https://tidal.com/album/473974385' target='_blank'>https://tidal.com/album/473974385</a></div>
+<div>Jang Hye Jin - 아름다운 선물</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/473974385' target='_blank'><img src='https://resources.tidal.com/images/0c38379b/f1eb/49a1/81dc/fe327a6ac723/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] Ordinary</div>
+<div><a href='https://tidal.com/album/344525773' target='_blank'>https://tidal.com/album/344525773</a></div>
+<div>Jang Hye Jin - 말해</div>
+<div>Jang Hye Jin - 운명론 (feat. 서사무엘)</div>
+<div>Jang Hye Jin - 오래된 사진 (아름다운 날들, Pt. 2) [feat. 딥플로우] (Remastered v</div>
+<div>Jang Hye Jin - #BBD (Beautiful Bad Day) [feat. 버벌진트] (Remastered</div>
+<div>Jang Hye Jin - 나의 태양 (Remastered ver.)</div>
+<div>Jang Hye Jin - Good Time (feat. 넉살) (Remastered ver.)</div>
+<div>Jang Hye Jin - Summer Lady (feat. 앤덥) (Remastered ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344525773' target='_blank'><img src='https://resources.tidal.com/images/cb2e635d/3096/4ceb/bd85/2494f7fd8d56/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Jang Hye Jin Collection</div>
+<div><a href='https://tidal.com/album/344519413' target='_blank'>https://tidal.com/album/344519413</a></div>
+<div>Jang Hye Jin - To Me</div>
+<div>Jang Hye Jin - Warmth</div>
+<div>Jang Hye Jin - Please Don't Stay Away</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344519413' target='_blank'><img src='https://resources.tidal.com/images/26d295fa/81cc/41c3/a04b/2610caddbc47/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Ordinary 0817</div>
+<div><a href='https://tidal.com/album/346476469' target='_blank'>https://tidal.com/album/346476469</a></div>
+<div>Jang Hye Jin - Summer Lady (feat. Andup)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346476469' target='_blank'><img src='https://resources.tidal.com/images/045a51b5/5b12/431d/889e/a18aeae33b23/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Ordinary 0710</div>
+<div><a href='https://tidal.com/album/346475751' target='_blank'>https://tidal.com/album/346475751</a></div>
+<div>Jang Hye Jin - Good Time (feat. Nucksal)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346475751' target='_blank'><img src='https://resources.tidal.com/images/8a79f5a0/5b3f/4262/9a9c/e49fee6cd27b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Ordinary 0508</div>
+<div><a href='https://tidal.com/album/346470197' target='_blank'>https://tidal.com/album/346470197</a></div>
+<div>Jang Hye Jin - My Sun</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346470197' target='_blank'><img src='https://resources.tidal.com/images/82496f5c/9a17/4b92/ae17/b026fbbcb8bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Ordinary 0325</div>
+<div><a href='https://tidal.com/album/346470441' target='_blank'>https://tidal.com/album/346470441</a></div>
+<div>Jang Hye Jin - #BBD (Beautiful Bad Day) [feat. Verbal Jint]</div>
+<div>Jang Hye Jin - Old Photo (Beautiful days, Pt. 2) [feat. Deepflow]</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346470441' target='_blank'><img src='https://resources.tidal.com/images/1a223103/2c12/420e/a958/7a4166246324/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Old Photo</div>
+<div><a href='https://tidal.com/album/346467115' target='_blank'>https://tidal.com/album/346467115</a></div>
+<div>Jang Hye Jin - Old Photo (Beautiful days, Pt. 2) [feat. Deepflow]</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346467115' target='_blank'><img src='https://resources.tidal.com/images/65ba55ed/f121/4028/bb58/a427507cea84/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Original Television Soundtrack, Pt. 3</div>
+<div><a href='https://tidal.com/album/146113358' target='_blank'>https://tidal.com/album/146113358</a></div>
+<div>Jang Hye Jin - Bad Guy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146113358' target='_blank'><img src='https://resources.tidal.com/images/8cf19fc2/42f5/4492/a1a7/8219dd679ae7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 보이스원</div>
+<div><a href='https://tidal.com/album/306469734' target='_blank'>https://tidal.com/album/306469734</a></div>
+<div>Jang Hye Jin, Monday Kiz, Lee Si Mon - 눈물을 움켜쥐고</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306469734' target='_blank'><img src='https://resources.tidal.com/images/81760175/42b5/4e91/a7c6/fe3a17291ce1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2011] 그대뒤에 있습니다 (Cooperation, Pt. 1)</div>
+<div><a href='https://tidal.com/album/306487508' target='_blank'>https://tidal.com/album/306487508</a></div>
+<div>Jang Hye Jin, YESUNG - 그대뒤에 있습니다 (Cooperation, Pt. 1)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306487508' target='_blank'><img src='https://resources.tidal.com/images/aaf1719d/e015/47fd/8bb3/e7b0f6ab5764/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Bad Guy (Original Soundtrack) Part.2</div>
+<div><a href='https://tidal.com/album/216119735' target='_blank'>https://tidal.com/album/216119735</a></div>
+<div>4Men, Jang Hye Jin - Don't Laugh,Don't Cry</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216119735' target='_blank'><img src='https://resources.tidal.com/images/dc3abbaa/f856/449a/9f12/9ee4eec96203/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] 하늘, 바람, 별</div>
+<div><a href='https://tidal.com/album/306491613' target='_blank'>https://tidal.com/album/306491613</a></div>
+<div>Jang Hye Jin - 어느날 오후</div>
+<div>Jang Hye Jin - 한번만 울고 말자</div>
+<div>Jang Hye Jin - 열심히 한 이별 (feat. Mansung)</div>
+<div>Jang Hye Jin - 그런 여자이니까</div>
+<div>Jang Hye Jin - 어느 늦은 밤.. (1994년 어느 늦은 밤)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306491613' target='_blank'><img src='https://resources.tidal.com/images/dd005717/a72e/495b/ad56/4d96c12152a6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Remember</div>
+<div><a href='https://tidal.com/album/218724367' target='_blank'>https://tidal.com/album/218724367</a></div>
+<div>Jang Hye Jin, 수호 - Remember</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/218724367' target='_blank'><img src='https://resources.tidal.com/images/60faf8a4/2ce6/4664/890e/19f501192fa1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] Tomboy</div>
+<div><a href='https://tidal.com/album/306492293' target='_blank'>https://tidal.com/album/306492293</a></div>
+<div>Jang Hye Jin - 괜찮습니다 (feat. B.BOX)</div>
+<div>Jang Hye Jin - Timeout</div>
+<div>Jang Hye Jin - 요즘 여자</div>
+<div>Jang Hye Jin - 가라 사랑아</div>
+<div>Jang Hye Jin - 비가 내리는 날</div>
+<div>Jang Hye Jin - Soulmate</div>
+<div>Jang Hye Jin - Color Of Night</div>
+<div>Jang Hye Jin - 불어라 바람아 (feat. Space Cowboy)</div>
+<div>Jang Hye Jin - 사랑하지마</div>
+<div>Jang Hye Jin - 여자란</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306492293' target='_blank'><img src='https://resources.tidal.com/images/c7adc2fd/6753/4953/9ce0/002ba6bb754c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] Music 2.0 Special Edition Version</div>
+<div><a href='https://tidal.com/album/160779622' target='_blank'>https://tidal.com/album/160779622</a></div>
+<div>Jang Hye Jin - 왜 나만 아프죠</div>
+<div>Jang Hye Jin - 마주치지 말자</div>
+<div>Jang Hye Jin - 불꽃</div>
+<div>Jang Hye Jin - 당신께 말합니다</div>
+<div>Jang Hye Jin - 간청</div>
+<div>Jang Hye Jin - 그림자 하나</div>
+<div>Jang Hye Jin - 너 떠난 후</div>
+<div>Jang Hye Jin - 두 번 뜨는 달</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/160779622' target='_blank'><img src='https://resources.tidal.com/images/3daa07fe/d1cc/4f9f/b2b6/11ed32841548/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] 4 Season Story</div>
+<div><a href='https://tidal.com/album/306497372' target='_blank'>https://tidal.com/album/306497372</a></div>
+<div>Jang Hye Jin - Spring</div>
+<div>Jang Hye Jin - 미운 오리</div>
+<div>Jang Hye Jin - 이연</div>
+<div>Jang Hye Jin - 간청</div>
+<div>Jang Hye Jin - 불어다오</div>
+<div>Jang Hye Jin - 사랑해 사랑해 사랑해</div>
+<div>Jang Hye Jin - Summer</div>
+<div>Jang Hye Jin - 장미의 기도</div>
+<div>Jang Hye Jin - 비온 뒤</div>
+<div>Jang Hye Jin - 마주치지 말자</div>
+<div>Jang Hye Jin - 그림자 하나</div>
+<div>Jang Hye Jin - 불면증</div>
+<div>Jang Hye Jin - Autumn</div>
+<div>Jang Hye Jin - 두 번 뜨는 달</div>
+<div>Jang Hye Jin - 왜 나만 아프죠</div>
+<div>Jang Hye Jin - Sweet Morning</div>
+<div>Jang Hye Jin - 널 위한 세상</div>
+<div>Jang Hye Jin - 너 떠난 후</div>
+<div>Jang Hye Jin - 다시 찾은 겨울</div>
+<div>Jang Hye Jin - Winter</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306497372' target='_blank'><img src='https://resources.tidal.com/images/458e884b/289a/4f06/9638/ab7570b01e82/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] Souvenir (Live)</div>
+<div><a href='https://tidal.com/album/306503726' target='_blank'>https://tidal.com/album/306503726</a></div>
+<div>Jang Hye Jin - Return (Live)</div>
+<div>Jang Hye Jin - 이별 후유증 (Live)</div>
+<div>Jang Hye Jin - 잔인한 이별 (Live)</div>
+<div>Jang Hye Jin - 그대를 위한... 또 나를 위한... (Live)</div>
+<div>Jang Hye Jin - 사랑이란 그 이름 하나만으로 (Live)</div>
+<div>Jang Hye Jin - 우 (Live)</div>
+<div>Jang Hye Jin - 다시 돌아와 (Live)</div>
+<div>Jang Hye Jin - 오늘만은 (Live)</div>
+<div>Jang Hye Jin - 힘겨운 사랑 (Live)</div>
+<div>Jang Hye Jin - For Your Love (Live)</div>
+<div>Jang Hye Jin - My Love (Live)</div>
+<div>Jang Hye Jin - 아름다운 날들 (Live)</div>
+<div>Jang Hye Jin - 못다한 사랑 (Live)</div>
+<div>Jang Hye Jin, Park Wan Kyu - Separate Ways (With Park Wan Kyu) (Live)</div>
+<div>Jang Hye Jin - 1994년 어느 늦은 밤 (Live)</div>
+<div>Jang Hye Jin, Park Wan Kyu - 천년의 사랑 (With Park Wan Kyu) (Live)</div>
+<div>Jang Hye Jin - 완전한 사랑 (Live)</div>
+<div>Jang Hye Jin, Can - Don't Let The Sun Go Down On Me (With CAN) (Live)</div>
+<div>Jang Hye Jin - 1000 Years (Live)</div>
+<div>Jang Hye Jin - 천상연 (feat. CAN) (Live)</div>
+<div>Jang Hye Jin - 가요 & Pop Medly (feat. CAN, Park Wan Kyu) (Live)</div>
+<div>Jang Hye Jin - 꿈의 대화 (Live)</div>
+<div>Jang Hye Jin - 내게로 (feat. CAN, Park Wan Kyu) (Live)</div>
+<div>Jang Hye Jin - 키작은 하늘 (Live)</div>
+<div>Jang Hye Jin - Abba Medly (Live)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306503726' target='_blank'><img src='https://resources.tidal.com/images/fcfdf27a/826e/40e7/929b/5a8e66ffecb5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] It's My Life & Best</div>
+<div><a href='https://tidal.com/album/427477836' target='_blank'>https://tidal.com/album/427477836</a></div>
+<div>Jang Hye Jin - 여인의 향기</div>
+<div>Jang Hye Jin - 이별 후유증</div>
+<div>Jang Hye Jin - 아름다운 날들</div>
+<div>Jang Hye Jin - 위기의 여자</div>
+<div>Jang Hye Jin - 키 작은 하늘</div>
+<div>Jang Hye Jin - 힘겨운 사랑</div>
+<div>Jang Hye Jin - 오늘만은</div>
+<div>Jang Hye Jin - 우 (雨)</div>
+<div>Jang Hye Jin - 내게로</div>
+<div>Jang Hye Jin - 잡을수 없는 너</div>
+<div>Jang Hye Jin - I Don′t Cry</div>
+<div>Jang Hye Jin - 꿈의 대화</div>
+<div>Jang Hye Jin - 왜</div>
+<div>Jang Hye Jin - 잊어야 한다는 것</div>
+<div>Jang Hye Jin - 거절</div>
+<div>Jang Hye Jin - 사랑이라는 그 이름 하나만으로</div>
+<div>Jang Hye Jin - 1000 Years</div>
+<div>Jang Hye Jin - 마지막 이별</div>
+<div>Jang Hye Jin - Still</div>
+<div>Jang Hye Jin - 완전한 사랑</div>
+<div>Jang Hye Jin - My Love</div>
+<div>Jang Hye Jin - Return</div>
+<div>Jang Hye Jin - 그대를 보내며</div>
+<div>Jang Hye Jin - 나는 요</div>
+<div>Jang Hye Jin - Leaving</div>
+<div>Jang Hye Jin - 못다한 사랑</div>
+<div>Jang Hye Jin - 영원으로</div>
+<div>Jang Hye Jin - 1994년 어느 늦은 밤</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/427477836' target='_blank'><img src='https://resources.tidal.com/images/4edda4c6/cc39/459a/a15b/1acf8982d422/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1999] 이소라의 프로포즈 2집</div>
+<div><a href='https://tidal.com/album/223263041' target='_blank'>https://tidal.com/album/223263041</a></div>
+<div>Jang Hye Jin - 1994년 어느 늦은 밤 Live Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223263041' target='_blank'><img src='https://resources.tidal.com/images/10142c38/55bd/41f5/9399/2614b5c307c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Dream</div>
+<div><a href='https://tidal.com/album/306493637' target='_blank'>https://tidal.com/album/306493637</a></div>
+<div>Jang Hye Jin - Dream</div>
+<div>Jang Hye Jin - 영원으로</div>
+<div>Jang Hye Jin - 추억</div>
+<div>Jang Hye Jin - 내게로 와</div>
+<div>Jang Hye Jin - 니가 날 알겠니</div>
+<div>Jang Hye Jin - 영원으로 (Dance Version)</div>
+<div>Jang Hye Jin - 잃어버린 너</div>
+<div>Jang Hye Jin - 실연</div>
+<div>Jang Hye Jin - My Love</div>
+<div>Jang Hye Jin - 달콤한 상상</div>
+<div>Jang Hye Jin - Unfulfilled Love</div>
+<div>Jang Hye Jin - Unfulfilled Love 2</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306493637' target='_blank'><img src='https://resources.tidal.com/images/a45afc4e/f2f2/4102/9bc4/b0687541fefa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] 장혜진 GOLDEN BEST- 100 Years After</div>
+<div><a href='https://tidal.com/album/305342391' target='_blank'>https://tidal.com/album/305342391</a></div>
+<div>Jang Hye Jin - Before The Party</div>
+<div>Jang Hye Jin - 사랑이라는 그 이름 하나만으로</div>
+<div>Jang Hye Jin - 키 작은 하늘</div>
+<div>Jang Hye Jin - 당신은 왜</div>
+<div>Jang Hye Jin - 꿈 속에선 언제나</div>
+<div>Jang Hye Jin - 혼자만의 이별</div>
+<div>Jang Hye Jin - 우 (雨)</div>
+<div>Jang Hye Jin - 위기의 여자</div>
+<div>Jang Hye Jin - 내게로</div>
+<div>Jang Hye Jin - 마지막 이별</div>
+<div>Jang Hye Jin - 슬픈 약속</div>
+<div>Jang Hye Jin - 완전한 사랑</div>
+<div>Jang Hye Jin - 이별 후유증</div>
+<div>Jang Hye Jin - 열정</div>
+<div>Jang Hye Jin - 아프리카 여행</div>
+<div>Jang Hye Jin - 1994년 어느 늦은 밤</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305342391' target='_blank'><img src='https://resources.tidal.com/images/1fe64644/170a/4603/92e0/563f3db32946/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Moskito</div>
+<div><a href='https://tidal.com/album/306491490' target='_blank'>https://tidal.com/album/306491490</a></div>
+<div>Jang Hye Jin - 왜-</div>
+<div>Jang Hye Jin - 꿈의 대화</div>
+<div>Jang Hye Jin - 나는요</div>
+<div>Jang Hye Jin - 왜- (Acoustic Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306491490' target='_blank'><img src='https://resources.tidal.com/images/832b0d03/64c5/4f40/8e31/252d4a577100/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] Temptation</div>
+<div><a href='https://tidal.com/album/305341641' target='_blank'>https://tidal.com/album/305341641</a></div>
+<div>Jang Hye Jin - 기다림의 시간들</div>
+<div>Jang Hye Jin - 마지막 이별</div>
+<div>Jang Hye Jin - 위기의 여자</div>
+<div>Jang Hye Jin - 완전한 사랑</div>
+<div>Jang Hye Jin - 그냥 두지 마</div>
+<div>Jang Hye Jin - 사랑 하지 마</div>
+<div>Jang Hye Jin - 이별 후유증</div>
+<div>Jang Hye Jin - 그대를 사랑해</div>
+<div>Jang Hye Jin - 혼자만의 기도</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305341641' target='_blank'><img src='https://resources.tidal.com/images/c67a34a4/f004/4ac7/9752/bbde1f47b950/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] Before The Party</div>
+<div><a href='https://tidal.com/album/305344669' target='_blank'>https://tidal.com/album/305344669</a></div>
+<div>Jang Hye Jin - Before The Party</div>
+<div>Jang Hye Jin - 사랑이라는 그 이름 하나만으로</div>
+<div>Jang Hye Jin - 내게로</div>
+<div>Jang Hye Jin - 우 (雨)</div>
+<div>Jang Hye Jin - Complex</div>
+<div>Jang Hye Jin - 그런 나</div>
+<div>Jang Hye Jin - 귀여운 남자</div>
+<div>Jang Hye Jin - 1994년 어느 늦은 밤</div>
+<div>Jang Hye Jin - 사랑이른 그 이름 하나만으로  (Club Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305344669' target='_blank'><img src='https://resources.tidal.com/images/5ce96636/14e0/402e/8c5c/f71c6eaac88d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1993] Whiteism</div>
+<div><a href='https://tidal.com/album/305344681' target='_blank'>https://tidal.com/album/305344681</a></div>
+<div>Jang Hye Jin - 내 슬픈 이야기</div>
+<div>Jang Hye Jin - 키 작은 하늘</div>
+<div>Jang Hye Jin - 아프리카 여행</div>
+<div>Jang Hye Jin - 잃어버린 꿈</div>
+<div>Jang Hye Jin - 이별을 준비하며</div>
+<div>Jang Hye Jin - 열정</div>
+<div>Jang Hye Jin - 당신은 왜</div>
+<div>Jang Hye Jin - 나 또한 아직</div>
+<div>Jang Hye Jin - 늦가을 모퉁이</div>
+<div>Jang Hye Jin - 어제와 다른 오늘</div>
+<div>Jang Hye Jin - 그대는</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305344681' target='_blank'><img src='https://resources.tidal.com/images/be0cb948/7848/4d76/951e/8e6883dce42e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/1_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ1) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/장혜진 (Jang Hye Jin)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
