@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 킹덤 ( Tidal KINGDOM )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 킹덤 ( Tidal KINGDOM )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/6a8aef6e/165a/492f/9390/b1773380ff76/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/29090866' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 킹덤</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>킹덤 (KINGDOM) - 웅장한 서사를 음악으로 빚어내는 일곱 왕, ‘Song of the Wind’의 울림과 ‘Dystopia’의 강렬함으로 세계관을 펼치다</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> KINGDOM</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>KINGDOM - Seven kings crafting epic narratives through music, expanding their universe with the resonance of ‘Song of the Wind’ and the intensity of ‘Dystopia’.</div><p>독창적인 콘셉트와 몰입도 높은 음악으로 글로벌 팬들을 사로잡은 그룹, 킹덤(KINGDOM)입니다. 각 멤버가 역사 속 왕을 모티브로 한 독특한 세계관을 바탕으로, 웅장한 스케일의 음악과 퍼포먼스를 선보이고 있어요. 마치 한 편의 판타지 서사시를 감상하는 듯한 경험을 선사하며, 끊임없이 새로운 음악적 시도를 이어가고 있습니다.</p><p>KINGDOM is a group that has captivated global fans with its unique concept and immersive music. Based on a unique worldview in which each member is motivated by kings in history, they showcase music and performances on a grand scale. They offer an experience like watching a fantasy epic and continue to make new musical attempts.</p><p>✧</p><p>왕국의 탄생</p><p>킹덤은 GF엔터테인먼트에서 야심차게 선보인 7인조 보이그룹입니다. 멤버들은 각자 다른 왕국을 상징하며, 고유한 스토리를 음악과 퍼포먼스에 녹여내고 있어요. 데뷔와 동시에 강렬한 콘셉트와 완성도 높은 무대로 주목받으며, '스토리텔링 아이돌'로서의 입지를 다졌습니다.</p><p>The Birth of a Kingdom</p><p>KINGDOM is a 7-member boy group ambitiously introduced by GF Entertainment. The members each symbolize a different kingdom and incorporate their unique stories into their music and performances. They gained attention for their intense concept and high-quality stage presence upon their debut, establishing themselves as 'storytelling idols'.</p><p>✧</p><p>음악과 퍼포먼스의 조화</p><p>킹덤의 음악은 웅장한 오케스트라 사운드와 강렬한 힙합 비트, 그리고 멤버들의 다채로운 보컬이 조화롭게 어우러집니다. 퍼포먼스 역시 각 왕국의 특색을 살린 화려한 의상과 드라마틱한 안무로 시각적인 즐거움을 더하고 있어요. 단순히 듣는 음악을 넘어, 보고 즐기는 종합 예술로서의 가치를 추구합니다.</p><p>Harmony of Music and Performance</p><p>KINGDOM's music harmoniously combines grand orchestral sounds, intense hip-hop beats, and the members' diverse vocals. The performances also add visual enjoyment with colorful costumes and dramatic choreography that highlight the characteristics of each kingdom. They pursue value as a comprehensive art form that goes beyond simply listening to music, but also seeing and enjoying it.</p><p>✧</p><p>주요 활동 발자취</p><p>데뷔 이후 킹덤은 꾸준히 앨범을 발매하며 자신들만의 세계관을 확장해 왔습니다. 국내뿐 아니라 해외 팬들의 뜨거운 반응을 얻으며 글로벌 아이돌로서의 가능성을 보여주고 있어요. 다양한 무대와 콘텐츠를 통해 팬들과 소통하며, 끊임없이 성장하는 모습을 보여주고 있습니다.</p><p>Key Activities and Achievements</p><p>Since their debut, KINGDOM has consistently released albums, expanding their unique worldview. They have garnered a warm response from domestic and international fans, demonstrating their potential as a global idol. They communicate with fans through various stages and content, constantly showing their growing presence.</p><p>✧</p><p>미래를 향한 발걸음</p><p>앞으로 킹덤은 더욱 다양한 음악적 시도와 완성도 높은 퍼포먼스로 팬들에게 깊은 감동을 선사할 것입니다. 자신들만의 독창적인 스토리텔링을 통해 K팝의 새로운 지평을 열어갈 것으로 기대됩니다. 킹덤의 음악 여정은 지금부터가 시작입니다.</p><p>Steps Towards the Future</p><p>In the future, KINGDOM will deeply impress fans with even more diverse musical attempts and high-quality performances. It is expected that they will open a new horizon for K-pop through their own unique storytelling. KINGDOM's musical journey starts now.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] History Of Kingdom_ Pt. Ⅵ. Mujin</div>
+<div><a href='https://tidal.com/album/282324889' target='_blank'>https://tidal.com/album/282324889</a></div>
+<div>KINGDOM - Intro- Stigma</div>
+<div>KINGDOM - Dystopia</div>
+<div>KINGDOM - Song of the Wind</div>
+<div>KINGDOM - Elements</div>
+<div>KINGDOM - My Wave</div>
+<div>KINGDOM - Love is Pain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/282324889' target='_blank'><img src='https://resources.tidal.com/images/772d5987/5d1f/4a6d/8fd0/1d9f7574908d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] History Of Kingdom_ Pt. VII. JAHAN</div>
+<div><a href='https://tidal.com/album/321522987' target='_blank'>https://tidal.com/album/321522987</a></div>
+<div>KINGDOM - INTRO- APOCALYPSE</div>
+<div>KINGDOM - COUP D’ETAT</div>
+<div>KINGDOM - LOVE SONG</div>
+<div>KINGDOM - X-GAME</div>
+<div>KINGDOM - ON MY WAY</div>
+<div>KINGDOM - SANDCASTLE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/321522987' target='_blank'><img src='https://resources.tidal.com/images/8776c80e/ceb2/4b2d/a167/7e021624d566/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] History Of Kingdom_ Pt.Ⅴ. Louis</div>
+<div><a href='https://tidal.com/album/249657160' target='_blank'>https://tidal.com/album/249657160</a></div>
+<div>KINGDOM - Intro- Requiem</div>
+<div>KINGDOM - Long Live The King</div>
+<div>KINGDOM - Period</div>
+<div>KINGDOM - Destiny</div>
+<div>KINGDOM - WAKA WAKA</div>
+<div>KINGDOM - Poison</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/249657160' target='_blank'><img src='https://resources.tidal.com/images/0089fe8f/6ad8/4c88/858d/6da02ca594e6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] History Of Kingdom_ Pt. IV. Dann</div>
+<div><a href='https://tidal.com/album/219416334' target='_blank'>https://tidal.com/album/219416334</a></div>
+<div>KINGDOM - Intro- Palace</div>
+<div>KINGDOM - Ascension</div>
+<div>KINGDOM - Blinder</div>
+<div>KINGDOM - Illusion</div>
+<div>KINGDOM - Appetite</div>
+<div>KINGDOM - The Song of Dann (Promise)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219416334' target='_blank'><img src='https://resources.tidal.com/images/e66f3d0f/2eb2/41c7/a43a/2e3500d54afa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] History Of Kingdom_ Pt. III. Ivan</div>
+<div><a href='https://tidal.com/album/200266948' target='_blank'>https://tidal.com/album/200266948</a></div>
+<div>KINGDOM - Intro- Legacy of Hatred</div>
+<div>KINGDOM - Black Crown</div>
+<div>KINGDOM - Fallen Star</div>
+<div>KINGDOM - We Are</div>
+<div>KINGDOM - Burn</div>
+<div>KINGDOM - ON AIR</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200266948' target='_blank'><img src='https://resources.tidal.com/images/795921ea/ca24/4e75/bbee/9e2025c46325/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] History Of Kingdom_ Pt. I. Arthur</div>
+<div><a href='https://tidal.com/album/240807539' target='_blank'>https://tidal.com/album/240807539</a></div>
+<div>KINGDOM - Intro- Majestic Departure</div>
+<div>KINGDOM - Excalibur</div>
+<div>KINGDOM - Night Air</div>
+<div>KINGDOM - Picasso</div>
+<div>KINGDOM - X</div>
+<div>KINGDOM - Night Air (Acoustic Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/240807539' target='_blank'><img src='https://resources.tidal.com/images/a8f9309a/1ef1/46ae/854f/b63937b490a6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] History Of Kingdom_ Part II . Chiwoo</div>
+<div><a href='https://tidal.com/album/188436267' target='_blank'>https://tidal.com/album/188436267</a></div>
+<div>KINGDOM - Intro- Echoes of Nirvana</div>
+<div>KINGDOM - KARMA</div>
+<div>KINGDOM - Eternity</div>
+<div>KINGDOM - Magical</div>
+<div>KINGDOM - Warning</div>
+<div>KINGDOM - MAKE US</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188436267' target='_blank'><img src='https://resources.tidal.com/images/b3a5cc53/0e1f/49fe/82c1/43ace6387450/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/1_TIDAL_Kpop_Artist_Link_CK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅋ1) TIDAL Kpop Artist Link (CK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/킹덤 (KINGDOM)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
