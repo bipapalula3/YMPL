@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 스윗소로우 ( Tidal Sweetsorrow )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 스윗소로우 ( Tidal Sweetsorrow )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/89df6ca1/9ddf/424f/9570/96c43de6b635/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6946688' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/24655102' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a><a href='https://tidal.com/browse/artist/4014898' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 3</a><a href='https://tidal.com/browse/artist/7313973' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 4</a><a href='https://tidal.com/browse/artist/7313972' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 5</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 스윗소로우</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>스윗소로우 (Sweetsorrow) – 따뜻한 하모니로 전하는 위로와 설렘, ‘사랑해’의 달콤함과 ‘작은 방’의 포근함</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Sweetsorrow</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Sweetsorrow – Comfort and excitement delivered through warm harmonies, the sweetness of ‘Love’ and the coziness of ‘Small Room’</div><p>부드러운 목소리와 섬세한 화음으로 우리의 마음을 어루만지는 그룹, 스윗소로우입니다. 네 멤버의 완벽한 조화는 듣는 이에게 따스한 위로와 설렘을 동시에 선사합니다. 그들의 음악은 일상 속 작은 행복을 발견하게 해주는 마법 같은 힘을 지니고 있어요.</p><p>Sweetsorrow is a group that touches our hearts with soft voices and delicate harmonies. The perfect harmony of the four members offers both warm comfort and excitement to listeners. Their music has a magical power that allows us to discover small happiness in everyday life.</p><p>✧</p><p>그룹 탄생</p><p>스윗소로우는 2002년, 대학생이던 멤버들이 만나 아카펠라 그룹으로 시작했어요. 탄탄한 음악적 기반과 멤버들의 끈끈한 우정이 지금의 스윗소로우를 만들었답니다. 그들의 시작은 단순한 음악적 만남을 넘어, 인생의 동반자를 만나는 여정이었죠.</p><p>Group Formation</p><p>Sweetsorrow started in 2002 as an a cappella group when the members, who were university students, met. A solid musical foundation and the strong friendship between the members created the Sweetsorrow of today. Their beginning was more than just a musical encounter, it was a journey of meeting life companions.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>스윗소로우의 음악은 주로 사랑, 위로, 일상 속 소소한 행복을 주제로 합니다. 멤버들의 감미로운 목소리가 어우러진 아카펠라 스타일은 그들의 음악적 정체성을 확고히 하죠. 또한, 다양한 악기 편곡과 콜라보레이션을 통해 폭넓은 음악적 스펙트럼을 보여주고 있습니다.</p><p>Music and Performance</p><p>Sweetsorrow's music mainly revolves around themes of love, comfort, and small happiness in everyday life. The a cappella style, which blends the members' sweet voices, solidifies their musical identity. In addition, they showcase a wide range of musical spectrums through various instrumental arrangements and collaborations.</p><p>✧</p><p>주요 활동</p><p>스윗소로우는 꾸준한 음반 발매와 콘서트를 통해 팬들과 소통하고 있어요. 드라마 OST 참여, 다른 아티스트와의 협업 등 다양한 활동을 펼치며 대중적 인기를 얻고 있습니다. 특히, 그들의 콘서트는 환상적인 하모니와 재치 있는 입담으로 유명하답니다.</p><p>Main Activities</p><p>Sweetsorrow communicates with fans through consistent album releases and concerts. They are gaining popular recognition through various activities such as participating in drama OSTs and collaborating with other artists. In particular, their concerts are famous for their fantastic harmonies and witty banter.</p><p>✧</p><p>미래/의미</p><p>스윗소로우는 앞으로도 따뜻한 음악으로 많은 사람들에게 위로와 행복을 전할 것입니다. 그들의 음악은 단순한 듣는 즐거움을 넘어, 삶의 긍정적인 에너지를 불어넣어 줍니다. 오랫동안 우리 곁에서 함께 노래하며, 행복을 선물하는 그룹으로 기억될 거예요.</p><p>Future/Meaning</p><p>Sweetsorrow will continue to deliver comfort and happiness to many people through their warm music. Their music goes beyond simple listening pleasure, infusing positive energy into life. They will be remembered as a group that sings with us for a long time and gives happiness.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Sundowner</div>
+<div><a href='https://tidal.com/album/387067317' target='_blank'>https://tidal.com/album/387067317</a></div>
+<div>스윗소로우(Sweet Sorrow) - Shall we walk together a little more</div>
+<div>스윗소로우(Sweet Sorrow) - Going home</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/387067317' target='_blank'><img src='https://resources.tidal.com/images/516e42b4/69b0/432f/b860/30b4ba80e253/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Wish You′re My Girl</div>
+<div><a href='https://tidal.com/album/425342986' target='_blank'>https://tidal.com/album/425342986</a></div>
+<div>Sweet Sorrow - Wish You′re My Girl</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/425342986' target='_blank'><img src='https://resources.tidal.com/images/c4c15885/6031/4d53/b3cb/15f43e5040fa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Nevertheless</div>
+<div><a href='https://tidal.com/album/284344469' target='_blank'>https://tidal.com/album/284344469</a></div>
+<div>스윗소로우(Sweet Sorrow), PATEKO (파테코) - Please Don’t Go</div>
+<div>스윗소로우(Sweet Sorrow), hiko - It Must Be Love</div>
+<div>스윗소로우(Sweet Sorrow) - Small Room (Feat. IU)</div>
+<div>스윗소로우(Sweet Sorrow) - Love Drive (Feat. meenoi)</div>
+<div>스윗소로우(Sweet Sorrow), 최준 - Merry Christmas JAM!</div>
+<div>스윗소로우(Sweet Sorrow) - Lighthouse</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/284344469' target='_blank'><img src='https://resources.tidal.com/images/ea020ff3/49d9/4054/93fb/08fd9eaf6a75/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] THE M Pt. 4</div>
+<div><a href='https://tidal.com/album/219877971' target='_blank'>https://tidal.com/album/219877971</a></div>
+<div>Sweet Sorrow, Sunnie - One Step</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219877971' target='_blank'><img src='https://resources.tidal.com/images/b19f28e7/3b66/43f5/ba6d/841aa4353666/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Love Drive (Feat. meenoi)</div>
+<div><a href='https://tidal.com/album/248161761' target='_blank'>https://tidal.com/album/248161761</a></div>
+<div>스윗소로우(Sweet Sorrow) - Love Drive (Feat. meenoi)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/248161761' target='_blank'><img src='https://resources.tidal.com/images/3ea8ce9e/0ea1/4e01/8086/54b930ca3432/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 스윗소로우 스페셜 싱글</div>
+<div><a href='https://tidal.com/album/183349791' target='_blank'>https://tidal.com/album/183349791</a></div>
+<div>스윗소로우(Sweet Sorrow) - 작은방 (Feat. 아이유)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183349791' target='_blank'><img src='https://resources.tidal.com/images/0d8c78eb/57de/4776/a785/99057d94a829/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 스윗소로우 5TH PART1 NEWDAY</div>
+<div><a href='https://tidal.com/album/183349794' target='_blank'>https://tidal.com/album/183349794</a></div>
+<div>스윗소로우(Sweet Sorrow) - 다 잘될 거라 생각해</div>
+<div>스윗소로우(Sweet Sorrow) - My Cinema</div>
+<div>스윗소로우(Sweet Sorrow) - 나에게 위로해</div>
+<div>스윗소로우(Sweet Sorrow) - 달라</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183349794' target='_blank'><img src='https://resources.tidal.com/images/4721bc1a/6c71/44e0/9a11/39b4dc0234fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 해피뉴이어</div>
+<div><a href='https://tidal.com/album/183354493' target='_blank'>https://tidal.com/album/183354493</a></div>
+<div>스윗소로우(Sweet Sorrow) - 해피뉴이어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183354493' target='_blank'><img src='https://resources.tidal.com/images/26d14510/45dc/4674/b435/5a4ae985d93e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 첫사랑</div>
+<div><a href='https://tidal.com/album/183349801' target='_blank'>https://tidal.com/album/183349801</a></div>
+<div>스윗소로우(Sweet Sorrow) - 첫사랑</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183349801' target='_blank'><img src='https://resources.tidal.com/images/17805b8e/82a6/4c8c/9e50/5db582964b4f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] 짜리리릿 (Sign)</div>
+<div><a href='https://tidal.com/album/183354491' target='_blank'>https://tidal.com/album/183354491</a></div>
+<div>스윗소로우(Sweet Sorrow) - 짜리리릿 (Sign) (Feat. 김이지 of 꽃잠프로젝트)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183354491' target='_blank'><img src='https://resources.tidal.com/images/4870b6d8/2291/44e0/9997/7115100cb95a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 대박금지</div>
+<div><a href='https://tidal.com/album/182581682' target='_blank'>https://tidal.com/album/182581682</a></div>
+<div>스윗소로우(Sweet Sorrow) - 가자 속초로! (Feat. Peppertones)</div>
+<div>스윗소로우(Sweet Sorrow) - 대박금지</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182581682' target='_blank'><img src='https://resources.tidal.com/images/a0882fea/a831/4a36/b183/c8de96223af0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Girl Who Sees Smell (Original Television Soundtrack), Pt.6</div>
+<div><a href='https://tidal.com/album/286156323' target='_blank'>https://tidal.com/album/286156323</a></div>
+<div>Sweet Sorrow - You are my everything</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/286156323' target='_blank'><img src='https://resources.tidal.com/images/7392a793/e292/4cad/8246/f5b3c7e9a421/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 연애의 발견 (Original Soundtrack) Part 1</div>
+<div><a href='https://tidal.com/album/216007985' target='_blank'>https://tidal.com/album/216007985</a></div>
+<div>Sweet Sorrow - 별 일 아니에요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216007985' target='_blank'><img src='https://resources.tidal.com/images/4627a2bd/7786/413f/b9fe/30d03b774e2f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Beautiful</div>
+<div><a href='https://tidal.com/album/98822245' target='_blank'>https://tidal.com/album/98822245</a></div>
+<div>Sweet Sorrow - Beautiful</div>
+<div>Sweet Sorrow - let me give a chance</div>
+<div>Sweet Sorrow - What a wonderful day</div>
+<div>Sweet Sorrow - be an Angel</div>
+<div>Sweet Sorrow - My heart leaps up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98822245' target='_blank'><img src='https://resources.tidal.com/images/d81fb7ff/574f/4240/a2e9/1a4eb8dc3e6a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] SWEET SORROW Winter Project Single Again And Again</div>
+<div><a href='https://tidal.com/album/98822141' target='_blank'>https://tidal.com/album/98822141</a></div>
+<div>Sweet Sorrow - SWEET SORROW Winter Project Single Again And Again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98822141' target='_blank'><img src='https://resources.tidal.com/images/9a87074e/4ba3/4d1d/8957/9cd87260c548/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 4Th #1_Just Get Away</div>
+<div><a href='https://tidal.com/album/98822112' target='_blank'>https://tidal.com/album/98822112</a></div>
+<div>Sweet Sorrow - Just Get Away</div>
+<div>Sweet Sorrow - Summer Fever</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98822112' target='_blank'><img src='https://resources.tidal.com/images/c5566289/ad36/4bd4/ac90/4edb1685d834/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] The Story of December (12월의 이야기)</div>
+<div><a href='https://tidal.com/album/52717820' target='_blank'>https://tidal.com/album/52717820</a></div>
+<div>Sweetsorrow (스윗소로우) - The Story of December (12월의 이야기)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/52717820' target='_blank'><img src='https://resources.tidal.com/images/3b5f2633/7760/47b7/b40a/9581975da069/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Sweet Sorrow 3 Viva</div>
+<div><a href='https://tidal.com/album/52719317' target='_blank'>https://tidal.com/album/52719317</a></div>
+<div>Sweetsorrow (스윗소로우) - Enjoy Your Harmony</div>
+<div>Sweetsorrow (스윗소로우), Lee,Sora (이소라) - Viva (feat. Lee,Sora (이소라))</div>
+<div>Sweetsorrow (스윗소로우) - The First Date (첫데이트)</div>
+<div>Sweetsorrow (스윗소로우) - Propose (나랑 같이 해줄래)</div>
+<div>Sweetsorrow (스윗소로우), 루시드 폴 - I'll Sing for You (노래할게) [feat. 루시드 폴]</div>
+<div>Sweetsorrow (스윗소로우) - Dear</div>
+<div>Sweetsorrow (스윗소로우) - Interlude</div>
+<div>Sweetsorrow (스윗소로우) - From Here (모험가)</div>
+<div>Sweetsorrow (스윗소로우), 박명수 (Park,Myungsoo) - Dark Circle (다크써클) [feat. 박명수 (Park,Myungsoo)]</div>
+<div>Sweetsorrow (스윗소로우) - Goodbye (그래, 안녕)</div>
+<div>Sweetsorrow (스윗소로우) - Good Night</div>
+<div>Sweetsorrow (스윗소로우) - Viva Reprise</div>
+<div>Sweetsorrow (스윗소로우), 오지은, 정준일, Peppertones - Good for You (좋겠다) [feat. 오지은, 정준일 & Peppertones]</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/52719317' target='_blank'><img src='https://resources.tidal.com/images/89df6ca1/9ddf/424f/9570/96c43de6b635/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2012] My Husband Got a Family (Original Television Soundtrack) Pt. 1</div>
+<div><a href='https://tidal.com/album/305930563' target='_blank'>https://tidal.com/album/305930563</a></div>
+<div>Sweet Sorrow - 그대가 천국</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305930563' target='_blank'><img src='https://resources.tidal.com/images/a28a8932/4646/490f/9cbe/7ac2180bc4a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Dark Cicle (다크 써클) Summer Viva Edition</div>
+<div><a href='https://tidal.com/album/52717818' target='_blank'>https://tidal.com/album/52717818</a></div>
+<div>Sweet Sorrow (스윗소로우) - Dark Cicle (다크 써클) Summer Viva Edition</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/52717818' target='_blank'><img src='https://resources.tidal.com/images/0e2721b9/d2d0/41e5/abcd/fa0843d4b153/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Sweet Sorrow 3 Single Part 1,2</div>
+<div><a href='https://tidal.com/album/52717813' target='_blank'>https://tidal.com/album/52717813</a></div>
+<div>sweetsorrow(스윗소로우) - The First Date- 첫데이트 (part1)</div>
+<div>sweetsorrow(스윗소로우) - Dear (part1)</div>
+<div>sweetsorrow(스윗소로우) - Propose -나랑 같이 해줄래 (part2)</div>
+<div>sweetsorrow(스윗소로우) - Good Night (part2)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/52717813' target='_blank'><img src='https://resources.tidal.com/images/7281beee/5931/42c7/9d7a/bd5dcf8f807e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Sweetsorrow</div>
+<div><a href='https://tidal.com/album/47401959' target='_blank'>https://tidal.com/album/47401959</a></div>
+<div>Sweetsorrow (스윗소로우) - Intro</div>
+<div>Sweetsorrow (스윗소로우) - Sweetsorrow</div>
+<div>Sweetsorrow (스윗소로우) - Where You At (어디에)</div>
+<div>Sweetsorrow (스윗소로우) - Sun Shine</div>
+<div>Sweetsorrow (스윗소로우) - Chance (그의변명)</div>
+<div>Sweetsorrow (스윗소로우) - Life Style</div>
+<div>Sweetsorrow (스윗소로우) - Sweetsorrow Part2 (Interlude)</div>
+<div>Sweetsorrow (스윗소로우) - Drive (드라이브)</div>
+<div>Sweetsorrow (스윗소로우) - On My Way (내맘대로)</div>
+<div>Sweetsorrow (스윗소로우) - 2407</div>
+<div>Sweetsorrow (스윗소로우) - Never Again (다시는 없다)</div>
+<div>Sweetsorrow (스윗소로우) - One Afternoon (어떤 오후)</div>
+<div>Sweetsorrow (스윗소로우) - Sanu (사랑느낌 #3)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/47401959' target='_blank'><img src='https://resources.tidal.com/images/02b4f4e0/2f29/480e/9a5e/04a344a9ccb1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Songs</div>
+<div><a href='https://tidal.com/album/52717800' target='_blank'>https://tidal.com/album/52717800</a></div>
+<div>Sweetsorrow (스윗소로우) - Songs (노래야)歌よ</div>
+<div>Sweetsorrow (스윗소로우) - So Cool</div>
+<div>Sweetsorrow (스윗소로우) - Prayer for You (그대에게 하는말)君への言葉</div>
+<div>Sweetsorrow (스윗소로우) - I Can't Let You Go (아픈 만큼 자라요)痛みの分だけ育つ</div>
+<div>Sweetsorrow (스윗소로우) - Love Is ... (사랑이란)愛とは</div>
+<div>Sweetsorrow (스윗소로우) - Grb 080913(feat.Yeonjin 연진)</div>
+<div>Sweetsorrow (스윗소로우) - Nightmare (악몽)悪夢</div>
+<div>Sweetsorrow (스윗소로우) - Turtle Song (거북이라도).亀でも</div>
+<div>Sweetsorrow (스윗소로우) - You (대단한 인연)すごい偶然</div>
+<div>Sweetsorrow (스윗소로우) - Winter Again (다시겨울)また冬</div>
+<div>Sweetsorrow (스윗소로우) - Desperate Love (사랑 같은건)愛なんか</div>
+<div>Sweetsorrow (스윗소로우) - Show Your Love (간지럽게)くすぐったく</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/52717800' target='_blank'><img src='https://resources.tidal.com/images/74724093/bbb9/419b/9d6f/6f8ca67a73f6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Aothearoa</div>
+<div><a href='https://tidal.com/album/187100393' target='_blank'>https://tidal.com/album/187100393</a></div>
+<div>Lee Han Chul, Sweet Sorrow, Kim Hyung Jun, 정지영 - Aothearoa</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/187100393' target='_blank'><img src='https://resources.tidal.com/images/3f2cd5cf/375b/4de8/af9f/503fb7c2c5ee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Sweetics</div>
+<div><a href='https://tidal.com/album/52717789' target='_blank'>https://tidal.com/album/52717789</a></div>
+<div>Sweetsorrow (스윗소로우) - Because of You (그대가 있어서)君がいて</div>
+<div>Sweetsorrow (스윗소로우) - I Love You (사랑해)愛してる</div>
+<div>Sweetsorrow (스윗소로우) - Falling Apart (멀어져)遠ざかって</div>
+<div>Sweetsorrow (스윗소로우) - Snorkeling (스노클링)スノーケリング</div>
+<div>Sweetsorrow (스윗소로우) - You're So Lovely (예뻐요).綺麗です</div>
+<div>Sweetsorrow (스윗소로우) - In Vain (애써)無理して</div>
+<div>Sweetsorrow (스윗소로우) - Lost</div>
+<div>Sweetsorrow (스윗소로우) - Bump! (부딪쳐!)ぶつかれ!</div>
+<div>Sweetsorrow (스윗소로우) - Somebody to Love (내님은 어디에)私の君はどこに</div>
+<div>Sweetsorrow (스윗소로우) - Hey, Buddy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/52717789' target='_blank'><img src='https://resources.tidal.com/images/adfaa6a6/6e75/4237/9491/821998bc7310/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Sweet Sorrow</div>
+<div><a href='https://tidal.com/album/99380096' target='_blank'>https://tidal.com/album/99380096</a></div>
+<div>Sweet Sorrow (스윗소로우) - YOU 대단한 우연</div>
+<div>Sweet Sorrow (스윗소로우) - 다시 겨울</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/99380096' target='_blank'><img src='https://resources.tidal.com/images/6df51fb1/6e17/41c5/b91c/c2a34be22652/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] On Life And Death</div>
+<div><a href='https://tidal.com/album/32267717' target='_blank'>https://tidal.com/album/32267717</a></div>
+<div>Sweet Sorrow - Vision</div>
+<div>Sweet Sorrow - Ko Bom Mrtev</div>
+<div>Sweet Sorrow - On The Death Of Anne Bronte</div>
+<div>Sweet Sorrow - Ob Polni Luni</div>
+<div>Sweet Sorrow - A Cradle Song</div>
+<div>Sweet Sorrow - Ask Me No More</div>
+<div>Sweet Sorrow - The Night Is Darkening Round Me</div>
+<div>Sweet Sorrow - Requiescat</div>
+<div>Sweet Sorrow - Vrt ljubezni</div>
+<div>Sweet Sorrow - I Heard An Angel</div>
+<div>Sweet Sorrow - In Beechwood Cemetery</div>
+<div>Sweet Sorrow - Sanjam</div>
+<div>Sweet Sorrow - Midnight</div>
+<div>Sweet Sorrow - Out Of Danger</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/32267717' target='_blank'><img src='https://resources.tidal.com/images/e2f49251/f177/4000/86b3/b00643b8500e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2007] War Of Money (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/182306212' target='_blank'>https://tidal.com/album/182306212</a></div>
+<div>Sweet Sorrow - Simple Life</div>
+<div>Sweet Sorrow - Things I Can't Know</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182306212' target='_blank'><img src='https://resources.tidal.com/images/a8cc1036/1634/4248/9bf8/2f89b1190816/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/스윗소로우 (Sweetsorrow)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
