@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 윈터 ( Tidal WINTER )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 윈터 ( Tidal WINTER )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4f60b437/c157/42d6/b22c/8d2aacd94d3b/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/33003865' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 윈터</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>청량한 음색으로 귓가를 사로잡는 보컬리스트, 'With You'의 따스함과 'Officially Cool'의 세련됨을 동시에 선사하는 매력적인 아티스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> WINTER</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A vocalist who captivates with a clear and refreshing voice, a charming artist who delivers both the warmth of 'With You' and the sophistication of 'Officially Cool'.</div><p>윈터는 독보적인 음색과 다채로운 매력으로 대중을 사로잡는 아티스트입니다. 그룹 활동뿐만 아니라 솔로, 콜라보를 통해 폭넓은 음악 스펙트럼을 보여주고 있어요. 앞으로 그녀가 들려줄 이야기가 더욱 기대되는 이유입니다.</p><p>WINTER is an artist who captivates the public with her unique voice and diverse charms. She showcases a wide musical spectrum through group activities as well as solo and collaborative works. That's why we look forward to the stories she will tell in the future.</p><p>✧</p><p>그룹 탄생</p><p>윈터는 뛰어난 보컬과 퍼포먼스 실력을 바탕으로 그룹의 핵심 멤버로 자리매김했습니다. 그녀의 존재감은 그룹의 음악적 색깔을 더욱 풍성하게 만들어주고 있어요. 팀 내에서의 시너지 효과는 윈터의 잠재력을 더욱 빛나게 합니다.</p><p>Group Formation</p><p>WINTER has established herself as a key member of the group based on her outstanding vocal and performance skills. Her presence enriches the group's musical color. The synergy within the team further highlights WINTER's potential.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>윈터는 다양한 장르를 소화하며 폭넓은 음악적 역량을 선보입니다. 섬세한 감정 표현과 안정적인 가창력은 듣는 이들에게 깊은 인상을 남겨요. 무대 위에서의 카리스마 넘치는 모습은 그녀의 또 다른 매력입니다.</p><p>Music and Performance</p><p>WINTER showcases a wide range of musical capabilities, covering various genres. Her delicate emotional expression and stable singing skills leave a deep impression on listeners. Her charismatic appearance on stage is another charm.</p><p>✧</p><p>주요 활동</p><p>윈터는 그룹 활동 외에도 다양한 콜라보레이션 작업을 통해 음악적 스펙트럼을 넓혀왔습니다. 솔로곡 발표를 통해 자신만의 음악 세계를 구축하고 있기도 해요. 앞으로 솔로 아티스트로서의 성장 또한 기대되는 부분입니다.</p><p>Key Activities</p><p>In addition to group activities, WINTER has expanded her musical spectrum through various collaborations. She is also building her own musical world by releasing solo songs. Her growth as a solo artist is something to look forward to.</p><p>✧</p><p>미래/의미</p><p>윈터는 끊임없는 음악적 시도를 통해 자신만의 색깔을 만들어가고 있습니다. 그녀의 음악은 듣는 이들에게 위로와 공감을 선사하며 긍정적인 영향력을 발휘해요. 앞으로 윈터가 보여줄 음악적 성장이 더욱 기대됩니다.</p><p>Future/Significance</p><p>WINTER is creating her own unique color through constant musical experimentation. Her music provides comfort and empathy to listeners and exerts a positive influence. We look forward to the musical growth that WINTER will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Resident Playbook, Pt. 3 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/430427893' target='_blank'>https://tidal.com/album/430427893</a></div>
+<div>WINTER - On Such a Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/430427893' target='_blank'><img src='https://resources.tidal.com/images/609c5293/e3e4/4ea4/9f39/e459ce56ee99/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] The Tale of Lady Ok (Original Television Soundtrack), Pt. 1</div>
+<div><a href='https://tidal.com/album/402214340' target='_blank'>https://tidal.com/album/402214340</a></div>
+<div>WINTER - HUNJUNG YEONSUH</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/402214340' target='_blank'><img src='https://resources.tidal.com/images/d7b42f0f/6c48/49a2/b3de/672929ef2efd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Officially Cool</div>
+<div><a href='https://tidal.com/album/352553101' target='_blank'>https://tidal.com/album/352553101</a></div>
+<div>WINTER, BANG YE DAM - Officially Cool</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352553101' target='_blank'><img src='https://resources.tidal.com/images/2c03ac25/afb7/4992/8568/2ed9fed9de5b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] WINTER of aespa X MY DEMON</div>
+<div><a href='https://tidal.com/album/334100589' target='_blank'>https://tidal.com/album/334100589</a></div>
+<div>WINTER - With You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334100589' target='_blank'><img src='https://resources.tidal.com/images/17d94671/e81e/4317/81f1/54ae0bdea4b6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] NOBODY</div>
+<div><a href='https://tidal.com/album/329068443' target='_blank'>https://tidal.com/album/329068443</a></div>
+<div>SOYEON ((G)I-DLE), WINTER, LIZ (IVE) - NOBODY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/329068443' target='_blank'><img src='https://resources.tidal.com/images/f31bba1f/639a/4b71/92a1/a707d165882b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] CASTAWAY DIVA (Original Soundtrack) Part.8</div>
+<div><a href='https://tidal.com/album/329908711' target='_blank'>https://tidal.com/album/329908711</a></div>
+<div>WINTER - Voyage</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/329908711' target='_blank'><img src='https://resources.tidal.com/images/56e6a478/5250/42f4/b223/a861dfc32e66/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Our Blues OST Part 10</div>
+<div><a href='https://tidal.com/album/230101797' target='_blank'>https://tidal.com/album/230101797</a></div>
+<div>WINTER, NINGNING - ONCE AGAIN</div>
+<div>WINTER, NINGNING - ONCE AGAIN (lnst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230101797' target='_blank'><img src='https://resources.tidal.com/images/6326fd2f/6ec6/4d40/a246/ab678ddaf2e0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/윈터 (WINTER)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
