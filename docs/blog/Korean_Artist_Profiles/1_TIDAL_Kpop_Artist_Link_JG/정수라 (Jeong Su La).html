@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 정수라 ( Tidal Jeong Su La )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 정수라 ( Tidal Jeong Su La )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/23c9df5d/634c/4cf9/865f/12eb7c7d843c/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/15732779' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 정수라</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>정수라 – 시대를 초월하는 에너지, '환희'의 폭발적인 가창력과 '사랑을 다시 한번'의 깊은 감성을 노래하는 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jeong Su La</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Jeong Su La – A timeless energy, a diva singing the explosive vocals of 'Joy' and the deep emotions of 'Love Once Again'</div><p>폭발적인 가창력과 다채로운 음악 스타일로 시대를 초월하여 사랑받는 가수, 정수라님을 소개합니다. 그녀는 파워풀한 에너지와 깊은 감성을 동시에 담아내는 독보적인 매력을 지니고 계시죠. 장르를 넘나드는 음악적 스펙트럼은 그녀를 단순한 가수를 넘어 아티스트로 자리매김하게 했습니다.</p><p>Introducing Jeong Su La, a singer loved across generations for her explosive vocals and diverse musical style. She possesses a unique charm that captures both powerful energy and deep emotion. Her genre-spanning musical spectrum has established her as an artist beyond a simple singer.</p><p>✧</p><p>강렬한 데뷔</p><p>정수라님은 어린 시절부터 뛰어난 음악적 재능을 보이며, 다양한 무대 경험을 쌓았습니다. 그녀의 데뷔는 가요계에 강렬한 인상을 남기며, 폭발적인 가창력으로 단숨에 대중을 사로잡았죠. 젊은 나이에도 불구하고 뛰어난 무대 장악력과 카리스마를 보여주며, 솔로 가수로서의 입지를 굳건히 했습니다.</p><p>A Powerful Debut</p><p>Jeong Su La showed outstanding musical talent from a young age, accumulating various stage experiences. Her debut left a strong impression on the music scene, captivating the public at once with her explosive vocals. Despite her young age, she demonstrated excellent stage presence and charisma, solidifying her position as a solo singer.</p><p>✧</p><p>폭넓은 음악적 스펙트럼</p><p>정수라님의 음악은 댄스, 팝, 발라드 등 다양한 장르를 아우릅니다. 그녀는 신나는 리듬의 댄스곡부터 가슴을 울리는 발라드까지, 폭넓은 음악적 스펙트럼을 선보이며 대중의 사랑을 받았어요. 특히, 그녀의 파워풀한 보컬은 어떤 장르의 곡이든 소화해내는 강점이죠.</p><p>A Wide Musical Spectrum</p><p>Jeong Su La's music encompasses various genres such as dance, pop, and ballad. She has been loved by the public, showcasing a wide musical spectrum from exciting rhythm dance songs to heart-wrenching ballads. In particular, her powerful vocals are her strength, capable of handling any genre of song.</p><p>✧</p><p>시대의 아이콘</p><p>정수라님은 80년대를 대표하는 디바로서, 수많은 히트곡을 발표하며 가요계의 르네상스를 이끌었습니다. 그녀의 음악은 시대를 초월하여 현재까지도 많은 사람들에게 사랑받고 있으며, 다양한 리메이크를 통해 재해석되고 있죠. 강렬한 퍼포먼스와 뛰어난 가창력은 그녀를 시대의 아이콘으로 만들었습니다.</p><p>An Icon of the Era</p><p>As a diva representing the 1980s, Jeong Su La released numerous hit songs and led the renaissance of the music industry. Her music transcends time and is still loved by many people, being reinterpreted through various remakes. Her intense performances and outstanding singing ability have made her an icon of the era.</p><p>✧</p><p>영원한 에너지</p><p>끊임없는 음악적 도전과 열정으로 정수라님은 여전히 활발하게 활동하고 계십니다. 그녀의 음악은 과거의 향수를 불러일으키는 동시에, 새로운 세대에게도 신선한 영감을 주고 있죠. 앞으로도 그녀의 음악이 우리에게 어떤 감동과 에너지를 선사할지 기대됩니다.</p><p>Eternal Energy</p><p>With constant musical challenges and passion, Jeong Su La is still actively working. Her music evokes nostalgia for the past while giving fresh inspiration to the new generation. We look forward to what kind of emotion and energy her music will bring us in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2021] Grandiflorum</div>
+<div><a href='https://tidal.com/album/188853393' target='_blank'>https://tidal.com/album/188853393</a></div>
+<div>정수라 - Grandiflorum</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188853393' target='_blank'><img src='https://resources.tidal.com/images/a81e4584/3655/4ce5/8ff6/d19e2292922e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 업고! 업고! DJ CLUB MIX Version</div>
+<div><a href='https://tidal.com/album/163280613' target='_blank'>https://tidal.com/album/163280613</a></div>
+<div>정수라 - 업고! 업고! DJ CLUB MIX Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163280613' target='_blank'><img src='https://resources.tidal.com/images/55621c44/adf2/4f6e/993f/19c7a8444705/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 2017 정수라 Single</div>
+<div><a href='https://tidal.com/album/169751228' target='_blank'>https://tidal.com/album/169751228</a></div>
+<div>정수라 - 어느날 문득</div>
+<div>정수라 - 어느날 문득 MR</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/169751228' target='_blank'><img src='https://resources.tidal.com/images/47b59c8c/2669/4060/b2fc/f378615c2403/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 청춘아 고맙다</div>
+<div><a href='https://tidal.com/album/163272279' target='_blank'>https://tidal.com/album/163272279</a></div>
+<div>정수라 - 청춘아 고맙다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163272279' target='_blank'><img src='https://resources.tidal.com/images/7f9bdb60/ee4d/4464/abca/7d383e840738/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] ...29 2012 Repackaged Version</div>
+<div><a href='https://tidal.com/album/163272241' target='_blank'>https://tidal.com/album/163272241</a></div>
+<div>정수라 - 사랑을 다시 한 번---</div>
+<div>정수라 - Beautiful Day</div>
+<div>정수라 - 난 너에게</div>
+<div>정수라 - 내 사랑을 본 적이 있나요</div>
+<div>정수라 - 도시의 거리 New Version</div>
+<div>정수라 - Beautiful Day Acoustic Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163272241' target='_blank'><img src='https://resources.tidal.com/images/23c9df5d/634c/4cf9/865f/12eb7c7d843c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Beautiful Day</div>
+<div><a href='https://tidal.com/album/163381719' target='_blank'>https://tidal.com/album/163381719</a></div>
+<div>정수라 - Beautiful Day</div>
+<div>정수라 - Beautiful Day Acoustic Version</div>
+<div>정수라 - 난 너에게 New Version</div>
+<div>정수라 - 내 사랑을 본적이 있나요 New Version</div>
+<div>정수라 - 도시의 거리 New Version</div>
+<div>정수라 - 사랑한 만큼 아프죠</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163381719' target='_blank'><img src='https://resources.tidal.com/images/d21c428b/81f9/4d47/b429/f314d052d278/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Music Is My Life</div>
+<div><a href='https://tidal.com/album/163272225' target='_blank'>https://tidal.com/album/163272225</a></div>
+<div>정수라 - 우리둘이</div>
+<div>정수라 - 사랑했지만</div>
+<div>정수라 - My Life</div>
+<div>정수라 - 노래는 내 인생</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163272225' target='_blank'><img src='https://resources.tidal.com/images/8fca560f/8310/4a27/bce2/77822674748d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] 정수라 First Single</div>
+<div><a href='https://tidal.com/album/169748671' target='_blank'>https://tidal.com/album/169748671</a></div>
+<div>정수라 - 어느 눈부신 날</div>
+<div>정수라 - 지나가면</div>
+<div>정수라 - 남자 길들이기</div>
+<div>정수라 - 울고 싶어요</div>
+<div>정수라 - 어느 눈부신 날 Trans Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/169748671' target='_blank'><img src='https://resources.tidal.com/images/77838b50/b268/4afd/aa51/8b6dac8772d4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] 20th Memorial Anniversary + Sene 14</div>
+<div><a href='https://tidal.com/album/163272136' target='_blank'>https://tidal.com/album/163272136</a></div>
+<div>정수라 - 쇼윈도에 걸린 스카프</div>
+<div>정수라 - 사랑하기 때문에</div>
+<div>정수라 - 나는 너를</div>
+<div>정수라 - 내 나이가 몇인데</div>
+<div>정수라 - 비와 외로움</div>
+<div>정수라 - 내일</div>
+<div>정수라 - 하루하루</div>
+<div>정수라 - 거리에서</div>
+<div>정수라 - 입영열차 안에서</div>
+<div>정수라 - 눈길만으로</div>
+<div>정수라 - 문밖에 있는 그대</div>
+<div>정수라 - 그대만의 사랑</div>
+<div>정수라 - 바라볼 수 없는 그대</div>
+<div>정수라 - 슬픈인연</div>
+<div>정수라 - Happy Birthday</div>
+<div>정수라 - 바람이었나</div>
+<div>정수라 - 풀잎이슬</div>
+<div>정수라 - 진</div>
+<div>정수라 - 아버지의 의자</div>
+<div>정수라 - 환희</div>
+<div>정수라 - 혼자라는 생각으로</div>
+<div>정수라 - 세상을 느낄 때</div>
+<div>정수라 - 사랑했지만</div>
+<div>정수라 - 내사랑을 본적이 있나요-</div>
+<div>정수라 - 사랑의 빛</div>
+<div>정수라 - 문득 문득</div>
+<div>정수라 - 도시의 거리</div>
+<div>정수라 - 난 너에게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163272136' target='_blank'><img src='https://resources.tidal.com/images/b62dd0e0/35f2/4702/bb89/e6ff168cdf6b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2002] 정수라 14</div>
+<div><a href='https://tidal.com/album/163272080' target='_blank'>https://tidal.com/album/163272080</a></div>
+<div>정수라 - 쇼윈도에 걸린 스카프</div>
+<div>정수라 - 사랑하기 때문에</div>
+<div>정수라 - 나는 너를</div>
+<div>정수라 - 내 나이가 몇인데</div>
+<div>정수라 - 비와 외로움</div>
+<div>정수라 - 내일</div>
+<div>정수라 - 하루하루</div>
+<div>정수라 - 거리에서</div>
+<div>정수라 - 입영열차 안에서</div>
+<div>정수라 - 눈길만으로</div>
+<div>정수라 - 문밖에 있는 그대</div>
+<div>정수라 - 그대만의 사랑</div>
+<div>정수라 - 바라볼 수 없는 그대</div>
+<div>정수라 - 슬픈인연</div>
+<div>정수라 - Happy Birthday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163272080' target='_blank'><img src='https://resources.tidal.com/images/47d434ba/e4e1/419d/8b87/b11221c0b744/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] sene 13 + best</div>
+<div><a href='https://tidal.com/album/169747638' target='_blank'>https://tidal.com/album/169747638</a></div>
+<div>정수라 - 뭐 하자는 거야</div>
+<div>정수라 - 바람이었나</div>
+<div>정수라 - 마지막 부탁</div>
+<div>정수라 - 풀잎이슬</div>
+<div>정수라 - 여자라는</div>
+<div>정수라 - 진</div>
+<div>정수라 - 머물 수 없는 사랑</div>
+<div>정수라 - 아버지의 의자</div>
+<div>정수라 - 가</div>
+<div>정수라 - 환희</div>
+<div>정수라 - Love Song</div>
+<div>정수라 - 혼자라는 생각으로</div>
+<div>정수라 - 세상을 느낄 때</div>
+<div>정수라 - 영원</div>
+<div>정수라 - 또 다른 너</div>
+<div>정수라 - 사랑했지만</div>
+<div>정수라 - 사랑해줘</div>
+<div>정수라 - 함께 가야할 길</div>
+<div>정수라 - 사랑의 빛</div>
+<div>정수라 - 문득 문득</div>
+<div>정수라 - 도시의 거리</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/169747638' target='_blank'><img src='https://resources.tidal.com/images/52c3b187/2395/4e11/afb6/52ac7bf82f38/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/1_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ1) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/정수라 (Jeong Su La)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
