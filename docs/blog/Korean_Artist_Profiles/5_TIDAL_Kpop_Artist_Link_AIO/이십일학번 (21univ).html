@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이십일학번 ( Tidal 21univ. )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이십일학번 ( Tidal 21univ. )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/1eda8eb7/144b/4c06/9099/ff1570d36a38/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/24368283' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/33161950' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이십일학번</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>이십일학번 (21univ.) - 풋풋한 설렘과 아련한 향수를 노래하는, '자연스러운 만남 추구'의 싱그러운 감성</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 21univ.</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>21univ. (21univ.) - Singing of youthful excitement and nostalgic yearning, the refreshing sensibility of 'Seeking Natural Encounters'</div><p>캠퍼스의 낭만과 청춘의 고민을 담아내는 그룹, 이십일학번(21univ.)을 소개합니다. 풋풋한 감성과 공감을 자아내는 음악으로 많은 사랑을 받고 있는데요. 일상 속 소소한 이야기들을 섬세하게 풀어내는 매력이 있답니다.</p><p>Introducing 21univ., a group that captures the romance of campus life and the worries of youth. They are much loved for their fresh emotions and relatable music. Their charm lies in delicately unraveling small stories of everyday life.</p><p>✧</p><p>그룹 탄생</p><p>이십일학번은 동갑내기 친구들이 모여 결성된 그룹이에요. 대학 생활의 경험과 감정을 공유하며 음악을 만들기 시작했다고 합니다. 그들의 이름처럼, 21학번의 이야기를 진솔하게 담아내고 있어요.</p><p>The Birth of the Group</p><p>21univ. is a group formed by friends of the same age. They started making music by sharing their experiences and feelings from university life. As their name suggests, they honestly capture the stories of the class of '21.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>이십일학번의 음악은 어쿠스틱 사운드를 기반으로 한 편안한 멜로디가 특징입니다. 누구나 쉽게 공감할 수 있는 가사와 풋풋한 보컬이 듣는 이들의 마음을 사로잡아요. 때로는 잔잔하게, 때로는 통통 튀는 매력을 선보입니다.</p><p>Music and Performance</p><p>The music of 21univ. is characterized by comfortable melodies based on acoustic sounds. Lyrics that anyone can easily relate to and fresh vocals captivate listeners. They showcase a charm that is sometimes calm and sometimes bubbly.</p><p>✧</p><p>주요 활동</p><p>이십일학번은 꾸준히 음원을 발매하며 활동을 이어가고 있어요. 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀가고 있답니다. 캠퍼스 축제나 소규모 공연을 통해 팬들과 소통하는 모습도 보여주고 있어요.</p><p>Main Activities</p><p>21univ. continues its activities by steadily releasing music. They are expanding their musical spectrum through collaborations with various artists. They also communicate with fans through campus festivals and small-scale performances.</p><p>✧</p><p>미래/의미</p><p>이십일학번은 앞으로도 청춘의 솔직한 감정을 노래할 것으로 기대됩니다. 그들의 음악은 잊고 지냈던 학창 시절의 추억을 떠올리게 하는 힘이 있어요. 앞으로 어떤 음악으로 우리의 감성을 자극할지 기대가 됩니다.</p><p>Future/Meaning</p><p>It is expected that 21univ. will continue to sing about the honest feelings of youth. Their music has the power to bring back forgotten memories of school days. It will be exciting to see what kind of music they will use to stimulate our emotions in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Lean On Me</div>
+<div><a href='https://tidal.com/album/411251288' target='_blank'>https://tidal.com/album/411251288</a></div>
+<div>21univ- - Lean On Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/411251288' target='_blank'><img src='https://resources.tidal.com/images/f84d5543/6b69/49f9/b994/3c7b3d95e94b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Study cafe</div>
+<div><a href='https://tidal.com/album/384974062' target='_blank'>https://tidal.com/album/384974062</a></div>
+<div>21univ- - Study cafe</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/384974062' target='_blank'><img src='https://resources.tidal.com/images/f18ba97f/717d/473b/9887/de5fd4ccf47c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Serendipity's Embrace (Original Soundtrack) Pt.7</div>
+<div><a href='https://tidal.com/album/380020685' target='_blank'>https://tidal.com/album/380020685</a></div>
+<div>21univ., Kim Do-hyeong - Hard to tell</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/380020685' target='_blank'><img src='https://resources.tidal.com/images/5f4b728c/7333/4572/a406/0046aa088959/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] First Love X _23#</div>
+<div><a href='https://tidal.com/album/361739196' target='_blank'>https://tidal.com/album/361739196</a></div>
+<div>SUNNYSIDEMJ, 21univ- - First Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/361739196' target='_blank'><img src='https://resources.tidal.com/images/b122fd28/934a/4c5b/80c4/8ad0fe221192/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Time Machine</div>
+<div><a href='https://tidal.com/album/317727496' target='_blank'>https://tidal.com/album/317727496</a></div>
+<div>21univ- - Time Machine</div>
+<div>21univ- - Time Machine (English Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/317727496' target='_blank'><img src='https://resources.tidal.com/images/18a49914/b76e/4296/8fa2/4f0badc3680e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Smiling</div>
+<div><a href='https://tidal.com/album/269174454' target='_blank'>https://tidal.com/album/269174454</a></div>
+<div>21univ- - Smiling</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269174454' target='_blank'><img src='https://resources.tidal.com/images/7bc000e2/0545/4d9d/9748/010e97215e6b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] My One and only</div>
+<div><a href='https://tidal.com/album/274410032' target='_blank'>https://tidal.com/album/274410032</a></div>
+<div>21univ., Chaemin yang, Soo hyun Kim - My One and only</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/274410032' target='_blank'><img src='https://resources.tidal.com/images/c87899cc/d654/4215/9682/1361014b613a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Coin karaoke</div>
+<div><a href='https://tidal.com/album/287877296' target='_blank'>https://tidal.com/album/287877296</a></div>
+<div>21univ- - Coin karaoke</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287877296' target='_blank'><img src='https://resources.tidal.com/images/df1bd14a/d75a/4752/a484/08c417fe6675/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Beginning is the First Kiss (Original Television Soundtrack), Pt.3</div>
+<div><a href='https://tidal.com/album/292928986' target='_blank'>https://tidal.com/album/292928986</a></div>
+<div>21univ- - Loveholic(2023)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/292928986' target='_blank'><img src='https://resources.tidal.com/images/a037e535/1e37/41a7/a47c/712655fb116c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Sticker picture</div>
+<div><a href='https://tidal.com/album/237326943' target='_blank'>https://tidal.com/album/237326943</a></div>
+<div>21univ- - Sticker picture</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237326943' target='_blank'><img src='https://resources.tidal.com/images/a77541f9/4451/4a38/b6e2/a486246d02f9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 자연스러운 만남 추구</div>
+<div><a href='https://tidal.com/album/180255315' target='_blank'>https://tidal.com/album/180255315</a></div>
+<div>21학번 - 자연스러운 만남 추구</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/180255315' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 완전 내 스타일</div>
+<div><a href='https://tidal.com/album/196737421' target='_blank'>https://tidal.com/album/196737421</a></div>
+<div>21학번 - 완전 내 스타일</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196737421' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/5_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ5) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/이십일학번 (21univ.)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
