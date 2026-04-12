@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 베이비몬스터 ( Tidal BABYMONSTER )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 베이비몬스터 ( Tidal BABYMONSTER )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/0654c575/c586/4127/876e/ecef6215e088/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/43985236' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 베이비몬스터</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>베이비몬스터 (BABYMONSTER) - 거침없는 에너지와 다채로운 매력으로 무대를 압도하는 차세대 걸그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> BABYMONSTER</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>BABYMONSTER - A next-generation girl group that dominates the stage with boundless energy and versatile charm.</div><p>강렬한 퍼포먼스와 개성 넘치는 음악으로 무장한 베이비몬스터는 K팝 씬에 신선한 바람을 일으키고 있어요. 멤버들의 뛰어난 실력과 독특한 매력은 글로벌 팬들의 마음을 사로잡고 있죠. 앞으로 이들이 보여줄 음악적 스펙트럼이 더욱 기대됩니다.</p><p>Armed with intense performances and unique music, BABYMONSTER is bringing a breath of fresh air to the K-pop scene. The members' outstanding skills and distinctive charms are captivating the hearts of global fans. We look forward to the musical spectrum they will showcase in the future.</p><p>✧</p><p>그룹 탄생</p><p>베이비몬스터는 YG엔터테인먼트에서 야심차게 선보인 차세대 걸그룹이에요. 오랜 트레이닝 기간을 거쳐 다양한 국적의 멤버들이 모여 탄생했습니다. 이들은 데뷔 전부터 뛰어난 실력으로 주목받으며 팬들의 기대를 한 몸에 받았죠.</p><p>Group Formation</p><p>BABYMONSTER is a next-generation girl group ambitiously introduced by YG Entertainment. Formed by members of various nationalities after a long period of training, they garnered attention with their outstanding skills even before their debut, raising high expectations from fans.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>베이비몬스터는 힙합 기반의 강렬한 사운드와 파워풀한 퍼포먼스를 선보이는 그룹이에요. 멤버들은 보컬, 랩, 댄스 등 다방면에서 뛰어난 재능을 보여주고 있죠. 무대 위에서 뿜어져 나오는 에너지와 자신감은 보는 이들을 압도합니다.</p><p>Music and Performance</p><p>BABYMONSTER is a group that showcases intense hip-hop-based sounds and powerful performances. The members demonstrate outstanding talent in various areas, including vocals, rap, and dance. The energy and confidence they exude on stage are overwhelming.</p><p>✧</p><p>주요 활동</p><p>베이비몬스터는 데뷔 이후 다양한 무대와 콘텐츠를 통해 팬들과 소통하고 있어요. 라이브 퍼포먼스 영상은 멤버들의 실력을 입증하며 큰 화제를 모으고 있죠. 앞으로 더욱 다양한 음악 활동을 통해 글로벌 팬들에게 다가갈 예정입니다.</p><p>Key Activities</p><p>Since their debut, BABYMONSTER has been communicating with fans through various stages and content. Their live performance videos have proven their skills and generated great buzz. They plan to reach out to global fans through even more diverse musical activities in the future.</p><p>✧</p><p>미래/의미</p><p>베이비몬스터는 앞으로 K팝 씬을 이끌어갈 차세대 주역으로 주목받고 있어요. 멤버들의 무한한 가능성과 성장 potential은 팬들을 설레게 만들죠. 이들이 만들어갈 새로운 역사가 기대됩니다.</p><p>Future/Significance</p><p>BABYMONSTER is attracting attention as the next-generation leader who will lead the K-pop scene. The members' infinite potential and growth potential excites fans. We look forward to the new history they will create.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] WE GO UP</div>
+<div><a href='https://tidal.com/album/464324514' target='_blank'>https://tidal.com/album/464324514</a></div>
+<div>BABYMONSTER - WE GO UP</div>
+<div>BABYMONSTER - PSYCHO</div>
+<div>BABYMONSTER - SUPA DUPA LUV</div>
+<div>BABYMONSTER - WILD</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/464324514' target='_blank'><img src='https://resources.tidal.com/images/d8adca21/dec0/49d4/92fe/0291c3dfba24/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] HOT SAUCE</div>
+<div><a href='https://tidal.com/album/444144882' target='_blank'>https://tidal.com/album/444144882</a></div>
+<div>BABYMONSTER - HOT SAUCE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/444144882' target='_blank'><img src='https://resources.tidal.com/images/e2ef09a8/abdd/432e/ba41/355226dda4d6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Ghost</div>
+<div><a href='https://tidal.com/album/432081585' target='_blank'>https://tidal.com/album/432081585</a></div>
+<div>BABYMONSTER - Ghost</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/432081585' target='_blank'><img src='https://resources.tidal.com/images/eeb701ad/2fd6/46b0/80a6/2e9030266c30/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] 2025 BABYMONSTER 1st WORLD TOUR HELLO MONSTERS IN JAPAN ~2025.04.13 K-ARENA YOKOHAMA~</div>
+<div><a href='https://tidal.com/album/459380212' target='_blank'>https://tidal.com/album/459380212</a></div>
+<div>BABYMONSTER - BATTER UP (Live Version)</div>
+<div>BABYMONSTER - CLIK CLAK (Live Version)</div>
+<div>BABYMONSTER - LIKE THAT (Live Version)</div>
+<div>BABYMONSTER - SHEESH (Live Version)</div>
+<div>BABYMONSTER - Woke Up In Tokyo (RUKA & ASA) (Live Version)</div>
+<div>BABYMONSTER - Love, Maybe (Live Version)</div>
+<div>BABYMONSTER - DREAM (Live Version)</div>
+<div>BABYMONSTER - BILLIONAIRE (Live Version)</div>
+<div>BABYMONSTER - Really Like You (Live Version)</div>
+<div>BABYMONSTER - CLAP YOUR HANDS ~ Go Away (2NE1 Cover) (Live Version)</div>
+<div>BABYMONSTER - FOREVER (Live Version)</div>
+<div>BABYMONSTER - Love In My Heart (Live Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/459380212' target='_blank'><img src='https://resources.tidal.com/images/e63fa77a/0b84/4f99/8d37/1f9b2ab85933/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Stuck In The Middle</div>
+<div><a href='https://tidal.com/album/342455972' target='_blank'>https://tidal.com/album/342455972</a></div>
+<div>BABYMONSTER - Stuck In The Middle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/342455972' target='_blank'><img src='https://resources.tidal.com/images/fbe3c740/e841/4d8b/90d9/1aca46a70b4b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] FOREVER</div>
+<div><a href='https://tidal.com/album/371594406' target='_blank'>https://tidal.com/album/371594406</a></div>
+<div>BABYMONSTER - FOREVER</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/371594406' target='_blank'><img src='https://resources.tidal.com/images/95f24fd3/bd72/468a/be41/597717f1bca3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] DRIP</div>
+<div><a href='https://tidal.com/album/396099969' target='_blank'>https://tidal.com/album/396099969</a></div>
+<div>BABYMONSTER - CLIK CLAK</div>
+<div>BABYMONSTER - DRIP</div>
+<div>BABYMONSTER - Love, Maybe</div>
+<div>BABYMONSTER - Really Like You</div>
+<div>BABYMONSTER - BILLIONAIRE</div>
+<div>BABYMONSTER - Love In My Heart</div>
+<div>BABYMONSTER - Woke Up In Tokyo (RUKA & ASA)</div>
+<div>BABYMONSTER - FOREVER</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/396099969' target='_blank'><img src='https://resources.tidal.com/images/f333ab56/229a/4a6d/8588/a07bef90c326/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] BATTER UP -JP Version</div>
+<div><a href='https://tidal.com/album/380967422' target='_blank'>https://tidal.com/album/380967422</a></div>
+<div>BABYMONSTER - BATTER UP -JP Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/380967422' target='_blank'><img src='https://resources.tidal.com/images/bd2993da/1e6d/4084/a1de/964452fb0fed/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] BABYMONS7ER</div>
+<div><a href='https://tidal.com/album/353811042' target='_blank'>https://tidal.com/album/353811042</a></div>
+<div>BABYMONSTER - MONSTERS (Intro)</div>
+<div>BABYMONSTER - SHEESH</div>
+<div>BABYMONSTER - LIKE THAT</div>
+<div>BABYMONSTER - Stuck In The Middle (7 ver.)</div>
+<div>BABYMONSTER - BATTER UP (7 ver.)</div>
+<div>BABYMONSTER - DREAM</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353811042' target='_blank'><img src='https://resources.tidal.com/images/c59c351a/d9c5/494d/a50c/bfbd63be4962/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] BATTER UP</div>
+<div><a href='https://tidal.com/album/330476482' target='_blank'>https://tidal.com/album/330476482</a></div>
+<div>BABYMONSTER - BATTER UP</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/330476482' target='_blank'><img src='https://resources.tidal.com/images/168113e0/37b1/4270/9301/4d072f598edc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/1_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ1) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/베이비몬스터 (BABYMONSTER)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
