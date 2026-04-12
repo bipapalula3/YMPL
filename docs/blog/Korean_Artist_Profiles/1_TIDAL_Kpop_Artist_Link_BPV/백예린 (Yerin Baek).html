@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 백예린 ( Tidal Yerin Baek )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 백예린 ( Tidal Yerin Baek )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/f7e0247d/4888/4ef4/a3a9/9c43a62acf76/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7345660' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 백예린</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>몽환적인 목소리로 빚어낸 솔직한 이야기, 'Square (2017)'의 울림과 'Bye bye my blue'의 깊이를 담아내는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Yerin Baek</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A singer-songwriter who crafts honest stories with a dreamy voice, capturing the resonance of 'Square (2017)' and the depth of 'Bye bye my blue'.</div><p>독보적인 음색과 섬세한 감성으로 많은 사랑을 받고 있는 백예린님을 소개합니다. 그녀는 자신만의 색깔로 다양한 음악적 스펙트럼을 보여주며 리스너들의 마음을 사로잡고 있어요. 솔직하고 진솔한 음악은 듣는 이들에게 깊은 공감과 위로를 전해준답니다.</p><p>Introducing Yerin Baek, who is widely loved for her unique voice and delicate emotions. She captivates listeners with her diverse musical spectrum, expressed in her own unique style. Her honest and sincere music delivers deep empathy and comfort to those who listen.</p><p>✧</p><p>홀로서기의 시작</p><p>아이돌 그룹 데뷔 제안을 뒤로하고 자신만의 음악을 추구했던 백예린님. JYP 엔터테인먼트에서 데뷔 후, 꾸준히 자신만의 음악 세계를 구축해나갔어요. 이후 독립 레이블 Blue Vinyl을 설립하며 더욱 자유로운 음악 활동을 펼치고 있습니다.</p><p>The Beginning of a Solo Journey</p><p>Yerin Baek turned down offers to debut in idol groups and pursued her own music. After debuting under JYP Entertainment, she steadily built her own musical world. Later, she established her independent label, Blue Vinyl, and is now engaging in even freer musical activities.</p><p>✧</p><p>음악적 스타일과 퍼포먼스</p><p>백예린님의 음악은 팝, R&B, 재즈 등 다양한 장르를 아우르는 것이 특징이에요. 몽환적인 분위기와 솔직한 가사는 그녀의 음악을 더욱 매력적으로 만들어줍니다. 라이브 무대에서의 뛰어난 가창력과 섬세한 감정 표현은 감동을 선사하죠.</p><p>Musical Style and Performance</p><p>Yerin Baek's music is characterized by encompassing various genres such as pop, R&B, and jazz. The dreamy atmosphere and honest lyrics make her music even more attractive. Her outstanding singing ability and delicate emotional expression on live stages deliver a sense of deep emotion.</p><p>✧</p><p>주요 활동</p><p>솔로 앨범 발매뿐만 아니라 다양한 아티스트와의 협업을 통해 폭넓은 음악적 스펙트럼을 보여주고 있어요. 드라마 OST 참여, 예능 프로그램 출연 등 다양한 분야에서 활약하며 대중적인 인기를 얻고 있습니다. 그녀의 음악은 국내뿐만 아니라 해외에서도 많은 사랑을 받고 있죠.</p><p>Major Activities</p><p>In addition to releasing solo albums, she is showcasing a wide range of musical spectrum through collaborations with various artists. She is gaining popular appeal by participating in drama OSTs and appearing on entertainment programs. Her music is loved not only in Korea but also overseas.</p><p>✧</p><p>미래와 의미</p><p>끊임없이 새로운 시도를 하며 자신만의 음악 세계를 확장해 나갈 백예린님. 그녀의 음악은 단순한 유행을 넘어 오랫동안 기억될 감동과 위로를 선사할 것입니다. 앞으로 그녀가 들려줄 이야기가 더욱 기대되는 이유입니다.</p><p>Future and Meaning</p><p>Yerin Baek will continue to make new attempts and expand her own musical world. Her music will deliver lasting emotion and comfort that transcends fleeting trends. This is why we look forward to the stories she will tell in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] New Year</div>
+<div><a href='https://tidal.com/album/412962245' target='_blank'>https://tidal.com/album/412962245</a></div>
+<div>Yerin Baek - Fuckin' New Year(Explicit)</div>
+<div>Yerin Baek - Big world</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412962245' target='_blank'><img src='https://resources.tidal.com/images/77b0a717/2740/4105/b35f/0f3a7d5c3c1d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] The Other Side</div>
+<div><a href='https://tidal.com/album/346653427' target='_blank'>https://tidal.com/album/346653427</a></div>
+<div>Yerin Baek, MONIKA, Lip J - The Other Side</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346653427' target='_blank'><img src='https://resources.tidal.com/images/c430a339/2207/4448/b20b/e47d0284a357/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Pisces</div>
+<div><a href='https://tidal.com/album/364279994' target='_blank'>https://tidal.com/album/364279994</a></div>
+<div>Yerin Baek - It was me</div>
+<div>Yerin Baek - Pisces</div>
+<div>Yerin Baek - The loved one</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/364279994' target='_blank'><img src='https://resources.tidal.com/images/6b486423/a00c/4c80/bff7/a9066aeda7c0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Love, Yerin</div>
+<div><a href='https://tidal.com/album/364278031' target='_blank'>https://tidal.com/album/364278031</a></div>
+<div>Yerin Baek - Whenever</div>
+<div>Yerin Baek - Antifreeze</div>
+<div>Yerin Baek - Go Back</div>
+<div>Yerin Baek - Why Me-</div>
+<div>Yerin Baek - Limit</div>
+<div>Yerin Baek - A Walk</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/364278031' target='_blank'><img src='https://resources.tidal.com/images/7e79a0a5/e8fb/4559/8a2f/6fcdd9027c14/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Crash Landing on You OST Part 4</div>
+<div><a href='https://tidal.com/album/196153233' target='_blank'>https://tidal.com/album/196153233</a></div>
+<div>Yerin Baek - Here I Am Again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196153233' target='_blank'><img src='https://resources.tidal.com/images/80c164b7/1b15/433b/97a8/a99048ac48eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] tellusboutyourself</div>
+<div><a href='https://tidal.com/album/189885536' target='_blank'>https://tidal.com/album/189885536</a></div>
+<div>Yerin Baek - Lovegame(Explicit)</div>
+<div>Yerin Baek - You’re so lonely now, so you need me back by your side again</div>
+<div>Yerin Baek - I am not your ocean anymore</div>
+<div>Yerin Baek - Hall&Oates</div>
+<div>Yerin Baek - Ms. Delicate</div>
+<div>Yerin Baek - Interlude</div>
+<div>Yerin Baek - Loner</div>
+<div>Yerin Baek - “HOMESWEETHOME”</div>
+<div>Yerin Baek - Loveless</div>
+<div>Yerin Baek - Hate you(Explicit)</div>
+<div>Yerin Baek - 0415</div>
+<div>Yerin Baek - I’ll be your family!</div>
+<div>Yerin Baek - I’m in love</div>
+<div>Yerin Baek - Bubbles&Mushrooms</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189885536' target='_blank'><img src='https://resources.tidal.com/images/f58e265c/1a3f/4f0e/8007/01c5a4c758c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Our Love is Great</div>
+<div><a href='https://tidal.com/album/305902316' target='_blank'>https://tidal.com/album/305902316</a></div>
+<div>Yerin Baek - Merry And The Witch’s Flower</div>
+<div>Yerin Baek - Maybe It’s Not Our Fault</div>
+<div>Yerin Baek - Dear my blue</div>
+<div>Yerin Baek - Our love is great</div>
+<div>Yerin Baek, Car, The Garden - I Don’t Know</div>
+<div>Yerin Baek - See You Again</div>
+<div>Yerin Baek - I Don’t Know (2019 Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305902316' target='_blank'><img src='https://resources.tidal.com/images/fef453c8/caca/4379/bb06/7e51fa4a0e5c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Onstage Digging Club Seoul THEME 01</div>
+<div><a href='https://tidal.com/album/176030079' target='_blank'>https://tidal.com/album/176030079</a></div>
+<div>Yerin Baek - Suddenly (Digging Club Seoul Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/176030079' target='_blank'><img src='https://resources.tidal.com/images/e79a3f50/9d17/465c/91f0/d206589f935e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Every letter I sent you.</div>
+<div><a href='https://tidal.com/album/189461165' target='_blank'>https://tidal.com/album/189461165</a></div>
+<div>Yerin Baek - Berlin</div>
+<div>Yerin Baek - Intro</div>
+<div>Yerin Baek - Datoom</div>
+<div>Yerin Baek - Rest</div>
+<div>Yerin Baek - Not a girl</div>
+<div>Yerin Baek - Popo (How deep is our love-)</div>
+<div>Yerin Baek - Newsong2</div>
+<div>Yerin Baek - can i b u</div>
+<div>Yerin Baek - Amy</div>
+<div>Yerin Baek - Meant to be</div>
+<div>Yerin Baek - Mr.gloomy</div>
+<div>Yerin Baek - True lover</div>
+<div>Yerin Baek - Point (feat. Loopy)</div>
+<div>Yerin Baek - lovelovelove</div>
+<div>Yerin Baek - Bunny</div>
+<div>Yerin Baek - Square (2017)</div>
+<div>Yerin Baek - 0310</div>
+<div>Yerin Baek - London</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189461165' target='_blank'><img src='https://resources.tidal.com/images/41ac98e7/e1ea/4e88/a255/846c939033ca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] A-TEEN2 Part.1</div>
+<div><a href='https://tidal.com/album/216117214' target='_blank'>https://tidal.com/album/216117214</a></div>
+<div>Yerin Baek - Lean On Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216117214' target='_blank'><img src='https://resources.tidal.com/images/fb63b79a/0518/473d/b506/f84593825a99/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Chicago Typewriter, Pt. 2 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/196133904' target='_blank'>https://tidal.com/album/196133904</a></div>
+<div>Yerin Baek - Blooming Memories</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196133904' target='_blank'><img src='https://resources.tidal.com/images/28ac5413/51cc/417e/8c76/7a1bb2424f3b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Love You On Christmas</div>
+<div><a href='https://tidal.com/album/305902311' target='_blank'>https://tidal.com/album/305902311</a></div>
+<div>Yerin Baek - Love You On Christmas</div>
+<div>Yerin Baek - November song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305902311' target='_blank'><img src='https://resources.tidal.com/images/5f5cbaef/ead2/4cf8/a446/45fd7045bf19/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Bye Bye My Blue</div>
+<div><a href='https://tidal.com/album/305902307' target='_blank'>https://tidal.com/album/305902307</a></div>
+<div>Yerin Baek - Bye Bye My Blue</div>
+<div>Yerin Baek - His ocean</div>
+<div>Yerin Baek - Zero</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305902307' target='_blank'><img src='https://resources.tidal.com/images/8c99c644/6605/4e4b/9dee/907ea07edcaa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] FRANK</div>
+<div><a href='https://tidal.com/album/305902236' target='_blank'>https://tidal.com/album/305902236</a></div>
+<div>Yerin Baek - Blue</div>
+<div>Yerin Baek - Across the universe</div>
+<div>Yerin Baek - As I am</div>
+<div>Yerin Baek - Don't leave me alone</div>
+<div>Yerin Baek - zZ</div>
+<div>Yerin Baek - That’s Why</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305902236' target='_blank'><img src='https://resources.tidal.com/images/c29a7bc4/df00/48ca/8489/5a222f062e7a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/1_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ1) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/백예린 (Yerin Baek)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
