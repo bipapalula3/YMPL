@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 빈센트블루 ( Tidal Vincent Blue )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 빈센트블루 ( Tidal Vincent Blue )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/70934ea1/cf26/4b8e/9fb1/54e2de269dc9/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9809820' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 빈센트블루</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>빈센트블루 (Vincent Blue) – ‘Sweet Drama’처럼 달콤하게, ‘Blue’처럼 깊게 스며드는 감성 보컬</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Vincent Blue</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Vincent Blue – A soulful vocalist who immerses you deeply, as sweet as 'Sweet Drama' and as profound as 'Blue'.</div><p>섬세한 감성으로 듣는 이의 마음을 어루만지는 가수, 빈센트블루를 소개합니다. 그의 음악은 일상 속의 다양한 감정을 솔직하게 담아내 공감을 자아내요. 부드러운 음색과 진솔한 가사로 리스너들에게 깊은 울림을 선사합니다.</p><p>Introducing Vincent Blue, an artist who touches hearts with his delicate sensibility. His music honestly captures various emotions from everyday life, creating a sense of resonance. With a soft tone and sincere lyrics, he offers listeners a profound echo.</p><p>✧</p><p>감성적인 시작</p><p>빈센트블루는 자신만의 색깔을 담아 음악계에 조용히 존재감을 드러냈어요. 특유의 감성적인 보컬은 듣는 이로 하여금 그의 음악에 쉽게 빠져들게 만들죠. 꾸밈없이 진솔한 그의 음악은 많은 이들의 플레이리스트에 자리 잡고 있습니다.</p><p>An Emotional Beginning</p><p>Vincent Blue quietly revealed his presence in the music scene with his unique color. His distinctive emotional vocals make it easy for listeners to fall into his music. His unadorned and sincere music has found its place on many people's playlists.</p><p>✧</p><p>음악적 스펙트럼</p><p>그의 음악은 특정 장르에 국한되지 않고 다양한 스타일을 아우르는 것이 특징입니다. R&B, 소울, 팝 등 다양한 장르를 넘나들며 자신만의 음악적 색깔을 구축해나가고 있어요. 때로는 감미롭게, 때로는 애절하게, 다채로운 감정을 표현하는 그의 음악은 폭넓은 공감대를 형성합니다.</p><p>Musical Spectrum</p><p>His music is characterized by encompassing various styles without being limited to a specific genre. He crosses various genres such as R&B, soul, and pop, building his own musical color. Sometimes sweet, sometimes heartrending, his music, which expresses diverse emotions, forms a broad consensus.</p><p>✧</p><p>꾸준한 음악 활동</p><p>빈센트블루는 꾸준한 음원 발매와 공연을 통해 팬들과 소통하고 있습니다. 다양한 아티스트와의 협업을 통해 음악적 역량을 넓혀가며 새로운 시도를 멈추지 않아요. 그의 진정성 있는 음악 활동은 앞으로 더욱 기대를 모으고 있습니다.</p><p>Consistent Musical Activity</p><p>Vincent Blue communicates with fans through consistent music releases and performances. He is expanding his musical capabilities through collaborations with various artists and is not stopping new attempts. His sincere musical activities are generating even more expectations for the future.</p><p>✧</p><p>앞으로의 행보</p><p>앞으로 빈센트블루가 보여줄 음악 세계는 더욱 무궁무진할 것으로 기대됩니다. 그의 음악은 단순한 듣는 즐거움을 넘어, 삶의 위로와 공감을 전하는 특별한 힘을 지니고 있어요. 빈센트블루의 음악이 앞으로도 많은 사람들에게 따뜻한 위로가 되기를 기대해 봅니다.</p><p>Future Steps</p><p>The musical world that Vincent Blue will show in the future is expected to be even more boundless. His music has a special power that goes beyond simple listening pleasure, conveying comfort and empathy in life. I hope that Vincent Blue's music will continue to be a warm comfort to many people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] ﻿Cinderella at 2AM OST Part 1</div>
+<div><a href='https://tidal.com/album/382685609' target='_blank'>https://tidal.com/album/382685609</a></div>
+<div>Vincent Blue - Sweet Drama</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382685609' target='_blank'><img src='https://resources.tidal.com/images/aeca3893/a0f7/45dc/90ee/25c6fe686c00/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Rain On Me</div>
+<div><a href='https://tidal.com/album/377983106' target='_blank'>https://tidal.com/album/377983106</a></div>
+<div>Vincent Blue - Rain On Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/377983106' target='_blank'><img src='https://resources.tidal.com/images/2004c35a/630b/4c85/b49a/d5aaa0a5b350/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Honesty (Pink Sweat$ Cover)</div>
+<div><a href='https://tidal.com/album/352491777' target='_blank'>https://tidal.com/album/352491777</a></div>
+<div>Vincent Blue - Honesty (Pink Sweat$ Cover)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352491777' target='_blank'><img src='https://resources.tidal.com/images/f17d2e98/6a96/496b/b7e1/fd23f3229fd4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Family by Choice (Original Television Soundtrack) Pt. 5</div>
+<div><a href='https://tidal.com/album/397675015' target='_blank'>https://tidal.com/album/397675015</a></div>
+<div>Vincent Blue - Wondering About Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397675015' target='_blank'><img src='https://resources.tidal.com/images/85e6301b/b7d0/4be8/beb8/cc8f48f7acf5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] PERFECT MARRIAGE REVENGE, Pt. 3 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/327449960' target='_blank'>https://tidal.com/album/327449960</a></div>
+<div>Vincent Blue - Smile For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/327449960' target='_blank'><img src='https://resources.tidal.com/images/790ebe2e/122b/4db7/8574/f973328f06d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Be With Me</div>
+<div><a href='https://tidal.com/album/324370313' target='_blank'>https://tidal.com/album/324370313</a></div>
+<div>Vincent Blue - Be With Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/324370313' target='_blank'><img src='https://resources.tidal.com/images/1b9c6b1e/8bb9/425c/85f1/96b73613cc51/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Battle for Happiness, Pt. 5 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346838064' target='_blank'>https://tidal.com/album/346838064</a></div>
+<div>Vincent Blue - Blue</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346838064' target='_blank'><img src='https://resources.tidal.com/images/0dc24e5b/6cb2/4746/bc55/003ba1ecf052/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 100 Reasons</div>
+<div><a href='https://tidal.com/album/333421310' target='_blank'>https://tidal.com/album/333421310</a></div>
+<div>Vincent Blue - 100 Reasons</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/333421310' target='_blank'><img src='https://resources.tidal.com/images/58fde359/38ba/45a3/bd7e/c26ed9b2dd81/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Take it To the Grave</div>
+<div><a href='https://tidal.com/album/237353966' target='_blank'>https://tidal.com/album/237353966</a></div>
+<div>Vincent Blue - Take it To the Grave</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237353966' target='_blank'><img src='https://resources.tidal.com/images/24773a56/6e29/42ae/943e/46e27efb7a4e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] So What</div>
+<div><a href='https://tidal.com/album/225330137' target='_blank'>https://tidal.com/album/225330137</a></div>
+<div>Vincent Blue - So What</div>
+<div>Vincent Blue - So What (Band Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/225330137' target='_blank'><img src='https://resources.tidal.com/images/a7a2a5d7/8dd9/47c1/a049/b49b403d1828/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Sliding</div>
+<div><a href='https://tidal.com/album/306183330' target='_blank'>https://tidal.com/album/306183330</a></div>
+<div>Vincent Blue - Sliding (feat. Kassy)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306183330' target='_blank'><img src='https://resources.tidal.com/images/1f37c567/cef2/474b/924c/c40695256377/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Heaven</div>
+<div><a href='https://tidal.com/album/268038367' target='_blank'>https://tidal.com/album/268038367</a></div>
+<div>Vincent Blue - Heaven</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/268038367' target='_blank'><img src='https://resources.tidal.com/images/110d3ac7/3153/4ef4/a689/17b024c8e3fb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Happy New Year</div>
+<div><a href='https://tidal.com/album/214054357' target='_blank'>https://tidal.com/album/214054357</a></div>
+<div>Vincent Blue - Happy New Year</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/214054357' target='_blank'><img src='https://resources.tidal.com/images/097b2c4f/0683/4d48/b73e/d0aadd775dce/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] It's Snowing</div>
+<div><a href='https://tidal.com/album/211327657' target='_blank'>https://tidal.com/album/211327657</a></div>
+<div>Vincent Blue - It's Snowing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/211327657' target='_blank'><img src='https://resources.tidal.com/images/a9558a26/51ba/4363/8c85/8faec844b6f0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Graffiti</div>
+<div><a href='https://tidal.com/album/135629901' target='_blank'>https://tidal.com/album/135629901</a></div>
+<div>Vincent Blue - Dream</div>
+<div>Vincent Blue - J</div>
+<div>Vincent Blue, Verbal Jint - LTNS (feat. Verbal Jint)</div>
+<div>Vincent Blue - Came from you</div>
+<div>Vincent Blue - J (Korean Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/135629901' target='_blank'><img src='https://resources.tidal.com/images/5e7f5444/c2b2/465c/9822/1b882ee50f7c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Ynos</div>
+<div><a href='https://tidal.com/album/455143538' target='_blank'>https://tidal.com/album/455143538</a></div>
+<div>Vincent Blue - Ynos (Original mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/455143538' target='_blank'><img src='https://resources.tidal.com/images/b5a91309/c66d/4fb9/827c/1e123bc3cf54/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Stupid</div>
+<div><a href='https://tidal.com/album/113000456' target='_blank'>https://tidal.com/album/113000456</a></div>
+<div>Vincent Blue - Stupid</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/113000456' target='_blank'><img src='https://resources.tidal.com/images/7048739a/6ef4/47d8/aecc/0ad5a703bf53/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] It's Raining</div>
+<div><a href='https://tidal.com/album/106318205' target='_blank'>https://tidal.com/album/106318205</a></div>
+<div>Vincent Blue - It's Raining</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/106318205' target='_blank'><img src='https://resources.tidal.com/images/ce813363/40a2/4a3b/b7fc/a3a69c0dc42f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] Dingo X Yang Da Il & Vincent Blue</div>
+<div><a href='https://tidal.com/album/268851279' target='_blank'>https://tidal.com/album/268851279</a></div>
+<div>Yang Da Il, Vincent Blue - With me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/268851279' target='_blank'><img src='https://resources.tidal.com/images/208c9132/5149/4ef0/bb13/d03986acd717/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] M.y.b.</div>
+<div><a href='https://tidal.com/album/455143446' target='_blank'>https://tidal.com/album/455143446</a></div>
+<div>Vincent Blue - M.y.b. (Original mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/455143446' target='_blank'><img src='https://resources.tidal.com/images/90493034/d745/4560/a06c/c3d3f36c1d69/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 역도요정 김복주 (Original Television Soundtrack, Pt. 2)</div>
+<div><a href='https://tidal.com/album/344536558' target='_blank'>https://tidal.com/album/344536558</a></div>
+<div>Vincent Blue - 앞으로</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344536558' target='_blank'><img src='https://resources.tidal.com/images/e955615e/7335/4251/b362/d13b02045a52/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] She Was Pretty (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/237805094' target='_blank'>https://tidal.com/album/237805094</a></div>
+<div>Vincent Blue - THUMPING</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237805094' target='_blank'><img src='https://resources.tidal.com/images/af7a8a68/779e/4943/a8ee/135a7750a11a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/2_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ2) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/빈센트블루 (Vincent Blue)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
