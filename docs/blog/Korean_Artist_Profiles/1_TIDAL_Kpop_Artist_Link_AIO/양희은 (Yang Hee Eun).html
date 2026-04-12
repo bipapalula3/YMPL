@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 양희은 ( Tidal Yang Hee Eun )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 양희은 ( Tidal Yang Hee Eun )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/3a92e3db/71f9/4af8/9ede/7761b1297531/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/153	36834' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 양희은</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>시대의 아픔을 어루만지는 목소리, ‘아름다운 것들’ 속 희망과 ‘서울로 가는 길’의 애환을 노래하는 영원한 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Yang Hee Eun</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A voice that caresses the pain of an era, an eternal diva singing hope in 'Beautiful Things' and the sorrow of 'The Road to Seoul'.</div><p>양희은은 대한민국 포크 음악의 상징과도 같은 존재입니다. 깊은 울림을 주는 목소리와 진솔한 가사로 오랜 시간 대중의 사랑을 받아왔어요. 그녀의 노래는 단순한 음악을 넘어, 시대의 아픔을 함께하고 희망을 전달하는 메시지입니다.</p><p>Yang Hee Eun is an iconic figure in Korean folk music. She has been loved by the public for a long time with her deeply resonant voice and sincere lyrics. Her songs are more than just music; they carry messages of sharing the pain of the era and conveying hope.</p><p>✧</p><p>시대의 아픔을 노래하다</p><p>양희은은 1970년대 데뷔하여 암울했던 시대 상황 속에서 저항 정신을 담은 노래들을 불렀습니다. 그녀의 음악은 단순한 유행가를 넘어 사회적 메시지를 전달하는 중요한 역할을 했어요. 당시 젊은이들에게 큰 위로와 용기를 주며 시대의 아이콘으로 자리매김했습니다.</p><p>Singing the Pain of an Era</p><p>Yang Hee Eun debuted in the 1970s and sang songs containing the spirit of resistance in the dark era. Her music played an important role in delivering social messages beyond simple popular songs. She became an icon of the time, giving great comfort and courage to the young people of that era.</p><p>✧</p><p>진솔한 음악 세계</p><p>양희은의 음악은 포크를 기반으로 다양한 장르를 넘나들며 폭넓은 음악적 스펙트럼을 보여줍니다. 그녀의 노래는 삶의 희로애락을 진솔하게 담아내 듣는 이들에게 깊은 공감대를 형성해요. 특히 그녀의 가사는 시적인 아름다움과 철학적인 깊이를 동시에 지니고 있다는 평가를 받습니다.</p><p>Sincere Musical World</p><p>Yang Hee Eun's music is based on folk but crosses various genres, showing a wide musical spectrum. Her songs sincerely capture the joys and sorrows of life, forming a deep connection with listeners. In particular, her lyrics are praised for having both poetic beauty and philosophical depth.</p><p>✧</p><p>꾸준한 활동과 영향력</p><p>양희은은 데뷔 이후 꾸준히 음악 활동을 이어오며 수많은 후배 뮤지션들에게 영감을 주고 있습니다. 그녀의 음악은 세대를 초월하여 사랑받으며, 다양한 방송 및 공연 활동을 통해 대중과의 소통을 이어가고 있어요. 또한, 사회 문제에 대한 꾸준한 관심과 참여는 많은 이들에게 귀감이 되고 있습니다.</p><p>Continuous Activity and Influence</p><p>Yang Hee Eun has been continuously active in music since her debut, inspiring many junior musicians. Her music is loved across generations, and she continues to communicate with the public through various broadcasting and performance activities. In addition, her continued interest and participation in social issues is an example to many.</p><p>✧</p><p>시대를 초월하는 가치</p><p>양희은의 음악은 단순한 유행을 넘어 시대를 초월하는 가치를 지니고 있습니다. 그녀의 노래는 앞으로도 많은 사람들에게 위로와 용기를 주며 오랫동안 기억될 거예요. 진심을 담은 목소리와 메시지는 시간이 흘러도 변치 않는 감동을 선사할 것입니다.</p><p>Timeless Value</p><p>Yang Hee Eun's music transcends mere trends and possesses timeless value. Her songs will continue to comfort and encourage many people and will be remembered for a long time. Her sincere voice and message will provide unchanging emotions even as time passes.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] 나의 꽃, 너의 빛 Bloom - SM STATION</div>
+<div><a href='https://tidal.com/album/296708889' target='_blank'>https://tidal.com/album/296708889</a></div>
+<div>Yang Hee Eun, CHEN - 나의 꽃, 너의 빛 Bloom</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296708889' target='_blank'><img src='https://resources.tidal.com/images/764f9f8b/f4bf/4f4b/8d64/5d1510f2b32b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] [THE SEASONS Vol. 1] _Choi Jung Hoon's Midnight Park_ ReːWake x Yang Hee Eun</div>
+<div><a href='https://tidal.com/album/298351504' target='_blank'>https://tidal.com/album/298351504</a></div>
+<div>Yang Hee Eun - Longing for a friend</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/298351504' target='_blank'><img src='https://resources.tidal.com/images/382cfbc5/c8dd/4be6/a371/59bd0e249177/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] _The Unexpected Meeting_ #9. YOU</div>
+<div><a href='https://tidal.com/album/216119073' target='_blank'>https://tidal.com/album/216119073</a></div>
+<div>Yang Hee Eun, Sung Si Kyung - YOU</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216119073' target='_blank'><img src='https://resources.tidal.com/images/2abc0b89/909c/4356/ae51/347f689f0bf7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 고운노래모음 2집</div>
+<div><a href='https://tidal.com/album/189188534' target='_blank'>https://tidal.com/album/189188534</a></div>
+<div>Yang Hee Eun - 아름다운 것들</div>
+<div>Yang Hee Eun - 그 사이</div>
+<div>Yang Hee Eun - 서울로 가는 길</div>
+<div>Yang Hee Eun - 인형</div>
+<div>Yang Hee Eun - 저 부는 바람</div>
+<div>Yang Hee Eun - 새벽길</div>
+<div>Yang Hee Eun - 백구</div>
+<div>Yang Hee Eun - 등대지기</div>
+<div>Yang Hee Eun - 아무도 아무데도</div>
+<div>Yang Hee Eun - 작은 연못</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188534' target='_blank'><img src='https://resources.tidal.com/images/3a92e3db/71f9/4af8/9ede/7761b1297531/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Memories</div>
+<div><a href='https://tidal.com/album/189173454' target='_blank'>https://tidal.com/album/189173454</a></div>
+<div>Yang Hee Eun - 아침이슬</div>
+<div>Yang Hee Eun - 이루어질 수 없는 사랑</div>
+<div>Yang Hee Eun - 내님의 사랑은</div>
+<div>Yang Hee Eun - 하얀 목련</div>
+<div>Yang Hee Eun - 들길 따라서</div>
+<div>Yang Hee Eun - 한사람</div>
+<div>Yang Hee Eun - 세노야 세노야</div>
+<div>Yang Hee Eun - 한계령</div>
+<div>Yang Hee Eun - 사랑의 기쁨</div>
+<div>Yang Hee Eun - 일곱 송이 수선화</div>
+<div>Yang Hee Eun - 아름다운 것들</div>
+<div>Yang Hee Eun - 행복의 나라로</div>
+<div>Yang Hee Eun - 네 꿈을 펼쳐라</div>
+<div>Yang Hee Eun - 천리길</div>
+<div>Yang Hee Eun - 거치른 들판에 푸르른 솔잎처럼</div>
+<div>Yang Hee Eun - 우리가 오를 봉우리는</div>
+<div>Yang Hee Eun - 빗속을 둘이서</div>
+<div>Yang Hee Eun - 사랑이야</div>
+<div>Yang Hee Eun - 나뭇잎 사이로</div>
+<div>Yang Hee Eun - 작은 배</div>
+<div>Yang Hee Eun - 고무줄 놀이</div>
+<div>Yang Hee Eun - 백구</div>
+<div>Yang Hee Eun - 내가 전에 말했잖아요</div>
+<div>Yang Hee Eun - 찔레꽃 피면</div>
+<div>Yang Hee Eun - 두리번거린다</div>
+<div>Yang Hee Eun - 옛날에 옛날에</div>
+<div>Yang Hee Eun - 늙은 군인의 노래</div>
+<div>Yang Hee Eun - 서울로 가는 길</div>
+<div>Yang Hee Eun - 부모</div>
+<div>Yang Hee Eun - 이름모를 소녀</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189173454' target='_blank'><img src='https://resources.tidal.com/images/34f8bda8/26d6/448b/b4f0/efafef4f6538/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1991] 양희은 1991</div>
+<div><a href='https://tidal.com/album/258310762' target='_blank'>https://tidal.com/album/258310762</a></div>
+<div>Yang Hee Eun - 그해 겨울</div>
+<div>Yang Hee Eun - 그리운 친구에게</div>
+<div>Yang Hee Eun - 가을 아침</div>
+<div>Yang Hee Eun - 저 바람은 어디서-</div>
+<div>Yang Hee Eun - 11월 그 저녁에</div>
+<div>Yang Hee Eun - 나무와 아이</div>
+<div>Yang Hee Eun - 사랑 그 쓸쓸함에 대하여</div>
+<div>Yang Hee Eun - 잠들기 바로 전</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/258310762' target='_blank'><img src='https://resources.tidal.com/images/d1d6d867/631f/4838/af27/4df28867a110/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1990] 양희은 골든 베스트 18</div>
+<div><a href='https://tidal.com/album/189117237' target='_blank'>https://tidal.com/album/189117237</a></div>
+<div>Yang Hee Eun - 아침 이슬</div>
+<div>Yang Hee Eun - 사랑이야</div>
+<div>Yang Hee Eun - 서울로 가는 길</div>
+<div>Yang Hee Eun - 하늘</div>
+<div>Yang Hee Eun - 그리운 내님네는</div>
+<div>Yang Hee Eun - 나홀로</div>
+<div>Yang Hee Eun - 빗속을 둘이서</div>
+<div>Yang Hee Eun - 세월이 가면</div>
+<div>Yang Hee Eun - 보고싶은 마음</div>
+<div>Yang Hee Eun - 내곁에 와요</div>
+<div>Yang Hee Eun - 한계령</div>
+<div>Yang Hee Eun - 나뭇잎 사이로</div>
+<div>Yang Hee Eun - 작은 배</div>
+<div>Yang Hee Eun - 두리번 거린다</div>
+<div>Yang Hee Eun - 인형</div>
+<div>Yang Hee Eun - 숲</div>
+<div>Yang Hee Eun - 저 높은 곳을 향하여</div>
+<div>Yang Hee Eun - 나도 몰래</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189117237' target='_blank'><img src='https://resources.tidal.com/images/216af0fb/d750/46e1/9f3d/273546c1dc8e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1987] 이문세, 양희은 골든</div>
+<div><a href='https://tidal.com/album/325601174' target='_blank'>https://tidal.com/album/325601174</a></div>
+<div>Lee Moon Sae - 난 아직 모르잖아요</div>
+<div>Lee Moon Sae - 붉은 노을</div>
+<div>Go Eun Hui - 이별 이야기</div>
+<div>Lee Moon Sae - 사랑이 지나가면</div>
+<div>Lee Moon Sae - 내 오랜 그녀</div>
+<div>Lee Moon Sae - 이 밤에</div>
+<div>Lee Moon Sae - 굿바이</div>
+<div>Yang Hee Eun - 거치른 들판에 푸르른 솔잎처럼</div>
+<div>Yang Hee Eun - 아침이슬</div>
+<div>Yang Hee Eun - 아름다운 것들</div>
+<div>Yang Hee Eun - 한사람</div>
+<div>Yang Hee Eun - 나뭇잎 사이로</div>
+<div>Yang Hee Eun - 백구</div>
+<div>Yang Hee Eun - 잘가오</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/325601174' target='_blank'><img src='https://resources.tidal.com/images/20ddf3b4/514e/4894/b2c4/ca82cb67adb4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1987] 양희은이 처음부른 노래들</div>
+<div><a href='https://tidal.com/album/334729606' target='_blank'>https://tidal.com/album/334729606</a></div>
+<div>Yang Hee Eun - 아침이슬</div>
+<div>Yang Hee Eun - 이루어질 수 없는 사랑</div>
+<div>Yang Hee Eun - 세노야 세노야</div>
+<div>Yang Hee Eun - 일곱송이 수선화</div>
+<div>Yang Hee Eun - 그 사이</div>
+<div>Yang Hee Eun - 서울로 가는길</div>
+<div>Yang Hee Eun - 행복의 나라</div>
+<div>Yang Hee Eun - 빈자리</div>
+<div>Yang Hee Eun - 한계령</div>
+<div>Yang Hee Eun - 사랑이야</div>
+<div>Yang Hee Eun - 백구</div>
+<div>Yang Hee Eun - 찔레꽃 피면</div>
+<div>Yang Hee Eun - 인형</div>
+<div>Yang Hee Eun - 아름다운 것들</div>
+<div>Yang Hee Eun - 하늘</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334729606' target='_blank'><img src='https://resources.tidal.com/images/4a819775/5ccb/43ce/a3db/8756d8ccef26/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1987] 양희은 골든 15</div>
+<div><a href='https://tidal.com/album/189099119' target='_blank'>https://tidal.com/album/189099119</a></div>
+<div>Yang Hee Eun - 이루어질수 없는 사랑</div>
+<div>Yang Hee Eun - 하얀 목련</div>
+<div>Yang Hee Eun - 내님의 사랑은</div>
+<div>Yang Hee Eun - 한사람</div>
+<div>Yang Hee Eun - 네 꿈을 펼쳐라</div>
+<div>Yang Hee Eun - 세노야 세노야</div>
+<div>Yang Hee Eun - 아름다운 것들</div>
+<div>Yang Hee Eun - 들길따라서</div>
+<div>Yang Hee Eun - 찔레꽃피면</div>
+<div>Yang Hee Eun - 이름모를 소녀</div>
+<div>Yang Hee Eun - 잊으리라</div>
+<div>Yang Hee Eun - 행복의 나라로</div>
+<div>Yang Hee Eun - 내가 전에 말했잖아요</div>
+<div>Yang Hee Eun - 부모</div>
+<div>Yang Hee Eun - 모두 모여 노래를</div>
+<div>Yang Hee Eun - 너와 내가</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189099119' target='_blank'><img src='https://resources.tidal.com/images/14b08f46/79c3/415b/a021/3ef7d26f53ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1985] 양희은 거치른 들판에 푸르른 솔잎처럼 _ 천리길</div>
+<div><a href='https://tidal.com/album/291651096' target='_blank'>https://tidal.com/album/291651096</a></div>
+<div>Yang Hee Eun - 거치른 들판에 푸르른 솔잎처럼</div>
+<div>Yang Hee Eun - 밤뱃놀이</div>
+<div>Yang Hee Eun - 고무줄 놀이</div>
+<div>Yang Hee Eun - 주여! 이제는 그곳에</div>
+<div>Yang Hee Eun - 알캉달캉</div>
+<div>Yang Hee Eun - 시장에 가면</div>
+<div>Yang Hee Eun - 천리길</div>
+<div>Yang Hee Eun - 두리번거린다</div>
+<div>Yang Hee Eun - 식구생각</div>
+<div>Yang Hee Eun - 저높은 곳을 향하여</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/291651096' target='_blank'><img src='https://resources.tidal.com/images/b8c68588/02dc/47ff/9db5/cfc355cfbe04/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1976] 양희은의 새노래 모음 (찔레 꽃피면)</div>
+<div><a href='https://tidal.com/album/189188677' target='_blank'>https://tidal.com/album/189188677</a></div>
+<div>Yang Hee Eun - 찔레꽃 피면</div>
+<div>Yang Hee Eun - 나뭇잎 사이로</div>
+<div>Yang Hee Eun - 옛날에 옛날에</div>
+<div>Yang Hee Eun - 고개 숙인 사람</div>
+<div>Yang Hee Eun - 우리가 오를 봉우리는</div>
+<div>Yang Hee Eun - 한계령</div>
+<div>Yang Hee Eun - 정원</div>
+<div>Yang Hee Eun - 당신의 빈 가슴에</div>
+<div>Yang Hee Eun - 갈 수 없는 나라</div>
+<div>Yang Hee Eun - 잘 가오</div>
+<div>Yang Hee Eun - 어허야 둥기둥기 (건전가요)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188677' target='_blank'><img src='https://resources.tidal.com/images/c167153d/8f77/4190/a98d/522025bf7969/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1976] 양희은 캐롤</div>
+<div><a href='https://tidal.com/album/189111754' target='_blank'>https://tidal.com/album/189111754</a></div>
+<div>Yang Hee Eun - 고요한 밤 거룩한 밤</div>
+<div>Yang Hee Eun - 루돌프 사슴코</div>
+<div>Yang Hee Eun - 오 거룩한 밤</div>
+<div>Yang Hee Eun - 실버벨 종소리</div>
+<div>Yang Hee Eun - 새하얀 크리스마스</div>
+<div>Yang Hee Eun - 오 작은 마을 벨레헴</div>
+<div>Yang Hee Eun - 축하하오! 기쁜 크리스마스</div>
+<div>Yang Hee Eun - 저 높은 곳을 향하여</div>
+<div>Yang Hee Eun - 여러해 동안 주 떠나</div>
+<div>Yang Hee Eun - 참 아름다워라</div>
+<div>Yang Hee Eun - 주여 이제는 그곳에</div>
+<div>Yang Hee Eun - 세상모두 사랑없이</div>
+<div>Yang Hee Eun - 진실하신 친구</div>
+<div>Yang Hee Eun - 주기도문</div>
+<div>Yang Hee Eun - 작별</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189111754' target='_blank'><img src='https://resources.tidal.com/images/e23e5be0/23ba/42af/8ed5/4f1d966b08f4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1976] 양희은 찬송가</div>
+<div><a href='https://tidal.com/album/189183692' target='_blank'>https://tidal.com/album/189183692</a></div>
+<div>Yang Hee Eun - 주 하나님 지으신 모든 세계</div>
+<div>Yang Hee Eun - 아 하나님의 은혜로</div>
+<div>Yang Hee Eun - 주 예수보다 더 귀한 것은 없네</div>
+<div>Yang Hee Eun - 내 주 되신 주를 참 사랑하고</div>
+<div>Yang Hee Eun - 나 가난 복지귀한 성에 들어가려고</div>
+<div>Yang Hee Eun - 나 어느날 꿈속을 헤매며</div>
+<div>Yang Hee Eun - 웬 말인가 날 위하여</div>
+<div>Yang Hee Eun - 만세반석 열리니</div>
+<div>Yang Hee Eun - 내 주여 뜻대로 행하시옵소서</div>
+<div>Yang Hee Eun - 고통의 멍에 벗으려고</div>
+<div>Yang Hee Eun - 나 어느곳에 있든지</div>
+<div>Yang Hee Eun - 그 크신 하나님의 사랑</div>
+<div>Yang Hee Eun - 주안에 있는 나에게</div>
+<div>Yang Hee Eun - 그 친구 내가 알기전</div>
+<div>Yang Hee Eun - 나의 사랑하는 책</div>
+<div>Yang Hee Eun - 내 평생가는길 순탄하여</div>
+<div>Yang Hee Eun - 한 귀한 친구 내게 있으니</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189183692' target='_blank'><img src='https://resources.tidal.com/images/15b36f25/32d5/450d/9ded/bfb3a82b05b3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1976] 아침 이슬</div>
+<div><a href='https://tidal.com/album/189098983' target='_blank'>https://tidal.com/album/189098983</a></div>
+<div>Yang Hee Eun - 아침 이슬</div>
+<div>Yang Hee Eun - 거치른 들판에 푸르른 솔잎처럼</div>
+<div>Yang Hee Eun - 우리가 오를 봉우리는</div>
+<div>Yang Hee Eun - 오! 주여 이제는 그곳에</div>
+<div>Yang Hee Eun - 천릿길</div>
+<div>Yang Hee Eun - 그사이</div>
+<div>Yang Hee Eun - 서울로 가는 길</div>
+<div>Yang Hee Eun - 사랑이야</div>
+<div>Yang Hee Eun - 가난한 마음</div>
+<div>Yang Hee Eun - 바다</div>
+<div>Yang Hee Eun - 찔레꽃 피면</div>
+<div>Yang Hee Eun - 백구</div>
+<div>Yang Hee Eun - 일곱송이 수선화</div>
+<div>Yang Hee Eun - 세노야 세노야</div>
+<div>Yang Hee Eun - 사랑의 기쁨</div>
+<div>Yang Hee Eun - 잘가오</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189098983' target='_blank'><img src='https://resources.tidal.com/images/e8a0a1d1/f19c/46f3/8d6c/fd4b6ee02dc1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1971] 고운노래 모음</div>
+<div><a href='https://tidal.com/album/291651359' target='_blank'>https://tidal.com/album/291651359</a></div>
+<div>Yang Hee Eun - 아침이슬</div>
+<div>Yang Hee Eun - 엄마! 엄마!</div>
+<div>Yang Hee Eun - 세노야 세노야</div>
+<div>Yang Hee Eun - 그날</div>
+<div>Yang Hee Eun - 사랑의 기쁨</div>
+<div>Yang Hee Eun - 펍</div>
+<div>Yang Hee Eun - 일곱송이의 수선화</div>
+<div>Yang Hee Eun - 잊지못할 추억</div>
+<div>Yang Hee Eun - 구름 사랑 그리고 인생</div>
+<div>Yang Hee Eun - All my trials lord</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/291651359' target='_blank'><img src='https://resources.tidal.com/images/e683f725/1bd7/43aa/85d2/fecbfe80e716/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/1_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ1) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/양희은 (Yang Hee Eun)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
