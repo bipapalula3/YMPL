@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 유승준 ( Tidal Steve Yoo )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 유승준 ( Tidal Steve Yoo )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/0253faf3/24f0/4676/b385/578550950dc6/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5687828' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/9314850' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 유승준</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>열정적인 무대와 감미로운 발라드의 조화, ‘사랑해 누나’의 설렘과 ‘나 나 나’의 에너지로 기억되는 청춘의 아이콘</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Steve Yoo</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A blend of passionate performances and sweet ballads, a youth icon remembered for the excitement of 'I Love You, Sis' and the energy of 'Na Na Na'.</div><p>한 시대를 풍미했던 댄스 가수로, 강렬한 퍼포먼스와 매력적인 보이스로 많은 사랑을 받았던 유승준. 그는 다양한 장르를 소화하며 자신만의 음악적 색깔을 구축해 나갔습니다. 지금도 그의 음악은 여전히 많은 이들에게 추억과 향수를 불러일으키고 있습니다.</p><p>Steve Yoo, a dance singer who dominated an era, was loved for his intense performances and charming voice. He digested various genres and established his own musical color. Even now, his music still evokes memories and nostalgia for many.</p><p>✧</p><p>강렬한 데뷔와 음악적 성장</p><p>유승준은 90년대 후반 화려하게 데뷔하여 단숨에 스타덤에 올랐습니다. 그는 댄스곡뿐만 아니라 발라드에서도 뛰어난 가창력을 선보이며 폭넓은 팬층을 확보했습니다. 그의 음악은 당시 젊은 세대의 문화적 감성을 대변하며 큰 인기를 끌었습니다.</p><p>Intense Debut and Musical Growth</p><p>Steve Yoo made a splendid debut in the late 90s and quickly rose to stardom. He showcased outstanding singing skills not only in dance songs but also in ballads, securing a wide fan base. His music represented the cultural sensibilities of the young generation at the time and gained great popularity.</p><p>✧</p><p>무대 위 카리스마와 다양한 시도</p><p>무대 위에서 그는 독보적인 카리스마를 발휘하며 관객들을 사로잡았습니다. 그는 끊임없이 새로운 음악적 시도를 감행하며 자신의 음악적 스펙트럼을 넓혔습니다. 다양한 장르를 넘나드는 그의 음악적 열정은 많은 이들에게 영감을 주었습니다.</p><p>Charisma on Stage and Diverse Attempts</p><p>On stage, he captivated audiences with his unique charisma. He constantly attempted new musical experiments, expanding his musical spectrum. His musical passion, crossing various genres, inspired many.</p><p>✧</p><p>기억 속에 남은 주요 활동</p><p>유승준은 수많은 히트곡을 발표하며 가요계에 굵직한 족적을 남겼습니다. 그의 음악은 각종 차트에서 상위권을 휩쓸었으며, 그는 각종 시상식에서 수상하며 그 인기를 입증했습니다. 또한, 그는 다양한 방송 프로그램에 출연하며 대중과의 소통을 이어갔습니다.</p><p>Major Activities Remembered</p><p>Steve Yoo left a significant mark on the music industry by releasing numerous hit songs. His music swept the top ranks of various charts, and he proved his popularity by winning awards at various award ceremonies. In addition, he continued to communicate with the public by appearing on various broadcasting programs.</p><p>✧</p><p>음악이 남긴 의미와 여운</p><p>유승준의 음악은 단순한 유행을 넘어, 한 시대의 문화적 상징으로 자리 잡았습니다. 그의 음악은 여전히 많은 이들에게 청춘의 추억과 열정을 떠올리게 합니다. 시간이 흘러도 그의 음악은 변치 않는 감동과 울림을 선사하며, 우리 마음속에 깊이 남아있습니다.</p><p>The Meaning and Lingering Effect of Music</p><p>Steve Yoo's music has become a cultural symbol of an era, going beyond simple trends. His music still reminds many of the memories and passions of youth. Even as time passes, his music provides unchanging emotion and resonance, remaining deeply in our hearts.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 유승준의 라이브 콘서트</div>
+<div><a href='https://tidal.com/album/364986146' target='_blank'>https://tidal.com/album/364986146</a></div>
+<div>Steve Yoo - 내가 기다린 사랑</div>
+<div>Steve Yoo - 침흘리는 여자</div>
+<div>Steve Yoo - 마지막 여행</div>
+<div>Steve Yoo - 사랑해 누나</div>
+<div>Steve Yoo - WEST SIDE</div>
+<div>Steve Yoo - OH HAPPY DAY</div>
+<div>Steve Yoo - 나 나 나</div>
+<div>Steve Yoo - 혼자남은 나</div>
+<div>Steve Yoo - 오락가락</div>
+<div>Steve Yoo - 연습</div>
+<div>Steve Yoo - 악마</div>
+<div>Steve Yoo - 가위</div>
+<div>Steve Yoo - 약속</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/364986146' target='_blank'><img src='https://resources.tidal.com/images/237b2ab0/cd66/4b4d/9bd4/e9635f98df83/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Nothing lasts forever</div>
+<div><a href='https://tidal.com/album/360055013' target='_blank'>https://tidal.com/album/360055013</a></div>
+<div>유승준 - 너의 존재만으로</div>
+<div>유승준 - 지나가다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/360055013' target='_blank'><img src='https://resources.tidal.com/images/37105081/875a/4c40/b97a/4253ac0f010c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Feelings</div>
+<div><a href='https://tidal.com/album/318766159' target='_blank'>https://tidal.com/album/318766159</a></div>
+<div>Steve Yoo - Feelings</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318766159' target='_blank'><img src='https://resources.tidal.com/images/7a434a52/8255/4326/a232/06f20c2aea91/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 플로리다반점 OST Part 1</div>
+<div><a href='https://tidal.com/album/302759313' target='_blank'>https://tidal.com/album/302759313</a></div>
+<div>유환, 차우민, 문강혁, 최재훈, 유승준 - Florida</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302759313' target='_blank'><img src='https://resources.tidal.com/images/88eebd90/1a7f/4a0c/b2ac/928f49a9e782/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 우연히 그리고 함께</div>
+<div><a href='https://tidal.com/album/356242216' target='_blank'>https://tidal.com/album/356242216</a></div>
+<div>유승준 - 우연히 그리고 함께</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/356242216' target='_blank'><img src='https://resources.tidal.com/images/ecfed22a/0b80/47ab/984d/fa3776fdb70d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 반포대교</div>
+<div><a href='https://tidal.com/album/356241968' target='_blank'>https://tidal.com/album/356241968</a></div>
+<div>유승준 - 반포대교</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/356241968' target='_blank'><img src='https://resources.tidal.com/images/1cb84361/535f/4012/a25f/2b50dabeb460/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Another Day</div>
+<div><a href='https://tidal.com/album/102680074' target='_blank'>https://tidal.com/album/102680074</a></div>
+<div>Steve Yoo - Another Day</div>
+<div>Steve Yoo - People don't know</div>
+<div>Steve Yoo - Rat-a-tat-(tat)</div>
+<div>Steve Yoo - Califonia</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102680074' target='_blank'><img src='https://resources.tidal.com/images/976a658e/52fe/4c73/b81d/0cb717c43657/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 멍냥꽁냥 - 하나의 별 (Original Web Drama 보니하니 Soundtrack, Part 2)</div>
+<div><a href='https://tidal.com/album/261857085' target='_blank'>https://tidal.com/album/261857085</a></div>
+<div>박서아, 유승준 - 멍냥꽁냥 - 하나의 별 (Original Web Drama 보니하니 Soundtrack,</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/261857085' target='_blank'><img src='https://resources.tidal.com/images/c0f99553/7b1c/4774/9e51/22e6bf441cd0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 멍냥꽁냥 (Original Web Drama 보니하니 Soundtrack, Part 1)</div>
+<div><a href='https://tidal.com/album/261857368' target='_blank'>https://tidal.com/album/261857368</a></div>
+<div>유승준 - trust me (Feat. chan chan)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/261857368' target='_blank'><img src='https://resources.tidal.com/images/25332700/ced8/4054/a433/c59d01ab476f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1998] 1998 V2_ For Sale</div>
+<div><a href='https://tidal.com/album/225097781' target='_blank'>https://tidal.com/album/225097781</a></div>
+<div>유승준 - 내가 기다린 사랑</div>
+<div>유승준 - 악마- Change</div>
+<div>유승준 - 용서</div>
+<div>유승준 - 나나나</div>
+<div>유승준 - 오락가락</div>
+<div>유승준 - 아킬레스건</div>
+<div>유승준 - Exercise#1 - 연습</div>
+<div>유승준 - 니가 뭘 알아</div>
+<div>유승준 - 떠나가버려</div>
+<div>유승준 - Oh! Happy Day</div>
+<div>유승준 - 마녀사냥</div>
+<div>유승준 - Promise- 약속</div>
+<div>유승준 - 나나나 (Club Mix Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/225097781' target='_blank'><img src='https://resources.tidal.com/images/2fa4881b/9259/4096/b93f/1476a1a7560c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] West Side</div>
+<div><a href='https://tidal.com/album/224369855' target='_blank'>https://tidal.com/album/224369855</a></div>
+<div>Steve Yoo - Intro</div>
+<div>Steve Yoo - 마지막 여행</div>
+<div>Steve Yoo - West Side</div>
+<div>Steve Yoo - 가위</div>
+<div>Steve Yoo - 혼자남은 나</div>
+<div>Steve Yoo - 사랑해 누나</div>
+<div>Steve Yoo - 침흘리는 여자</div>
+<div>Steve Yoo - Hunter</div>
+<div>Steve Yoo - 공전 그리고 일식</div>
+<div>Steve Yoo - Aha</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/224369855' target='_blank'><img src='https://resources.tidal.com/images/0253faf3/24f0/4676/b385/578550950dc6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/유승준 (Steve Yoo)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
