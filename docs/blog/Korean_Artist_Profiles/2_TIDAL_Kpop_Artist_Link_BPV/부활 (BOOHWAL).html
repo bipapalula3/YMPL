@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 부활 ( Tidal BOOHWAL )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 부활 ( Tidal BOOHWAL )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/1ed3ea83/a8ea/4b44/a9af/558bc1f37e38/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5688117' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 부활</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>영원한 멜로디, 시대를 초월하는 감성… 'Never Ending Story'처럼 꺼지지 않는 불꽃을 노래하는 밴드</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> BOOHWAL</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Timeless Melodies, Transcending Emotions… A band that sings of an undying flame, just like 'Never Ending Story'.</div><p>대한민국 록의 자존심, 부활을 소개합니다. 깊은 감성과 폭발적인 사운드로 오랜 시간 동안 많은 사랑을 받아온 전설적인 밴드인데요. 끊임없이 변화하면서도 부활만의 색깔을 잃지 않는 음악 여정을 함께 떠나볼까요?</p><p>Let me introduce Boohwal, the pride of Korean rock. They are a legendary band that has been loved for a long time with their deep emotions and explosive sounds. Shall we embark on a musical journey that constantly changes but never loses Boohwal's unique color?</p><p>✧</p><p>그룹 탄생</p><p>부활은 1985년, 기타리스트 김태원을 중심으로 결성되었어요. 한국 록 음악의 새로운 지평을 열겠다는 열정으로 시작된 밴드인데요. 수많은 멤버 교체 속에서도 김태원은 굳건히 자리를 지키며 부활의 음악적 정체성을 이끌어왔습니다.</p><p>The Birth of the Group</p><p>Boohwal was formed in 1985, centered around guitarist Kim Tae-won. The band started with the passion to open a new horizon in Korean rock music. Despite numerous member changes, Kim Tae-won has firmly held his position, leading Boohwal's musical identity.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>부활의 음악은 서정적인 멜로디와 강렬한 록 사운드의 조화가 특징이에요. 다양한 보컬리스트를 거치며 각기 다른 매력을 선보였는데요. 'Never Ending Story', 'Lonely Night' 등 수많은 히트곡은 시대를 초월하여 여전히 많은 사람들에게 사랑받고 있습니다.</p><p>Music and Performance</p><p>Boohwal's music is characterized by a harmony of lyrical melodies and intense rock sounds. They have showcased different charms through various vocalists. Numerous hit songs such as 'Never Ending Story' and 'Lonely Night' transcend time and are still loved by many.</p><p>✧</p><p>주요 활동</p><p>부활은 꾸준한 앨범 발매와 콘서트 활동을 통해 팬들과 소통해왔어요. 드라마 OST 참여, 다양한 아티스트와의 협업 등 폭넓은 활동을 펼치고 있는데요. 음악 외적으로도 멤버들의 개성 넘치는 예능 출연으로 대중적인 인기를 얻고 있습니다.</p><p>Main Activities</p><p>Boohwal has been communicating with fans through continuous album releases and concert activities. They are engaged in a wide range of activities, including participating in drama OSTs and collaborating with various artists. Outside of music, the members have gained popular appeal through their unique appearances on variety shows.</p><p>✧</p><p>미래/의미</p><p>부활은 앞으로도 끊임없이 새로운 음악적 시도를 이어갈 것으로 기대됩니다. 그들의 음악은 단순한 록 밴드를 넘어, 한국 대중음악사에 깊은 발자취를 남겼는데요. 앞으로도 오랫동안 우리 곁에서 영원한 멜로디를 선사해줄 거예요.</p><p>Future/Meaning</p><p>Boohwal is expected to continue to make new musical attempts in the future. Their music goes beyond being a simple rock band, leaving a deep mark on the history of Korean popular music. They will continue to be with us for a long time, presenting eternal melodies.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Breath〈Sanullim's 50th anniversary collaboration album〉</div>
+<div><a href='https://tidal.com/album/362197905' target='_blank'>https://tidal.com/album/362197905</a></div>
+<div>BOOHWAL - Breath</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/362197905' target='_blank'><img src='https://resources.tidal.com/images/d56af39a/cd1b/494f/b7d9/7a9df99f3637/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Miracle</div>
+<div><a href='https://tidal.com/album/346798260' target='_blank'>https://tidal.com/album/346798260</a></div>
+<div>BOOHWAL - Miracle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346798260' target='_blank'><img src='https://resources.tidal.com/images/062630dc/11ff/4208/a053/0636c82eb81d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Flame Band Part.9</div>
+<div><a href='https://tidal.com/album/320020759' target='_blank'>https://tidal.com/album/320020759</a></div>
+<div>BOOHWAL - Forever love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/320020759' target='_blank'><img src='https://resources.tidal.com/images/3bccaa48/6916/48b6/b5e2/f697a5ed3762/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Flame Band Part.8</div>
+<div><a href='https://tidal.com/album/318409732' target='_blank'>https://tidal.com/album/318409732</a></div>
+<div>BOOHWAL, In Kwon Jeon - Beauty</div>
+<div>BOOHWAL, In Kwon Jeon - In the distance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318409732' target='_blank'><img src='https://resources.tidal.com/images/4e5a19e2/4c69/4af7/80fe/641f1e4c7ee8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Flame Band Part.7</div>
+<div><a href='https://tidal.com/album/317319511' target='_blank'>https://tidal.com/album/317319511</a></div>
+<div>BOOHWAL - The more you love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/317319511' target='_blank'><img src='https://resources.tidal.com/images/c7a9ecc4/15dc/408d/9a4d/5b9f0eb07900/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Flame Band Part.5</div>
+<div><a href='https://tidal.com/album/313771578' target='_blank'>https://tidal.com/album/313771578</a></div>
+<div>BOOHWAL - It's Only My World</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/313771578' target='_blank'><img src='https://resources.tidal.com/images/b21cf655/cf0e/482b/81ac/90ed85881b29/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Flame Band Part.2 - Ranking Match</div>
+<div><a href='https://tidal.com/album/310003265' target='_blank'>https://tidal.com/album/310003265</a></div>
+<div>BOOHWAL - Never Ending Story</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/310003265' target='_blank'><img src='https://resources.tidal.com/images/cac5b4f2/a6de/4b9e/8c1b/0973117e53b0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Flame Band Part.10</div>
+<div><a href='https://tidal.com/album/321274032' target='_blank'>https://tidal.com/album/321274032</a></div>
+<div>BOOHWAL - Flashback 3</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/321274032' target='_blank'><img src='https://resources.tidal.com/images/6c892935/0027/415b/a535/5e776d0267be/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] The Moment</div>
+<div><a href='https://tidal.com/album/346336362' target='_blank'>https://tidal.com/album/346336362</a></div>
+<div>BOOHWAL - The Moment</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346336362' target='_blank'><img src='https://resources.tidal.com/images/2bb40b14/cbce/4ea6/b4fa/ca1c224a9743/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] PICTURESQUE</div>
+<div><a href='https://tidal.com/album/346143105' target='_blank'>https://tidal.com/album/346143105</a></div>
+<div>BOOHWAL - PICTURESQUE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346143105' target='_blank'><img src='https://resources.tidal.com/images/b8dc9180/1b6c/4414/92e9/2cc0e5ed1d63/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Flower</div>
+<div><a href='https://tidal.com/album/345896637' target='_blank'>https://tidal.com/album/345896637</a></div>
+<div>BOOHWAL - Flower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/345896637' target='_blank'><img src='https://resources.tidal.com/images/7b625b32/b8d5/4dc0/8b2b/3771d42479e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 사랑하고 있다</div>
+<div><a href='https://tidal.com/album/344439919' target='_blank'>https://tidal.com/album/344439919</a></div>
+<div>BOOHWAL - 사랑하고 있다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344439919' target='_blank'><img src='https://resources.tidal.com/images/4b45fe39/901e/467f/beed/55a18055ab21/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] To Be One</div>
+<div><a href='https://tidal.com/album/344453466' target='_blank'>https://tidal.com/album/344453466</a></div>
+<div>BOOHWAL - To Be One (feat. An Se Kwon)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344453466' target='_blank'><img src='https://resources.tidal.com/images/21d6fad9/779e/4b03/a081/ce3391e6aa3d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 사랑엔 조건이 없습니다(법무부 `Good-Bye 학교폭력` 캠페인송)</div>
+<div><a href='https://tidal.com/album/261133732' target='_blank'>https://tidal.com/album/261133732</a></div>
+<div>BOOHWAL,Girl's Day,배기성,Baek Chung Kang,손진영,이성욱,이태권,정단,최재훈,호 PD,로다,서재혁,김관진,류재형,청소년합창단 음악친구들 - 사랑엔 조건이 없습니다(법무부 `Good-Bye 학교폭력` 캠페인송)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/261133732' target='_blank'><img src='https://resources.tidal.com/images/e38d7434/d9af/429d/956b/6a2cdad58070/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Purple Wave</div>
+<div><a href='https://tidal.com/album/344382024' target='_blank'>https://tidal.com/album/344382024</a></div>
+<div>BOOHWAL - Return To Innocence</div>
+<div>BOOHWAL - 부활</div>
+<div>BOOHWAL - 돈키호테</div>
+<div>BOOHWAL - Head Up</div>
+<div>BOOHWAL - Pluto</div>
+<div>BOOHWAL - 1982</div>
+<div>BOOHWAL - 차갑다</div>
+<div>BOOHWAL - Beard of God</div>
+<div>BOOHWAL - Color of Merging</div>
+<div>BOOHWAL - 사랑이라는 이름을 더하여</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344382024' target='_blank'><img src='https://resources.tidal.com/images/53201842/5d1b/46e5/823a/e31038cfe420/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 불의 발견</div>
+<div><a href='https://tidal.com/album/344342856' target='_blank'>https://tidal.com/album/344342856</a></div>
+<div>BOOHWAL - Lonely Night</div>
+<div>BOOHWAL - 슬픈 바램</div>
+<div>BOOHWAL - 21C 불경기</div>
+<div>BOOHWAL - 작은 너에게</div>
+<div>BOOHWAL - 마술사</div>
+<div>BOOHWAL - 또다른 미로</div>
+<div>BOOHWAL - 믿음</div>
+<div>BOOHWAL - 회상</div>
+<div>BOOHWAL - 불의 발견 I</div>
+<div>BOOHWAL - 불의 발견 II</div>
+<div>BOOHWAL - 불의 발견 III</div>
+<div>BOOHWAL - 비밀 (Special Bonus Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344342856' target='_blank'><img src='https://resources.tidal.com/images/d2e12d6c/15c5/4970/9db4/38f315cf41a6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 부활 Collaboration Project + (Plus)</div>
+<div><a href='https://tidal.com/album/344306060' target='_blank'>https://tidal.com/album/344306060</a></div>
+<div>BOOHWAL - 비밀 (feat. 박완규)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344306060' target='_blank'><img src='https://resources.tidal.com/images/976e6340/5a43/46ba/bb81/b8a608481cd1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 누구나 사랑을 한다 (With 정단, 박완규, 이성욱)</div>
+<div><a href='https://tidal.com/album/344340521' target='_blank'>https://tidal.com/album/344340521</a></div>
+<div>BOOHWAL - 누구나 사랑을 한다 (With 정단, 박완규, 이성욱)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344340521' target='_blank'><img src='https://resources.tidal.com/images/724c26d9/001b/4eea/acc9/0d6929c4118a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2011] Vision In Mind</div>
+<div><a href='https://tidal.com/album/216006331' target='_blank'>https://tidal.com/album/216006331</a></div>
+<div>BOOHWAL - Vision In Mind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216006331' target='_blank'><img src='https://resources.tidal.com/images/1bf22f3f/a1fe/49c6/afee/dd9d4e51ad9e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Color</div>
+<div><a href='https://tidal.com/album/344346338' target='_blank'>https://tidal.com/album/344346338</a></div>
+<div>BOOHWAL - 안녕</div>
+<div>BOOHWAL - 대신할 수 없는 아픔</div>
+<div>BOOHWAL - I Can Dream Come True</div>
+<div>BOOHWAL - 동강</div>
+<div>BOOHWAL - 리플리히</div>
+<div>BOOHWAL - 개미</div>
+<div>BOOHWAL - Color</div>
+<div>BOOHWAL - In Your Eyes</div>
+<div>BOOHWAL - Second Dimension</div>
+<div>BOOHWAL - 슬픈 사슴</div>
+<div>BOOHWAL - 희야</div>
+<div>BOOHWAL - 소나기</div>
+<div>BOOHWAL - 사랑할수록</div>
+<div>BOOHWAL - Lonely Night</div>
+<div>BOOHWAL - 슬픈 바램</div>
+<div>BOOHWAL - 가능성</div>
+<div>BOOHWAL - 너에게로</div>
+<div>BOOHWAL - 이상시선 I</div>
+<div>BOOHWAL - 이상시선 II</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344346338' target='_blank'><img src='https://resources.tidal.com/images/b5927ab1/1449/4c15/bcda/8326af8dad94/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Collaboration Project +3</div>
+<div><a href='https://tidal.com/album/344345752' target='_blank'>https://tidal.com/album/344345752</a></div>
+<div>BOOHWAL - 이별에서 영원으로 (with 윤시내)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344345752' target='_blank'><img src='https://resources.tidal.com/images/9c2822f2/73ce/4ce7/9605/99ff75dd0f90/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 사랑해서 사랑해서</div>
+<div><a href='https://tidal.com/album/344313382' target='_blank'>https://tidal.com/album/344313382</a></div>
+<div>BOOHWAL - 사랑해서 사랑해서</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344313382' target='_blank'><img src='https://resources.tidal.com/images/21534a63/1c54/4274/b23f/f0890011e3a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 25th Anniversary_ Retrospect II</div>
+<div><a href='https://tidal.com/album/344309469' target='_blank'>https://tidal.com/album/344309469</a></div>
+<div>BOOHWAL - 동화</div>
+<div>BOOHWAL - 사랑이란건</div>
+<div>BOOHWAL - Someday</div>
+<div>BOOHWAL - 너는 하얗다</div>
+<div>BOOHWAL - 백야</div>
+<div>BOOHWAL - 사랑할수록</div>
+<div>BOOHWAL - 흑백영화 II</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344309469' target='_blank'><img src='https://resources.tidal.com/images/c5a047ee/7ccd/4109/b647/222ba3b9d1b4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 행복합니다 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/155401901' target='_blank'>https://tidal.com/album/155401901</a></div>
+<div>BOOHWAL - 행복합니다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/155401901' target='_blank'><img src='https://resources.tidal.com/images/4afff4f1/66e2/4546/934b/ed2be048de8f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] 11집 사랑</div>
+<div><a href='https://tidal.com/album/102168570' target='_blank'>https://tidal.com/album/102168570</a></div>
+<div>BOOHWAL - 친구야 너는 아니</div>
+<div>BOOHWAL - 시간 2</div>
+<div>BOOHWAL - 사랑</div>
+<div>BOOHWAL - Close Your Eyes</div>
+<div>BOOHWAL - 1971 여름</div>
+<div>BOOHWAL - A Side Effect</div>
+<div>BOOHWAL - If</div>
+<div>BOOHWAL - 순수</div>
+<div>BOOHWAL - 나비</div>
+<div>BOOHWAL - 사랑 Piano Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102168570' target='_blank'><img src='https://resources.tidal.com/images/faed2b38/c456/4577/b495/d55ed3635dfb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Rock Will Never Die</div>
+<div><a href='https://tidal.com/album/346286817' target='_blank'>https://tidal.com/album/346286817</a></div>
+<div>BOOHWAL - 희야</div>
+<div>BOOHWAL - 비와 당신의 이야기</div>
+<div>BOOHWAL - 너 뿐이야</div>
+<div>BOOHWAL - 길 가의 연인들</div>
+<div>BOOHWAL - 인형의 부활</div>
+<div>BOOHWAL - 슬픈 환상</div>
+<div>BOOHWAL - 사랑 아닌 친구</div>
+<div>BOOHWAL - 사랑의 흔적</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346286817' target='_blank'><img src='https://resources.tidal.com/images/640406aa/ece7/48e2/8065/9230c01ff755/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] 새벽</div>
+<div><a href='https://tidal.com/album/248755177' target='_blank'>https://tidal.com/album/248755177</a></div>
+<div>BOOHWAL - 새벽</div>
+<div>BOOHWAL - 섬</div>
+<div>BOOHWAL - 눈먼 아이가 본 풍경</div>
+<div>BOOHWAL - 회상 II</div>
+<div>BOOHWAL - 네번째 회상</div>
+<div>BOOHWAL - Never Ending Story</div>
+<div>BOOHWAL - R.E.M</div>
+<div>BOOHWAL - 시계의 반대 방향</div>
+<div>BOOHWAL - 비와 당신의 이야기</div>
+<div>BOOHWAL - 천국에서 II</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/248755177' target='_blank'><img src='https://resources.tidal.com/images/1ed3ea83/a8ea/4b44/a9af/558bc1f37e38/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1998] Ideal Sight</div>
+<div><a href='https://tidal.com/album/308999989' target='_blank'>https://tidal.com/album/308999989</a></div>
+<div>BOOHWAL - Possibility</div>
+<div>BOOHWAL - To You</div>
+<div>BOOHWAL - Street (幅)</div>
+<div>BOOHWAL - Change</div>
+<div>BOOHWAL - Sleepless</div>
+<div>BOOHWAL - Recall II</div>
+<div>BOOHWAL - Your silence</div>
+<div>BOOHWAL - Strange Gaze I</div>
+<div>BOOHWAL - Strange Gaze II</div>
+<div>BOOHWAL - Strange Gaze III</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308999989' target='_blank'><img src='https://resources.tidal.com/images/8fbf5d7a/98f9/4f1c/8a2e/5c4033fa011b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] 이솝의 붓</div>
+<div><a href='https://tidal.com/album/215690991' target='_blank'>https://tidal.com/album/215690991</a></div>
+<div>BOOHWAL - 사랑할수록</div>
+<div>BOOHWAL - 기억이 부르는 날에</div>
+<div>BOOHWAL - 비와 당신의 이야기</div>
+<div>BOOHWAL - 슬픈 사슴</div>
+<div>BOOHWAL - 회상 1</div>
+<div>BOOHWAL - 마지막 콘서트</div>
+<div>BOOHWAL - 소나기</div>
+<div>BOOHWAL - 시 쓰는 시인의 시</div>
+<div>BOOHWAL - 드나드는 그리움</div>
+<div>BOOHWAL - 희야</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215690991' target='_blank'><img src='https://resources.tidal.com/images/4eeaba3a/6445/41e5/bcca/378cc0baa5ba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] 잡념에 관하여…</div>
+<div><a href='https://tidal.com/album/215648404' target='_blank'>https://tidal.com/album/215648404</a></div>
+<div>BOOHWAL - 기억이 부르는 날에</div>
+<div>BOOHWAL - 잡념에 관하여</div>
+<div>BOOHWAL - 드나드는 그리움</div>
+<div>BOOHWAL - 시 쓰는 시인의 시</div>
+<div>BOOHWAL - 시간의 칠</div>
+<div>BOOHWAL - 늘 너의 곁으로</div>
+<div>BOOHWAL - 다리를 걷는 여인</div>
+<div>BOOHWAL - 244! 저무는 날의 끝</div>
+<div>BOOHWAL - 이분 쉼표</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215648404' target='_blank'><img src='https://resources.tidal.com/images/8b90dd96/0be1/46d7/ab17/10cdb379f84a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] 이승철 & 부활 Joint Concert Part. 2</div>
+<div><a href='https://tidal.com/album/386967110' target='_blank'>https://tidal.com/album/386967110</a></div>
+<div>BOOHWAL - 천국에서</div>
+<div>BOOHWAL - 지나온 날들에게</div>
+<div>BOOHWAL - 소녀시대</div>
+<div>BOOHWAL - 희야</div>
+<div>BOOHWAL - 안녕이라고 말하지마</div>
+<div>BOOHWAL - 가까이 와 봐</div>
+<div>BOOHWAL - 그대가 나에게</div>
+<div>BOOHWAL - 발레리나 걸</div>
+<div>BOOHWAL - You'Re So Beautiful</div>
+<div>BOOHWAL - 방황</div>
+<div>BOOHWAL - 검은 고양이</div>
+<div>BOOHWAL - 마지막 콘서트</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/386967110' target='_blank'><img src='https://resources.tidal.com/images/ff47b4d2/78b2/4d66/9ca5/eaa52a3aa83d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] Boohwal & Lee Seung Chul Joint Concert Part. 1</div>
+<div><a href='https://tidal.com/album/386969759' target='_blank'>https://tidal.com/album/386969759</a></div>
+<div>BOOHWAL - 소나기</div>
+<div>BOOHWAL - 회상 Ⅱ</div>
+<div>BOOHWAL - 흑백영화</div>
+<div>BOOHWAL - Member 소개</div>
+<div>BOOHWAL - 기억상실</div>
+<div>BOOHWAL - 흐린비가 내리며는</div>
+<div>BOOHWAL - 사랑할수록</div>
+<div>BOOHWAL - 천국에서</div>
+<div>BOOHWAL - 지나온 날들에게</div>
+<div>BOOHWAL - 마지막 콘서트</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/386969759' target='_blank'><img src='https://resources.tidal.com/images/5e9efc11/7003/4e0f/9ff5/8b6d44a4cad9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1993] 기억상실</div>
+<div><a href='https://tidal.com/album/102480384' target='_blank'>https://tidal.com/album/102480384</a></div>
+<div>BOOHWAL - 소나기</div>
+<div>BOOHWAL - 흑백영화</div>
+<div>BOOHWAL - Loss Of Momory</div>
+<div>BOOHWAL - 사랑할수록</div>
+<div>BOOHWAL - 흐린 비가 내리며는</div>
+<div>BOOHWAL - 그리움 그리운 그림</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102480384' target='_blank'><img src='https://resources.tidal.com/images/2b2034b7/b66c/4365/80eb/4f9405b8d0dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1989] The Best Of Born Again</div>
+<div><a href='https://tidal.com/album/215649406' target='_blank'>https://tidal.com/album/215649406</a></div>
+<div>BOOHWAL - 희야</div>
+<div>BOOHWAL - 비와 당신의 이야기</div>
+<div>BOOHWAL - 너 뿐이야</div>
+<div>BOOHWAL - 인형의 부활</div>
+<div>BOOHWAL - 회상 1</div>
+<div>BOOHWAL - 회상 2</div>
+<div>BOOHWAL - 회상 3</div>
+<div>BOOHWAL - 천국에서</div>
+<div>BOOHWAL - 슬픈 사슴</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215649406' target='_blank'><img src='https://resources.tidal.com/images/62c21e9c/2ff4/4b74/9ab7/69719fc5bc9d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1987] Remember</div>
+<div><a href='https://tidal.com/album/346288520' target='_blank'>https://tidal.com/album/346288520</a></div>
+<div>BOOHWAL - 회상 Ⅰ</div>
+<div>BOOHWAL - 회상 Ⅱ</div>
+<div>BOOHWAL - 회상 Ⅲ</div>
+<div>BOOHWAL - 천국에서</div>
+<div>BOOHWAL - 슬픈 사슴</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346288520' target='_blank'><img src='https://resources.tidal.com/images/94e00b55/364b/43f8/b078/2d9390285e93/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/2_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ2) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/부활 (BOOHWAL)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
