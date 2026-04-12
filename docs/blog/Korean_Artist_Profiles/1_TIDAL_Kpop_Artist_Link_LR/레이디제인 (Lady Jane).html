@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 레이디제인 ( Tidal Lady Jane )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 레이디제인 ( Tidal Lady Jane )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/6c3f9b97/dbac/49a4/9a2c/f1dc150961fc/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/4279993' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 레이디제인</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>레이디제인 – 섬세한 감성으로 일상을 노래하는 이야기꾼, '이틀이면'의 아련함과 '토닥토닥'의 따뜻한 위로를 전하는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lady Jane</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Lady Jane – A storyteller singing about everyday life with delicate emotions, a singer-songwriter delivering the faint memories of '이틀이면' (In Two Days) and the warm comfort of '토닥토닥' (Pat Pat).</div><p>싱어송라이터 레이디제인은 솔직하고 섬세한 가사, 부드러운 음색으로 많은 사랑을 받고 있어요. 그녀의 음악은 일상 속의 소소한 감정들을 따뜻하게 어루만지며 듣는 이들에게 공감과 위로를 전해줍니다. 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여주는 아티스트랍니다.</p><p>Singer-songwriter Lady Jane is much loved for her honest and delicate lyrics, and her soft voice. Her music warmly embraces the small emotions of everyday life, conveying empathy and comfort to listeners. She is an artist who showcases a wide musical spectrum, encompassing various genres.</p><p>✧</p><p>다양한 음악적 시도</p><p>레이디제인은 힙합, 어쿠스틱, 발라드 등 다양한 장르를 넘나들며 자신만의 음악적 색깔을 구축해왔어요. 딘딘, 한해 등 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀왔으며, 늘 새로운 시도를 두려워하지 않는 모습을 보여줍니다. 그녀의 음악은 듣는 이들에게 다채로운 즐거움을 선사하죠.</p><p>Diverse Musical Attempts</p><p>Lady Jane has built her own musical style, crossing various genres such as hip-hop, acoustic, and ballad. She has expanded her musical spectrum through collaborations with various artists such as DinDin and Hanhae, and always shows a fearless attitude towards new attempts. Her music offers a diverse range of enjoyment to listeners.</p><p>✧</p><p>공감을 자아내는 가사</p><p>레이디제인의 음악은 솔직하고 현실적인 가사가 특징이에요. 이별의 아픔, 사랑의 설렘, 일상의 고민 등 누구나 공감할 수 있는 이야기를 그녀만의 감성으로 풀어냅니다. 그녀의 가사는 듣는 이들에게 깊은 공감과 위로를 선사하죠.</p><p>Lyrics That Evoke Empathy</p><p>Lady Jane's music is characterized by honest and realistic lyrics. She expresses stories that everyone can relate to, such as the pain of separation, the excitement of love, and the worries of everyday life, with her own unique sensibility. Her lyrics offer listeners deep empathy and comfort.</p><p>✧</p><p>꾸준한 활동</p><p>레이디제인은 음악 활동뿐만 아니라 다양한 방송 프로그램에서도 활약하며 대중과의 소통을 이어가고 있어요. 라디오 DJ, 예능 프로그램 출연 등 다방면에서 재능을 발휘하며 그녀만의 매력을 보여주고 있습니다. 그녀의 꾸준한 활동은 앞으로 더욱 기대하게 만들죠.</p><p>Continuous Activity</p><p>Lady Jane continues to communicate with the public not only through her music activities but also through various broadcasting programs. She showcases her talents in various fields, such as radio DJing and appearing on entertainment programs, showing her unique charm. Her continuous activity makes us look forward to the future.</p><p>✧</p><p>앞으로의 음악 여정</p><p>레이디제인은 앞으로도 진솔한 음악과 다양한 활동을 통해 대중과 더욱 가까워질 것으로 기대됩니다. 그녀만의 감성으로 풀어낼 이야기가 더욱 많아질 것이며, 그녀의 음악은 더욱 깊은 울림을 선사할 것입니다. 그녀의 음악 여정을 응원하며 앞으로의 활동을 기대해 봅니다.</p><p>Future Musical Journey</p><p>Lady Jane is expected to become even closer to the public through her genuine music and various activities in the future. She will have more stories to tell with her own sensibility, and her music will offer even deeper resonance. We support her musical journey and look forward to her future activities.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2016] 이틀이면</div>
+<div><a href='https://tidal.com/album/269764617' target='_blank'>https://tidal.com/album/269764617</a></div>
+<div>Lady Jane, DinDin - 이별주의 (feat. 딘딘)</div>
+<div>Lady Jane - 이틀이면</div>
+<div>Lady Jane - 토닥토닥</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269764617' target='_blank'><img src='https://resources.tidal.com/images/911f0b9e/2f47/4b49/9b01/f532f61d09ab/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 이별주의</div>
+<div><a href='https://tidal.com/album/269764624' target='_blank'>https://tidal.com/album/269764624</a></div>
+<div>Lady Jane, DinDin - 이별주의 (feat. 딘딘)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269764624' target='_blank'><img src='https://resources.tidal.com/images/048dd54b/8fb7/46b0/8fc7/fdc5b7bad2ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 스무살이니</div>
+<div><a href='https://tidal.com/album/269764614' target='_blank'>https://tidal.com/album/269764614</a></div>
+<div>Lady Jane, Hanhae - 스무살이니 (feat. 한해)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269764614' target='_blank'><img src='https://resources.tidal.com/images/b4c126cc/17e6/4c6d/9fe0/5918636c4801/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Hello</div>
+<div><a href='https://tidal.com/album/269764578' target='_blank'>https://tidal.com/album/269764578</a></div>
+<div>Lady Jane - Hello</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269764578' target='_blank'><img src='https://resources.tidal.com/images/8bc75794/56c8/4e69/8e86/b9d23f07d3c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Diary</div>
+<div><a href='https://tidal.com/album/189134362' target='_blank'>https://tidal.com/album/189134362</a></div>
+<div>Lady Jane - Diary</div>
+<div>Lady Jane - Bambi</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189134362' target='_blank'><img src='https://resources.tidal.com/images/956756db/3355/480f/a534/409ff8e0dbeb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Dandy Girl</div>
+<div><a href='https://tidal.com/album/269764581' target='_blank'>https://tidal.com/album/269764581</a></div>
+<div>Lady Jane - Dandy Girl</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269764581' target='_blank'><img src='https://resources.tidal.com/images/90936117/e62b/47cd/937b/4c3adc384cbb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 여섯시 반</div>
+<div><a href='https://tidal.com/album/269759277' target='_blank'>https://tidal.com/album/269759277</a></div>
+<div>Simon Dominic, Lady Jane - 여섯시 반</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269759277' target='_blank'><img src='https://resources.tidal.com/images/dd0f3c23/7e96/4083/ac68/92f0f1b21f17/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 친한 사이</div>
+<div><a href='https://tidal.com/album/269759280' target='_blank'>https://tidal.com/album/269759280</a></div>
+<div>Lady Jane - Go Away</div>
+<div>Lady Jane - 친한 사이</div>
+<div>Lady Jane - Life Is</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269759280' target='_blank'><img src='https://resources.tidal.com/images/ad47fc30/2397/4fa5/8086/30e0b7fe5501/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Love Treatment (feat. Untouchable)</div>
+<div><a href='https://tidal.com/album/168695900' target='_blank'>https://tidal.com/album/168695900</a></div>
+<div>Lady Jane - Love Treatment (feat. Untouchable)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168695900' target='_blank'><img src='https://resources.tidal.com/images/ff06068c/193e/4e9b/a6d0/c9cd77ff104e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2011] Jane Another Jane</div>
+<div><a href='https://tidal.com/album/168695968' target='_blank'>https://tidal.com/album/168695968</a></div>
+<div>Lady Jane - 짝 (feat. Tony An)</div>
+<div>Lady Jane - Janie</div>
+<div>Lady Jane - Baby, Good Night</div>
+<div>Lady Jane - Love Treatment (feat. Untouchable)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168695968' target='_blank'><img src='https://resources.tidal.com/images/6c3f9b97/dbac/49a4/9a2c/f1dc150961fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 이별 뭐 별거야</div>
+<div><a href='https://tidal.com/album/269764587' target='_blank'>https://tidal.com/album/269764587</a></div>
+<div>Lady Jane, Verbal Jint - 매일 사랑해 (feat. 버벌진트)</div>
+<div>Lady Jane - 이별 뭐 별거야</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269764587' target='_blank'><img src='https://resources.tidal.com/images/02902299/c9f2/4ddb/8e87/293465a43d3a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/1_TIDAL_Kpop_Artist_Link_LR.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄹ1) TIDAL Kpop Artist Link (LR)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/레이디제인 (Lady Jane)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
