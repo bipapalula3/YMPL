@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+                    <html lang="ko">
+                    <head>
+                      <meta charset="UTF-8">
+                      <title>타이달 포지션 ( Tidal Position ) - Tracks</title>
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      <link href="https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap" rel="stylesheet">
+                      <style>
+                        body {
+                          background: #111;
+                          color: #e6eef6;
+                          font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+                          margin: 0;
+                          padding: 0;
+                        }
+
+                        /* 상단 여백 확보용 */
+                        .top-spacer {
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
+                        }
+
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
+                        }
+
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
+                        }
+
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
+                        }
+
+                        .track-content {
+                          padding: 4px;
+                        }
+
+                        pre {
+                          white-space: pre-wrap;
+                          font-size: 15px;
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
+                          font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+                          margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
+                        }
+                      </style>
+                    </head>
+                    <body>
+
+                      <div class="top-spacer"></div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./포지션 (Position)_trk.txt" download="포지션 (Position)_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%ED%8F%AC%EC%A7%80%EC%85%98%20%28%20Position%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="track-content">
+                        <pre>💿 <b><a href='https://tidal.com/album/340536861' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] 어디있을까</a></b>
+▶️Album link : <a href="https://tidal.com/album/340536861" target="_blank">https://tidal.com/album/340536861</a>
+
+Position - 어디있을까
+EN ⇄ KR : Where Could You Be
+ES     : Dónde estará
+ZH-CN  : 会在哪里呢
+
+
+💿 <b><a href='https://tidal.com/album/226142997' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] 온다</a></b>
+▶️Album link : <a href="https://tidal.com/album/226142997" target="_blank">https://tidal.com/album/226142997</a>
+
+포지션 - 온다
+EN ⇄ KR : Come
+ES     : Llega
+ZH-CN  : 到来
+
+
+💿 <b><a href='https://tidal.com/album/333041903' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2021] 내 말 들어봐</a></b>
+▶️Album link : <a href="https://tidal.com/album/333041903" target="_blank">https://tidal.com/album/333041903</a>
+
+Position - 내 말 들어봐
+EN ⇄ KR : Listen to Me
+ES     : Escucha lo que digo
+ZH-CN  : 听我说
+
+
+💿 <b><a href='https://tidal.com/album/163273113' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2013] 스캔들 (Original Television Soundtrack) Pt. 1</a></b>
+▶️Album link : <a href="https://tidal.com/album/163273113" target="_blank">https://tidal.com/album/163273113</a>
+
+더 포지션 - 내 생애 마지막 사랑
+EN ⇄ KR : The Last Love of My Life
+ES     : Mi Último Amor en la Vida
+ZH-CN  : 我生命中最后的爱
+
+
+💿 <b><a href='https://tidal.com/album/231132953' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2007] 애가 (愛歌)</a></b>
+▶️Album link : <a href="https://tidal.com/album/231132953" target="_blank">https://tidal.com/album/231132953</a>
+
+Position - 왠지
+EN ⇄ KR : Somehow
+ES     : No sé por qué
+ZH-CN  : 莫名其妙
+
+Position - Love Is Over (Feat. 조관우)
+EN ⇄ KR : 사랑은 끝났어 (Feat. 조관우)
+ES     : El amor se acabó
+ZH-CN  : 爱已逝
+
+Position - 혼자
+EN ⇄ KR : Alone
+ES     : Solo/a
+ZH-CN  : 独自
+
+Position - 하루
+EN ⇄ KR : A Day
+ES     : Un día
+ZH-CN  : 一天
+
+Position - 자꾸 눈에 밟혀서
+EN ⇄ KR : Keep Seeing You
+ES     : No dejo de verte/No puedo dejar de verte
+ZH-CN  : 总是在我眼前浮现
+
+Position - 이따위 사랑같은건
+EN ⇄ KR : This Kind Of Love
+ES     : Una cosa como este amor
+ZH-CN  : 这种爱情
+
+Position - 그림자
+EN ⇄ KR : Shadow
+ES     : Sombra
+ZH-CN  : 影子
+
+Position - 독백
+EN ⇄ KR : Soliloquy
+ES     : Monólogo
+ZH-CN  : 独白
+
+Position - 아찔했어요
+EN ⇄ KR : I Was Dizzy
+ES     : Fue vertiginoso/Me sentí mareado/a
+ZH-CN  : 晕眩
+
+Position - Lonely Day (Blue DayⅡ)
+EN ⇄ KR : 외로운 날 (Blue DayⅡ)
+ES     : Día Solitario
+ZH-CN  : 孤单的一天
+
+Position - 슬픈 허락
+EN ⇄ KR : Sorrowful Permission
+ES     : Un permiso triste/Un permiso doloroso
+ZH-CN  : 悲伤的允许
+
+Position - Friends (Feat. 이동건)
+EN ⇄ KR : 친구들 (Feat. 이동건)
+ES     : amigos
+ZH-CN  : 朋友
+
+Position - 너 없는 하루
+EN ⇄ KR : A Day Without You
+ES     : Un día sin ti
+ZH-CN  : 没有你的日子
+
+Position - 사랑 그 하나로
+EN ⇄ KR : With Just That One Love
+ES     : Sólo por ese amor
+ZH-CN  : 仅凭爱
+
+Position - 미루나무
+EN ⇄ KR : Poplar
+ES     : Álamo blanco
+ZH-CN  : 银白杨
+
+
+💿 <b><a href='https://tidal.com/album/305992346' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2005] Renaissance (Remake 2005)</a></b>
+▶️Album link : <a href="https://tidal.com/album/305992346" target="_blank">https://tidal.com/album/305992346</a>
+
+Position - 추억 (2005 Remake Version)
+EN ⇄ KR : Memories (2005 Remake Version)
+ES     : Recuerdos
+ZH-CN  : 回忆
+
+Position - 슬픔 속에 그댈 지워야만 해 (2005 Remake Version)
+EN ⇄ KR : I Have to Erase You in Sadness (2005 Remake Version)
+ES     : Debo Borrarte en la Tristeza
+ZH-CN  : 必须在悲伤中将你抹去
+
+Position - 가려진 시간 사이로 (2005 Remake Version)
+EN ⇄ KR : Between Veiled Times (2005 Remake Version)
+ES     : Entre el tiempo oculto
+ZH-CN  : 在被遮蔽的时间里
+
+Position - 그 아픔까지 사랑한거야 (2005 Remake Version)
+EN ⇄ KR : I Even Loved That Pain (2005 Remake Version)
+ES     : Amé incluso ese dolor
+ZH-CN  : 连那份痛苦都爱了
+
+Position - 가리워진 길 (2005 Remake Version)
+EN ⇄ KR : The Hidden Path (2005 Remake Version)
+ES     : Camino oculto
+ZH-CN  : 被遮蔽的路
+
+Position - 그대가 이 세상에 있는 것만으로 (2005 Remake Version)
+EN ⇄ KR : Just Your Existence in This World (2005 Remake Version)
+ES     : Solo con que estés en este mundo
+ZH-CN  : 仅凭你存在于这世上
+
+Position - 먼지가 되어 (2005 Remake Version)
+EN ⇄ KR : Turn Into Dust (2005 Remake Version)
+ES     : Convertido en polvo
+ZH-CN  : 化为尘埃
+
+Position - 아직도 그대는 내 사랑 (2005 Remake Version)
+EN ⇄ KR : You Are Still My Love (2005 Remake Version)
+ES     : Todavía eres mi amor
+ZH-CN  : 你仍然是我的爱
+
+Position - 그대가 나에게 (2005 Remake Version)
+EN ⇄ KR : You To Me (2005 Remake Version)
+ES     : Tú para mí
+ZH-CN  : 你对我
+
+Position - 사랑할수록 (2005 Remake Version)
+EN ⇄ KR : The More I Love (2005 Remake Version)
+ES     : Mientras más amo
+ZH-CN  : 爱越深
+
+Position - 기도 (2005 Remake Version)
+EN ⇄ KR : Prayer (2005 Remake Version)
+ES     : Oración
+ZH-CN  : 祈祷
+
+Position - 기억의 습작 (2005 Remake Version)
+EN ⇄ KR : Etudes of Memories (2005 Remake Version)
+ES     : Borrador de la memoria
+ZH-CN  : 记忆的素描
+
+
+💿 <b><a href='https://tidal.com/album/290622245' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2003] On The Road - New & Best</a></b>
+▶️Album link : <a href="https://tidal.com/album/290622245" target="_blank">https://tidal.com/album/290622245</a>
+
+Position - Goodbye
+EN ⇄ KR : 안녕
+ES     : Adiós
+ZH-CN  : 再见
+
+Position - 편지
+EN ⇄ KR : Letter
+ES     : Carta
+ZH-CN  : 信
+
+Position - Blue
+EN ⇄ KR : 파란색
+ES     : Azul
+ZH-CN  : 蓝色
+
+Position - Remember
+EN ⇄ KR : 기억하다
+ES     : Recuerda
+ZH-CN  : 记住
+
+Position - Too Far Away
+EN ⇄ KR : 너무 멀리 떨어져
+ES     : Demasiado Lejos
+ZH-CN  : 遥不可及
+
+Position - 재회
+EN ⇄ KR : Reunion
+ES     : Reencuentro
+ZH-CN  : 再会
+
+Position - Desperado
+EN ⇄ KR : 무법자
+ES     : EL DESESPERADO
+ZH-CN  : 亡命之徒
+
+Position - Summer Time
+EN ⇄ KR : 여름 시간
+ES     : Tiempo de verano
+ZH-CN  : 夏日时光
+
+Position - Extra
+EN ⇄ KR : 덤
+ES     : Adicional
+ZH-CN  : 额外
+
+Position - 후회 없는 사랑
+EN ⇄ KR : Regretless Love
+ES     : Un Amor Sin Arrepentimientos
+ZH-CN  : 无悔的爱
+
+Position - 마지막 약속
+EN ⇄ KR : The Final Vow
+ES     : Última Promesa
+ZH-CN  : 最后的约定
+
+Position - 신부에게
+EN ⇄ KR : To The Bride
+ES     : A la novia
+ZH-CN  : 致新娘
+
+Position - I Love You
+EN ⇄ KR : 사랑해
+ES     : Te Quiero
+ZH-CN  : 我爱你
+
+Position - 다시 네 곁에---
+EN ⇄ KR : Back To Your Side---
+ES     : De Nuevo A Tu Lado---
+ZH-CN  : 再次回到你身边
+
+Position - 두려운 이별
+EN ⇄ KR : Fearful Parting
+ES     : Una Despedida Temida
+ZH-CN  : 可怕的离别
+
+Position - 또 한번의 이별
+EN ⇄ KR : Another Farewell
+ES     : Otra Despedida Más
+ZH-CN  : 又一次离别
+
+Position - I Love U More
+EN ⇄ KR : 난 너를 더 사랑해
+ES     : Te Amo Más
+ZH-CN  : 我更爱你
+
+Position - 너에게
+EN ⇄ KR : To You
+ES     : A ti
+ZH-CN  : 给你
+
+Position - Blue Day
+EN ⇄ KR : 푸른 날
+ES     : Día triste
+ZH-CN  : 蓝色的一天
+
+Position - 애심 (愛心)
+EN ⇄ KR : Love Mind (愛心)
+ES     : Afecto
+ZH-CN  : 爱心
+
+Position - 가지마
+EN ⇄ KR : Don't Go
+ES     : No te vayas
+ZH-CN  : 不要走
+
+Position - 두려움 없는 사랑
+EN ⇄ KR : Love Without Fear
+ES     : Un Amor Sin Temor
+ZH-CN  : 无所畏惧的爱
+
+Position - Desperado II (하늘도 울린 사랑) (Music Video Version)
+EN ⇄ KR : 무법자 II (하늘도 울린 사랑) (Music Video Version)
+ES     : Desesperado II
+ZH-CN  : 亡命之徒II
+
+Position - 사랑해 사랑해
+EN ⇄ KR : I Love You, I Love You
+ES     : 사랑해 사랑해: Te Amo, Te Amo
+ZH-CN  : 我爱你 我爱你
+
+
+💿 <b><a href='https://tidal.com/album/102166797' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2000] I LOVE YOU</a></b>
+▶️Album link : <a href="https://tidal.com/album/102166797" target="_blank">https://tidal.com/album/102166797</a>
+
+Position - NARRATION+나의 길
+EN ⇄ KR : NARRATION+My Way
+ES     : NARRACIÓN+Mi Camino
+ZH-CN  : 旁白+我的路
+
+Position - 짧은 인연
+EN ⇄ KR : Fleeting Connection
+ES     : Un Breve Encuentro
+ZH-CN  : 短暂的因缘
+
+Position - 애수
+EN ⇄ KR : Sorrow
+ES     : Tristeza / Elegía
+ZH-CN  : 哀愁
+
+Position - I LOVE YOU
+EN ⇄ KR : 사랑해
+ES     : Te Quiero
+ZH-CN  : 我爱你
+
+Position - 추억의 이름으로---
+EN ⇄ KR : In the Name of Memories---
+ES     : En Nombre de los Recuerdos---
+ZH-CN  : 以回忆之名---
+
+Position - GOODBYE FOREVER
+EN ⇄ KR : 영원히 안녕
+ES     : ADIÓS PARA SIEMPRE
+ZH-CN  : 永远再见
+
+Position - 그해 겨울은---
+EN ⇄ KR : That Winter---
+ES     : Aquel Invierno---
+ZH-CN  : 那年冬天---
+
+Position - 재회
+EN ⇄ KR : Reunion
+ES     : Reencuentro
+ZH-CN  : 再会
+
+Position - 용서
+EN ⇄ KR : Forgiveness
+ES     : Perdón
+ZH-CN  : 饶恕
+
+Position - KEEP ON RUNNING
+EN ⇄ KR : 계속 달려
+ES     : SIGUE CORRIENDO
+ZH-CN  : 继续奔跑
+
+Position - NEVER
+EN ⇄ KR : 결코
+ES     : Byte
+ZH-CN  : 从未
+
+Position - WINTER LOVE
+EN ⇄ KR : 겨울 사랑
+ES     : Amor de Invierno
+ZH-CN  : 冬日恋情
+
+
+💿 <b><a href='https://tidal.com/album/102166859' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1999] Blue Day</a></b>
+▶️Album link : <a href="https://tidal.com/album/102166859" target="_blank">https://tidal.com/album/102166859</a>
+
+Position - Prologue
+EN ⇄ KR : 프롤로그
+ES     : translated title
+ZH-CN  : 序幕
+
+Position - Run
+EN ⇄ KR : 달려
+ES     : CORRE
+ZH-CN  : 跑
+
+Position - One Night
+EN ⇄ KR : 하룻밤
+ES     : Una noche
+ZH-CN  : One Night (一个夜晚)
+
+Position - Blue day
+EN ⇄ KR : 푸른 날
+ES     : Día triste
+ZH-CN  : 蓝色的一天
+
+Position - You
+EN ⇄ KR : 당신
+ES     : Tú
+ZH-CN  : 你
+
+Position - 변심
+EN ⇄ KR : Fickle Mind
+ES     : Inconstancia
+ZH-CN  : 变心
+
+Position - 너 떠난 후---
+EN ⇄ KR : After You Left---
+ES     : Después de que te fuiste
+ZH-CN  : 你离开后
+
+Position - 단 한번의 사랑
+EN ⇄ KR : A Single Love
+ES     : Un Solo Amor
+ZH-CN  : 仅此一次的爱
+
+Position - 오랜 연인과의 이별
+EN ⇄ KR : Farewell to a Long-Time Lover
+ES     : Una separación con una pareja de mucho tiempo
+ZH-CN  : 和老恋人的离别
+
+Position - Say Say Say
+EN ⇄ KR : 말해 말해 말해
+ES     : Di, di, di
+ZH-CN  : 说话 说话 说话
+
+Position - 사랑해 사랑해
+EN ⇄ KR : I Love You, I Love You
+ES     : 사랑해 사랑해: Te Amo, Te Amo
+ZH-CN  : 我爱你 我爱你
+
+Position - Piano No. 7
+EN ⇄ KR : 피아노 7번
+ES     : Piano n.º 7
+ZH-CN  : 钢琴曲 第7号
+
+
+💿 <b><a href='https://tidal.com/album/305380209' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1998] FEEL SO GOOD</a></b>
+▶️Album link : <a href="https://tidal.com/album/305380209" target="_blank">https://tidal.com/album/305380209</a>
+
+Position - Prologue
+EN ⇄ KR : 프롤로그
+ES     : translated title
+ZH-CN  : 序幕
+
+Position - The change
+EN ⇄ KR : 그 변화
+ES     : El cambio
+ZH-CN  : 改变
+
+Position - 두려움 없는 사랑
+EN ⇄ KR : Love Without Fear
+ES     : Un Amor Sin Temor
+ZH-CN  : 无所畏惧的爱
+
+Position - 편지
+EN ⇄ KR : Letter
+ES     : Carta
+ZH-CN  : 信
+
+Position - Paradise
+EN ⇄ KR : 낙원
+ES     : Paraíso
+ZH-CN  : 天堂
+
+Position - 애수
+EN ⇄ KR : Sorrow
+ES     : Tristeza / Elegía
+ZH-CN  : 哀愁
+
+Position - 이별유예
+EN ⇄ KR : Breakup Probation
+ES     : Aplazamiento de la despedida
+ZH-CN  : 离别预告
+
+Position - 허무한 날들
+EN ⇄ KR : Empty Days
+ES     : Días vanos
+ZH-CN  : 虚无的日子
+
+Position - 방황
+EN ⇄ KR : Wandering
+ES     : Deambular
+ZH-CN  : 彷徨
+
+Position - 기도
+EN ⇄ KR : Prayer
+ES     : Oración
+ZH-CN  : 祈祷
+
+Position - Africa
+EN ⇄ KR : 아프리카
+ES     : ÁFRICA
+ZH-CN  : 非洲
+
+Position - 날 위한 노래
+EN ⇄ KR : A Song for Myself
+ES     : Una canción para mí
+ZH-CN  : 为我而唱的歌
+
+Position - 상처
+EN ⇄ KR : Wound
+ES     : Herida
+ZH-CN  : 伤口
+
+Position - 꿈
+EN ⇄ KR : A Dream
+ES     : Sueño
+ZH-CN  : 梦
+
+Position - Friends
+EN ⇄ KR : 친구들
+ES     : amigos
+ZH-CN  : 朋友
+
+
+💿 <b><a href='https://tidal.com/album/102075397' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1997] WINE&TEARS</a></b>
+▶️Album link : <a href="https://tidal.com/album/102075397" target="_blank">https://tidal.com/album/102075397</a>
+
+Position - Rock your world
+EN ⇄ KR : 세상을 흔들어
+ES     : Sacude tu mundo
+ZH-CN  : 震撼你的世界
+
+Position - Remember
+EN ⇄ KR : 기억하다
+ES     : Recuerda
+ZH-CN  : 记住
+
+Position - 너없는 생일
+EN ⇄ KR : Birthday Without You
+ES     : Cumpleaños sin ti
+ZH-CN  : 没有你的生日
+
+Position - Memory
+EN ⇄ KR : 기억
+ES     : MEMORIA
+ZH-CN  : 回忆
+
+Position - 작은 상자
+EN ⇄ KR : A Small Box
+ES     : Una pequeña caja
+ZH-CN  : 小盒子
+
+Position - 마지막 부탁
+EN ⇄ KR : Last Wish
+ES     : Último favor
+ZH-CN  : 最后的请求
+
+Position - Summer time
+EN ⇄ KR : 여름 시간
+ES     : Tiempo de verano
+ZH-CN  : 夏日时光
+
+Position - 슬픈 약속
+EN ⇄ KR : Sorrowful Vow
+ES     : Una Promesa Triste
+ZH-CN  : 悲伤的约定
+
+Position - 예감했던 이별
+EN ⇄ KR : Foretold Separation
+ES     : Una despedida que ya presentía
+ZH-CN  : 预感到的离别
+
+Position - 혼자 남은 세상
+EN ⇄ KR : A World Left Alone
+ES     : Un mundo donde estoy solo
+ZH-CN  : 独自留下的世界
+
+Position - 어색한 만남
+EN ⇄ KR : Awkward Meeting
+ES     : Un encuentro incómodo
+ZH-CN  : 尴尬的相遇
+
+Position - 너에게 Rock Version
+EN ⇄ KR : Rock Version To You
+ES     : Rock Version para ti
+ZH-CN  : 给你的摇滚版
+
+Position - Happy birthday to you
+EN ⇄ KR : 생일 축하해
+ES     : Feliz Cumpleaños a Ti
+ZH-CN  : 祝你生日快乐
+
+
+💿 <b><a href='https://tidal.com/album/102166923' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1996] 후회없는 사랑</a></b>
+▶️Album link : <a href="https://tidal.com/album/102166923" target="_blank">https://tidal.com/album/102166923</a>
+
+Position - 결별
+EN ⇄ KR : Parting
+ES     : Ruptura
+ZH-CN  : 诀别
+
+Position - 후회 없는 사랑
+EN ⇄ KR : Regretless Love
+ES     : Un Amor Sin Arrepentimientos
+ZH-CN  : 无悔的爱
+
+Position - 남겨진 추억
+EN ⇄ KR : Leftover Memories
+ES     : Recuerdos olvidados
+ZH-CN  : 留下的回忆
+
+Position - 널 기억하며---
+EN ⇄ KR : Remembering You---
+ES     : Recordándote---
+ZH-CN  : 记得你---
+
+Position - 후회
+EN ⇄ KR : Regret
+ES     : Arrepentimiento / Remordimiento
+ZH-CN  : 后悔
+
+Position - 우린 그때 똑같은 바보였지
+EN ⇄ KR : We Were the Same Fools Back Then
+ES     : Éramos los mismos tontos entonces
+ZH-CN  : 那时我们都是一样的傻瓜
+
+Position - 너에게
+EN ⇄ KR : To You
+ES     : A ti
+ZH-CN  : 给你
+
+Position - 진실한 사랑
+EN ⇄ KR : True Love
+ES     : Amor verdadero
+ZH-CN  : 真挚的爱
+
+Position - 어린 시절 첫사랑처럼---
+EN ⇄ KR : Like First Love in Childhood---
+ES     : Como el primer amor de la infancia---
+ZH-CN  : 像小时候的初恋---
+
+Position - 너의 또다른 모습
+EN ⇄ KR : Another Side of You
+ES     : Tu otra cara
+ZH-CN  : 你的另一面
+
+Position - The messiah will come again
+EN ⇄ KR : 메시아는 다시 오실 것이다
+ES     : El mesías volverá
+ZH-CN  : 弥赛亚会再次降临</pre>
+                      </div>
+
+                      <div class="btn-container">
+                        <a href="javascript:void(0);" 
+                               style="
+                                   color:#fca5a5; 
+                                   font-size:1.0em;
+                                   line-height:1.6;
+                                   display:inline-block;
+                                   margin-bottom:4em;
+                                   cursor:pointer;
+                                   transition:color 0.2s ease, transform 0.1s ease;
+                                   text-decoration:none;
+                               "
+                               onmouseover="
+                                   this.style.color='#ef4444';
+                                   this.querySelector('.icon').style.transform='scale(1.2)';
+                               "
+                               onmouseout="
+                                   this.style.color='#fca5a5';
+                                   this.querySelector('.icon').style.transform='scale(1)';
+                               "
+                               onmousedown="
+                                   this.style.transform='scale(0.96)';
+                               "
+                               onmouseup="
+                                   this.style.transform='scale(1)';
+                               "
+                               onclick="
+                               if (window.ReactNativeWebView) {
+                                   window.ReactNativeWebView.postMessage('go_home');
+                               } else {
+                                   window.location.href='https://bipapalula3.github.io/';
+                               }">
+
+                            <span class="icon" style="
+                                display:inline-block; 
+                                transition:transform 0.2s ease;
+                            ">
+                            🏠
+                            </span>
+
+                            <span style="
+                                margin-left:6px;
+                                text-decoration:underline;
+                                text-decoration-thickness:1px;
+                                text-underline-offset: 4px;
+                            ">
+                            Search K-pop Artists, Albums & Playlists
+                            </span>
+
+                            </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
+
+                    </body>
+                    </html>
+                    
