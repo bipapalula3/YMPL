@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 라드뮤지엄 ( Tidal rad museum )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 라드뮤지엄 ( Tidal rad museum )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/67f08737/8865/4922/b65f/e22ec1754f94/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9219820' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 라드뮤지엄</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>라드뮤지엄 (Rad Museum) – 몽환적인 사운드scapes 속 섬세한 감정, '알코올'의 취기와 '5AM'의 새벽 감성을 담아내는 뮤지션</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> rad museum</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Rad Museum – A musician who captures delicate emotions in dreamy soundscapes, embodying the intoxication of 'Alcohol' and the dawn sensitivity of '5AM'.</div><p>라드뮤지엄은 독특한 색깔과 감각적인 음악으로 리스너들의 마음을 사로잡는 아티스트입니다. 그는 섬세한 감정 표현과 트렌디한 사운드를 결합하여 자신만의 음악 세계를 구축해 나가고 있어요. 몽환적인 분위기 속에서 진솔한 이야기를 풀어내는 그의 음악은 듣는 이로 하여금 깊은 공감을 불러일으킵니다.</p><p>Rad Museum is an artist who captivates listeners with his unique style and sensual music. He combines delicate emotional expression with trendy sounds to build his own musical world. His music, which tells honest stories in a dreamy atmosphere, evokes deep empathy from listeners.</p><p>✧</p><p>그룹 탄생</p><p>라드뮤지엄은 단순히 하나의 이름이 아닌, 음악적 실험과 자유로운 표현을 추구하는 프로젝트 그룹이라고 할 수 있습니다. 다양한 아티스트와의 협업을 통해 새로운 시너지를 창출하고, 끊임없이 변화하는 음악 트렌드에 맞춰 진화하는 모습을 보여주고 있어요. 특히 Kid Milli와의 협업은 그의 음악적 스펙트럼을 더욱 넓히는 데 중요한 역할을 했습니다.</p><p>Group Origin</p><p>Rad Museum can be seen as a project group that pursues musical experimentation and free expression, rather than just a single name. Through collaborations with various artists, he creates new synergies and evolves in line with constantly changing music trends. In particular, his collaboration with Kid Milli has played an important role in broadening his musical spectrum.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그의 음악은 몽환적인 신스 사운드와 감각적인 비트가 조화를 이루는 것이 특징입니다. 그는 단순히 듣기 좋은 음악을 넘어, 시각적인 요소까지 고려한 퍼포먼스를 선보이며 종합적인 예술 경험을 선사합니다. 그의 무대는 마치 한 편의 예술 작품을 감상하는 듯한 느낌을 주며, 관객들을 그의 음악 세계로 깊숙이 빠져들게 만들죠.</p><p>Music and Performance</p><p>His music is characterized by a harmonious blend of dreamy synth sounds and sensual beats. Beyond simply making good music, he presents performances that consider visual elements, providing a comprehensive artistic experience. His stage feels like watching a piece of art, drawing the audience deeply into his musical world.</p><p>✧</p><p>주요 활동</p><p>라드뮤지엄은 꾸준한 음원 발매와 더불어 다양한 브랜드와의 협업, 패션 행사 참여 등 다방면에서 활발한 활동을 펼치고 있습니다. 그는 음악뿐만 아니라 패션, 디자인 등 다양한 예술 분야에 관심을 가지고 자신만의 감각을 드러내고 있어요. 이러한 다양한 활동은 그의 음악적 영감을 더욱 풍부하게 만들어주는 원동력이 되고 있습니다.</p><p>Main Activities</p><p>Rad Museum is actively engaged in various fields, including steady music releases, collaborations with various brands, and participation in fashion events. He is interested in various art fields such as fashion and design as well as music, revealing his own sense. These diverse activities are the driving force behind enriching his musical inspiration.</p><p>✧</p><p>미래/의미</p><p>라드뮤지엄은 앞으로도 실험적인 시도를 통해 더욱 확장된 음악 세계를 선보일 것으로 기대됩니다. 그는 끊임없이 새로운 사운드를 탐구하고, 다양한 아티스트들과의 협업을 통해 자신만의 음악적 색깔을 더욱 굳건히 할 것입니다. 그의 음악은 단순한 유행을 넘어, 오랫동안 기억될 독창적인 예술 작품으로 남을 것입니다.</p><p>Future/Meaning</p><p>Rad Museum is expected to present an even more expanded musical world through experimental attempts in the future. He will continue to explore new sounds and solidify his own musical color through collaborations with various artists. His music will remain as an original work of art that will be remembered for a long time, beyond simple trends.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[E] [2024] RAD MILLI</div>
+<div><a href='https://tidal.com/album/381137209' target='_blank'>https://tidal.com/album/381137209</a></div>
+<div>Rad Museum, Kid Milli - 5AM</div>
+<div>Rad Museum, Kid Milli - Summer Time(Explicit)</div>
+<div>Rad Museum, Kid Milli - Feel Good</div>
+<div>Rad Museum, Kid Milli - Apollo</div>
+<div>Rad Museum, Kid Milli, Dean - S-S</div>
+<div>Rad Museum, Kid Milli - Twilight Interlude</div>
+<div>Rad Museum, Kid Milli - Million - Warrior(Explicit)</div>
+<div>Rad Museum, Kid Milli, Jimmy Paige - Foxy Plush(Explicit)</div>
+<div>Rad Museum, Kid Milli - Need U(Explicit)</div>
+<div>Rad Museum, Kid Milli, NOCHANG - Talk Too Much(Explicit)</div>
+<div>Rad Museum, Kid Milli - Alcohol(Explicit)</div>
+<div>Rad Museum, Kid Milli - Silence</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381137209' target='_blank'><img src='https://resources.tidal.com/images/3dea9ba9/3e9a/4d5b/ac60/5ab282c90350/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2024] HOME SICK</div>
+<div><a href='https://tidal.com/album/405318010' target='_blank'>https://tidal.com/album/405318010</a></div>
+<div>Rad Museum - DON'T CRY</div>
+<div>Rad Museum - PAPER CUT(Explicit)</div>
+<div>Rad Museum - HOME</div>
+<div>Rad Museum - PILLOW TALK</div>
+<div>Rad Museum - BATHTUB</div>
+<div>Rad Museum - TAXI</div>
+<div>Rad Museum - SHE WAS SICK</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/405318010' target='_blank'><img src='https://resources.tidal.com/images/ef5133d2/733a/4a34/898c/3bcad28cff6d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2022] RAD</div>
+<div><a href='https://tidal.com/album/220712737' target='_blank'>https://tidal.com/album/220712737</a></div>
+<div>Rad Museum, Lossapardo - God's Work</div>
+<div>Rad Museum, Wonstein - AirDrop</div>
+<div>Rad Museum - U</div>
+<div>Rad Museum - This Night</div>
+<div>Rad Museum - Wet Umbrella</div>
+<div>Rad Museum - 한량</div>
+<div>Rad Museum, DEAN, LeeHi - Off-Line(Explicit)</div>
+<div>Rad Museum, JUSTHIS - EXIT</div>
+<div>Rad Museum, Sujin Moon - Two Bourbon Rock(Explicit)</div>
+<div>Rad Museum, Miso, Loco - 4D</div>
+<div>Rad Museum - Flashback</div>
+<div>Rad Museum - Say Hello Inner Child</div>
+<div>Rad Museum, So!YoON! - Forever</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/220712737' target='_blank'><img src='https://resources.tidal.com/images/67f08737/8865/4922/b65f/e22ec1754f94/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] WORK HARD PLAY HARD</div>
+<div><a href='https://tidal.com/album/295364858' target='_blank'>https://tidal.com/album/295364858</a></div>
+<div>Rad Museum, Kid Milli, GOLDBUUDA - WORK HARD PLAY HARD</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/295364858' target='_blank'><img src='https://resources.tidal.com/images/195fce76/580e/49d2/942e/2b816fe83b0a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] More</div>
+<div><a href='https://tidal.com/album/272283244' target='_blank'>https://tidal.com/album/272283244</a></div>
+<div>Rad Museum, Sik-K - More</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/272283244' target='_blank'><img src='https://resources.tidal.com/images/6ab3b1b3/a2aa/4623/b1ad/a1f34d31a150/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] GIRL</div>
+<div><a href='https://tidal.com/album/317576701' target='_blank'>https://tidal.com/album/317576701</a></div>
+<div>Rad Museum, Kid Milli, GOLDBUUDA - WHPH</div>
+<div>Rad Museum - SOME GIRL</div>
+<div>Rad Museum, Sik-K - MORE</div>
+<div>Rad Museum - GIRLS CURSE</div>
+<div>Rad Museum, TABBER - ROCKSTAR</div>
+<div>Rad Museum, BE′O - CALL ME BACK</div>
+<div>Rad Museum, Miso - ANOTHER MAN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/317576701' target='_blank'><img src='https://resources.tidal.com/images/3f905060/39ff/42db/88a5/7a0ca88121db/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Settle Down</div>
+<div><a href='https://tidal.com/album/213130556' target='_blank'>https://tidal.com/album/213130556</a></div>
+<div>Beau Diako, Rad Museum - Settle Down</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/213130556' target='_blank'><img src='https://resources.tidal.com/images/12a652ba/6657/4a73/8a33/98ed164202d6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] SOME GIRL</div>
+<div><a href='https://tidal.com/album/247617658' target='_blank'>https://tidal.com/album/247617658</a></div>
+<div>Rad Museum - SOME GIRL</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/247617658' target='_blank'><img src='https://resources.tidal.com/images/ee6dd81e/1a12/440c/9c29/9f4a75f64011/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 숨</div>
+<div><a href='https://tidal.com/album/150790601' target='_blank'>https://tidal.com/album/150790601</a></div>
+<div>DEAN, Rad Museum, Mokyo - 숨</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/150790601' target='_blank'><img src='https://resources.tidal.com/images/03400374/95a1/4b8c/af4c/b20f3f77121f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] SINK</div>
+<div><a href='https://tidal.com/album/164631971' target='_blank'>https://tidal.com/album/164631971</a></div>
+<div>Rad Museum - This Night</div>
+<div>Rad Museum - Wet Umbrella</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/164631971' target='_blank'><img src='https://resources.tidal.com/images/b023a330/555d/4ddb/817a/2ad735f77e8f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Scene</div>
+<div><a href='https://tidal.com/album/306298130' target='_blank'>https://tidal.com/album/306298130</a></div>
+<div>Rad Museum - Over The Fence</div>
+<div>Rad Museum - Cloud (feat. Colde, punchnello & Miso)</div>
+<div>Rad Museum - Dancing In The Rain</div>
+<div>Rad Museum - MADKID</div>
+<div>Rad Museum - Birthday</div>
+<div>Rad Museum - Tiny Little Boy (feat. DEAN)</div>
+<div>Rad Museum - Woman</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306298130' target='_blank'><img src='https://resources.tidal.com/images/b9649528/711c/4e95/8259/49cccdbc4a9f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/1_TIDAL_Kpop_Artist_Link_LR.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄹ1) TIDAL Kpop Artist Link (LR)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/라드뮤지엄 (rad museum)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
