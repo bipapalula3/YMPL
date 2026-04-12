@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 온앤오프 ( Tidal ONF )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 온앤오프 ( Tidal ONF )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/fbe1980c/ddd2/4f92/9fab/ac5b3565d879/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9832359' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 온앤오프</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>온앤오프 (ONF) – 몽환적인 선율과 강렬한 퍼포먼스, ‘Beautiful Beautiful’처럼 아름다운 청춘의 단면을 담아내는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> ONF</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>ONF – A group capturing the beautiful facets of youth through dreamy melodies and intense performances, like in 'Beautiful Beautiful'.</div><p>독특한 음악적 색깔과 탄탄한 실력으로 무장한 그룹, 온앤오프(ONF)를 소개합니다! ON과 OFF, 두 가지 콘셉트를 넘나들며 다채로운 매력을 선보이고 있는데요. 그들의 음악 세계로 함께 빠져보실까요?</p><p>Let me introduce you to ONF, a group armed with a unique musical color and solid skills! They showcase a variety of charms, crossing between two concepts, ON and OFF. Shall we dive into their musical world together?</p><p>✧</p><p>그룹의 탄생과 독특한 콘셉트</p><p>온앤오프는 WM엔터테인먼트에서 야심차게 선보인 보이 그룹이에요. 그룹명처럼 ON과 OFF라는 뚜렷한 콘셉트를 가지고, 무대 위 화려함과 무대 아래 친근함을 동시에 보여주죠.</p><p>Birth of the Group and Unique Concepts</p><p>ONF is a boy group ambitiously introduced by WM Entertainment. Just like their name, they have distinct concepts of ON and OFF, showing both the splendor on stage and the friendliness off stage.</p><p>✧</p><p>음악적 스펙트럼과 퍼포먼스</p><p>온앤오프의 음악은 한 마디로 정의하기 어려울 정도로 다채로운데요. 몽환적인 분위기의 곡부터 강렬한 퍼포먼스를 위한 곡까지, 폭넓은 장르를 소화하며 자신들만의 색깔을 만들어가고 있어요.</p><p>Musical Spectrum and Performance</p><p>ONF's music is so diverse that it's hard to define in one word. From songs with a dreamy atmosphere to songs for intense performances, they digest a wide range of genres and create their own color.</p><p>✧</p><p>끊임없는 활동과 성장</p><p>데뷔 이후 꾸준한 음반 발매와 다양한 활동을 통해 팬들과 소통하고 있어요. 멤버들의 군백기 이후, 더욱 성숙해진 모습으로 돌아와 앞으로가 더욱 기대되는 그룹이랍니다.</p><p>Continuous Activities and Growth</p><p>They have been communicating with fans through steady album releases and various activities since their debut. After the members' military service hiatus, they have returned with a more mature look, making them a group to look forward to even more.</p><p>✧</p><p>미래와 음악적 의미</p><p>온앤오프는 앞으로도 끊임없이 새로운 음악적 시도를 할 것으로 기대돼요. 그들의 음악은 단순한 아이돌 음악을 넘어, 듣는 이에게 깊은 감동과 여운을 선사할 것입니다.</p><p>Future and Musical Significance</p><p>ONF is expected to continue making new musical attempts in the future. Their music goes beyond simple idol music, offering deep emotion and lingering feelings to listeners.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] ONF_MY IDENTITY</div>
+<div><a href='https://tidal.com/album/418625370' target='_blank'>https://tidal.com/album/418625370</a></div>
+<div>ONF - The Stranger</div>
+<div>ONF - Night Tale</div>
+<div>ONF - Nothing but a stranger (ON Team Ver.)</div>
+<div>ONF - Anti Hero (OFF Team Ver.)</div>
+<div>ONF - Good Place</div>
+<div>ONF - Collab</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/418625370' target='_blank'><img src='https://resources.tidal.com/images/c41e15f1/4763/4983/af69/c6c53f64570f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Beautiful Shadow</div>
+<div><a href='https://tidal.com/album/356034058' target='_blank'>https://tidal.com/album/356034058</a></div>
+<div>ONF - Bye My Monster</div>
+<div>ONF - Aphrodite</div>
+<div>ONF - Breath, Haze & Shadow</div>
+<div>ONF - Chemical Type</div>
+<div>ONF - Slave To The Rhythm</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/356034058' target='_blank'><img src='https://resources.tidal.com/images/c90ab4b2/d0c4/4114/b6d1/06b794b713a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] BREWING LOVE, Pt. 1 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/396338050' target='_blank'>https://tidal.com/album/396338050</a></div>
+<div>ONF - Tipsy On You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/396338050' target='_blank'><img src='https://resources.tidal.com/images/e41e837a/b8ce/43c1/acd9/be3a8a4d65db/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] LOVE EFFECT</div>
+<div><a href='https://tidal.com/album/408881430' target='_blank'>https://tidal.com/album/408881430</a></div>
+<div>ONF - LOVE EFFECT (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/408881430' target='_blank'><img src='https://resources.tidal.com/images/1dbeebe4/f44c/4701/9555/9842ef6fe654/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] LOVE EFFECT (Japanese Version)</div>
+<div><a href='https://tidal.com/album/408882214' target='_blank'>https://tidal.com/album/408882214</a></div>
+<div>ONF - Be Here Now</div>
+<div>ONF - Love Effect</div>
+<div>ONF - Dam Dam Di Ram</div>
+<div>ONF - Arrival</div>
+<div>ONF - Wind Effect</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/408882214' target='_blank'><img src='https://resources.tidal.com/images/f4f3d269/0d65/4f2d/857f/dab8753c8768/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] SPECIAL ALBUM [Storage of ONF]</div>
+<div><a href='https://tidal.com/album/408880724' target='_blank'>https://tidal.com/album/408880724</a></div>
+<div>ONF - Your Song</div>
+<div>ONF - Runaway</div>
+<div>ONF - Traveler</div>
+<div>ONF - GUCCI</div>
+<div>ONF - My Song</div>
+<div>ONF - ON-OFF (Remastered Version)</div>
+<div>ONF - If We Dream (Remastered Version)</div>
+<div>ONF - 86400 (Remastered Version)</div>
+<div>ONF - We Must Love (Remastered Version)</div>
+<div>ONF - Complete (Remastered Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/408880724' target='_blank'><img src='https://resources.tidal.com/images/fe26dd66/85d1/4810/b27f/a669af8d6376/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] SUMMER POPUP ALBUM [POPPING]</div>
+<div><a href='https://tidal.com/album/409067572' target='_blank'>https://tidal.com/album/409067572</a></div>
+<div>ONF - Popping</div>
+<div>ONF - Summer Poem</div>
+<div>ONF - Summer Shape</div>
+<div>ONF - Dry Ice</div>
+<div>ONF - Summer End</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/409067572' target='_blank'><img src='https://resources.tidal.com/images/30445fc7/e40b/4d74/9e04/09c14eb5bab0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] ONF_MY NAME</div>
+<div><a href='https://tidal.com/album/412255758' target='_blank'>https://tidal.com/album/412255758</a></div>
+<div>ONF - Beautiful Beautiful</div>
+<div>ONF - My Name Is</div>
+<div>ONF - Thermometer (ON Team Version)</div>
+<div>ONF - Secret Triangle (OFF Team Version)</div>
+<div>ONF - The Realist</div>
+<div>ONF - On-You (Interlude)</div>
+<div>ONF - Trip Advisor</div>
+<div>ONF - Feedback</div>
+<div>ONF - I.T.I.L.U</div>
+<div>ONF - Beautiful Beautiful (English Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412255758' target='_blank'><img src='https://resources.tidal.com/images/877bacbf/dca5/4bd9/a89f/37f136eb5f5b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] CITY OF ONF</div>
+<div><a href='https://tidal.com/album/412260753' target='_blank'>https://tidal.com/album/412260753</a></div>
+<div>ONF - Ugly Dance</div>
+<div>ONF - My Genesis (Übermensch)</div>
+<div>ONF - The Dreamer</div>
+<div>ONF - Beautiful Beautiful</div>
+<div>ONF - My Name Is</div>
+<div>ONF - Thermometer (ON Team Version)</div>
+<div>ONF - Secret Triangle (OFF Team Version)</div>
+<div>ONF - The Realist</div>
+<div>ONF - On-You (Interlude)</div>
+<div>ONF - Trip Advisor</div>
+<div>ONF - Feedback</div>
+<div>ONF - I.T.I.L.U</div>
+<div>ONF - Beautiful Beautiful (English Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412260753' target='_blank'><img src='https://resources.tidal.com/images/8c1676aa/90b3/4b56/a680/e554958fa7cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] 6TH MINI ALBUM [Goosebumps]</div>
+<div><a href='https://tidal.com/album/348860118' target='_blank'>https://tidal.com/album/348860118</a></div>
+<div>ONF - Goosebumps</div>
+<div>ONF - Whistle</div>
+<div>ONF - Fat and Sugar</div>
+<div>ONF - Alarm</div>
+<div>ONF - Show Must Go On</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/348860118' target='_blank'><img src='https://resources.tidal.com/images/fe64a055/78d2/4249/9f53/1e45f1123bb2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] SPIN OFF</div>
+<div><a href='https://tidal.com/album/412253558' target='_blank'>https://tidal.com/album/412253558</a></div>
+<div>ONF - Sukhumvit Swimming</div>
+<div>ONF - Belle Epoque</div>
+<div>ONF - Geppeto</div>
+<div>ONF - Good Good</div>
+<div>ONF - Cactus</div>
+<div>ONF - Message</div>
+<div>ONF - New World (SPIN OFF Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412253558' target='_blank'><img src='https://resources.tidal.com/images/3385fa9b/133a/4778/a72e/d5bb776e412f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Road to Kingdom _King′s Melody_ Part.1</div>
+<div><a href='https://tidal.com/album/196156168' target='_blank'>https://tidal.com/album/196156168</a></div>
+<div>ONF - Everybody</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196156168' target='_blank'><img src='https://resources.tidal.com/images/2984236b/eec9/4a11/98cf/d14b675b210a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] OURS</div>
+<div><a href='https://tidal.com/album/379010348' target='_blank'>https://tidal.com/album/379010348</a></div>
+<div>B1A4, OH MY GIRL, ONF - OURS</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/379010348' target='_blank'><img src='https://resources.tidal.com/images/d0d92d00/2e7b/4ef7/9e42/d6f64111f75e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Love Revolution (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/216465664' target='_blank'>https://tidal.com/album/216465664</a></div>
+<div>ONF - Not a sad song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216465664' target='_blank'><img src='https://resources.tidal.com/images/f4e24aaa/0fc5/424a/ab3a/107438af8f7c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] When You Love Yourself Season2 (Original Television Soundtrack), Pt. 1</div>
+<div><a href='https://tidal.com/album/196148692' target='_blank'>https://tidal.com/album/196148692</a></div>
+<div>ONF - Pretty</div>
+<div>ONF - Pretty</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196148692' target='_blank'><img src='https://resources.tidal.com/images/36a1a69b/0123/4067/bbf5/4a16167de604/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] WE MUST LOVE</div>
+<div><a href='https://tidal.com/album/412248625' target='_blank'>https://tidal.com/album/412248625</a></div>
+<div>ONF - We Must Love</div>
+<div>ONF - Ice & Fire</div>
+<div>ONF - Yayaya</div>
+<div>ONF - Happily never after</div>
+<div>ONF - I Do</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412248625' target='_blank'><img src='https://resources.tidal.com/images/1a597dd5/0875/433f/8ea4/ca2b9a426870/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] GO LIVE</div>
+<div><a href='https://tidal.com/album/412250765' target='_blank'>https://tidal.com/album/412250765</a></div>
+<div>ONF - Why</div>
+<div>ONF - Asteroid</div>
+<div>ONF - All Day</div>
+<div>ONF - Moscow Moscow</div>
+<div>ONF - Twinkle Twinkle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412250765' target='_blank'><img src='https://resources.tidal.com/images/1f44cbd8/7efa/42c9/a0f8/9b4e4d73e32a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] YOU COMPLETE ME</div>
+<div><a href='https://tidal.com/album/412173413' target='_blank'>https://tidal.com/album/412173413</a></div>
+<div>ONF - Complete</div>
+<div>ONF - Fly Me To The Moon</div>
+<div>ONF - Good Morning</div>
+<div>ONF - Fifty Fifty</div>
+<div>ONF - Incomplete</div>
+<div>ONF - 86400</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412173413' target='_blank'><img src='https://resources.tidal.com/images/c310abdd/7ba2/4845/b186/b5014a6eefeb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Timing</div>
+<div><a href='https://tidal.com/album/379005904' target='_blank'>https://tidal.com/album/379005904</a></div>
+<div>B1A4, OH MY GIRL, ONF - Timing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/379005904' target='_blank'><img src='https://resources.tidal.com/images/c272cd8d/ae37/4c0a/b99b/baa7cf4c5337/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] ON_OFF -Japanese Ver.-</div>
+<div><a href='https://tidal.com/album/351776179' target='_blank'>https://tidal.com/album/351776179</a></div>
+<div>ONF - ON-OFF -Japanese Ver.-</div>
+<div>ONF - Original -Japanese Ver.-</div>
+<div>ONF - Love Arrow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/351776179' target='_blank'><img src='https://resources.tidal.com/images/32336330/d4d5/4a10/9731/0a2ed68c8bb3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Let′s Eat! 3 _ Begins, Pt. 1 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196142087' target='_blank'>https://tidal.com/album/196142087</a></div>
+<div>ONF - Your Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142087' target='_blank'><img src='https://resources.tidal.com/images/ace011c1/40fc/445c/963a/70846852aff1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Complete -Japanese Ver.-</div>
+<div><a href='https://tidal.com/album/351776353' target='_blank'>https://tidal.com/album/351776353</a></div>
+<div>ONF - Complete -Japanese Ver.-</div>
+<div>ONF - 24 Jikan -Japanese Ver.-</div>
+<div>ONF - What is a love-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/351776353' target='_blank'><img src='https://resources.tidal.com/images/76cea92d/b9bf/4f38/a6ac/ab251c359b3d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] ON_OFF</div>
+<div><a href='https://tidal.com/album/412171625' target='_blank'>https://tidal.com/album/412171625</a></div>
+<div>ONF - ON-OFF</div>
+<div>ONF - Difficult</div>
+<div>ONF - If We Dream</div>
+<div>ONF - Original</div>
+<div>ONF - Cat's Waltz</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412171625' target='_blank'><img src='https://resources.tidal.com/images/f9a10674/bf1d/4777/8a2c/b5b141584d1c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/온앤오프 (ONF)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
