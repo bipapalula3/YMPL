@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 산들 ( Tidal Sanduel )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 산들 ( Tidal Sanduel )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/96f90793/520b/4c7d/8d16/34eadbb26bc4/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/14327519' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 산들</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>산들 (SANDEUL) - 'Smile Box'처럼 따스한 위로를, 'Butterfly'처럼 섬세한 감성을 노래하는 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Sanduel</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>SANDEUL - A vocalist who sings warm comfort like 'Smile Box' and delicate emotions like 'Butterfly'</div><p>깊은 감성과 따뜻한 음색으로 듣는 이의 마음을 어루만지는 가수, 산들입니다. 그는 솔로 활동은 물론, 그룹 B1A4의 멤버로서도 다채로운 음악적 매력을 선보이고 있어요. 특유의 청량하면서도 감미로운 보이스는 산들만의 독보적인 음악 세계를 구축하며 많은 사랑을 받고 있습니다.</p><p>Sandeul is a singer who touches the hearts of listeners with his deep emotions and warm tone. He showcases diverse musical charms not only as a solo artist but also as a member of the group B1A4. His unique, refreshing yet sweet voice has established Sandeul's own distinctive musical world, earning him much love.</p><p>✧</p><p>그룹 탄생</p><p>산들은 2011년 그룹 B1A4의 메인 보컬로 데뷔하여 가요계에 첫 발을 내딛었습니다. 팀 내에서 뛰어난 가창력을 선보이며 B1A4의 음악적 색깔을 완성하는 데 중요한 역할을 했어요. 멤버들과 함께 다양한 콘셉트를 소화하며 폭넓은 팬층을 확보했습니다.</p><p>Group Formation</p><p>Sandeul debuted as the main vocalist of the group B1A4 in 2011, taking his first step into the music industry. He played an important role in completing B1A4's musical color by showcasing outstanding singing skills within the team. Together with the members, he embraced various concepts and secured a wide fan base.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>산들의 음악은 섬세한 감정 표현과 호소력 짙은 보컬이 특징입니다. 발라드, 팝 등 다양한 장르를 소화하며 자신만의 스타일로 재해석하는 능력이 뛰어나요. 듣는 이에게 진솔한 감정을 전달하며 깊은 울림을 선사합니다.</p><p>Music and Performance</p><p>Sandeul's music is characterized by delicate emotional expression and appealing vocals. He excels at digesting various genres such as ballads and pop, reinterpreting them in his own style. He conveys sincere emotions to the listener, delivering a deep resonance.</p><p>✧</p><p>주요 활동</p><p>솔로 앨범 발매 외에도 드라마 OST 참여, 뮤지컬 무대 등 다양한 분야에서 활약하고 있습니다. 다른 아티스트와의 컬래버레이션을 통해 음악적 스펙트럼을 넓히는 시도도 꾸준히 이어가고 있어요. 다재다능한 면모를 보여주며 대중의 사랑을 받고 있습니다.</p><p>Key Activities</p><p>In addition to releasing solo albums, he is active in various fields such as participating in drama OSTs and performing on musical stages. He is also constantly trying to expand his musical spectrum through collaborations with other artists. He is loved by the public for showing his versatile side.</p><p>✧</p><p>미래/의미</p><p>앞으로 산들은 더욱 깊어진 음악적 역량과 진솔한 감성으로 대중에게 다가갈 것입니다. 그의 음악은 단순한 즐거움을 넘어, 듣는 이의 마음에 위로와 공감을 선사할 것으로 기대됩니다. 꾸준한 활동을 통해 자신만의 음악 세계를 더욱 공고히 해나갈 거예요.</p><p>Future/Meaning</p><p>In the future, Sandeul will approach the public with even deeper musical capabilities and sincere emotions. His music is expected to go beyond simple enjoyment, providing comfort and empathy to the hearts of listeners. Through continuous activities, he will further solidify his own musical world.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Wedding Impossible _ Original Soundtrack Special</div>
+<div><a href='https://tidal.com/album/347939647' target='_blank'>https://tidal.com/album/347939647</a></div>
+<div>SANDEUL - Butterfly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/347939647' target='_blank'><img src='https://resources.tidal.com/images/f7594149/c0dd/490a/a2c2/771737b3fb4c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] HELLO! WM_V</div>
+<div><a href='https://tidal.com/album/348189747' target='_blank'>https://tidal.com/album/348189747</a></div>
+<div>SANDEUL, HYOJUNG, Hyojin - 366 Days</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/348189747' target='_blank'><img src='https://resources.tidal.com/images/c4d18e9a/172e/4c71/bb9f/929efc72c33d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] CASTAWAY DIVA (Original Soundtrack) Part.9</div>
+<div><a href='https://tidal.com/album/331299044' target='_blank'>https://tidal.com/album/331299044</a></div>
+<div>SANDEUL - You're leaving like the season</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/331299044' target='_blank'><img src='https://resources.tidal.com/images/fc767f51/cd76/4cd9/b9c5/f6dd86d91982/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] It's alright (Prod. Captain Planet)</div>
+<div><a href='https://tidal.com/album/346637576' target='_blank'>https://tidal.com/album/346637576</a></div>
+<div>Ahn Seha, SANDEUL - It's alright (Prod. Captain Planet)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346637576' target='_blank'><img src='https://resources.tidal.com/images/5d4b481b/9d3c/42df/9281/bc2c1d48e28b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] The One And Only You (The Moon during the Day X SANDEUL)</div>
+<div><a href='https://tidal.com/album/216277524' target='_blank'>https://tidal.com/album/216277524</a></div>
+<div>SANDEUL - The One And Only You (The Moon during the Day X SANDEUL)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216277524' target='_blank'><img src='https://resources.tidal.com/images/3bd02a40/4c62/4021/b714/1f4e5f81b0fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] I Miss You (CookieBox X Sandeul)</div>
+<div><a href='https://tidal.com/album/216375394' target='_blank'>https://tidal.com/album/216375394</a></div>
+<div>SANDEUL - I Miss You (CookieBox X Sandeul)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216375394' target='_blank'><img src='https://resources.tidal.com/images/f4c8e92d/89a1/46b5/9014/911b27cbc572/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Hometown Cha-Cha-Cha OST Part 6</div>
+<div><a href='https://tidal.com/album/199838406' target='_blank'>https://tidal.com/album/199838406</a></div>
+<div>SANDEUL - The Image of You (Remains in My Memory)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/199838406' target='_blank'><img src='https://resources.tidal.com/images/d0195d7e/ce76/449e/8a91/49d0b95668ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Contemplation</div>
+<div><a href='https://tidal.com/album/182261509' target='_blank'>https://tidal.com/album/182261509</a></div>
+<div>SANDEUL - Remember</div>
+<div>SANDEUL - That Night</div>
+<div>SANDEUL - Bird Monster</div>
+<div>SANDEUL - Your Heart</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182261509' target='_blank'><img src='https://resources.tidal.com/images/43b1e9b3/e64b/4ec1/bb5c/0321dc54f46c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Smile Box</div>
+<div><a href='https://tidal.com/album/379009676' target='_blank'>https://tidal.com/album/379009676</a></div>
+<div>SANDEUL - Smile Box</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/379009676' target='_blank'><img src='https://resources.tidal.com/images/e0d98d2e/6f70/44d2/80fd/c11c41dd4924/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Slightly Tipsy (She is My Type♡ X SANDEUL)</div>
+<div><a href='https://tidal.com/album/216118619' target='_blank'>https://tidal.com/album/216118619</a></div>
+<div>SANDEUL - Slightly Tipsy (She is My Type♡ X SANDEUL)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216118619' target='_blank'><img src='https://resources.tidal.com/images/d67a8af4/ce79/4a51/8a89/20379d610420/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] My Little Thought</div>
+<div><a href='https://tidal.com/album/408902809' target='_blank'>https://tidal.com/album/408902809</a></div>
+<div>SANDEUL - Summer day summer night</div>
+<div>SANDEUL - Letter</div>
+<div>SANDEUL - Smile Box</div>
+<div>SANDEUL - Lazy Me</div>
+<div>SANDEUL - Thank you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/408902809' target='_blank'><img src='https://resources.tidal.com/images/1f2573dd/03bb/4be0/b279/90f5ec2faa8a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Lazy Me</div>
+<div><a href='https://tidal.com/album/367017540' target='_blank'>https://tidal.com/album/367017540</a></div>
+<div>SANDEUL - Lazy Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/367017540' target='_blank'><img src='https://resources.tidal.com/images/f6be6c25/d947/4f32/a16b/5f9baf760a62/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Dark Tales (Talesrunner Original Soundtrack Pt. 1)</div>
+<div><a href='https://tidal.com/album/348860940' target='_blank'>https://tidal.com/album/348860940</a></div>
+<div>SANDEUL - Dark Tales</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/348860940' target='_blank'><img src='https://resources.tidal.com/images/9cd0fe90/1adf/4769/bd2f/8b6ca9270050/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] WannabeChallenge (Original Soundtrack) Part.2</div>
+<div><a href='https://tidal.com/album/339862471' target='_blank'>https://tidal.com/album/339862471</a></div>
+<div>SANDEUL - I Wish</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339862471' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] The Tale Of Nokdu (Original Television Soundtrack), Pt. 5</div>
+<div><a href='https://tidal.com/album/189363170' target='_blank'>https://tidal.com/album/189363170</a></div>
+<div>SANDEUL - Lingering Inside Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189363170' target='_blank'><img src='https://resources.tidal.com/images/b117639c/d126/4c14/a7fb/d55f6cb6feee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] PCR</div>
+<div><a href='https://tidal.com/album/104488809' target='_blank'>https://tidal.com/album/104488809</a></div>
+<div>SANDEUL - PCR (Original Mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/104488809' target='_blank'><img src='https://resources.tidal.com/images/55dd8c4b/8bc6/4645/ad35/e90a90624d89/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] ONE FINE DAY</div>
+<div><a href='https://tidal.com/album/354742390' target='_blank'>https://tidal.com/album/354742390</a></div>
+<div>SANDEUL - One Fine Day</div>
+<div>SANDEUL - This love</div>
+<div>SANDEUL - Oblique line</div>
+<div>SANDEUL - Raindrop</div>
+<div>SANDEUL - Love, always you (duet. Gongchan)</div>
+<div>SANDEUL - I’m Fine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/354742390' target='_blank'><img src='https://resources.tidal.com/images/9e25987d/6e21/48f8/bef2/31a85aaa7cb8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 연결되어 있으니까</div>
+<div><a href='https://tidal.com/album/241313907' target='_blank'>https://tidal.com/album/241313907</a></div>
+<div>Yang Yoseop, SANDEUL, Jung Seung Hwan - 연결되어 있으니까</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/241313907' target='_blank'><img src='https://resources.tidal.com/images/7796cfc2/8f6f/4acc/acec/796ba5f408c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Bad Guys_ Vile City, Pt. 3 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196138196' target='_blank'>https://tidal.com/album/196138196</a></div>
+<div>SANDEUL - Other World</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196138196' target='_blank'><img src='https://resources.tidal.com/images/6225a967/b584/4270/a492/b6fdafcb31e4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] OPPA</div>
+<div><a href='https://tidal.com/album/237600635' target='_blank'>https://tidal.com/album/237600635</a></div>
+<div>Yu Seung Woo, SANDEUL - OPPA (PROD. Brother Su)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237600635' target='_blank'><img src='https://resources.tidal.com/images/2d832e5e/c23a/4e27/8ce1/8c8e992f3681/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Introverted Boss (Original Television Soundtrack), Pt. 3</div>
+<div><a href='https://tidal.com/album/196130029' target='_blank'>https://tidal.com/album/196130029</a></div>
+<div>SANDEUL - One More Step</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196130029' target='_blank'><img src='https://resources.tidal.com/images/6421a421/0d1a/4d58/8826/785351788f6d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 구르미 그린 달빛 (Original Television Soundtrack), Pt.2</div>
+<div><a href='https://tidal.com/album/322792786' target='_blank'>https://tidal.com/album/322792786</a></div>
+<div>SANDEUL - 마음을 삼킨다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/322792786' target='_blank'><img src='https://resources.tidal.com/images/a8e7895e/cff7/4b1e/9fc2/b0b82a784445/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] STAY AS YOU ARE</div>
+<div><a href='https://tidal.com/album/354759071' target='_blank'>https://tidal.com/album/354759071</a></div>
+<div>SANDEUL - Stay as you are</div>
+<div>SANDEUL - Home</div>
+<div>SANDEUL - My childhood story</div>
+<div>SANDEUL - Ya! (Feat. Whee In)</div>
+<div>SANDEUL - The way with you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/354759071' target='_blank'><img src='https://resources.tidal.com/images/658e940f/63db/487b/9a61/50b1088ddb39/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] God's Gift _ 14 Days (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/326005624' target='_blank'>https://tidal.com/album/326005624</a></div>
+<div>SANDEUL - 아파서</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/326005624' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/1_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ1) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/산들 (Sanduel)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
