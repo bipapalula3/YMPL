@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 박완규 ( Tidal Park Wan Kyu )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 박완규 ( Tidal Park Wan Kyu )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/5dd5d222/fe2c/4e4e/aecc/e1b5ee9c9922/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5878851' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/7133897' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 박완규</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>박완규 – 록 스피릿으로 시대의 아픔을 노래하는 영원한 록커, ‘Lonely Night’의 절규와 ‘사랑해서 사랑해서’의 애절함을 담아</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Park Wan Kyu</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Park Wan Kyu – An eternal rocker singing the pain of the times with a rock spirit, capturing the cry of ‘Lonely Night’ and the heartbreaking emotions of ‘Loving, Because I Love You’</div><p>폭발적인 가창력과 깊은 감성으로 듣는 이의 가슴을 울리는 록커, 박완규님을 소개합니다. 그의 음악은 단순한 멜로디를 넘어 삶의 희로애락을 담아내며 오랜 시간 동안 많은 사랑을 받아왔습니다. 특유의 허스키한 보이스와 강렬한 무대 매너는 그를 대체 불가능한 존재로 만들었습니다.</p><p>Let me introduce Park Wan Kyu, a rocker who touches the hearts of listeners with explosive singing ability and deep emotion. His music goes beyond simple melodies, capturing the joys and sorrows of life, and has been loved for a long time. His unique husky voice and intense stage presence have made him an irreplaceable figure.</p><p>✧</p><p>그룹 탄생</p><p>박완규님은 록 밴드 부활의 보컬로 데뷔하여 강렬한 록 사운드로 대중의 이목을 사로잡았습니다. 이후 솔로 활동을 통해 자신만의 음악 세계를 구축하며 꾸준히 활동을 이어왔습니다. 그의 음악적 여정은 늘 새로운 도전과 실험으로 가득했습니다.</p><p>Group Origins</p><p>Park Wan Kyu debuted as the vocalist of the rock band Boohwal, captivating the public with his intense rock sound. Since then, he has continued his career by building his own musical world through solo activities. His musical journey has always been full of new challenges and experiments.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그의 음악은 록을 기반으로 하지만 발라드, 팝 등 다양한 장르를 아우르는 폭넓은 스펙트럼을 보여줍니다. 특히, 호소력 짙은 보컬은 슬픔, 그리움, 희망 등 다양한 감정을 생생하게 전달합니다. 무대 위에서의 카리스마 넘치는 모습은 관객들을 압도하며 깊은 인상을 남깁니다.</p><p>Music and Performance</p><p>His music is based on rock but shows a wide spectrum covering various genres such as ballads and pop. In particular, his appealing vocals vividly convey various emotions such as sadness, longing, and hope. His charismatic presence on stage overwhelms the audience and leaves a deep impression.</p><p>✧</p><p>주요 활동</p><p>박완규님은 솔로 앨범 발매 외에도 드라마 OST, 방송 출연 등 다양한 분야에서 활발하게 활동하고 있습니다. 특히, 여러 음악 경연 프로그램에 출연하여 뛰어난 가창력을 선보이며 다시 한번 대중의 주목을 받았습니다. 그의 음악은 세대를 초월하여 많은 사람들에게 감동과 위로를 선사합니다.</p><p>Main Activities</p><p>In addition to releasing solo albums, Park Wan Kyu is actively working in various fields such as drama OSTs and broadcasting appearances. In particular, he appeared on several music competition programs, showcasing his outstanding singing ability and once again gaining public attention. His music transcends generations and offers emotion and comfort to many people.</p><p>✧</p><p>미래/의미</p><p>끊임없이 변화하고 도전하는 박완규님의 음악은 앞으로도 많은 사람들에게 깊은 울림을 선사할 것입니다. 그의 음악은 단순한 유행을 넘어 시대를 초월하는 감동을 전달하며 영원히 기억될 것입니다. 앞으로 그가 보여줄 새로운 음악적 시도와 깊이에 더욱 기대가 됩니다.</p><p>Future/Meaning</p><p>Park Wan Kyu's music, which is constantly changing and challenging, will continue to resonate deeply with many people in the future. His music goes beyond simple trends, delivering timeless emotion and will be remembered forever. We look forward to the new musical attempts and depth that he will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] Not Meant To Be</div>
+<div><a href='https://tidal.com/album/250937988' target='_blank'>https://tidal.com/album/250937988</a></div>
+<div>Park Wan Kyu - Not Meant To Be</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/250937988' target='_blank'><img src='https://resources.tidal.com/images/5bae38d8/ab06/4da9/a17e/7c8084054255/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Another Day</div>
+<div><a href='https://tidal.com/album/182961062' target='_blank'>https://tidal.com/album/182961062</a></div>
+<div>Park Wan Kyu, 노바소닉 - Another Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182961062' target='_blank'><img src='https://resources.tidal.com/images/ed436b25/abb8/4e0d/93da/dcee996ef0d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] SR PROJECT VOL. 4</div>
+<div><a href='https://tidal.com/album/380997749' target='_blank'>https://tidal.com/album/380997749</a></div>
+<div>박완규 - Sadness</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/380997749' target='_blank'><img src='https://resources.tidal.com/images/c8bbc445/e586/4da6/8e54/c6f28a2d9d09/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] The Royal Gambler (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/216046747' target='_blank'>https://tidal.com/album/216046747</a></div>
+<div>Park Wan Kyu - If the time stop</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216046747' target='_blank'><img src='https://resources.tidal.com/images/37a9c8ec/a3f9/432f/9c8c/79c2d485ffa7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 그 사람, 그 사랑</div>
+<div><a href='https://tidal.com/album/98826980' target='_blank'>https://tidal.com/album/98826980</a></div>
+<div>Park Wan Kyu - 거인의 잠</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98826980' target='_blank'><img src='https://resources.tidal.com/images/db2ac99a/9b4d/464b/bdcc/4cb6da305fda/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 음악여행 예스터데이 8회</div>
+<div><a href='https://tidal.com/album/303695284' target='_blank'>https://tidal.com/album/303695284</a></div>
+<div>박완규 - Lonely Night (원곡가수 부활)</div>
+<div>박완규 - 세월이 가면 (원곡가수 최호섭)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303695284' target='_blank'><img src='https://resources.tidal.com/images/1d71364e/2b83/43f3/9f0d/9a56630fae85/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Empress Ki (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/193498348' target='_blank'>https://tidal.com/album/193498348</a></div>
+<div>Park Wan Kyu - Wind Breeze</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/193498348' target='_blank'><img src='https://resources.tidal.com/images/5339a169/2f37/4bac/a041/b1d16cefdc75/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 결혼의 여신 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/217228660' target='_blank'>https://tidal.com/album/217228660</a></div>
+<div>Park Wan Kyu - Always</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/217228660' target='_blank'><img src='https://resources.tidal.com/images/ff67371c/233f/4099/a5cb/131eb2da2415/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 수호</div>
+<div><a href='https://tidal.com/album/306387323' target='_blank'>https://tidal.com/album/306387323</a></div>
+<div>Park Wan Kyu - 수호</div>
+<div>Park Wan Kyu - 사랑해서 사랑해서</div>
+<div>Park Wan Kyu - 수호 (Piano Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306387323' target='_blank'><img src='https://resources.tidal.com/images/aa4ac1c0/deff/4440/b90a/838dbb253885/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2012] The Sky Full of Star</div>
+<div><a href='https://tidal.com/album/344370331' target='_blank'>https://tidal.com/album/344370331</a></div>
+<div>Park Wan Kyu - The Sky Full of Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344370331' target='_blank'><img src='https://resources.tidal.com/images/9d23b5a5/5882/45a7/b772/2136344304eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Love Story</div>
+<div><a href='https://tidal.com/album/306394350' target='_blank'>https://tidal.com/album/306394350</a></div>
+<div>Park Wan Kyu - I Do</div>
+<div>Park Wan Kyu - I Do (Piano Version)</div>
+<div>Park Wan Kyu - I Do (Guitar Version)</div>
+<div>Park Wan Kyu - 정리</div>
+<div>Park Wan Kyu - 수호</div>
+<div>Park Wan Kyu - 수호 (Piano Version)</div>
+<div>Park Wan Kyu - 사랑하기 전에는</div>
+<div>Park Wan Kyu - 사랑하기 전에는 (Acoustic Version)</div>
+<div>Park Wan Kyu - 사랑해서 사랑해서</div>
+<div>Park Wan Kyu - 사랑해</div>
+<div>Park Wan Kyu - 어부의 아들</div>
+<div>Park Wan Kyu - 가질 수 없는 너</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306394350' target='_blank'><img src='https://resources.tidal.com/images/5dd5d222/fe2c/4e4e/aecc/e1b5ee9c9922/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Love Story (스페셜 앨범)</div>
+<div><a href='https://tidal.com/album/315975876' target='_blank'>https://tidal.com/album/315975876</a></div>
+<div>박완규 - 사랑했어요</div>
+<div>박완규 - 고해</div>
+<div>박완규 - 어느 60대 노부부의 이야기</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/315975876' target='_blank'><img src='https://resources.tidal.com/images/2cf09563/825a/4552/a16a/7f1caf9a3691/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Don't Say</div>
+<div><a href='https://tidal.com/album/344373420' target='_blank'>https://tidal.com/album/344373420</a></div>
+<div>Park Wan Kyu - Don't Say</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344373420' target='_blank'><img src='https://resources.tidal.com/images/c2804296/8c04/425a/89dd/c3006d3912d4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 사랑이 아프다</div>
+<div><a href='https://tidal.com/album/306389595' target='_blank'>https://tidal.com/album/306389595</a></div>
+<div>Park Wan Kyu - 사랑이 아프다</div>
+<div>Park Wan Kyu - 사랑하기 전에는</div>
+<div>Park Wan Kyu - 사랑하기 전에는 (Acoustic Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306389595' target='_blank'><img src='https://resources.tidal.com/images/421d1971/e2fa/41b0/8d7b/4350da21d313/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] The Princess' Man (Original Soundtrack) Part.6</div>
+<div><a href='https://tidal.com/album/216118798' target='_blank'>https://tidal.com/album/216118798</a></div>
+<div>Park Wan Kyu - Love in a day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216118798' target='_blank'><img src='https://resources.tidal.com/images/4abda096/456d/4590/a71c/7d2a3bab8e39/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] 첫번째 이야기 - Love Song</div>
+<div><a href='https://tidal.com/album/306387037' target='_blank'>https://tidal.com/album/306387037</a></div>
+<div>Park Wan Kyu - 사랑해서 사랑해서</div>
+<div>Park Wan Kyu - 사랑해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306387037' target='_blank'><img src='https://resources.tidal.com/images/4c30d297/77ea/479b/833d/9fa761389480/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] 검은비밀</div>
+<div><a href='https://tidal.com/album/184931112' target='_blank'>https://tidal.com/album/184931112</a></div>
+<div>박완규 - 검은비밀</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184931112' target='_blank'><img src='https://resources.tidal.com/images/995fc9cb/428e/42b6/828b/173a23e370a5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] Exodus</div>
+<div><a href='https://tidal.com/album/339621024' target='_blank'>https://tidal.com/album/339621024</a></div>
+<div>Park Wan Kyu - To The Light</div>
+<div>Park Wan Kyu - call out the world</div>
+<div>Park Wan Kyu - Darkness, that starlight</div>
+<div>Park Wan Kyu - Do whatever you want-</div>
+<div>Park Wan Kyu - Promise</div>
+<div>Park Wan Kyu - at the end of despair</div>
+<div>Park Wan Kyu - Exodus</div>
+<div>Park Wan Kyu - Rock Never DieS</div>
+<div>Park Wan Kyu - If we're together (Duet. Lee Hyunsuk)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339621024' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2002] It's Now Or Never</div>
+<div><a href='https://tidal.com/album/339846675' target='_blank'>https://tidal.com/album/339846675</a></div>
+<div>Park Wan Kyu - a happy illusion</div>
+<div>Park Wan Kyu - In another time,</div>
+<div>Park Wan Kyu - The reason why I live</div>
+<div>Park Wan Kyu - I Love You Tonight</div>
+<div>Park Wan Kyu - After You've Gone</div>
+<div>Park Wan Kyu - Love Is Over</div>
+<div>Park Wan Kyu - The shade I made</div>
+<div>Park Wan Kyu - My Way</div>
+<div>Park Wan Kyu - mountain</div>
+<div>Park Wan Kyu - Wish</div>
+<div>Park Wan Kyu - a painful choice</div>
+<div>Park Wan Kyu - Castle of Perforation</div>
+<div>Park Wan Kyu - It's Impossible</div>
+<div>Park Wan Kyu - Fighter</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339846675' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] 엽기발랄</div>
+<div><a href='https://tidal.com/album/307065191' target='_blank'>https://tidal.com/album/307065191</a></div>
+<div>Park Wan Kyu - 욕망이란 이름---</div>
+<div>Park Wan Kyu - 왜 그랬어</div>
+<div>Park Wan Kyu - 비</div>
+<div>Park Wan Kyu - Day Fly</div>
+<div>Park Wan Kyu - 잃어버린 기억</div>
+<div>Park Wan Kyu - TV & 16</div>
+<div>Park Wan Kyu - 사랑한 후에</div>
+<div>Park Wan Kyu - 닿을 수 없는 너</div>
+<div>Park Wan Kyu - 친구야</div>
+<div>Park Wan Kyu - Rain</div>
+<div>Park Wan Kyu - Crazy Doggy Run</div>
+<div>Park Wan Kyu - TV & 16 (English Version)</div>
+<div>Park Wan Kyu - 언제나</div>
+<div>Park Wan Kyu - 눈물없는 이별</div>
+<div>Park Wan Kyu - When The Love Is Fading</div>
+<div>Park Wan Kyu - Naked Desire</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/307065191' target='_blank'><img src='https://resources.tidal.com/images/3c49ca01/a85c/427c/a77a/082fa693d75f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] 천년지애</div>
+<div><a href='https://tidal.com/album/306473092' target='_blank'>https://tidal.com/album/306473092</a></div>
+<div>Park Wan Kyu - Inferno</div>
+<div>Park Wan Kyu - 천년의 사랑</div>
+<div>Park Wan Kyu - 약속</div>
+<div>Park Wan Kyu - Till To The Rainbow</div>
+<div>Park Wan Kyu - 너의 눈물을 내가 볼 수 있도록</div>
+<div>Park Wan Kyu - 새로운 모습으로</div>
+<div>Park Wan Kyu - 남겨진 날들</div>
+<div>Park Wan Kyu - 진심</div>
+<div>Park Wan Kyu - 자유</div>
+<div>Park Wan Kyu - Angel</div>
+<div>Park Wan Kyu - One More Try</div>
+<div>Park Wan Kyu - 태양의 꿈</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306473092' target='_blank'><img src='https://resources.tidal.com/images/27626b78/fc59/45a7/8596/11c782e532e0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/1_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ1) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/박완규 (Park Wan Kyu)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
