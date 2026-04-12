@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 뮤지 ( Tidal Muzie )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 뮤지 ( Tidal Muzie )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/49b16fb3/2af8/42d1/a7db/00cab91f98c0/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/8081418' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 뮤지</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>뮤지 (Muzie) – 일상 속 따뜻한 위로를 전하는 로맨틱 멜로디 메이커, 'Any day with you'처럼 포근하고 '감출 수 없어'처럼 솔직한 감성을 노래하는 뮤지션</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Muzie</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Muzie - A romantic melody maker delivering warm comfort in everyday life, a musician who sings with emotions as cozy as 'Any day with you' and as honest as '감출 수 없어'.</div><p>일상에 스며드는 따뜻한 음악으로 우리 곁을 찾아오는 뮤지(Muzie)님을 소개합니다. 감미로운 목소리와 섬세한 감성으로 듣는 이의 마음을 사로잡는 뮤지님의 음악 세계로 함께 떠나볼까요? 편안함과 설렘이 공존하는 그의 음악은 지친 하루에 작은 위로를 선물해 드릴 거예요.</p><p>Let me introduce Muzie, who comes to us with warm music that permeates our daily lives. Shall we embark on a musical journey with Muzie, whose sweet voice and delicate emotions captivate the hearts of listeners? His music, where comfort and excitement coexist, will gift you a small comfort on a tiring day.</p><p>✧</p><p>음악적 여정의 시작</p><p>뮤지님은 다양한 음악적 시도를 통해 자신만의 색깔을 만들어왔습니다. 솔로 활동뿐만 아니라 다양한 아티스트와의 협업을 통해 폭넓은 음악적 스펙트럼을 보여주셨어요. 장르에 얽매이지 않고 자유로운 음악 활동을 펼치는 모습이 인상적입니다.</p><p>The Beginning of a Musical Journey</p><p>Muzie has created his own unique style through various musical attempts. He has shown a broad musical spectrum through solo activities as well as collaborations with various artists. His free musical activities without being bound by genre are impressive.</p><p>✧</p><p>섬세한 감성, 다채로운 음악</p><p>뮤지님의 음악은 듣는 이의 감성을 어루만지는 섬세함이 돋보입니다. 따뜻한 분위기의 곡부터 솔직한 감정을 담은 곡까지, 다양한 스타일을 소화하시죠. 특히 로맨틱한 멜로디와 진솔한 가사는 많은 사랑을 받고 있습니다.</p><p>Delicate Sensibility, Diverse Music</p><p>Muzie's music stands out for its delicacy that caresses the emotions of the listener. From songs with a warm atmosphere to songs with honest emotions, he digests various styles. In particular, his romantic melodies and sincere lyrics are much loved.</p><p>✧</p><p>협업을 통한 시너지</p><p>백지영, 범키 등 다양한 아티스트들과의 협업은 뮤지님의 음악 세계를 더욱 풍성하게 만들었습니다. 각기 다른 매력을 가진 아티스트들과의 조화는 신선한 음악적 경험을 선사하죠. 협업을 통해 끊임없이 새로운 시도를 하는 모습이 돋보입니다.</p><p>Synergy Through Collaboration</p><p>Collaborations with various artists such as Baek Ji Young and Bumkey have made Muzie's musical world even richer. The harmony with artists with different charms presents a fresh musical experience. His constant attempts at new things through collaboration stand out.</p><p>✧</p><p>앞으로의 음악, 그리고 의미</p><p>앞으로 뮤지님이 들려줄 음악은 어떤 모습일까요? 꾸준한 음악 활동을 통해 더욱 깊어진 감성과 음악적 역량을 보여줄 것으로 기대됩니다. 뮤지님의 음악은 우리에게 따뜻한 위로와 공감을 전하며 오랫동안 기억될 것입니다.</p><p>Future Music and Meaning</p><p>What will Muzie's music sound like in the future? It is expected that he will show even deeper emotions and musical capabilities through continuous musical activities. Muzie's music will be remembered for a long time, delivering warm comfort and empathy to us.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] White Christmas For You</div>
+<div><a href='https://tidal.com/album/406016531' target='_blank'>https://tidal.com/album/406016531</a></div>
+<div>Muzie - White Christmas For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406016531' target='_blank'><img src='https://resources.tidal.com/images/f25caf6a/ce40/4bca/bd4b/ec19e12d67af/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Love Next Door, Pt. 1 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/380955328' target='_blank'>https://tidal.com/album/380955328</a></div>
+<div>Muzie - Any day with you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/380955328' target='_blank'><img src='https://resources.tidal.com/images/cf09300d/e898/4d11/95a4/b1d115577273/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Beautiful Tonight</div>
+<div><a href='https://tidal.com/album/338798174' target='_blank'>https://tidal.com/album/338798174</a></div>
+<div>Muzie - Beautiful Tonight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/338798174' target='_blank'><img src='https://resources.tidal.com/images/3dac1148/1f3a/42e8/8728/31fb6b4176eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Be a Star</div>
+<div><a href='https://tidal.com/album/352791843' target='_blank'>https://tidal.com/album/352791843</a></div>
+<div>Baek Ji Young, Muzie - Be a Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352791843' target='_blank'><img src='https://resources.tidal.com/images/07b7c680/a72a/4d76/af9b/d0aad30d0153/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] BRANDNEW YEAR 2023 'White Christmas'</div>
+<div><a href='https://tidal.com/album/333821514' target='_blank'>https://tidal.com/album/333821514</a></div>
+<div>Bumkey, Muzie, Yang Da Il, Vincent Blue, JEON WOONG, LEE DAE HWI, EUNHO, EUNSANG - White Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/333821514' target='_blank'><img src='https://resources.tidal.com/images/8f8a7115/505f/41f3/a065/e426592e7eb6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 첫눈 말고 네 눈</div>
+<div><a href='https://tidal.com/album/340033379' target='_blank'>https://tidal.com/album/340033379</a></div>
+<div>Muzie - 첫눈 말고 네 눈</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340033379' target='_blank'><img src='https://resources.tidal.com/images/bc0f8c5c/97e9/4a9d/9eeb/224f26e50b9e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 감출 수 없어</div>
+<div><a href='https://tidal.com/album/340033162' target='_blank'>https://tidal.com/album/340033162</a></div>
+<div>Muzie - 감출 수 없어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340033162' target='_blank'><img src='https://resources.tidal.com/images/e49f6734/5a35/4408/b2ce/fc717e98db27/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Bucket Remake</div>
+<div><a href='https://tidal.com/album/346670261' target='_blank'>https://tidal.com/album/346670261</a></div>
+<div>Muzie, Darlim - Luv</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346670261' target='_blank'><img src='https://resources.tidal.com/images/0fc81326/5200/4464/b56d/7161d3ca6118/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Hide and Seek</div>
+<div><a href='https://tidal.com/album/297821168' target='_blank'>https://tidal.com/album/297821168</a></div>
+<div>Muzie - Hide and Seek</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297821168' target='_blank'><img src='https://resources.tidal.com/images/6ce582a8/cf3c/4c74/8c12/afbe24de6a7f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Blue Rose (Feat. X.Q)</div>
+<div><a href='https://tidal.com/album/297821583' target='_blank'>https://tidal.com/album/297821583</a></div>
+<div>Muzie - Blue Rose (feat. X.Q)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297821583' target='_blank'><img src='https://resources.tidal.com/images/4e28c900/458e/4a17/9df4/65a6e14b529c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] &lt;Muzie-Kwang Company&gt; project album</div>
+<div><a href='https://tidal.com/album/206281370' target='_blank'>https://tidal.com/album/206281370</a></div>
+<div>Muzie, Lee Hyun, LEE GI KWANG, JOOHONEY, CHUU, HYEONGJUN, JEONG YEON JOO - Starlight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/206281370' target='_blank'><img src='https://resources.tidal.com/images/8ea35ccb/b422/4e82/ba15/04dd50e71f3d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Me Before You</div>
+<div><a href='https://tidal.com/album/222013137' target='_blank'>https://tidal.com/album/222013137</a></div>
+<div>Muzie - Me Before You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222013137' target='_blank'><img src='https://resources.tidal.com/images/89d79afb/6378/45f6/bb93/12ed82efd4c7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] I'm not in your heart</div>
+<div><a href='https://tidal.com/album/297819610' target='_blank'>https://tidal.com/album/297819610</a></div>
+<div>Muzie - I'm not in your heart</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297819610' target='_blank'><img src='https://resources.tidal.com/images/0d81fb97/21c9/4acc/bb9a/f29c1ecf009a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Beside</div>
+<div><a href='https://tidal.com/album/297819023' target='_blank'>https://tidal.com/album/297819023</a></div>
+<div>Muzie - Beside</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297819023' target='_blank'><img src='https://resources.tidal.com/images/4d3fba0a/ad82/4141/adef/64f5e8827a1a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Shattered Love</div>
+<div><a href='https://tidal.com/album/110924773' target='_blank'>https://tidal.com/album/110924773</a></div>
+<div>Muzie - Shattered Love (Prod. By Postino)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/110924773' target='_blank'><img src='https://resources.tidal.com/images/9adb1e1d/3fc9/4e80/9f20/2b3e1645225b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Last Page (prod. by yoonsang)</div>
+<div><a href='https://tidal.com/album/105047954' target='_blank'>https://tidal.com/album/105047954</a></div>
+<div>Muzie - Last Page (prod. by yoonsang)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/105047954' target='_blank'><img src='https://resources.tidal.com/images/07f92c19/cdd4/49b4/af53/e6f3606a0848/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] COSMOS</div>
+<div><a href='https://tidal.com/album/297820129' target='_blank'>https://tidal.com/album/297820129</a></div>
+<div>Muzie - Behind</div>
+<div>Muzie - Another Me</div>
+<div>Muzie - Apologize</div>
+<div>Muzie - Ohae</div>
+<div>Muzie - Snow Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297820129' target='_blank'><img src='https://resources.tidal.com/images/f1a8b227/e7ae/4a06/986f/7f1a09ef9dc5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Behind</div>
+<div><a href='https://tidal.com/album/297820625' target='_blank'>https://tidal.com/album/297820625</a></div>
+<div>Muzie - Behind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297820625' target='_blank'><img src='https://resources.tidal.com/images/65af63f6/07d7/47c0/b25a/7b89bd72bc68/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Nothing (feat. Space Cowboy)</div>
+<div><a href='https://tidal.com/album/297820497' target='_blank'>https://tidal.com/album/297820497</a></div>
+<div>Muzie - Nothing (feat. Space Cowboy)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297820497' target='_blank'><img src='https://resources.tidal.com/images/9674c435/7000/43c0/b17b/82fedc3483dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] New Wave City</div>
+<div><a href='https://tidal.com/album/297822045' target='_blank'>https://tidal.com/album/297822045</a></div>
+<div>Muzie - Next Door (feat. Killagramz)</div>
+<div>Muzie - Sidorim (feat. XQ, Bbanana, J Black & J Pink)</div>
+<div>Muzie - Don't Worry (feat. jeebanoff)</div>
+<div>Muzie - What is Say- (feat. HANHAE & HWANG SEUNG UN)</div>
+<div>Muzie - I Can't Let You Go (feat. Space Cowboy)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297822045' target='_blank'><img src='https://resources.tidal.com/images/d93f5c99/64a1/4817/8704/86eea92d1314/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Color of Night</div>
+<div><a href='https://tidal.com/album/297822525' target='_blank'>https://tidal.com/album/297822525</a></div>
+<div>Muzie - Thinking About You (feat. SUMIN)</div>
+<div>Muzie - My Lady</div>
+<div>Muzie - Nothing (feat. Space Cowboy)</div>
+<div>Muzie - Urban Night (feat. Boi B)</div>
+<div>Muzie - Curious</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297822525' target='_blank'><img src='https://resources.tidal.com/images/2659036a/7bc2/4f41/976e/0c5428280ec3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Sidorim (feat. XQ)</div>
+<div><a href='https://tidal.com/album/297820856' target='_blank'>https://tidal.com/album/297820856</a></div>
+<div>Muzie - Sidorim (feat. XQ, Bbanana, J Black & J Pink)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297820856' target='_blank'><img src='https://resources.tidal.com/images/cc389373/26ad/48a8/8f80/da68e9de475e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Love Christmas</div>
+<div><a href='https://tidal.com/album/297821494' target='_blank'>https://tidal.com/album/297821494</a></div>
+<div>Muzie - Love Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297821494' target='_blank'><img src='https://resources.tidal.com/images/1f9d34bd/8f34/42df/9524/d6d091b8689a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Future track</div>
+<div><a href='https://tidal.com/album/297807321' target='_blank'>https://tidal.com/album/297807321</a></div>
+<div>Muzie - What is Say- (feat. HANHAE & HWANG SEUNG UN)</div>
+<div>Muzie - Don't Worry (feat. jeebanoff)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297807321' target='_blank'><img src='https://resources.tidal.com/images/3f2fe125/6c60/4777/b597/19105b998908/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] ZALZARA</div>
+<div><a href='https://tidal.com/album/216015081' target='_blank'>https://tidal.com/album/216015081</a></div>
+<div>Muzie - ZALZARA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216015081' target='_blank'><img src='https://resources.tidal.com/images/022ec178/ea99/431a/bd50/5a63257b60bd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] My Name is MUZIE</div>
+<div><a href='https://tidal.com/album/215832157' target='_blank'>https://tidal.com/album/215832157</a></div>
+<div>Muzie - My Name is MUZIE</div>
+<div>Muzie - Love at Frist Sight (Feat. Dynamic Duo)</div>
+<div>Muzie - Under the Moonlight (Feat. OKDAL, Yoo Se Yun)</div>
+<div>Muzie - Rain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215832157' target='_blank'><img src='https://resources.tidal.com/images/185ea671/460c/41b4/b048/b72611489adf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/1_TIDAL_Kpop_Artist_Link_M.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅁ1) TIDAL Kpop Artist Link (M)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/뮤지 (Muzie)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
