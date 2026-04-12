@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 샘김 ( Tidal Sam Kim )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 샘김 ( Tidal Sam Kim )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/643cd3b9/037a/4c40/8cdf/45a324fddae4/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9013777' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 샘김</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>샘김 - 섬세한 감성으로 빚어낸 음악, 'Summer Rain'처럼 촉촉한 감성을 노래하는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Sam Kim</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Sam Kim - A singer-songwriter crafting music with delicate emotions, singing with a sensibility as tender as 'Summer Rain'.</div><p>독보적인 음색과 섬세한 감성으로 리스너들의 마음을 사로잡는 아티스트, 샘김을 소개합니다. 기타 선율과 함께 펼쳐지는 그의 음악은 마치 한 편의 영화를 보는 듯한 깊은 여운을 남기죠. 자신만의 색깔로 다양한 장르를 소화하며 끊임없이 성장하는 그의 음악 세계를 함께 알아볼까요?</p><p>Let me introduce Sam Kim, an artist who captivates listeners with his unique voice and delicate emotions. His music, unfolding with guitar melodies, leaves a deep impression, like watching a movie. Shall we explore his ever-growing musical world, where he digests various genres with his own color?</p><p>✧</p><p>음악적 시작</p><p>샘김은 K팝 스타 시즌3 준우승을 통해 대중에게 이름을 알리기 시작했어요. 어린 나이에도 불구하고 뛰어난 기타 연주 실력과 소울풀한 보컬은 심사위원들과 시청자들을 매료시켰죠. 이후 안테나 뮤직에 합류하며 본격적인 음악 활동을 시작하게 됩니다.</p><p>Musical Beginnings</p><p>Sam Kim first made himself known to the public as the runner-up of K-Pop Star Season 3. Despite his young age, his outstanding guitar playing skills and soulful vocals captivated the judges and viewers. He later joined Antenna Music and began his full-fledged music career.</p><p>✧</p><p>다채로운 음악 스펙트럼</p><p>샘김의 음악은 특정 장르에 얽매이지 않고 다양한 시도를 보여줍니다. 소울, R&B, 팝 등 다양한 장르를 자신만의 스타일로 녹여내며 폭넓은 음악적 스펙트럼을 자랑하죠. 감미로운 보컬과 섬세한 기타 연주가 어우러져 듣는 이로 하여금 깊은 감성에 빠져들게 합니다.</p><p>Diverse Musical Spectrum</p><p>Sam Kim's music shows various attempts without being bound by a specific genre. He boasts a wide musical spectrum, melting various genres such as soul, R&B, and pop into his own style. His sweet vocals and delicate guitar playing combine to immerse listeners in deep emotions.</p><p>✧</p><p>주요 활동과 협업</p><p>드라마 OST 참여, 다양한 아티스트들과의 협업 등 활발한 활동을 이어가고 있습니다. 특히, OST에서는 특유의 감성적인 보컬로 드라마의 분위기를 더욱 깊게 만들며 많은 사랑을 받고 있죠. YERI, KYUHYUN, Kwon Jin Ah 등 다양한 아티스트들과의 협업을 통해 음악적 시너지를 발휘하고 있습니다.</p><p>Major Activities and Collaborations</p><p>He continues to be active in participating in drama OSTs and collaborating with various artists. In particular, in OSTs, he deepens the atmosphere of the drama with his unique emotional vocals and is loved by many. He is creating musical synergy through collaborations with various artists such as YERI, KYUHYUN, and Kwon Jin Ah.</p><p>✧</p><p>앞으로의 음악 여정</p><p>샘김은 앞으로도 자신만의 음악적 색깔을 더욱 짙게 드러낼 것으로 기대됩니다. 꾸준한 음악 활동을 통해 더욱 깊어진 감성과 음악적 역량을 선보일 그의 미래가 더욱 기대되네요. 샘김의 음악은 듣는 이들에게 진솔한 위로와 공감을 전하며 오랫동안 기억될 거예요.</p><p>Future Musical Journey</p><p>Sam Kim is expected to reveal his own musical color even more in the future. His future, which will showcase his deepened emotions and musical capabilities through continuous musical activities, is even more anticipated. Sam Kim's music will be remembered for a long time, delivering sincere comfort and empathy to listeners.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Like a Moonlight (From _Love Scout_ _ Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/409884084' target='_blank'>https://tidal.com/album/409884084</a></div>
+<div>SAM KIM - Like a Moonlight (From -Love Scout- - Original Soundtrack)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/409884084' target='_blank'><img src='https://resources.tidal.com/images/bc397154/c2b5/4773/80aa/59ec8d13cab7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] ﻿Cinderella at 2AM OST Part 2</div>
+<div><a href='https://tidal.com/album/382685735' target='_blank'>https://tidal.com/album/382685735</a></div>
+<div>SAM KIM - Shining you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382685735' target='_blank'><img src='https://resources.tidal.com/images/924d2870/96e1/482d/8ce4/0e0a3276ef65/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] LOVE in the BIG CITY (Special pre-release - Original Motion Picture Soundtrack)</div>
+<div><a href='https://tidal.com/album/388882087' target='_blank'>https://tidal.com/album/388882087</a></div>
+<div>SAM KIM - Playing Pretend</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/388882087' target='_blank'><img src='https://resources.tidal.com/images/08255f1a/822c/46ea/b4d8/57202fcc3c8d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Wish</div>
+<div><a href='https://tidal.com/album/333171232' target='_blank'>https://tidal.com/album/333171232</a></div>
+<div>KYUHYUN, Kwon Jin Ah, SAM KIM - Wish</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/333171232' target='_blank'><img src='https://resources.tidal.com/images/8102cc6a/753b/4f3e/b53c/f747cc5d31ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Sam Kim X MY DEMON</div>
+<div><a href='https://tidal.com/album/335372791' target='_blank'>https://tidal.com/album/335372791</a></div>
+<div>SAM KIM - Say You Love Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/335372791' target='_blank'><img src='https://resources.tidal.com/images/22348b3a/df5b/4417/a4b5/237a7bce0586/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 낮잠 Nap Fairy - SM STATION</div>
+<div><a href='https://tidal.com/album/244026618' target='_blank'>https://tidal.com/album/244026618</a></div>
+<div>YERI, SAM KIM - 낮잠 Nap Fairy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/244026618' target='_blank'><img src='https://resources.tidal.com/images/f6e2505a/7bee/46b8/a932/f0175a87aad8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Smile</div>
+<div><a href='https://tidal.com/album/210195083' target='_blank'>https://tidal.com/album/210195083</a></div>
+<div>SAM KIM - Smile(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210195083' target='_blank'><img src='https://resources.tidal.com/images/55e42a8d/1235/48f1/9290/cd848a49cb43/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Our Beloved Summer (Original Television Soundtrack), Pt. 8</div>
+<div><a href='https://tidal.com/album/211605717' target='_blank'>https://tidal.com/album/211605717</a></div>
+<div>SAM KIM - Summer Rain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/211605717' target='_blank'><img src='https://resources.tidal.com/images/0f7ddc33/0fff/4dbc/882a/a2842797c568/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Cheer Up (Original Television Soundtrack Part.2) - Single</div>
+<div><a href='https://tidal.com/album/409059247' target='_blank'>https://tidal.com/album/409059247</a></div>
+<div>SAM KIM - Confession</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/409059247' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] CLEANING UP (Original Television Soundtrack, Pt. 1)</div>
+<div><a href='https://tidal.com/album/233412249' target='_blank'>https://tidal.com/album/233412249</a></div>
+<div>SAM KIM - For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/233412249' target='_blank'><img src='https://resources.tidal.com/images/cf74a963/435d/4c79/bcea/d498e7be8bf6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] These Walls</div>
+<div><a href='https://tidal.com/album/216276526' target='_blank'>https://tidal.com/album/216276526</a></div>
+<div>SAM KIM - These Walls</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216276526' target='_blank'><img src='https://resources.tidal.com/images/af626335/04c2/4389/9a06/41263821c5ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] The Juice</div>
+<div><a href='https://tidal.com/album/216277603' target='_blank'>https://tidal.com/album/216277603</a></div>
+<div>SAM KIM - The Juice</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216277603' target='_blank'><img src='https://resources.tidal.com/images/da4a87dd/1740/4586/b820/e5d44bd63df8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Someday (feat. Sam Kim)</div>
+<div><a href='https://tidal.com/album/203944548' target='_blank'>https://tidal.com/album/203944548</a></div>
+<div>Raisa, SAM KIM - Someday (feat. Sam Kim)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/203944548' target='_blank'><img src='https://resources.tidal.com/images/a3a96ff2/b371/464f/a041/844e0dfce8ad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Nevertheless, (Original Television Soundtrack, Pt. 6)</div>
+<div><a href='https://tidal.com/album/191087108' target='_blank'>https://tidal.com/album/191087108</a></div>
+<div>SAM KIM - Love Me Like That</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/191087108' target='_blank'><img src='https://resources.tidal.com/images/877586fa/f9c9/4ca8/b99a/c3f95bc700c8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Closer</div>
+<div><a href='https://tidal.com/album/216375772' target='_blank'>https://tidal.com/album/216375772</a></div>
+<div>SAM KIM, Jukjae, Kwon Jin Ah - Closer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216375772' target='_blank'><img src='https://resources.tidal.com/images/6301cabe/d6ca/431b/acc1/08bfe42daebf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Before 4_30 (She Said…)</div>
+<div><a href='https://tidal.com/album/208454211' target='_blank'>https://tidal.com/album/208454211</a></div>
+<div>Mew Suppasit, SAM KIM - Before 4-30 (She Said…)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208454211' target='_blank'><img src='https://resources.tidal.com/images/1b76ff0d/6d97/4afb/b7c0/5d551f4641f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 2021 Antenna Christmas Carol</div>
+<div><a href='https://tidal.com/album/216375710' target='_blank'>https://tidal.com/album/216375710</a></div>
+<div>You Hee Yul, Yu Jae Seok, Jung Jae Hyung, Lucid Fall, Peppertones, Park Sae Byul, SAM KIM, Lee Jin A - Hello Antenna, Hello Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216375710' target='_blank'><img src='https://resources.tidal.com/images/3b6919dd/beae/42d6/b72f/e49ee9589daa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] What about (feat. PENOMECO)</div>
+<div><a href='https://tidal.com/album/155676877' target='_blank'>https://tidal.com/album/155676877</a></div>
+<div>SAM KIM, Penomeco - What about (feat. PENOMECO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/155676877' target='_blank'><img src='https://resources.tidal.com/images/aa5aa815/6237/49af/8b92/aa72b8f706c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Like a Fool</div>
+<div><a href='https://tidal.com/album/383924869' target='_blank'>https://tidal.com/album/383924869</a></div>
+<div>Nive, SAM KIM - Like a Fool</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383924869' target='_blank'><img src='https://resources.tidal.com/images/77f9b0b8/0d1b/40ee/8e42/3904b31a30ee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] It's Okay to Not Be Okay (Original Television Soundtrack), Pt.2</div>
+<div><a href='https://tidal.com/album/189858979' target='_blank'>https://tidal.com/album/189858979</a></div>
+<div>SAM KIM - Breath</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189858979' target='_blank'><img src='https://resources.tidal.com/images/70069d04/b88e/44f3/9eb0/bb23884fe23b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Everything Is OK</div>
+<div><a href='https://tidal.com/album/216276464' target='_blank'>https://tidal.com/album/216276464</a></div>
+<div>Lucid Fall, CHAI, Lee Jin Ah, Jung Seung Hwan, Jung Jae Hyung, SAM KIM, Kwon Jin Ah, Park Sae Byul, - Everything Is OK (with Antenna Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216276464' target='_blank'><img src='https://resources.tidal.com/images/7189316e/893a/4977/8ebe/6fb0006244b5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 2020 Antenna Christmas Carol</div>
+<div><a href='https://tidal.com/album/216182392' target='_blank'>https://tidal.com/album/216182392</a></div>
+<div>Toy, Jung Seung Hwan, SAM KIM, Jung Jae Hyung, Lucid Fall, Peppertones, Park Sae Byul, Kwon Jin Ah, - Our Christmas Wish For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216182392' target='_blank'><img src='https://resources.tidal.com/images/048f531d/b521/4e2e/90c5/99e411c55556/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] WHERE'S MY MONEY</div>
+<div><a href='https://tidal.com/album/216123261' target='_blank'>https://tidal.com/album/216123261</a></div>
+<div>SAM KIM - WHERE'S MY MONEY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216123261' target='_blank'><img src='https://resources.tidal.com/images/11b7253c/7913/4ac6/8ad8/52b204c5857f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] When You Fall (Feat. Chai)</div>
+<div><a href='https://tidal.com/album/215971077' target='_blank'>https://tidal.com/album/215971077</a></div>
+<div>SAM KIM - When You Fall (Feat. Chai)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215971077' target='_blank'><img src='https://resources.tidal.com/images/ba7c9a6a/7628/49d8/8b0d/ede9f25dfcaf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Sun And Moon</div>
+<div><a href='https://tidal.com/album/216437348' target='_blank'>https://tidal.com/album/216437348</a></div>
+<div>SAM KIM - Sun And Moon</div>
+<div>SAM KIM - It's You (Feat. ZICO)</div>
+<div>SAM KIM - Make Up (Feat. Crush)</div>
+<div>SAM KIM - Sunny Days, Summer Nights</div>
+<div>SAM KIM - The One</div>
+<div>SAM KIM - Would You Believe</div>
+<div>SAM KIM - The Weight</div>
+<div>SAM KIM - If</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437348' target='_blank'><img src='https://resources.tidal.com/images/d366f6ed/e4c9/41a8/a1b8/6dc89f0b4190/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Boys and Girls Music Vol.1</div>
+<div><a href='https://tidal.com/album/215973868' target='_blank'>https://tidal.com/album/215973868</a></div>
+<div>SAM KIM, Loco - Think About' Chu</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215973868' target='_blank'><img src='https://resources.tidal.com/images/d1bf451c/e210/4d8d/9492/1b82399408f2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] LOVE ANTENNA</div>
+<div><a href='https://tidal.com/album/216097605' target='_blank'>https://tidal.com/album/216097605</a></div>
+<div>Kwon Jin Ah, SAM KIM - For now</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216097605' target='_blank'><img src='https://resources.tidal.com/images/44f075b9/a0cd/47c2/99dc/13971aae8617/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] I AM SAM</div>
+<div><a href='https://tidal.com/album/216116805' target='_blank'>https://tidal.com/album/216116805</a></div>
+<div>SAM KIM - NO SENSE (Feat. Crush)</div>
+<div>SAM KIM - DANCE</div>
+<div>SAM KIM - TOUCH MY BODY</div>
+<div>SAM KIM - MAMA DON'T WORRY</div>
+<div>SAM KIM - SEATTLE</div>
+<div>SAM KIM - YOUR SONG (With Lee Jin Ah, Jung Seung Hwan, Kwon Jin Ah)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216116805' target='_blank'><img src='https://resources.tidal.com/images/bd2efa05/f77d/43d7/bdc4/e2d5185cabe1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] KPOP STAR 3 TOP2 (Sam Kim)</div>
+<div><a href='https://tidal.com/album/216075639' target='_blank'>https://tidal.com/album/216075639</a></div>
+<div>SAM KIM - Lies</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216075639' target='_blank'><img src='https://resources.tidal.com/images/587ab604/ecc9/4ac8/8f62/7f11a3e8facc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/1_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ1) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/샘김 (Sam Kim)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
