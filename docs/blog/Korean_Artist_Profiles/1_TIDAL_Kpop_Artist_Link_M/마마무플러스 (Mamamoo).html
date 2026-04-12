@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 마마무플러스 ( Tidal Mamamoo+ )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 마마무플러스 ( Tidal Mamamoo+ )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/f431c1f6/5641/4cec/a4a6/b99740dfab7d/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/34121210' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 마마무플러스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>무한한 가능성을 탐험하는 유닛, 'GGBB'처럼 다채로운 색깔과 'Better'처럼 편안한 음악적 시도를 선보이는 듀오</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Mamamoo+</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A unit exploring limitless possibilities, a duo showcasing diverse colors like in 'GGBB' and comfortable musical experiments like in 'Better'.</div><p>마마무의 새로운 유닛, 마마무플러스(+)를 소개합니다. 솔라와 문별, 두 멤버의 시너지가 돋보이는 이 유닛은 기존 마마무의 음악적 스펙트럼을 넓히고 있습니다. 더욱 실험적이고 다채로운 음악으로 팬들을 매료시키고 있답니다.</p><p>Introducing Mamamoo+, a new unit from Mamamoo. This unit, showcasing the synergy of members Solar and Moonbyul, is expanding the musical spectrum of the original group. They are captivating fans with more experimental and diverse music.</p><p>✧</p><p>새로운 시작을 알리며</p><p>마마무플러스는 그룹 마마무의 확장된 세계관을 보여주는 유닛입니다. 기존 그룹 활동과는 또 다른 매력과 음악적 시도를 통해 새로운 모습을 선보이고자 탄생했습니다. 두 멤버의 조합이 어떤 시너지를 만들어낼지 기대감을 높였답니다.</p><p>Announcing a New Beginning</p><p>Mamamoo+ is a unit that showcases the expanded universe of the group Mamamoo. It was created to present a new image through different charms and musical experiments from the existing group activities. The combination of the two members raises expectations for the synergy they will create.</p><p>✧</p><p>음악적 스타일과 퍼포먼스</p><p>마마무플러스는 다양한 장르를 넘나들며 폭넓은 음악적 스펙트럼을 보여줍니다. 톡톡 튀는 매력의 곡부터 감성적인 분위기의 곡까지, 다채로운 음악 스타일을 소화하며 듣는 재미를 더합니다. 무대 위 퍼포먼스 역시 두 멤버의 개성이 돋보이는 조화로운 모습을 보여준답니다.</p><p>Musical Style and Performance</p><p>Mamamoo+ showcases a wide musical spectrum, crossing various genres. From songs with a popping charm to songs with an emotional atmosphere, they digest diverse musical styles, adding to the fun of listening. The stage performance also shows a harmonious appearance that highlights the individuality of the two members.</p><p>✧</p><p>다채로운 활동</p><p>마마무플러스는 유닛 활동을 통해 솔로 활동과는 또 다른 매력을 발산하고 있습니다. 그룹 활동에서는 보여주기 어려웠던 새로운 콘셉트와 음악 스타일을 시도하며 팬들에게 신선함을 선사합니다. 콜라보레이션, OST 참여 등 다양한 활동을 통해 음악적 역량을 넓혀가고 있어요.</p><p>Diverse Activities</p><p>Mamamoo+ is radiating a different charm from solo activities through unit activities. They present freshness to fans by trying new concepts and musical styles that were difficult to show in group activities. They are expanding their musical capabilities through various activities such as collaborations and OST participation.</p><p>✧</p><p>미래와 의미</p><p>마마무플러스는 앞으로도 끊임없는 음악적 탐구를 통해 더욱 성장해나갈 것입니다. 단순한 유닛 활동을 넘어, 마마무라는 그룹 전체에 긍정적인 영향을 미치는 존재가 될 것으로 기대됩니다. 이들의 음악적 행보에 많은 관심과 응원 부탁드려요.</p><p>Future and Meaning</p><p>Mamamoo+ will continue to grow through continuous musical exploration. Beyond simple unit activities, they are expected to become an entity that positively influences the entire group Mamamoo. We ask for your interest and support in their musical journey.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] 더 퀸즈 OST Part.4</div>
+<div><a href='https://tidal.com/album/288290585' target='_blank'>https://tidal.com/album/288290585</a></div>
+<div>MAMAMOO+ - Super Gap (박세리 테마곡)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288290585' target='_blank'><img src='https://resources.tidal.com/images/7c3107cf/09f3/4079/b5e3/33fa9bbc4f25/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] TWO RABBITS</div>
+<div><a href='https://tidal.com/album/308886871' target='_blank'>https://tidal.com/album/308886871</a></div>
+<div>MAMAMOO+ - Intro - Two Rabbits</div>
+<div>MAMAMOO+ - dangdang</div>
+<div>MAMAMOO+ - I LIKE THIS</div>
+<div>MAMAMOO+ - Starry Sea</div>
+<div>MAMAMOO+ - Save Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308886871' target='_blank'><img src='https://resources.tidal.com/images/846422bd/79f9/4961/ae1b/a09823495815/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Save Me</div>
+<div><a href='https://tidal.com/album/305410651' target='_blank'>https://tidal.com/album/305410651</a></div>
+<div>MAMAMOO+ - Save Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305410651' target='_blank'><img src='https://resources.tidal.com/images/684d549c/1e91/4874/8e53/2611025dbe8b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Chico malo</div>
+<div><a href='https://tidal.com/album/283823124' target='_blank'>https://tidal.com/album/283823124</a></div>
+<div>MAMAMOO+ - Chico malo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/283823124' target='_blank'><img src='https://resources.tidal.com/images/c9121f23/cd79/4c70/8409/bb988720f7bc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] ACT 1, SCENE 1</div>
+<div><a href='https://tidal.com/album/285977413' target='_blank'>https://tidal.com/album/285977413</a></div>
+<div>MAMAMOO+ - GGBB</div>
+<div>MAMAMOO+ - Chico malo</div>
+<div>MAMAMOO+ - LLL</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/285977413' target='_blank'><img src='https://resources.tidal.com/images/4e48e3d7/f7be/48d5/8b2b/612dd01bbeaf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Better</div>
+<div><a href='https://tidal.com/album/245687788' target='_blank'>https://tidal.com/album/245687788</a></div>
+<div>MAMAMOO+ - Better (Feat. BIG Naughty)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/245687788' target='_blank'><img src='https://resources.tidal.com/images/3c7a4681/3d12/4e8e/b456/e060a6e33fda/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/1_TIDAL_Kpop_Artist_Link_M.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅁ1) TIDAL Kpop Artist Link (M)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/마마무플러스 (Mamamoo+)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
