@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 원슈타인 ( Tidal Wonstein )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 원슈타인 ( Tidal Wonstein )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/d742d178/accb/4fb2/ab55/a360b9b72d5c/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/14945768' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 원슈타인</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>몽글몽글한 감성과 자유로운 음악 세계, 'Pajama'처럼 편안하고 'I Love Yuo'처럼 솔직한 이야기</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Wonstein</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Fuzzy emotions and a free musical world, stories as comfortable as 'Pajama' and as honest as 'I Love Yuo'.</div><p>독특한 음색과 개성 넘치는 음악으로 리스너들의 마음을 사로잡는 아티스트, 원슈타인입니다. 그는 장르에 얽매이지 않고 다양한 음악적 시도를 통해 자신만의 색깔을 만들어가고 있어요. 듣는 이로 하여금 편안함과 동시에 신선한 자극을 선사하는 매력적인 뮤지션입니다.</p><p>Wonstein is an artist who captivates listeners with his unique tone and distinctive music. He is creating his own color through various musical attempts without being bound by genre. He is an attractive musician who offers both comfort and fresh stimulation.</p><p>✧</p><p>자유로운 음악적 탐구</p><p>원슈타인은 특정 그룹에 소속되어 활동하기보다는, 다양한 협업을 통해 음악적 스펙트럼을 넓혀왔어요. 힙합, 알앤비, 팝 등 다양한 장르를 넘나들며 자신만의 독특한 스타일을 구축해나가고 있습니다. 틀에 갇히지 않은 자유로운 시도가 그의 음악의 가장 큰 매력이라고 할 수 있죠.</p><p>Free Musical Exploration</p><p>Rather than being affiliated with a specific group, Wonstein has broadened his musical spectrum through various collaborations. He is building his own unique style by crossing various genres such as hip-hop, R&B, and pop. His free attempts, unconstrained by frames, are the biggest charm of his music.</p><p>✧</p><p>다채로운 감성 표현</p><p>그의 음악은 사랑, 이별, 일상 등 다양한 주제를 솔직하게 담아내고 있습니다. 특히, 섬세한 가사와 멜로디는 듣는 이들의 공감을 불러일으키며 깊은 감동을 선사해요. 꾸밈없는 솔직함이 그의 음악을 더욱 특별하게 만들어주는 요소입니다.</p><p>Diverse Expression of Emotions</p><p>His music honestly captures various themes such as love, separation, and daily life. In particular, the delicate lyrics and melodies evoke empathy from listeners and provide deep emotion. Unadorned honesty is an element that makes his music even more special.</p><p>✧</p><p>폭넓은 활동 스펙트럼</p><p>음악 활동 외에도 다양한 방송 프로그램에 출연하며 대중적인 인지도를 높여가고 있습니다. 예능감을 뽐내면서도 진솔한 모습을 보여주며 많은 사랑을 받고 있어요. 음악과 예능을 넘나드는 그의 활약은 앞으로 더욱 기대됩니다.</p><p>Wide Range of Activities</p><p>In addition to music activities, he is increasing his public recognition by appearing in various broadcasting programs. He is loved for showing off his entertainment sense while also showing a sincere side. His activities across music and entertainment are even more anticipated in the future.</p><p>✧</p><p>앞으로의 음악 세계</p><p>끊임없이 새로운 시도를 통해 자신만의 음악적 영역을 확장해 나갈 원슈타인. 그의 음악은 단순한 유행을 쫓기보다는, 진솔한 감정과 메시지를 담아 오랫동안 사랑받을 것으로 기대됩니다. 앞으로 그가 들려줄 이야기가 더욱 궁금해지네요.</p><p>The Future of His Music</p><p>Wonstein will continue to expand his musical realm through constant new attempts. Rather than simply chasing trends, his music is expected to be loved for a long time for containing sincere emotions and messages. I am even more curious about the stories he will tell in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Newtopia OST</div>
+<div><a href='https://tidal.com/album/426564592' target='_blank'>https://tidal.com/album/426564592</a></div>
+<div>Wonstein - Rebirth</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/426564592' target='_blank'><img src='https://resources.tidal.com/images/90a6f7f5/7f5e/41f8/8256/fcca3a425f90/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Valentine</div>
+<div><a href='https://tidal.com/album/349779161' target='_blank'>https://tidal.com/album/349779161</a></div>
+<div>Wonstein - Valentine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/349779161' target='_blank'><img src='https://resources.tidal.com/images/96f2464a/f860/4443/b91a/9166990ced3a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] TENT 0.7</div>
+<div><a href='https://tidal.com/album/393244296' target='_blank'>https://tidal.com/album/393244296</a></div>
+<div>Wonstein - Inception (Feat. Yun Seok Cheol)</div>
+<div>Wonstein - Pajama</div>
+<div>Wonstein - I Love Yuo</div>
+<div>Wonstein - Valentine (Feat. Min Jiwoon)</div>
+<div>Wonstein - DENIM</div>
+<div>Wonstein - Memo..!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/393244296' target='_blank'><img src='https://resources.tidal.com/images/e8326ace/455d/4692/b6fd/cfa3c455b65d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] TENT 0.3</div>
+<div><a href='https://tidal.com/album/379305123' target='_blank'>https://tidal.com/album/379305123</a></div>
+<div>Wonstein - Pajama</div>
+<div>Wonstein - I Love Yuo</div>
+<div>Wonstein - Memo..!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/379305123' target='_blank'><img src='https://resources.tidal.com/images/fb5f6ebe/af0a/4b59/8077/61441c439a53/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Love Next Door, Pt. 5 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/388300207' target='_blank'>https://tidal.com/album/388300207</a></div>
+<div>Wonstein - Leave it all behind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/388300207' target='_blank'><img src='https://resources.tidal.com/images/5ce5ce1c/2dc6/4c29/8e42/6cd97997934b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] It's not beautiful and it doesn't hurt</div>
+<div><a href='https://tidal.com/album/341684311' target='_blank'>https://tidal.com/album/341684311</a></div>
+<div>Wonstein - It's not beautiful and it doesn't hurt</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/341684311' target='_blank'><img src='https://resources.tidal.com/images/54483439/451d/4be7/ad70/b6dc420364d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Han River 220625</div>
+<div><a href='https://tidal.com/album/361979742' target='_blank'>https://tidal.com/album/361979742</a></div>
+<div>Wonstein - Han River 220625</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/361979742' target='_blank'><img src='https://resources.tidal.com/images/c6c3681a/a31c/4e86/8cf5/34c98766bd74/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Grandpa of Mountain〈Sanullim's 50th anniversary collaboration album〉</div>
+<div><a href='https://tidal.com/album/358833280' target='_blank'>https://tidal.com/album/358833280</a></div>
+<div>Wonstein - Grandpa of Mountain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/358833280' target='_blank'><img src='https://resources.tidal.com/images/42fbcb9f/24bd/4dcf/b35c/e5a67ec4197e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Single</div>
+<div><a href='https://tidal.com/album/306122838' target='_blank'>https://tidal.com/album/306122838</a></div>
+<div>Wonstein - Single</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306122838' target='_blank'><img src='https://resources.tidal.com/images/7e38b193/1f29/46d2/a595/9ab40bf7117b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] K-Mars (Original Television Soundtrack From _Duty After School_)</div>
+<div><a href='https://tidal.com/album/287160083' target='_blank'>https://tidal.com/album/287160083</a></div>
+<div>Wonstein - K-Mars (Original Television Soundtrack From -Duty</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287160083' target='_blank'><img src='https://resources.tidal.com/images/a6e93693/97fa/4b07/b68c/2b08ccb5a857/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] DEMO</div>
+<div><a href='https://tidal.com/album/306168303' target='_blank'>https://tidal.com/album/306168303</a></div>
+<div>Wonstein - Cool (Prod. PEEJAY)</div>
+<div>Wonstein - I Don′t Believe The Chart (Prod. PEEJAY)(Explicit)</div>
+<div>Wonstein - Apocalypse (Prod. PEEJAY)</div>
+<div>Wonstein - News (Prod. PEEJAY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306168303' target='_blank'><img src='https://resources.tidal.com/images/e3c5e548/6376/4356/840d/03c456ab0a5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Call It Love, Pt. 1 (Original Soundtrack from the Disney+ Original Series)</div>
+<div><a href='https://tidal.com/album/346784354' target='_blank'>https://tidal.com/album/346784354</a></div>
+<div>Wonstein - The Secret Garden</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346784354' target='_blank'><img src='https://resources.tidal.com/images/637a4e1f/2a0e/48b0/b0f2/e789aecd359d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Apocalypse</div>
+<div><a href='https://tidal.com/album/306152805' target='_blank'>https://tidal.com/album/306152805</a></div>
+<div>Wonstein - Apocalypse (Prod. PEEJAY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306152805' target='_blank'><img src='https://resources.tidal.com/images/ee1bdb97/8265/4fb7/b9fd/56391def1c68/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] World Peace Project Vol.2</div>
+<div><a href='https://tidal.com/album/255508610' target='_blank'>https://tidal.com/album/255508610</a></div>
+<div>JOY, Wonstein - Love Song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/255508610' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Twenty-Five Twenty-One OST Part 4</div>
+<div><a href='https://tidal.com/album/218055255' target='_blank'>https://tidal.com/album/218055255</a></div>
+<div>Wonstein - Your Existence</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/218055255' target='_blank'><img src='https://resources.tidal.com/images/1e0d2eeb/8f4e/467a/b832/27e1c702f2a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Sing Forest, Pt. 4</div>
+<div><a href='https://tidal.com/album/346668705' target='_blank'>https://tidal.com/album/346668705</a></div>
+<div>Gummy, Wonstein - Memory Loss</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346668705' target='_blank'><img src='https://resources.tidal.com/images/ccd8ae0f/081c/4230/93eb/5bdf6a5efc06/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Love Theory - SM STATION</div>
+<div><a href='https://tidal.com/album/224495378' target='_blank'>https://tidal.com/album/224495378</a></div>
+<div>TAEYONG, Wonstein - Love Theory</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/224495378' target='_blank'><img src='https://resources.tidal.com/images/e3ee32b0/cc40/490b/b050/a26a71894e9d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Extraordinary Attorney Woo (Original Television Soundtrack) Pt. 4</div>
+<div><a href='https://tidal.com/album/306277952' target='_blank'>https://tidal.com/album/306277952</a></div>
+<div>Wonstein - Tuning In To You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306277952' target='_blank'><img src='https://resources.tidal.com/images/1f3f76b6/6038/48ce/98f6/077dec089cee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Cassie ($)</div>
+<div><a href='https://tidal.com/album/306288026' target='_blank'>https://tidal.com/album/306288026</a></div>
+<div>Wonstein - Cassie ($) (prod. PEEJAY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306288026' target='_blank'><img src='https://resources.tidal.com/images/ad8c3097/a4fe/4338/8387/0a71c40a7518/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] When Night Is Falling</div>
+<div><a href='https://tidal.com/album/196169595' target='_blank'>https://tidal.com/album/196169595</a></div>
+<div>Wonstein - When Night Is Falling</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196169595' target='_blank'><img src='https://resources.tidal.com/images/3e3961f8/9fb0/487d/9fc2/123874583e3f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Tree</div>
+<div><a href='https://tidal.com/album/339451030' target='_blank'>https://tidal.com/album/339451030</a></div>
+<div>Wonstein - Tree</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339451030' target='_blank'><img src='https://resources.tidal.com/images/4771b376/8723/433f/b6da/b49c29854cb7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Kangaroo</div>
+<div><a href='https://tidal.com/album/339452594' target='_blank'>https://tidal.com/album/339452594</a></div>
+<div>Wonstein - Kangaroo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339452594' target='_blank'><img src='https://resources.tidal.com/images/80b8097c/1268/43f2/b674/589d84ca2227/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Feel The Rhythm Of Korea Part 3</div>
+<div><a href='https://tidal.com/album/203863294' target='_blank'>https://tidal.com/album/203863294</a></div>
+<div>Mommy Son, Coe - happy-go-lucky (Mokpo) (Prod. Coe)</div>
+<div>Wonstein, COUP D′ETAT - easy going (Jeonju) (Prod. COUP D′ETAT)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/203863294' target='_blank'><img src='https://resources.tidal.com/images/f50b6980/7475/480d/86f6/1eff1d2e9dfe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Druken</div>
+<div><a href='https://tidal.com/album/209233853' target='_blank'>https://tidal.com/album/209233853</a></div>
+<div>Wonstein - Druken</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209233853' target='_blank'><img src='https://resources.tidal.com/images/846e9fd8/dc5b/4ad3/81df/07e182833905/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] CYWORLD BGM 2021</div>
+<div><a href='https://tidal.com/album/360806998' target='_blank'>https://tidal.com/album/360806998</a></div>
+<div>Wonstein - 10 Minutes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/360806998' target='_blank'><img src='https://resources.tidal.com/images/e5d6be70/1f71/4c68/8f3e/b0fad5b8a656/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] ZOO</div>
+<div><a href='https://tidal.com/album/397033237' target='_blank'>https://tidal.com/album/397033237</a></div>
+<div>Wonstein - New cat freestyle(Explicit)</div>
+<div>Wonstein - Life is a ZOOoo--</div>
+<div>Wonstein - It's me !</div>
+<div>Wonstein - GOAT</div>
+<div>Wonstein - Small fish</div>
+<div>Wonstein - Waves room skit</div>
+<div>Wonstein - Late night walker</div>
+<div>Wonstein - 3 GUINEAS</div>
+<div>Wonstein - Norwegian penguin</div>
+<div>Wonstein - It's you (Bonus Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397033237' target='_blank'><img src='https://resources.tidal.com/images/f0b0ccd5/8198/4478/b841/901510ff4684/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] X</div>
+<div><a href='https://tidal.com/album/339431061' target='_blank'>https://tidal.com/album/339431061</a></div>
+<div>Wonstein - X (Butterfly)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339431061' target='_blank'><img src='https://resources.tidal.com/images/e1688509/feff/491d/8e6d/f74815c089c8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] GOAT (Feat. Verbal Jint)</div>
+<div><a href='https://tidal.com/album/397092883' target='_blank'>https://tidal.com/album/397092883</a></div>
+<div>Wonstein - GOAT (Feat. Verbal Jint)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397092883' target='_blank'><img src='https://resources.tidal.com/images/75a57d38/3fa2/4eca/8ae7/a058a2cf7632/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] frankenstein</div>
+<div><a href='https://tidal.com/album/397038458' target='_blank'>https://tidal.com/album/397038458</a></div>
+<div>Wonstein - TV</div>
+<div>Wonstein - Cereal</div>
+<div>Wonstein - 50% Sale</div>
+<div>Wonstein - Angel's heart</div>
+<div>Wonstein - persona</div>
+<div>Wonstein - avatar book</div>
+<div>Wonstein - cha kan dorai</div>
+<div>Wonstein - small fish</div>
+<div>Wonstein - Ice star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397038458' target='_blank'><img src='https://resources.tidal.com/images/bf72c578/664f/4b8f/9f80/76bce1f159ed/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Noise</div>
+<div><a href='https://tidal.com/album/397040176' target='_blank'>https://tidal.com/album/397040176</a></div>
+<div>Mommy Son, Kim Seungmin, Wonstein, Zior Park - Noise(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397040176' target='_blank'><img src='https://resources.tidal.com/images/c58c39b8/cc6e/4b8f/98e6/651e2914f377/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] #seoulcitypopfreestyle</div>
+<div><a href='https://tidal.com/album/397040360' target='_blank'>https://tidal.com/album/397040360</a></div>
+<div>Homeboy, Wonstein - #seoulcitypopfreestyle</div>
+<div>Homeboy, Wonstein - Do the Love</div>
+<div>Homeboy, Wonstein - Star's Name (narr.Mommyson)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397040360' target='_blank'><img src='https://resources.tidal.com/images/4eca09ed/848f/41f1/a27f/2676e28e8d67/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Spider Web</div>
+<div><a href='https://tidal.com/album/346095359' target='_blank'>https://tidal.com/album/346095359</a></div>
+<div>Wonstein - Spider Web</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346095359' target='_blank'><img src='https://resources.tidal.com/images/086e3a1d/4014/40cb/9b6a/9eb226382676/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/원슈타인 (Wonstein)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
