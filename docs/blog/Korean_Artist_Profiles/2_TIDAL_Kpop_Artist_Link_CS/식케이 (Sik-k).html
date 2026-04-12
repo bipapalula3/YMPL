@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 식케이 ( Tidal Sik-k )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 식케이 ( Tidal Sik-k )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/c7abcec5/b307/4083/8e8f/d39634731573/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/8729720' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 식케이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>식케이 (Sik-k) – 거침없는 에너지와 솔직함으로 무장한 힙합 씬의 문제아, 'K-FLIP'의 강렬함과 'LALALA (Snitch Club)'의 자유분방함을 넘나드는 아티스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Sik-k</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Sik-k – The rebellious spirit of the hip-hop scene armed with unstoppable energy and honesty, an artist who moves between the intensity of 'K-FLIP' and the freedom of 'LALALA (Snitch Club)'</div><p>힙합 씬에 신선한 바람을 불어넣는 아티스트, 식케이(Sik-k)를 소개합니다. 그는 특유의 개성과 솔직한 가사로 많은 팬들의 공감을 얻고 있어요. 끊임없이 새로운 시도를 하는 그의 음악 세계는 늘 흥미진진하답니다.</p><p>Let me introduce Sik-k, an artist who brings a fresh vibe to the hip-hop scene. He gains empathy from many fans with his unique personality and honest lyrics. His musical world, which constantly tries new things, is always exciting.</p><p>✧</p><p>문제적 만남, 크루의 탄생</p><p>식케이는 릴 모쉬핏과의 협업을 통해 더욱 강력한 시너지를 발휘합니다. 함께 만들어내는 음악은 기존의 틀을 깨는 과감함과 에너지를 보여줘요. 이들의 조합은 힙합 씬에 새로운 활력을 불어넣고 있습니다.</p><p>A Problematic Encounter, The Birth of a Crew</p><p>Sik-k demonstrates even stronger synergy through collaboration with Lil Moshpit. The music they create together shows boldness and energy that breaks the existing mold. Their combination is injecting new vitality into the hip-hop scene.</p><p>✧</p><p>스타일, 장르를 넘나드는 음악적 스펙트럼</p><p>그의 음악은 특정 장르에 갇히지 않고 다채로운 색깔을 보여주는 것이 특징입니다. 트랩, 힙합, R&B 등 다양한 스타일을 자유롭게 넘나들며 자신만의 독특한 음악 세계를 구축하고 있어요. 실험적인 사운드와 개성 넘치는 랩은 듣는 재미를 더합니다.</p><p>Musical Spectrum Crossing Styles and Genres</p><p>His music is characterized by showing various colors without being confined to a specific genre. He freely crosses various styles such as trap, hip-hop, and R&B to build his own unique musical world. Experimental sounds and unique rap add to the fun of listening.</p><p>✧</p><p>거침없는 에너지, 솔직함으로 승부</p><p>식케이의 음악은 솔직한 가사와 거침없는 표현이 돋보입니다. 사회 비판적인 메시지를 담기도 하고, 자신의 내면을 솔직하게 드러내기도 해요. 그의 음악은 듣는 이들에게 공감과 위로를 선사합니다.</p><p>Unstoppable Energy, Winning with Honesty</p><p>Sik-k's music stands out for its honest lyrics and unrestrained expression. He sometimes includes socially critical messages and honestly reveals his inner self. His music offers empathy and comfort to listeners.</p><p>✧</p><p>멈추지 않는 도전, 무한한 가능성</p><p>식케이는 현재에 안주하지 않고 끊임없이 새로운 음악적 시도를 감행하고 있습니다. 앞으로 그가 보여줄 음악적 성장과 변화가 더욱 기대되네요. 그의 무한한 가능성은 힙합 씬의 미래를 밝혀줄 것입니다.</p><p>Unceasing Challenge, Infinite Possibilities</p><p>Sik-k is constantly attempting new musical endeavors without settling for the present. His future musical growth and changes are highly anticipated. His infinite potential will illuminate the future of the hip-hop scene.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] K-FLIP+</div>
+<div><a href='https://tidal.com/album/424394020' target='_blank'>https://tidal.com/album/424394020</a></div>
+<div>Sik-K, Lil Moshpit - K-FLIP(Explicit)</div>
+<div>Sik-K, Lil Moshpit - KC2 (Feat. JMIN, HAON)(Explicit)</div>
+<div>Sik-K, Lil Moshpit - LALALA (Snitch Club)(Explicit)</div>
+<div>Sik-K, Lil Moshpit - INTERLUDE</div>
+<div>Sik-K, Lil Moshpit - SELF HATE (Feat. HOMIES)(Explicit)</div>
+<div>Sik-K, Lil Moshpit - PUBLIC ENEMY (Feat. Roh Yun Ha, Wuuslime)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/424394020' target='_blank'><img src='https://resources.tidal.com/images/666ec151/7082/4fd5/a893/d6d9f13fa11e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] TRAP (feat. Jimmy Paige)</div>
+<div><a href='https://tidal.com/album/390338096' target='_blank'>https://tidal.com/album/390338096</a></div>
+<div>Sik-K - TRAP (feat. Jimmy Paige)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/390338096' target='_blank'><img src='https://resources.tidal.com/images/79f22a26/43d3/41fc/8b2f/e3139d0aa802/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] KCTAPE, Vol. 2</div>
+<div><a href='https://tidal.com/album/377533867' target='_blank'>https://tidal.com/album/377533867</a></div>
+<div>Haon, Vangdale, Sik-K - TASTE (feat. Tabber)(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - LOVE IN THE AIR(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - WATER IS A LIE(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - 8AM NAMSAN FREESTYLE(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - R.O.K (RECIPE of KC) (feat. Leellamarz)(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - MOSQUIT(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - TO.PUSSBOY</div>
+<div>Haon, Vangdale, Sik-K - SOME MORE</div>
+<div>Haon, Vangdale, Sik-K - SHOT (feat. ShyboiiTobii)(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - A24(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/377533867' target='_blank'><img src='https://resources.tidal.com/images/cef9e947/9783/4cdc/b2bc/a2507aedece2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] KCTAPE, Vol. 1</div>
+<div><a href='https://tidal.com/album/364203072' target='_blank'>https://tidal.com/album/364203072</a></div>
+<div>Haon, Vangdale, Sik-K - X(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - GIOTL</div>
+<div>Haon, Vangdale, Sik-K - HELLA DOPE (feat. icecream drum, Leellamarz, White Punk)</div>
+<div>Haon, Vangdale, Sik-K - GO DJ (feat. Jibin)</div>
+<div>Haon, Vangdale, Sik-K - CYBERTRUCK BEASTMODE(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - BEAT THE CASE(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - I LIKE IT (feat. Leellamarz)(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - SOHOHOUSE PARIS(Explicit)</div>
+<div>Haon, Vangdale, Sik-K - WHAT THE DEAL (feat. Coogie)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/364203072' target='_blank'><img src='https://resources.tidal.com/images/7647bee8/f298/49c5/a82d/0fac99de75b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] KC (BUST IT DOWN) (feat. Leellamarz)</div>
+<div><a href='https://tidal.com/album/343138344' target='_blank'>https://tidal.com/album/343138344</a></div>
+<div>Sik-K, Haon - KC (BUST IT DOWN) (feat. Leellamarz)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343138344' target='_blank'><img src='https://resources.tidal.com/images/297e1d99/5a2c/4575/a5ad/e7cff0751782/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 3=1</div>
+<div><a href='https://tidal.com/album/346424573' target='_blank'>https://tidal.com/album/346424573</a></div>
+<div>Leellamarz, Sik-K, Haon - Trap Talk</div>
+<div>Leellamarz, Sik-K, Haon - Haidilao</div>
+<div>Leellamarz, Sik-K, Haon - My Dawgs</div>
+<div>Leellamarz, Sik-K, Haon - YO MA</div>
+<div>Leellamarz, Sik-K, Haon - NDA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346424573' target='_blank'><img src='https://resources.tidal.com/images/564a7128/49cb/4e11/8c43/2f8e152d7e92/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] TTM</div>
+<div><a href='https://tidal.com/album/306140521' target='_blank'>https://tidal.com/album/306140521</a></div>
+<div>B.I, Sik-K, REDDY - TTM</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306140521' target='_blank'><img src='https://resources.tidal.com/images/2d190b67/aa34/477d/8f9a/f9ba9fd746ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] POP A LOT</div>
+<div><a href='https://tidal.com/album/308912883' target='_blank'>https://tidal.com/album/308912883</a></div>
+<div>Sik-K - Stupid I Guess(Explicit)</div>
+<div>Sik-K - See You In Every Party</div>
+<div>Sik-K - 5882 (OPPA ASAP)(Explicit)</div>
+<div>Sik-K - Exotic & Toxic(Explicit)</div>
+<div>Sik-K - THE SIK</div>
+<div>Sik-K - I Wonder (feat. BIG Naughty)</div>
+<div>Sik-K - Got Lost</div>
+<div>Sik-K - On The Phone (feat. Uhm Jung Hwa)</div>
+<div>Sik-K - Sorry, I Hate You (feat. B.I)</div>
+<div>Sik-K - Can You Not- (feat. Leellamarz)</div>
+<div>Sik-K - Dirty (feat. BE'O)</div>
+<div>Sik-K - Give Me Lit (feat. M Huncho)(Explicit)</div>
+<div>Sik-K - Stay</div>
+<div>Sik-K - PLUTO PLUTo PLUto PLuto Pluto(Explicit)</div>
+<div>Sik-K - Alright (feat. pH-1, HAON & Jay Park)</div>
+<div>Sik-K - plz</div>
+<div>Sik-K - 28 (Bonus)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308912883' target='_blank'><img src='https://resources.tidal.com/images/5bca58e6/bb80/4500/a394/d45c78c9a586/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] DAY OFF</div>
+<div><a href='https://tidal.com/album/315982356' target='_blank'>https://tidal.com/album/315982356</a></div>
+<div>Sik-K, Haon - DAY OFF</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/315982356' target='_blank'><img src='https://resources.tidal.com/images/3ea9b29a/0233/4c06/b743/d799289120e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] ALBUM ON THE WAY!</div>
+<div><a href='https://tidal.com/album/306159038' target='_blank'>https://tidal.com/album/306159038</a></div>
+<div>Sik-K, Haon - SHAWTY WANNA WAIT</div>
+<div>Sik-K, Haon - CRASH MERCEDES(Explicit)</div>
+<div>Sik-K, Haon - BITCH BOY (feat. Leellamarz)(Explicit)</div>
+<div>Sik-K, Haon - MAYBE I'M KCRAZY(Explicit)</div>
+<div>Sik-K, Haon - BALACLAVA BABIES (feat. Blase)(Explicit)</div>
+<div>Sik-K, Haon - POV- GOD (feat. Ourealgoat, ShyboiiTobii)(Explicit)</div>
+<div>Sik-K, Haon - I CAN'T SEE YOU(Explicit)</div>
+<div>Sik-K, Haon - ABU DHABI D-DAY FREESTYLE (feat. Theo)(Explicit)</div>
+<div>Sik-K, Haon - LOCKED-IN(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306159038' target='_blank'><img src='https://resources.tidal.com/images/7effeb70/d1a6/4776/bc91/f9fd8e755deb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 5882 (OPPA ASAP)</div>
+<div><a href='https://tidal.com/album/306852578' target='_blank'>https://tidal.com/album/306852578</a></div>
+<div>Sik-K - 5882 (OPPA ASAP)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306852578' target='_blank'><img src='https://resources.tidal.com/images/7d978381/a991/466a/a538/0ebf0df810aa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] TELL YA!</div>
+<div><a href='https://tidal.com/album/196157625' target='_blank'>https://tidal.com/album/196157625</a></div>
+<div>Sik-K - TELL YA!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196157625' target='_blank'><img src='https://resources.tidal.com/images/d6d7d017/e36f/481b/9140/6022d621aceb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Officially OG</div>
+<div><a href='https://tidal.com/album/196154336' target='_blank'>https://tidal.com/album/196154336</a></div>
+<div>Sik-K - VJ IS CLASSIC (Prod. GooseBumps)</div>
+<div>Sik-K - NO HOOK (Feat. Paloalto & The Quiett) (Prod. GooseBumps)</div>
+<div>Sik-K - HEAR ME (Prod. GooseBumps)</div>
+<div>Sik-K - 30MIN (Feat. Simon Dominic) (Prod. GooseBumps)</div>
+<div>Sik-K - SOAP SEOUL (Prod. GooseBumps)</div>
+<div>Sik-K - ″SEASON OFF″ (Prod. GooseBumps)</div>
+<div>Sik-K - DO MAIN 2020 (Feat. Lil Boi, Ugly Duck, ZICO, TakeOne) (Prod. GooseBumps)</div>
+<div>Sik-K - (BONUS) WATER (Feat. Woodie Gochild, pH-1, HAON, Jay Park) (Prod. GooseBumps)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196154336' target='_blank'><img src='https://resources.tidal.com/images/4963d55a/765b/49fd/b1d7/713b2de19cf9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] HEADLINER</div>
+<div><a href='https://tidal.com/album/196158612' target='_blank'>https://tidal.com/album/196158612</a></div>
+<div>Sik-K - DARLING (Feat. Crush)</div>
+<div>Sik-K - NEW LOVE</div>
+<div>Sik-K - SHE’S GONE</div>
+<div>Sik-K - ADDY (Feat. MOON)</div>
+<div>Sik-K - TOO PICKY</div>
+<div>Sik-K - 12-45</div>
+<div>Sik-K - NIRVANA</div>
+<div>Sik-K - BAE</div>
+<div>Sik-K - IBTFY (Feat. pH-1)</div>
+<div>Sik-K - TELL YA!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196158612' target='_blank'><img src='https://resources.tidal.com/images/a21c2756/1883/4c66/bfbe/f70bca767900/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] WHY YOU_</div>
+<div><a href='https://tidal.com/album/196148288' target='_blank'>https://tidal.com/album/196148288</a></div>
+<div>Sik-K - WHY YOU-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196148288' target='_blank'><img src='https://resources.tidal.com/images/871eb42b/fca1/4741/8d73/458ca1fb95b4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] WATER</div>
+<div><a href='https://tidal.com/album/281520630' target='_blank'>https://tidal.com/album/281520630</a></div>
+<div>Sik-K, Woodie Gochild, pH-1, Haon, Jay Park - WATER (Feat. Woodie Gochild, pH-1, HAON, Jay Park) (Prod. by GooseBumps)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/281520630' target='_blank'><img src='https://resources.tidal.com/images/ea187493/1577/44f8/ab36/d939d0c26bc3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Untitled</div>
+<div><a href='https://tidal.com/album/125942459' target='_blank'>https://tidal.com/album/125942459</a></div>
+<div>Sik-K, CRUCiAL STAR, taylor - Untitled (feat. Crucial Star & Taylor)</div>
+<div>Sik-K, Donutman, ELO - What The Hell (feat. Donutman & ELO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125942459' target='_blank'><img src='https://resources.tidal.com/images/598915fb/e9b0/41eb/9e00/098a7f10894f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] The Fearless Ones</div>
+<div><a href='https://tidal.com/album/196147880' target='_blank'>https://tidal.com/album/196147880</a></div>
+<div>The Quiett, Sik-K, 빈지노 (Beenzino), CHANGMO - The Fearless Ones</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196147880' target='_blank'><img src='https://resources.tidal.com/images/a94cce66/7bf7/48d1/958d/46ff1efe62ca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] S.O.S (Sink or Swim)</div>
+<div><a href='https://tidal.com/album/438601209' target='_blank'>https://tidal.com/album/438601209</a></div>
+<div>Sik-K, Coogie - Drowning</div>
+<div>Sik-K, Coogie, Giriboy - Two Everything</div>
+<div>Sik-K, Coogie - Wet The Bed</div>
+<div>Sik-K, Coogie - Goin’ Up</div>
+<div>Sik-K, Coogie, The Quiett - Summer Snack</div>
+<div>Sik-K, Coogie - h1ghrATM Freestyle (Bonus Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/438601209' target='_blank'><img src='https://resources.tidal.com/images/9b8dcb90/7332/4b58/8b11/c2f9bd22a0bd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] My Man</div>
+<div><a href='https://tidal.com/album/125942450' target='_blank'>https://tidal.com/album/125942450</a></div>
+<div>Sik-K - Better Life</div>
+<div>Sik-K - My Man</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125942450' target='_blank'><img src='https://resources.tidal.com/images/a44f5db5/7248/4e78/915c/c249f0abf25e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Is It Love_</div>
+<div><a href='https://tidal.com/album/196148579' target='_blank'>https://tidal.com/album/196148579</a></div>
+<div>Sik-K - Is It Love-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196148579' target='_blank'><img src='https://resources.tidal.com/images/377290e0/d11c/4dcf/ac84/e495b6520195/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] FL1P</div>
+<div><a href='https://tidal.com/album/196146188' target='_blank'>https://tidal.com/album/196146188</a></div>
+<div>Sik-K - FLIP - FL1P</div>
+<div>Sik-K - NOIZY</div>
+<div>Sik-K - 19 CAYENNE FREESTYLE</div>
+<div>Sik-K - VANESSA</div>
+<div>Sik-K - LOVE ACHES</div>
+<div>Sik-K - FXCK.THAT.FLOWER</div>
+<div>Sik-K - OUTTA MY HEAD</div>
+<div>Sik-K - MI CASA ES TU CASA</div>
+<div>Sik-K - XIBAL (Prod. by GroovyRoom)</div>
+<div>Sik-K - ADDICT</div>
+<div>Sik-K - FIRE (Prod. by GroovyRoom)</div>
+<div>Sik-K - RUNNIN′</div>
+<div>Sik-K - R.I.P (Rest In Party)</div>
+<div>Sik-K - SORRY (1000)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196146188' target='_blank'><img src='https://resources.tidal.com/images/0fe027b0/b6ef/4cf4/8c1d/5f51ed19d812/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Dingo X H1GHR MUSIC</div>
+<div><a href='https://tidal.com/album/216123597' target='_blank'>https://tidal.com/album/216123597</a></div>
+<div>Sik-K, Haon, pH-1, Woodie Gochild, Jay Park, GroovyRoom - GIDDY UP (Prod. GroovyRoom)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216123597' target='_blank'><img src='https://resources.tidal.com/images/6fcb5636/b586/405e/802a/0be1d91b098d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] ADDICT</div>
+<div><a href='https://tidal.com/album/196146207' target='_blank'>https://tidal.com/album/196146207</a></div>
+<div>Sik-K - ADDICT (Prod. by Girlnexxtdoor)</div>
+<div>Sik-K - xanax</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196146207' target='_blank'><img src='https://resources.tidal.com/images/8d7e090e/9cb8/49cc/8ba2/71f3feb123ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] youth.wit.purpose</div>
+<div><a href='https://tidal.com/album/196141922' target='_blank'>https://tidal.com/album/196141922</a></div>
+<div>Sik-K - Skip And Kiss</div>
+<div>Sik-K - Up All Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141922' target='_blank'><img src='https://resources.tidal.com/images/c6682571/82b9/4bc4/a9aa/7f3ad693d6e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] XIBAL</div>
+<div><a href='https://tidal.com/album/196143250' target='_blank'>https://tidal.com/album/196143250</a></div>
+<div>Sik-K - XIBAL(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143250' target='_blank'><img src='https://resources.tidal.com/images/14326fc5/81d6/404d/b833/8bc32016204b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] TRAPART</div>
+<div><a href='https://tidal.com/album/196138490' target='_blank'>https://tidal.com/album/196138490</a></div>
+<div>Sik-K - Young Boy</div>
+<div>Sik-K - YeLowS Gang</div>
+<div>Sik-K - FUCK IT UP</div>
+<div>Sik-K - Link Up</div>
+<div>Sik-K - Another 0</div>
+<div>Sik-K - Never Know</div>
+<div>Sik-K - lil baby</div>
+<div>Sik-K - not my TYPE</div>
+<div>Sik-K - Boomin′</div>
+<div>Sik-K - Choppy</div>
+<div>Sik-K - Never Know</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196138490' target='_blank'><img src='https://resources.tidal.com/images/242b1281/cc87/4838/bc05/a2b5f6ba7110/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Plus It</div>
+<div><a href='https://tidal.com/album/196139481' target='_blank'>https://tidal.com/album/196139481</a></div>
+<div>Sik-K - Plus It</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196139481' target='_blank'><img src='https://resources.tidal.com/images/fc5e23f5/ed31/4eca/91db/bfea58f170ba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Good Luck</div>
+<div><a href='https://tidal.com/album/408896664' target='_blank'>https://tidal.com/album/408896664</a></div>
+<div>Woodie Gochild, Haon, Sik-K, pH-1 - KITKAT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/408896664' target='_blank'><img src='https://resources.tidal.com/images/0d302f5b/ff59/4a85/b152/5fc8970f187b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Fire</div>
+<div><a href='https://tidal.com/album/196143554' target='_blank'>https://tidal.com/album/196143554</a></div>
+<div>Sik-K - FIRE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143554' target='_blank'><img src='https://resources.tidal.com/images/beab336d/e854/48ec/9411/6282658492ce/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Choppy</div>
+<div><a href='https://tidal.com/album/196138356' target='_blank'>https://tidal.com/album/196138356</a></div>
+<div>Sik-K - Choppy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196138356' target='_blank'><img src='https://resources.tidal.com/images/f918091a/75e0/4b91/902f/03b54a0036d4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 데칼코마니 Decalcomanie</div>
+<div><a href='https://tidal.com/album/115280755' target='_blank'>https://tidal.com/album/115280755</a></div>
+<div>IMLAY, Sik-K - 데칼코마니 Decalcomanie</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115280755' target='_blank'><img src='https://resources.tidal.com/images/99660886/15d8/468c/9fca/a76d451c6da7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] H.A.L.F (Have.A.Little.Fun)</div>
+<div><a href='https://tidal.com/album/196135278' target='_blank'>https://tidal.com/album/196135278</a></div>
+<div>Sik-K - RING RING (Feat. 개코)</div>
+<div>Sik-K - party (SHUT DOWN)</div>
+<div>Sik-K - FLY</div>
+<div>Sik-K - Henny</div>
+<div>Sik-K - Chit Chat Ting</div>
+<div>Sik-K - Too Many</div>
+<div>Sik-K - Interlude- 24 7 365</div>
+<div>Sik-K - XYZ</div>
+<div>Sik-K - A Lil Bit</div>
+<div>Sik-K - Somebody Else</div>
+<div>Sik-K - Have A Little Fun</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196135278' target='_blank'><img src='https://resources.tidal.com/images/07c30668/8eec/462e/8fc5/a7d6c7301607/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] FLY</div>
+<div><a href='https://tidal.com/album/196135213' target='_blank'>https://tidal.com/album/196135213</a></div>
+<div>Sik-K - FLY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196135213' target='_blank'><img src='https://resources.tidal.com/images/2f98db46/9399/4bba/a9df/df765d9dfc93/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Dingo X H1GHR MUSIC</div>
+<div><a href='https://tidal.com/album/216008436' target='_blank'>https://tidal.com/album/216008436</a></div>
+<div>Sik-K, pH-1, Jay Park, GroovyRoom - iffy (Prod. GroovyRoom)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216008436' target='_blank'><img src='https://resources.tidal.com/images/c954c0d9/dcd7/4037/be2f/70da8f166aa4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] BOYCOLD</div>
+<div><a href='https://tidal.com/album/196137327' target='_blank'>https://tidal.com/album/196137327</a></div>
+<div>Sik-K - Your Night</div>
+<div>Sik-K - Earphone</div>
+<div>Sik-K - Get That Money</div>
+<div>Sik-K - EX</div>
+<div>Sik-K - h1ghr gang</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137327' target='_blank'><img src='https://resources.tidal.com/images/8e848d0f/747b/45c3/a9e5/075d1c8eb654/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] Stylin'</div>
+<div><a href='https://tidal.com/album/142633976' target='_blank'>https://tidal.com/album/142633976</a></div>
+<div>Sik-K, Supreme Boi, Elles - Stylin'(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142633976' target='_blank'><img src='https://resources.tidal.com/images/98fd7460/b90c/4876/b583/ccc9ef3c70c9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Ring Ring</div>
+<div><a href='https://tidal.com/album/196122251' target='_blank'>https://tidal.com/album/196122251</a></div>
+<div>Sik-K - RING RING</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196122251' target='_blank'><img src='https://resources.tidal.com/images/4bfd487f/eae6/4b90/92d2/3d045d795d89/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] No Where</div>
+<div><a href='https://tidal.com/album/285459851' target='_blank'>https://tidal.com/album/285459851</a></div>
+<div>Sik-K, Loco - No Where (Feat. Loco)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/285459851' target='_blank'><img src='https://resources.tidal.com/images/f1bf6c20/b00f/4a3a/996c/9e044a3344c4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] I Call It Love</div>
+<div><a href='https://tidal.com/album/196116110' target='_blank'>https://tidal.com/album/196116110</a></div>
+<div>Sik-K - I Call It Love</div>
+<div>Sik-K - Alcohol</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196116110' target='_blank'><img src='https://resources.tidal.com/images/1bf2c636/dd8f/4d19/b721/d8a7e4d0e982/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Flip</div>
+<div><a href='https://tidal.com/album/196116593' target='_blank'>https://tidal.com/album/196116593</a></div>
+<div>Sik-K - Zero Fucks Is Given</div>
+<div>Sik-K - Cha Cha</div>
+<div>Sik-K - Rendezvous</div>
+<div>Sik-K - No Where</div>
+<div>Sik-K - Act Different</div>
+<div>Sik-K - God Damn</div>
+<div>Sik-K - Habibi</div>
+<div>Sik-K - Don’t Play</div>
+<div>Sik-K - I Call It Love</div>
+<div>Sik-K - Alcohol</div>
+<div>Sik-K - #yelowsmobbin</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196116593' target='_blank'><img src='https://resources.tidal.com/images/b78ee518/a11b/47fc/97c9/32b2531f1bda/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/식케이 (Sik-k)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
