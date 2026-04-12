@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 조용필 ( Tidal Yong Pil Cho )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 조용필 ( Tidal Yong Pil Cho )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/0e4d0df8/9f75/465f/8f24/4e485a9d3a4c/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/11678761' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 조용필</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>영원한 오빠, '모나리자'의 강렬함과 '꿈'의 희망을 노래하는 가왕</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Yong Pil Cho</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>The eternal oppa, a singing king who sings the intensity of 'Mona Lisa' and the hope of 'Dream'</div><p>대한민국 대중음악사에 큰 획을 그은 이름, 조용필입니다. 그는 시대를 초월하는 음악성과 깊이 있는 가사로 수많은 사람들의 마음을 사로잡았습니다. 끊임없는 도전과 실험 정신으로 늘 새로운 음악을 선보이는 영원한 현역입니다.</p><p>A name that has made a significant mark in the history of Korean popular music, Cho Yong Pil. He has captured the hearts of countless people with his timeless musicality and profound lyrics. He is an eternal active singer who always presents new music with constant challenges and experimental spirit.</p><p>✧</p><p>그룹 탄생</p><p>조용필은 1968년 '애트킨즈'를 결성하며 음악계에 첫 발을 내딛었습니다. 이후 '김트리오'를 거쳐 솔로 가수로 데뷔, 독보적인 음악 세계를 구축했습니다. 다양한 장르를 섭렵하며 자신만의 스타일을 완성해 나갔습니다.</p><p>The Birth of a Group</p><p>Cho Yong Pil took his first step into the music scene by forming 'Atkins' in 1968. After going through 'Kim Trio', he debuted as a solo singer and built a unique musical world. He mastered various genres and completed his own style.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그의 음악은 록, 팝, 트로트 등 다양한 장르를 아우르며 폭넓은 스펙트럼을 자랑합니다. 깊이 있는 가사와 호소력 짙은 보이스는 듣는 이들에게 깊은 감동과 울림을 선사합니다. 무대 위에서의 카리스마 넘치는 퍼포먼스는 관객들을 압도합니다.</p><p>Music and Performance</p><p>His music encompasses various genres such as rock, pop, and trot, boasting a wide spectrum. Deep lyrics and appealing voice deliver deep emotion and resonance to listeners. His charismatic performance on stage overwhelms the audience.</p><p>✧</p><p>주요 활동</p><p>조용필은 '돌아와요 부산항에', '모나리자', '꿈' 등 수많은 히트곡을 발표하며 국민 가수로 자리매김했습니다. 수많은 음반 판매 기록과 수상 경력은 그의 음악적 업적을 증명합니다. 꾸준한 콘서트 활동으로 팬들과 소통하며 음악적 교감을 이어가고 있습니다.</p><p>Major Activities</p><p>Cho Yong Pil has established himself as a national singer by releasing numerous hit songs such as 'Return to Busan Port', 'Mona Lisa', and 'Dream'. Numerous record sales records and awards prove his musical achievements. He communicates with fans through steady concert activities and continues musical rapport.</p><p>✧</p><p>미래/의미</p><p>조용필은 끊임없는 음악적 탐구와 실험 정신으로 미래에도 새로운 음악을 선보일 것입니다. 그의 음악은 단순한 유행을 넘어 시대를 초월하는 가치를 지니고 있습니다. 앞으로도 그의 음악은 많은 사람들에게 위로와 희망을 선사할 것입니다.</p><p>Future/Meaning</p><p>Cho Yong Pil will continue to present new music in the future with his constant musical exploration and experimental spirit. His music has timeless value beyond simple trends. His music will continue to provide comfort and hope to many people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Welcome to Samdal-ri From CHO YONG PIL (2024 Remastering)</div>
+<div><a href='https://tidal.com/album/343362320' target='_blank'>https://tidal.com/album/343362320</a></div>
+<div>CHO YONG PIL - Dream (2024 Remastered Ver.)</div>
+<div>CHO YONG PIL - Reunion (2024 Remastered Ver.)</div>
+<div>CHO YONG PIL - Mona Lisa (2024 Remastered Ver.)</div>
+<div>CHO YONG PIL - Spinning Life (2024 Remastered Ver.)</div>
+<div>CHO YONG PIL - MADOYO (2024 Remastered Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343362320' target='_blank'><img src='https://resources.tidal.com/images/bfa70e70/ebdc/4b7a/b37d/ef63e54ecfaa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 20</div>
+<div><a href='https://tidal.com/album/393609996' target='_blank'>https://tidal.com/album/393609996</a></div>
+<div>CHO YONG PIL - It’ll Be Okay</div>
+<div>CHO YONG PIL - Moment</div>
+<div>CHO YONG PIL - Timing</div>
+<div>CHO YONG PIL - Like Serengeti</div>
+<div>CHO YONG PIL - Why</div>
+<div>CHO YONG PIL - Feeling Of You</div>
+<div>CHO YONG PIL - La</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/393609996' target='_blank'><img src='https://resources.tidal.com/images/e8bbbba6/1852/435d/aa2a/47976ec0d4d9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Road to 20 - Prelude 2</div>
+<div><a href='https://tidal.com/album/382456794' target='_blank'>https://tidal.com/album/382456794</a></div>
+<div>CHO YONG PIL - Feeling Of You</div>
+<div>CHO YONG PIL - 찰나</div>
+<div>CHO YONG PIL - 세렝게티처럼</div>
+<div>CHO YONG PIL - La</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382456794' target='_blank'><img src='https://resources.tidal.com/images/d51a0b4c/fdd8/4ff8/a9cd/5a42e26280b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Road to 20 - Prelude 1</div>
+<div><a href='https://tidal.com/album/382456453' target='_blank'>https://tidal.com/album/382456453</a></div>
+<div>CHO YONG PIL - 찰나</div>
+<div>CHO YONG PIL - 세렝게티처럼</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382456453' target='_blank'><img src='https://resources.tidal.com/images/4172d485/804e/4cc7/8af2/1b6c11df0d8d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Best 2</div>
+<div><a href='https://tidal.com/album/382454692' target='_blank'>https://tidal.com/album/382454692</a></div>
+<div>CHO YONG PIL - Love Lullaby</div>
+<div>CHO YONG PIL - Affection</div>
+<div>CHO YONG PIL - I Love You</div>
+<div>CHO YONG PIL - Cloud, My Name</div>
+<div>CHO YONG PIL - Red Dragonfly</div>
+<div>CHO YONG PIL - Teahouse In The Winter</div>
+<div>CHO YONG PIL - River Doesn't Come Back</div>
+<div>CHO YONG PIL - Candlelight</div>
+<div>CHO YONG PIL - Because I Love You</div>
+<div>CHO YONG PIL - I Love Susie</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382454692' target='_blank'><img src='https://resources.tidal.com/images/b67d3b0a/c30e/4463/b1de/221e18248c95/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Best 1</div>
+<div><a href='https://tidal.com/album/382453139' target='_blank'>https://tidal.com/album/382453139</a></div>
+<div>CHO YONG PIL - Woman Outside The Window</div>
+<div>CHO YONG PIL - Party Of Tears</div>
+<div>CHO YONG PIL - Forget-Me-Not</div>
+<div>CHO YONG PIL - Light Wind</div>
+<div>CHO YONG PIL - Reunion</div>
+<div>CHO YONG PIL - Come Back To Busan Harbor</div>
+<div>CHO YONG PIL - Bobbed Hair</div>
+<div>CHO YONG PIL - Where You Are Stepping At</div>
+<div>CHO YONG PIL - Dear My Friend</div>
+<div>CHO YONG PIL - Seoul Seoul Seoul</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382453139' target='_blank'><img src='https://resources.tidal.com/images/584baaf6/941f/47f0/a9c6/bb986a97894a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 30th Anniversary Greatest Hits, Pt. 3</div>
+<div><a href='https://tidal.com/album/382450181' target='_blank'>https://tidal.com/album/382450181</a></div>
+<div>CHO YONG PIL - Reunion</div>
+<div>CHO YONG PIL - Teahouse In The Winter</div>
+<div>CHO YONG PIL - Let's Take A Trip</div>
+<div>CHO YONG PIL - Your Scent</div>
+<div>CHO YONG PIL - Mona Lisa</div>
+<div>CHO YONG PIL - Seoul Seoul Seoul</div>
+<div>CHO YONG PIL - Hwang Jin Yi</div>
+<div>CHO YONG PIL - Unknown World</div>
+<div>CHO YONG PIL - Flapping Up In The Sky</div>
+<div>CHO YONG PIL - Turn On The Rose-Light</div>
+<div>CHO YONG PIL - Han River</div>
+<div>CHO YONG PIL - In The Wave</div>
+<div>CHO YONG PIL - I Love You</div>
+<div>CHO YONG PIL - The Dreams That Can't Be Erased</div>
+<div>CHO YONG PIL - In Last Night's Dream</div>
+<div>CHO YONG PIL - Love You My Dear</div>
+<div>CHO YONG PIL - Farewell Without Memories</div>
+<div>CHO YONG PIL - My Dear In The Eyedrop</div>
+<div>CHO YONG PIL - Beauty, Rational And Kind Lady</div>
+<div>CHO YONG PIL - Cloud, My Name</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382450181' target='_blank'><img src='https://resources.tidal.com/images/92498f29/04f6/49ce/9b81/11e3315cf191/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 30th Anniversary Greatest Hits, Pt. 2</div>
+<div><a href='https://tidal.com/album/382448843' target='_blank'>https://tidal.com/album/382448843</a></div>
+<div>CHO YONG PIL - Red Dragonfly</div>
+<div>CHO YONG PIL - Woman Outside The Window</div>
+<div>CHO YONG PIL - I Won't Change My Mind</div>
+<div>CHO YONG PIL - Tragic</div>
+<div>CHO YONG PIL - Bobbd Hair</div>
+<div>CHO YONG PIL - Mountain Flower</div>
+<div>CHO YONG PIL - Candlelight</div>
+<div>CHO YONG PIL - Meaning Of The Trace</div>
+<div>CHO YONG PIL - I Like You</div>
+<div>CHO YONG PIL - Light Wind</div>
+<div>CHO YONG PIL - Party Of Tears</div>
+<div>CHO YONG PIL - Woman and Man</div>
+<div>CHO YONG PIL - Forget-me-not</div>
+<div>CHO YONG PIL - Yesterday, Today And</div>
+<div>CHO YONG PIL - Seoul In 1987</div>
+<div>CHO YONG PIL - Too Short</div>
+<div>CHO YONG PIL - Dream Fairy</div>
+<div>CHO YONG PIL - Hundreds Of Years</div>
+<div>CHO YONG PIL - Ganyangrok</div>
+<div>CHO YONG PIL - Sad Smile</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382448843' target='_blank'><img src='https://resources.tidal.com/images/339395f2/03e5/4aa5/a337/0725379c83dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 30th Anniversary Greatest Hits, Pt. 1</div>
+<div><a href='https://tidal.com/album/382445688' target='_blank'>https://tidal.com/album/382445688</a></div>
+<div>CHO YONG PIL - In The Air</div>
+<div>CHO YONG PIL - Leopard of Killimandjaro</div>
+<div>CHO YONG PIL - Because I Love You</div>
+<div>CHO YONG PIL - Words The Wind Delivers</div>
+<div>CHO YONG PIL - Come Back To Busan Harbor</div>
+<div>CHO YONG PIL - Let It Be</div>
+<div>CHO YONG PIL - Dear My Friend</div>
+<div>CHO YONG PIL - Wound</div>
+<div>CHO YONG PIL - Sad Beatrice</div>
+<div>CHO YONG PIL - Say Goodbye</div>
+<div>CHO YONG PIL - I Hate You</div>
+<div>CHO YONG PIL - Where You Are Stepping At</div>
+<div>CHO YONG PIL - Affection</div>
+<div>CHO YONG PIL - Dream</div>
+<div>CHO YONG PIL - Love Didn't End Yet</div>
+<div>CHO YONG PIL - Oh My Dear</div>
+<div>CHO YONG PIL - Forgotten Love</div>
+<div>CHO YONG PIL - Wild Flower</div>
+<div>CHO YONG PIL - Lonely Runner</div>
+<div>CHO YONG PIL - River Doesn't Come Back</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382445688' target='_blank'><img src='https://resources.tidal.com/images/ac420894/c833/4889/853b/970c59dd8d81/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] The History _ The 40th Anniversary Live Concert (Live)</div>
+<div><a href='https://tidal.com/album/382451281' target='_blank'>https://tidal.com/album/382451281</a></div>
+<div>CHO YONG PIL - Dream (Live)</div>
+<div>CHO YONG PIL - Forget-me-not (Live)</div>
+<div>CHO YONG PIL - Kangwondo Arirang (Live)</div>
+<div>CHO YONG PIL - Red Dragonfly (Live)</div>
+<div>CHO YONG PIL - Can't Find You (Live)</div>
+<div>CHO YONG PIL - Teahouse In The Winter (Live)</div>
+<div>CHO YONG PIL - I Like You (Live)</div>
+<div>CHO YONG PIL - Self Respect (Live)</div>
+<div>CHO YONG PIL - Forgotten Love (Live)</div>
+<div>CHO YONG PIL - Yesterday,Today And (Live)</div>
+<div>CHO YONG PIL - Bobbed Hair (Live)</div>
+<div>CHO YONG PIL - Mona Lisa (Live)</div>
+<div>CHO YONG PIL - Han River (Live)</div>
+<div>CHO YONG PIL - My Dear (Live)</div>
+<div>CHO YONG PIL - Leopard of Killimandjaro (Live)</div>
+<div>CHO YONG PIL - Song Of The Wind (Live)</div>
+<div>CHO YONG PIL - Flare Of Longing (Live)</div>
+<div>CHO YONG PIL - Unknown World (Live)</div>
+<div>CHO YONG PIL - Eurasian Curlew (Live)</div>
+<div>CHO YONG PIL - Let's Take A Trip (Live)</div>
+<div>CHO YONG PIL - Era of Youth (Live)</div>
+<div>CHO YONG PIL - Pain Of Waiting (Live)</div>
+<div>CHO YONG PIL - Q (Live)</div>
+<div>CHO YONG PIL - Woman Of Mountain Cabin (Live)</div>
+<div>CHO YONG PIL - Woman Outside The Window (Live)</div>
+<div>CHO YONG PIL - Affection (Live)</div>
+<div>CHO YONG PIL - The Air (Live)</div>
+<div>CHO YONG PIL - Dear My Friend (Live)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382451281' target='_blank'><img src='https://resources.tidal.com/images/1f3127de/4a06/47fe/8eaa/58e798063ceb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Q (10th, Pt. 2)</div>
+<div><a href='https://tidal.com/album/382500164' target='_blank'>https://tidal.com/album/382500164</a></div>
+<div>CHO YONG PIL - Q</div>
+<div>CHO YONG PIL - Wanna Be A Flower</div>
+<div>CHO YONG PIL - If Life Were Roses</div>
+<div>CHO YONG PIL - Missing You When It Snows</div>
+<div>CHO YONG PIL - Purple Lady</div>
+<div>CHO YONG PIL - Tell Me That What You Saw</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382500164' target='_blank'><img src='https://resources.tidal.com/images/63b4fb0e/9ec5/4816/a59c/49d7b8fd169c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 9th Cho Yong Pil</div>
+<div><a href='https://tidal.com/album/382500106' target='_blank'>https://tidal.com/album/382500106</a></div>
+<div>CHO YONG PIL - Eurasian Curlew</div>
+<div>CHO YONG PIL - True Love</div>
+<div>CHO YONG PIL - Yes It Is</div>
+<div>CHO YONG PIL - Love After Farewell</div>
+<div>CHO YONG PIL - Where You Are Stepping At</div>
+<div>CHO YONG PIL - Men's Decision</div>
+<div>CHO YONG PIL - Stranger</div>
+<div>CHO YONG PIL - I Love You</div>
+<div>CHO YONG PIL - Leaving Boat</div>
+<div>CHO YONG PIL - Era of Youth</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382500106' target='_blank'><img src='https://resources.tidal.com/images/1e516097/dbe9/413f/9970/4a157e00ed2b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 88 Cho Yong Pil 10th</div>
+<div><a href='https://tidal.com/album/382500142' target='_blank'>https://tidal.com/album/382500142</a></div>
+<div>CHO YONG PIL - Seoul Seoul Seoul</div>
+<div>CHO YONG PIL - I Don't Know Either</div>
+<div>CHO YONG PIL - Mona Lisa</div>
+<div>CHO YONG PIL - I Love Susie</div>
+<div>CHO YONG PIL - Space Trip X</div>
+<div>CHO YONG PIL - Seoul In 1987</div>
+<div>CHO YONG PIL - Gray City</div>
+<div>CHO YONG PIL - Magnolia Story</div>
+<div>CHO YONG PIL - I Love You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382500142' target='_blank'><img src='https://resources.tidal.com/images/087e4b7e/3e73/4a90/8257/01e523dcf0a6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] The Dreams, Vol. 13</div>
+<div><a href='https://tidal.com/album/382503722' target='_blank'>https://tidal.com/album/382503722</a></div>
+<div>CHO YONG PIL - The Dreams</div>
+<div>CHO YONG PIL - Dreaming Love</div>
+<div>CHO YONG PIL - Waiting</div>
+<div>CHO YONG PIL - Dream Fairy</div>
+<div>CHO YONG PIL - The Dreams That Can't Be Erased</div>
+<div>CHO YONG PIL - Beauty, Rational And Kind Lady</div>
+<div>CHO YONG PIL - In Dreaming</div>
+<div>CHO YONG PIL - Street With Memories</div>
+<div>CHO YONG PIL - Turn On The Rose-Light</div>
+<div>CHO YONG PIL - In Last Night's Dream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382503722' target='_blank'><img src='https://resources.tidal.com/images/e0c4766c/98e1/425d/8525/a18fc3d70b1a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Sailing Sound (90-Vol.1)</div>
+<div><a href='https://tidal.com/album/382500184' target='_blank'>https://tidal.com/album/382500184</a></div>
+<div>CHO YONG PIL - Reunion</div>
+<div>CHO YONG PIL - Let It Be</div>
+<div>CHO YONG PIL - Your Scent</div>
+<div>CHO YONG PIL - By Your Breath</div>
+<div>CHO YONG PIL - Ancient Palace</div>
+<div>CHO YONG PIL - Sun Flower</div>
+<div>CHO YONG PIL - Reflection</div>
+<div>CHO YONG PIL - Memories In A Bow</div>
+<div>CHO YONG PIL - Dear Trees</div>
+<div>CHO YONG PIL - Spinning Life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382500184' target='_blank'><img src='https://resources.tidal.com/images/ed265b0f/a804/42b6/b61c/2c4cefb62a62/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Eternally-16</div>
+<div><a href='https://tidal.com/album/382506921' target='_blank'>https://tidal.com/album/382506921</a></div>
+<div>CHO YONG PIL - Flare Of Longing</div>
+<div>CHO YONG PIL - To Be The Last</div>
+<div>CHO YONG PIL - Love You My Dear</div>
+<div>CHO YONG PIL - In The Wave</div>
+<div>CHO YONG PIL - Sunset</div>
+<div>CHO YONG PIL - Song Of The Wind</div>
+<div>CHO YONG PIL - Love Is Difficult</div>
+<div>CHO YONG PIL - Sorrow</div>
+<div>CHO YONG PIL - Pandora's Box</div>
+<div>CHO YONG PIL - Whisper From The Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382506921' target='_blank'><img src='https://resources.tidal.com/images/e10c55a2/2ca4/487f/8538/3fe2886129f9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 45TH ANNIVERSARY CONCERT HELLO</div>
+<div><a href='https://tidal.com/album/91870882' target='_blank'>https://tidal.com/album/91870882</a></div>
+<div>CHO YONG PIL - OPENING HELLO</div>
+<div>CHO YONG PIL - 설렘</div>
+<div>CHO YONG PIL - BOUNCE</div>
+<div>CHO YONG PIL - 미지의 세계</div>
+<div>CHO YONG PIL - 단발머리</div>
+<div>CHO YONG PIL - 창밖의 여자</div>
+<div>CHO YONG PIL - 꿈</div>
+<div>CHO YONG PIL - 널 만나면</div>
+<div>CHO YONG PIL - 고추잠자리</div>
+<div>CHO YONG PIL - 이젠 그랬으면 좋겠네</div>
+<div>CHO YONG PIL - 비련</div>
+<div>CHO YONG PIL - 자존심</div>
+<div>CHO YONG PIL - 못찾겠다 꾀꼬리</div>
+<div>CHO YONG PIL - 장미꽃 불을 켜요</div>
+<div>CHO YONG PIL - 그대여</div>
+<div>CHO YONG PIL - 모나리자</div>
+<div>CHO YONG PIL - HELLO</div>
+<div>CHO YONG PIL - 친구여</div>
+<div>CHO YONG PIL - Q</div>
+<div>CHO YONG PIL - 나는 너 좋아</div>
+<div>CHO YONG PIL - 돌아와요 부산항에</div>
+<div>CHO YONG PIL - 여행을 떠나요</div>
+<div>CHO YONG PIL - 걷고 싶다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/91870882' target='_blank'><img src='https://resources.tidal.com/images/947b6363/d159/4c41/b7da/a7664a131ae7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Hello</div>
+<div><a href='https://tidal.com/album/382510410' target='_blank'>https://tidal.com/album/382510410</a></div>
+<div>CHO YONG PIL - Bounce (Full Japanese Version)</div>
+<div>CHO YONG PIL - Hello (feat. Taecyeon) (Full Japanese Version)</div>
+<div>CHO YONG PIL - Walking Along With You (Full Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382510410' target='_blank'><img src='https://resources.tidal.com/images/366e7ac4/b7e4/4370/8fa5/ddbdb119baf9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] Hello (Japan Edition Korea Version)</div>
+<div><a href='https://tidal.com/album/382457234' target='_blank'>https://tidal.com/album/382457234</a></div>
+<div>CHO YONG PIL - Bounce</div>
+<div>CHO YONG PIL - Hello (feat. Verbal Jint)</div>
+<div>CHO YONG PIL - Walking Along With You</div>
+<div>CHO YONG PIL - Need To Be Recharged</div>
+<div>CHO YONG PIL - First Love</div>
+<div>CHO YONG PIL - Should I Tell</div>
+<div>CHO YONG PIL - When I Am With You</div>
+<div>CHO YONG PIL - One Day On The Way Back Home</div>
+<div>CHO YONG PIL - Romance</div>
+<div>CHO YONG PIL - Moving Forward</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382457234' target='_blank'><img src='https://resources.tidal.com/images/b4598324/766c/4e04/be96/9507595aaa05/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Cho Yong Pil - 14</div>
+<div><a href='https://tidal.com/album/382504824' target='_blank'>https://tidal.com/album/382504824</a></div>
+<div>CHO YONG PIL - Sad Beatrice</div>
+<div>CHO YONG PIL - Say Goodbye</div>
+<div>CHO YONG PIL - Lonely Runner</div>
+<div>CHO YONG PIL - Farewell Without Memories</div>
+<div>CHO YONG PIL - Meaning Of The Trace</div>
+<div>CHO YONG PIL - Sad Today, Happy Tomorrow</div>
+<div>CHO YONG PIL - Swinging Tree</div>
+<div>CHO YONG PIL - Jungle City</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382504824' target='_blank'><img src='https://resources.tidal.com/images/8e7dd454/55c2/4bc5/b237/52f9eeb3641e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] Over the Rainbow (The 35th Anniversary)</div>
+<div><a href='https://tidal.com/album/382509158' target='_blank'>https://tidal.com/album/382509158</a></div>
+<div>CHO YONG PIL - Eyes Of The Sun</div>
+<div>CHO YONG PIL - Today Again</div>
+<div>CHO YONG PIL - The Voice</div>
+<div>CHO YONG PIL - With</div>
+<div>CHO YONG PIL - Oh My Flower</div>
+<div>CHO YONG PIL - Opera Of City</div>
+<div>CHO YONG PIL - Also My Life</div>
+<div>CHO YONG PIL - My Dear</div>
+<div>CHO YONG PIL - For Tomorrow</div>
+<div>CHO YONG PIL - Arirang In My Dream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382509158' target='_blank'><img src='https://resources.tidal.com/images/9533dfe0/4f68/4593/a9ff/5ded6a3c4414/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Ambition, Vol. 17</div>
+<div><a href='https://tidal.com/album/382507901' target='_blank'>https://tidal.com/album/382507901</a></div>
+<div>CHO YONG PIL - Friends Of The Morning</div>
+<div>CHO YONG PIL - Sorrow Of Waiting</div>
+<div>CHO YONG PIL - The End Of The Soul</div>
+<div>CHO YONG PIL - Wish</div>
+<div>CHO YONG PIL - Reason For The Life</div>
+<div>CHO YONG PIL - Little Heaven</div>
+<div>CHO YONG PIL - My Love Is</div>
+<div>CHO YONG PIL - After</div>
+<div>CHO YONG PIL - Monoloug</div>
+<div>CHO YONG PIL - First Love I Felt</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382507901' target='_blank'><img src='https://resources.tidal.com/images/471ed551/cfd0/458a/bdf5/f241b146c55d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] Cho Yong Pil - 15</div>
+<div><a href='https://tidal.com/album/382506107' target='_blank'>https://tidal.com/album/382506107</a></div>
+<div>CHO YONG PIL - Solitude Of Being Left</div>
+<div>CHO YONG PIL - Like In The Old Days</div>
+<div>CHO YONG PIL - Left The City</div>
+<div>CHO YONG PIL - Soul Fell Into A Sleep</div>
+<div>CHO YONG PIL - Flapping Up In The Sky</div>
+<div>CHO YONG PIL - When The Sun Rises</div>
+<div>CHO YONG PIL - When The Dark Ends</div>
+<div>CHO YONG PIL - Feeling Like Yours</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382506107' target='_blank'><img src='https://resources.tidal.com/images/40ffbecd/7a39/4dd1/97d1/7e10de118139/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1984] 조용필</div>
+<div><a href='https://tidal.com/album/189111770' target='_blank'>https://tidal.com/album/189111770</a></div>
+<div>CHO YONG PIL - 돌아와요 부산항에</div>
+<div>CHO YONG PIL - 정</div>
+<div>CHO YONG PIL - 꽃순이</div>
+<div>CHO YONG PIL - 너무 짧아요</div>
+<div>CHO YONG PIL - 돌아오지 않는 강</div>
+<div>CHO YONG PIL - 님이여</div>
+<div>CHO YONG PIL - 깊은 정</div>
+<div>CHO YONG PIL - 내 이름은 구름이여</div>
+<div>CHO YONG PIL - 해변의 여인</div>
+<div>CHO YONG PIL - 잊을 수 없어</div>
+<div>CHO YONG PIL - 옛 일</div>
+<div>CHO YONG PIL - 서러워 말아요</div>
+<div>CHO YONG PIL - 어디로 갔나요</div>
+<div>CHO YONG PIL - 못잊어</div>
+<div>CHO YONG PIL - 생각이 나네</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189111770' target='_blank'><img src='https://resources.tidal.com/images/15490265/663c/45a8/8822/b5046d581a5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1980] 조용필 데뷰집</div>
+<div><a href='https://tidal.com/album/242583092' target='_blank'>https://tidal.com/album/242583092</a></div>
+<div>CHO YONG PIL - Lead Me On</div>
+<div>CHO YONG PIL - 반지의 상처</div>
+<div>CHO YONG PIL - 사랑의 자장가-마리아</div>
+<div>CHO YONG PIL - 고운님내님</div>
+<div>CHO YONG PIL - 꿈을꾸리</div>
+<div>CHO YONG PIL - Chesara</div>
+<div>CHO YONG PIL - 하얀모래의꿈</div>
+<div>CHO YONG PIL - 허공 (경음악)</div>
+<div>CHO YONG PIL - Once There Was A Love</div>
+<div>CHO YONG PIL - Turn Around Look At Me</div>
+<div>CHO YONG PIL - 미워미워미워 (경음악)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/242583092' target='_blank'><img src='https://resources.tidal.com/images/fe830080/d7c5/4893/805c/9ad984cd73a6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/조용필 (Yong Pil Cho)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
