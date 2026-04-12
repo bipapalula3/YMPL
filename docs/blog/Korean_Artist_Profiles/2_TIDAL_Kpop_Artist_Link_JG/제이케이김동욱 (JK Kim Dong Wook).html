@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 제이케이김동욱 ( Tidal JK Kim Dong Wook )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 제이케이김동욱 ( Tidal JK Kim Dong Wook )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/3b255e75/2ad8/4cfc/b801/cdeb1d204499/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/23250241' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/9735231' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 제이케이김동욱</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>JK 김동욱 – 깊은 밤, 위로를 건네는 짙은 목소리, 'Heaven'처럼 마음을 울리고 'Your Song'처럼 따스하게 감싸는 음악</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> JK Kim Dong Wook</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>JK Kim Dong Uk – A deep voice offering comfort in the dark night, music that resonates like 'Heaven' and warmly embraces like 'Your Song'.</div><p>독보적인 음색과 깊은 감성으로 듣는 이의 마음을 사로잡는 JK 김동욱 님을 소개합니다. 그의 음악은 단순한 노래를 넘어, 진심을 담아 전하는 이야기와 같습니다. 부드러움과 강렬함을 넘나드는 보컬은 오랫동안 잊혀지지 않는 깊은 울림을 선사합니다.</p><p>Introducing JK Kim Dong Uk, who captivates listeners with his unique tone and deep emotion. His music goes beyond mere songs, it's like a story delivered with sincerity. His vocals, ranging from gentle to intense, create a profound resonance that lingers long after.</p><p>✧</p><p>음악적 여정의 시작</p><p>JK 김동욱 님은 특유의 허스키하면서도 깊이 있는 목소리로 데뷔 초부터 주목받았습니다. 그는 Soul, R&B, 팝 등 다양한 장르를 자신만의 스타일로 소화하며 폭넓은 음악적 스펙트럼을 보여주었습니다. 자신만의 색깔을 잃지 않으면서도 끊임없이 새로운 시도를 하는 모습이 인상적입니다.</p><p>The Beginning of a Musical Journey</p><p>JK Kim Dong Uk has been recognized since his debut for his unique, husky, and profound voice. He has showcased a wide range of musical spectrum by digesting various genres such as Soul, R&B, and pop in his own style. It is impressive that he constantly tries new things while maintaining his own color.</p><p>✧</p><p>마음을 어루만지는 음악 세계</p><p>그의 음악은 듣는 이에게 진솔한 감정을 전달하며 깊은 공감을 불러일으킵니다. 'Heaven'과 같이 웅장하고 감동적인 발라드부터 'Your Song'처럼 따뜻하고 섬세한 곡까지, 다양한 감성을 담아냅니다. 그의 음악은 때로는 위로가 되고, 때로는 용기를 주는 힘을 지니고 있습니다.</p><p>A World of Music that Touches the Heart</p><p>His music conveys sincere emotions to the listener and evokes deep empathy. From grand and touching ballads like 'Heaven' to warm and delicate songs like 'Your Song,' he captures a variety of emotions. His music sometimes offers comfort and sometimes gives courage.</p><p>✧</p><p>끊임없는 음악적 도전</p><p>JK 김동욱 님은 안주하지 않고 꾸준히 새로운 음악적 시도를 이어가고 있습니다. 다양한 장르와의 융합을 시도하거나, 새로운 스타일의 보컬을 선보이는 등 끊임없이 변화를 추구합니다. 이러한 노력은 그의 음악을 더욱 풍성하고 다채롭게 만들어줍니다.</p><p>Continuous Musical Challenge</p><p>JK Kim Dong Uk continues to make new musical attempts without being complacent. He constantly seeks change, such as trying to fuse with various genres or showcasing new styles of vocals. These efforts make his music richer and more diverse.</p><p>✧</p><p>앞으로의 음악, 그리고 의미</p><p>앞으로 JK 김동욱 님이 들려줄 음악은 어떤 모습일까요? 변치 않는 깊은 감성과 더욱 발전된 음악적 역량을 기대하게 합니다. 그의 음악은 단순한 즐거움을 넘어, 삶의 위로와 희망을 전하는 메시지로 오랫동안 우리 곁에 남을 것입니다.</p><p>Future Music and Meaning</p><p>What will the music that JK Kim Dong Uk will play in the future look like? We look forward to his unchanging deep emotions and more developed musical capabilities. His music will remain with us for a long time as a message that conveys comfort and hope in life, beyond mere pleasure.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Reverie</div>
+<div><a href='https://tidal.com/album/373549475' target='_blank'>https://tidal.com/album/373549475</a></div>
+<div>JK Kim Dong Uk - Hide & Seek</div>
+<div>JK Kim Dong Uk - HeavEn</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/373549475' target='_blank'><img src='https://resources.tidal.com/images/35529fb6/cac5/47f8/82cf/192022002998/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Mon amour</div>
+<div><a href='https://tidal.com/album/397929541' target='_blank'>https://tidal.com/album/397929541</a></div>
+<div>JK Kim Dong Uk - Mon amour</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397929541' target='_blank'><img src='https://resources.tidal.com/images/607bf7b5/1cf1/46fa/bc05/6d7a273bf89c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] The Book Of John Part 2_ End of Innocence</div>
+<div><a href='https://tidal.com/album/277275894' target='_blank'>https://tidal.com/album/277275894</a></div>
+<div>JK Kim Dong Uk - Wonder</div>
+<div>JK Kim Dong Uk - T O R O N T O</div>
+<div>JK Kim Dong Uk - Your Song</div>
+<div>JK Kim Dong Uk - G I A N T</div>
+<div>JK Kim Dong Uk - Olla la la</div>
+<div>JK Kim Dong Uk - Promise U</div>
+<div>JK Kim Dong Uk - Fall Again</div>
+<div>JK Kim Dong Uk - FIGHT</div>
+<div>JK Kim Dong Uk - My Precious</div>
+<div>JK Kim Dong Uk - Umma</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/277275894' target='_blank'><img src='https://resources.tidal.com/images/a75bd067/76f1/4c1f/ae69/9f86fb8f824e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] T O R O N T O</div>
+<div><a href='https://tidal.com/album/274681106' target='_blank'>https://tidal.com/album/274681106</a></div>
+<div>JK Kim Dong Uk - T O R O N T O</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/274681106' target='_blank'><img src='https://resources.tidal.com/images/261e4902/8327/4fb6/ab27/80db0309e561/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Better</div>
+<div><a href='https://tidal.com/album/320007692' target='_blank'>https://tidal.com/album/320007692</a></div>
+<div>JK Kim Dong Uk - Better</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/320007692' target='_blank'><img src='https://resources.tidal.com/images/e0869e9b/df77/4fa3/8100/031c9b06dfb0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] My Precious</div>
+<div><a href='https://tidal.com/album/226219946' target='_blank'>https://tidal.com/album/226219946</a></div>
+<div>JK Kim Dong Uk - My Precious</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/226219946' target='_blank'><img src='https://resources.tidal.com/images/76a4b9c3/7b8f/484a/859b/4e5bc5a922e2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] FIGHT</div>
+<div><a href='https://tidal.com/album/210782668' target='_blank'>https://tidal.com/album/210782668</a></div>
+<div>JK Kim Dong Uk - FIGHT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210782668' target='_blank'><img src='https://resources.tidal.com/images/e1aa69a4/066f/49d5/82a4/21493618c7dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] olla la la</div>
+<div><a href='https://tidal.com/album/196167906' target='_blank'>https://tidal.com/album/196167906</a></div>
+<div>JK Kim Dong Uk - olla la la</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196167906' target='_blank'><img src='https://resources.tidal.com/images/a0c92e15/0bb2/40ab/b20a/851590a50cfd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Fall Again</div>
+<div><a href='https://tidal.com/album/203172670' target='_blank'>https://tidal.com/album/203172670</a></div>
+<div>JK Kim Dong Uk - Fall Again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/203172670' target='_blank'><img src='https://resources.tidal.com/images/d2bd555f/c592/4d9c/981a/06eb55dfae29/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Dancing on my own</div>
+<div><a href='https://tidal.com/album/196169425' target='_blank'>https://tidal.com/album/196169425</a></div>
+<div>JK Kim Dong Uk - Promise U</div>
+<div>JK Kim Dong Uk - Olla la la</div>
+<div>JK Kim Dong Uk - I′m coming</div>
+<div>JK Kim Dong Uk - ROLEPLAY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196169425' target='_blank'><img src='https://resources.tidal.com/images/9ce64a40/808f/408a/813c/1229d6a89053/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Slow Down (cafe song)</div>
+<div><a href='https://tidal.com/album/152850372' target='_blank'>https://tidal.com/album/152850372</a></div>
+<div>Lanester, JK Kim Dong Uk - Slow Down (cafe song)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/152850372' target='_blank'><img src='https://resources.tidal.com/images/b5454b29/00ca/4592/b458/e25b9d608be2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] ROLEPLAY</div>
+<div><a href='https://tidal.com/album/196161429' target='_blank'>https://tidal.com/album/196161429</a></div>
+<div>JK Kim Dong Uk - ROLEPLAY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196161429' target='_blank'><img src='https://resources.tidal.com/images/c9fa8a27/a109/4677/87d9/a5003d9e75c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] I’m Coming</div>
+<div><a href='https://tidal.com/album/196162418' target='_blank'>https://tidal.com/album/196162418</a></div>
+<div>JK Kim Dong Uk - I’m Coming</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196162418' target='_blank'><img src='https://resources.tidal.com/images/95d0b52c/c2ac/44d9/a879/0b17d80b6895/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] My Lawyer, Mr. Joe 2 _ Crime and Punishment Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/102418969' target='_blank'>https://tidal.com/album/102418969</a></div>
+<div>JK Kim Dong Uk - OFF ROAD</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102418969' target='_blank'><img src='https://resources.tidal.com/images/dbfca72d/3b48/447e/bd73/2f923828b55a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The Player (Original Television Soundtrack) Pt. 3</div>
+<div><a href='https://tidal.com/album/189537134' target='_blank'>https://tidal.com/album/189537134</a></div>
+<div>JK Kim Dong Uk - Yesterday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189537134' target='_blank'><img src='https://resources.tidal.com/images/bede1f4a/af6b/4f04/ae86/9a82b24c1e89/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The Book of John_ Part 1</div>
+<div><a href='https://tidal.com/album/196139929' target='_blank'>https://tidal.com/album/196139929</a></div>
+<div>JK Kim Dong Uk - Reminder</div>
+<div>JK Kim Dong Uk - Eyes of blu</div>
+<div>JK Kim Dong Uk - Pray for love</div>
+<div>JK Kim Dong Uk - Gold</div>
+<div>JK Kim Dong Uk - Universe</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196139929' target='_blank'><img src='https://resources.tidal.com/images/6f088716/e633/47ca/8cc0/c4f005850269/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Still</div>
+<div><a href='https://tidal.com/album/196143254' target='_blank'>https://tidal.com/album/196143254</a></div>
+<div>JK Kim Dong Uk - Still</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143254' target='_blank'><img src='https://resources.tidal.com/images/083ad726/6a10/4d32/aeb7/5717e058c866/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Let Me Introduce Her (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/339602806' target='_blank'>https://tidal.com/album/339602806</a></div>
+<div>JK Kim Dong Uk - Snowball</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339602806' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] Universe</div>
+<div><a href='https://tidal.com/album/196133464' target='_blank'>https://tidal.com/album/196133464</a></div>
+<div>JK Kim Dong Uk - Universe</div>
+<div>JK Kim Dong Uk - Universe (C.T.P Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196133464' target='_blank'><img src='https://resources.tidal.com/images/aa73c62a/5efe/40fa/b45c/2521699d289f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Tunnel (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196134514' target='_blank'>https://tidal.com/album/196134514</a></div>
+<div>JK Kim Dong Uk - Circle Of Life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196134514' target='_blank'><img src='https://resources.tidal.com/images/9ca0ff0e/6902/4e49/bfa6/6676f5041531/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Gold</div>
+<div><a href='https://tidal.com/album/196136767' target='_blank'>https://tidal.com/album/196136767</a></div>
+<div>JK Kim Dong Uk - Gold</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196136767' target='_blank'><img src='https://resources.tidal.com/images/074170b2/2d0a/48a9/bd51/1933fdee9a8e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Dirty Dancing</div>
+<div><a href='https://tidal.com/album/196096366' target='_blank'>https://tidal.com/album/196096366</a></div>
+<div>JK Kim Dong Uk - Dirty Dancing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196096366' target='_blank'><img src='https://resources.tidal.com/images/afb90290/aeb7/4162/97f9/4c6c21eed281/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Queen of ambition (Original Soundtrack) Part.5</div>
+<div><a href='https://tidal.com/album/215831011' target='_blank'>https://tidal.com/album/215831011</a></div>
+<div>JK Kim Dong Wook - A nail</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215831011' target='_blank'><img src='https://resources.tidal.com/images/6fa25915/0522/44d1/be3a/40906d1bff19/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 윤일상 작곡가 21주년 기념 앨범 I'm 21 Part.2</div>
+<div><a href='https://tidal.com/album/168609264' target='_blank'>https://tidal.com/album/168609264</a></div>
+<div>SUPER JUNIOR-K.R.Y- - 회상</div>
+<div>JK Kim Dong Uk - Remember (feat. Miryo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168609264' target='_blank'><img src='https://resources.tidal.com/images/294b9e52/1c85/4381/a6b9/6d23139524a3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] AcoustiK</div>
+<div><a href='https://tidal.com/album/215604175' target='_blank'>https://tidal.com/album/215604175</a></div>
+<div>JK Kim Dong Wook - 가시를 삼키다</div>
+<div>JK Kim Dong Wook - 나를 떠날 당신에게</div>
+<div>JK Kim Dong Wook - 너를 비운다</div>
+<div>JK Kim Dong Wook - 자운영</div>
+<div>JK Kim Dong Wook - 퇴근길 블루스</div>
+<div>JK Kim Dong Wook - 잠든 니 곁에서</div>
+<div>JK Kim Dong Wook - 신기루</div>
+<div>JK Kim Dong Wook - Falling</div>
+<div>JK Kim Dong Wook - 기억해줘</div>
+<div>JK Kim Dong Wook - Nostaigia</div>
+<div>JK Kim Dong Wook - 두번째 발걸음</div>
+<div>JK Kim Dong Wook - First sight</div>
+<div>JK Kim Dong Wook - 빈자리</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215604175' target='_blank'><img src='https://resources.tidal.com/images/81fe5830/447c/42a5/98c4/75a0b939ac2b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Multiple personalize</div>
+<div><a href='https://tidal.com/album/216097611' target='_blank'>https://tidal.com/album/216097611</a></div>
+<div>JK Kim Dong Wook - Ego</div>
+<div>JK Kim Dong Wook - 돌아와 제발</div>
+<div>JK Kim Dong Wook - 헤어질때면 언제나</div>
+<div>JK Kim Dong Wook - Cry</div>
+<div>JK Kim Dong Wook - 내가 사랑할게요</div>
+<div>JK Kim Dong Wook - 괜찮아</div>
+<div>JK Kim Dong Wook - Iris</div>
+<div>JK Kim Dong Wook - 너의 행복만</div>
+<div>JK Kim Dong Wook - 불면</div>
+<div>JK Kim Dong Wook - 부디</div>
+<div>JK Kim Dong Wook - Pradise</div>
+<div>JK Kim Dong Wook - Love 2night</div>
+<div>JK Kim Dong Wook - 오늘도 그레이 빛 하늘</div>
+<div>JK Kim Dong Wook - 1년 전 약속</div>
+<div>JK Kim Dong Wook - 너뿐이라고</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216097611' target='_blank'><img src='https://resources.tidal.com/images/d8cc8b5f/337b/4eb8/bf15/6cdb883b9193/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] Life Sentence</div>
+<div><a href='https://tidal.com/album/216118227' target='_blank'>https://tidal.com/album/216118227</a></div>
+<div>JK Kim Dong Wook - Never again</div>
+<div>JK Kim Dong Wook - Foolish love</div>
+<div>JK Kim Dong Wook - For her</div>
+<div>JK Kim Dong Wook - Beautiful One</div>
+<div>JK Kim Dong Wook - Maginot</div>
+<div>JK Kim Dong Wook - speech-impaired person</div>
+<div>JK Kim Dong Wook - After love</div>
+<div>JK Kim Dong Wook - Travel</div>
+<div>JK Kim Dong Wook - Relation</div>
+<div>JK Kim Dong Wook - Sweet Days</div>
+<div>JK Kim Dong Wook - Letter</div>
+<div>JK Kim Dong Wook - I Believe I Can Fly</div>
+<div>JK Kim Dong Wook - Still In Love</div>
+<div>JK Kim Dong Wook - Never again (Radio Edit Ver.)</div>
+<div>JK Kim Dong Wook - Feel So Good</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216118227' target='_blank'><img src='https://resources.tidal.com/images/3b255e75/2ad8/4cfc/b801/cdeb1d204499/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/제이케이김동욱 (JK Kim Dong Wook)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
