@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 신승훈 ( Tidal Shin Seung Hun )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 신승훈 ( Tidal Shin Seung Hun )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/82df8b12/32bd/4df6/8e4b/70015fc9822f/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9830579' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/9830580' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 신승훈</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>신승훈 – 시대를 초월하는 감성 발라드의 황제, '미소 속에 비친 그대'의 아련함과 'I Believe'의 벅찬 감동을 선사하는 영원한 목소리</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Shin Seung Hun</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Shin Seung Hun – The timeless emperor of emotional ballads, delivering the wistfulness of 'Reflection of You in Your Smile' and the overwhelming emotion of 'I Believe', an eternal voice.</div><p>대한민국 발라드의 역사를 써내려 온 가수, 신승훈을 소개합니다. 섬세한 감정 표현과 깊이 있는 목소리로 오랜 시간 동안 많은 사랑을 받아왔어요. 그의 음악은 단순한 노래를 넘어, 시대의 감성을 담아내는 예술 작품과 같습니다.</p><p>Introducing Shin Seung Hun, the singer who has written the history of Korean ballads. He has been loved for a long time for his delicate emotional expression and deep voice. His music is more than just a song; it is a work of art that captures the emotions of an era.</p><p>✧</p><p>발라드 제국의 탄생</p><p>신승훈은 데뷔 이후 독보적인 감성으로 발라드 시장에 새로운 바람을 일으켰어요. 그의 음악은 사랑, 이별, 그리움 등 보편적인 감정을 섬세하게 그려내며 대중의 공감을 얻었습니다. 꾸준한 음악 활동을 통해 자신만의 확고한 음악 세계를 구축해왔죠.</p><p>The Birth of a Ballad Empire</p><p>Since his debut, Shin Seung Hun has brought a new wave to the ballad market with his unique sensibility. His music delicately portrays universal emotions such as love, parting, and longing, gaining public sympathy. Through consistent musical activities, he has built his own solid musical world.</p><p>✧</p><p>음악적 깊이와 섬세한 표현</p><p>신승훈의 음악은 깊은 감정선과 섬세한 표현력이 돋보입니다. 그의 목소리는 듣는 이의 마음을 어루만지는 듯한 따뜻함을 전달하며, 가사는 마치 한 편의 시처럼 아름다운 이미지를 떠올리게 합니다. 다양한 음악적 시도를 통해 발라드라는 장르 안에서 끊임없이 변화를 추구해왔어요.</p><p>Musical Depth and Delicate Expression</p><p>Shin Seung Hun's music stands out with its deep emotional lines and delicate expressions. His voice conveys a warmth that seems to caress the listener's heart, and the lyrics evoke beautiful images like a poem. He has constantly sought change within the ballad genre through various musical attempts.</p><p>✧</p><p>시간을 초월하는 주요 활동</p><p>신승훈은 수많은 히트곡을 발표하며 한국 가요계에 큰 발자취를 남겼습니다. 콘서트와 방송 활동을 통해 꾸준히 팬들과 소통하며, 그의 음악은 시대를 초월하여 사랑받고 있어요. 다양한 OST 참여를 통해 드라마의 감동을 더하는 역할도 해왔습니다.</p><p>Major Activities Transcending Time</p><p>Shin Seung Hun has left a significant mark on the Korean music scene by releasing numerous hit songs. He has consistently communicated with fans through concerts and broadcasting activities, and his music is loved beyond generations. He has also played a role in adding to the emotion of dramas through various OST participations.</p><p>✧</p><p>앞으로의 음악, 그리고 의미</p><p>끊임없이 새로운 음악을 탐구하고 도전하는 신승훈의 음악은 앞으로도 많은 이들에게 감동과 위로를 전할 것입니다. 그의 음악은 단순한 유행을 넘어, 오랜 시간 동안 우리의 마음속에 깊이 새겨질 거예요. 앞으로 그가 보여줄 음악적 행보에 기대가 모아집니다.</p><p>Future Music, and Its Meaning</p><p>Shin Seung Hun's music, which constantly explores and challenges new sounds, will continue to deliver emotion and comfort to many people. His music transcends mere trends and will be deeply etched in our hearts for a long time. Expectations are high for his future musical endeavors.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Shin Seung Hun The Best Of Remastered 2024</div>
+<div><a href='https://tidal.com/album/358071544' target='_blank'>https://tidal.com/album/358071544</a></div>
+<div>Shin Seung Hun - Reflection of You in Your Smile (2024 Remaster)</div>
+<div>Shin Seung Hun - Don’t Make Me Cry (Re-Mix) (2024 Remaster)</div>
+<div>Shin Seung Hun - I Like Weather Like Today (2024 Remaster)</div>
+<div>Shin Seung Hun - Invisible Love (2024 Remaster)</div>
+<div>Shin Seung Hun - Autumn Memories (2024 Remaster)</div>
+<div>Shin Seung Hun - By Chance (2024 Remaster)</div>
+<div>Shin Seung Hun - Like A Sapphire (In Studio) (2024 Remaster)</div>
+<div>Shin Seung Hun - Because I Love You (2024 Remaster)</div>
+<div>Shin Seung Hun - Hey Girl (2024 Remaster)</div>
+<div>Shin Seung Hun - Romeo & Juliet (Re-Mix) (2024 Remaster)</div>
+<div>Shin Seung Hun - Just Like First Sight (2024 Remaster)</div>
+<div>Shin Seung Hun - After A Long Time (2024 Remaster)</div>
+<div>Shin Seung Hun - Long After (2024 Remaster)</div>
+<div>Shin Seung Hun - Misconception (2024 Remaster)</div>
+<div>Shin Seung Hun - You’re Just at A Higher Place Than Me (2024 Remaster)</div>
+<div>Shin Seung Hun - My Way of Loving You (Mambo) (2024 Remaster)</div>
+<div>Shin Seung Hun - Fate (2024 Remaster)</div>
+<div>Shin Seung Hun - Breakable Promise (2024 Remaster)</div>
+<div>Shin Seung Hun - Mourning You (2024 Remaster)</div>
+<div>Shin Seung Hun - Destiny (2024 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/358071544' target='_blank'><img src='https://resources.tidal.com/images/2e449fce/09bb/4114/b93e/edc8c0d27fba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Shin Seung Hun (2024 Remasterd)</div>
+<div><a href='https://tidal.com/album/358075129' target='_blank'>https://tidal.com/album/358075129</a></div>
+<div>Shin Seung Hun - Reflection of You in Your Smile (2024 Remaster)</div>
+<div>Shin Seung Hun - Second Love (2024 Remaster)</div>
+<div>Shin Seung Hun - Don’t Make Me Cry (2024 Remaster)</div>
+<div>Shin Seung Hun - I Like Weather Like Today (2024 Remaster)</div>
+<div>Shin Seung Hun - I Love Her (2024 Remaster)</div>
+<div>Shin Seung Hun - Look Back (2024 Remaster)</div>
+<div>Shin Seung Hun - Your Mind (2024 Remaster)</div>
+<div>Shin Seung Hun - Missing You (2024 Remaster)</div>
+<div>Shin Seung Hun - Good Bye My Love (2024 Remaster)</div>
+<div>Shin Seung Hun - Don’t Make Me Cry (Re-Mix) (2024 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/358075129' target='_blank'><img src='https://resources.tidal.com/images/aaf3a03e/0828/464d/8e76/5d2e41e2d024/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Welcome to Samdal-ri (Original Television Soundtrack), Pt.4</div>
+<div><a href='https://tidal.com/album/336477194' target='_blank'>https://tidal.com/album/336477194</a></div>
+<div>Shin Seung Hun - Reunion</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/336477194' target='_blank'><img src='https://resources.tidal.com/images/9e1fbe30/8595/473d/89cf/8a99d2b681c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 너를 보낸다 (Robin Project X 신승훈 작가 Part.1)</div>
+<div><a href='https://tidal.com/album/302567622' target='_blank'>https://tidal.com/album/302567622</a></div>
+<div>신승훈 - 너를 보낸다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302567622' target='_blank'><img src='https://resources.tidal.com/images/795a0fae/7b22/4788/9b8d/28162eba40f3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] MY PERSONAS</div>
+<div><a href='https://tidal.com/album/196153925' target='_blank'>https://tidal.com/album/196153925</a></div>
+<div>Shin Seung Hun - Like The First Goodbye</div>
+<div>Shin Seung Hun - Memories of You</div>
+<div>Shin Seung Hun - In November</div>
+<div>Shin Seung Hun - TO ME</div>
+<div>Shin Seung Hun - Been There, Done That</div>
+<div>Shin Seung Hun - Walking in the Rain</div>
+<div>Shin Seung Hun - Love makes me grown up</div>
+<div>Shin Seung Hun - Lullaby (Orchestra Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196153925' target='_blank'><img src='https://resources.tidal.com/images/d1a9580f/2baa/4346/9724/26a1f454e15a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Been there, Done that</div>
+<div><a href='https://tidal.com/album/196154139' target='_blank'>https://tidal.com/album/196154139</a></div>
+<div>Shin Seung Hun - Been there, Done that</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196154139' target='_blank'><img src='https://resources.tidal.com/images/27c0dbae/4d83/408f/aad5/f4c5cc827fb0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Mr. Sunshine, Pt. 12 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196142942' target='_blank'>https://tidal.com/album/196142942</a></div>
+<div>Shin Seung Hun - Like a Beautiful Flame</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142942' target='_blank'><img src='https://resources.tidal.com/images/a008c07c/ea86/4cfb/8b61/b0ddf0f6c259/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Limited Edition, Vol. 1</div>
+<div><a href='https://tidal.com/album/196137755' target='_blank'>https://tidal.com/album/196137755</a></div>
+<div>Shin Seung Hun - Polaroid</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137755' target='_blank'><img src='https://resources.tidal.com/images/46ade4e0/4cc2/4f4f/93de/8121cf4a9cae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] I Am…&I Am</div>
+<div><a href='https://tidal.com/album/196106446' target='_blank'>https://tidal.com/album/196106446</a></div>
+<div>Shin Seung Hun - MAYO</div>
+<div>Shin Seung Hun - Me, Myself</div>
+<div>Shin Seung Hun - Love Again</div>
+<div>Shin Seung Hun - Walk with---</div>
+<div>Shin Seung Hun - Hello, Hello, Hello</div>
+<div>Shin Seung Hun - Unsaid Love</div>
+<div>Shin Seung Hun - Amigo</div>
+<div>Shin Seung Hun - Time Is Mine</div>
+<div>Shin Seung Hun - Interstellar</div>
+<div>Shin Seung Hun - Would You Marry Me</div>
+<div>Shin Seung Hun - I Will</div>
+<div>Shin Seung Hun - Would You Marry Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196106446' target='_blank'><img src='https://resources.tidal.com/images/ebb5b3aa/dd3d/46dd/b18d/a7e142fbda44/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] I hear your voice (Original Soundtrack) Part.4</div>
+<div><a href='https://tidal.com/album/411745951' target='_blank'>https://tidal.com/album/411745951</a></div>
+<div>Shin Seung Hun - Words You Can't Hear</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/411745951' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Great Wave</div>
+<div><a href='https://tidal.com/album/196092399' target='_blank'>https://tidal.com/album/196092399</a></div>
+<div>Shin Seung Hun - I′ve Changed a Lot</div>
+<div>Shin Seung Hun - Sorry</div>
+<div>Shin Seung Hun - You</div>
+<div>Shin Seung Hun - Love Witch</div>
+<div>Shin Seung Hun - My Melody</div>
+<div>Shin Seung Hun - I Hope</div>
+<div>Shin Seung Hun - Butterfly Effect</div>
+<div>Shin Seung Hun - Love Fool</div>
+<div>Shin Seung Hun - Turn On the Radio</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196092399' target='_blank'><img src='https://resources.tidal.com/images/e7355bfa/dd2e/4af0/828c/f4452c2f5a27/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 천일의 약속 (Original Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/344352081' target='_blank'>https://tidal.com/album/344352081</a></div>
+<div>Shin Seung Hun - 처음 하는 말처럼</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344352081' target='_blank'><img src='https://resources.tidal.com/images/c0290183/d719/46c2/9db7/e15ed8f3f516/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Love O`Clock</div>
+<div><a href='https://tidal.com/album/305345202' target='_blank'>https://tidal.com/album/305345202</a></div>
+<div>Shin Seung Hun - 그랬으면 좋겠어</div>
+<div>Shin Seung Hun - 지금, 사랑할 시간</div>
+<div>Shin Seung Hun - 사랑치</div>
+<div>Shin Seung Hun - 이별할 떄 버려야 할 것들</div>
+<div>Shin Seung Hun - 온도</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305345202' target='_blank'><img src='https://resources.tidal.com/images/305683bf/c773/44e0/ab51/7dd6de19ab9c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Cinderella Man (Original Television Soundtrack) - 내 사람인 것 같아서</div>
+<div><a href='https://tidal.com/album/306337557' target='_blank'>https://tidal.com/album/306337557</a></div>
+<div>Shin Seung Hun - Cinderella Man (Original Television Soundtrack) - 내 사람인 것 같아서</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306337557' target='_blank'><img src='https://resources.tidal.com/images/92ce6b72/3cbe/479b/b648/1bf45e605514/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] RADIO WAVE</div>
+<div><a href='https://tidal.com/album/166357646' target='_blank'>https://tidal.com/album/166357646</a></div>
+<div>Shin Seung Hun - Different Wave</div>
+<div>Shin Seung Hun - Hey</div>
+<div>Shin Seung Hun - 라디오를 켜봐요</div>
+<div>Shin Seung Hun - 나비효과</div>
+<div>Shin Seung Hun - I Do</div>
+<div>Shin Seung Hun - 너를 안는다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/166357646' target='_blank'><img src='https://resources.tidal.com/images/6cb8d852/1d57/42ac/a321/349e670763cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] The Romanticist</div>
+<div><a href='https://tidal.com/album/166356983' target='_blank'>https://tidal.com/album/166356983</a></div>
+<div>Shin Seung Hun - Dream Of My Life</div>
+<div>Shin Seung Hun - 송연비가 ('인연을 보내는 슬픈 노래')</div>
+<div>Shin Seung Hun - Lady (무궁화 꽃이 또...피었습니다)</div>
+<div>Shin Seung Hun - 시간을 뒤로 걸어</div>
+<div>Shin Seung Hun - 지금 만나러 갑니다</div>
+<div>Shin Seung Hun - 못된 기다림</div>
+<div>Shin Seung Hun - 그런가요</div>
+<div>Shin Seung Hun - I Luv U I Luv U I Luv U</div>
+<div>Shin Seung Hun - 아파도, 그래도---</div>
+<div>Shin Seung Hun - 그랬죠 (Song For Mother)</div>
+<div>Shin Seung Hun - 로미오 & 줄리엣 2</div>
+<div>Shin Seung Hun - 어디선가 그녀에게 무슨 일이 생기면</div>
+<div>Shin Seung Hun - Wonderful World</div>
+<div>Shin Seung Hun - 어떡하죠 (From 천국의 나무)</div>
+<div>Shin Seung Hun - 그래도 사랑이다 (From 이 죽일 놈의 사랑)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/166356983' target='_blank'><img src='https://resources.tidal.com/images/ad442fef/53dd/4457/a0db/c7fd35ec054d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] The Legend - Special Album The New _ The Classic _ The Festive</div>
+<div><a href='https://tidal.com/album/184617487' target='_blank'>https://tidal.com/album/184617487</a></div>
+<div>Shin Seung Hun - Why</div>
+<div>Shin Seung Hun, Johan Kim - Christmas Miracle</div>
+<div>Shin Seung Hun (with Lee Moon Sae) - Silver Bells</div>
+<div>Shin Seung Hun - 그대 떠나갈 만큼</div>
+<div>Shin Seung Hun (with Ash) - Always</div>
+<div>Shin Seung Hun - White Christmas</div>
+<div>Shin Seung Hun - Last Christmas</div>
+<div>Shin Seung Hun - 그대여서 고마워요</div>
+<div>Shin Seung Hun - I Love You For Sentimental Reasons</div>
+<div>Shin Seung Hun - I Left My Heart In San Francisco</div>
+<div>Shin Seung Hun - 미소속에 비친 그대 + 나보다 조금 더 높은 곳에 니가 있을 뿐 + 보이지 않는 사랑 + 그 후로 오랫동안</div>
+<div>Shin Seung Hun, Anny - Hey Girl</div>
+<div>Shin Seung Hun - 가을빛 추억</div>
+<div>Shin Seung Hun, 윤희중 - 우연히</div>
+<div>Shin Seung Hun - 로미오 & 줄리엣</div>
+<div>Shin Seung Hun - 오랜 이별 뒤에 Quartet Version</div>
+<div>Shin Seung Hun - 가잖아 + 이런 나를 2002 Live Version</div>
+<div>Shin Seung Hun - Loving You House Version</div>
+<div>Shin Seung Hun - The Unwritten Legend English Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184617487' target='_blank'><img src='https://resources.tidal.com/images/f80eaec2/dbfc/4a7f/bc70/e97f47c1d51b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] 8th</div>
+<div><a href='https://tidal.com/album/381008147' target='_blank'>https://tidal.com/album/381008147</a></div>
+<div>Shin Seung Hun - Prologue-The Eighth Story</div>
+<div>Shin Seung Hun - 사랑해도 헤어질수 있다면---</div>
+<div>Shin Seung Hun - 애이불비</div>
+<div>Shin Seung Hun - Loving You</div>
+<div>Shin Seung Hun - 올꺼야</div>
+<div>Shin Seung Hun - 널 위한 이별</div>
+<div>Shin Seung Hun - 이런나를---</div>
+<div>Shin Seung Hun - Face Off</div>
+<div>Shin Seung Hun - 비상</div>
+<div>Shin Seung Hun - 우연</div>
+<div>Shin Seung Hun - Tomorrow</div>
+<div>Shin Seung Hun - I Believe</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381008147' target='_blank'><img src='https://resources.tidal.com/images/82df8b12/32bd/4df6/8e4b/70015fc9822f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2001] Endless Ballads</div>
+<div><a href='https://tidal.com/album/343737331' target='_blank'>https://tidal.com/album/343737331</a></div>
+<div>Shin Seung Hun - Fate</div>
+<div>Shin Seung Hun - Invisible Love</div>
+<div>Shin Seung Hun - Just Like First Sight</div>
+<div>Shin Seung Hun - You’re Just at A Higher Place Than Me</div>
+<div>Shin Seung Hun - After A Long Time</div>
+<div>Shin Seung Hun - Misconception</div>
+<div>Shin Seung Hun - Reflection of You in Your Smile</div>
+<div>Shin Seung Hun - Because I Love You</div>
+<div>Shin Seung Hun - Don’t Make Me Cry</div>
+<div>Shin Seung Hun - Long After</div>
+<div>Shin Seung Hun - My Way of Loving You (Houes Version)</div>
+<div>Shin Seung Hun - I Like Weather Like Today</div>
+<div>Shin Seung Hun - Mistake</div>
+<div>Shin Seung Hun - A Broken Promise</div>
+<div>Shin Seung Hun - Like A Sapphire (In Studio)</div>
+<div>Shin Seung Hun - Autumn Memories</div>
+<div>Shin Seung Hun - Hey Girl</div>
+<div>Shin Seung Hun - In Front of A Broken Love</div>
+<div>Shin Seung Hun - Feeling Love</div>
+<div>Shin Seung Hun - Look Back</div>
+<div>Shin Seung Hun - Enough For Now</div>
+<div>Shin Seung Hun - Your Season</div>
+<div>Shin Seung Hun - Love Ending</div>
+<div>Shin Seung Hun - Mourning You</div>
+<div>Shin Seung Hun - Second Love</div>
+<div>Shin Seung Hun - My Day</div>
+<div>Shin Seung Hun - Coincidentally</div>
+<div>Shin Seung Hun - Love Only For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343737331' target='_blank'><img src='https://resources.tidal.com/images/1ba39c6f/67d7/48ea/9992/7d4e1a271873/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] Desire to fly high</div>
+<div><a href='https://tidal.com/album/381006891' target='_blank'>https://tidal.com/album/381006891</a></div>
+<div>신승훈 - Prologue(Desire to fly high)</div>
+<div>신승훈 - 전설 속의 누군가처럼</div>
+<div>신승훈 - 가잖아</div>
+<div>신승훈 - 엄마야</div>
+<div>신승훈 - 내 안의 그녀</div>
+<div>신승훈 - Good bye my love</div>
+<div>신승훈 - 이별 그후</div>
+<div>신승훈 - 어느 멋진 날</div>
+<div>신승훈 - 슬픈 거짓말</div>
+<div>신승훈 - Change</div>
+<div>신승훈 - Forever</div>
+<div>신승훈 - Over the rainbow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381006891' target='_blank'><img src='https://resources.tidal.com/images/0a8f2f69/b997/49a4/924e/e8b2ddfb8c05/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] 이소라의 프로포즈 2집</div>
+<div><a href='https://tidal.com/album/223263041' target='_blank'>https://tidal.com/album/223263041</a></div>
+<div>Shin Seung Hun - 오늘같은 이런 창 밖이 좋아 Live Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223263041' target='_blank'><img src='https://resources.tidal.com/images/10142c38/55bd/41f5/9399/2614b5c307c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Shin Seung Hun 6</div>
+<div><a href='https://tidal.com/album/343713714' target='_blank'>https://tidal.com/album/343713714</a></div>
+<div>Shin Seung Hun - Breakable Promise (2024 Remaster)</div>
+<div>Shin Seung Hun - Mourning You (2024 Remaster)</div>
+<div>Shin Seung Hun - The Most Beautiful Love (2024 Remaster)</div>
+<div>Shin Seung Hun - In Front of A Broken Love (2024 Remaster)</div>
+<div>Shin Seung Hun - Coincidentally (2024 Remaster)</div>
+<div>Shin Seung Hun - Love Ending (2024 Remaster)</div>
+<div>Shin Seung Hun - Destiny (2024 Remaster)</div>
+<div>Shin Seung Hun - Mistake (2024 Remaster)</div>
+<div>Shin Seung Hun - Dream Girl (2024 Remaster)</div>
+<div>Shin Seung Hun - My Day (2024 Remaster)</div>
+<div>Shin Seung Hun - Love Ending (Bonus Disco Version) (2024 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343713714' target='_blank'><img src='https://resources.tidal.com/images/f3158013/ac76/4146/b950/54d92d46d5a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] Shin Seung Hun 5 (2024 Remasterd)</div>
+<div><a href='https://tidal.com/album/358067972' target='_blank'>https://tidal.com/album/358067972</a></div>
+<div>Shin Seung Hun - You’re Just at A Higher Place Than Me (2024 Remaster)</div>
+<div>Shin Seung Hun - Fate (2024 Remaster)</div>
+<div>Shin Seung Hun - My Way of Loving You (House Version) (2024 Remaster)</div>
+<div>Shin Seung Hun - I Love You (2024 Remaster)</div>
+<div>Shin Seung Hun - Your Song (Duet With Jon B.) (2024 Remaster)</div>
+<div>Shin Seung Hun - Eternity of Moments (2024 Remaster)</div>
+<div>Shin Seung Hun - Enough For Now (2024 Remaster)</div>
+<div>Shin Seung Hun - Happy Birthday To Me (2024 Remaster)</div>
+<div>Shin Seung Hun - Game of Republic Of R.O.K (2024 Remaster)</div>
+<div>Shin Seung Hun - My Way of Loving You (Mambo Version) (2024 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/358067972' target='_blank'><img src='https://resources.tidal.com/images/f9b50f88/8bea/41dd/8331/f6feab780d5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] Shin Seung Hun 4</div>
+<div><a href='https://tidal.com/album/343732625' target='_blank'>https://tidal.com/album/343732625</a></div>
+<div>Shin Seung Hun - With You In The Rain... (Prologue) (2024 Remaster)</div>
+<div>Shin Seung Hun - After A Long Time (2024 Remaster)</div>
+<div>Shin Seung Hun - Feeling Love (2024 Remaster)</div>
+<div>Shin Seung Hun - Letting You Go (2024 Remaster)</div>
+<div>Shin Seung Hun - When Tomorrow Comes (2024 Remaster)</div>
+<div>Shin Seung Hun - My Way of Good Bye (2024 Remaster)</div>
+<div>Shin Seung Hun - Long After (2024 Remaster)</div>
+<div>Shin Seung Hun - Transformation (2024 Remaster)</div>
+<div>Shin Seung Hun - Misconception (2024 Remaster)</div>
+<div>Shin Seung Hun - Sad Love (2024 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343732625' target='_blank'><img src='https://resources.tidal.com/images/bb24ae66/ef32/4b0f/a704/3691517d8add/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1993] Shin Seung Hun 3</div>
+<div><a href='https://tidal.com/album/343711579' target='_blank'>https://tidal.com/album/343711579</a></div>
+<div>Shin Seung Hun - Because I Love You (2024 Remaster)</div>
+<div>Shin Seung Hun - Hey Girl (2024 Remaster)</div>
+<div>Shin Seung Hun - Romeo & Juliet (2024 Remaster)</div>
+<div>Shin Seung Hun - Last Night Dream (2024 Remaster)</div>
+<div>Shin Seung Hun - Just Like First Sight (2024 Remaster)</div>
+<div>Shin Seung Hun - Like Me (2024 Remaster)</div>
+<div>Shin Seung Hun - When The Night Falls (2024 Remaster)</div>
+<div>Shin Seung Hun - Anything For You (2024 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343711579' target='_blank'><img src='https://resources.tidal.com/images/6c8569b0/9cdd/44cd/ac5f/b8e549c7c3bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1992] Shin Seung Hun Live</div>
+<div><a href='https://tidal.com/album/343703884' target='_blank'>https://tidal.com/album/343703884</a></div>
+<div>Shin Seung Hun - Opening + Don’t Make Me Cry (2024 Remaster)</div>
+<div>Shin Seung Hun - Reflection of You in Your Smile (2024 Remaster)</div>
+<div>Shin Seung Hun - Mourning You (2024 Remaster)</div>
+<div>Shin Seung Hun - Like A Sapphire (Intro Live) (2024 Remaster)</div>
+<div>Shin Seung Hun - Like A Sapphire (In Studio) (2024 Remaster)</div>
+<div>Shin Seung Hun - Into The Sunlight (2024 Remaster)</div>
+<div>Shin Seung Hun - I Like Weather Like Today (2024 Remaster)</div>
+<div>Shin Seung Hun - By Chance (2024 Remaster)</div>
+<div>Shin Seung Hun - Invisible Love (2024 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343703884' target='_blank'><img src='https://resources.tidal.com/images/c6e08fe5/2fb2/4a21/809b/437e58213c68/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1991] Shin Seung Hun 2</div>
+<div><a href='https://tidal.com/album/343703194' target='_blank'>https://tidal.com/album/343703194</a></div>
+<div>Shin Seung Hun - Invisible Love (2024 Remaster)</div>
+<div>Shin Seung Hun - Eternal Love (2024 Remaster)</div>
+<div>Shin Seung Hun - Autumn Memories (2024 Remaster)</div>
+<div>Shin Seung Hun - By Chance (2024 Remaster)</div>
+<div>Shin Seung Hun - Me Inside The Mirrow (2024 Remaster)</div>
+<div>Shin Seung Hun - Just Today (2024 Remaster)</div>
+<div>Shin Seung Hun - Easy Breakup (2024 Remaster)</div>
+<div>Shin Seung Hun - Into The Sunlight (2024 Remaster)</div>
+<div>Shin Seung Hun - Second Love (2024 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343703194' target='_blank'><img src='https://resources.tidal.com/images/8bdff5be/a01e/460c/8916/8d1721e11c7f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1990] Shin Seung Hun</div>
+<div><a href='https://tidal.com/album/343701967' target='_blank'>https://tidal.com/album/343701967</a></div>
+<div>Shin Seung Hun - Reflection of You in Your Smile</div>
+<div>Shin Seung Hun - Second Love</div>
+<div>Shin Seung Hun - I Like Weather Like Today</div>
+<div>Shin Seung Hun - I Love Her</div>
+<div>Shin Seung Hun - Look Back</div>
+<div>Shin Seung Hun - Your Mind</div>
+<div>Shin Seung Hun - Missing You</div>
+<div>Shin Seung Hun - Good Bye My Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343701967' target='_blank'><img src='https://resources.tidal.com/images/b693aaba/06ee/4bde/8a94/d7af04e932e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/신승훈 (Shin Seung Hun)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
