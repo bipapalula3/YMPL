@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 민호 ( Tidal MINHO )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 민호 ( Tidal MINHO )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4e1446e2/35ff/45d4/b0f5/024c685e5df5/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/13636930' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 민호</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>민호 (MINHO) – 다채로운 감성을 담아낸 음악, ‘Slow Down’처럼 부드럽게 스며드는 매력</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> MINHO</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>MINHO – Music filled with diverse emotions, a charm that softly permeates like ‘Slow Down’</div><p>빛나는 무대 위 퍼포머에서 솔로 아티스트로, 민호의 음악 세계는 끊임없이 확장되고 있어요. 섬세한 감정 표현과 매력적인 음색으로 팬들의 마음을 사로잡고 있죠. 장르를 넘나드는 그의 음악적 스펙트럼은 앞으로가 더욱 기대됩니다.</p><p>From a dazzling performer on stage to a solo artist, Minho's musical world is constantly expanding. He captivates fans with his delicate emotional expressions and charming vocals. His musical spectrum, which crosses genres, makes the future even more anticipated.</p><p>✧</p><p>그룹에서 솔로까지</p><p>그룹 활동을 통해 다져진 탄탄한 기본기와 무대 장악력은 민호의 가장 큰 강점이에요. 솔로 아티스트로서 그는 자신만의 색깔을 담은 음악을 선보이며 새로운 매력을 발산하고 있죠. 다양한 콘셉트를 소화하며 보여주는 그의 역량은 팬들을 매료시키기에 충분합니다.</p><p>From Group to Solo</p><p>Minho's greatest strengths are his solid foundation and stage presence, built through group activities. As a solo artist, he showcases his own unique musical style, radiating new charms. His ability to handle various concepts is more than enough to captivate fans.</p><p>✧</p><p>음악적 스펙트럼</p><p>민호의 음악은 특정 장르에 얽매이지 않고 다채로운 시도를 보여주고 있어요. 감미로운 보컬이 돋보이는 곡부터 강렬한 퍼포먼스를 위한 곡까지, 폭넓은 음악적 스펙트럼을 자랑하죠. 때로는 부드럽게, 때로는 강렬하게 변신하는 그의 음악은 듣는 이들을 즐겁게 합니다.</p><p>Musical Spectrum</p><p>Minho's music isn't confined to a specific genre, showcasing diverse attempts. From songs that highlight his sweet vocals to songs for intense performances, he boasts a wide musical spectrum. His music, which transforms from gentle to powerful, delights listeners.</p><p>✧</p><p>다재다능한 활동</p><p>음악 활동 외에도 민호는 연기, 예능 등 다양한 분야에서 활약하며 만능 엔터테이너로서의 면모를 보여주고 있어요. 그의 긍정적인 에너지와 밝은 미소는 많은 사람들에게 긍정적인 영향을 미치죠. 끊임없이 새로운 도전을 시도하는 그의 열정은 팬들에게 큰 영감을 줍니다.</p><p>Versatile Activities</p><p>In addition to music, Minho is active in various fields such as acting and entertainment, showcasing his talents as an all-around entertainer. His positive energy and bright smile have a positive impact on many. His passion for constantly taking on new challenges greatly inspires his fans.</p><p>✧</p><p>앞으로의 행보</p><p>민호는 앞으로도 솔로 아티스트로서 더욱 깊이 있는 음악 세계를 펼쳐나갈 것으로 기대돼요. 자신만의 색깔을 더욱 확고히 하고, 다양한 음악적 시도를 통해 팬들에게 새로운 감동을 선사할 거예요. 그의 음악은 앞으로도 많은 이들의 마음속에 오랫동안 기억될 것입니다.</p><p>Future Path</p><p>Minho is expected to further develop his profound musical world as a solo artist in the future. He will solidify his own unique style and bring new emotions to fans through various musical endeavors. His music will be remembered in the hearts of many for a long time to come.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[A] [2024] CALL BACK - The 1st Album</div>
+<div><a href='https://tidal.com/album/396116776' target='_blank'>https://tidal.com/album/396116776</a></div>
+<div>MINHO - CALL BACK</div>
+<div>MINHO - Slow Down</div>
+<div>MINHO, Sohee - FIREWORKS</div>
+<div>MINHO - Came And Left Me</div>
+<div>MINHO - Something About U</div>
+<div>MINHO - Round Kick</div>
+<div>MINHO - Affection</div>
+<div>MINHO - I Don’t Miss You</div>
+<div>MINHO, NINGNING - Because Of You</div>
+<div>MINHO - Would You Mind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/396116776' target='_blank'><img src='https://resources.tidal.com/images/9b63e4ae/64f6/468e/8991/2840e07b3bbe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Stay for a night</div>
+<div><a href='https://tidal.com/album/337406465' target='_blank'>https://tidal.com/album/337406465</a></div>
+<div>MINHO - Stay for a night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/337406465' target='_blank'><img src='https://resources.tidal.com/images/2bf6e8a4/f471/4377/939a/9cef58b461b4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Romeo and Juliet</div>
+<div><a href='https://tidal.com/album/243364870' target='_blank'>https://tidal.com/album/243364870</a></div>
+<div>MINHO - Romeo and Juliet</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/243364870' target='_blank'><img src='https://resources.tidal.com/images/3e4f4e2a/4d0f/4236/877f/12119d903e51/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Falling Free</div>
+<div><a href='https://tidal.com/album/243364872' target='_blank'>https://tidal.com/album/243364872</a></div>
+<div>MINHO - Falling Free</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/243364872' target='_blank'><img src='https://resources.tidal.com/images/baa82116/35d7/485b/91ac/e608ed06fc9d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] CHASE - The 1st Mini Album</div>
+<div><a href='https://tidal.com/album/263339680' target='_blank'>https://tidal.com/album/263339680</a></div>
+<div>MINHO - 놓아줘 Chase</div>
+<div>MINHO, Gemini - Runaway</div>
+<div>MINHO - Prove It</div>
+<div>MINHO, Lim Kim - Waterfall</div>
+<div>MINHO - Choice</div>
+<div>MINHO - Heartbreak</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263339680' target='_blank'><img src='https://resources.tidal.com/images/46ea7b4a/194f/40e7/b211/a2698ccc1da3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Heartbreak</div>
+<div><a href='https://tidal.com/album/209107909' target='_blank'>https://tidal.com/album/209107909</a></div>
+<div>MINHO - Heartbreak</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209107909' target='_blank'><img src='https://resources.tidal.com/images/e3f7ed2f/2f64/4f95/ae56/e1950d1d1be5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] I'm Home (그래)</div>
+<div><a href='https://tidal.com/album/115277719' target='_blank'>https://tidal.com/album/115277719</a></div>
+<div>MINHO - I'm Home (그래)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115277719' target='_blank'><img src='https://resources.tidal.com/images/518aa93e/8a3d/47d4/a4c8/5d8252adbc26/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/1_TIDAL_Kpop_Artist_Link_M.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅁ1) TIDAL Kpop Artist Link (M)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/민호 (MINHO)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
