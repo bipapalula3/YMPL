@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 지코 ( Tidal Zico )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 지코 ( Tidal Zico )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/6fea65d3/dc09/4d50/a430/3e4bdf447c27/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/21629571' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 지코</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>지코 (Zico) - ‘Summer Hate’의 유쾌함부터 ‘I Am You, You Are Me’의 섬세함까지, 트렌드를 이끄는 다재다능한 프로듀서 겸 아티스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Zico</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Zico - From the joyful ‘Summer Hate’ to the delicate ‘I Am You, You Are Me,’ a versatile producer and artist leading the trend</div><p>힙합 씬을 넘어 대중음악계에 독보적인 존재감을 드러내는 지코를 소개합니다. 그는 프로듀싱 능력과 랩, 보컬 실력을 겸비한 올라운더 아티스트입니다. 끊임없이 새로운 시도를 통해 자신만의 음악 세계를 구축해 나가고 있어요.</p><p>Introducing Zico, a unique presence in the popular music scene beyond hip-hop. He is an all-around artist with production skills, rap, and vocal abilities. He is constantly building his own musical world through new attempts.</p><p>✧</p><p>그룹 탄생</p><p>지코는 블락비(Block B)의 리더로서 데뷔하여 강렬한 힙합 음악을 선보였습니다. 그는 팀의 음악적 방향을 설정하고 프로듀싱을 담당하며 그룹의 색깔을 만들어 나갔어요. 블락비 활동을 통해 아이돌 힙합이라는 새로운 영역을 개척했다는 평가를 받습니다.</p><p>Group Formation</p><p>Zico debuted as the leader of Block B, showcasing intense hip-hop music. He set the team's musical direction and was in charge of producing, creating the group's identity. He is credited with pioneering a new area of idol hip-hop through his activities with Block B.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>지코의 음악은 힙합을 기반으로 다양한 장르를 융합하는 것이 특징입니다. 그는 트렌디한 사운드와 재치 있는 가사를 통해 대중적인 공감대를 형성합니다. 무대 위에서의 에너지 넘치는 퍼포먼스는 그의 음악을 더욱 돋보이게 만들어요.</p><p>Music and Performance</p><p>Zico's music is characterized by the fusion of various genres based on hip-hop. He forms a popular consensus through trendy sounds and witty lyrics. His energetic performance on stage makes his music even more outstanding.</p><p>✧</p><p>주요 활동</p><p>솔로 아티스트로서 지코는 'BERMUDA TRIANGLE', 'Summer Hate' 등 수많은 히트곡을 발표했습니다. 그는 다양한 아티스트들과의 협업을 통해 음악적 스펙트럼을 넓히고 있습니다. 또한, 프로듀서로서 다른 아티스트들의 앨범 제작에도 참여하며 영향력을 넓혀나가고 있어요.</p><p>Key Activities</p><p>As a solo artist, Zico has released numerous hit songs such as 'BERMUDA TRIANGLE' and 'Summer Hate'. He is expanding his musical spectrum through collaborations with various artists. He is also expanding his influence by participating in the production of other artists' albums as a producer.</p><p>✧</p><p>미래/의미</p><p>지코는 끊임없는 음악적 실험과 도전을 통해 자신만의 영역을 구축해 나갈 것으로 기대됩니다. 그는 단순한 힙합 아티스트를 넘어 대중음악계에 새로운 흐름을 만들어내는 선구자적인 역할을 할 것입니다. 앞으로 그의 음악이 어떤 새로운 방향으로 나아갈지 기대가 됩니다.</p><p>Future/Meaning</p><p>Zico is expected to build his own territory through constant musical experimentation and challenges. He will play a pioneering role in creating a new trend in the popular music scene, going beyond a simple hip-hop artist. It is exciting to see what new direction his music will take in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] SEOUL DRIFT</div>
+<div><a href='https://tidal.com/album/238441548' target='_blank'>https://tidal.com/album/238441548</a></div>
+<div>ZICO - SEOUL DRIFT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/238441548' target='_blank'><img src='https://resources.tidal.com/images/3abda899/e350/48b4/b615/0378774f54d9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Grown Ass Kid</div>
+<div><a href='https://tidal.com/album/239848768' target='_blank'>https://tidal.com/album/239848768</a></div>
+<div>ZICO - Freak</div>
+<div>ZICO - SEOUL DRIFT</div>
+<div>ZICO, CHANGMO - Trash Talk (Feat. CHANGMO)</div>
+<div>ZICO - OMZ freestyle(Explicit)</div>
+<div>ZICO, Zior Park - Nocturnal animals (Feat. Zior Park)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/239848768' target='_blank'><img src='https://resources.tidal.com/images/78b233f7/bc3d/4ec0/946b/71f72e06ae4b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Break Up 2 Make Up</div>
+<div><a href='https://tidal.com/album/372214570' target='_blank'>https://tidal.com/album/372214570</a></div>
+<div>ZICO - I Am You, You Are Me</div>
+<div>ZICO - It Was Love (Feat. LUNA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372214570' target='_blank'><img src='https://resources.tidal.com/images/08485012/b104/4e0a/9151/3dd686c75c76/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] BERMUDA TRIANGLE (Feat. Crush, DEAN)</div>
+<div><a href='https://tidal.com/album/372215665' target='_blank'>https://tidal.com/album/372215665</a></div>
+<div>ZICO - BERMUDA TRIANGLE (Feat. Crush, DEAN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372215665' target='_blank'><img src='https://resources.tidal.com/images/d820f1ac/cf34/4312/80da/8405618bb7f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] The King _ Eternal Monarch, Pt. 10 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196156422' target='_blank'>https://tidal.com/album/196156422</a></div>
+<div>ZICO - My Day Is Full Of You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196156422' target='_blank'><img src='https://resources.tidal.com/images/7946baec/5fba/4bda/9efd/9aa7f5cbe89d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] RANDOM BOX</div>
+<div><a href='https://tidal.com/album/216123806' target='_blank'>https://tidal.com/album/216123806</a></div>
+<div>ZICO - Summer Hate (Feat. Rain)</div>
+<div>ZICO - Cartoon</div>
+<div>ZICO - Love & hate (Feat. BIBI)</div>
+<div>ZICO - No you can't</div>
+<div>ZICO - Roommate</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216123806' target='_blank'><img src='https://resources.tidal.com/images/18765452/c3bd/49f9/bf35/483fa73a04e3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] FOR THE LOVE OF KOREA</div>
+<div><a href='https://tidal.com/album/216449404' target='_blank'>https://tidal.com/album/216449404</a></div>
+<div>ZICO, KANGDANIEL - Refresh</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216449404' target='_blank'><img src='https://resources.tidal.com/images/8edea3bf/6757/448f/9697/0e4ec9b06e4f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Any song</div>
+<div><a href='https://tidal.com/album/216140181' target='_blank'>https://tidal.com/album/216140181</a></div>
+<div>ZICO - Any song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216140181' target='_blank'><img src='https://resources.tidal.com/images/f93db51d/8902/49b3/987a/06d0b9f11b8b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] THINKING Part.2</div>
+<div><a href='https://tidal.com/album/216097660' target='_blank'>https://tidal.com/album/216097660</a></div>
+<div>ZICO - another level (Feat. PENOMECO)</div>
+<div>ZICO - Being left (Feat. Dvwn)</div>
+<div>ZICO - Dystopia</div>
+<div>ZICO - Balloon</div>
+<div>ZICO - The language of flowers (Feat. JeHwi)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216097660' target='_blank'><img src='https://resources.tidal.com/images/66a4bfd8/22a7/46d3/9ac7/4a6b4d4c85e2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] THINKING Part.1</div>
+<div><a href='https://tidal.com/album/216122270' target='_blank'>https://tidal.com/album/216122270</a></div>
+<div>ZICO - Daredevil (Feat. Jvcki Wai, YUMDDA)</div>
+<div>ZICO - actually</div>
+<div>ZICO - Human</div>
+<div>ZICO - Extreme</div>
+<div>ZICO - One-man show (Feat. Sik-K)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216122270' target='_blank'><img src='https://resources.tidal.com/images/ad3ecec4/db18/49b1/9f08/59a8f58be68e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] SoulMate (feat. IU)</div>
+<div><a href='https://tidal.com/album/92519371' target='_blank'>https://tidal.com/album/92519371</a></div>
+<div>ZICO, IU - SoulMate (feat. IU)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/92519371' target='_blank'><img src='https://resources.tidal.com/images/a5d58cf7/aa9f/4636/a1bb/232ac122e443/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Wi-Fi (2017 월간 윤종신 2월호)</div>
+<div><a href='https://tidal.com/album/189569566' target='_blank'>https://tidal.com/album/189569566</a></div>
+<div>Yoon Jong Shin, ZICO - Wi-Fi (2017 월간 윤종신 2월호)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189569566' target='_blank'><img src='https://resources.tidal.com/images/a96179a3/5bd7/43da/a2ab/2d6c889b7a56/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] TELEVISION</div>
+<div><a href='https://tidal.com/album/372202801' target='_blank'>https://tidal.com/album/372202801</a></div>
+<div>ZICO - Genius (Behind the scene)</div>
+<div>ZICO - Artist</div>
+<div>ZICO - ANTI (Feat. G.Soul)</div>
+<div>ZICO - FANXY CHILD (Feat. FANXY CHILD)(Explicit)</div>
+<div>ZICO - She′s a Baby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372202801' target='_blank'><img src='https://resources.tidal.com/images/a482a384/d8b0/46f7/9d45/a30641650102/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] She`s a Baby</div>
+<div><a href='https://tidal.com/album/372216808' target='_blank'>https://tidal.com/album/372216808</a></div>
+<div>ZICO - She`s a Baby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372216808' target='_blank'><img src='https://resources.tidal.com/images/d574fe27/3ed9/4f2d/a7f9/523def7f1532/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Well Done</div>
+<div><a href='https://tidal.com/album/372217883' target='_blank'>https://tidal.com/album/372217883</a></div>
+<div>ZICO - Well Done (Feat. Ja Mezz)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372217883' target='_blank'><img src='https://resources.tidal.com/images/246b15bd/9081/498d/b6c6/9324e74f9e55/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Tell Me Yes Or No (Feat. PENOMECO, The Quiett)</div>
+<div><a href='https://tidal.com/album/372219195' target='_blank'>https://tidal.com/album/372219195</a></div>
+<div>ZICO - Tell Me Yes Or No (Feat. PENOMECO, The Quiett)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372219195' target='_blank'><img src='https://resources.tidal.com/images/ba0c501f/5b22/4d1b/87f9/808164b78ed6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Show Me the Money 4 Episode 3</div>
+<div><a href='https://tidal.com/album/196102951' target='_blank'>https://tidal.com/album/196102951</a></div>
+<div>MINO (송민호), ZICO, PaloAlto - moneyflow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196102951' target='_blank'><img src='https://resources.tidal.com/images/6d530a58/97a5/4852/9452/d7f089ea8790/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Mask (Original Soundtrack) Part.2</div>
+<div><a href='https://tidal.com/album/216006274' target='_blank'>https://tidal.com/album/216006274</a></div>
+<div>ZICO, Sojin - Sick</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216006274' target='_blank'><img src='https://resources.tidal.com/images/7f76f6f2/c73d/49b6/ab18/af25aebdb959/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2015] GALLERY</div>
+<div><a href='https://tidal.com/album/372214015' target='_blank'>https://tidal.com/album/372214015</a></div>
+<div>ZICO - VENI VIDI VICI (Feat. DJ Wegun)(Explicit)</div>
+<div>ZICO - Eureka (Feat. Zion.T)(Explicit)</div>
+<div>ZICO - Pride and Prejudice (Feat. SURAN)</div>
+<div>ZICO - Boys And Girls (Feat. Babylon)</div>
+<div>ZICO - Predator (Feat. JTONG)</div>
+<div>ZICO - Tell Me Yes Or No (Feat. PENOMECO, The Quiett)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372214015' target='_blank'><img src='https://resources.tidal.com/images/78f767d9/f076/4255/bb73/9af4963e720c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] DARK PANDA</div>
+<div><a href='https://tidal.com/album/237636968' target='_blank'>https://tidal.com/album/237636968</a></div>
+<div>Hyolyn, ZICO, PaloAlto - DARK PANDA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237636968' target='_blank'><img src='https://resources.tidal.com/images/db9e4264/ffab/47cc/85e9/d8811d5832ed/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Boys and Girls</div>
+<div><a href='https://tidal.com/album/372219469' target='_blank'>https://tidal.com/album/372219469</a></div>
+<div>ZICO - Predator (Feat. JTONG)</div>
+<div>ZICO - Boys And Girls (Feat. Babylon)</div>
+<div>ZICO - Tell Me Yes Or No (Feat. PENOMECO, The Quiett)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372219469' target='_blank'><img src='https://resources.tidal.com/images/a4f03dd1/0d8b/4dea/8956/fd2f562bb461/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Tough Cookie (Feat. Don Mills)</div>
+<div><a href='https://tidal.com/album/372217632' target='_blank'>https://tidal.com/album/372217632</a></div>
+<div>ZICO - Tough Cookie (Feat. Don Mills)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372217632' target='_blank'><img src='https://resources.tidal.com/images/93621177/2722/452c/bd43/887c56581292/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/지코 (Zico)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
