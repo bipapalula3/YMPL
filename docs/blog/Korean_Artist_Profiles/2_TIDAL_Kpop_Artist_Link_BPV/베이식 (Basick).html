@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 베이식 ( Tidal Basick )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 베이식 ( Tidal Basick )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/e700bdc1/9e37/48d6/8359/b93926747e98/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7521279 ---' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 베이식</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>베이식 (Basick) - 거침없는 랩으로 현실을 조명하는 언더그라운드 씬의 베테랑, 'SM58'의 날카로운 가사와 'HOME'의 따뜻한 감성을 넘나드는 래퍼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Basick</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Basick - A veteran of the underground scene who illuminates reality with unfiltered rap, a rapper who navigates between the sharp lyrics of 'SM58' and the warm emotions of 'HOME'.</div><p>대한민국 힙합씬에서 굳건히 자리를 지키고 있는 래퍼 베이식입니다. 그는 특유의 딕션과 에너지 넘치는 랩으로 많은 팬들의 사랑을 받고 있어요. 언더그라운드에서 쌓아온 실력과 끊임없는 노력으로 자신만의 음악 세계를 구축해 나가고 있습니다.</p><p>Basick is a rapper who firmly holds his place in the Korean hip-hop scene. He is loved by many fans for his unique diction and energetic rapping. He is building his own musical world with the skills and continuous effort he has accumulated in the underground scene.</p><p>✧</p><p>언더그라운드에서 시작된 탄탄한 기반</p><p>베이식은 오랜 시간 언더그라운드 씬에서 활동하며 실력을 갈고닦았어요. 다양한 무대 경험과 동료 래퍼들과의 교류를 통해 자신만의 스타일을 확립했습니다. 이러한 경험은 그의 음악에 깊이를 더하고, 더욱 다양한 시도를 가능하게 만들었습니다.</p><p>A Solid Foundation Starting from the Underground</p><p>Basick honed his skills by working in the underground scene for a long time. He established his own style through various stage experiences and interactions with fellow rappers. This experience adds depth to his music and enables more diverse attempts.</p><p>✧</p><p>날카로운 랩과 진솔한 가사</p><p>베이식의 음악은 거침없는 랩 스킬과 현실을 반영하는 가사가 특징이에요. 사회 비판적인 메시지부터 개인적인 이야기까지, 솔직하고 과감하게 표현하는 그의 음악은 듣는 이들에게 강렬한 인상을 남깁니다. 또한, 다양한 피처링진과의 협업을 통해 음악적 스펙트럼을 넓혀가고 있습니다.</p><p>Sharp Rap and Sincere Lyrics</p><p>Basick's music is characterized by unfiltered rap skills and lyrics that reflect reality. From socio-critical messages to personal stories, his music, which is expressed honestly and boldly, leaves a strong impression on listeners. He is also expanding his musical spectrum through collaborations with various featured artists.</p><p>✧</p><p>끊임없는 도전과 실험</p><p>베이식은 안주하지 않고 끊임없이 새로운 시도를 하는 아티스트입니다. 그는 다양한 장르와의 융합을 시도하고, 새로운 스타일의 랩을 선보이며 자신의 음악적 영역을 넓혀가고 있어요. 이러한 도전 정신은 그의 음악을 더욱 다채롭고 흥미롭게 만들어 줍니다.</p><p>Continuous Challenge and Experimentation</p><p>Basick is an artist who constantly makes new attempts without settling down. He is trying to fuse with various genres and showcasing new styles of rap, expanding his musical realm. This challenging spirit makes his music more diverse and interesting.</p><p>✧</p><p>앞으로의 행보, 그리고 의미</p><p>베이식은 앞으로도 자신의 음악을 통해 더욱 다양한 이야기를 들려줄 것으로 기대됩니다. 그의 음악은 단순한 힙합 음악을 넘어, 사회와 개인의 삶에 대한 진솔한 성찰을 담고 있어요. 앞으로 그가 보여줄 음악적 성장과 깊이에 더욱 기대가 됩니다.</p><p>Future Steps and Meaning</p><p>Basick is expected to tell more diverse stories through his music in the future. His music goes beyond simple hip-hop music and contains sincere reflections on society and individual life. I am more excited about the musical growth and depth he will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] 다가올래’d</div>
+<div><a href='https://tidal.com/album/225775878' target='_blank'>https://tidal.com/album/225775878</a></div>
+<div>Basick, Layone - 다가올래’d</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/225775878' target='_blank'><img src='https://resources.tidal.com/images/796e394b/f3ae/41cc/8707/23556380580c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Superbee's Maserati</div>
+<div><a href='https://tidal.com/album/222493813' target='_blank'>https://tidal.com/album/222493813</a></div>
+<div>Basick - Superbee's Maserati(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222493813' target='_blank'><img src='https://resources.tidal.com/images/169b5c0c/0d95/4de2/8720/5019be950f6c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] SM58 (Feat. JUSTHIS)</div>
+<div><a href='https://tidal.com/album/383031886' target='_blank'>https://tidal.com/album/383031886</a></div>
+<div>Basick - SM58 (Feat. JUSTHIS)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383031886' target='_blank'><img src='https://resources.tidal.com/images/e59ffb69/63d5/49d7/912d/2d485993fc7f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Never give up, Pt. 10 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/346685946' target='_blank'>https://tidal.com/album/346685946</a></div>
+<div>Jeong Dong Won, Basick - Alright</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346685946' target='_blank'><img src='https://resources.tidal.com/images/e32000ea/965a/4cef/bb4a/ba6258c3088c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Ladder (One of a Kind Romance)</div>
+<div><a href='https://tidal.com/album/223745081' target='_blank'>https://tidal.com/album/223745081</a></div>
+<div>Basick - Ladder (One of a Kind Romance)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223745081' target='_blank'><img src='https://resources.tidal.com/images/f9c9327b/f7c1/410d/9654/121da541ebad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] HOME</div>
+<div><a href='https://tidal.com/album/383006085' target='_blank'>https://tidal.com/album/383006085</a></div>
+<div>Basick - HOME (feat. Jang Jane, Hash Swan)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383006085' target='_blank'><img src='https://resources.tidal.com/images/c689300c/76ab/44cc/896b/5bc38370b9bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Foundation, Vol. 4</div>
+<div><a href='https://tidal.com/album/383033382' target='_blank'>https://tidal.com/album/383033382</a></div>
+<div>Basick - One Time(Explicit)</div>
+<div>Basick - SM58 (Feat. JUSTHIS)(Explicit)</div>
+<div>Basick - Microphone Checker (MC) (Feat. Koonta, Paloalto)(Explicit)</div>
+<div>Basick - F`Artist(Explicit)</div>
+<div>Basick - IDCA (Feat. Double K)(Explicit)</div>
+<div>Basick - The Kid(Explicit)</div>
+<div>Basick - Mask (Feat. B JYUN)(Explicit)</div>
+<div>Basick - ￦ON IT ALL (Feat. MBA)(Explicit)</div>
+<div>Basick - A Game (Feat. Dbo)(Explicit)</div>
+<div>Basick - My Wave (Feat. Sik-K)(Explicit)</div>
+<div>Basick - Flava (Feat. SUPERBEE)(Explicit)</div>
+<div>Basick - Real Life (Feat. The Quiett)(Explicit)</div>
+<div>Basick - Starter (Feat. DJ Ebony)(Explicit)</div>
+<div>Basick - Untitled (Feat. EPTEND, DJ Noah)(Explicit)</div>
+<div>Basick - Flower(Explicit)</div>
+<div>Basick - Goodbye (Feat. Brwn)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383033382' target='_blank'><img src='https://resources.tidal.com/images/d728dfb7/69cc/4d4c/883e/554cb56da598/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Foundation Vol. 4</div>
+<div><a href='https://tidal.com/album/196140321' target='_blank'>https://tidal.com/album/196140321</a></div>
+<div>Basick - One Time</div>
+<div>Basick - SM58</div>
+<div>Basick - Microphone Checker (MC)</div>
+<div>Basick - F′Artist</div>
+<div>Basick - IDCA</div>
+<div>Basick - The Kid</div>
+<div>Basick - Mask</div>
+<div>Basick - Won It All</div>
+<div>Basick - A Game</div>
+<div>Basick - My Wave</div>
+<div>Basick - Flava</div>
+<div>Basick - Real Life</div>
+<div>Basick - Starter</div>
+<div>Basick - Untitled</div>
+<div>Basick - Flower</div>
+<div>Basick - Goodbye</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140321' target='_blank'><img src='https://resources.tidal.com/images/e700bdc1/9e37/48d6/8359/b93926747e98/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] ￦ON IT ALL (Feat. MBA)</div>
+<div><a href='https://tidal.com/album/383086750' target='_blank'>https://tidal.com/album/383086750</a></div>
+<div>Basick - ￦ON IT ALL (Feat. MBA)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383086750' target='_blank'><img src='https://resources.tidal.com/images/c2bcb9f0/6e8e/45f5/b897/da8565998a0c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] 웹드라마 청춘 레시피 (Original Television Soundtrack) Pt. 1</div>
+<div><a href='https://tidal.com/album/176918702' target='_blank'>https://tidal.com/album/176918702</a></div>
+<div>Eun Jung, Basick - 우연처럼</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/176918702' target='_blank'><img src='https://resources.tidal.com/images/f06dfbd0/0c8e/416e/81cd/dde91b63f179/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] The House</div>
+<div><a href='https://tidal.com/album/383092514' target='_blank'>https://tidal.com/album/383092514</a></div>
+<div>Basick - Dominant</div>
+<div>Basick - The House (feat. Kim Jin Ho)</div>
+<div>Basick - The Empty House(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383092514' target='_blank'><img src='https://resources.tidal.com/images/4b220493/f8a4/4022/b2e9/d65ba8f9ffd0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Starter</div>
+<div><a href='https://tidal.com/album/196142599' target='_blank'>https://tidal.com/album/196142599</a></div>
+<div>Basick - Starter</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142599' target='_blank'><img src='https://resources.tidal.com/images/c12454dd/7cae/48ad/a272/cb6fe9c938a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] STARTER</div>
+<div><a href='https://tidal.com/album/383074089' target='_blank'>https://tidal.com/album/383074089</a></div>
+<div>Basick - STARTER(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383074089' target='_blank'><img src='https://resources.tidal.com/images/f585c7f1/2412/423c/ab07/97320c95397d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Real Life (feat. The Quiett)</div>
+<div><a href='https://tidal.com/album/383073080' target='_blank'>https://tidal.com/album/383073080</a></div>
+<div>Basick - Real Life (feat. The Quiett)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383073080' target='_blank'><img src='https://resources.tidal.com/images/53daf0d8/5b75/4511/85be/ee8aace5fae1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Pick Up the Phone (feat. San E)</div>
+<div><a href='https://tidal.com/album/383087169' target='_blank'>https://tidal.com/album/383087169</a></div>
+<div>Basick - Pick Up the Phone (feat. San E)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383087169' target='_blank'><img src='https://resources.tidal.com/images/c24c1e91/6d1a/4506/9aa3/5d2bf8eb8098/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] My Wave (feat. Sik-K)</div>
+<div><a href='https://tidal.com/album/383080839' target='_blank'>https://tidal.com/album/383080839</a></div>
+<div>Basick - My Wave (feat. Sik-K)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383080839' target='_blank'><img src='https://resources.tidal.com/images/6342380f/3b44/4ceb/8fae/a3432fe2a5d1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Is That Why (feat. B.O.)</div>
+<div><a href='https://tidal.com/album/383077322' target='_blank'>https://tidal.com/album/383077322</a></div>
+<div>Basick - Is That Why (feat. B.O.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383077322' target='_blank'><img src='https://resources.tidal.com/images/8b30ce46/ea1e/47ae/b0df/56af8424f1d7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] HOME</div>
+<div><a href='https://tidal.com/album/196142224' target='_blank'>https://tidal.com/album/196142224</a></div>
+<div>Basick - HOME</div>
+<div>Basick - HOME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142224' target='_blank'><img src='https://resources.tidal.com/images/9d3074a4/4794/4fd2/a02f/a8e4d356a19f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] When It Snows mmm (feat. Wheein)</div>
+<div><a href='https://tidal.com/album/167313981' target='_blank'>https://tidal.com/album/167313981</a></div>
+<div>Basick, Whee In - When It Snows mmm (feat. Wheein)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167313981' target='_blank'><img src='https://resources.tidal.com/images/ccf0eb92/f4fc/4030/afaf/04e8d9cbc675/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Naked</div>
+<div><a href='https://tidal.com/album/159397131' target='_blank'>https://tidal.com/album/159397131</a></div>
+<div>Basick - Naked</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/159397131' target='_blank'><img src='https://resources.tidal.com/images/c97dc13f/4054/4bbf/b062/751943116d7c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] More Than Ever</div>
+<div><a href='https://tidal.com/album/189833150' target='_blank'>https://tidal.com/album/189833150</a></div>
+<div>Man1ac, Ann One, Basick - More Than Ever</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189833150' target='_blank'><img src='https://resources.tidal.com/images/d7924f64/0d2d/4d4c/b362/e4106964e3e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Layoff</div>
+<div><a href='https://tidal.com/album/146934044' target='_blank'>https://tidal.com/album/146934044</a></div>
+<div>Basick, Gwangil Jo - Layoff(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146934044' target='_blank'><img src='https://resources.tidal.com/images/8e05db06/97ac/4537/9658/e61df7182f01/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Fucked</div>
+<div><a href='https://tidal.com/album/149324312' target='_blank'>https://tidal.com/album/149324312</a></div>
+<div>Basick - Fucked(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/149324312' target='_blank'><img src='https://resources.tidal.com/images/41e38fc1/a188/481b/b700/c96096fcd75d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 157 Brands with MUSINSA</div>
+<div><a href='https://tidal.com/album/166517973' target='_blank'>https://tidal.com/album/166517973</a></div>
+<div>Basick - 157 Brands with MUSINSA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/166517973' target='_blank'><img src='https://resources.tidal.com/images/03c09322/e525/418f/a145/24c2aa469a21/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] whatiwant</div>
+<div><a href='https://tidal.com/album/106942805' target='_blank'>https://tidal.com/album/106942805</a></div>
+<div>Basick - rocks</div>
+<div>Basick, Ek - me (feat. EK)</div>
+<div>Basick, LANNISTAR - braindead (feat. Lannistar)</div>
+<div>Basick - ijustwannadance</div>
+<div>Basick, Canhaz - oohooh (feat. Canhaz)</div>
+<div>Basick, Mckdaddy - manbogi (feat. Mckdaddy)</div>
+<div>Basick, The Quiett - whatyouwant (feat. The Quiett)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/106942805' target='_blank'><img src='https://resources.tidal.com/images/2c4b745a/1b47/4dc3/8a77/969d75280564/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] SOFT</div>
+<div><a href='https://tidal.com/album/123633129' target='_blank'>https://tidal.com/album/123633129</a></div>
+<div>Basick, Horim - A Piece of Art (feat. Horim)</div>
+<div>Basick, The Deep - CHOCO (feat. The Deep)</div>
+<div>Basick, Layone - Puberty (feat. Layone)</div>
+<div>Basick, BRWN - Come To Me (feat. BRWN)</div>
+<div>Basick, Yeo Journey - No Call Back (feat. Yeo Journey)(Explicit)</div>
+<div>Basick, Rose - Two Days (feat. Rose)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/123633129' target='_blank'><img src='https://resources.tidal.com/images/c8478835/3b95/4a73/8e62/8e772b95189d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Manbogi (feat. Mckdaddy)</div>
+<div><a href='https://tidal.com/album/104630552' target='_blank'>https://tidal.com/album/104630552</a></div>
+<div>Basick, Mckdaddy - Manbogi (feat. Mckdaddy)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/104630552' target='_blank'><img src='https://resources.tidal.com/images/025191f6/0872/4695/9390/d667ab19bde5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] Honestly (feat. Sleepy)</div>
+<div><a href='https://tidal.com/album/115847073' target='_blank'>https://tidal.com/album/115847073</a></div>
+<div>Basick, SLEEPY - Honestly (feat. Sleepy)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115847073' target='_blank'><img src='https://resources.tidal.com/images/e3e8e119/05e2/48a2/9810/9ef7ca2c3253/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Calluses (feat. Life of Hojj)</div>
+<div><a href='https://tidal.com/album/110533957' target='_blank'>https://tidal.com/album/110533957</a></div>
+<div>Basick, Life of Hojj - Calluses (feat. Life of Hojj)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/110533957' target='_blank'><img src='https://resources.tidal.com/images/dd10afe7/d65f/4b86/8db5/b36aa97e5a65/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] CONFESSION Pt. 1 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/107337060' target='_blank'>https://tidal.com/album/107337060</a></div>
+<div>Song Ji Eun, Basick - Let Me Hear</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/107337060' target='_blank'><img src='https://resources.tidal.com/images/9f7682a3/da25/4b41/82e3/6123bb26087f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Pinocchio (feat. Verbal Jint)</div>
+<div><a href='https://tidal.com/album/383086273' target='_blank'>https://tidal.com/album/383086273</a></div>
+<div>Basick - Pinocchio (feat. Verbal Jint)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383086273' target='_blank'><img src='https://resources.tidal.com/images/6da3dada/dfee/4e77/928a/58cc058d1149/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Man to Man, Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/334933420' target='_blank'>https://tidal.com/album/334933420</a></div>
+<div>Park Bo Ram, Basick - Destiny</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334933420' target='_blank'><img src='https://resources.tidal.com/images/7cace0ca/10c2/4d5c/ac62/1fca5915979f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] W (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/216014320' target='_blank'>https://tidal.com/album/216014320</a></div>
+<div>Basick, Inkii - In The Illusion</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216014320' target='_blank'><img src='https://resources.tidal.com/images/41b323db/41c8/484a/99c7/3143758cf2c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Nice</div>
+<div><a href='https://tidal.com/album/383096806' target='_blank'>https://tidal.com/album/383096806</a></div>
+<div>Basick - Can't Find Love (feat. Kimsaehankil)(Explicit)</div>
+<div>Basick - Bottom(Explicit)</div>
+<div>Basick - Nice (feat. G2, HWASA)(Explicit)</div>
+<div>Basick - Sunday in My Bedroom (feat. B.O.)</div>
+<div>Basick - Who Am I (feat. Marvel J)(Explicit)</div>
+<div>Basick - Hunnit (feat. InnoVator)(Explicit)</div>
+<div>Basick - DJ (feat. Sleepy, DopeDoug)(Explicit)</div>
+<div>Basick - Nice (feat. G2, HWASA) (Radio Edit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383096806' target='_blank'><img src='https://resources.tidal.com/images/36a7643b/151e/414c/b586/68af425c297a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] I'll Give You Everything</div>
+<div><a href='https://tidal.com/album/67536661' target='_blank'>https://tidal.com/album/67536661</a></div>
+<div>Won Geun Song, Basick, Eun Woo Jung - I'll Give You Everything</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/67536661' target='_blank'><img src='https://resources.tidal.com/images/59f89941/e096/464f/a8d5/16db01fd1db9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Basick X Lil Boi</div>
+<div><a href='https://tidal.com/album/215969586' target='_blank'>https://tidal.com/album/215969586</a></div>
+<div>lIlBOI, Basick - Call Me (Feat. Hwa Sa)</div>
+<div>lIlBOI, Basick - Don’t Stop</div>
+<div>lIlBOI, Basick - Watch Out (Movie 'The Advocate' Special OST)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215969586' target='_blank'><img src='https://resources.tidal.com/images/8a38593e/2ce5/4c41/8178/c96a8b5657f4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] Therapy</div>
+<div><a href='https://tidal.com/album/208823420' target='_blank'>https://tidal.com/album/208823420</a></div>
+<div>Basick - Master(Explicit)</div>
+<div>Basick - Nice Life (Feat. Paloalto)(Explicit)</div>
+<div>Basick - Too Bad (Feat. B-Free)</div>
+<div>Basick - MC (Feat. Deepflow)(Explicit)</div>
+<div>Basick - Work(Explicit)</div>
+<div>Basick - Therapy (Feat. CJAMM, InnoVator)(Explicit)</div>
+<div>Basick - 정대만(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208823420' target='_blank'><img src='https://resources.tidal.com/images/ccf8357c/a249/4c0b/a489/b24f940043fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Nice Life (Feat. Paloalto)</div>
+<div><a href='https://tidal.com/album/208814636' target='_blank'>https://tidal.com/album/208814636</a></div>
+<div>Basick - Nice Life (Feat. Paloalto)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208814636' target='_blank'><img src='https://resources.tidal.com/images/878dcfc1/4a76/4483/9268/a4eba5028632/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Foundation Vol.3</div>
+<div><a href='https://tidal.com/album/208237310' target='_blank'>https://tidal.com/album/208237310</a></div>
+<div>Basick - Do It (Feat. InnoVator)(Explicit)</div>
+<div>Basick - Pretty Girls (feat. 김새한길)</div>
+<div>Basick - Survivor(Explicit)</div>
+<div>Basick - 김치(Explicit)</div>
+<div>Basick - You Already Know (Feat. CRUCiAL STAR)(Explicit)</div>
+<div>Basick - Saturday Noon</div>
+<div>Basick - Boss (feat. 김새한길)</div>
+<div>Basick - 2번방(Explicit)</div>
+<div>Basick - My Time (Feat. 노창)(Explicit)</div>
+<div>Basick - Don't Stop(Explicit)</div>
+<div>Basick - 거짓말 (Feat. InnoVator)(Explicit)</div>
+<div>Basick - Ugly(Explicit)</div>
+<div>Basick - 원래 없었다 (Feat. Noproblem)</div>
+<div>Basick - Shut Up(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208237310' target='_blank'><img src='https://resources.tidal.com/images/a10da8c9/59c0/4b11/8644/e7cab1bf76fe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] You Already Know</div>
+<div><a href='https://tidal.com/album/303466597' target='_blank'>https://tidal.com/album/303466597</a></div>
+<div>Basick - You Already Know (feat. Crucial Star)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303466597' target='_blank'><img src='https://resources.tidal.com/images/4045c647/f7fb/42ce/b765/3614d8b03d50/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Pretty Girls</div>
+<div><a href='https://tidal.com/album/303466605' target='_blank'>https://tidal.com/album/303466605</a></div>
+<div>Basick - Pretty Girls(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303466605' target='_blank'><img src='https://resources.tidal.com/images/bcc1a600/be1a/4f6c/879b/f5ff0a389fb1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] RH- 2nd 'Miss Pretty'</div>
+<div><a href='https://tidal.com/album/168768504' target='_blank'>https://tidal.com/album/168768504</a></div>
+<div>Basick, Kimsaehankil - Miss Pretty</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168768504' target='_blank'><img src='https://resources.tidal.com/images/6203bc24/e2a9/444d/9669/a919436a12e4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Classick</div>
+<div><a href='https://tidal.com/album/303466527' target='_blank'>https://tidal.com/album/303466527</a></div>
+<div>Basick - B.A.S.I.C.K(Explicit)</div>
+<div>Basick - Rhymin'(Explicit)</div>
+<div>Basick - Check It Out (feat. Jay Moon & DJ Tiz)</div>
+<div>Basick - Entourage(Explicit)</div>
+<div>Basick - Bounce (feat. Vasco)(Explicit)</div>
+<div>Basick - Head & Tail (feat. Crybaby)(Explicit)</div>
+<div>Basick - Mic Check(Explicit)</div>
+<div>Basick - Double Trouble (feat. Innovator)(Explicit)</div>
+<div>Basick - Basement(Explicit)</div>
+<div>Basick - Get Up (feat. Kim Sae Han Kil)</div>
+<div>Basick - U R Not Alone(Explicit)</div>
+<div>Basick - Rapper's Night (feat. B-Free)(Explicit)</div>
+<div>Basick - Good Life (feat. Kim Sae Han Kil)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303466527' target='_blank'><img src='https://resources.tidal.com/images/3452d753/f474/4d13/a4b0/a85ab9081873/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/2_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ2) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/베이식 (Basick)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
