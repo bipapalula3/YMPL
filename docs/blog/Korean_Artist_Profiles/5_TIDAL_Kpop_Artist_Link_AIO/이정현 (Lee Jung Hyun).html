@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이정현 ( Tidal Lee Jung Hyun )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이정현 ( Tidal Lee Jung Hyun )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/870296d7/e6aa/46cd/a63f/189802af8347/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/18005483' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이정현</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>테크노 여전사에서 팔색조 배우로, ‘와’의 강렬함과 ‘바꿔’의 도발적인 매력을 겸비한 아이콘</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lee Jung Hyun</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>From Techno Warrior to Versatile Actress, an Icon with the Intensity of 'Wa' and the Provocative Charm of 'Change'</div><p>대한민국 가요계에 독보적인 획을 그은 이정현님을 소개합니다. 그녀는 실험적인 음악과 파격적인 퍼포먼스로 대중의 시선을 사로잡았어요. 장르를 넘나드는 도전과 연기 활동을 통해 끊임없이 변화하는 모습이 인상적입니다.</p><p>Let me introduce Lee Jung Hyun, who has made a unique mark on the Korean music scene. She captivated the public with her experimental music and unconventional performances. Her constant transformation through genre-crossing challenges and acting activities is truly impressive.</p><p>✧</p><p>솔로 데뷔와 독창적인 음악 세계</p><p>이정현님은 솔로 데뷔 이후 테크노, 하우스, 한국적인 리듬을 결합한 독특한 음악 스타일을 선보였어요. 강렬한 비트와 신비로운 분위기는 그녀만의 트레이드 마크가 되었죠. 실험적인 시도는 늘 새로운 트렌드를 만들며 대중음악사에 큰 영향을 주었습니다.</p><p>Solo Debut and Unique Musical World</p><p>Since her solo debut, Lee Jung Hyun has showcased a unique musical style that combines techno, house, and Korean rhythms. Her intense beats and mysterious atmosphere have become her trademark. Her experimental attempts have always created new trends and greatly influenced the history of popular music.</p><p>✧</p><p>퍼포먼스 퀸, 시대를 앞서간 스타일</p><p>부채, 화려한 의상, 독특한 메이크업 등 이정현님의 퍼포먼스는 늘 화제의 중심이었어요. 그녀의 무대는 단순한 공연을 넘어 하나의 예술 작품처럼 느껴졌죠. 시대를 앞서가는 스타일은 많은 아티스트들에게 영감을 주었습니다.</p><p>Performance Queen, A Style Ahead of Its Time</p><p>Lee Jung Hyun's performances, featuring fans, extravagant costumes, and unique makeup, were always a hot topic. Her stage felt like a work of art, going beyond a simple performance. Her forward-thinking style has inspired many artists.</p><p>✧</p><p>음악과 연기의 조화</p><p>이정현님은 가수 활동뿐만 아니라 배우로서도 뛰어난 재능을 보여주고 계세요. 다양한 영화와 드라마에서 인상적인 연기를 펼치며 폭넓은 스펙트럼을 입증했죠. 음악적 감성과 연기력이 시너지를 이루며 그녀만의 독보적인 캐릭터를 구축했습니다.</p><p>Harmony of Music and Acting</p><p>Lee Jung Hyun has demonstrated outstanding talent not only as a singer but also as an actress. She has proven her wide spectrum by delivering impressive performances in various films and dramas. The synergy between her musical sensibility and acting skills has created her own unique character.</p><p>✧</p><p>끊임없는 도전, 현재 진행형 아티스트</p><p>과거에 안주하지 않고 늘 새로운 도전을 시도하는 이정현님. 그녀의 음악과 연기는 앞으로도 많은 사람들에게 영감을 줄 것입니다. 앞으로 어떤 모습으로 우리를 놀라게 할지 기대하며 응원합니다.</p><p>Continuous Challenge, An Artist in Progress</p><p>Lee Jung Hyun never rests on her laurels and always tries new challenges. Her music and acting will continue to inspire many people in the future. We look forward to seeing how she will surprise us in the future and we support her.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2006] Fantastic Girl</div>
+<div><a href='https://tidal.com/album/287616888' target='_blank'>https://tidal.com/album/287616888</a></div>
+<div>Lee Jung-hyun,Double K - Fun Fun</div>
+<div>Lee Jung-hyun - 나만봐</div>
+<div>Lee Jung-hyun - 들</div>
+<div>Lee Jung-hyun - 철수야 사랑해</div>
+<div>Lee Jung-hyun - Welcome To My Style</div>
+<div>Lee Jung-hyun - 달려</div>
+<div>Lee Jung-hyun - 남자는 여자를 귀찮게 해</div>
+<div>Lee Jung-hyun - 어떻게</div>
+<div>Lee Jung-hyun - 또 사랑할 수 있을까</div>
+<div>Lee Jung-hyun - 연가</div>
+<div>Lee Jung-hyun - All In</div>
+<div>Lee Jung-hyun - 니 남자를 줘</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287616888' target='_blank'><img src='https://resources.tidal.com/images/870296d7/e6aa/46cd/a63f/189802af8347/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] Summer Party!</div>
+<div><a href='https://tidal.com/album/223263206' target='_blank'>https://tidal.com/album/223263206</a></div>
+<div>Lee Jung-hyun - Stage1.Summer Party</div>
+<div>Lee Jung-hyun - Summer Dance</div>
+<div>Lee Jung-hyun - 야!</div>
+<div>Lee Jung-hyun - 악어</div>
+<div>Lee Jung-hyun - 말해</div>
+<div>Lee Jung-hyun - Stage2.Trance Party</div>
+<div>Lee Jung-hyun - Summer Dance Trance Mix Verison</div>
+<div>Lee Jung-hyun - 야! Hardcore Trance Mix Version</div>
+<div>Lee Jung-hyun - 악어 Dream Mix Version</div>
+<div>Lee Jung-hyun - 말해 Hyper Trance Mix Version</div>
+<div>Lee Jung-hyun - Stage3.Nonstop Party Nonstop Mix Version</div>
+<div>Lee Jung-hyun - See You Next Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223263206' target='_blank'><img src='https://resources.tidal.com/images/fbda31dc/83f1/4648/808c/fb8a121390fd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] I Love Natural</div>
+<div><a href='https://tidal.com/album/223263148' target='_blank'>https://tidal.com/album/223263148</a></div>
+<div>Lee Jung-hyun - 단심가</div>
+<div>Lee Jung-hyun - 달아달아</div>
+<div>Lee Jung-hyun - Q</div>
+<div>Lee Jung-hyun - Tell Me</div>
+<div>Lee Jung-hyun - Time Machine</div>
+<div>Lee Jung-hyun, 박주아 - 고향의 봄 Interlude Version</div>
+<div>Lee Jung-hyun - Brighter Than Sunshine</div>
+<div>Lee Jung-hyun, Doodrock - Rhythm Nature Interlude Version</div>
+<div>Lee Jung-hyun - 아리아리(Explicit)</div>
+<div>Lee Jung-hyun - 뭘 더 바래-</div>
+<div>Lee Jung-hyun - 미워요</div>
+<div>Lee Jung-hyun - 날 봐</div>
+<div>Lee Jung-hyun - Believe</div>
+<div>Lee Jung-hyun - Sun Flower</div>
+<div>Lee Jung-hyun - To Be Continued</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223263148' target='_blank'><img src='https://resources.tidal.com/images/c93f4ca7/3ff9/4901/a028/2826746e1061/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] Magic To Go To My Star</div>
+<div><a href='https://tidal.com/album/223263110' target='_blank'>https://tidal.com/album/223263110</a></div>
+<div>Lee Jung-hyun - Intro</div>
+<div>Lee Jung-hyun - 수리수리 마수리</div>
+<div>Lee Jung-hyun - 난 죽지 않아</div>
+<div>Lee Jung-hyun - Crying In The Mirror</div>
+<div>Lee Jung-hyun - 미쳐</div>
+<div>Lee Jung-hyun - No More Terror</div>
+<div>Lee Jung-hyun - 프리즘</div>
+<div>Lee Jung-hyun - Misty</div>
+<div>Lee Jung-hyun - Surprise Party</div>
+<div>Lee Jung-hyun - 반</div>
+<div>Lee Jung-hyun - Set It Up Now</div>
+<div>Lee Jung-hyun - Anti Drug</div>
+<div>Lee Jung-hyun - French Kiss</div>
+<div>Lee Jung-hyun - Outro</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223263110' target='_blank'><img src='https://resources.tidal.com/images/51bce810/1cc0/4926/a7cc/0543678d352c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] 너</div>
+<div><a href='https://tidal.com/album/223263094' target='_blank'>https://tidal.com/album/223263094</a></div>
+<div>Lee Jung-hyun - MessageⅠ Intro</div>
+<div>Lee Jung-hyun - Peace</div>
+<div>Lee Jung-hyun - Feel Me!</div>
+<div>Lee Jung-hyun - Original</div>
+<div>Lee Jung-hyun - 줄래</div>
+<div>Lee Jung-hyun - 따</div>
+<div>Lee Jung-hyun - 꿈</div>
+<div>Lee Jung-hyun - 잘먹고 잘살아라---</div>
+<div>Lee Jung-hyun - 아냐</div>
+<div>Lee Jung-hyun - 끝났어</div>
+<div>Lee Jung-hyun - 도전</div>
+<div>Lee Jung-hyun - 피어</div>
+<div>Lee Jung-hyun - Love Is A Secret</div>
+<div>Lee Jung-hyun - 너 Bonus Track-Techno Version</div>
+<div>Lee Jung-hyun - MessageⅡ Outro</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223263094' target='_blank'><img src='https://resources.tidal.com/images/c20c52e2/3932/420e/a313/ff0425eb5b25/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] Let's Go To My Star</div>
+<div><a href='https://tidal.com/album/223263059' target='_blank'>https://tidal.com/album/223263059</a></div>
+<div>Lee Jung-hyun - 00001</div>
+<div>Lee Jung-hyun - Gx 339-4</div>
+<div>Lee Jung-hyun - Bird</div>
+<div>Lee Jung-hyun - 바꿔</div>
+<div>Lee Jung-hyun - 와</div>
+<div>Lee Jung-hyun - 00001.5</div>
+<div>Lee Jung-hyun - Ca Tient Moi</div>
+<div>Lee Jung-hyun - 티나세</div>
+<div>Lee Jung-hyun - 충격</div>
+<div>Lee Jung-hyun - Trance</div>
+<div>Lee Jung-hyun - 카르마</div>
+<div>Lee Jung-hyun - I Love X</div>
+<div>Lee Jung-hyun - 00002</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223263059' target='_blank'><img src='https://resources.tidal.com/images/5750a745/1123/4fe1/bb21/f408c7143165/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/5_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ5) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/이정현 (Lee Jung Hyun)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
