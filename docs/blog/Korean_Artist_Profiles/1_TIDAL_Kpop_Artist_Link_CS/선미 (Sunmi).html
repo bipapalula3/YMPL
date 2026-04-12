@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 선미 ( Tidal Sunmi )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 선미 ( Tidal Sunmi )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/09d659b8/cb27/4c81/8247/a275ee10e177/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9542021' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 선미</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>선미 (SUNMI) - '24시간이 모자라'의 강렬함부터 '비바리 처녀'의 애절함까지, 장르를 넘나드는 팔색조 매력의 아이콘</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Sunmi</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>SUNMI - From the intensity of '24 Hours' to the heartbreaking emotion of 'Bibari Woman', an icon of versatile charm that transcends genres.</div><p>독보적인 분위기와 음악 스타일로 대중을 사로잡는 아티스트, 선미입니다. 원더걸스 데뷔 이후 솔로 아티스트로서 자신만의 색깔을 확고히 하며 끊임없이 변화를 시도하고 있어요. 그녀의 음악은 늘 새로운 시도와 매혹적인 퍼포먼스로 가득 차 있답니다.</p><p>Sunmi is an artist who captivates the public with her unique atmosphere and music style. After debuting with Wonder Girls, she has firmly established her own color as a solo artist and is constantly trying to change. Her music is always full of new attempts and fascinating performances.</p><p>✧</p><p>그룹 탄생</p><p>선미는 2007년, 걸그룹 원더걸스로 데뷔하여 'Tell Me', 'Nobody' 등의 히트곡으로 큰 사랑을 받았어요. 그룹 활동을 통해 쌓은 경험은 솔로 아티스트로서의 성장에 밑거름이 되었답니다. 그녀는 팀 활동 중에도 자신만의 음악적 색깔을 탐구하며 솔로 데뷔를 준비했어요.</p><p>Group Origins</p><p>Sunmi debuted as a member of the girl group Wonder Girls in 2007, receiving great love for hit songs such as 'Tell Me' and 'Nobody'. The experience she gained through group activities became the foundation for her growth as a solo artist. Even during her time with the group, she explored her own musical colors and prepared for her solo debut.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>선미의 음악은 몽환적이면서도 강렬한 분위기가 특징이에요. 그녀는 레트로, 신스팝, 댄스 등 다양한 장르를 자신만의 스타일로 소화하며 폭넓은 음악적 스펙트럼을 보여줍니다. 특히, 무대 위에서의 퍼포먼스는 독보적인 카리스마와 매혹적인 분위기로 팬들을 사로잡죠.</p><p>Music and Performance</p><p>Sunmi's music is characterized by a dreamy yet intense atmosphere. She digests various genres such as retro, synth-pop, and dance in her own style, showcasing a wide musical spectrum. In particular, her performance on stage captivates fans with her unique charisma and fascinating atmosphere.</p><p>✧</p><p>주요 활동</p><p>솔로 데뷔곡 '24시간이 모자라'를 통해 파격적인 퍼포먼스와 음악으로 솔로 아티스트로서의 가능성을 입증했어요. 이후 '가시나', '주인공', '사이렌 (Siren)' 등 발표하는 곡마다 히트를 기록하며 자신만의 확고한 음악 세계를 구축했습니다. 드라마 OST 참여와 다양한 콜라보레이션도 활발하게 진행하고 있어요.</p><p>Key Activities</p><p>She proved her potential as a solo artist with her groundbreaking performance and music in her solo debut song '24 Hours'. Since then, she has built her own solid musical world by releasing hit songs such as 'Gashina', 'Heroine', and 'Siren'. She is also actively participating in drama OSTs and various collaborations.</p><p>✧</p><p>미래/의미</p><p>선미는 끊임없는 음악적 시도와 독창적인 콘셉트로 앞으로가 더욱 기대되는 아티스트입니다. 자신만의 색깔을 잃지 않으면서도 대중과의 소통을 잊지 않는 그녀의 행보는 많은 이들에게 영감을 주고 있어요. 앞으로도 그녀가 보여줄 새로운 음악과 퍼포먼스를 기대하며 응원합니다.</p><p>Future/Meaning</p><p>Sunmi is an artist whose future is even more anticipated with her constant musical attempts and original concepts. Her steps, which do not lose her own color while still communicating with the public, inspire many people. We look forward to and support the new music and performances she will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Crossroad</div>
+<div><a href='https://tidal.com/album/393041500' target='_blank'>https://tidal.com/album/393041500</a></div>
+<div>SUNMI - Crossroad (The Judge from Hell - Original Television Soundtrack)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/393041500' target='_blank'><img src='https://resources.tidal.com/images/b4fa5bec/0020/4f9e/9812/3ed71d7786d6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Balloon in Love</div>
+<div><a href='https://tidal.com/album/435380433' target='_blank'>https://tidal.com/album/435380433</a></div>
+<div>SUNMI - Balloon in Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/435380433' target='_blank'><img src='https://resources.tidal.com/images/056d9188/2f6a/4581/bd8e/232acf678cce/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 논개</div>
+<div><a href='https://tidal.com/album/274887708' target='_blank'>https://tidal.com/album/274887708</a></div>
+<div>SUNMI - 논개</div>
+<div>SUNMI - 비바리 처녀</div>
+<div>SUNMI - 논개 (MR)</div>
+<div>SUNMI - 비바리 처녀 (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/274887708' target='_blank'><img src='https://resources.tidal.com/images/1a4ce6e5/2782/4af7/a2e1/ca3c486f4fea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] [BILLION MUSIC PROJECT VOL.1]</div>
+<div><a href='https://tidal.com/album/306123543' target='_blank'>https://tidal.com/album/306123543</a></div>
+<div>SUNMI, BE′O - Lights Out</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306123543' target='_blank'><img src='https://resources.tidal.com/images/63e8b48c/f62a/49f2/a701/b3580b6219af/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] When We Disco</div>
+<div><a href='https://tidal.com/album/296556820' target='_blank'>https://tidal.com/album/296556820</a></div>
+<div>J.Y. Park, SUNMI - When We Disco</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296556820' target='_blank'><img src='https://resources.tidal.com/images/852da792/56e8/4d13/9c64/233c7b251eca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] STRANGER</div>
+<div><a href='https://tidal.com/album/435379691' target='_blank'>https://tidal.com/album/435379691</a></div>
+<div>SUNMI - Calm myself</div>
+<div>SUNMI - STRANGER</div>
+<div>SUNMI - 덕질 (Call my name)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/435379691' target='_blank'><img src='https://resources.tidal.com/images/cd41d1f4/8abe/475f/86a9/adbfc0e587e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 24 Hours</div>
+<div><a href='https://tidal.com/album/306218513' target='_blank'>https://tidal.com/album/306218513</a></div>
+<div>SUNMI - 24 Hours</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306218513' target='_blank'><img src='https://resources.tidal.com/images/630f94ae/2e64/44bf/919e/154b663128a0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 선미야클럽 (Original Soundtrack Part 1)</div>
+<div><a href='https://tidal.com/album/228869247' target='_blank'>https://tidal.com/album/228869247</a></div>
+<div>SUNMI - Fellowship</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/228869247' target='_blank'><img src='https://resources.tidal.com/images/71ad935f/8c43/44a3/b15f/4bd6063509de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Oh Sorry Ya</div>
+<div><a href='https://tidal.com/album/437437008' target='_blank'>https://tidal.com/album/437437008</a></div>
+<div>SUNMI - Oh Sorry Ya</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/437437008' target='_blank'><img src='https://resources.tidal.com/images/df4067c5/69b2/4904/8bf2/370c1f40b807/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] NEW FESTA EPISODE.10</div>
+<div><a href='https://tidal.com/album/242374013' target='_blank'>https://tidal.com/album/242374013</a></div>
+<div>SUNMI - SPRINGIRLS</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/242374013' target='_blank'><img src='https://resources.tidal.com/images/9cde03c5/cd32/46ef/91fa/ee7e2f3d071a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Heart Burn</div>
+<div><a href='https://tidal.com/album/435407426' target='_blank'>https://tidal.com/album/435407426</a></div>
+<div>SUNMI - Heart Burn</div>
+<div>SUNMI - Childhood</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/435407426' target='_blank'><img src='https://resources.tidal.com/images/d3544abc/13ba/4724/92ff/085302caa686/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] TAIL</div>
+<div><a href='https://tidal.com/album/435383115' target='_blank'>https://tidal.com/album/435383115</a></div>
+<div>SUNMI - TAIL</div>
+<div>SUNMI - What The Flower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/435383115' target='_blank'><img src='https://resources.tidal.com/images/753d2fc5/97e8/4ce3/8014/a02b503acada/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Go or Stop_</div>
+<div><a href='https://tidal.com/album/435415780' target='_blank'>https://tidal.com/album/435415780</a></div>
+<div>SUNMI - Go or Stop-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/435415780' target='_blank'><img src='https://resources.tidal.com/images/caa54c29/ca10/402e/8a37/97b03b1fb541/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 1_6</div>
+<div><a href='https://tidal.com/album/435405980' target='_blank'>https://tidal.com/album/435405980</a></div>
+<div>SUNMI - You can't sit with us</div>
+<div>SUNMI - SUNNY</div>
+<div>SUNMI - 1-6</div>
+<div>SUNMI - Call</div>
+<div>SUNMI - Narcissism</div>
+<div>SUNMI - Borderline</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/435405980' target='_blank'><img src='https://resources.tidal.com/images/c2d91395/4c96/45d2/b832/19335531a863/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] pporappippam</div>
+<div><a href='https://tidal.com/album/189842663' target='_blank'>https://tidal.com/album/189842663</a></div>
+<div>SUNMI - pporappippam</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189842663' target='_blank'><img src='https://resources.tidal.com/images/4e6a5830/2264/44f9/bbcd/e8fcd25620db/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] XX (Original Television Soundtrack) Pt. 1</div>
+<div><a href='https://tidal.com/album/295751511' target='_blank'>https://tidal.com/album/295751511</a></div>
+<div>SUNMI - 가라고 (Gotta Go)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/295751511' target='_blank'><img src='https://resources.tidal.com/images/7c086165/26cf/4d38/b1d8/8e26177e1c8a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Noir</div>
+<div><a href='https://tidal.com/album/188868097' target='_blank'>https://tidal.com/album/188868097</a></div>
+<div>SUNMI - Noir</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188868097' target='_blank'><img src='https://resources.tidal.com/images/9bea43b0/46b5/42d3/8c5c/93e8c6e6a9e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] LALALAY</div>
+<div><a href='https://tidal.com/album/189262720' target='_blank'>https://tidal.com/album/189262720</a></div>
+<div>SUNMI - LALALAY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189262720' target='_blank'><img src='https://resources.tidal.com/images/8fc8ca4d/207b/4105/8308/48a370c1b073/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] WARNING</div>
+<div><a href='https://tidal.com/album/175067690' target='_blank'>https://tidal.com/album/175067690</a></div>
+<div>SUNMI - ADDICT</div>
+<div>SUNMI - Siren</div>
+<div>SUNMI - Curve</div>
+<div>SUNMI - Black Pearl</div>
+<div>SUNMI - Secret Tape</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175067690' target='_blank'><img src='https://resources.tidal.com/images/5903d0c8/da11/40e3/9b30/1d432688bf1e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Heroine</div>
+<div><a href='https://tidal.com/album/216006667' target='_blank'>https://tidal.com/album/216006667</a></div>
+<div>SUNMI - Heroine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216006667' target='_blank'><img src='https://resources.tidal.com/images/358e9061/0b15/4549/b373/8d3576d8a9d4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] SUNMI SPECIAL EDITION [Gashina]</div>
+<div><a href='https://tidal.com/album/215976008' target='_blank'>https://tidal.com/album/215976008</a></div>
+<div>SUNMI - Gashina</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215976008' target='_blank'><img src='https://resources.tidal.com/images/88af3e4a/ce32/4b59/a36c/a01e287c5719/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 잊을 수 없잖아</div>
+<div><a href='https://tidal.com/album/161293521' target='_blank'>https://tidal.com/album/161293521</a></div>
+<div>SUNMI - 잊을 수 없잖아</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/161293521' target='_blank'><img src='https://resources.tidal.com/images/bf953200/f8f8/4f34/9f25/605e04a1b5c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Full Moon</div>
+<div><a href='https://tidal.com/album/306270771' target='_blank'>https://tidal.com/album/306270771</a></div>
+<div>SUNMI, Lena - Full Moon</div>
+<div>SUNMI - 24 Hours</div>
+<div>SUNMI - Burn</div>
+<div>SUNMI, Yubin - Who am I</div>
+<div>SUNMI, Jackson Wang - Time Is Up</div>
+<div>SUNMI - If That Was You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306270771' target='_blank'><img src='https://resources.tidal.com/images/57220f31/c1dd/40aa/bfbf/9db1b7c90208/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/1_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ1) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/선미 (Sunmi)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
