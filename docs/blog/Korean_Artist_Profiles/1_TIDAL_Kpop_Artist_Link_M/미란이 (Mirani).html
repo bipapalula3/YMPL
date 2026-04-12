@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 미란이 ( Tidal Mirani )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 미란이 ( Tidal Mirani )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/b87a5ed3/5df4/4537/b9a5/511138a4b0aa/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/22599427' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 미란이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>미란이 (Mirani) – 거침없는 에너지로 무대를 장악하는 래퍼, 'Candy'처럼 달콤하면서도 'Test me'처럼 도발적인 매력</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Mirani</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Mirani – A rapper who dominates the stage with unstoppable energy, as sweet as 'Candy' yet provocative like 'Test me'</div><p>힙합 씬에 강렬한 존재감을 드러내는 미란이님을 소개합니다. 독특한 음색과 개성 넘치는 랩 스타일로 많은 사랑을 받고 있어요. 자신만의 색깔로 음악계를 물들이는 그녀의 매력에 빠져보세요!</p><p>Introducing Mirani, who is making a strong presence in the hip-hop scene. She is loved for her unique voice and distinctive rap style. Fall into the charm of her as she colors the music world with her own style!</p><p>✧</p><p>개성으로 빚어낸 시작</p><p>미란이님은 특유의 개성과 음악적 재능을 바탕으로 자신만의 영역을 구축했어요. 다양한 음악적 시도를 통해 끊임없이 변화하고 발전하는 모습을 보여주고 있습니다. 그녀의 음악은 틀에 갇히지 않는 자유로운 영혼을 담고 있는 것 같아요.</p><p>A Beginning Crafted with Individuality</p><p>Mirani has established her own territory based on her unique personality and musical talent. She continues to change and evolve through various musical attempts. Her music seems to contain a free spirit that is not confined to stereotypes.</p><p>✧</p><p>다채로운 음악적 스펙트럼</p><p>미란이님의 음악은 힙합을 기반으로 다양한 장르를 넘나드는 폭넓은 스펙트럼을 자랑합니다. 강렬한 랩은 물론, 섬세한 감정 표현까지 가능한 팔색조 매력을 지니고 있어요. 듣는 이로 하여금 지루할 틈 없이 빠져들게 만드는 힘이 있습니다.</p><p>A Diverse Musical Spectrum</p><p>Mirani's music boasts a wide spectrum that crosses various genres based on hip-hop. She possesses a charm that allows for not only intense rapping but also delicate emotional expression. She has the power to keep listeners immersed without a moment of boredom.</p><p>✧</p><p>무대를 압도하는 존재감</p><p>미란이님은 무대 위에서 폭발적인 에너지와 카리스마를 발산하며 관객들을 사로잡습니다. 그녀의 퍼포먼스는 단순히 음악을 듣는 것을 넘어 시각적인 즐거움까지 선사해요. 자신감 넘치는 모습은 보는 이들에게 긍정적인 영향을 줍니다.</p><p>Overwhelming Presence on Stage</p><p>Mirani captivates audiences with explosive energy and charisma on stage. Her performance goes beyond just listening to music, offering visual enjoyment as well. Her confident appearance has a positive impact on viewers.</p><p>✧</p><p>앞으로가 더욱 기대되는 아티스트</p><p>끊임없는 음악적 도전과 성장을 통해 미란이님은 앞으로 더욱 빛나는 아티스트가 될 것이라고 확신합니다. 그녀의 음악은 단순한 유행을 넘어, 듣는 이들에게 깊은 공감과 영감을 선사할 것입니다. 앞으로 그녀가 보여줄 새로운 모습들이 더욱 기대됩니다.</p><p>An Artist Whose Future is Highly Anticipated</p><p>Through continuous musical challenges and growth, I am confident that Mirani will become an even brighter artist in the future. Her music transcends simple trends and offers deep empathy and inspiration to listeners. I look forward to the new aspects she will show us in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[E] [2023] The Drift</div>
+<div><a href='https://tidal.com/album/292460312' target='_blank'>https://tidal.com/album/292460312</a></div>
+<div>Mirani - Intro</div>
+<div>Mirani, BIG Naughty - BAD BOY (feat. BIG Naughty)</div>
+<div>Mirani, Blase, REI AMI - 1, 2, 3 Go Shoot (feat. Blase & REI AMI)(Explicit)</div>
+<div>Mirani - WOW</div>
+<div>Mirani, pH-1 - Asphalt (feat. pH-1)(Explicit)</div>
+<div>Mirani - Ya</div>
+<div>Mirani - Interlude</div>
+<div>Mirani, Coogie, Leellamarz - Candy (feat. Leellamarz & Coogie)(Explicit)</div>
+<div>Mirani - Make U Mine(Explicit)</div>
+<div>Mirani - Test me</div>
+<div>Mirani, Sumin - I hate you (feat. SUMIN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/292460312' target='_blank'><img src='https://resources.tidal.com/images/773d5569/8385/4fcd/80db/41052a8c4a34/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2023] Asphalt (feat. pH-1)</div>
+<div><a href='https://tidal.com/album/280459728' target='_blank'>https://tidal.com/album/280459728</a></div>
+<div>Mirani, pH-1 - Asphalt (feat. pH-1)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/280459728' target='_blank'><img src='https://resources.tidal.com/images/1d927092/dedb/43e1/8dc9/a251f2182b3a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[E] [2021] Daisy</div>
+<div><a href='https://tidal.com/album/179067539' target='_blank'>https://tidal.com/album/179067539</a></div>
+<div>Mirani, pH-1 - Daisy (feat. pH-1)</div>
+<div>Mirani, JUSTHIS - Open Up (feat. JUSTHIS)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/179067539' target='_blank'><img src='https://resources.tidal.com/images/a17f8038/9b74/4ea9/9e1b/05952f1401e4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] ME TIME</div>
+<div><a href='https://tidal.com/album/385412344' target='_blank'>https://tidal.com/album/385412344</a></div>
+<div>Mirani, The Quiett, Tyla Yaweh - Gets Me Hot (feat. Tyla Yaweh & The Quiett)</div>
+<div>Mirani, Wonstein - Falling Down (feat. Wonstein)</div>
+<div>Mirani, MINGI of ATEEZ - Hit Me Up (feat. MINGI of ATEEZ)</div>
+<div>Mirani - Kiss Me Now</div>
+<div>Mirani - LVSNG</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/385412344' target='_blank'><img src='https://resources.tidal.com/images/8b0cb137/7199/4afa/8a5e/1c9f1dc40eaa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Hit Me Up (feat. MINGI of ATEEZ)</div>
+<div><a href='https://tidal.com/album/378915440' target='_blank'>https://tidal.com/album/378915440</a></div>
+<div>Mirani, MINGI of ATEEZ - Hit Me Up (feat. MINGI of ATEEZ)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/378915440' target='_blank'><img src='https://resources.tidal.com/images/916cfb2b/23a7/45c7/9642/502a0cca6706/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Kiss Me Now</div>
+<div><a href='https://tidal.com/album/327907057' target='_blank'>https://tidal.com/album/327907057</a></div>
+<div>Mirani - Kiss Me Now</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/327907057' target='_blank'><img src='https://resources.tidal.com/images/e56b393b/a8bf/448b/a9e6/da8eeceb2d2f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] HAN 2023</div>
+<div><a href='https://tidal.com/album/296283027' target='_blank'>https://tidal.com/album/296283027</a></div>
+<div>Kid Milli, 루피 (Loopy), Mirani, Saewoo - Seoul City - Spotify Singles</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296283027' target='_blank'><img src='https://resources.tidal.com/images/f9563f75/f609/41aa/80dd/822f83789f31/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Battle for Happiness, Pt. 3 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346835766' target='_blank'>https://tidal.com/album/346835766</a></div>
+<div>Mirani - End The Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346835766' target='_blank'><img src='https://resources.tidal.com/images/0134eefd/5031/4d69/b27e/4b6f73539bb0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 비밀-리에 Vol. 5 -Pick up your phone-</div>
+<div><a href='https://tidal.com/album/306309404' target='_blank'>https://tidal.com/album/306309404</a></div>
+<div>Mirani - Pick up your phone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306309404' target='_blank'><img src='https://resources.tidal.com/images/509cb6e9/f42a/4745/87cf/329b1ba5a062/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Rollin'</div>
+<div><a href='https://tidal.com/album/252617387' target='_blank'>https://tidal.com/album/252617387</a></div>
+<div>GroovyRoom, Mirani, GEMINI - Rollin' (Prod. GroovyRoom)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/252617387' target='_blank'><img src='https://resources.tidal.com/images/0b79a236/e500/4bea/94a9/d5892503bb7c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Gasoline</div>
+<div><a href='https://tidal.com/album/225758315' target='_blank'>https://tidal.com/album/225758315</a></div>
+<div>Mirani - Gasoline</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/225758315' target='_blank'><img src='https://resources.tidal.com/images/85bf316b/b4f6/43a1/bd8d/593efde2f01b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Freaky</div>
+<div><a href='https://tidal.com/album/239508394' target='_blank'>https://tidal.com/album/239508394</a></div>
+<div>Mirani - Freaky (Prod. GroovyRoom)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/239508394' target='_blank'><img src='https://resources.tidal.com/images/53dab9de/956d/4b3a/8b8a/48224a2be90e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] UPTOWN GIRL</div>
+<div><a href='https://tidal.com/album/206585075' target='_blank'>https://tidal.com/album/206585075</a></div>
+<div>Mirani - UPTOWN GIRL</div>
+<div>Mirani, lIlBOI - Tikita (feat. lIlBOI)</div>
+<div>Mirani, Skinny Brown - too boring (feat. Skinny Brown)</div>
+<div>Mirani, Uneducated Kid - Lambo! (feat. UNEDUCATED KID)</div>
+<div>Mirani, Jay B - P.S. (feat. JAY B)</div>
+<div>Mirani - I Wanna Be</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/206585075' target='_blank'><img src='https://resources.tidal.com/images/c5533cc1/622b/427b/8dcc/33e440201697/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Lambo! (feat. UNEDUCATED KID)</div>
+<div><a href='https://tidal.com/album/204365647' target='_blank'>https://tidal.com/album/204365647</a></div>
+<div>Mirani, Uneducated Kid - Lambo! (feat. UNEDUCATED KID)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204365647' target='_blank'><img src='https://resources.tidal.com/images/919de103/c6b1/407b/b712/25cb3b0b2984/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Tic Tac!</div>
+<div><a href='https://tidal.com/album/189833798' target='_blank'>https://tidal.com/album/189833798</a></div>
+<div>Mirani - Tic Tac!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189833798' target='_blank'><img src='https://resources.tidal.com/images/e105503d/e3a3/46d9/8af6/599ce40d2dad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/1_TIDAL_Kpop_Artist_Link_M.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅁ1) TIDAL Kpop Artist Link (M)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/미란이 (Mirani)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
