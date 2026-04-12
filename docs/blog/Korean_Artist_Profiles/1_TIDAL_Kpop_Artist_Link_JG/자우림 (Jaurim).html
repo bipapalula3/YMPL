@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 자우림 ( Tidal Jaurim )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 자우림 ( Tidal Jaurim )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/79cfb2b4/1ece/4cbb/bf5d/3a95098f40dd/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7698797' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 자우림</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>자우림 – ‘Hey, hey, hey’의 강렬한 외침부터 ‘Winter Wonderland’의 따스함까지, 다채로운 색깔로 물들이는 25년차 밴드</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jaurim</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Jaurim – From the intense cry of ‘Hey, hey, hey’ to the warmth of ‘Winter Wonderland,’ a 25-year-old band painting the world with diverse colors.</div><p>한국 모던 록의 자존심, 자우림을 소개합니다. 독특한 음악 세계와 김윤아의 매력적인 보컬로 대중과 평단을 사로잡은 밴드인데요. 25년이 넘는 시간 동안 끊임없이 변화하고 도전하며 자신들만의 영역을 구축해 왔습니다.</p><p>Introducing Jaurim, the pride of Korean modern rock. This band has captivated both the public and critics with its unique musical world and Kim Yuna's captivating vocals. For over 25 years, they have constantly evolved and challenged themselves, building their own unique territory.</p><p>✧</p><p>독창적인 그룹의 탄생</p><p>자우림은 1997년 데뷔 이후, 한국 록 음악계에 신선한 충격을 안겨주었습니다. 개성 강한 멤버들의 조합과 실험적인 사운드는 기존의 록 음악과는 차별화된 독자적인 스타일을 만들어냈어요. 그들의 음악은 단순한 록을 넘어 다양한 장르를 넘나드는 폭넓은 스펙트럼을 자랑합니다.</p><p>The Birth of a Unique Group</p><p>Since their debut in 1997, Jaurim has brought a fresh shock to the Korean rock music scene. The combination of strong personalities and experimental sounds has created a unique style that sets them apart from conventional rock music. Their music boasts a wide spectrum that transcends simple rock, crossing various genres.</p><p>✧</p><p>음악과 퍼포먼스의 조화</p><p>자우림의 음악은 몽환적인 분위기부터 강렬한 록 사운드까지 폭넓은 감성을 담고 있습니다. 특히, 보컬 김윤아의 카리스마 넘치는 무대 매너와 폭발적인 가창력은 관객들을 압도합니다. 단순한 연주를 넘어선, 몰입도 높은 퍼포먼스는 자우림 공연의 빼놓을 수 없는 매력입니다.</p><p>Harmony of Music and Performance</p><p>Jaurim's music encompasses a wide range of emotions, from dreamy atmospheres to intense rock sounds. In particular, vocalist Kim Yuna's charismatic stage presence and explosive singing ability overwhelm the audience. The highly immersive performance, going beyond simple playing, is an indispensable charm of Jaurim's concerts.</p><p>✧</p><p>주요 활동과 끊임없는 변화</p><p>25주년 기념 앨범 발매와 콘서트를 통해 자우림은 여전히 활발한 활동을 이어가고 있습니다. 과거의 히트곡들을 새로운 감각으로 재해석하고, 실험적인 시도를 통해 끊임없이 변화하는 모습을 보여주는데요. 오랜 시간 동안 쌓아온 음악적 내공은 그들의 음악을 더욱 깊이 있고 풍성하게 만들어줍니다.</p><p>Major Activities and Continuous Change</p><p>Jaurim continues to be active through the release of their 25th-anniversary album and concerts. They reinterpret past hits with a new sensibility and show a constantly evolving appearance through experimental attempts. The musical expertise they have built over a long period makes their music deeper and richer.</p><p>✧</p><p>미래와 자우림의 의미</p><p>자우림은 단순한 밴드를 넘어, 하나의 문화 아이콘으로 자리매김했습니다. 그들의 음악은 시대를 초월하여 많은 사람들에게 영감과 위로를 전달하고 있는데요. 앞으로도 자우림은 자신들만의 색깔을 잃지 않고, 더욱 다양한 음악적 시도를 통해 대중과 소통할 것으로 기대됩니다.</p><p>The Future and Meaning of Jaurim</p><p>Jaurim has established itself as a cultural icon, transcending the boundaries of a simple band. Their music transcends time, delivering inspiration and comfort to many. It is expected that Jaurim will continue to communicate with the public through even more diverse musical attempts without losing their own color.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] MERRY SPOOKY X-MAS</div>
+<div><a href='https://tidal.com/album/343376454' target='_blank'>https://tidal.com/album/343376454</a></div>
+<div>Jaurim - Winter Wonderland</div>
+<div>Jaurim - Spooky Xmas</div>
+<div>Jaurim - If it snows on Christmas day</div>
+<div>Jaurim - Mister Klauss</div>
+<div>Jaurim - X-mas dogs</div>
+<div>Jaurim - Night Wishes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343376454' target='_blank'><img src='https://resources.tidal.com/images/1288c86e/778c/4336/b7b5/df36cd82a0d8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] HAPPY 25th JAURIM</div>
+<div><a href='https://tidal.com/album/343336832' target='_blank'>https://tidal.com/album/343336832</a></div>
+<div>Jaurim - HAPPY 25th, JAURIM!!</div>
+<div>Jaurim - Magic carpet ride 25th</div>
+<div>Jaurim - Hey, hey, hey 25th</div>
+<div>Jaurim - 하하하쏭 25th</div>
+<div>Jaurim - 17171771 25th</div>
+<div>Jaurim - 팬이야 25th</div>
+<div>Jaurim - Boxing Helena 25th</div>
+<div>Jaurim - I am sorry, I hate you 25th</div>
+<div>Jaurim - our song</div>
+<div>Jaurim - Twenty-five, twenty-one 25th</div>
+<div>Jaurim - Shining 25th</div>
+<div>Jaurim - 일탈 25th</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343336832' target='_blank'><img src='https://resources.tidal.com/images/ac842a8b/a38f/4e30/b565/874535c27a19/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] written on a leaf</div>
+<div><a href='https://tidal.com/album/343329357' target='_blank'>https://tidal.com/album/343329357</a></div>
+<div>Jaurim - written on a leaf</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343329357' target='_blank'><img src='https://resources.tidal.com/images/76329c78/17c2/43b2/bd1d/169373c8bdd4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] LOVE FOREVER</div>
+<div><a href='https://tidal.com/album/343330463' target='_blank'>https://tidal.com/album/343330463</a></div>
+<div>Jaurim - FADE AWAY</div>
+<div>Jaurim - LOVE FOREVER</div>
+<div>Jaurim - STAY WITH ME</div>
+<div>Jaurim - PÉON PÉON</div>
+<div>Jaurim - DADADA</div>
+<div>Jaurim - SANDY BEACH</div>
+<div>Jaurim - WRITTEN ON A LEAF</div>
+<div>Jaurim - FEEL PLAY LOVE</div>
+<div>Jaurim - DA CAPO</div>
+<div>Jaurim - MY DEAR OLD FRIEND</div>
+<div>Jaurim - EURYDICE</div>
+<div>Jaurim - TIL DEATH DO US PART</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343330463' target='_blank'><img src='https://resources.tidal.com/images/1499da00/5a17/4ff2/bc67/dbd71a3ea437/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] HOLA!</div>
+<div><a href='https://tidal.com/album/343326672' target='_blank'>https://tidal.com/album/343326672</a></div>
+<div>Jaurim - HOLA!</div>
+<div>Jaurim - Waltz for a Morning</div>
+<div>Jaurim - Our Failure</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343326672' target='_blank'><img src='https://resources.tidal.com/images/7087a063/39c1/4591/b667/1cb3398f42ff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 자우림</div>
+<div><a href='https://tidal.com/album/343382322' target='_blank'>https://tidal.com/album/343382322</a></div>
+<div>Jaurim - 狂犬時代</div>
+<div>Jaurim - 아는 아이</div>
+<div>Jaurim - Sleeping Beauty</div>
+<div>Jaurim - 있지</div>
+<div>Jaurim - 영원히 영원히</div>
+<div>Jaurim - Give me one reason</div>
+<div>Jaurim - Psycho heaven</div>
+<div>Jaurim - Other one’s eye</div>
+<div>Jaurim - Over the rainbow</div>
+<div>Jaurim - XOXO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343382322' target='_blank'><img src='https://resources.tidal.com/images/e606b76b/836c/4f31/b377/01da32c7d151/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] XOXO</div>
+<div><a href='https://tidal.com/album/346389679' target='_blank'>https://tidal.com/album/346389679</a></div>
+<div>Jaurim - XOXO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346389679' target='_blank'><img src='https://resources.tidal.com/images/3f96aa39/4248/48a0/8f29/111d940e2d96/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 이카루스</div>
+<div><a href='https://tidal.com/album/346384217' target='_blank'>https://tidal.com/album/346384217</a></div>
+<div>Jaurim - 이카루스</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346384217' target='_blank'><img src='https://resources.tidal.com/images/dd9eb0f7/04d2/4d77/bf21/2a4dbadc7960/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Goodbye, grief.</div>
+<div><a href='https://tidal.com/album/346400230' target='_blank'>https://tidal.com/album/346400230</a></div>
+<div>Jaurim - Anna</div>
+<div>Jaurim - Dear Mother</div>
+<div>Jaurim - 님아</div>
+<div>Jaurim - 템페스트</div>
+<div>Jaurim - I Feel Good</div>
+<div>Jaurim - 스물다섯, 스물하나</div>
+<div>Jaurim - 무지개</div>
+<div>Jaurim - Dancing Star</div>
+<div>Jaurim - 전하고 싶은 말</div>
+<div>Jaurim - 이카루스</div>
+<div>Jaurim - 슬픔이여 이제 안녕</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346400230' target='_blank'><img src='https://resources.tidal.com/images/0d481556/9557/462f/a237/7df6e88c12c7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2011] 음모론</div>
+<div><a href='https://tidal.com/album/346385496' target='_blank'>https://tidal.com/album/346385496</a></div>
+<div>Jaurim - HAPPY DAY</div>
+<div>Jaurim - IDOL</div>
+<div>Jaurim - EV1</div>
+<div>Jaurim - 꿈에</div>
+<div>Jaurim - PEEP SHOW</div>
+<div>Jaurim - RED RAIN</div>
+<div>Jaurim - 혼자가 아니야</div>
+<div>Jaurim - 답답</div>
+<div>Jaurim - from：me@iwaswrong.com to：you@aremy.net</div>
+<div>Jaurim - 피터의 노래</div>
+<div>Jaurim - snowdrop</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346385496' target='_blank'><img src='https://resources.tidal.com/images/023a1ad9/5164/4a68/9e3f/9460e7f5e366/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] EV1 _ PEEP SHOW</div>
+<div><a href='https://tidal.com/album/346386538' target='_blank'>https://tidal.com/album/346386538</a></div>
+<div>Jaurim - EV1</div>
+<div>Jaurim - PEEP SHOW</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346386538' target='_blank'><img src='https://resources.tidal.com/images/fcc80509/69a5/4a20/986d/639e84715b5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Jaurim SS Collection</div>
+<div><a href='https://tidal.com/album/216437566' target='_blank'>https://tidal.com/album/216437566</a></div>
+<div>Jaurim - 일탈</div>
+<div>Jaurim - 애인발견!!!</div>
+<div>Jaurim - 김가만세(金家萬歲)</div>
+<div>Jaurim - 이런데서 주무시면 얼어죽어요</div>
+<div>Jaurim - 숨은그림찾기</div>
+<div>Jaurim - 나비</div>
+<div>Jaurim - 매직 카펫 라이드</div>
+<div>Jaurim - 오렌지 마말레이드</div>
+<div>Jaurim - 꿈의 택배편</div>
+<div>Jaurim - Hey Guyz</div>
+<div>Jaurim - Vlad</div>
+<div>Jaurim - 르샤마지끄</div>
+<div>Jaurim - 하하하쏭</div>
+<div>Jaurim - 사랑의 병원으로 놀러 오세요</div>
+<div>Jaurim - 17171771</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437566' target='_blank'><img src='https://resources.tidal.com/images/1a1793d9/634f/44ce/bbcb/375b6e3bffb9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Untitled Records</div>
+<div><a href='https://tidal.com/album/343389732' target='_blank'>https://tidal.com/album/343389732</a></div>
+<div>Jaurim - Magnolia</div>
+<div>Jaurim - Glitter</div>
+<div>Jaurim - Dew</div>
+<div>Jaurim - 나사</div>
+<div>Jaurim - 꿈속의 연인</div>
+<div>Jaurim - 숙취</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343389732' target='_blank'><img src='https://resources.tidal.com/images/9745a12c/9c00/4464/9d0e/22ecfd7ac207/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Jaurim Best - A_W Collection</div>
+<div><a href='https://tidal.com/album/216437539' target='_blank'>https://tidal.com/album/216437539</a></div>
+<div>Jaurim - 밀랍천사</div>
+<div>Jaurim - 파애</div>
+<div>Jaurim - 안녕, 미미</div>
+<div>Jaurim - 미안해 널 미워해</div>
+<div>Jaurim - 낙화 (落花)</div>
+<div>Jaurim - 레테</div>
+<div>Jaurim - 미쓰코리아</div>
+<div>Jaurim - 뱀</div>
+<div>Jaurim - 새</div>
+<div>Jaurim - 벌레</div>
+<div>Jaurim - 마왕</div>
+<div>Jaurim - 망향 (望鄕)</div>
+<div>Jaurim - 악몽 (惡夢)</div>
+<div>Jaurim - Truth</div>
+<div>Jaurim - 청춘예찬 (靑春禮讚)</div>
+<div>Jaurim - You And Me</div>
+<div>Jaurim - 샤이닝</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437539' target='_blank'><img src='https://resources.tidal.com/images/e65929d5/d9b7/4baf/b53c/8183d072c12d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Ruby Sapphire Diamond</div>
+<div><a href='https://tidal.com/album/346405780' target='_blank'>https://tidal.com/album/346405780</a></div>
+<div>Jaurim - Oh, Honey!</div>
+<div>Jaurim - 행복한 왕자</div>
+<div>Jaurim - Something Good</div>
+<div>Jaurim - Drops</div>
+<div>Jaurim - 20세기 소년소녀</div>
+<div>Jaurim - 반딧불</div>
+<div>Jaurim - Carnival Amour</div>
+<div>Jaurim - Love Rock`N Roll</div>
+<div>Jaurim - 27</div>
+<div>Jaurim - 옛날</div>
+<div>Jaurim - The Devil</div>
+<div>Jaurim - Poor Tom</div>
+<div>Jaurim - Blue Marble</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346405780' target='_blank'><img src='https://resources.tidal.com/images/f4f70b37/2625/494a/beb2/d72b562cf4d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] Ashes To Ashes</div>
+<div><a href='https://tidal.com/album/216437871' target='_blank'>https://tidal.com/album/216437871</a></div>
+<div>Jaurim - Seoul Blues</div>
+<div>Jaurim - Loving Memory</div>
+<div>Jaurim - Jester Song</div>
+<div>Jaurim - You And Me</div>
+<div>Jaurim - Summer Slumber</div>
+<div>Jaurim - 죽은 자들의 무도회</div>
+<div>Jaurim - Beautiful Girl</div>
+<div>Jaurim - Over And Over Again I Think Of You</div>
+<div>Jaurim - 6월 이야기</div>
+<div>Jaurim - 위로</div>
+<div>Jaurim - Old Man</div>
+<div>Jaurim - Blue Devils</div>
+<div>Jaurim - Good Boy</div>
+<div>Jaurim - Oh, Mama!</div>
+<div>Jaurim - 샤이닝</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437871' target='_blank'><img src='https://resources.tidal.com/images/5f3bfabd/21be/48d7/a898/6481d233961f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] 靑春禮讚(청춘예찬)</div>
+<div><a href='https://tidal.com/album/216437720' target='_blank'>https://tidal.com/album/216437720</a></div>
+<div>Jaurim - Anotherday In Paradise</div>
+<div>Jaurim - Girl, You'll Be A Woman Soon</div>
+<div>Jaurim - Starman</div>
+<div>Jaurim - Angel</div>
+<div>Jaurim - Take A Bow</div>
+<div>Jaurim - Social Life</div>
+<div>Jaurim - 누구라도 그러하듯이</div>
+<div>Jaurim - Gloomy Sunday</div>
+<div>Jaurim - Penny Royal Tea</div>
+<div>Jaurim - Lover's Rock</div>
+<div>Jaurim - Summertime</div>
+<div>Jaurim - Even Flow</div>
+<div>Jaurim - 새</div>
+<div>Jaurim - Goodbye To Romance</div>
+<div>Jaurim - 청춘예찬</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437720' target='_blank'><img src='https://resources.tidal.com/images/ed628efb/df0e/4c4c/8752/073cd1387c25/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] All You Need Is Love 5집</div>
+<div><a href='https://tidal.com/album/216437853' target='_blank'>https://tidal.com/album/216437853</a></div>
+<div>Jaurim - 하하하쏭</div>
+<div>Jaurim - 사랑의 병원으로 놀러 오세요</div>
+<div>Jaurim - I Saw Him</div>
+<div>Jaurim - 거지</div>
+<div>Jaurim - 曠野(광야)</div>
+<div>Jaurim - 우리에게 내일은 없다</div>
+<div>Jaurim - 惡夢(악몽)</div>
+<div>Jaurim - 실리콘벨리</div>
+<div>Jaurim - 파트너</div>
+<div>Jaurim - 17171771</div>
+<div>Jaurim - Social Life</div>
+<div>Jaurim - Truth</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437853' target='_blank'><img src='https://resources.tidal.com/images/c7c9cfcb/5c4f/4f16/928c/e31fa0fd8b99/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2002] Jaurim 04</div>
+<div><a href='https://tidal.com/album/216437831' target='_blank'>https://tidal.com/album/216437831</a></div>
+<div>Jaurim - #1</div>
+<div>Jaurim - 우리를 위해 기도해 주세요</div>
+<div>Jaurim - Hey Guyz</div>
+<div>Jaurim - Vlad</div>
+<div>Jaurim - Good Morning</div>
+<div>Jaurim - 벨벳소로우</div>
+<div>Jaurim - 팬이야</div>
+<div>Jaurim - 르샤마지끄</div>
+<div>Jaurim - 수사반장</div>
+<div>Jaurim - Only One</div>
+<div>Jaurim - 망향(望鄕)</div>
+<div>Jaurim - 무언가(無言歌)</div>
+<div>Jaurim - (11) (Hidden Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437831' target='_blank'><img src='https://resources.tidal.com/images/7fa37b74/a763/4d06/9184/b769d2bd2527/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] Jaurim 'True' Live (Live)</div>
+<div><a href='https://tidal.com/album/216437748' target='_blank'>https://tidal.com/album/216437748</a></div>
+<div>Kim Yuna - 나비</div>
+<div>Kim Yuna - 미쓰코리아</div>
+<div>Kim Yuna - 애인발견</div>
+<div>Kim Yuna - 욕</div>
+<div>Kim Yuna - 벌레</div>
+<div>Kim Yuna - 이런데서 주무시면 얼어죽어요</div>
+<div>Kim Yuna - 레테</div>
+<div>Kim Yuna - 새</div>
+<div>Kim Yuna - 낙화 (落花)</div>
+<div>Kim Yuna - 마론인형</div>
+<div>Kim Yuna - 뱀</div>
+<div>Kim Yuna - 오렌지 마말레이드</div>
+<div>Kim Yuna - 연인 (戀人) 3-3 Angel</div>
+<div>Kim Yuna - 파애</div>
+<div>Kim Yuna - 새</div>
+<div>Kim Yuna - 연인 (戀人) 2-3 Lover</div>
+<div>Kim Yuna - 꿈의 택배편</div>
+<div>Kim Yuna - 연인 (戀人) 1-3 Gueen</div>
+<div>Kim Yuna - 마왕 Prologue</div>
+<div>Kim Yuna - 아파</div>
+<div>Kim Yuna - Boxing Helena (Feat. Funny Powder)</div>
+<div>Kim Yuna - 마왕</div>
+<div>Kim Yuna - www.사이버디지탈.com</div>
+<div>Kim Yuna - 뱀</div>
+<div>Kim Yuna - Hey, Hey, Hey</div>
+<div>Kim Yuna - 김가 (金家) Comix</div>
+<div>Kim Yuna - 매직카펫라이드</div>
+<div>Kim Yuna - 미안해 널 미워해</div>
+<div>Kim Yuna - 어른아이</div>
+<div>Kim Yuna - 일탈</div>
+<div>Kim Yuna - Boxing Helena</div>
+<div>Kim Yuna - 안녕, 미미</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437748' target='_blank'><img src='https://resources.tidal.com/images/52549a64/4519/48b9/a6ef/fa5094869d70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] Jaurim, The Wonder Land</div>
+<div><a href='https://tidal.com/album/216437939' target='_blank'>https://tidal.com/album/216437939</a></div>
+<div>Jaurim - 미쓰코리아</div>
+<div>Jaurim - 매직 카펫 라이드</div>
+<div>Jaurim - 뱀</div>
+<div>Jaurim - 새</div>
+<div>Jaurim - 오렌지 마말레이드</div>
+<div>Jaurim - Summerday Blues</div>
+<div>Jaurim - Www.사이버디지탈.Com</div>
+<div>Jaurim - 꿈의 택배편</div>
+<div>Jaurim - 벌레</div>
+<div>Jaurim - 그녀와 단둘이</div>
+<div>Jaurim - 적루(赤淚)</div>
+<div>Jaurim - 마왕</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437939' target='_blank'><img src='https://resources.tidal.com/images/4acb3727/8172/44b6/8d0d/24193dcd122d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] B정규작업(定規作業)</div>
+<div><a href='https://tidal.com/album/216437907' target='_blank'>https://tidal.com/album/216437907</a></div>
+<div>Jaurim - B Side</div>
+<div>Jaurim - 그래 제길</div>
+<div>Jaurim - 밀랍천사 No.9</div>
+<div>Jaurim - New 욕</div>
+<div>Jaurim - V.V-</div>
+<div>Jaurim - 알아</div>
+<div>Jaurim - A Side</div>
+<div>Jaurim - 나비</div>
+<div>Jaurim - 마론인형</div>
+<div>Jaurim - Light, Delight</div>
+<div>Jaurim - Mother Angel</div>
+<div>Jaurim - 레테</div>
+<div>Jaurim - 안녕 미미</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437907' target='_blank'><img src='https://resources.tidal.com/images/87e8da89/c6e4/48c0/a808/f0d77c0b56b0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] 연인(戀人)</div>
+<div><a href='https://tidal.com/album/216437924' target='_blank'>https://tidal.com/album/216437924</a></div>
+<div>Jaurim - 연인(戀人) 3-3</div>
+<div>Jaurim - 미안해 널 미워해</div>
+<div>Jaurim - 김가만세(金家萬歲)</div>
+<div>Jaurim - 낙화(落花)</div>
+<div>Jaurim - 연인(戀人) 2-3 (Lover)</div>
+<div>Jaurim - 동두천 Charlie</div>
+<div>Jaurim - 이런데서 주무시면 얼어죽어요</div>
+<div>Jaurim - 그래 제길 나 이렇게 살았어</div>
+<div>Jaurim - 숨은그림찾기</div>
+<div>Jaurim - 연인(戀人) 1-3 (Queen)</div>
+<div>Jaurim - 하늘로 가는 상자</div>
+<div>Jaurim - 아파</div>
+<div>Jaurim - 알아</div>
+<div>Jaurim - 연인 3-3 (Angel)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437924' target='_blank'><img src='https://resources.tidal.com/images/55dd1489/f22c/4a50/8655/157b0eb1b5d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Purple Heart</div>
+<div><a href='https://tidal.com/album/216437513' target='_blank'>https://tidal.com/album/216437513</a></div>
+<div>Jaurim - 밀랍천사</div>
+<div>Jaurim - 파애</div>
+<div>Jaurim - 일탈</div>
+<div>Jaurim - 욕</div>
+<div>Jaurim - 격주 코믹스</div>
+<div>Jaurim - 안녕, 미미</div>
+<div>Jaurim - 애인 발견!!!</div>
+<div>Jaurim - 이틀전에 죽은 그녀와의 채팅은</div>
+<div>Jaurim - 어른 아이</div>
+<div>Jaurim - 마론인형</div>
+<div>Jaurim - 예뻐</div>
+<div>Jaurim - vIOLenT VioLEt</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216437513' target='_blank'><img src='https://resources.tidal.com/images/f5b71b26/d763/404f/af9f/5b73927a0af6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/1_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ1) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/자우림 (Jaurim)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
