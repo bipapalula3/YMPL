@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 지바노프 ( Tidal jeebanoff )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 지바노프 ( Tidal jeebanoff )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/0f2f14dc/7a6d/4d9f/b0b6/9ef08827dd10/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9999616' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/22680185' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 지바노프</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>지바노프 – 새벽녘 감성을 깨우는 목소리, 'BOYFRIEND'의 부드러움과 'Misery'의 깊은 슬픔을 담아내는 R&B 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> jeebanoff</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>jeebanoff – A voice that awakens dawn emotions, an R&B singer-songwriter capturing the tenderness of 'BOYFRIEND' and the deep sorrow of 'Misery'</div><p>부드러운 음색과 섬세한 감성으로 리스너들의 마음을 사로잡는 아티스트, 지바노프입니다. 그는 특유의 감각적인 R&B 사운드를 통해 사랑, 이별, 그리움 등 다양한 감정을 노래하고 있어요. 듣는 이로 하여금 깊은 공감을 불러일으키는 그의 음악 세계로 함께 떠나볼까요?</p><p>jeebanoff is an artist who captures listeners' hearts with his smooth tone and delicate emotions. Through his unique and sensual R&B sound, he sings about various emotions such as love, parting, and longing. Shall we embark on a journey into his musical world that evokes deep empathy?</p><p>✧</p><p>섬세한 감성으로 시작된 음악</p><p>지바노프는 자신만의 색깔을 담아낸 음악으로 데뷔 이후 꾸준히 활동을 이어왔어요. 그의 음악은 일상적인 소재를 솔직하고 담백하게 풀어내어 많은 이들의 공감을 얻고 있습니다. 특히 그는 작사, 작곡, 편곡 등 음악 작업 전반에 참여하며 자신만의 음악적 세계를 구축해 나가고 있죠.</p><p>Music Started with Delicate Emotions</p><p>jeebanoff has been consistently active since his debut with music that reflects his unique style. His music gains empathy from many by honestly and simply unraveling everyday subjects. In particular, he participates in all aspects of music production, including writing lyrics, composing, and arranging, building his own musical world.</p><p>✧</p><p>다채로운 음악적 스펙트럼</p><p>지바노프의 음악은 R&B를 기반으로 다양한 장르의 요소를 융합하는 것이 특징입니다. 그는 트렌디한 비트와 감각적인 멜로디를 통해 세련된 사운드를 만들어내고 있어요. 또한, 그의 음악은 깊은 밤 혼자 듣기 좋은 몽환적인 분위기를 자아내기도 합니다.</p><p>A Diverse Musical Spectrum</p><p>jeebanoff's music is characterized by fusing elements of various genres based on R&B. He creates a sophisticated sound through trendy beats and sensual melodies. Also, his music creates a dreamy atmosphere that is good to listen to alone on a deep night.</p><p>✧</p><p>꾸준한 활동과 협업</p><p>지바노프는 솔로 활동뿐만 아니라 다양한 아티스트와의 협업을 통해 음악적 역량을 넓혀왔어요. 그는 여러 뮤지션들과 함께 작업하며 자신만의 음악 세계를 더욱 풍성하게 만들어가고 있습니다. 이러한 협업은 그의 음악적 스펙트럼을 넓히는 데 중요한 역할을 하고 있죠.</p><p>Continuous Activity and Collaboration</p><p>jeebanoff has expanded his musical capabilities through collaborations with various artists as well as solo activities. He is enriching his own musical world by working with several musicians. These collaborations play an important role in broadening his musical spectrum.</p><p>✧</p><p>앞으로의 음악 여정</p><p>앞으로 지바노프는 더욱 깊어진 감성과 다양한 음악적 시도를 통해 자신만의 음악 세계를 더욱 확장해 나갈 것으로 기대됩니다. 그의 음악은 단순한 유행을 넘어, 오랫동안 리스너들의 마음속에 깊은 울림을 남길 것입니다. 지바노프의 음악이 앞으로 어떤 감동을 선사할지 기대해주세요.</p><p>The Future Musical Journey</p><p>In the future, jeebanoff is expected to further expand his musical world through deeper emotions and various musical attempts. His music will go beyond simple trends and leave a deep resonance in the hearts of listeners for a long time. Please look forward to what kind of emotions jeebanoff's music will bring in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Misery</div>
+<div><a href='https://tidal.com/album/431741233' target='_blank'>https://tidal.com/album/431741233</a></div>
+<div>jeebanoff - BOYFRIEND</div>
+<div>jeebanoff - Thinkin' bout U</div>
+<div>jeebanoff - Stranger</div>
+<div>jeebanoff - Hidden Photos</div>
+<div>jeebanoff - Misery</div>
+<div>jeebanoff - The Day</div>
+<div>jeebanoff - Forecast- You</div>
+<div>jeebanoff - Weather.. ugh</div>
+<div>jeebanoff - See Me Once</div>
+<div>jeebanoff - After Sunset</div>
+<div>jeebanoff - Meet Me At Dream</div>
+<div>jeebanoff - Back To You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431741233' target='_blank'><img src='https://resources.tidal.com/images/ebeec845/5402/427a/baba/0a18a3137934/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] BOYFRIEND</div>
+<div><a href='https://tidal.com/album/427901742' target='_blank'>https://tidal.com/album/427901742</a></div>
+<div>jeebanoff - Hidden Photos</div>
+<div>jeebanoff - BOYFRIEND</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/427901742' target='_blank'><img src='https://resources.tidal.com/images/42402d76/a320/47d5/b902/36748373f7e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 남과여 OST Part 5</div>
+<div><a href='https://tidal.com/album/345579574' target='_blank'>https://tidal.com/album/345579574</a></div>
+<div>jeebanoff (지바노프) - Candle On The Water</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/345579574' target='_blank'><img src='https://resources.tidal.com/images/ea4ae42b/7936/4d0f/a0a3/689712f3ddad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] We Will Meet Again</div>
+<div><a href='https://tidal.com/album/378666123' target='_blank'>https://tidal.com/album/378666123</a></div>
+<div>jeebanoff - Promised Land</div>
+<div>jeebanoff - Whispers</div>
+<div>jeebanoff - Night & Day</div>
+<div>jeebanoff - Echoes of Winter</div>
+<div>jeebanoff - My Point Is</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/378666123' target='_blank'><img src='https://resources.tidal.com/images/f87531cb/c8c0/4916/94f6/6d4ad85f3eda/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Promised land</div>
+<div><a href='https://tidal.com/album/374384362' target='_blank'>https://tidal.com/album/374384362</a></div>
+<div>jeebanoff - Promised land</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/374384362' target='_blank'><img src='https://resources.tidal.com/images/43fdfafb/4652/45ec/aff8/f701ad657ba7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] About Time</div>
+<div><a href='https://tidal.com/album/398345873' target='_blank'>https://tidal.com/album/398345873</a></div>
+<div>jeebanoff - Bluebird</div>
+<div>jeebanoff - Don't be Afraid</div>
+<div>jeebanoff - GIRL</div>
+<div>jeebanoff - Silent Dawn</div>
+<div>jeebanoff - End of the road</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/398345873' target='_blank'><img src='https://resources.tidal.com/images/261922f3/59d7/4f5c/bd93/3c32841bc22a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] There, there</div>
+<div><a href='https://tidal.com/album/305409656' target='_blank'>https://tidal.com/album/305409656</a></div>
+<div>jeebanoff - Care for you</div>
+<div>jeebanoff - There, there</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305409656' target='_blank'><img src='https://resources.tidal.com/images/d2a2ca41/94f4/4a99/aa58/29d07265c8f3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] VOID.</div>
+<div><a href='https://tidal.com/album/269617004' target='_blank'>https://tidal.com/album/269617004</a></div>
+<div>jeebanoff - GOOD BYE-</div>
+<div>jeebanoff - I MEAN I MEAN-</div>
+<div>jeebanoff - LOVE ME AGAIN-</div>
+<div>jeebanoff - LEAVE ME-</div>
+<div>jeebanoff - PRAY-</div>
+<div>jeebanoff - SHUT MY EYES-</div>
+<div>jeebanoff - IT AIN'T ME-</div>
+<div>jeebanoff - HELLO-</div>
+<div>jeebanoff - BEFORE SUNRISE-</div>
+<div>jeebanoff - OFF YOU-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269617004' target='_blank'><img src='https://resources.tidal.com/images/b118e5e8/c6fc/4933/bf65/b35294b4d3b0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] I MEAN I MEAN.</div>
+<div><a href='https://tidal.com/album/269617019' target='_blank'>https://tidal.com/album/269617019</a></div>
+<div>jeebanoff - I MEAN I MEAN-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269617019' target='_blank'><img src='https://resources.tidal.com/images/60e9c186/2515/4aaf/a70e/0fede21686d8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] 도도솔솔라라솔 OST Part.6</div>
+<div><a href='https://tidal.com/album/309856001' target='_blank'>https://tidal.com/album/309856001</a></div>
+<div>jeebanoff (지바노프) - 내겐 너무 힘들어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309856001' target='_blank'><img src='https://resources.tidal.com/images/b9f5d9af/295d/4090/84a7/a040a0317451/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Talking Book</div>
+<div><a href='https://tidal.com/album/269617049' target='_blank'>https://tidal.com/album/269617049</a></div>
+<div>jeebanoff - NOT ME!</div>
+<div>jeebanoff - I Know</div>
+<div>jeebanoff - Thinkin' bout</div>
+<div>jeebanoff - Still HERE</div>
+<div>jeebanoff - Overflow</div>
+<div>jeebanoff - BEHIND (skit)</div>
+<div>jeebanoff - OUI 2</div>
+<div>jeebanoff - Crosswalk</div>
+<div>jeebanoff - End of the Sky</div>
+<div>jeebanoff - why don’t you love me-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269617049' target='_blank'><img src='https://resources.tidal.com/images/72c5445c/fe7e/474e/b920/77870855af12/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Overflow</div>
+<div><a href='https://tidal.com/album/269650135' target='_blank'>https://tidal.com/album/269650135</a></div>
+<div>jeebanoff - Overflow</div>
+<div>jeebanoff - End of the Sky</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269650135' target='_blank'><img src='https://resources.tidal.com/images/504027a9/2a20/435d/9b77/0355fc1ae160/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Each Other</div>
+<div><a href='https://tidal.com/album/269650146' target='_blank'>https://tidal.com/album/269650146</a></div>
+<div>jeebanoff - Each Other (feat. SOLE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269650146' target='_blank'><img src='https://resources.tidal.com/images/b515d5ef/5769/4f15/926c/05b57f0508cd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] We (OUI)</div>
+<div><a href='https://tidal.com/album/269650280' target='_blank'>https://tidal.com/album/269650280</a></div>
+<div>jeebanoff - We (OUI) (Feat. sogumm)</div>
+<div>jeebanoff - We (OUI) (Solo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269650280' target='_blank'><img src='https://resources.tidal.com/images/14462bb6/1e2d/4a19/9c00/aeb676253a7b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Onstage Digging Club Seoul THEME 04</div>
+<div><a href='https://tidal.com/album/269616997' target='_blank'>https://tidal.com/album/269616997</a></div>
+<div>jeebanoff - The girl in my memories (Digging club Seoul Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269616997' target='_blank'><img src='https://resources.tidal.com/images/3a2cc478/4193/4fad/a27d/66cc5243b0ab/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] GOOD THING.</div>
+<div><a href='https://tidal.com/album/269650247' target='_blank'>https://tidal.com/album/269650247</a></div>
+<div>jeebanoff - Paper mache</div>
+<div>jeebanoff - Good thing</div>
+<div>jeebanoff - Me and You</div>
+<div>jeebanoff - Luh you</div>
+<div>jeebanoff - Come along with me</div>
+<div>jeebanoff - Bad girl</div>
+<div>jeebanoff - Callin'</div>
+<div>jeebanoff - The clouds</div>
+<div>jeebanoff - Guilty</div>
+<div>jeebanoff - Silence</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269650247' target='_blank'><img src='https://resources.tidal.com/images/83ac71b1/4747/4e4a/8749/efa0c66c073e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Boomerang</div>
+<div><a href='https://tidal.com/album/269650204' target='_blank'>https://tidal.com/album/269650204</a></div>
+<div>jeebanoff - Boomerang (MIC SWG ver.)</div>
+<div>jeebanoff - Boomerang (2019)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269650204' target='_blank'><img src='https://resources.tidal.com/images/4f31ba64/4895/40d1/bb6f/af63a86d12a0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] B.T.N</div>
+<div><a href='https://tidal.com/album/269650289' target='_blank'>https://tidal.com/album/269650289</a></div>
+<div>jeebanoff - B.T.N (Better Than Now)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269650289' target='_blank'><img src='https://resources.tidal.com/images/f882176a/8cbb/4901/aa87/2e7cc3338068/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Panorama</div>
+<div><a href='https://tidal.com/album/269616973' target='_blank'>https://tidal.com/album/269616973</a></div>
+<div>jeebanoff - School</div>
+<div>jeebanoff - Good Place</div>
+<div>jeebanoff - Last Morning</div>
+<div>jeebanoff - We Just</div>
+<div>jeebanoff - The Ferry</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269616973' target='_blank'><img src='https://resources.tidal.com/images/5f1acf31/0f0c/4a8c/a783/a177f33ce00f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Right here. (feat. Rick Bridges)</div>
+<div><a href='https://tidal.com/album/191688465' target='_blank'>https://tidal.com/album/191688465</a></div>
+<div>jeebanoff - Right here. (feat. Rick Bridges)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/191688465' target='_blank'><img src='https://resources.tidal.com/images/4c825549/a496/4a56/a8fc/d1306d945b94/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] KARMA</div>
+<div><a href='https://tidal.com/album/269650295' target='_blank'>https://tidal.com/album/269650295</a></div>
+<div>jeebanoff - Wish (Feat. SUMIN)</div>
+<div>jeebanoff - Truth</div>
+<div>jeebanoff - Then we</div>
+<div>jeebanoff - Timid (Feat. CHANGMO)</div>
+<div>jeebanoff - If you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269650295' target='_blank'><img src='https://resources.tidal.com/images/b26e8d40/8447/4d17/95e9/d771c53d08f3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] so fed up</div>
+<div><a href='https://tidal.com/album/213119974' target='_blank'>https://tidal.com/album/213119974</a></div>
+<div>jeebanoff - soft</div>
+<div>jeebanoff - 25</div>
+<div>jeebanoff - insane (feat. OVCOCO)</div>
+<div>jeebanoff, OVCOCO - insane (feat. OVCOCO)</div>
+<div>jeebanoff - into the polaroid</div>
+<div>jeebanoff - polaroid</div>
+<div>jeebanoff - fo+ap (feat. MRCO)(Explicit)</div>
+<div>jeebanoff, MRCO - fo+ap (feat. MRCO)(Explicit)</div>
+<div>jeebanoff - hardcore (feat. Worldwide)(Explicit)</div>
+<div>jeebanoff, WorldWide - hardcore (feat. Worldwide)(Explicit)</div>
+<div>jeebanoff - sungbook-gu kids</div>
+<div>jeebanoff - 삼선동 사거리</div>
+<div>jeebanoff - take me over</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/213119974' target='_blank'><img src='https://resources.tidal.com/images/5109a6c5/8bb7/4d43/aa4b/e79ebb987eb6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] For The Few.</div>
+<div><a href='https://tidal.com/album/191688474' target='_blank'>https://tidal.com/album/191688474</a></div>
+<div>jeebanoff - How We Love</div>
+<div>jeebanoff - About You (Feat. K.vsh, OLNL)</div>
+<div>jeebanoff - Belief</div>
+<div>jeebanoff - Mur Mur</div>
+<div>jeebanoff - Table (Feat. TAEK)</div>
+<div>jeebanoff - Deny</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/191688474' target='_blank'><img src='https://resources.tidal.com/images/875dc69e/0855/4aec/b752/42f8326574a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/지바노프 (jeebanoff)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
