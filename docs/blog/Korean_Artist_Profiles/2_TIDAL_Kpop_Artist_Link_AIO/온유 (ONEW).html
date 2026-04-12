@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 온유 ( Tidal ONEW )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 온유 ( Tidal ONEW )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/cb417e46/be4c/49e9/95a6/ffc37abfde2d/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10746923' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 온유</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>온유 (ONEW) – 섬세한 감성으로 빚어낸 음악, 'O(Circle)'의 깊은 울림과 'Dice'의 짜릿한 설렘을 전하는 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> ONEW</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>ONEW – A vocalist crafting music with delicate emotion, conveying the profound resonance of 'O(Circle)' and the thrilling excitement of 'Dice'.</div><p>따뜻한 음색과 섬세한 표현력으로 듣는 이의 마음을 어루만지는 아티스트, 온유입니다. 그는 그룹 활동은 물론 솔로 활동을 통해 자신만의 음악 세계를 구축해 나가고 있어요. 특유의 감성적인 보컬은 다양한 장르를 소화하며 폭넓은 음악 스펙트럼을 보여줍니다.</p><p>ONEW is an artist who touches the hearts of listeners with his warm tone and delicate expressiveness. He is building his own musical world through both group and solo activities. His unique emotional vocals encompass various genres, showcasing a wide range of musical spectrums.</p><p>✧</p><p>그룹 탄생</p><p>온유는 대한민국 대표 아이돌 그룹 샤이니(SHINee)의 리더이자 메인 보컬로 데뷔했어요. 샤이니는 독창적인 음악과 퍼포먼스로 K팝의 새로운 지평을 열었다고 평가받고 있습니다. 온유는 팀의 중심에서 안정적인 보컬과 따뜻한 리더십으로 팀을 이끌어 왔습니다.</p><p>Birth of a Group</p><p>ONEW debuted as the leader and main vocalist of SHINee, one of South Korea's leading idol groups. SHINee is praised for opening new horizons in K-pop with its unique music and performance. ONEW has led the team with stable vocals and warm leadership at the center of the group.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그의 음악은 따뜻함과 섬세함이 공존하는 감성적인 보컬이 특징이에요. 팝, R&B, 발라드 등 다양한 장르를 자신만의 색깔로 소화하며 폭넓은 음악적 스펙트럼을 보여줍니다. 무대 위에서는 뛰어난 가창력과 감정 표현으로 몰입도 높은 퍼포먼스를 선보입니다.</p><p>Music and Performance</p><p>His music is characterized by emotional vocals that combine warmth and delicacy. He showcases a wide musical spectrum by digesting various genres such as pop, R&B, and ballads in his own style. On stage, he delivers immersive performances with outstanding singing ability and emotional expression.</p><p>✧</p><p>주요 활동</p><p>온유는 샤이니 활동 외에도 솔로 앨범 발매, 드라마 OST 참여, 뮤지컬 배우 등 다방면에서 활약하고 있어요. 솔로 앨범에서는 자신의 음악적 색깔을 더욱 깊이 있게 드러내며 솔로 아티스트로서의 역량을 입증했습니다. 또한, 다양한 아티스트와의 협업을 통해 음악적 교류를 이어가고 있습니다.</p><p>Main Activities</p><p>In addition to his activities with SHINee, ONEW is active in various fields, including releasing solo albums, participating in drama OSTs, and acting as a musical actor. In his solo albums, he reveals his musical colors more deeply, proving his capabilities as a solo artist. He also continues musical exchanges through collaborations with various artists.</p><p>✧</p><p>미래/의미</p><p>앞으로도 온유는 진솔한 음악과 따뜻한 감성으로 팬들과 소통하며 꾸준히 성장해 나갈 것으로 기대됩니다. 그의 음악은 단순한 즐거움을 넘어, 듣는 이에게 위로와 공감을 선사하며 깊은 감동을 전달합니다. 자신만의 음악 세계를 더욱 확장해 나갈 그의 미래가 더욱 기대됩니다.</p><p>Future/Meaning</p><p>It is expected that ONEW will continue to grow, communicating with fans through sincere music and warm emotions. His music goes beyond simple pleasure, providing comfort and empathy to listeners and conveying deep emotions. His future, which will further expand his own musical world, is highly anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] MAD</div>
+<div><a href='https://tidal.com/album/429957890' target='_blank'>https://tidal.com/album/429957890</a></div>
+<div>ONEW - MAD</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/429957890' target='_blank'><img src='https://resources.tidal.com/images/b45149b2/bbe3/4717/b2ff/6e00ef7b635c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] CONNECTION</div>
+<div><a href='https://tidal.com/album/408475559' target='_blank'>https://tidal.com/album/408475559</a></div>
+<div>ONEW - Winner</div>
+<div>ONEW - Promise you</div>
+<div>ONEW - Boy</div>
+<div>ONEW - Gradation</div>
+<div>ONEW - Conversation</div>
+<div>ONEW - Yay</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/408475559' target='_blank'><img src='https://resources.tidal.com/images/c155a86c/ae8c/4910/a865/6c9129e7e8b9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Songstealer - December 32 days</div>
+<div><a href='https://tidal.com/album/370437811' target='_blank'>https://tidal.com/album/370437811</a></div>
+<div>ONEW - December 32 days</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/370437811' target='_blank'><img src='https://resources.tidal.com/images/ca2908e5/4f76/4064/8613/c160ea95a192/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] For You (No Office Romance! X ONEW) (Original Webtoon Soundtrack)</div>
+<div><a href='https://tidal.com/album/397065833' target='_blank'>https://tidal.com/album/397065833</a></div>
+<div>ONEW - For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/397065833' target='_blank'><img src='https://resources.tidal.com/images/7714a6ab/5853/49ad/a1e7/a5f11a26e30d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] FLOW</div>
+<div><a href='https://tidal.com/album/383897071' target='_blank'>https://tidal.com/album/383897071</a></div>
+<div>ONEW - Beat Drum</div>
+<div>ONEW - Hola!</div>
+<div>ONEW - MAESTRO</div>
+<div>ONEW - Shape of My Heart</div>
+<div>ONEW - All Day</div>
+<div>ONEW - Focus</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383897071' target='_blank'><img src='https://resources.tidal.com/images/1119d71c/1790/44f0/8635/e86a45e6adea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] All Day</div>
+<div><a href='https://tidal.com/album/374093856' target='_blank'>https://tidal.com/album/374093856</a></div>
+<div>ONEW - All Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/374093856' target='_blank'><img src='https://resources.tidal.com/images/228d6e56/0dc4/49bd/969b/43886cd15f4f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Knock On My Door</div>
+<div><a href='https://tidal.com/album/281808038' target='_blank'>https://tidal.com/album/281808038</a></div>
+<div>ONEW - Knock On My Door</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/281808038' target='_blank'><img src='https://resources.tidal.com/images/6f3eaf1c/f8ef/42db/a691/97d4099333e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] INSPIRATION</div>
+<div><a href='https://tidal.com/album/281808073' target='_blank'>https://tidal.com/album/281808073</a></div>
+<div>ONEW - INSPIRATION</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/281808073' target='_blank'><img src='https://resources.tidal.com/images/858e3b2c/034f/48b1/ad9c/0f3ad5a1d6de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Circle - The 1st Album</div>
+<div><a href='https://tidal.com/album/279441828' target='_blank'>https://tidal.com/album/279441828</a></div>
+<div>ONEW - O (Circle)</div>
+<div>ONEW - 환절기 Cough</div>
+<div>ONEW - 우중산책 Rain On Me</div>
+<div>ONEW, Giriboy - Caramel</div>
+<div>ONEW - Anywhere</div>
+<div>ONEW - Paradise</div>
+<div>ONEW - Expectations</div>
+<div>ONEW - No Parachute</div>
+<div>ONEW - 기억을 걷다 Walk With You</div>
+<div>ONEW - 보통의 밤 Always</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/279441828' target='_blank'><img src='https://resources.tidal.com/images/178ba925/6fba/415c/88c1/20d6c8b76e2c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Who sings_ Vol.1</div>
+<div><a href='https://tidal.com/album/230661441' target='_blank'>https://tidal.com/album/230661441</a></div>
+<div>ONEW - Everything</div>
+<div>ONEW - Kirakira</div>
+<div>ONEW - Uroko</div>
+<div>ONEW - Yasashii Kiss Wo Shite</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230661441' target='_blank'><img src='https://resources.tidal.com/images/4ba29357/05a2/4dda/8caf/e9b39f052c44/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Uroko</div>
+<div><a href='https://tidal.com/album/229650131' target='_blank'>https://tidal.com/album/229650131</a></div>
+<div>ONEW - Uroko</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/229650131' target='_blank'><img src='https://resources.tidal.com/images/2477e4f9/4679/4a3e/b71a/cb4a5f3d0bfd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Life goes on</div>
+<div><a href='https://tidal.com/album/234636206' target='_blank'>https://tidal.com/album/234636206</a></div>
+<div>ONEW - Life goes on</div>
+<div>ONEW - Yoake No Sekai</div>
+<div>ONEW - Osoku Okita Asani</div>
+<div>ONEW - Life is---</div>
+<div>ONEW - Beauty</div>
+<div>ONEW - Lighthouse</div>
+<div>ONEW - Life goes on</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/234636206' target='_blank'><img src='https://resources.tidal.com/images/6cb7f6b4/5759/458e/b89f/00d7765e69a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Kirakira</div>
+<div><a href='https://tidal.com/album/228197289' target='_blank'>https://tidal.com/album/228197289</a></div>
+<div>ONEW - Kirakira</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/228197289' target='_blank'><img src='https://resources.tidal.com/images/fa9e047c/9f2f/4f49/bbf5/620d40c74d8d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Forecasting Love and Weather (Original Television Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/218061095' target='_blank'>https://tidal.com/album/218061095</a></div>
+<div>ONEW - Mind Warning</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/218061095' target='_blank'><img src='https://resources.tidal.com/images/4e110dc0/fd4f/404d/bdef/3ec3ba610c25/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Dance Whole Day</div>
+<div><a href='https://tidal.com/album/246777645' target='_blank'>https://tidal.com/album/246777645</a></div>
+<div>ONEW - Dance Whole Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/246777645' target='_blank'><img src='https://resources.tidal.com/images/e79d3152/1edd/410f/999d/60eaadaad54d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] DICE - The 2nd Mini Album</div>
+<div><a href='https://tidal.com/album/224224840' target='_blank'>https://tidal.com/album/224224840</a></div>
+<div>ONEW - DICE</div>
+<div>ONEW - Sunshine</div>
+<div>ONEW - On the way</div>
+<div>ONEW - Love Phobia</div>
+<div>ONEW - 여우비 Yeowoobi</div>
+<div>ONEW - In the whale</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/224224840' target='_blank'><img src='https://resources.tidal.com/images/e1d202b9/b859/4884/925c/80d415e612e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 이별유예, 일주일 OST Part 3</div>
+<div><a href='https://tidal.com/album/302561583' target='_blank'>https://tidal.com/album/302561583</a></div>
+<div>ONEW - 그림자</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302561583' target='_blank'><img src='https://resources.tidal.com/images/8ec379b6/12b0/46c4/b144/f43d5ec0951c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 별 하나 Way - SM STATION</div>
+<div><a href='https://tidal.com/album/207621736' target='_blank'>https://tidal.com/album/207621736</a></div>
+<div>ONEW, Punch - 별 하나 Way</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/207621736' target='_blank'><img src='https://resources.tidal.com/images/208f1156/997b/4017/a05f/9c1f7a4a983e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] 너는 나의 봄 OST Part 7</div>
+<div><a href='https://tidal.com/album/192825137' target='_blank'>https://tidal.com/album/192825137</a></div>
+<div>ONEW - 다정한 봄에게</div>
+<div>헨(HEN) - 다정한 봄에게 (Piano Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/192825137' target='_blank'><img src='https://resources.tidal.com/images/0797e80e/88eb/452a/be55/e4ca99cbb208/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Meet Me When The Sun Goes Down (From _Midnight Sun_ Original Musical Soundtrack, Pt. 4)</div>
+<div><a href='https://tidal.com/album/184888378' target='_blank'>https://tidal.com/album/184888378</a></div>
+<div>ONEW - Meet Me When The Sun Goes Down (From -Midnight Sun</div>
+<div>ONEW, kei - Good-Bye Days (From -Midnight Sun- Original Musica</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184888378' target='_blank'><img src='https://resources.tidal.com/images/911c94e4/53de/4c9d/960f/12ad3fd53239/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] High Class OST Part 3</div>
+<div><a href='https://tidal.com/album/200091690' target='_blank'>https://tidal.com/album/200091690</a></div>
+<div>ONEW, Elaine - Blue</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200091690' target='_blank'><img src='https://resources.tidal.com/images/ffda5000/7f72/46a8/8bcb/d9d737e95d03/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] VOICE - The 1st Mini Album</div>
+<div><a href='https://tidal.com/album/115279042' target='_blank'>https://tidal.com/album/115279042</a></div>
+<div>ONEW - Blue</div>
+<div>ONEW - 거리마다 (Your Scent)</div>
+<div>ONEW - 동네 (Under The Starlight)</div>
+<div>ONEW - 어떤 사이 (Sign)</div>
+<div>ONEW - 사랑이었을까 (Illusion)</div>
+<div>ONEW - 온유하게 해요 (Shine On You)</div>
+<div>ONEW - 또각또각 (Timepiece)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115279042' target='_blank'><img src='https://resources.tidal.com/images/e8d373f6/cfd8/4f14/aef9/f383413d76de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 수면제 Lullaby</div>
+<div><a href='https://tidal.com/album/115280919' target='_blank'>https://tidal.com/album/115280919</a></div>
+<div>ONEW, ROCOBERRY - 수면제 Lullaby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115280919' target='_blank'><img src='https://resources.tidal.com/images/6af686e6/efe8/4d5b/a484/08b1fecfe273/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 밤과 별의 노래 Starry Night</div>
+<div><a href='https://tidal.com/album/115281122' target='_blank'>https://tidal.com/album/115281122</a></div>
+<div>ONEW, Lee Jin Ah - 밤과 별의 노래 Starry Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115281122' target='_blank'><img src='https://resources.tidal.com/images/7638589f/299e/4ce0/8bcf/28a6a781d985/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/온유 (ONEW)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
