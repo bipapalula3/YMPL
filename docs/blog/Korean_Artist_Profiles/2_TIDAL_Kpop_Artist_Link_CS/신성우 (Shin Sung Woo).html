@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 신성우 ( Tidal Shin Sung Woo )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 신성우 ( Tidal Shin Sung Woo )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/5a66b45c/0e23/4119/8b24/5f05bca901bb/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/8549540' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 신성우</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>조각미남 신성우: ‘서시’의 애절함부터 록 스피릿까지, 시대를 아우르는 깊은 울림</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Shin Sung Woo</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Sculptural Beauty Shin Sung Woo: From the heart-wrenching 'Seosi' to the Rock Spirit, a profound resonance that transcends eras</div><p>90년대를 대표하는 '테리우스' 신성우님을 소개합니다. 조각 같은 외모와 탄탄한 연기력은 물론, 깊이 있는 음악 세계로 많은 사랑을 받고 있어요. 그의 음악은 록을 기반으로 한 다양한 장르를 아우르며, 진솔한 감성을 담아내 듣는 이들의 마음을 사로잡습니다.</p><p>Let me introduce Shin Sung Woo, the 'Terius' who represented the 90s. He is loved not only for his sculptural looks and solid acting skills, but also for his profound musical world. His music encompasses various genres based on rock and captures the hearts of listeners with sincere emotions.</p><p>✧</p><p>솔로 아티스트의 시작</p><p>신성우님은 솔로 가수로 데뷔하여 독특한 음색과 강렬한 무대 매너로 대중에게 깊은 인상을 남겼습니다. 그는 자신만의 음악적 색깔을 구축하며 꾸준히 활동 영역을 넓혀갔습니다. 드라마와 뮤지컬 무대에서도 활약하며 다재다능한 면모를 보여주셨죠.</p><p>The Beginning as a Solo Artist</p><p>Shin Sung Woo debuted as a solo singer and impressed the public with his unique tone and intense stage presence. He built his own musical style and steadily expanded his field of activity. He also showed his versatile side by performing in dramas and musicals.</p><p>✧</p><p>음악적 스펙트럼</p><p>신성우님의 음악은 록 발라드를 중심으로 팝, 클래식 등 다양한 장르를 넘나드는 폭넓은 스펙트럼을 보여줍니다. 깊은 감성을 담은 가사와 멜로디는 듣는 이들에게 위로와 공감을 선사합니다. 오랜 시간이 흘러도 변치 않는 그의 음악은 여전히 많은 사랑을 받고 있습니다.</p><p>Musical Spectrum</p><p>Shin Sung Woo's music shows a wide spectrum that crosses various genres such as pop and classical music, centering on rock ballads. The lyrics and melodies filled with deep emotions offer comfort and empathy to listeners. His music, which has remained unchanged over time, is still loved by many.</p><p>✧</p><p>다양한 활동과 영향력</p><p>신성우님은 음악 활동 외에도 연극, 뮤지컬, 드라마 등 다양한 분야에서 활약하며 대중문화에 큰 영향을 미쳤습니다. 그는 자신만의 예술 세계를 구축하며 후배 아티스트들에게도 귀감이 되고 있습니다. 끊임없이 새로운 도전을 시도하는 그의 열정은 많은 이들에게 영감을 주고 있습니다.</p><p>Diverse Activities and Influence</p><p>In addition to his music career, Shin Sung Woo has had a great impact on popular culture by working in various fields such as plays, musicals, and dramas. He is building his own art world and is becoming a role model for junior artists. His passion for constantly trying new challenges inspires many people.</p><p>✧</p><p>앞으로의 행보와 의미</p><p>신성우님은 앞으로도 음악과 연기를 통해 더욱 깊이 있는 예술 세계를 보여줄 것으로 기대됩니다. 그의 음악은 단순한 유행을 넘어 시대를 초월하는 감동을 선사할 것입니다. 꾸준한 활동을 통해 대중들에게 오랫동안 사랑받는 아티스트로 기억될 것입니다.</p><p>Future Activities and Meaning</p><p>Shin Sung Woo is expected to show a deeper art world through music and acting in the future. His music will go beyond simple trends and deliver timeless emotions. Through constant activities, he will be remembered as an artist who has been loved by the public for a long time.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2009] Telecinema Project Vol.2 - Dear old friend</div>
+<div><a href='https://tidal.com/album/216116918' target='_blank'>https://tidal.com/album/216116918</a></div>
+<div>Shin Sung Woo - Dear old friend (With 'After The Wedding')</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216116918' target='_blank'><img src='https://resources.tidal.com/images/e3748486/dd3e/4992/85d4/88ab8a3f9f52/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] Encounter</div>
+<div><a href='https://tidal.com/album/384293077' target='_blank'>https://tidal.com/album/384293077</a></div>
+<div>Shin Sung Woo - Confession</div>
+<div>Shin Sung Woo - For tomorrow (2006 Version)</div>
+<div>Shin Sung Woo - Resolution (2006 Version)</div>
+<div>Shin Sung Woo - To be a pleasure (2006 Version)</div>
+<div>Shin Sung Woo - Boy (2006 Version)</div>
+<div>Shin Sung Woo - Dreams are (2006 Version)</div>
+<div>Shin Sung Woo - For a free life (2006 Version)</div>
+<div>Shin Sung Woo - Reunion (2006 Version)</div>
+<div>Shin Sung Woo - Lee yeon (2006 Version)</div>
+<div>Shin Sung Woo - What it is- (2006 Version)</div>
+<div>Shin Sung Woo - Angel, Don't cry (2006 Version)</div>
+<div>Shin Sung Woo - Ellephant (2006 Version)</div>
+<div>Shin Sung Woo - All I can say is a friend (2006 Version)</div>
+<div>Shin Sung Woo - Very Very good life (2006 Version)</div>
+<div>Shin Sung Woo - I have never thought (2006 Version)</div>
+<div>Shin Sung Woo - When sadness comes (2006 Version)</div>
+<div>Shin Sung Woo - After love (2006 Version)</div>
+<div>Shin Sung Woo - geondarui heose (2006 Version)</div>
+<div>Shin Sung Woo - Cinderella complex (2006 Version)</div>
+<div>Shin Sung Woo - Winter Trees (2006 Version)</div>
+<div>Shin Sung Woo - Epic (2006 Version)</div>
+<div>Shin Sung Woo - The garden of eden (2006 Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/384293077' target='_blank'><img src='https://resources.tidal.com/images/5a66b45c/0e23/4119/8b24/5f05bca901bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] 2002 Special Edition (Best)</div>
+<div><a href='https://tidal.com/album/224369733' target='_blank'>https://tidal.com/album/224369733</a></div>
+<div>Shin Sung Woo - 내일을 향해</div>
+<div>Shin Sung Woo - 서시</div>
+<div>Shin Sung Woo - (이런 XX) 머야 이건</div>
+<div>Shin Sung Woo - 꿈이라는 건</div>
+<div>Shin Sung Woo - Rockn Roll + 압구정동 . 공주병</div>
+<div>Shin Sung Woo - 친구라 말할 수 있는 건</div>
+<div>Shin Sung Woo - 그대 기억뿐</div>
+<div>Shin Sung Woo - 노을에 기댄 이유</div>
+<div>Shin Sung Woo - 천사여 울지 마세요</div>
+<div>Shin Sung Woo - 초연</div>
+<div>Shin Sung Woo - 슬픔이 올때</div>
+<div>Shin Sung Woo - 주머니 크기만큼의 자유</div>
+<div>Shin Sung Woo - 그대의 슬픈 눈빛에</div>
+<div>Shin Sung Woo - 울고있는 작은 영혼을 위해</div>
+<div>Shin Sung Woo - 독백이 그린 미소</div>
+<div>Shin Sung Woo - 자유하는 삶을 위해</div>
+<div>Shin Sung Woo - 개미와 베짱이</div>
+<div>Shin Sung Woo - 이렇게 될 줄이야</div>
+<div>Shin Sung Woo - 바른 생활</div>
+<div>Shin Sung Woo - 불감증</div>
+<div>Shin Sung Woo - 건달의 허세</div>
+<div>Shin Sung Woo - 코끼리</div>
+<div>Shin Sung Woo - Rain Song</div>
+<div>Shin Sung Woo - 신데렐라 콤플렉스</div>
+<div>Shin Sung Woo - 재회 (再會)</div>
+<div>Shin Sung Woo - 친구의 모습으로</div>
+<div>Shin Sung Woo - My Sharona</div>
+<div>Shin Sung Woo - 기다림</div>
+<div>Shin Sung Woo - 송가</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/224369733' target='_blank'><img src='https://resources.tidal.com/images/84998823/9ce3/4447/aa55/e76cad2cc172/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] Identity</div>
+<div><a href='https://tidal.com/album/385625982' target='_blank'>https://tidal.com/album/385625982</a></div>
+<div>Shin Sung Woo - 반원 (Uk Goes To...)</div>
+<div>Shin Sung Woo - Joy Ride</div>
+<div>Shin Sung Woo - 일어서</div>
+<div>Shin Sung Woo - 내 안의 바다</div>
+<div>Shin Sung Woo - 이연(異緣)</div>
+<div>Shin Sung Woo - Ya</div>
+<div>Shin Sung Woo - 별리</div>
+<div>Shin Sung Woo - 굳이 네가 묻는다면</div>
+<div>Shin Sung Woo - 힘을 주오</div>
+<div>Shin Sung Woo - 충고</div>
+<div>Shin Sung Woo - 겨울나무</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/385625982' target='_blank'><img src='https://resources.tidal.com/images/fc250c45/6ef5/4b92/9458/b93b13eed050/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Mauve</div>
+<div><a href='https://tidal.com/album/385626071' target='_blank'>https://tidal.com/album/385626071</a></div>
+<div>Shin Sung Woo - Boy</div>
+<div>Shin Sung Woo - 소년</div>
+<div>Shin Sung Woo - Missing</div>
+<div>Shin Sung Woo - 그리움</div>
+<div>Shin Sung Woo - 5 minutes ago</div>
+<div>Shin Sung Woo - 5분전</div>
+<div>Shin Sung Woo - Mother</div>
+<div>Shin Sung Woo - 어머니</div>
+<div>Shin Sung Woo - On the way</div>
+<div>Shin Sung Woo - 내 맘대로</div>
+<div>Shin Sung Woo - After Love</div>
+<div>Shin Sung Woo - 사랑한 후에</div>
+<div>Shin Sung Woo - On a rain day</div>
+<div>Shin Sung Woo - 변덕쟁이</div>
+<div>Shin Sung Woo - Evolution</div>
+<div>Shin Sung Woo - 비오는 날엔</div>
+<div>Shin Sung Woo - 진화론</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/385626071' target='_blank'><img src='https://resources.tidal.com/images/e993c2dd/4f6a/4661/a186/58b4c09f9db7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] For</div>
+<div><a href='https://tidal.com/album/229472664' target='_blank'>https://tidal.com/album/229472664</a></div>
+<div>Shin Sung Woo - Rage</div>
+<div>Shin Sung Woo - For a Free Life</div>
+<div>Shin Sung Woo - Frigidity</div>
+<div>Shin Sung Woo - Prayer of a Superman</div>
+<div>Shin Sung Woo - When Sadness Comes</div>
+<div>Shin Sung Woo - I Didn`t Know It Would Be Like This</div>
+<div>Shin Sung Woo - While You Are Sleeping</div>
+<div>Shin Sung Woo - Ignorance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/229472664' target='_blank'><img src='https://resources.tidal.com/images/686b61c2/277b/4923/8f50/025ce67f486b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] 서시</div>
+<div><a href='https://tidal.com/album/224949024' target='_blank'>https://tidal.com/album/224949024</a></div>
+<div>Shin Sung Woo - 기쁨이 될 것을</div>
+<div>Shin Sung Woo - 초연</div>
+<div>Shin Sung Woo - 천사여 울지 마세요</div>
+<div>Shin Sung Woo - 건달의 허세</div>
+<div>Shin Sung Woo - Rodeo Blues</div>
+<div>Shin Sung Woo - 서시</div>
+<div>Shin Sung Woo - 파라 프레니아</div>
+<div>Shin Sung Woo - 집에서 온 편지</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/224949024' target='_blank'><img src='https://resources.tidal.com/images/6711cd53/1432/46ca/aa3d/eee3a8d005e7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1992] Toward Tomorrow</div>
+<div><a href='https://tidal.com/album/228158961' target='_blank'>https://tidal.com/album/228158961</a></div>
+<div>Shin Sung Woo - Toward Tomorrow</div>
+<div>Shin Sung Woo - What We Call a Dream is</div>
+<div>Shin Sung Woo - Waiting</div>
+<div>Shin Sung Woo - Red Hat and Jeans</div>
+<div>Shin Sung Woo - A Girl I See Everyday</div>
+<div>Shin Sung Woo - Memories of You Only</div>
+<div>Shin Sung Woo - Image of You</div>
+<div>Shin Sung Woo - At the Sad Eyes of Yours</div>
+<div>Shin Sung Woo - The Ant and the Cicada</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/228158961' target='_blank'><img src='https://resources.tidal.com/images/59ac7789/a902/4b98/877d/c780af0c5990/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1991] Vol. 1 [To the Future]</div>
+<div><a href='https://tidal.com/album/207950251' target='_blank'>https://tidal.com/album/207950251</a></div>
+<div>Shin Sung Woo - To the Future</div>
+<div>Shin Sung Woo - Dream Is</div>
+<div>Shin Sung Woo - Waiting</div>
+<div>Shin Sung Woo - Red Hat and Blue Jean</div>
+<div>Shin Sung Woo - The Lady I See Everyday</div>
+<div>Shin Sung Woo - Only the Memory of Her</div>
+<div>Shin Sung Woo - The Image of You</div>
+<div>Shin Sung Woo - On Your Sad Eyes</div>
+<div>Shin Sung Woo - The Ant and the Grasshopper</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/207950251' target='_blank'><img src='https://resources.tidal.com/images/446a4069/26b1/438a/baa8/73b62f93b67a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1991] Towards Tomorrow_Only Your Memories</div>
+<div><a href='https://tidal.com/album/210766499' target='_blank'>https://tidal.com/album/210766499</a></div>
+<div>Shin Sung Woo - Towards Tomorrow</div>
+<div>Shin Sung Woo - Dream Is</div>
+<div>Shin Sung Woo - Waiting</div>
+<div>Shin Sung Woo - Red Had and Jeans</div>
+<div>Shin Sung Woo - I See Her Everyday</div>
+<div>Shin Sung Woo - Only Your Memories</div>
+<div>Shin Sung Woo - The Image of You</div>
+<div>Shin Sung Woo - Your Sad Eeys</div>
+<div>Shin Sung Woo - The Ant and The Grasshopper</div>
+<div>Shin Sung Woo - Picture in a Picture</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210766499' target='_blank'><img src='https://resources.tidal.com/images/40c2f53c/e609/4911/be11/7fb1a374e688/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/신성우 (Shin Sung Woo)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
