@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이재성 ( Tidal Lee Jae Sung )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이재성 ( Tidal Lee Jae Sung )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/527cf0be/1ef9/4888/9c4e/c2d89e56f6d5/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/11008492' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이재성</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>이재성 – 세월의 흔적을 노래하는 음유시인, ‘1970년 막걸리와 아버지’의 향수와 ‘킬리만자로’의 웅장함을 담아내다</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lee Jae Sung</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Lee Jae Sung – A Poet Singing the Traces of Time, Capturing the Nostalgia of '1970 Makgeolli and Father' and the Grandeur of 'Kilimanjaro'</div><p>가수 이재성은 깊은 감성과 진솔한 울림으로 듣는 이의 마음을 사로잡는 아티스트입니다. 그의 음악은 삶의 애환과 희망을 따뜻하게 어루만지며 오랜 시간 동안 많은 사랑을 받아왔습니다. 세월의 흐름 속에서 더욱 깊어진 그의 음악 세계를 함께 만나보아요.</p><p>Lee Jae Sung is an artist who captivates listeners with his deep emotions and sincere resonance. His music warmly embraces the sorrows and hopes of life and has been loved for a long time. Let's explore his musical world, which has deepened over the years.</p><p>✧</p><p>음악적 여정의 시작</p><p>이재성은 특유의 허스키한 보이스와 뛰어난 가창력으로 데뷔 초부터 주목받았습니다. 그의 음악은 포크, 발라드, 록 등 다양한 장르를 아우르며 폭넓은 음악적 스펙트럼을 보여줍니다. 특히 삶의 진솔한 이야기를 담은 가사는 많은 이들에게 공감과 위로를 전해줍니다.</p><p>The Beginning of a Musical Journey</p><p>Lee Jae Sung has been recognized since his debut for his unique husky voice and outstanding singing ability. His music encompasses various genres such as folk, ballad, and rock, showcasing a wide musical spectrum. In particular, the lyrics containing honest stories of life convey empathy and comfort to many.</p><p>✧</p><p>깊이 있는 음악 세계</p><p>그의 음악은 단순한 유행을 따르기보다는 삶의 깊은 성찰과 진정성을 담고 있습니다. ‘1970년 막걸리와 아버지’와 같이 추억과 향수를 자극하는 곡들은 세대를 초월하여 사랑받고 있습니다. 또한 ‘킬리만자로’와 같은 웅장한 스케일의 곡들은 그의 음악적 역량을 더욱 돋보이게 합니다.</p><p>A Profound Musical World</p><p>His music focuses on deep reflection and sincerity of life rather than simply following trends. Songs like '1970 Makgeolli and Father,' which evoke memories and nostalgia, are loved across generations. Also, grand-scale songs like 'Kilimanjaro' further highlight his musical capabilities.</p><p>✧</p><p>꾸준한 음악 활동</p><p>이재성은 오랜 시간 동안 꾸준히 음악 활동을 이어오며 자신만의 음악 세계를 구축해왔습니다. 그는 다양한 공연과 방송을 통해 팬들과 소통하며 변함없는 사랑을 받고 있습니다. 그의 음악은 시간이 흘러도 변치 않는 감동을 선사합니다.</p><p>Consistent Musical Activities</p><p>Lee Jae Sung has steadily continued his musical activities for a long time, building his own musical world. He communicates with fans through various performances and broadcasts and receives unwavering love. His music offers timeless emotions.</p><p>✧</p><p>음악이 주는 의미</p><p>이재성의 음악은 단순한 듣는 즐거움을 넘어 삶의 의미를 되새기게 합니다. 그의 진솔한 노랫말과 깊은 감성은 듣는 이에게 위로와 용기를 주며 함께 공감하게 만듭니다. 앞으로도 그의 음악이 우리 삶에 따뜻한 위로와 희망을 전해주기를 기대합니다.</p><p>The Meaning of Music</p><p>Lee Jae Sung's music goes beyond mere listening pleasure, reminding us of the meaning of life. His sincere lyrics and deep emotions provide comfort and courage to listeners, making them empathize together. We look forward to his music continuing to deliver warm comfort and hope to our lives in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 이재성의 2024년</div>
+<div><a href='https://tidal.com/album/343958976' target='_blank'>https://tidal.com/album/343958976</a></div>
+<div>이재성 - 1970년 막걸리와 아버지</div>
+<div>이재성 - 이 나이가 되고보니</div>
+<div>이재성 - 1970년 막걸리와 아버지 (MR)</div>
+<div>이재성 - 이 나이가 되고보니 (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343958976' target='_blank'><img src='https://resources.tidal.com/images/527cf0be/1ef9/4888/9c4e/c2d89e56f6d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 가슴 가득한 슬픔</div>
+<div><a href='https://tidal.com/album/353653012' target='_blank'>https://tidal.com/album/353653012</a></div>
+<div>이재성 - 가슴 가득한 슬픔</div>
+<div>이재성 - 가슴 가득한 슬픔 (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353653012' target='_blank'><img src='https://resources.tidal.com/images/12b7881e/8514/40c6/ab7f/3fd08566cfc7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Sweet Days</div>
+<div><a href='https://tidal.com/album/425256838' target='_blank'>https://tidal.com/album/425256838</a></div>
+<div>이재성 - Sweet Days</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/425256838' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Alien (feat. 고예정)</div>
+<div><a href='https://tidal.com/album/425255145' target='_blank'>https://tidal.com/album/425255145</a></div>
+<div>이재성, 고예정 - Alien (feat. 고예정)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/425255145' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 이재성 Digital Single (지금 마시는 술잔에 소주가 달다면)</div>
+<div><a href='https://tidal.com/album/222790712' target='_blank'>https://tidal.com/album/222790712</a></div>
+<div>이재성 - 지금 마시는 술잔에 소주가 달다면</div>
+<div>이재성 - 킬리만자로</div>
+<div>이재성 - 지금 마시는 술잔에 소주가 달다면 (MR)</div>
+<div>이재성 - 킬리만자로 (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222790712' target='_blank'><img src='https://resources.tidal.com/images/fc2f9655/b54f/40e8/a3be/4d46695456d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 사계절 인생</div>
+<div><a href='https://tidal.com/album/318281225' target='_blank'>https://tidal.com/album/318281225</a></div>
+<div>이재성 - 사계절 인생</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318281225' target='_blank'><img src='https://resources.tidal.com/images/aa997fe3/76c8/49dd/9dc7/9df77ff4e6b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] 바람의 전설</div>
+<div><a href='https://tidal.com/album/153535206' target='_blank'>https://tidal.com/album/153535206</a></div>
+<div>이재성 - 남자의 눈물</div>
+<div>이재성 - 바람의 전설</div>
+<div>이재성 - 덫</div>
+<div>이재성 - 결혼이야기</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/153535206' target='_blank'><img src='https://resources.tidal.com/images/8c20e1c5/f7fc/4bd5/ac43/52497d9b78c7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/5_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ5) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/이재성 (Lee Jae Sung)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
