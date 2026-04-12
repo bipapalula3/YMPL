@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 첫사랑 ( Tidal CSR )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 첫사랑 ( Tidal CSR )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/62cef726/ef38/44a0/a230/5643100e7805/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/33618496' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 첫사랑</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>첫사랑 (CSR) – 청량한 멜로디로 그려낸 열여덟의 빛나는 순간들, 'HELLO'처럼 설렘 가득한 시작을 노래하는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> CSR</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>CSR (Cheot-Sarang) – A group that sings about the sparkling moments of eighteen with refreshing melodies, like a heart-fluttering beginning in 'HELLO'</div><p>싱그러운 에너지로 가득한 그룹, 첫사랑 (CSR)을 소개합니다! 풋풋한 설렘과 톡톡 터지는 매력으로 무장한 그녀들은 듣는 이들에게 기분 좋은 떨림을 선사합니다. 그녀들의 음악은 마치 첫사랑의 기억처럼 오랫동안 마음에 남아 맴돌 거예요.</p><p>Let us introduce you to CSR (Cheot-Sarang), a group full of refreshing energy! Armed with youthful excitement and bubbly charm, they deliver pleasant shivers to listeners. Their music will linger in your heart like a first love memory.</p><p>✧</p><p>그룹 탄생</p><p>첫사랑 (CSR)은 특별한 콘셉트 아래 탄생했습니다. 멤버들은 모두 2005년생으로, 17~18세의 풋풋함을 그대로 담아내고 있어요. 그녀들의 음악은 마치 성장 앨범처럼, 청춘의 다양한 감정을 섬세하게 표현합니다.</p><p>The Birth of the Group</p><p>CSR (Cheot-Sarang) was born under a special concept. All members were born in 2005, capturing the freshness of 17-18 years old. Their music delicately expresses various emotions of youth, like a coming-of-age album.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>상큼하고 발랄한 멜로디, 청량한 보컬이 첫사랑 (CSR) 음악의 특징입니다. 듣기만 해도 기분이 좋아지는 음악들은 긍정적인 에너지를 선사하죠. 무대 위에서의 퍼포먼스 역시 그녀들의 매력을 한껏 돋보이게 합니다.</p><p>Music and Performance</p><p>CSR (Cheot-Sarang)'s music is characterized by refreshing and cheerful melodies, and clear vocals. The songs, which make you feel good just by listening, provide positive energy. Their performances on stage also highlight their charm.</p><p>✧</p><p>주요 활동</p><p>첫사랑 (CSR)은 데뷔 이후 꾸준히 활동 영역을 넓혀가고 있습니다. 다양한 무대와 콘텐츠를 통해 팬들과 소통하며, 긍정적인 영향력을 전파하고 있어요. 앞으로 그녀들이 보여줄 다양한 모습들이 더욱 기대됩니다.</p><p>Key Activities</p><p>Since their debut, CSR (Cheot-Sarang) has been steadily expanding their activities. They communicate with fans through various stages and content, spreading a positive influence. We look forward to the various aspects they will show in the future.</p><p>✧</p><p>미래/의미</p><p>첫사랑 (CSR)은 단순한 아이돌 그룹을 넘어, 청춘을 대변하는 아이콘으로 성장하고 있습니다. 그녀들의 음악은 듣는 이들에게 공감과 위로를 전하며, 빛나는 미래를 응원합니다. 앞으로 더욱 성장해나갈 그녀들의 모습을 기대해주세요.</p><p>Future/Meaning</p><p>CSR (Cheot-Sarang) is growing beyond a simple idol group into an icon representing youth. Their music conveys empathy and comfort to listeners, supporting a bright future. Please look forward to their further growth.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] L’heure Bleue _ Prologue</div>
+<div><a href='https://tidal.com/album/368704441' target='_blank'>https://tidal.com/album/368704441</a></div>
+<div>CSR - HELLO</div>
+<div>CSR - Pretty mob</div>
+<div>CSR - Higher</div>
+<div>CSR - Blueway</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/368704441' target='_blank'><img src='https://resources.tidal.com/images/6d3d0f51/af5a/4eef/a494/7b3caa2660cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] HBD To You (Sped Up Version)</div>
+<div><a href='https://tidal.com/album/340866190' target='_blank'>https://tidal.com/album/340866190</a></div>
+<div>CSR - HBD To You (Sped Up Version)</div>
+<div>CSR - HBD To You (Midnight Sped Up Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340866190' target='_blank'><img src='https://resources.tidal.com/images/c5385f40/46f6/404a/aad3/a15e71766ef4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] K-909 _ Dolphin</div>
+<div><a href='https://tidal.com/album/300168962' target='_blank'>https://tidal.com/album/300168962</a></div>
+<div>CSR - Dolphin</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/300168962' target='_blank'><img src='https://resources.tidal.com/images/2b66c048/3989/42ea/817a/2a08d3818d93/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] HBD To You</div>
+<div><a href='https://tidal.com/album/346370665' target='_blank'>https://tidal.com/album/346370665</a></div>
+<div>CSR - HBD To You</div>
+<div>CSR - HBD To You (Midnight Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346370665' target='_blank'><img src='https://resources.tidal.com/images/60d14339/8c6a/48ed/912c/20a8eb08585d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] DELIGHT</div>
+<div><a href='https://tidal.com/album/285978373' target='_blank'>https://tidal.com/album/285978373</a></div>
+<div>CSR - Eighteen (Signal)</div>
+<div>CSR - Shining Bright</div>
+<div>CSR - Picnic</div>
+<div>CSR - Dandelion</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/285978373' target='_blank'><img src='https://resources.tidal.com/images/e2c3501d/53d5/45a4/81a8/8ed9701f2b08/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Sequence _ 7272</div>
+<div><a href='https://tidal.com/album/240268317' target='_blank'>https://tidal.com/album/240268317</a></div>
+<div>CSR - 72.72Hz</div>
+<div>CSR - Pop- Pop!</div>
+<div>CSR - Manito</div>
+<div>CSR - Toi Et Moi</div>
+<div>CSR - Euratcha!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/240268317' target='_blank'><img src='https://resources.tidal.com/images/f98e18a2/4bfc/4fef/bb39/a81c3ecb83a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Sequence _ 17&</div>
+<div><a href='https://tidal.com/album/261170927' target='_blank'>https://tidal.com/album/261170927</a></div>
+<div>CSR - LOVETICON (♡TiCON)</div>
+<div>CSR - Anding (&)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/261170927' target='_blank'><img src='https://resources.tidal.com/images/9206ce1b/e593/4f24/b43a/fd0e43b93e99/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_Ch/1_TIDAL_Kpop_Artist_Link_Ch.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅊ1) TIDAL Kpop Artist Link (Ch)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_Ch/첫사랑 (CSR)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
