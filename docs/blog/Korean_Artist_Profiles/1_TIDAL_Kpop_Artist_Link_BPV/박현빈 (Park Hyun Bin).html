@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 박현빈 ( Tidal Park Hyun Bin )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 박현빈 ( Tidal Park Hyun Bin )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4e14d207/882e/42a3/b738/b72dbcca5303/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5688068' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 박현빈</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>샤방샤방 트로트 왕자, 신나는 리듬으로 대한민국을 들썩이게 하는 에너지 넘치는 가수</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Park Hyun Bin</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>The 'Shabang Shabang' Trot Prince, an energetic singer who makes Korea dance with exciting rhythms</div><p>트로트계의 활력소, 박현빈님을 소개합니다! 그는 특유의 시원한 가창력과 무대 매너로 많은 사랑을 받고 있어요. 듣는 이들을 즐겁게 하는 그의 음악 세계로 함께 떠나볼까요?</p><p>Let me introduce you to Park Hyun Bin, the energizer of the trot world! He is loved for his unique, refreshing vocals and stage presence. Shall we embark on a journey into his musical world that delights listeners?</p><p>✧</p><p>트로트계의 새로운 바람</p><p>박현빈님은 기존 트로트의 이미지를 벗고 젊고 활기찬 에너지를 불어넣었습니다. 그의 음악은 남녀노소 누구나 쉽게 즐길 수 있는 매력을 지니고 있어요.</p><p>A Fresh Breeze in the Trot World</p><p>Park Hyun Bin broke away from the existing image of trot and infused it with youthful and vibrant energy. His music has an appeal that anyone, young and old, can easily enjoy.</p><p>✧</p><p>신나는 음악과 퍼포먼스</p><p>그의 무대는 언제나 에너지 넘치는 퍼포먼스로 가득합니다. 특히 월드컵 응원가나 축제 분위기에 어울리는 신나는 곡들은 듣는 이들을 절로 춤추게 만들죠.</p><p>Exciting Music and Performance</p><p>His stage is always full of energetic performances. In particular, exciting songs suitable for World Cup cheers or festive atmospheres make listeners dance involuntarily.</p><p>✧</p><p>다양한 활동과 콜라보</p><p>박현빈님은 솔로 활동뿐만 아니라 다양한 아티스트들과의 콜라보레이션을 통해 음악적 스펙트럼을 넓혀왔습니다. 아이돌 그룹과의 협업은 트로트 팬뿐 아니라 젊은 세대에게도 그의 음악을 알리는 계기가 되었죠.</p><p>Diverse Activities and Collaborations</p><p>Park Hyun Bin has broadened his musical spectrum not only through solo activities but also through collaborations with various artists. Collaborations with idol groups have served as an opportunity to introduce his music not only to trot fans but also to the younger generation.</p><p>✧</p><p>긍정 에너지의 아이콘</p><p>박현빈님은 특유의 밝고 긍정적인 에너지로 대중들에게 즐거움을 선사합니다. 앞으로도 그의 음악이 많은 사람들에게 힘이 되고 행복을 전달해주길 기대합니다.</p><p>An Icon of Positive Energy</p><p>Park Hyun Bin brings joy to the public with his unique bright and positive energy. I hope that his music will continue to empower and bring happiness to many people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] Drinking the liquid</div>
+<div><a href='https://tidal.com/album/319811424' target='_blank'>https://tidal.com/album/319811424</a></div>
+<div>Park Hyun-Bin - Drinking the liquid</div>
+<div>Park Hyun-Bin - Drinking the liquid (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/319811424' target='_blank'><img src='https://resources.tidal.com/images/da07e496/fe77/4183/a65a/425a18067d96/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Let's play love (World cup Ver.)</div>
+<div><a href='https://tidal.com/album/261829427' target='_blank'>https://tidal.com/album/261829427</a></div>
+<div>Park Hyun-Bin - Let's play love (World cup Ver.)</div>
+<div>Park Hyun-Bin - Let's play love (World cup Ver., MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/261829427' target='_blank'><img src='https://resources.tidal.com/images/1b7f370f/190a/411d/a98d/a5409cd77397/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Let's Christmas</div>
+<div><a href='https://tidal.com/album/266902327' target='_blank'>https://tidal.com/album/266902327</a></div>
+<div>Park Hyun-Bin - Let's Christmas</div>
+<div>Park Hyun-Bin - Let's Christmas (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/266902327' target='_blank'><img src='https://resources.tidal.com/images/68f567b2/76ed/43a3/9751/d96b79b00b2f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Fantastic Duo 2 Part.17</div>
+<div><a href='https://tidal.com/album/326002535' target='_blank'>https://tidal.com/album/326002535</a></div>
+<div>Park Hyun-Bin, LEE GI KWANG - 샤방샤방</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/326002535' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Fantastic Duo 2 Part.16</div>
+<div><a href='https://tidal.com/album/326001873' target='_blank'>https://tidal.com/album/326001873</a></div>
+<div>Park Hyun-Bin, Park Gwanghyun, LEE GI KWANG, Lizzy - 오빠만 믿어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/326001873' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] You're so pretty</div>
+<div><a href='https://tidal.com/album/260729872' target='_blank'>https://tidal.com/album/260729872</a></div>
+<div>Park Hyun-Bin - You're so pretty</div>
+<div>Park Hyun-Bin - Let's go to Busan</div>
+<div>Park Hyun-Bin - Bring It On (Rio 2016)</div>
+<div>Park Hyun-Bin - You're so pretty (MR)</div>
+<div>Park Hyun-Bin - Let's go to Busan (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260729872' target='_blank'><img src='https://resources.tidal.com/images/56a501c2/d524/427a/abe6/d15387e9a276/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Bring It On</div>
+<div><a href='https://tidal.com/album/260668153' target='_blank'>https://tidal.com/album/260668153</a></div>
+<div>Park Hyun-Bin, YOON SOO HYUN - Bring It On</div>
+<div>Park Hyun-Bin, YOON SOO HYUN - 쾌지나칭칭</div>
+<div>Park Hyun-Bin, YOON SOO HYUN - 천태만상</div>
+<div>Park Hyun-Bin, YOON SOO HYUN - Bring It On (MR)</div>
+<div>Park Hyun-Bin, YOON SOO HYUN - 쾌지나칭칭 (MR)</div>
+<div>Park Hyun-Bin, YOON SOO HYUN - 천태만상 (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260668153' target='_blank'><img src='https://resources.tidal.com/images/1177c092/5898/420f/b1f8/33ec383731d6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] The Best Album</div>
+<div><a href='https://tidal.com/album/260776379' target='_blank'>https://tidal.com/album/260776379</a></div>
+<div>Park Hyun-Bin - 춘향아</div>
+<div>Park Hyun-Bin - The Whale</div>
+<div>Park Hyun-Bin - HourGlass (Piano Ver.)</div>
+<div>Park Hyun-Bin - So Hot!</div>
+<div>Park Hyun-Bin - Cool Life</div>
+<div>Park Hyun-Bin - BlingBling</div>
+<div>Park Hyun-Bin - Just trust me</div>
+<div>Park Hyun-Bin - Dead drunk</div>
+<div>Park Hyun-Bin - 빠라빠빠</div>
+<div>Park Hyun-Bin - 춘향아 (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260776379' target='_blank'><img src='https://resources.tidal.com/images/9e6c5901/7830/4b95/841f/30c6d72153b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 춘향아 _ 고래</div>
+<div><a href='https://tidal.com/album/260696860' target='_blank'>https://tidal.com/album/260696860</a></div>
+<div>Park Hyun-Bin - 춘향아</div>
+<div>Park Hyun-Bin - The Whale</div>
+<div>Park Hyun-Bin - 춘향아 (MR)</div>
+<div>Park Hyun-Bin - The Whale (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260696860' target='_blank'><img src='https://resources.tidal.com/images/69ff3624/273b/49ab/80ce/c1db359a72fb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2011] HourGlass</div>
+<div><a href='https://tidal.com/album/260668177' target='_blank'>https://tidal.com/album/260668177</a></div>
+<div>Park Hyun-Bin - HourGlass (Piano Ver.)</div>
+<div>Park Hyun-Bin - HourGlass (Guitar Ver.)</div>
+<div>Park Hyun-Bin - So Hot!</div>
+<div>Park Hyun-Bin - Cool Life</div>
+<div>Park Hyun-Bin - BlingBling</div>
+<div>Park Hyun-Bin - Just trust me</div>
+<div>Park Hyun-Bin - Dead drunk</div>
+<div>Park Hyun-Bin - 빠라빠빠</div>
+<div>Park Hyun-Bin - HourGlass (Piano Ver., MR)</div>
+<div>Park Hyun-Bin - HourGlass (Guitar Ver., MR)</div>
+<div>Park Hyun-Bin - So Hot! (MR)</div>
+<div>Park Hyun-Bin - Cool Life (MR)</div>
+<div>Park Hyun-Bin - BlingBling (MR)</div>
+<div>Park Hyun-Bin - Just trust me (MR)</div>
+<div>Park Hyun-Bin - Dead drunk (MR)</div>
+<div>Park Hyun-Bin - 빠라빠빠 (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260668177' target='_blank'><img src='https://resources.tidal.com/images/4e14d207/882e/42a3/b738/b72dbcca5303/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Worldcup Korea</div>
+<div><a href='https://tidal.com/album/260014717' target='_blank'>https://tidal.com/album/260014717</a></div>
+<div>Park Hyun-Bin - So Hot! Worldcup (Worldcup Song)</div>
+<div>Park Hyun-Bin - 빠라빠빠 (Worldcup Song)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260014717' target='_blank'><img src='https://resources.tidal.com/images/9b69ba05/64cb/4f00/95e6/bf5dd9f89cd1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] So Hot!</div>
+<div><a href='https://tidal.com/album/260729793' target='_blank'>https://tidal.com/album/260729793</a></div>
+<div>Park Hyun-Bin - So Hot!</div>
+<div>Park Hyun-Bin - So Hot! Worldcup</div>
+<div>Park Hyun-Bin - Yes!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260729793' target='_blank'><img src='https://resources.tidal.com/images/0772e6c4/d639/4e16/b7b0/ed443c77b2a2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Cool Life</div>
+<div><a href='https://tidal.com/album/260729868' target='_blank'>https://tidal.com/album/260729868</a></div>
+<div>Park Hyun-Bin - Cool Life (Feat. DJ Chully)</div>
+<div>Park Hyun-Bin - Cool Life</div>
+<div>Park Hyun-Bin - Cool Life (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260729868' target='_blank'><img src='https://resources.tidal.com/images/93596764/e258/4094/b3cf/55e258061064/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 샤방샤방 (피망 맞고 주제곡)</div>
+<div><a href='https://tidal.com/album/168741150' target='_blank'>https://tidal.com/album/168741150</a></div>
+<div>Park Hyun-Bin - 샤방샤방 (피망 맞고 주제곡)</div>
+<div>Park Hyun-Bin - 샤방샤방 (끝내줘요 Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168741150' target='_blank'><img src='https://resources.tidal.com/images/b2666722/2bb7/48e3/9559/1817476f748b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] BlingBling</div>
+<div><a href='https://tidal.com/album/260729823' target='_blank'>https://tidal.com/album/260729823</a></div>
+<div>Park Hyun-Bin - Just trust me</div>
+<div>Park Hyun-Bin - Mom Doesn't Know</div>
+<div>Park Hyun-Bin - It's boiling</div>
+<div>Park Hyun-Bin - HourGlass</div>
+<div>Park Hyun-Bin - Pull it</div>
+<div>Park Hyun-Bin - palpitating</div>
+<div>Park Hyun-Bin - It's making me crazy-</div>
+<div>Park Hyun-Bin - a pleasant smile</div>
+<div>Park Hyun-Bin - Because I'm a man</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260729823' target='_blank'><img src='https://resources.tidal.com/images/3eb682d4/3ce1/4a03/bf68/e27253d0aeb4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] Just trust me</div>
+<div><a href='https://tidal.com/album/260729785' target='_blank'>https://tidal.com/album/260729785</a></div>
+<div>Park Hyun-Bin - Just trust me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260729785' target='_blank'><img src='https://resources.tidal.com/images/781cc786/2ea1/4a63/8dfd/fcb4f5d2f33b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] 빠라빠빠</div>
+<div><a href='https://tidal.com/album/260729833' target='_blank'>https://tidal.com/album/260729833</a></div>
+<div>Park Hyun-Bin - 빠라빠빠 (Original)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260729833' target='_blank'><img src='https://resources.tidal.com/images/6d97f66b/9ddf/48f6/bd64/658de039399d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] Park Hyun Bin 1st Gondre mandre</div>
+<div><a href='https://tidal.com/album/260776372' target='_blank'>https://tidal.com/album/260776372</a></div>
+<div>Park Hyun-Bin - Dead drunk</div>
+<div>Park Hyun-Bin - 빠라빠빠</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260776372' target='_blank'><img src='https://resources.tidal.com/images/8e913145/efa8/488a/bb2d/246809abe759/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/1_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ1) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/박현빈 (Park Hyun Bin)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
