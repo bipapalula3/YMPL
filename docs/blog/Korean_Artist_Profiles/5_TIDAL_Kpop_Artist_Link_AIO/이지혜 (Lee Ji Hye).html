@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이지혜 ( Tidal Lee Ji Hye )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이지혜 ( Tidal Lee Ji Hye )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/bd77288a/5b8e/44bc/b4be/1730266da77b/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10449600' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이지혜</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>이지혜 – ‘나의 너에게’처럼 따스한 위로를, ‘한 여자로는 심심했니’처럼 솔직한 감정을 노래하는 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lee Ji Hye</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Lee Ji Hye – A vocalist who sings warm comfort like in 'To My You,' and honest emotions like in 'Was One Woman Not Enough For You?'</div><p>때로는 애절하게, 때로는 사랑스럽게 우리 마음을 흔드는 목소리, 이지혜입니다. 그녀는 다양한 감성을 담아낸 음악으로 폭넓은 사랑을 받고 있어요. 섬세한 표현력과 진솔한 가사로 듣는 이들에게 깊은 공감을 선사하죠.</p><p>Lee Ji Hye's voice stirs our hearts with both sorrow and loveliness. She is widely loved for her music that captures a variety of emotions. Her delicate expression and sincere lyrics deeply resonate with listeners.</p><p>✧</p><p>그룹 탄생</p><p>이지혜는 그룹 활동을 통해 대중에게 처음 이름을 알렸습니다. 그녀의 독특한 음색과 뛰어난 가창력은 그룹의 음악적 색깔을 더욱 풍성하게 만들었어요. 이후 솔로 아티스트로서 자신만의 음악 세계를 구축하며 꾸준히 활동하고 있습니다.</p><p>The Birth of a Group</p><p>Lee Ji Hye first made herself known to the public through her group activities. Her unique tone and outstanding singing skills enriched the group's musical color. Since then, she has been steadily active as a solo artist, building her own musical world.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그녀의 음악은 발라드를 기반으로 다양한 장르를 아우릅니다. 때로는 서정적인 멜로디로, 때로는 리드미컬한 사운드로 듣는 이들의 감성을 자극하죠. 솔직하고 진솔한 가사는 그녀의 음악을 더욱 특별하게 만들어줍니다.</p><p>Music and Performance</p><p>Her music encompasses various genres based on ballads. Sometimes with lyrical melodies, sometimes with rhythmic sounds, she stimulates the emotions of listeners. The honest and sincere lyrics make her music even more special.</p><p>✧</p><p>주요 활동</p><p>이지혜는 음악 활동 외에도 다양한 방송 프로그램에 출연하며 활발하게 활동하고 있습니다. 그녀의 밝고 긍정적인 에너지는 많은 사람들에게 즐거움을 선사해요. 예능에서의 솔직한 모습은 그녀를 더욱 친근하게 느껴지게 만들죠.</p><p>Main Activities</p><p>In addition to her music activities, Lee Ji Hye is actively involved in various broadcasting programs. Her bright and positive energy brings joy to many people. Her honest appearance in entertainment shows makes her feel even more approachable.</p><p>✧</p><p>미래/의미</p><p>이지혜는 앞으로도 진솔한 음악과 다양한 활동을 통해 대중과 소통할 것입니다. 그녀의 음악은 단순한 즐거움을 넘어, 삶의 위로와 공감을 선사하죠. 앞으로 그녀가 들려줄 이야기가 더욱 기대됩니다.</p><p>Future/Meaning</p><p>Lee Ji Hye will continue to communicate with the public through sincere music and various activities. Her music goes beyond simple enjoyment, offering comfort and empathy in life. We look forward to the stories she will tell in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2016] 나의 너에게</div>
+<div><a href='https://tidal.com/album/146799410' target='_blank'>https://tidal.com/album/146799410</a></div>
+<div>Lee ji hye - 나의 너에게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146799410' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 스캔들 (Original Television Soundtrack) Pt. 3</div>
+<div><a href='https://tidal.com/album/163273369' target='_blank'>https://tidal.com/album/163273369</a></div>
+<div>Lee ji hye - 내려</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163273369' target='_blank'><img src='https://resources.tidal.com/images/1c6b8aaf/af59/4125/a12a/43bdc4bdf8e2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 야차 - 스페셜 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/238016075' target='_blank'>https://tidal.com/album/238016075</a></div>
+<div>Lee ji hye - 일년같은 하루</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/238016075' target='_blank'><img src='https://resources.tidal.com/images/b3b950ee/29a0/4df0/93c7/fb789f617e09/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 나 또</div>
+<div><a href='https://tidal.com/album/326103523' target='_blank'>https://tidal.com/album/326103523</a></div>
+<div>Lee ji hye, Teebone - 나 또</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/326103523' target='_blank'><img src='https://resources.tidal.com/images/61371ec9/098e/4ca0/9584/0a8ecd437ecb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 야차 (Original Television Soundtrack) Pt.2</div>
+<div><a href='https://tidal.com/album/238016088' target='_blank'>https://tidal.com/album/238016088</a></div>
+<div>Lee ji hye - 일년 같은 하루</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/238016088' target='_blank'><img src='https://resources.tidal.com/images/2d200283/7a0d/4bcc/980c/7ab71bedddee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Lost</div>
+<div><a href='https://tidal.com/album/325698555' target='_blank'>https://tidal.com/album/325698555</a></div>
+<div>Lee ji hye - 한여자로는 심심했니 (Feat. Speed Motion)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/325698555' target='_blank'><img src='https://resources.tidal.com/images/bd77288a/5b8e/44bc/b4be/1730266da77b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 바보 (All Star 2집 Vol.4)</div>
+<div><a href='https://tidal.com/album/215690850' target='_blank'>https://tidal.com/album/215690850</a></div>
+<div>Lee ji hye - 내사랑 곰돌이</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215690850' target='_blank'><img src='https://resources.tidal.com/images/2523ad1a/3d34/4b3b/8f20/8d39ec396cfe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] 그대 없이 난</div>
+<div><a href='https://tidal.com/album/168871310' target='_blank'>https://tidal.com/album/168871310</a></div>
+<div>Lee ji hye - 꿈</div>
+<div>Lee ji hye - 피터팬은 죽지 않았다</div>
+<div>Lee ji hye - 그대 없이 난</div>
+<div>Lee ji hye - 집앞에서 길을 잃다</div>
+<div>Lee ji hye - 사랑이 오네요</div>
+<div>Lee ji hye - 내 입술 따뜻한 커피처럼</div>
+<div>Lee ji hye - 그래요 그대죠</div>
+<div>Lee ji hye - Missing You</div>
+<div>Lee ji hye - 혼자서 하는 그 말</div>
+<div>Lee ji hye - Floor Fever</div>
+<div>Lee ji hye - 비정</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168871310' target='_blank'><img src='https://resources.tidal.com/images/e9eff0a4/5e2d/4723/b204/47a3e5015d09/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/5_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ5) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/이지혜 (Lee Ji Hye)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
