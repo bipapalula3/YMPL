@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 예원 ( Tidal yewon )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 예원 ( Tidal yewon )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/5e145e45/30fe/4d4b/a9ff/9ec7549b9504/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10756700' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/15361310' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 예원</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>예원 (Yewon) – 사랑의 설렘을 노래하는 섬세한 감성 보컬, 'I'm Into You'처럼 부드럽게 스며드는 목소리</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> yewon</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Yewon – A delicate emotional vocalist singing of love's excitement, with a voice that gently permeates like 'I'm Into You'</div><p>맑고 청아한 음색으로 듣는 이의 마음을 사로잡는 아티스트, 예원(Yewon)을 소개합니다. 그녀의 음악은 사랑의 다양한 감정을 섬세하게 표현하며 많은 이들의 공감을 얻고 있어요. 부드러운 멜로디와 진솔한 가사로 리스너들에게 따뜻한 위로와 설렘을 선물하는 예원의 음악 세계로 함께 떠나볼까요?</p><p>Let me introduce Yewon, an artist who captivates listeners with her clear and pure tone. Her music delicately expresses various emotions of love and resonates with many. Shall we embark on a journey into Yewon's musical world, which offers warm comfort and excitement to listeners through soft melodies and sincere lyrics?</p><p>✧</p><p>사랑스러운 시작</p><p>예원은 자신만의 색깔을 담아 사랑의 시작을 노래하며 음악계에 등장했어요. 그녀의 음악은 풋풋한 설렘과 두근거리는 감정을 고스란히 담아내 듣는 이들에게 기분 좋은 에너지를 전달해줍니다. 마치 첫사랑의 기억을 떠올리게 하는 듯한 멜로디는 많은 이들의 플레이리스트에 꾸준히 자리매김하고 있어요.</p><p>A Lovely Beginning</p><p>Yewon emerged into the music scene, singing about the beginning of love with her unique style. Her music captures the fresh excitement and fluttering emotions, delivering pleasant energy to listeners. The melodies, reminiscent of first love, steadily hold a place in many playlists.</p><p>✧</p><p>섬세한 음악적 표현</p><p>예원의 음악은 사랑의 여러 모습을 다채롭게 그려내는 것이 특징이에요. 때로는 달콤하게, 때로는 애틋하게 사랑의 감정을 노래하며 듣는 이들의 감성을 자극합니다. 국승은과 함께한 'Jelly'처럼 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀가고 있다는 점도 주목할 만합니다.</p><p>Delicate Musical Expression</p><p>Yewon's music is characterized by its diverse depiction of various aspects of love. She stimulates the emotions of listeners by singing about love's feelings, sometimes sweetly, sometimes with affection. It is also worth noting that she is expanding her musical spectrum through collaborations with various artists, such as 'Jelly' with Kuk Seung-eun.</p><p>✧</p><p>따뜻한 공감대 형성</p><p>예원은 특유의 감성적인 보컬로 리스너들과 깊은 공감대를 형성하고 있습니다. 그녀의 노래는 단순히 듣기 좋은 음악을 넘어, 마음속 깊은 곳의 이야기를 꺼내어주는 듯한 울림을 선사합니다. 'It's okay because I met you(November)'처럼 잔잔한 위로를 건네는 곡들은 지친 일상 속에서 힘이 되어주기도 해요.</p><p>Forming Warm Empathy</p><p>Yewon is forming a deep connection with listeners through her unique emotional vocals. Her songs go beyond just being pleasant to listen to; they resonate as if bringing out stories from deep within the heart. Songs that offer quiet comfort, such as 'It's okay because I met you(November),' provide strength in tiring daily lives.</p><p>✧</p><p>앞으로의 음악 여정</p><p>앞으로 예원은 더욱 다양한 음악적 시도를 통해 자신만의 색깔을 더욱 굳건히 해나갈 것으로 기대됩니다. 그녀의 음악은 듣는 이들에게 끊임없이 새로운 감정과 경험을 선사하며 오랫동안 사랑받을 것입니다. 예원이 앞으로 들려줄 이야기에 귀 기울여 주세요.</p><p>The Musical Journey Ahead</p><p>It is expected that Yewon will further solidify her unique style through more diverse musical attempts in the future. Her music will continuously provide new emotions and experiences to listeners and will be loved for a long time. Please listen to the stories that Yewon will tell in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] The Scandal of Chun Hwa (TVING Original Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/417437247' target='_blank'>https://tidal.com/album/417437247</a></div>
+<div>Yewon - I'm Into You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/417437247' target='_blank'><img src='https://resources.tidal.com/images/35b50e42/c650/4e66/bb44/9d5d10591cc5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] My Curations Vol.3 YEWON</div>
+<div><a href='https://tidal.com/album/440242730' target='_blank'>https://tidal.com/album/440242730</a></div>
+<div>Yewon - Height Difference</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/440242730' target='_blank'><img src='https://resources.tidal.com/images/d2342428/6176/4213/97e5/7fba3e5bd419/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Dive For You</div>
+<div><a href='https://tidal.com/album/425102668' target='_blank'>https://tidal.com/album/425102668</a></div>
+<div>Yewon - Dive For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/425102668' target='_blank'><img src='https://resources.tidal.com/images/3230767f/977c/4f5c/ada6/3e2c8a9fe243/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 사랑의 시작은 고백에서부터</div>
+<div><a href='https://tidal.com/album/352782669' target='_blank'>https://tidal.com/album/352782669</a></div>
+<div>Yewon - Disc1 - 사랑의 시작은 고백에서부터</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352782669' target='_blank'><img src='https://resources.tidal.com/images/b2ed5b95/080a/48f0/ac9b/a14fb2dfda11/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Melting love</div>
+<div><a href='https://tidal.com/album/358064122' target='_blank'>https://tidal.com/album/358064122</a></div>
+<div>Yewon, 109 - Melting love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/358064122' target='_blank'><img src='https://resources.tidal.com/images/c291c28a/8d6a/4bfc/b82c/db442d093e5e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] MARRY YOU (Original Soundtrack), Pt.8</div>
+<div><a href='https://tidal.com/album/407001023' target='_blank'>https://tidal.com/album/407001023</a></div>
+<div>Yewon - Shal la la la</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/407001023' target='_blank'><img src='https://resources.tidal.com/images/bac0d4fd/a9ce/4020/89e1/7dc55424e6ea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Love Interference 2024 (Original Soundtrack), Pt.13</div>
+<div><a href='https://tidal.com/album/366626866' target='_blank'>https://tidal.com/album/366626866</a></div>
+<div>Yewon - If there's a season between us</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366626866' target='_blank'><img src='https://resources.tidal.com/images/a4321fd1/872e/4d7f/9d03/76093ab0d809/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Jelly</div>
+<div><a href='https://tidal.com/album/398986629' target='_blank'>https://tidal.com/album/398986629</a></div>
+<div>예원, 국승은 - Jelly (feat. 국승은)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/398986629' target='_blank'><img src='https://resources.tidal.com/images/af168007/eaf1/4fd0/afd3/cbb9997aae67/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] It's okay because I met you(November)</div>
+<div><a href='https://tidal.com/album/389433734' target='_blank'>https://tidal.com/album/389433734</a></div>
+<div>예원 - It's okay because I met you(November)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/389433734' target='_blank'><img src='https://resources.tidal.com/images/c68e3ff9/795d/4605/b6b0/a4920f0a2fc5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] DNA Lover (Original Television Soundtrack) Pt. 8</div>
+<div><a href='https://tidal.com/album/390370979' target='_blank'>https://tidal.com/album/390370979</a></div>
+<div>Yewon - Because of you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/390370979' target='_blank'><img src='https://resources.tidal.com/images/7e89fb89/2f10/4d11/9bbc/3e68b57fa46f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] You are irresistibly lovely</div>
+<div><a href='https://tidal.com/album/309110034' target='_blank'>https://tidal.com/album/309110034</a></div>
+<div>Yewon - You are irresistibly lovely</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309110034' target='_blank'><img src='https://resources.tidal.com/images/417bc1d7/3154/4e9b/9f87/b2900cc81fc7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] That's gonna be love</div>
+<div><a href='https://tidal.com/album/334944316' target='_blank'>https://tidal.com/album/334944316</a></div>
+<div>Yewon - That's gonna be love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334944316' target='_blank'><img src='https://resources.tidal.com/images/eb2b9474/a84d/48f1/966e/6dafcd0e3ba3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Spring illusion</div>
+<div><a href='https://tidal.com/album/306126002' target='_blank'>https://tidal.com/album/306126002</a></div>
+<div>Yewon - Spring illusion</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306126002' target='_blank'><img src='https://resources.tidal.com/images/aad399d3/2211/4a96/b4c0/4d9722183eea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Someone's playlist #12</div>
+<div><a href='https://tidal.com/album/366449121' target='_blank'>https://tidal.com/album/366449121</a></div>
+<div>Yewon - With You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366449121' target='_blank'><img src='https://resources.tidal.com/images/a7f245c7/83a7/4c4d/94e4/6569cb92ede8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Everyday is you</div>
+<div><a href='https://tidal.com/album/306137799' target='_blank'>https://tidal.com/album/306137799</a></div>
+<div>Yewon - Everyday is you (feat. Jaehee)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306137799' target='_blank'><img src='https://resources.tidal.com/images/263f7686/e383/4a19/ad4e/3c7cbdb00d23/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] My youth is</div>
+<div><a href='https://tidal.com/album/235135481' target='_blank'>https://tidal.com/album/235135481</a></div>
+<div>Yewon, WOOJAE - My youth is</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/235135481' target='_blank'><img src='https://resources.tidal.com/images/a7ae7236/f4e5/4aec/8488/e8a52fcd5693/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Beep</div>
+<div><a href='https://tidal.com/album/237312212' target='_blank'>https://tidal.com/album/237312212</a></div>
+<div>예원, yeyun - Beep (feat. yeyun)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237312212' target='_blank'><img src='https://resources.tidal.com/images/36b06ad6/2a76/402b/a97b/14d28f21930e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Under the weather</div>
+<div><a href='https://tidal.com/album/305856912' target='_blank'>https://tidal.com/album/305856912</a></div>
+<div>Yewon - Under the weather</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305856912' target='_blank'><img src='https://resources.tidal.com/images/d917b33b/b322/473f/bf93/0a433348f737/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Sappy Love Song</div>
+<div><a href='https://tidal.com/album/180761664' target='_blank'>https://tidal.com/album/180761664</a></div>
+<div>Yewon - Sappy Love Song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/180761664' target='_blank'><img src='https://resources.tidal.com/images/eebfd9e8/4d90/43f5/8f09/ef5e1a553cac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Once Aga!n</div>
+<div><a href='https://tidal.com/album/194648283' target='_blank'>https://tidal.com/album/194648283</a></div>
+<div>예원, yeyun - Once Aga!n (feat. yeyun)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/194648283' target='_blank'><img src='https://resources.tidal.com/images/5f0f8bb7/aaa0/460e/8fbd/20b575bce558/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Mountain</div>
+<div><a href='https://tidal.com/album/175020021' target='_blank'>https://tidal.com/album/175020021</a></div>
+<div>예원 - Mountain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175020021' target='_blank'><img src='https://resources.tidal.com/images/0d21a5e2/47f3/4040/b1fc/0408218e91e3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Living</div>
+<div><a href='https://tidal.com/album/209102799' target='_blank'>https://tidal.com/album/209102799</a></div>
+<div>Yewon - Pine</div>
+<div>Yewon - Comfort food</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209102799' target='_blank'><img src='https://resources.tidal.com/images/b96a3df4/3cb5/4302/9a54/a90935672a42/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 길</div>
+<div><a href='https://tidal.com/album/131332342' target='_blank'>https://tidal.com/album/131332342</a></div>
+<div>예원 (feat. 홍영구) - 길 (feat. 홍영구)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/131332342' target='_blank'><img src='https://resources.tidal.com/images/93207936/4c10/4aad/a43d/dd2ca22fbd88/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] evening primrose</div>
+<div><a href='https://tidal.com/album/124181177' target='_blank'>https://tidal.com/album/124181177</a></div>
+<div>Yewon - Loner</div>
+<div>Yewon - SUBWAY</div>
+<div>Yewon - Plop Plop</div>
+<div>Yewon - Kidult</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/124181177' target='_blank'><img src='https://resources.tidal.com/images/ecbf277e/1a2a/4db9/802f/f7a9cb712d1a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Little forest</div>
+<div><a href='https://tidal.com/album/189198663' target='_blank'>https://tidal.com/album/189198663</a></div>
+<div>Yewon - Little forest (Feat. Three Brothers and Sisters)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189198663' target='_blank'><img src='https://resources.tidal.com/images/bbe93272/537b/42a0/ab09/22d8cf5cb799/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Dear my little star</div>
+<div><a href='https://tidal.com/album/189052753' target='_blank'>https://tidal.com/album/189052753</a></div>
+<div>Yewon - Dear my little star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189052753' target='_blank'><img src='https://resources.tidal.com/images/3852371a/3f2c/4395/a5d3/8772364d8ce5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/예원 (yewon)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
