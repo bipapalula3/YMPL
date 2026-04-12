@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 송창식 ( Tidal Song Chang Sik )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 송창식 ( Tidal Song Chang Sik )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/e3a6f7a0/12b5/41e9/9911/2b6065fc3602/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/23856450' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 송창식</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>송창식 — 시대의 감성을 노래하는 음유시인, '피리부는 사나이'의 자유로움과 '이슬비'의 서정성을 담아낸 목소리</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Song Chang Sik</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Song Chang Sik — A lyrical poet singing the emotions of an era, his voice capturing the freedom of 'The Pied Piper' and the lyricism of 'Drizzle'.</div><p>한국 포크 음악의 거목, 송창식입니다. 그는 깊은 울림을 주는 목소리와 독창적인 음악 세계로 대중의 마음을 사로잡았습니다. 시대를 초월하는 그의 음악은 여전히 많은 이들에게 감동을 선사하고 있습니다.</p><p>Song Chang Sik is a towering figure in Korean folk music. He has captivated the public with his deeply resonant voice and original musical world. His timeless music continues to inspire many.</p><p>✧</p><p>그룹 탄생</p><p>송창식은 1960년대 후반, 윤형주, 김세환, 이장희와 함께 한국 포크 음악의 르네상스를 이끌었습니다. 특히 트윈폴리오 활동을 통해 청춘의 낭만과 아름다움을 노래하며 큰 인기를 얻었습니다. 그의 음악은 당시 젊은이들의 문화를 대변하는 상징이었습니다.</p><p>The Birth of a Group</p><p>In the late 1960s, Song Chang Sik, along with Yoon Hyung Joo, Kim Se Hwan, and Lee Jang Hee, led the renaissance of Korean folk music. In particular, he gained immense popularity through his activities with Twin Folio, singing about the romance and beauty of youth. His music was a symbol representing the culture of young people at the time.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>송창식의 음악은 포크를 기반으로 다양한 장르를 넘나드는 실험적인 시도가 돋보입니다. 그는 특유의 깊고 허스키한 목소리로 인생의 희로애락을 진솔하게 표현합니다. 그의 공연은 단순한 음악 감상을 넘어, 관객과 함께 호흡하는 특별한 경험을 선사합니다.</p><p>Music and Performance</p><p>Song Chang Sik's music is based on folk but stands out for its experimental attempts that cross various genres. He honestly expresses the joys and sorrows of life with his unique, deep, and husky voice. His performances offer a special experience that goes beyond simple music appreciation, breathing together with the audience.</p><p>✧</p><p>주요 활동</p><p>솔로 활동 이후 송창식은 '피리부는 사나이', '담배가게 아가씨', '사랑이야' 등 수많은 히트곡을 발표하며 대중적인 인기를 얻었습니다. 또한, 불교 음악 작업에도 참여하여 깊이 있는 음악 세계를 선보였습니다. 그의 음악은 시대를 초월하여 다양한 세대에게 사랑받고 있습니다.</p><p>Main Activities</p><p>After his solo debut, Song Chang Sik gained popular recognition by releasing numerous hit songs such as 'The Pied Piper,' 'The Girl at the Tobacco Shop,' and 'A Love Story.' He also participated in Buddhist music projects, showcasing his profound musical world. His music transcends generations and is loved by various age groups.</p><p>✧</p><p>미래/의미</p><p>송창식은 끊임없이 새로운 음악적 시도를 하며, 여전히 한국 음악계에 큰 영향을 미치고 있습니다. 그의 음악은 단순한 유행을 넘어, 삶의 깊이를 성찰하게 하는 예술 작품으로 평가받습니다. 앞으로도 그의 음악이 우리에게 어떤 감동을 선사할지 기대됩니다.</p><p>Future/Meaning</p><p>Song Chang Sik continues to make new musical attempts and still has a significant impact on the Korean music scene. His music is valued as a work of art that makes us reflect on the depth of life, beyond mere trends. We look forward to the emotions his music will bring us in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[1998] Buddhist Music Vol. 2 - Traditional Korean Cantata for Prasing Love-Yekeongje, Prasing Complement,</div>
+<div><a href='https://tidal.com/album/204494437' target='_blank'>https://tidal.com/album/204494437</a></div>
+<div>Song Chang Sik, Kim Sungnyu - Buddhist Music Vol. 2 - Traditional Korean Cantata for Prasing Love-Yekeongje, Prasing Complement,</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204494437' target='_blank'><img src='https://resources.tidal.com/images/dbd90ff7/49f6/42a2/9820/6257c1714eff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] 94 Songs of Panorama</div>
+<div><a href='https://tidal.com/album/211012323' target='_blank'>https://tidal.com/album/211012323</a></div>
+<div>Song Chang Sik - For the Beautiful World</div>
+<div>Song Chang Sik - Man's Road</div>
+<div>Song Chang Sik - We Go</div>
+<div>Yoo Heesung, Ko Mikyung - Rainbow of Youth</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/211012323' target='_blank'><img src='https://resources.tidal.com/images/12449400/020b/4325/8ef2/c0f317e9a0eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1989] 골든 포크 (Best)</div>
+<div><a href='https://tidal.com/album/226467875' target='_blank'>https://tidal.com/album/226467875</a></div>
+<div>Song Chang Sik - 피리부는 사나이</div>
+<div>Song Chang Sik - 한번쯤</div>
+<div>Song Chang Sik - 맨 처음 고백</div>
+<div>Song Chang Sik - 한 걸음만</div>
+<div>Song Chang Sik - 간다시면</div>
+<div>Song Chang Sik - 이슬비</div>
+<div>Song Chang Sik - 손을 잡고 걸어요</div>
+<div>Song Chang Sik - 둘이 둘이만</div>
+<div>Song Chang Sik - 새는</div>
+<div>Song Chang Sik - 그대 있음에</div>
+<div>Song Chang Sik - 새벽길</div>
+<div>Song Chang Sik - 가위 바위 보</div>
+<div>Song Chang Sik - 걷지 말고 뛰어라</div>
+<div>Song Chang Sik - 하얀손수건</div>
+<div>Song Chang Sik - 동요메들리</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/226467875' target='_blank'><img src='https://resources.tidal.com/images/e3a6f7a0/12b5/41e9/9911/2b6065fc3602/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1988] 송창식 서유석 베스트</div>
+<div><a href='https://tidal.com/album/291654395' target='_blank'>https://tidal.com/album/291654395</a></div>
+<div>Song Chang Sik - 토함산</div>
+<div>Song Chang Sik - 사랑이야</div>
+<div>Song Chang Sik - 돌돌이와 석순이</div>
+<div>Song Chang Sik - 20년전쯤에</div>
+<div>Song Chang Sik - 나의 기타이야기</div>
+<div>Song Chang Sik - 별똥별</div>
+<div>Song Chang Sik - 잊읍시다</div>
+<div>Song Chang Sik - 병사의 향수</div>
+<div>Song Chang Sik - 가위바위보</div>
+<div>Song Chang Sik - 그사람</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/291654395' target='_blank'><img src='https://resources.tidal.com/images/352bab1f/30dd/4db6/a05a/ceba4dc2ae4f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1972] Oasis Folk Festival Vol. 5</div>
+<div><a href='https://tidal.com/album/207485289' target='_blank'>https://tidal.com/album/207485289</a></div>
+<div>Song Chang Sik - Her and I</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/207485289' target='_blank'><img src='https://resources.tidal.com/images/30498d82/632a/46d4/8ec4/99e2d3c2980a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/송창식 (Song Chang Sik)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
