@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 빅톤 ( Tidal VICTON )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 빅톤 ( Tidal VICTON )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/651ca641/71eb/41c1/b8f5/e01914472191/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9730817' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 빅톤</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>빅톤 (VICTON) – 시간을 넘어선 음악적 성장, 'Stupid O'clock'의 몽환적인 매력과 'Chronograph'의 강렬한 에너지</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> VICTON</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>VICTON – Musical Growth Beyond Time, The Dreamlike Charm of 'Stupid O'clock' and the Intense Energy of 'Chronograph'</div><p>시간을 초월하는 음악적 스펙트럼을 가진 그룹, 빅톤을 소개합니다. 데뷔 이후 꾸준히 변화와 성장을 거듭하며 다채로운 매력을 선보여 왔는데요. 섬세한 감성부터 강렬한 퍼포먼스까지, 빅톤만의 색깔로 음악 팬들을 사로잡고 있습니다.</p><p>Introducing VICTON, a group with a musical spectrum that transcends time. They have consistently shown diverse charms through continuous change and growth since their debut. From delicate emotions to intense performances, VICTON captivates music fans with their unique color.</p><p>✧</p><p>그룹 탄생</p><p>빅톤은 2016년, 'Voice To New World'라는 의미를 담고 데뷔했습니다. 멤버들의 탄탄한 실력과 매력적인 비주얼은 데뷔 초부터 많은 이들의 시선을 사로잡았어요. 끊임없는 노력과 연습으로 완성도 높은 무대를 선보이며 팬덤을 확장해 나갔습니다.</p><p>Group Formation</p><p>VICTON debuted in 2016 with the meaning 'Voice To New World'. The members' solid skills and attractive visuals captured the attention of many from the beginning. They expanded their fanbase by showcasing highly polished performances through constant effort and practice.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>빅톤의 음악은 다채로운 장르를 아우르며 폭넓은 스펙트럼을 자랑합니다. 몽환적인 분위기의 곡부터 강렬한 퍼포먼스가 돋보이는 곡까지 소화하며 한계 없는 음악적 역량을 보여주는데요. 특히 섬세한 감정 표현과 무대 장악력은 빅톤만의 강점이라고 할 수 있습니다.</p><p>Music and Performance</p><p>VICTON's music encompasses various genres and boasts a wide spectrum. They showcase limitless musical capabilities by performing everything from dreamy songs to intense performances. In particular, their delicate emotional expression and stage presence are VICTON's strengths.</p><p>✧</p><p>주요 활동</p><p>빅톤은 데뷔 이후 꾸준한 음반 발매와 콘서트 활동을 통해 팬들과 소통해 왔습니다. 멤버들은 음악 활동 외에도 연기, 예능 등 다양한 분야에서 활약하며 다재다능한 면모를 보여주고 있는데요. 앞으로도 다양한 활동을 통해 팬들에게 더욱 가까이 다가갈 예정입니다.</p><p>Key Activities</p><p>Since their debut, VICTON has been communicating with fans through consistent album releases and concert activities. In addition to their music careers, the members are active in various fields such as acting and entertainment, showcasing their versatile talents. They plan to get closer to fans through various activities in the future.</p><p>✧</p><p>미래/의미</p><p>빅톤은 앞으로도 끊임없는 음악적 도전을 통해 더욱 성장해 나갈 것입니다. 그들의 음악은 단순한 즐거움을 넘어, 듣는 이들에게 위로와 공감을 선사하며 깊은 울림을 전달합니다. 빅톤이 만들어갈 미래는 더욱 기대됩니다.</p><p>Future/Meaning</p><p>VICTON will continue to grow through constant musical challenges. Their music goes beyond simple enjoyment, offering comfort and empathy to listeners and delivering deep resonance. The future that VICTON will create is even more anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] You Are Mine (A Business Proposal (Original Soundtrack) Part.2)</div>
+<div><a href='https://tidal.com/album/219658399' target='_blank'>https://tidal.com/album/219658399</a></div>
+<div>VICTON - You Are Mine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219658399' target='_blank'><img src='https://resources.tidal.com/images/83afa0b3/9d95/466d/abf9/a074dbb91559/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Chronograph</div>
+<div><a href='https://tidal.com/album/216534148' target='_blank'>https://tidal.com/album/216534148</a></div>
+<div>VICTON - Chronograph</div>
+<div>VICTON - Want me</div>
+<div>VICTON - Chronograph (English Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216534148' target='_blank'><img src='https://resources.tidal.com/images/262ef4e6/6f1f/4973/b481/bfc8873a87f9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Choice</div>
+<div><a href='https://tidal.com/album/260697216' target='_blank'>https://tidal.com/album/260697216</a></div>
+<div>VICTON - Virus</div>
+<div>VICTON - Time Chaser</div>
+<div>VICTON - Alive</div>
+<div>VICTON - Better Place</div>
+<div>VICTON - Feels good</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260697216' target='_blank'><img src='https://resources.tidal.com/images/92bcb36d/1b68/458c/a3df/f4071e4d7f80/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Chaos</div>
+<div><a href='https://tidal.com/album/231548582' target='_blank'>https://tidal.com/album/231548582</a></div>
+<div>VICTON - Stupid O'clock</div>
+<div>VICTON - Bonnie and Clyde</div>
+<div>VICTON - INK</div>
+<div>VICTON - Stay</div>
+<div>VICTON - In Love</div>
+<div>VICTON - Dear. young</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/231548582' target='_blank'><img src='https://resources.tidal.com/images/c88f4244/50d2/4415/9961/64d0f34a4d13/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] VOICE _ The future is now</div>
+<div><a href='https://tidal.com/album/216181096' target='_blank'>https://tidal.com/album/216181096</a></div>
+<div>VICTON - Into The Mirror</div>
+<div>VICTON - What I Said</div>
+<div>VICTON - Circle</div>
+<div>VICTON - Chess</div>
+<div>VICTON - Up To You</div>
+<div>VICTON - All Day</div>
+<div>VICTON - Carry on</div>
+<div>VICTON - Eyes on you</div>
+<div>VICTON - Utopia</div>
+<div>VICTON - Where is Love-</div>
+<div>VICTON - Unpredictable</div>
+<div>VICTON - Flip A Coin</div>
+<div>VICTON - We Stay</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216181096' target='_blank'><img src='https://resources.tidal.com/images/9152657c/7e5d/4891/b287/4d1a47bed5bc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Sweet Travel</div>
+<div><a href='https://tidal.com/album/216279127' target='_blank'>https://tidal.com/album/216279127</a></div>
+<div>VICTON - Sweet Travel</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216279127' target='_blank'><img src='https://resources.tidal.com/images/a33597eb/0fcc/4ed2/980b/bf741627e46e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] One Ordinary Day (Original Television Soundtrack), Pt. 4</div>
+<div><a href='https://tidal.com/album/209413966' target='_blank'>https://tidal.com/album/209413966</a></div>
+<div>VICTON - Pray For Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209413966' target='_blank'><img src='https://resources.tidal.com/images/92b6e15f/fd5c/49d7/9002/44ef6cb8a528/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Mayday</div>
+<div><a href='https://tidal.com/album/216534878' target='_blank'>https://tidal.com/album/216534878</a></div>
+<div>VICTON - Mayday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216534878' target='_blank'><img src='https://resources.tidal.com/images/36ea051e/23cd/4ed3/8bc2/ba9b6a279507/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Continuous</div>
+<div><a href='https://tidal.com/album/216541965' target='_blank'>https://tidal.com/album/216541965</a></div>
+<div>VICTON - Nightmare</div>
+<div>VICTON - Howling</div>
+<div>VICTON - All I Know</div>
+<div>VICTON - Petal</div>
+<div>VICTON - White Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216541965' target='_blank'><img src='https://resources.tidal.com/images/f7c5f2d2/731e/4622/9782/e4c12c341472/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] nostalgia</div>
+<div><a href='https://tidal.com/album/216542077' target='_blank'>https://tidal.com/album/216542077</a></div>
+<div>VICTON - Intro (nostalgia)</div>
+<div>VICTON - nostalgic night</div>
+<div>VICTON - New World</div>
+<div>VICTON - Farewell</div>
+<div>VICTON - Here I am</div>
+<div>VICTON - Hands up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216542077' target='_blank'><img src='https://resources.tidal.com/images/43187401/1246/4e2c/887b/d8b50dc828a2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 그남자 오수 (Original Television Soundtrack) Pt. 6</div>
+<div><a href='https://tidal.com/album/215281560' target='_blank'>https://tidal.com/album/215281560</a></div>
+<div>VICTON - Celebrate</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215281560' target='_blank'><img src='https://resources.tidal.com/images/33d97541/37df/4410/9b20/8b106f621d26/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] TIME OF SORROW</div>
+<div><a href='https://tidal.com/album/216122935' target='_blank'>https://tidal.com/album/216122935</a></div>
+<div>VICTON - TIME OF SORROW</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216122935' target='_blank'><img src='https://resources.tidal.com/images/f5c8e263/1180/415f/909b/d77e492f81e2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] ‘PLAN A’ THIRD EPISODE</div>
+<div><a href='https://tidal.com/album/216094086' target='_blank'>https://tidal.com/album/216094086</a></div>
+<div>Huhgak, Apink, VICTON - OASIS</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216094086' target='_blank'><img src='https://resources.tidal.com/images/decec44f/c3e3/41aa/b2c3/87a063004064/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] READY</div>
+<div><a href='https://tidal.com/album/215969682' target='_blank'>https://tidal.com/album/215969682</a></div>
+<div>VICTON - EYEZ EYEZ</div>
+<div>VICTON - IN THE AIR</div>
+<div>VICTON - Blank</div>
+<div>VICTON - So bad--</div>
+<div>VICTON - SUNRISE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215969682' target='_blank'><img src='https://resources.tidal.com/images/9de35c5a/6aa9/4141/8273/6aa7d63a4170/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] IDENTITY</div>
+<div><a href='https://tidal.com/album/215976897' target='_blank'>https://tidal.com/album/215976897</a></div>
+<div>VICTON - UNBELIEVABLE</div>
+<div>VICTON - STAY WITH ME</div>
+<div>VICTON - SLOW GOODBYE</div>
+<div>VICTON - FLOWER</div>
+<div>VICTON - LIGHT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215976897' target='_blank'><img src='https://resources.tidal.com/images/f397542d/9034/46a1/8d60/8d7dcaf6ea2b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] From. VICTON</div>
+<div><a href='https://tidal.com/album/216075206' target='_blank'>https://tidal.com/album/216075206</a></div>
+<div>VICTON - Remember Me</div>
+<div>VICTON - Because of You</div>
+<div>VICTON - Have a Good Night (Stage Ver.)</div>
+<div>VICTON - Stay With Me</div>
+<div>VICTON - Timeline</div>
+<div>VICTON - Remember Me (Acoustic Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216075206' target='_blank'><img src='https://resources.tidal.com/images/ad898554/37c8/43dd/94f9/93801d4a24cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Voice To New World</div>
+<div><a href='https://tidal.com/album/216007978' target='_blank'>https://tidal.com/album/216007978</a></div>
+<div>VICTON - What time is it now-</div>
+<div>VICTON - I'm fine</div>
+<div>VICTON - Beautiful</div>
+<div>VICTON - Your smile and you</div>
+<div>VICTON - The Chemistry</div>
+<div>VICTON - #Begin again (VICTON Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216007978' target='_blank'><img src='https://resources.tidal.com/images/b8b5641c/efe8/4a19/9bbe/3b405d4542b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/2_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ2) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/빅톤 (VICTON)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
