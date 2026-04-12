@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 정태춘 ( Tidal Jeong Tae CHun )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 정태춘 ( Tidal Jeong Tae CHun )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/98f206b2/f34a/4150/b70f/115e588a9b69/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/16793298' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 정태춘</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>정태춘 – 시대의 아픔을 노래하며 고향의 정취를 담아낸, ‘가을 노래’처럼 깊어가는 음유시인</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jeong Tae CHun</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Jeong Tae Chun – A lyrical poet singing of the era's pain and capturing the nostalgia of home, deepening like 'Autumn Song'</div><p>한국 포크 음악의 거장이자 시대를 노래하는 음유시인, 정태춘을 소개합니다. 그의 음악은 단순한 유행을 넘어, 깊은 성찰과 인간에 대한 따뜻한 시선을 담고 있어요. 삶의 애환과 사회의 부조리를 꿰뚫는 그의 노랫말은 오랫동안 많은 이들의 마음을 울려왔습니다.</p><p>Introducing Jeong Tae Chun, a master of Korean folk music and a lyrical poet singing of the times. His music transcends mere trends, containing deep reflection and a warm perspective on humanity. His lyrics, penetrating life's sorrows and social absurdities, have resonated with many for a long time.</p><p>✧</p><p>시대정신을 담은 노래의 시작</p><p>정태춘은 1970년대 후반, 암울했던 시대 상황 속에서 진솔한 노랫말로 대중의 공감을 얻으며 데뷔했습니다. 그의 음악은 단순한 사랑 노래를 넘어 사회 비판적인 메시지를 담아냈고, 이는 당시 젊은 세대에게 큰 울림을 주었습니다. 척박한 현실 속에서도 희망을 잃지 않으려는 그의 노래는 많은 이들에게 위로와 용기를 주었습니다.</p><p>The Beginning of Songs Containing the Zeitgeist</p><p>Jeong Tae Chun debuted in the late 1970s, gaining public sympathy with sincere lyrics amidst the bleak era. His music went beyond simple love songs to include socially critical messages, which resonated greatly with the younger generation at the time. His songs, trying not to lose hope in the barren reality, provided comfort and courage to many.</p><p>✧</p><p>음악적 특징과 독창적인 퍼포먼스</p><p>그의 음악은 포크를 기반으로 다양한 장르를 융합하며 독창적인 스타일을 구축했습니다. 서정적인 멜로디와 시적인 가사는 물론, 때로는 강렬한 록 사운드를 선보이기도 합니다. 또한, 그는 공연 무대에서 사회 문제에 대한 자신의 생각을 거침없이 이야기하며 관객과의 소통을 중요하게 생각했습니다.</p><p>Musical Characteristics and Unique Performance</p><p>His music established a unique style by fusing various genres based on folk. In addition to lyrical melodies and poetic lyrics, he sometimes presented intense rock sounds. Furthermore, he openly discussed his thoughts on social issues on stage, valuing communication with the audience.</p><p>✧</p><p>주요 활동과 사회 참여</p><p>정태춘은 꾸준한 음반 발매와 공연 활동을 통해 자신의 음악 세계를 확장해왔습니다. 그는 단순한 가수를 넘어 사회 운동에도 적극적으로 참여하며 자신의 신념을 행동으로 보여주었습니다. 저작권 운동을 비롯한 다양한 사회 활동은 그의 음악에 깊이를 더하고, 많은 이들에게 영감을 주었습니다.</p><p>Major Activities and Social Participation</p><p>Jeong Tae Chun has expanded his musical world through continuous album releases and performances. Beyond being a simple singer, he actively participated in social movements, showing his beliefs in action. Various social activities, including the copyright movement, added depth to his music and inspired many.</p><p>✧</p><p>미래와 음악적 의미</p><p>정태춘의 음악은 시대를 초월하여 여전히 많은 사람들에게 깊은 감동과 울림을 선사합니다. 그의 노래는 단순한 유행을 따르는 것이 아니라, 인간의 보편적인 감정과 사회 문제에 대한 진지한 고민을 담고 있기 때문입니다. 앞으로도 그의 음악은 우리 사회에 긍정적인 영향을 미치며 오랫동안 기억될 것입니다.</p><p>Future and Musical Significance</p><p>Jeong Tae Chun's music transcends time and continues to offer deep emotion and resonance to many people. His songs do not simply follow trends, but contain universal human emotions and serious contemplation on social issues. His music will continue to have a positive impact on our society and will be remembered for a long time.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2014] 2nd</div>
+<div><a href='https://tidal.com/album/117583690' target='_blank'>https://tidal.com/album/117583690</a></div>
+<div>Jeong Tae-Chun(정태춘) - This night(이런밤)</div>
+<div>Jeong Tae-Chun(정태춘) - Autumn song(Sky){가을노래(하늘)}</div>
+<div>Jeong Tae-Chun(정태춘) - Competition of our neighborhood best korean classi</div>
+<div>Jeong Tae-Chun(정태춘) - Hometown(고향)</div>
+<div>Jeong Tae-Chun(정태춘) - Morning hymn(아침찬가)</div>
+<div>Jeong Tae-Chun(정태춘) - Morning of mountain temple(Dawn Song of Dervish){산</div>
+<div>Jeong Tae-Chun(정태춘) - The Dead Father Song(사 망부가)</div>
+<div>Jeong Tae-Chun(정태춘) - I'll miss mother(그리운 어머니)</div>
+<div>Jeong Tae-Chun(정태춘) - Put one's hands together(합장)</div>
+<div>Jeong Tae-Chun(정태춘) - Happy birthday(Korean popular song) ({생일을 축하합니다(건전</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117583690' target='_blank'><img src='https://resources.tidal.com/images/98f206b2/f34a/4150/b70f/115e588a9b69/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 1st</div>
+<div><a href='https://tidal.com/album/117583679' target='_blank'>https://tidal.com/album/117583679</a></div>
+<div>Jeong Tae-Chun(정태춘) - The village of poet(시인의 마을)</div>
+<div>Jeong Tae-Chun(정태춘) - Want to love(사랑하고 싶소)</div>
+<div>Jeong Tae-Chun(정태춘) - Candlelight(촛불)</div>
+<div>Jeong Tae-Chun(정태춘) - From the western sea(서해에서)</div>
+<div>Jeong Tae-Chun(정태춘) - Swing(그네)</div>
+<div>Jeong Tae-Chun(정태춘) - Song of Mokpo(Eighty-eighth ri){목포의 노래(여드레 팔십리)}</div>
+<div>Jeong Tae-Chun(정태춘) - Aha! Wings(아하! 날개여)</div>
+<div>Jeong Tae-Chun(정태춘) - Winter Trees(겨울나무)</div>
+<div>Jeong Tae-Chun(정태춘) - Drizzle of love(사랑의 보슬비)</div>
+<div>Jeong Tae-Chun(정태춘) - Mountainous district beyond the mountains(산너머 두메)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117583679' target='_blank'><img src='https://resources.tidal.com/images/9611f06d/8c45/4819/b25a/35b605bfcf16/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/1_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ1) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/정태춘 (Jeong Tae CHun)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
