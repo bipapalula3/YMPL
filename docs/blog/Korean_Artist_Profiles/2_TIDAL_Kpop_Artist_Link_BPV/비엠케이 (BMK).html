@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 비엠케이 ( Tidal BMK )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 비엠케이 ( Tidal BMK )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/62905219/6c3e/47e6/982e/07e7d2e714df/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/3999488 ---------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 비엠케이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>영혼을 울리는 목소리, '하루만'의 애절함부터 'City of Soul'의 깊은 울림까지 전하는 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> BMK</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Soulful Voice: A Diva Conveying Everything from the Heartrending 'A Day Without You' to the Deep Resonance of 'City of Soul'</div><p>폭발적인 가창력과 깊은 감성으로 무대를 압도하는 디바, BMK를 소개합니다. 그녀는 R&B, Soul, Blues를 넘나들며 독보적인 음악 세계를 구축해왔습니다. 듣는 이의 마음을 어루만지는 BMK의 음악 속으로 함께 떠나볼까요?</p><p>Introducing the diva BMK, who captivates the stage with her explosive vocals and deep emotions. She has built a unique musical world that spans R&B, Soul, and Blues. Shall we embark on a journey into BMK's music that touches the hearts of listeners?</p><p>✧</p><p>그룹 탄생</p><p>BMK는 솔로 가수로 데뷔하기 전, 다양한 그룹 활동을 통해 음악적 기반을 다졌습니다. 허니 패밀리, 가라사대 등의 그룹에서 활동하며 힙합, R&B 등 다양한 장르를 섭렵했습니다. 이러한 경험은 그녀만의 독특한 음악 스타일을 완성하는 데 큰 영향을 미쳤습니다.</p><p>Birth of a Group</p><p>Before debuting as a solo singer, BMK built her musical foundation through various group activities. She explored various genres such as hip-hop and R&B while working with groups such as Honey Family and Garasadae. This experience had a significant impact on completing her unique musical style.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>BMK의 음악은 깊은 울림과 진솔한 감성이 특징입니다. 그녀는 특유의 허스키한 보이스와 폭발적인 가창력으로 듣는 이들에게 깊은 감동을 선사합니다. 특히, 그녀의 무대는 에너지 넘치는 퍼포먼스와 혼신의 힘을 다하는 열정으로 가득합니다.</p><p>Music and Performance</p><p>BMK's music is characterized by deep resonance and sincere emotions. She delivers deep emotion to listeners with her unique husky voice and explosive singing ability. In particular, her stage is full of energetic performances and passionate dedication.</p><p>✧</p><p>주요 활동</p><p>BMK는 '꽃피는 봄이 오면', '하루만' 등 수많은 히트곡을 발표하며 대중적인 사랑을 받았습니다. 또한, 드라마 OST, 뮤지컬, 예능 프로그램 등 다양한 분야에서 활약하며 폭넓은 활동을 이어가고 있습니다. 그녀의 다재다능함은 끊임없이 새로운 모습을 보여주는 원동력이 되고 있습니다.</p><p>Main Activities</p><p>BMK has received popular love by releasing numerous hit songs such as 'When Spring Blooms' and 'Just One Day'. In addition, she continues to be active in various fields such as drama OSTs, musicals, and entertainment programs. Her versatility is the driving force behind constantly showing new sides.</p><p>✧</p><p>미래/의미</p><p>BMK는 앞으로도 끊임없이 새로운 음악을 선보이며 팬들과 소통할 예정입니다. 그녀의 음악은 단순한 노래를 넘어, 삶의 희로애락을 담아내는 예술 작품과 같습니다. BMK의 음악은 앞으로도 많은 사람들에게 위로와 감동을 선사할 것입니다.</p><p>Future/Meaning</p><p>BMK plans to continue to showcase new music and communicate with fans in the future. Her music is more than just a song; it is like a work of art that captures the joys and sorrows of life. BMK's music will continue to provide comfort and inspiration to many people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Hidden Masterpiece Episode.4 Waiting leaves a wound</div>
+<div><a href='https://tidal.com/album/416179512' target='_blank'>https://tidal.com/album/416179512</a></div>
+<div>BMK - Waiting leaves a wound (Remastered)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/416179512' target='_blank'><img src='https://resources.tidal.com/images/4d6d452f/86d2/4ec1/b8de/3607085eb547/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 33.3</div>
+<div><a href='https://tidal.com/album/331793003' target='_blank'>https://tidal.com/album/331793003</a></div>
+<div>BMK - Goodbye to longing</div>
+<div>BMK, RGP - LIFE GOES ON (feat. RGP)</div>
+<div>BMK - A day without you</div>
+<div>BMK - GRAVITY</div>
+<div>BMK - I FOUND YOU</div>
+<div>BMK, RGP - LIFE GOES ON (feat. RGP)</div>
+<div>BMK - HALO</div>
+<div>BMK - City of soul</div>
+<div>BMK - Walking Home Blues</div>
+<div>BMK - Dear My Friend</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/331793003' target='_blank'><img src='https://resources.tidal.com/images/9072d51b/222a/4f3d/b310/481121aedab2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 2021 Again in color</div>
+<div><a href='https://tidal.com/album/178098015' target='_blank'>https://tidal.com/album/178098015</a></div>
+<div>BMK - in color Short Version</div>
+<div>BMK - in color String Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/178098015' target='_blank'><img src='https://resources.tidal.com/images/b1c8fe0e/6e41/4531/8287/e3de8947e88b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Palm</div>
+<div><a href='https://tidal.com/album/147007046' target='_blank'>https://tidal.com/album/147007046</a></div>
+<div>BMK - Palm</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/147007046' target='_blank'><img src='https://resources.tidal.com/images/b2a21efb/7ddf/47ec/9197/83a16a85fab8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Listen & Repeat</div>
+<div><a href='https://tidal.com/album/147007033' target='_blank'>https://tidal.com/album/147007033</a></div>
+<div>BMK - Everthing is fine</div>
+<div>BMK - Just in case</div>
+<div>BMK - cherry blossom</div>
+<div>BMK - Black Out</div>
+<div>BMK - Imcomplete bar</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/147007033' target='_blank'><img src='https://resources.tidal.com/images/46db7897/1a09/49d0/83c6/120860c88e14/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 못갖춘마디</div>
+<div><a href='https://tidal.com/album/147007001' target='_blank'>https://tidal.com/album/147007001</a></div>
+<div>BMK - 못갖춘마디</div>
+<div>BMK - cherry blossom</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/147007001' target='_blank'><img src='https://resources.tidal.com/images/bb691e99/b501/4d37/98ec/9688c105cfdc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Everthing is fine</div>
+<div><a href='https://tidal.com/album/147006973' target='_blank'>https://tidal.com/album/147006973</a></div>
+<div>BMK - Everthing is fine</div>
+<div>BMK - Black Out</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/147006973' target='_blank'><img src='https://resources.tidal.com/images/f23a0323/7e4f/483d/b3d2/4ec9cf7094d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 무사백동수 PART1</div>
+<div><a href='https://tidal.com/album/366091008' target='_blank'>https://tidal.com/album/366091008</a></div>
+<div>BMK - 야뇌(野餒) song ver</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366091008' target='_blank'><img src='https://resources.tidal.com/images/59bb5cd5/642f/43b1/9a0b/7ad2ba1dbdbe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Merry Christmas (Far Away you)</div>
+<div><a href='https://tidal.com/album/147006966' target='_blank'>https://tidal.com/album/147006966</a></div>
+<div>BMK - Merry Christmas (Far Away you)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/147006966' target='_blank'><img src='https://resources.tidal.com/images/041b69cc/26b9/4b06/9d68/efcb81071881/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2010] Love is faster than farewell</div>
+<div><a href='https://tidal.com/album/188525208' target='_blank'>https://tidal.com/album/188525208</a></div>
+<div>BMK - Love is faster than farewell</div>
+<div>BMK, 정선국 - Treasure hunt</div>
+<div>BMK - Because you are</div>
+<div>BMK - Wake up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188525208' target='_blank'><img src='https://resources.tidal.com/images/7ca41680/ad05/4357/bd7f/ba273c37c18d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Get up</div>
+<div><a href='https://tidal.com/album/147006946' target='_blank'>https://tidal.com/album/147006946</a></div>
+<div>BMK - Get up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/147006946' target='_blank'><img src='https://resources.tidal.com/images/c67f6ddf/1f26/4e4e/8b56/6d7b014e4a89/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Bad Guy (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/216119743' target='_blank'>https://tidal.com/album/216119743</a></div>
+<div>BMK - Wounded Waiting for You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216119743' target='_blank'><img src='https://resources.tidal.com/images/740d035d/3473/4117/af5d/8cd5b99fde76/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] BMK & Good Fellaz</div>
+<div><a href='https://tidal.com/album/219383265' target='_blank'>https://tidal.com/album/219383265</a></div>
+<div>BMK - Everyday (Feat. 길 Of 리쌍, Sean2slow)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219383265' target='_blank'><img src='https://resources.tidal.com/images/61ce9fac/1a5e/4554/a0d9/6beebedb69cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] 999.9</div>
+<div><a href='https://tidal.com/album/381008723' target='_blank'>https://tidal.com/album/381008723</a></div>
+<div>BMK - 물들어</div>
+<div>BMK - 여담</div>
+<div>BMK - 하루살이</div>
+<div>BMK - You & Me</div>
+<div>BMK - 이별했니-</div>
+<div>BMK - 향기에 취한 시간</div>
+<div>BMK - 눈물 흘러</div>
+<div>BMK - Happiness</div>
+<div>BMK - 바람이 전하는 노래</div>
+<div>BMK - 왜 자꾸만</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381008723' target='_blank'><img src='https://resources.tidal.com/images/46a794db/b2ea/4dbc/bd75/950214c4261b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] SOUL FOOD</div>
+<div><a href='https://tidal.com/album/146399292' target='_blank'>https://tidal.com/album/146399292</a></div>
+<div>BMK - Intro (Thanks For)</div>
+<div>BMK, Park Mi Hyun - Intro (Thanks For)</div>
+<div>BMK - Real Life</div>
+<div>BMK - When flowering spring comes</div>
+<div>BMK - Rainbow</div>
+<div>BMK, gary - Rainbow</div>
+<div>BMK - From the time O loved you</div>
+<div>BMK - Queen & I</div>
+<div>BMK, Tiger Jk - Queen & I</div>
+<div>BMK - Boomerang</div>
+<div>BMK - Set Me Free</div>
+<div>BMK - Love Virus</div>
+<div>BMK, Yoonmirae - Love Virus</div>
+<div>BMK - Even if I try to erase</div>
+<div>BMK - Back</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146399292' target='_blank'><img src='https://resources.tidal.com/images/3b913bed/6e07/4531/95a6/05bd98cc982e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/2_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ2) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/비엠케이 (BMK)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
