@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 악동뮤지션 ( Tidal AKMU )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 악동뮤지션 ( Tidal AKMU )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/93e84de8/091e/4eab/8b8c/fe5cedbdb30b/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/22205620' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 악동뮤지션</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>악동뮤지션 (AKMU) – ‘Love Lee’의 풋풋한 설렘과 ‘DADA’의 자유로운 에너지, 음악적 스펙트럼을 넓혀가는 독창적인 듀오</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> AKMU</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>AKMU (악동뮤지션) – From the youthful excitement of ‘Love Lee’ to the free-spirited energy of ‘DADA,’ an original duo expanding their musical spectrum</div><p>개성 넘치는 음악과 독특한 감성으로 대중을 사로잡는 남매 듀오, 악동뮤지션 (AKMU)입니다. 이찬혁, 이수현 두 멤버는 어린 시절부터 음악적 재능을 키워, 자신들만의 색깔을 담은 음악을 선보이고 있습니다. 그들의 음악은 듣는 이에게 신선한 즐거움과 깊은 공감을 선사하며, 끊임없이 변화하고 성장하는 모습을 보여주고 있습니다.</p><p>AKMU (악동뮤지션), a sibling duo captivating the public with their unique music and distinctive sensibility. Members Lee Chan-hyuk and Lee Su-hyun have cultivated their musical talents since childhood, showcasing music with their own unique colors. Their music offers listeners fresh enjoyment and deep empathy, demonstrating a constantly evolving and growing presence.</p><p>✧</p><p>그룹 탄생: 순수한 음악적 만남</p><p>악동뮤지션은 TV 오디션 프로그램을 통해 대중에게 알려지기 시작했습니다. 몽골에서의 홈스쿨링 경험은 그들의 음악적 감수성을 더욱 풍부하게 만들었습니다. 순수한 시선으로 세상을 바라보는 그들의 음악은 많은 사람들에게 깊은 인상을 남겼습니다.</p><p>Group Formation: A Pure Musical Encounter</p><p>AKMU first became known to the public through a TV audition program. Their homeschooling experience in Mongolia enriched their musical sensibilities. Their music, which views the world with a pure perspective, has left a deep impression on many.</p><p>✧</p><p>음악 및 퍼포먼스: 다채로운 음악적 스펙트럼</p><p>악동뮤지션의 음악은 팝, 알앤비, 포크 등 다양한 장르를 넘나들며 독창적인 사운드를 구축합니다. 이찬혁의 작사, 작곡 능력과 이수현의 청량한 보컬은 완벽한 조화를 이룹니다. 때로는 재치 넘치는 가사로, 때로는 진솔한 감정으로 듣는 이들의 마음을 사로잡습니다.</p><p>Music and Performance: A Diverse Musical Spectrum</p><p>AKMU's music spans various genres such as pop, R&B, and folk, creating a unique sound. Lee Chan-hyuk's songwriting ability and Lee Su-hyun's refreshing vocals create a perfect harmony. They captivate listeners with witty lyrics and sincere emotions.</p><p>✧</p><p>주요 활동: 끊임없는 성장과 변화</p><p>악동뮤지션은 꾸준한 앨범 발매와 다양한 콜라보레이션을 통해 활동 영역을 넓혀가고 있습니다. 아이유, 자이언티, 빈지노 등 다양한 아티스트와의 협업은 그들의 음악적 스펙트럼을 더욱 풍성하게 만들었습니다. 또한, 콘서트와 방송 출연을 통해 대중과의 소통을 이어가고 있습니다.</p><p>Key Activities: Continuous Growth and Change</p><p>AKMU is expanding its activities through steady album releases and various collaborations. Collaborations with various artists such as IU, Zion.T, and Beenzino have enriched their musical spectrum. They also continue to communicate with the public through concerts and broadcast appearances.</p><p>✧</p><p>미래/의미: 독창적인 음악 세계의 지속</p><p>악동뮤지션은 앞으로도 자신들만의 독창적인 음악 세계를 구축해 나갈 것입니다. 그들의 음악은 단순한 유행을 따르기보다는, 진솔한 이야기와 메시지를 담아내려 노력합니다. 끊임없이 변화하고 성장하는 악동뮤지션의 미래는 더욱 기대됩니다.</p><p>Future/Meaning: Sustaining a Unique Musical World</p><p>AKMU will continue to build their own unique musical world in the future. Their music strives to contain sincere stories and messages rather than simply following trends. The future of AKMU, who are constantly changing and growing, is highly anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] DADA (AKMU X CookieRun)</div>
+<div><a href='https://tidal.com/album/426053841' target='_blank'>https://tidal.com/album/426053841</a></div>
+<div>AKMU (악동뮤지션) - DADA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/426053841' target='_blank'><img src='https://resources.tidal.com/images/09b7de0a/c2ec/4e92/9be5/aae327c3b56d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] LOVE EPISODE</div>
+<div><a href='https://tidal.com/album/366125191' target='_blank'>https://tidal.com/album/366125191</a></div>
+<div>AKMU (악동뮤지션) - Hero</div>
+<div>AKMU (악동뮤지션) - Long D</div>
+<div>AKMU (악동뮤지션) - Peace of Cake</div>
+<div>AKMU (악동뮤지션) - Answer Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366125191' target='_blank'><img src='https://resources.tidal.com/images/55f6fede/f6d6/41d0/a636/f0035fd022cb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Love Lee</div>
+<div><a href='https://tidal.com/album/311555801' target='_blank'>https://tidal.com/album/311555801</a></div>
+<div>AKMU (악동뮤지션) - Love Lee</div>
+<div>AKMU (악동뮤지션) - Fry’s Dream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/311555801' target='_blank'><img src='https://resources.tidal.com/images/8a19d21b/9e94/4cee/957d/748b0646242f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] NEXT EPISODE</div>
+<div><a href='https://tidal.com/album/192168358' target='_blank'>https://tidal.com/album/192168358</a></div>
+<div>AKMU (악뮤), 이선희 - Hey kid, Close your eyes (with Lee Sun Hee)</div>
+<div>AKMU (악뮤), 아이유(IU) - NAKKA (with IU)</div>
+<div>AKMU (악뮤), Zion.T - BENCH (with Zion.T)</div>
+<div>AKMU (악뮤), 빈지노(Beenzino) - Tictoc Tictoc Tictoc (with Beenzino)</div>
+<div>AKMU (악뮤), 잔나비 최정훈 - Next episode (with Choi Jung Hoon of JANNABI)</div>
+<div>AKMU (악뮤), Crush - Stupid love song (with Crush)</div>
+<div>AKMU (악뮤), 샘김 (Sam Kim) - EVEREST (with Sam Kim)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/192168358' target='_blank'><img src='https://resources.tidal.com/images/9b2ae60b/3350/4b5a/9819/9035f6c65a18/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] HAPPENING</div>
+<div><a href='https://tidal.com/album/162358560' target='_blank'>https://tidal.com/album/162358560</a></div>
+<div>AKMU (악동뮤지션) - HAPPENING</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/162358560' target='_blank'><img src='https://resources.tidal.com/images/86c0fcc6/6c5c/4871/bfa0/757e6cf1d6e2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] AKMU [항해] TOUR LIVE</div>
+<div><a href='https://tidal.com/album/172431009' target='_blank'>https://tidal.com/album/172431009</a></div>
+<div>AKMU (악동뮤지션) - 물 만난 물고기</div>
+<div>AKMU (악동뮤지션) - 리얼리티 & Crescendo</div>
+<div>AKMU (악동뮤지션) - RE-BYE & 다리꼬지마 & 사소한 것에서</div>
+<div>AKMU (악동뮤지션) - 얼음들</div>
+<div>AKMU (악동뮤지션) - 사랑상실증</div>
+<div>AKMU (악동뮤지션) - 어떻게 이별까지 사랑하겠어, 널 사랑하는 거지</div>
+<div>AKMU (악동뮤지션) - FREEDOM</div>
+<div>AKMU (악동뮤지션) - DINOSAUR</div>
+<div>AKMU (악동뮤지션) - 사람들이 움직이는 게</div>
+<div>AKMU (악동뮤지션) - Give Love</div>
+<div>AKMU (악동뮤지션) - 200%</div>
+<div>AKMU (악동뮤지션) - 오랜 날 오랜 밤</div>
+<div>AKMU (악동뮤지션) - 시간을 갖자</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/172431009' target='_blank'><img src='https://resources.tidal.com/images/ca65d212/fb87/4983/aeb4/48f30c5ef21f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 항해</div>
+<div><a href='https://tidal.com/album/170272954' target='_blank'>https://tidal.com/album/170272954</a></div>
+<div>AKMU (악동뮤지션) - 뱃노래</div>
+<div>AKMU (악동뮤지션) - 물 만난 물고기</div>
+<div>AKMU (악동뮤지션) - 어떻게 이별까지 사랑하겠어, 널 사랑하는 거지</div>
+<div>AKMU (악동뮤지션) - 달</div>
+<div>AKMU (악동뮤지션) - FREEDOM</div>
+<div>AKMU (악동뮤지션) - 더 사랑해줄걸</div>
+<div>AKMU (악동뮤지션) - 고래</div>
+<div>AKMU (악동뮤지션) - 밤 끝없는 밤</div>
+<div>AKMU (악동뮤지션) - 작별 인사</div>
+<div>AKMU (악동뮤지션) - 시간을 갖자</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170272954' target='_blank'><img src='https://resources.tidal.com/images/080ad717/21ef/4a9d/b586/d900ee68c9cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 사춘기 하 (思春記 下)</div>
+<div><a href='https://tidal.com/album/170271426' target='_blank'>https://tidal.com/album/170271426</a></div>
+<div>AKMU (악동뮤지션) - 생방송</div>
+<div>AKMU (악동뮤지션) - 리얼리티</div>
+<div>AKMU (악동뮤지션) - 오랜 날 오랜 밤</div>
+<div>AKMU (악동뮤지션) - 못생긴 척</div>
+<div>AKMU (악동뮤지션) - CHOCOLADY</div>
+<div>AKMU (악동뮤지션) - YOU KNOW ME</div>
+<div>AKMU (악동뮤지션) - 집에 돌아오는 길</div>
+<div>AKMU (악동뮤지션) - 그때 그 아이들은</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170271426' target='_blank'><img src='https://resources.tidal.com/images/e0bc134e/7d16/4da6/80f4/fa5fc832f7dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] SUMMER EPISODE</div>
+<div><a href='https://tidal.com/album/170271833' target='_blank'>https://tidal.com/album/170271833</a></div>
+<div>AKMU (악동뮤지션) - DINOSAUR</div>
+<div>AKMU (악동뮤지션) - MY DARLING</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170271833' target='_blank'><img src='https://resources.tidal.com/images/a4a71ab7/dee6/487a/8f36/5b08a0145f67/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] 사춘기 상 (思春記 上)</div>
+<div><a href='https://tidal.com/album/170268410' target='_blank'>https://tidal.com/album/170268410</a></div>
+<div>AKMU (악동뮤지션) - RE-BYE</div>
+<div>AKMU (악동뮤지션) - 사람들이 움직이는 게</div>
+<div>AKMU (악동뮤지션) - 새삼스럽게 왜</div>
+<div>AKMU (악동뮤지션) - 초록창가</div>
+<div>AKMU (악동뮤지션) - 사소한 것에서</div>
+<div>AKMU (악동뮤지션) - 주변인</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170268410' target='_blank'><img src='https://resources.tidal.com/images/27fdf78e/bcf0/4011/bd64/7fc644758c43/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 시간과 낙엽</div>
+<div><a href='https://tidal.com/album/170260747' target='_blank'>https://tidal.com/album/170260747</a></div>
+<div>AKMU (악동뮤지션) - 시간과 낙엽</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170260747' target='_blank'><img src='https://resources.tidal.com/images/d8577734/9557/4910/850c/4c3eb5a9024d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] PLAY</div>
+<div><a href='https://tidal.com/album/170260802' target='_blank'>https://tidal.com/album/170260802</a></div>
+<div>AKMU (악동뮤지션) - Give Love</div>
+<div>AKMU (악동뮤지션) - 200%</div>
+<div>AKMU (악동뮤지션) - 얼음들</div>
+<div>AKMU (악동뮤지션) - 지하철에서</div>
+<div>AKMU (악동뮤지션) - 가르마</div>
+<div>AKMU (악동뮤지션) - 인공잔디</div>
+<div>AKMU (악동뮤지션) - 안녕</div>
+<div>AKMU (악동뮤지션) - 작은별</div>
+<div>AKMU (악동뮤지션) - 길이나</div>
+<div>AKMU (악동뮤지션) - 소재</div>
+<div>AKMU (악동뮤지션) - Galaxy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170260802' target='_blank'><img src='https://resources.tidal.com/images/c40728e6/6bf4/40cf/95d9/97ebb25cabc8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 콩떡빙수</div>
+<div><a href='https://tidal.com/album/306272490' target='_blank'>https://tidal.com/album/306272490</a></div>
+<div>AKMU (악동뮤지션) - 콩떡빙수 - Extreme Summer By East4A (Radio Edit Versio</div>
+<div>AKMU (악동뮤지션) - 콩떡빙수 - Cool Summer By Junjaman (Radio Edit Version</div>
+<div>AKMU (악동뮤지션) - 콩떡빙수 - Extreme Summer By East4A</div>
+<div>AKMU (악동뮤지션) - 콩떡빙수 - Cool Summer By Junjaman</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306272490' target='_blank'><img src='https://resources.tidal.com/images/56e49758/9a3a/4574/b867/9e694bed7517/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 콩떡빙수 Extreme Cool Summer Edition</div>
+<div><a href='https://tidal.com/album/306273670' target='_blank'>https://tidal.com/album/306273670</a></div>
+<div>AKMU (악동뮤지션) - 콩떡빙수</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306273670' target='_blank'><img src='https://resources.tidal.com/images/b4a91e7b/209d/433b/bb08/167d5a28f369/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] KPOPSTAR Season2 TOP 3 Part.2</div>
+<div><a href='https://tidal.com/album/332421704' target='_blank'>https://tidal.com/album/332421704</a></div>
+<div>AKMU (악동뮤지션) - The Love Of Foreigner</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/332421704' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] All about my romance (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/332413118' target='_blank'>https://tidal.com/album/332413118</a></div>
+<div>AKMU (악동뮤지션) - I Love You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/332413118' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] KPOPSTAR Season2</div>
+<div><a href='https://tidal.com/album/332442924' target='_blank'>https://tidal.com/album/332442924</a></div>
+<div>AKMU (악동뮤지션) - Don't Cross Your Leg</div>
+<div>AKMU (악동뮤지션) - You Are Attractive</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/332442924' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/1_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ1) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/악동뮤지션 (AKMU)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
