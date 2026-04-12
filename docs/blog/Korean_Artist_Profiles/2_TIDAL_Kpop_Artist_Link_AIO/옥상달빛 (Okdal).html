@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 옥상달빛 ( Tidal Okdal )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 옥상달빛 ( Tidal Okdal )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/52f377e4/36fc/4c3b/b54c/8a670ce8503e/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5782824' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/10754614' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 옥상달빛</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>옥상달빛 – 일상 속 작은 행복을 노래하는, '정말 고마웠어요'의 따뜻한 위로와 '없는게 메리트'의 솔직한 공감을 전하는 듀오</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Okdal</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Okdal – A duo singing about small joys in everyday life, delivering warm comfort with 'For Your Happiness' and honest empathy with 'Special Idiot'.</div><p>일상의 소소한 이야기를 따뜻한 시선으로 담아내는 듀오, 옥상달빛을 소개합니다. 섬세한 가사와 편안한 멜로디로 많은 이들의 공감을 얻으며 꾸준히 사랑받고 있어요. 듣는 이의 마음을 어루만지는 음악으로 특별한 감동을 선사하는 옥상달빛의 세계로 함께 떠나볼까요?</p><p>Let me introduce Okdal, a duo that captures the small stories of everyday life with a warm gaze. They have been steadily loved for their delicate lyrics and comfortable melodies that resonate with many. Shall we embark on a journey into the world of Okdal, whose music touches the hearts of listeners and delivers special emotion?</p><p>✧</p><p>그룹의 탄생</p><p>옥상달빛은 김윤주와 박세진, 두 명의 여성 뮤지션으로 이루어진 듀오입니다. 대학 시절 만나 음악적 교감을 나누며 2010년 EP 앨범 '옥상달빛'으로 데뷔했어요. 풋풋하고 진솔한 음악으로 인디씬에서 주목받기 시작했답니다.</p><p>Birth of the Group</p><p>Okdal is a duo consisting of two female musicians, Kim Yoon-ju and Park Se-jin. They met in college, shared musical sympathy, and debuted in 2010 with the EP album 'Okdal'. They began to gain attention in the indie scene with their fresh and sincere music.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>옥상달빛의 음악은 어쿠스틱 사운드를 기반으로 서정적인 가사가 돋보입니다. 일상적인 소재를 특유의 감성으로 풀어내어 듣는 이들에게 깊은 공감과 위로를 전달해요. 차분하면서도 따뜻한 음색은 옥상달빛 음악의 가장 큰 매력이라고 할 수 있죠.</p><p>Music and Performance</p><p>Okdal's music is based on acoustic sounds and features lyrical lyrics. They express everyday subjects with their unique sensibility, conveying deep empathy and comfort to listeners. The calm yet warm tone is the biggest charm of Okdal's music.</p><p>✧</p><p>주요 활동</p><p>옥상달빛은 꾸준한 앨범 발매와 공연 활동을 통해 팬들과 소통하고 있습니다. 라디오 DJ로도 활약하며 특유의 편안하고 재치 있는 입담을 선보이기도 했어요. 드라마 OST 참여, 다른 아티스트와의 협업 등 다양한 활동을 통해 음악적 스펙트럼을 넓혀가고 있답니다.</p><p>Main Activities</p><p>Okdal communicates with fans through consistent album releases and performances. They have also been active as radio DJs, showcasing their unique, comfortable, and witty speaking skills. They are expanding their musical spectrum through various activities such as participating in drama OSTs and collaborating with other artists.</p><p>✧</p><p>미래/의미</p><p>옥상달빛은 앞으로도 변함없이 진솔한 음악으로 대중에게 다가갈 거예요. 평범한 일상 속에서 발견하는 작은 행복과 위로를 노래하며 오랫동안 사랑받는 뮤지션으로 남을 것으로 기대됩니다. 그들의 음악은 지친 일상에 따뜻한 위로를 건네는 소중한 선물이 될 것입니다.</p><p>Future/Meaning</p><p>Okdal will continue to approach the public with sincere music without change. They are expected to remain a long-loved musician, singing about the small joys and comfort found in everyday life. Their music will be a precious gift offering warm comfort to tired daily lives.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Heavenly Ever After (Original Television Soundtrack), Pt. 3</div>
+<div><a href='https://tidal.com/album/431851069' target='_blank'>https://tidal.com/album/431851069</a></div>
+<div>Okdal - For your happiness</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431851069' target='_blank'><img src='https://resources.tidal.com/images/940e90d0/4b95/492b/9a1b/655de1491054/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Happy Ending</div>
+<div><a href='https://tidal.com/album/341257241' target='_blank'>https://tidal.com/album/341257241</a></div>
+<div>Okdal - Happy Ending</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/341257241' target='_blank'><img src='https://resources.tidal.com/images/864c4986/27e3/444f/8e73/bbd74134bc0a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Forty</div>
+<div><a href='https://tidal.com/album/351208244' target='_blank'>https://tidal.com/album/351208244</a></div>
+<div>Okdal - Okdal Radio 6</div>
+<div>Okdal - Self Introduction</div>
+<div>Okdal - Diving</div>
+<div>Okdal - Dwayne Johnson</div>
+<div>Okdal - I Promise I Won’t Die</div>
+<div>Okdal - Thirty</div>
+<div>Okdal - Social Media</div>
+<div>Okdal - Special Idiot</div>
+<div>Okdal - Monologue</div>
+<div>Okdal - No One to Know</div>
+<div>Okdal - To Begin</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/351208244' target='_blank'><img src='https://resources.tidal.com/images/9a5a513b/b927/455d/a628/35227cde1807/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] [THE SEASONS Vol. 2] _Choi Jung Hoon's Midnight Park_ ReːWake x Okdal</div>
+<div><a href='https://tidal.com/album/299398759' target='_blank'>https://tidal.com/album/299398759</a></div>
+<div>Okdal - Hardcore Life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/299398759' target='_blank'><img src='https://resources.tidal.com/images/e172b66a/3095/4769/bb2e/52792e87e3f7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Ceremony</div>
+<div><a href='https://tidal.com/album/382512080' target='_blank'>https://tidal.com/album/382512080</a></div>
+<div>Okdal - Ceremony</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382512080' target='_blank'><img src='https://resources.tidal.com/images/77a83aa6/828c/4f7b/9da0/fbf0e0700b2f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] A Perfect Ending</div>
+<div><a href='https://tidal.com/album/230622952' target='_blank'>https://tidal.com/album/230622952</a></div>
+<div>Okdal - A Perfect Ending</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230622952' target='_blank'><img src='https://resources.tidal.com/images/6f6c269d/151d/4d0c/a412/832b9ed1b42c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Blue Night</div>
+<div><a href='https://tidal.com/album/323822498' target='_blank'>https://tidal.com/album/323822498</a></div>
+<div>Okdal - Blue Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/323822498' target='_blank'><img src='https://resources.tidal.com/images/71b2638c/89a8/4efc/9016/536d59bff15b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 당신의 안녕 Say hello to me (HUSH Original Television Soundtrack), Pt.1</div>
+<div><a href='https://tidal.com/album/165945181' target='_blank'>https://tidal.com/album/165945181</a></div>
+<div>Okdal - 당신의 안녕 Say hello to me (HUSH Original Television S</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/165945181' target='_blank'><img src='https://resources.tidal.com/images/80b4ce2a/55c6/4d8c/a3d1/217669fef1c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Still a Child</div>
+<div><a href='https://tidal.com/album/307662297' target='_blank'>https://tidal.com/album/307662297</a></div>
+<div>Okdal - Take a stroll</div>
+<div>Okdal - Take care, wherever you are</div>
+<div>Okdal - Still a Child</div>
+<div>Okdal - Your absence</div>
+<div>Okdal - Nobody sleeps tonight</div>
+<div>Okdal - Open secrets (Bonus track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/307662297' target='_blank'><img src='https://resources.tidal.com/images/e2be2640/ac55/49a6/b39d/5416fa73c669/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] More than friends (Original Television Soundtrack), Pt.9</div>
+<div><a href='https://tidal.com/album/185671628' target='_blank'>https://tidal.com/album/185671628</a></div>
+<div>Okdal - Each Other</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185671628' target='_blank'><img src='https://resources.tidal.com/images/0e6c004c/b0be/4ef8/8495/394cdacc2949/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 님 찾아가는 길 (MBC 라디오 `대한민국 임시정부 수립 100주년 특별기획` 주제곡)</div>
+<div><a href='https://tidal.com/album/301492655' target='_blank'>https://tidal.com/album/301492655</a></div>
+<div>옥상달빛 - 님 찾아가는 길</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/301492655' target='_blank'><img src='https://resources.tidal.com/images/c53ef216/c58a/454a/b7f2/f6bea98a53b0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Miss Lee (Original Television Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/196151271' target='_blank'>https://tidal.com/album/196151271</a></div>
+<div>Okdal - Good Luck</div>
+<div>Okdal - Good Luck</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196151271' target='_blank'><img src='https://resources.tidal.com/images/b485574d/dd55/4230/8323/c0db55141bac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Good Night</div>
+<div><a href='https://tidal.com/album/336500375' target='_blank'>https://tidal.com/album/336500375</a></div>
+<div>Okdal - Good Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/336500375' target='_blank'><img src='https://resources.tidal.com/images/b599b2da/6f17/43be/918a/f56831fa628e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Day _ Night</div>
+<div><a href='https://tidal.com/album/346106967' target='_blank'>https://tidal.com/album/346106967</a></div>
+<div>Okdal - The Best Days</div>
+<div>Okdal - Life on Stage</div>
+<div>Okdal - Balance</div>
+<div>Okdal - Nights</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346106967' target='_blank'><img src='https://resources.tidal.com/images/68547b11/cb13/4616/9afa/c5eecda33a5c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Beautiful As You Are</div>
+<div><a href='https://tidal.com/album/346200460' target='_blank'>https://tidal.com/album/346200460</a></div>
+<div>Okdal - Beautiful As You Are</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346200460' target='_blank'><img src='https://resources.tidal.com/images/e9bd4b28/524f/40bf/b349/2f41ca2f1a23/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The Best Days</div>
+<div><a href='https://tidal.com/album/346013425' target='_blank'>https://tidal.com/album/346013425</a></div>
+<div>Okdal - The Best Days</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346013425' target='_blank'><img src='https://resources.tidal.com/images/0af32b5b/03ef/432d/bff3/3efc38c13298/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Nights</div>
+<div><a href='https://tidal.com/album/331578910' target='_blank'>https://tidal.com/album/331578910</a></div>
+<div>Okdal - Nights</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/331578910' target='_blank'><img src='https://resources.tidal.com/images/bb16b32a/80d3/4d9c/80b4/ddac6f77d540/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Life on Stage</div>
+<div><a href='https://tidal.com/album/302152589' target='_blank'>https://tidal.com/album/302152589</a></div>
+<div>Okdal - Life on Stage</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302152589' target='_blank'><img src='https://resources.tidal.com/images/b9970d83/7713/4951/98a2/94bc39c13db7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Balance</div>
+<div><a href='https://tidal.com/album/311980373' target='_blank'>https://tidal.com/album/311980373</a></div>
+<div>Okdal - Balance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/311980373' target='_blank'><img src='https://resources.tidal.com/images/f9a15fa1/1925/448f/aa58/349542011d00/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Mon_Fri</div>
+<div><a href='https://tidal.com/album/366490156' target='_blank'>https://tidal.com/album/366490156</a></div>
+<div>Okdal - Intern</div>
+<div>Okdal - Love Advice</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366490156' target='_blank'><img src='https://resources.tidal.com/images/1067484f/8c23/4ff0/936f/e2a832e48967/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Coming of age</div>
+<div><a href='https://tidal.com/album/366471373' target='_blank'>https://tidal.com/album/366471373</a></div>
+<div>Okdal - Coming of age</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366471373' target='_blank'><img src='https://resources.tidal.com/images/b8f3ae25/60ac/4bff/84a4/c79cc50ee51b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Walk</div>
+<div><a href='https://tidal.com/album/366301180' target='_blank'>https://tidal.com/album/366301180</a></div>
+<div>Okdal - Walk</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366301180' target='_blank'><img src='https://resources.tidal.com/images/25123cdd/a599/4b08/b5df/b3336595bd59/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] The Lover</div>
+<div><a href='https://tidal.com/album/366296281' target='_blank'>https://tidal.com/album/366296281</a></div>
+<div>Okdal - The Lover</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366296281' target='_blank'><img src='https://resources.tidal.com/images/784d53fd/5bb2/4105/a298/6332ad6bd82a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] RE_TAG</div>
+<div><a href='https://tidal.com/album/366267914' target='_blank'>https://tidal.com/album/366267914</a></div>
+<div>Okdal - Run</div>
+<div>Okdal - The Lover</div>
+<div>Okdal - Walk</div>
+<div>Okdal - Sketchbook</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366267914' target='_blank'><img src='https://resources.tidal.com/images/504231c5/be22/41df/bdb6/b7d909569fd3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Great thinking - thinking about you</div>
+<div><a href='https://tidal.com/album/366273659' target='_blank'>https://tidal.com/album/366273659</a></div>
+<div>Ha Sang Wook, Okdal - Great thinking - thinking about you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366273659' target='_blank'><img src='https://resources.tidal.com/images/84af4b4a/06b2/496c/815b/e8536c6c439b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Drinking Solo, Pt. 1 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196117615' target='_blank'>https://tidal.com/album/196117615</a></div>
+<div>Okdal - Could I Leave</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196117615' target='_blank'><img src='https://resources.tidal.com/images/c52a4d31/72b6/48bc/98b3/a75796e47a59/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] The Time We Weren't in Love (Original Soundtrack) Part.2</div>
+<div><a href='https://tidal.com/album/339901172' target='_blank'>https://tidal.com/album/339901172</a></div>
+<div>Okdal - My love song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339901172' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2015] The Strange Times</div>
+<div><a href='https://tidal.com/album/366285878' target='_blank'>https://tidal.com/album/366285878</a></div>
+<div>Okdal - The Strange Times (feat. Yoo Seungho)</div>
+<div>Okdal - The Strange Times</div>
+<div>Okdal - Wanna disappear (feat. Jung Eunchae)</div>
+<div>Okdal - Wanna disappear</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366285878' target='_blank'><img src='https://resources.tidal.com/images/771d308e/3191/451b/8a0d/05d7c609e7a5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Run</div>
+<div><a href='https://tidal.com/album/366295332' target='_blank'>https://tidal.com/album/366295332</a></div>
+<div>Okdal - Run</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366295332' target='_blank'><img src='https://resources.tidal.com/images/f1158cf7/ed57/463e/9aef/76f7ff234650/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 가끔은 그래도 괜찮아</div>
+<div><a href='https://tidal.com/album/216007886' target='_blank'>https://tidal.com/album/216007886</a></div>
+<div>Okdal - 가끔은 그래도 괜찮아</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216007886' target='_blank'><img src='https://resources.tidal.com/images/1824f60d/f726/42e1/ba05/b6eba4e9cf3f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Thank You Again</div>
+<div><a href='https://tidal.com/album/366315511' target='_blank'>https://tidal.com/album/366315511</a></div>
+<div>Okdal - Thank You Again</div>
+<div>Okdal - Thank You Again (Cinema Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366315511' target='_blank'><img src='https://resources.tidal.com/images/681249a0/28e5/49a5/b80c/978dcce66c5b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Enchante (Nice to Meet You)</div>
+<div><a href='https://tidal.com/album/366248347' target='_blank'>https://tidal.com/album/366248347</a></div>
+<div>Okdal - Enchante (Nice to Meet You)</div>
+<div>Okdal - Life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366248347' target='_blank'><img src='https://resources.tidal.com/images/c0500d6b/6d75/4815/82b9/2fb05a2511cd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Where</div>
+<div><a href='https://tidal.com/album/366312383' target='_blank'>https://tidal.com/album/366312383</a></div>
+<div>Okdal - Ding Dong</div>
+<div>Okdal - Newness</div>
+<div>Okdal - It's Okay</div>
+<div>Okdal - Tickle</div>
+<div>Okdal - Children Song</div>
+<div>Okdal - A Will</div>
+<div>Okdal - The Air</div>
+<div>Okdal - Hero</div>
+<div>Okdal - Help</div>
+<div>Okdal - Farewell</div>
+<div>Okdal - Forest</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366312383' target='_blank'><img src='https://resources.tidal.com/images/52f377e4/36fc/4c3b/b54c/8a670ce8503e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 그대를 사랑합니다 Ost Pt.3</div>
+<div><a href='https://tidal.com/album/101306106' target='_blank'>https://tidal.com/album/101306106</a></div>
+<div>옥상달빛 - 보호해줘</div>
+<div>진아 - 못 잊을 이야기</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/101306106' target='_blank'><img src='https://resources.tidal.com/images/9b6f7ec7/1a1c/4727/977e/6fcff334f4d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 그대를 사랑합니다 Ost Pt.2</div>
+<div><a href='https://tidal.com/album/101306326' target='_blank'>https://tidal.com/album/101306326</a></div>
+<div>옥상달빛 - 그대와 나</div>
+<div>이영훈, 김윤주 of 옥상달빛 - 봄이 오면</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/101306326' target='_blank'><img src='https://resources.tidal.com/images/3637c901/559e/41a9/ad8f/08a07a4e22bc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Each Other</div>
+<div><a href='https://tidal.com/album/366242057' target='_blank'>https://tidal.com/album/366242057</a></div>
+<div>Okdal - Bird (feat. Yoo Se Yoon)</div>
+<div>Okdal - Gift</div>
+<div>Okdal - One Goat, 40 Buck</div>
+<div>Okdal - Okdal Radio 3 (Bonus Track)</div>
+<div>Okdal - One Goat, 40 Buck (Live, Bonus Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366242057' target='_blank'><img src='https://resources.tidal.com/images/b2c48c0b/4938/4961/bb37/2b6a4528a15d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2011] 28</div>
+<div><a href='https://tidal.com/album/366246882' target='_blank'>https://tidal.com/album/366246882</a></div>
+<div>Okdal - Dalmoon</div>
+<div>Okdal - Nostalgia</div>
+<div>Okdal - None the better or Courage</div>
+<div>Okdal - Don't Leave me</div>
+<div>Okdal - Nothing Lasts Forever</div>
+<div>Okdal - 25</div>
+<div>Okdal - Cheer Up</div>
+<div>Okdal - Comeback, My Friend</div>
+<div>Okdal - Sleepless</div>
+<div>Okdal - Okdal Radio 2 (Skit)</div>
+<div>Okdal - Thank You</div>
+<div>Okdal - Nothing Lasts Forever (String Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366246882' target='_blank'><img src='https://resources.tidal.com/images/9288d933/89fd/4a6f/97ce/3295db84f611/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Okdal Radio</div>
+<div><a href='https://tidal.com/album/366243069' target='_blank'>https://tidal.com/album/366243069</a></div>
+<div>Okdal - Hello, Goodbye</div>
+<div>Okdal - Hardcore Life</div>
+<div>Okdal - Okdal Radio</div>
+<div>Okdal - Okdal</div>
+<div>Okdal - Another Day</div>
+<div>Okdal - Twin</div>
+<div>Okdal - Easy Thing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366243069' target='_blank'><img src='https://resources.tidal.com/images/0f65e9b7/9254/4322/bdcf/8e2cbaeb1eaa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/옥상달빛 (Okdal)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
