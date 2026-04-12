@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 아이오아이 ( Tidal I.O.I )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 아이오아이 ( Tidal I.O.I )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/d88e8899/7724/4408/b83f/98e4ad25a8bb/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/28207187' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 아이오아이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>아이오아이 (I.O.I) - ‘너무너무너무’ 신나는 에너지와 ‘소나기’의 애틋한 감성을 담아낸, 짧지만 강렬했던 프로젝트 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> I.O.I</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>I.O.I - A short but impactful project group capturing the exciting energy of 'Very Very Very' and the tender emotion of 'DOWNPOUR'</div><p>국민 프로듀서의 손으로 탄생한 그룹, 아이오아이를 소개합니다! 데뷔 전부터 뜨거운 관심 속에 시작해, 다채로운 매력으로 팬들의 마음을 사로잡았죠. 짧은 활동 기간 동안 수많은 히트곡을 남기며 K팝 역사에 잊을 수 없는 족적을 남겼답니다.</p><p>Let me introduce I.O.I, a group born from the hands of national producers! Starting with great interest even before their debut, they captivated fans with their diverse charms. They left an unforgettable mark on K-pop history, leaving behind numerous hit songs during their short period of activity.</p><p>✧</p><p>그룹 탄생</p><p>아이오아이는 엠넷의 서바이벌 프로그램 '프로듀스 101'을 통해 결성되었어요. 각기 다른 소속사의 연습생들이 모여 꿈을 향해 달려가는 과정이 큰 감동을 선사했죠. 최종 11인으로 선정된 멤버들은 프로젝트 그룹 아이오아이로서 활동을 시작하게 됩니다.</p><p>Group Formation</p><p>I.O.I was formed through Mnet's survival program 'Produce 101'. The process of trainees from different agencies coming together and running towards their dreams was deeply moving. The final 11 members were selected and began their activities as the project group I.O.I.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>아이오아이는 다양한 장르를 소화하며 폭넓은 음악 스펙트럼을 보여줬어요. 상큼발랄한 댄스곡부터 감성적인 발라드까지, 각 멤버의 개성을 살린 퍼포먼스가 돋보였죠. 특히, 멤버들의 시너지가 돋보이는 무대들은 팬들에게 깊은 인상을 남겼습니다.</p><p>Music and Performance</p><p>I.O.I showcased a wide range of musical spectrum by digesting various genres. From refreshing and lively dance songs to emotional ballads, the performances that highlighted the individuality of each member were outstanding. In particular, the stages that showed the synergy of the members left a deep impression on the fans.</p><p>✧</p><p>주요 활동</p><p>아이오아이는 'Dream Girls', 'Whatta Man', 'Very Very Very' 등 발표하는 곡마다 큰 사랑을 받았어요. 음원 차트 1위를 석권하는 것은 물론, 각종 시상식에서 신인상을 휩쓸며 존재감을 드러냈죠. 짧은 활동 기간이었지만, 광고, 예능 등 다양한 분야에서 활약하며 대중적인 인기를 얻었습니다.</p><p>Key Activities</p><p>I.O.I received great love for every song they released, including 'Dream Girls', 'Whatta Man', and 'Very Very Very'. They not only topped the music charts, but also swept the rookie awards at various award ceremonies, showing their presence. Although it was a short period of activity, they gained popularity in various fields such as advertising and entertainment.</p><p>✧</p><p>미래/의미</p><p>아이오아이는 짧은 활동을 마무리했지만, 멤버들은 각자의 자리에서 활발하게 활동을 이어가고 있어요. 아이오아이 활동은 멤버들에게 소중한 경험이자 성장의 발판이 되었죠. 팬들에게는 영원히 잊을 수 없는 아름다운 추억으로 남아있습니다.</p><p>Future/Meaning</p><p>Although I.O.I finished their short activities, the members are actively continuing their activities in their respective positions. I.O.I activities were a valuable experience and a stepping stone for growth for the members. It remains a beautiful and unforgettable memory for the fans.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2021] DOWNPOUR</div>
+<div><a href='https://tidal.com/album/196141464' target='_blank'>https://tidal.com/album/196141464</a></div>
+<div>아이오아이 (I.O.I) - DOWNPOUR</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141464' target='_blank'><img src='https://resources.tidal.com/images/b0b2bc9a/1fcb/47da/9d18/ea4f5888221f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Whatta Man (Good Man)</div>
+<div><a href='https://tidal.com/album/196141478' target='_blank'>https://tidal.com/album/196141478</a></div>
+<div>아이오아이 (I.O.I) - Whatta Man (Good man)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141478' target='_blank'><img src='https://resources.tidal.com/images/f843b745/ec35/47b0/8e66/a8ce3e2ac218/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Moonlovers - Scarlet Heart Ryeo (Official TV Soundtrack) Part 3</div>
+<div><a href='https://tidal.com/album/196117243' target='_blank'>https://tidal.com/album/196117243</a></div>
+<div>아이오아이 (I.O.I) - I Love You, I Remeber You</div>
+<div>아이오아이 (I.O.I) - I Love You, I Remeber You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196117243' target='_blank'><img src='https://resources.tidal.com/images/074f421f/6bc5/4865/b7a5/0813e6b2de12/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Miss Me_</div>
+<div><a href='https://tidal.com/album/196142069' target='_blank'>https://tidal.com/album/196142069</a></div>
+<div>아이오아이 (I.O.I) - Very Very Very</div>
+<div>아이오아이 (I.O.I) - Hold On</div>
+<div>아이오아이 (I.O.I) - More More</div>
+<div>아이오아이 (I.O.I) - PING PONG</div>
+<div>아이오아이 (I.O.I) - M-Maybe</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142069' target='_blank'><img src='https://resources.tidal.com/images/ffc94a88/e57e/4ca4/8bb8/e4dbe950266d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] I.O.I 1st Mini Album ′Chrysalis′</div>
+<div><a href='https://tidal.com/album/196140517' target='_blank'>https://tidal.com/album/196140517</a></div>
+<div>아이오아이 (I.O.I) - I.O.I (Intro)</div>
+<div>아이오아이 (I.O.I) - Dream Girls</div>
+<div>아이오아이 (I.O.I) - Knock Knock Knock</div>
+<div>아이오아이 (I.O.I) - Doo Wap</div>
+<div>아이오아이 (I.O.I) - Crush</div>
+<div>아이오아이 (I.O.I) - When The Cherry Blossoms Fade</div>
+<div>아이오아이 (I.O.I) - Pick Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196140517' target='_blank'><img src='https://resources.tidal.com/images/8887bb63/dfbf/40b1/82ee/33c78edb1128/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/1_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ1) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/아이오아이 (I.O.I)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
