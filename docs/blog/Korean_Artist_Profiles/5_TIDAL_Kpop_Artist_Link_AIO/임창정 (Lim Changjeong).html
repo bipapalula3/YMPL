@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 임창정 ( Tidal Lim Changjeong )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 임창정 ( Tidal Lim Changjeong )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/04983403/30f8/4aa1/b3c2/1a1ec60c24d9/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10366413' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/10611233' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 임창정</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>애절한 발라드부터 유쾌한 댄스곡까지, ‘소주 한 잔’에 녹아든 희로애락을 노래하는 만능 엔터테이너</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lim Changjeong</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>From heartfelt ballads to cheerful dance tunes, a versatile entertainer who sings the joys and sorrows melted in 'A Glass of SOJU'.</div><p>독보적인 음색과 뛰어난 가창력으로 대중의 마음을 사로잡은 가수 임창정입니다. 그는 배우, 예능인으로서도 활약하며 다재다능한 면모를 보여주고 있습니다. 특유의 솔직함과 유머 감각으로 오랜 시간 동안 사랑받고 있습니다.</p><p>Lim Changjung is a singer who has captivated the public with his unique tone and exceptional singing ability. He also showcases his versatility as an actor and entertainer. He has been loved for a long time for his unique honesty and sense of humor.</p><p>✧</p><p>만능 엔터테이너의 시작</p><p>임창정은 가수로 데뷔하기 전 영화와 드라마에서 연기 활동을 먼저 시작했어요. 그의 끼와 재능은 다양한 분야에서 빛을 발하며 대중에게 눈도장을 찍었습니다. 이후 가수로 전향하며 본격적인 음악 활동을 시작하게 됩니다.</p><p>The Beginning of a Versatile Entertainer</p><p>Before debuting as a singer, Lim Changjung started his career in film and television dramas. His talent and aptitude shone in various fields, making a mark on the public. He later switched to singing and began his full-fledged music career.</p><p>✧</p><p>다채로운 음악 세계</p><p>그의 음악은 애절한 발라드를 중심으로 다양한 장르를 아우릅니다. 특유의 호소력 짙은 목소리와 공감 가는 가사는 많은 이들의 심금을 울립니다. 또한, 무대 위에서의 열정적인 퍼포먼스는 그의 음악을 더욱 풍성하게 만들어줍니다.</p><p>A Diverse World of Music</p><p>His music encompasses various genres, centered around heartfelt ballads. His unique, appealing voice and relatable lyrics resonate with many people. In addition, his passionate performances on stage enrich his music even further.</p><p>✧</p><p>끊임없는 활동</p><p>임창정은 꾸준한 음반 발매와 콘서트를 통해 팬들과 소통하고 있습니다. 드라마, 영화, 예능 프로그램 등 다양한 분야에서도 활발하게 활동하며 대중과의 거리를 좁히고 있습니다. 그의 다재다능함은 현재 진행형입니다.</p><p>Continuous Activities</p><p>Lim Changjung communicates with fans through consistent album releases and concerts. He is also actively involved in various fields such as dramas, movies, and entertainment programs, narrowing the distance with the public. His versatility is ongoing.</p><p>✧</p><p>변함없는 감동</p><p>그의 음악은 단순한 유행을 넘어, 시대를 초월하는 감동을 선사합니다. 진솔한 가사와 깊이 있는 음악성은 오랜 시간이 흘러도 변치 않는 그의 가치를 증명합니다. 앞으로도 그의 음악이 우리에게 어떤 울림을 줄지 기대됩니다.</p><p>Unchanging Emotion</p><p>His music transcends mere trends, delivering timeless emotion. His sincere lyrics and profound musicality prove his enduring value even after a long time. We look forward to what kind of resonance his music will bring us in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2021] LIVE ON UNPLUGGED - IM CHANG JUNG</div>
+<div><a href='https://tidal.com/album/196167768' target='_blank'>https://tidal.com/album/196167768</a></div>
+<div>IM CHANG JUNG - Again (Live ver.)</div>
+<div>IM CHANG JUNG - Already To Me (Live ver.)</div>
+<div>IM CHANG JUNG - Marry me (Live ver.)</div>
+<div>IM CHANG JUNG - Love Affair (Live ver.)</div>
+<div>IM CHANG JUNG - Look Like Me (Live ver.)</div>
+<div>IM CHANG JUNG - Advice (Live ver.)</div>
+<div>IM CHANG JUNG - Sad monologue (Live ver.)</div>
+<div>IM CHANG JUNG - A glass of SOJU (Live ver.)</div>
+<div>IM CHANG JUNG - Long time no see (Live ver.)</div>
+<div>IM CHANG JUNG - A guy like me (Live ver.)</div>
+<div>IM CHANG JUNG - Love Again (Live ver.)</div>
+<div>IM CHANG JUNG - The Love Committed (Live ver.)</div>
+<div>IM CHANG JUNG - There has never been a day I haven′t loved you (Li</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196167768' target='_blank'><img src='https://resources.tidal.com/images/04983403/30f8/4aa1/b3c2/1a1ec60c24d9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] We were..</div>
+<div><a href='https://tidal.com/album/216078277' target='_blank'>https://tidal.com/album/216078277</a></div>
+<div>Xia, IM CHANG JUNG - We were--</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216078277' target='_blank'><img src='https://resources.tidal.com/images/1405237e/03eb/4b86/b8ba/14a10ca8cb2e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 흔한 노래... 흔한 멜로디...</div>
+<div><a href='https://tidal.com/album/167382507' target='_blank'>https://tidal.com/album/167382507</a></div>
+<div>임창정 (feat. 제드) - 보내야 했을까 (feat. 제드)</div>
+<div>임창정 - 어느 하루가</div>
+<div>임창정 - 흔한 노래</div>
+<div>임창정 - 바보</div>
+<div>임창정 - 죽어라 잊어도</div>
+<div>임창정 - 토로</div>
+<div>임창정 (feat. 더레이) - 너는 행복 (feat. 더레이)</div>
+<div>임창정 - 마지막 악수</div>
+<div>임창정 - 우리가 헤어질 때</div>
+<div>임창정 - 행복한 남자 TO.ECO Version</div>
+<div>임창정 (feat. 조현민,김대산,이재언,김빛나라,소원) - 너의 미소 (feat. 조현민,김대산,이재언,김빛나라,소원)</div>
+<div>임창정 (feat. 이박사) - 임박사와 함께 춤을 (feat. 이박사)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167382507' target='_blank'><img src='https://resources.tidal.com/images/d28d3ed7/e4af/4ab7/a467/1736198304e7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 친한사람</div>
+<div><a href='https://tidal.com/album/167382480' target='_blank'>https://tidal.com/album/167382480</a></div>
+<div>임창정 - INTRO Intro</div>
+<div>임창정 - 친한사람 String Version</div>
+<div>임창정 - 친한사람</div>
+<div>임창정 (feat. LE,이박사) - 임박사와 함께 춤을 (feat. LE,이박사)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167382480' target='_blank'><img src='https://resources.tidal.com/images/d5c330b6/204c/4a9c/b41a/81e915cda3c9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 조선총잡이 (Original Television Soundtrack) Pt.4</div>
+<div><a href='https://tidal.com/album/365859187' target='_blank'>https://tidal.com/album/365859187</a></div>
+<div>IM CHANG JUNG - Disc1 - 기다리라 해요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/365859187' target='_blank'><img src='https://resources.tidal.com/images/e6dacf9d/8641/46fd/998f/c2bd8bf4ff2a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] SHIN HYE SUNG - Once Again #2</div>
+<div><a href='https://tidal.com/album/98823469' target='_blank'>https://tidal.com/album/98823469</a></div>
+<div>Shin Hye Sung, IM CHANG JUNG - Doll</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98823469' target='_blank'><img src='https://resources.tidal.com/images/f6065603/2d87/4b1f/9401/d27d196e4c90/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 나란놈이란</div>
+<div><a href='https://tidal.com/album/167382431' target='_blank'>https://tidal.com/album/167382431</a></div>
+<div>임창정 - 나란놈이란</div>
+<div>임창정 - 괜찮을런지</div>
+<div>임창정 (feat. 김창렬) - 문을 여시오 (feat. 김창렬)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167382431' target='_blank'><img src='https://resources.tidal.com/images/46758856/e34f/43c6/a11d/87e70d7de4e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 그렇게 당해놓고 (용감한형제 10주년 앨범 Pt.1)</div>
+<div><a href='https://tidal.com/album/230981095' target='_blank'>https://tidal.com/album/230981095</a></div>
+<div>임창정, Maboos - 그렇게 당해놓고</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230981095' target='_blank'><img src='https://resources.tidal.com/images/b07ad2ae/c420/4a89/a899/4318645b9efa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] 이소라의 프로포즈 2집</div>
+<div><a href='https://tidal.com/album/223263041' target='_blank'>https://tidal.com/album/223263041</a></div>
+<div>IM CHANG JUNG - 결혼해 줘 Live Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223263041' target='_blank'><img src='https://resources.tidal.com/images/10142c38/55bd/41f5/9399/2614b5c307c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/5_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ5) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/임창정 (Lim Changjeong)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
