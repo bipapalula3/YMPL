@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이은하 ( Tidal Lee Eun Ha )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이은하 ( Tidal Lee Eun Ha )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/053ab9ac/472c/4a15/aef8/24092c86bc4b/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/19441770' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/10641867' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이은하</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>‘미소를 띄우며 나를 보낸 그 모습처럼’ 애절한 감성, ‘소녀와 가로등’ 속 아련한 추억을 노래하는 영원한 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lee Eun Ha</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>The eternal diva singing of heartbreaking emotions in 'Just like the smile you showed me,' and wistful memories in 'A Girl and a Streetlight'</div><p>폭발적인 가창력과 섬세한 감정 표현으로 1970년대 후반부터 1980년대 가요계를 휩쓴 디바, 이은하를 소개합니다. 허스키하면서도 호소력 짙은 목소리는 듣는 이의 마음을 사로잡으며 깊은 여운을 남기죠. 시대를 초월하는 그녀의 음악은 여전히 많은 이들에게 사랑받고 있습니다.</p><p>Let me introduce Lee Eun Ha, a diva who swept the music scene from the late 1970s to the 1980s with her explosive singing ability and delicate emotional expression. Her husky yet appealing voice captivates listeners and leaves a deep impression. Her timeless music is still loved by many.</p><p>✧</p><p>데뷔와 음악적 시작</p><p>어린 나이에 데뷔한 이은하는 뛰어난 가창력으로 빠르게 대중의 주목을 받았어요. 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여주었죠. 특히 그녀의 허스키한 보이스는 독보적인 매력으로 자리 잡았습니다.</p><p>Debut and Musical Beginnings</p><p>Lee Eun Ha, who debuted at a young age, quickly gained public attention for her outstanding singing ability. She showcased a wide range of musical spectrums, covering various genres. In particular, her husky voice became a unique charm.</p><p>✧</p><p>다채로운 음악 세계</p><p>이은하는 발라드, 팝, 록 등 다양한 장르를 넘나들며 자신만의 음악 스타일을 구축했습니다. 그녀의 노래는 사랑과 이별, 인생의 희로애락을 진솔하게 담아내어 많은 이들의 공감을 얻었죠. 섬세한 감정 표현과 폭발적인 가창력은 그녀의 음악을 더욱 특별하게 만들어줍니다.</p><p>A Diverse Musical World</p><p>Lee Eun Ha has established her own musical style by crossing various genres such as ballads, pop, and rock. Her songs honestly portray love, parting, and the joys and sorrows of life, gaining empathy from many. Delicate emotional expression and explosive singing ability make her music even more special.</p><p>✧</p><p>시대의 아이콘</p><p>1970년대와 80년대를 대표하는 가수로, 이은하는 수많은 히트곡을 발표하며 대중문화에 큰 영향을 미쳤습니다. 그녀의 음악은 단순한 유행을 넘어 시대를 반영하는 거울과 같은 역할을 했죠. 그녀의 패션 스타일 또한 젊은 세대 사이에서 큰 인기를 끌었습니다.</p><p>An Icon of the Era</p><p>As a representative singer of the 1970s and 80s, Lee Eun Ha had a great impact on popular culture by releasing numerous hit songs. Her music served as a mirror reflecting the times, going beyond simple trends. Her fashion style was also very popular among the younger generation.</p><p>✧</p><p>영원한 디바, 현재진행형</p><p>시간이 흘러도 변치 않는 감동을 선사하는 이은하. 그녀의 음악은 과거의 향수를 불러일으키는 동시에, 현재에도 여전히 깊은 울림을 줍니다. 앞으로도 그녀만의 독보적인 음악 세계를 통해 더욱 많은 사람들에게 감동과 위로를 전해줄 것으로 기대됩니다.</p><p>An Eternal Diva, Still Ongoing</p><p>Lee Eun Ha offers unchanging emotion even as time passes. Her music evokes nostalgia for the past, while still resonating deeply in the present. It is expected that she will continue to deliver emotion and comfort to many more people through her unique musical world.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] 이은하 ‘86</div>
+<div><a href='https://tidal.com/album/284601813' target='_blank'>https://tidal.com/album/284601813</a></div>
+<div>Eunha Lee - 미소를 띄우며 나를보낸 그 모습처럼</div>
+<div>Eunha Lee - 미소를 띄우며 나를보낸 그 모습처럼 (경음악)</div>
+<div>Eunha Lee - 소녀와 가로등</div>
+<div>Eunha Lee - 우리와 한강</div>
+<div>Eunha Lee - 지하철을 타고</div>
+<div>Eunha Lee - 여자의 샘</div>
+<div>Eunha Lee - 여자의 샘 (경음악)</div>
+<div>Eunha Lee - 당신은 나</div>
+<div>Eunha Lee - 애인</div>
+<div>Eunha Lee - 누군가를 사랑할 때</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/284601813' target='_blank'><img src='https://resources.tidal.com/images/e6e03161/3fef/4148/9e03/be68690b8f54/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 이은하 `87</div>
+<div><a href='https://tidal.com/album/286155098' target='_blank'>https://tidal.com/album/286155098</a></div>
+<div>Eunha Lee - 안녕! 여보세요</div>
+<div>Eunha Lee - 안녕! 여보세요 (경음악)</div>
+<div>Eunha Lee - 드라이브</div>
+<div>Eunha Lee - 망각</div>
+<div>Eunha Lee - 우리는하나</div>
+<div>Eunha Lee - 여심</div>
+<div>Eunha Lee - 여심 (경음악)</div>
+<div>Eunha Lee - 나는 꽃이랍니다</div>
+<div>Eunha Lee - 장미빛 스카프</div>
+<div>Eunha Lee - 떠돌이별</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/286155098' target='_blank'><img src='https://resources.tidal.com/images/e948a3ca/c666/405e/8158/647bb7dc3533/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 이은하 Golden Hits</div>
+<div><a href='https://tidal.com/album/287882922' target='_blank'>https://tidal.com/album/287882922</a></div>
+<div>Eunha Lee - 청춘</div>
+<div>Eunha Lee - 꽃뱀</div>
+<div>Eunha Lee - 봄비</div>
+<div>Eunha Lee - 겨울장미</div>
+<div>Eunha Lee - 여자의 샘</div>
+<div>Eunha Lee - 미소를 띄우며 나를보낸 그 모습처럼</div>
+<div>Eunha Lee - 노란 민들레</div>
+<div>Eunha Lee - 사랑도 못해본 사람은</div>
+<div>Eunha Lee - 네가 좋아</div>
+<div>Eunha Lee - 밤차</div>
+<div>Eunha Lee - 바람에 구름가듯</div>
+<div>Eunha Lee - 아직도 그대는 내사랑</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287882922' target='_blank'><img src='https://resources.tidal.com/images/a73cbbe0/d725/4158/8820/41e59406f83d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 애정을 주는 마음 (12_ Mix)</div>
+<div><a href='https://tidal.com/album/311289373' target='_blank'>https://tidal.com/album/311289373</a></div>
+<div>이은하 - 애정을 주는 마음 (12- Mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/311289373' target='_blank'><img src='https://resources.tidal.com/images/e2b4af92/1060/43fe/afe1/802dd63639aa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] THE GIFT SETS</div>
+<div><a href='https://tidal.com/album/200314721' target='_blank'>https://tidal.com/album/200314721</a></div>
+<div>Eunha Lee - 당신께만</div>
+<div>Eunha Lee - 돌이키지마</div>
+<div>Eunha Lee - 아리송해</div>
+<div>Eunha Lee - 밤차</div>
+<div>Eunha Lee - 사랑도 못해본 사람은</div>
+<div>Eunha Lee - 탈출</div>
+<div>Eunha Lee - 미소를 띄우며 나를 보낸 그 모습처럼</div>
+<div>Eunha Lee - 겨울 장미</div>
+<div>Eunha Lee - 청춘</div>
+<div>Eunha Lee - 바람에 구름가듯</div>
+<div>Eunha Lee - 다시는 사랑하지 않으리</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200314721' target='_blank'><img src='https://resources.tidal.com/images/7b495a32/7cae/41d3/9095/a86b70b6eeda/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 그 여자의 바다 (Original Television Soundtrack), Pt. 15</div>
+<div><a href='https://tidal.com/album/419130187' target='_blank'>https://tidal.com/album/419130187</a></div>
+<div>이은하 - 보고 싶었다는 그 말</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/419130187' target='_blank'><img src='https://resources.tidal.com/images/e322edfb/e209/46f7/a187/bbb40d364889/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 왜 널 사랑했는지</div>
+<div><a href='https://tidal.com/album/99310035' target='_blank'>https://tidal.com/album/99310035</a></div>
+<div>이은하 - 왜 널 사랑했는지</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/99310035' target='_blank'><img src='https://resources.tidal.com/images/6abc06f5/f9f6/4ba3/acb9/460605d7302b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] Golden Best</div>
+<div><a href='https://tidal.com/album/224369766' target='_blank'>https://tidal.com/album/224369766</a></div>
+<div>Eunha Lee - 돌이키지마</div>
+<div>Eunha Lee - 미소를 띄우며 나를 보낸 그 모습처럼</div>
+<div>Eunha Lee - 사랑도 못해본 사람은</div>
+<div>Eunha Lee - 봄비</div>
+<div>Eunha Lee - 노란 민들레</div>
+<div>Eunha Lee - 청춘</div>
+<div>Eunha Lee - 아직도 그대는 내사랑</div>
+<div>Eunha Lee - 밤차</div>
+<div>Eunha Lee - 겨울장미</div>
+<div>Eunha Lee - 네가 좋아</div>
+<div>Eunha Lee - 여자의 샘</div>
+<div>Eunha Lee - 바람에 구름가듯</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/224369766' target='_blank'><img src='https://resources.tidal.com/images/053ab9ac/472c/4a15/aef8/24092c86bc4b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1991] Winter Rose_Shadow of Love</div>
+<div><a href='https://tidal.com/album/210726492' target='_blank'>https://tidal.com/album/210726492</a></div>
+<div>Eunha Lee - Winter Rose</div>
+<div>Eunha Lee - 한순간</div>
+<div>Eunha Lee - Spring Rain</div>
+<div>Eunha Lee - Night Train</div>
+<div>Eunha Lee - I'm Not Sure</div>
+<div>Eunha Lee - Quiet Smile</div>
+<div>Eunha Lee - The Shadow of Love</div>
+<div>Eunha Lee - Although You're Gone</div>
+<div>Eunha Lee - Say Nothing</div>
+<div>Eunha Lee - Only to You</div>
+<div>Eunha Lee - Welcoming You</div>
+<div>Eunha Lee - Leave Without Words</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210726492' target='_blank'><img src='https://resources.tidal.com/images/62bbd9e1/acbc/44d7/8596/8c2f29178350/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1990] 오리지날 힛송 총결산집 - 겨울장미 _ 한순간 _ 봄비</div>
+<div><a href='https://tidal.com/album/207869828' target='_blank'>https://tidal.com/album/207869828</a></div>
+<div>Eunha Lee - Winter Rose</div>
+<div>Eunha Lee - Nick of Time</div>
+<div>Eunha Lee - Sring Rain</div>
+<div>Eunha Lee - Night Train</div>
+<div>Eunha Lee - It's Very Confusing</div>
+<div>Eunha Lee - Quiet Smile</div>
+<div>Eunha Lee - The Shadow of Love</div>
+<div>Eunha Lee - Even If My Love Is Gone</div>
+<div>Eunha Lee - Don't Say Anything</div>
+<div>Eunha Lee - Only For You</div>
+<div>Eunha Lee - Welcoming My Love</div>
+<div>Eunha Lee - When You Say Good Bye, No Words Needed</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/207869828' target='_blank'><img src='https://resources.tidal.com/images/28409ae7/45fe/43e5/87a6/b712bda439bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1989] 돌이키지마 돌이키지마</div>
+<div><a href='https://tidal.com/album/246774271' target='_blank'>https://tidal.com/album/246774271</a></div>
+<div>이은하 - 돌이키지마 Don</div>
+<div>이은하 - 그대 있기에 Because You</div>
+<div>이은하 - DRIVE DRIVE</div>
+<div>이은하 - 나의 창에 햇살을 Sunlight on My Window</div>
+<div>이은하 - 버스 정류장 Bus Station</div>
+<div>이은하 - 바람아 Oh Wind</div>
+<div>이은하 - 아름다운 밤을 위해 For a Beautiful Light</div>
+<div>이은하 - 욕망의 계절 Season of Desire</div>
+<div>이은하 - 그대 돌아오는 날까지 Until the Day You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/246774271' target='_blank'><img src='https://resources.tidal.com/images/8c9c1ac1/83af/4faf/bd35/547a7a8fa12e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1982] 네가 좋아</div>
+<div><a href='https://tidal.com/album/260736047' target='_blank'>https://tidal.com/album/260736047</a></div>
+<div>Eunha Lee - 네가 좋아</div>
+<div>Eunha Lee - 날마다 허물벗는 꽃뱀</div>
+<div>Eunha Lee - 사랑하고파</div>
+<div>Eunha Lee - 생각하는 들장미</div>
+<div>Eunha Lee - 아이되고 싶어</div>
+<div>Eunha Lee - 작은 슬픔</div>
+<div>Eunha Lee - 하얀 불꽃</div>
+<div>Eunha Lee - 잊으면 그만인데</div>
+<div>Eunha Lee - 지난날의 꿈</div>
+<div>Eunha Lee - 그 마음 알 수가 없네</div>
+<div>Eunha Lee - 내 꿈이 머무는 곳</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260736047' target='_blank'><img src='https://resources.tidal.com/images/d2142e2e/ee16/483f/b598/14ee690d758e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/5_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ5) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/이은하 (Lee Eun Ha)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
