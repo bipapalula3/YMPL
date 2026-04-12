@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 박진영 ( Tidal J.Y.Park )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 박진영 ( Tidal J.Y.Park )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/bab8aeff/39db/4a49/a47d/da728dcf37e6/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/8081423' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/5878838' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 박진영</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>박진영 (J.Y.Park) – 딴따라, 시대를 춤추게 하는 영원한 그루브</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> J.Y.Park</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>J.Y.Park – The Entertainer, the Eternal Groove That Makes Generations Dance</div><p>박진영은 단순한 가수를 넘어선, 엔터테인먼트 업계의 선구자 같은 존재예요. 그는 자신만의 독특한 음악 스타일과 퍼포먼스로 대중을 사로잡으며 끊임없이 새로운 트렌드를 만들어가고 있죠.</p><p>J.Y.Park is more than just a singer; he's a pioneer in the entertainment industry. He captivates the public with his unique musical style and performances, constantly creating new trends.</p><p>✧</p><p>그룹 탄생</p><p>그는 단순히 솔로 활동에만 머무르지 않고, 뛰어난 프로듀싱 능력으로 수많은 아이돌 그룹을 탄생시켰어요. Stray Kids, ITZY, NMIXX 등, 그가 발굴하고 키워낸 그룹들은 K팝의 새로운 역사를 써내려 가고 있답니다.</p><p>Group Creation</p><p>He doesn't just focus on his solo career; his outstanding producing skills have led to the creation of numerous idol groups. Stray Kids, ITZY, NMIXX, and other groups he discovered and nurtured are writing a new chapter in K-pop history.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>박진영의 음악은 펑키한 리듬과 소울풀한 감성이 조화롭게 어우러져 있어요. 무대 위에서의 그는 에너지 넘치는 퍼포먼스와 독특한 무대 매너로 관객들을 압도하죠. 그의 음악과 퍼포먼스는 시대를 초월하는 매력을 지니고 있다고 생각해요.</p><p>Music and Performance</p><p>J.Y.Park's music harmoniously blends funky rhythms with soulful emotions. On stage, he overwhelms the audience with his energetic performances and unique stage presence. His music and performances possess a timeless charm.</p><p>✧</p><p>주요 활동</p><p>솔로 가수 활동은 물론, 다양한 아티스트들과의 협업도 꾸준히 이어가고 있어요. 선미와의 'When We Disco', 가코와의 'Groove Back'처럼 예상치 못한 조합 속에서 신선한 시너지를 만들어내는 모습이 인상적이죠. 그는 끊임없이 새로운 도전을 즐기는 아티스트인 것 같아요.</p><p>Key Activities</p><p>In addition to his solo activities, he consistently collaborates with various artists. His ability to create fresh synergy in unexpected combinations, such as 'When We Disco' with SUNMI and 'Groove Back' with Gaeko, is impressive. He seems to be an artist who constantly enjoys new challenges.</p><p>✧</p><p>미래/의미</p><p>박진영은 앞으로도 끊임없이 변화하고 발전하며, 새로운 음악과 퍼포먼스를 선보일 거예요. 그는 K팝의 역사를 만들어가는 중요한 인물이며, 앞으로 그가 보여줄 행보가 더욱 기대되는 이유입니다. 그의 음악은 단순한 유행을 넘어, 시대를 반영하는 거울과 같은 의미를 지니고 있다고 생각해요.</p><p>Future/Meaning</p><p>J.Y.Park will continue to change and evolve, showcasing new music and performances. He is an important figure in shaping the history of K-pop, and that's why his future endeavors are highly anticipated. His music is more than just a trend; it holds the meaning of a mirror reflecting the times.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Like Magic</div>
+<div><a href='https://tidal.com/album/345795464' target='_blank'>https://tidal.com/album/345795464</a></div>
+<div>J.Y. Park, Stray Kids, ITZY, NMIXX - Like Magic</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/345795464' target='_blank'><img src='https://resources.tidal.com/images/37995b6c/d5a4/4753/8183/b59ad498031f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Easy Lover</div>
+<div><a href='https://tidal.com/album/396845859' target='_blank'>https://tidal.com/album/396845859</a></div>
+<div>J.Y. Park - Easy Lover</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/396845859' target='_blank'><img src='https://resources.tidal.com/images/a1327a76/e23d/414d/b176/70988ccc3e92/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Who's your mama_ (Soul Ver.)</div>
+<div><a href='https://tidal.com/album/296698107' target='_blank'>https://tidal.com/album/296698107</a></div>
+<div>J.Y. Park, Lee Jin Ah, JiJohn - Who's your mama- (Soul Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296698107' target='_blank'><img src='https://resources.tidal.com/images/2eabce0c/52c4/430c/a1bd/66b516cb30b8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] When We Disco</div>
+<div><a href='https://tidal.com/album/296556820' target='_blank'>https://tidal.com/album/296556820</a></div>
+<div>J.Y. Park, SUNMI - When We Disco</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296556820' target='_blank'><img src='https://resources.tidal.com/images/852da792/56e8/4d13/9c64/233c7b251eca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] This Small Hand</div>
+<div><a href='https://tidal.com/album/296533510' target='_blank'>https://tidal.com/album/296533510</a></div>
+<div>J.Y. Park - This Small Hand</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296533510' target='_blank'><img src='https://resources.tidal.com/images/cac2f1a4/8979/4385/add5/39951d5e1964/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Still Alive</div>
+<div><a href='https://tidal.com/album/296642972' target='_blank'>https://tidal.com/album/296642972</a></div>
+<div>J.Y. Park - Still Alive</div>
+<div>J.Y. Park, Conan O'Brien, Steven Yeun, Jimin Park - Fire</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296642972' target='_blank'><img src='https://resources.tidal.com/images/3b3e20b9/eb75/469b/81c4/a1c2604f2307/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Road to the Airport (Sing the Road #01)</div>
+<div><a href='https://tidal.com/album/296698021' target='_blank'>https://tidal.com/album/296698021</a></div>
+<div>J.Y. Park, Lee Jin Ah - Road to the Airport (Sing the Road #01)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296698021' target='_blank'><img src='https://resources.tidal.com/images/9706ec90/faaf/4a13/af16/7bbfbb6b31cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Movie Star</div>
+<div><a href='https://tidal.com/album/296512636' target='_blank'>https://tidal.com/album/296512636</a></div>
+<div>J.Y. Park - Movie Star(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296512636' target='_blank'><img src='https://resources.tidal.com/images/df1b175e/1942/4d8b/b767/162e3ae0db97/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Jamsu Bridge (Sing the Road #02)</div>
+<div><a href='https://tidal.com/album/296698032' target='_blank'>https://tidal.com/album/296698032</a></div>
+<div>J.Y. Park, Jung Seung Hwan - Jamsu Bridge (Sing the Road #02)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296698032' target='_blank'><img src='https://resources.tidal.com/images/0a1c6e44/c1af/4464/9849/35a05570f431/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] Groove Missing</div>
+<div><a href='https://tidal.com/album/296616386' target='_blank'>https://tidal.com/album/296616386</a></div>
+<div>J.Y. Park, Gaeko - Groove Back</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296616386' target='_blank'><img src='https://resources.tidal.com/images/f50ae299/692a/49df/a48e/7d87532c26ce/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] FEVER</div>
+<div><a href='https://tidal.com/album/296698041' target='_blank'>https://tidal.com/album/296698041</a></div>
+<div>J.Y. Park, Superbee, BIBI - FEVER</div>
+<div>J.Y. Park - FEVER (Short Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296698041' target='_blank'><img src='https://resources.tidal.com/images/8e5e1a76/e7bc/4570/a822/f15bf7fb470e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Classic</div>
+<div><a href='https://tidal.com/album/303062703' target='_blank'>https://tidal.com/album/303062703</a></div>
+<div>J.Y. Park, Jang Wooyoung, Taecyeon, 수지 Suzy - Classic</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303062703' target='_blank'><img src='https://resources.tidal.com/images/6385ef59/63d8/42cd/898b/60bfe7bca7f2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Changed Man</div>
+<div><a href='https://tidal.com/album/329069244' target='_blank'>https://tidal.com/album/329069244</a></div>
+<div>J.Y. Park - Changed Man</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/329069244' target='_blank'><img src='https://resources.tidal.com/images/3ef7cb19/fc8e/495b/ba31/cfaccf187887/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Busan Memories (Sing the Road #03)</div>
+<div><a href='https://tidal.com/album/296698035' target='_blank'>https://tidal.com/album/296698035</a></div>
+<div>J.Y. Park, Bernard Park, Jamie - Busan Memories (Sing the Road #03)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296698035' target='_blank'><img src='https://resources.tidal.com/images/e77e1950/0d7e/4ce8/857b/479f174854d3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] BLUE & RED</div>
+<div><a href='https://tidal.com/album/296533507' target='_blank'>https://tidal.com/album/296533507</a></div>
+<div>J.Y. Park, Heize - Regrets</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296533507' target='_blank'><img src='https://resources.tidal.com/images/df498a30/1e9a/44c6/b8d9/15cf0cea512e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] All I need</div>
+<div><a href='https://tidal.com/album/296533505' target='_blank'>https://tidal.com/album/296533505</a></div>
+<div>J.Y. Park, P-Type - All I need</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296533505' target='_blank'><img src='https://resources.tidal.com/images/82093a3d/498c/494b/a37e/70a81ee845dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 24_34</div>
+<div><a href='https://tidal.com/album/296533526' target='_blank'>https://tidal.com/album/296533526</a></div>
+<div>J.Y. Park, Jessi - Who′s your mama？</div>
+<div>J.Y. Park - Behind closed doors</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296533526' target='_blank'><img src='https://resources.tidal.com/images/cc8b4fc8/e639/4e9a/a9d1/a7bbd8dfba67/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 100 Dollars</div>
+<div><a href='https://tidal.com/album/296616315' target='_blank'>https://tidal.com/album/296616315</a></div>
+<div>J.Y. Park - 100 Dollars</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296616315' target='_blank'><img src='https://resources.tidal.com/images/fcacb926/ab4a/490a/b81d/ae0a9987ad73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] Half Time</div>
+<div><a href='https://tidal.com/album/296595666' target='_blank'>https://tidal.com/album/296595666</a></div>
+<div>J.Y. Park - Halftime</div>
+<div>J.Y. Park, Namgung Songok, Gaeko - Greatest of These</div>
+<div>J.Y. Park - Had enough parties</div>
+<div>J.Y. Park - She Doesn't Know</div>
+<div>J.Y. Park - Mingle Mingle</div>
+<div>J.Y. Park - You're the One (Happy Ending Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296595666' target='_blank'><img src='https://resources.tidal.com/images/4d4d7a9d/212b/4993/aa5c/ff3912a66768/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Spring - 5 Songs for a New Love</div>
+<div><a href='https://tidal.com/album/296533512' target='_blank'>https://tidal.com/album/296533512</a></div>
+<div>J.Y. Park - Feel So Good</div>
+<div>J.Y. Park, GaIn - Someone Else</div>
+<div>J.Y. Park - You′re the One</div>
+<div>J.Y. Park - Last Love</div>
+<div>J.Y. Park - Please</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296533512' target='_blank'><img src='https://resources.tidal.com/images/21507961/e4b3/4e64/893d/a82315979525/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Back to Stage</div>
+<div><a href='https://tidal.com/album/296484560' target='_blank'>https://tidal.com/album/296484560</a></div>
+<div>J.Y. Park - Kiss</div>
+<div>J.Y. Park - Your House</div>
+<div>J.Y. Park - Your Woman</div>
+<div>J.Y. Park - Delicious (Your Lips)</div>
+<div>J.Y. Park, Bobby Kim - Single</div>
+<div>J.Y. Park - Blues of a Clown</div>
+<div>J.Y. Park - Actually</div>
+<div>J.Y. Park - I Am Going Back</div>
+<div>J.Y. Park, Dynamicduo, Jeon Jeduk - I Like a Woman Like This</div>
+<div>J.Y. Park - Dangerous Play</div>
+<div>J.Y. Park, Yoon Mirae - Criss Cross</div>
+<div>J.Y. Park, SunYe - Farewell Under the Sun</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296484560' target='_blank'><img src='https://resources.tidal.com/images/f5d437d9/db86/4bc1/ab14/33cc0ce398b5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Sad Freedom</div>
+<div><a href='https://tidal.com/album/296484251' target='_blank'>https://tidal.com/album/296484251</a></div>
+<div>J.Y. Park - Sad Freedom</div>
+<div>J.Y. Park - No Love No More</div>
+<div>J.Y. Park - Rewind</div>
+<div>J.Y. Park - Come Over</div>
+<div>J.Y. Park - No Love No More (R&B mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296484251' target='_blank'><img src='https://resources.tidal.com/images/a082b177/cbf5/440c/9c38/a5c3a82987c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] Game</div>
+<div><a href='https://tidal.com/album/189314157' target='_blank'>https://tidal.com/album/189314157</a></div>
+<div>Park Jin Young - Swing Baby</div>
+<div>Park Jin Young - From room door to bed</div>
+<div>Park Jin Young - I have a lover</div>
+<div>Park Jin Young - Eum Eum Eum</div>
+<div>Park Jin Young - Your fingertips</div>
+<div>Park Jin Young - Grateless prison</div>
+<div>Park Jin Young - Last night</div>
+<div>Park Jin Young - With the first met I met</div>
+<div>Park Jin Young - Game</div>
+<div>Park Jin Young - Sun, Moon, Star</div>
+<div>Park Jin Young - Secret Love</div>
+<div>Park Jin Young - d-j- vu</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189314157' target='_blank'><img src='https://resources.tidal.com/images/1504f282/23ea/40f6/9d48/b474351c4d2f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] 이소라의 프로포즈 1집</div>
+<div><a href='https://tidal.com/album/223262998' target='_blank'>https://tidal.com/album/223262998</a></div>
+<div>Lee Sora - I.O.U</div>
+<div>Kim Gun Mo - 당신과 만난 이 날</div>
+<div>뱅크 - 나와 같다면</div>
+<div>이은미 - 그녀는 예뻤다</div>
+<div>Cho Young Nam - 그리움만 쌓이네</div>
+<div>J.Y. Park - 회상</div>
+<div>Jo Sung Mo - 미소속에 비친 그대</div>
+<div>Insooni - The Way We Were</div>
+<div>Cult Triple - 소라 소라 소라</div>
+<div>Kim Kwang Jin - 사랑의 서약</div>
+<div>Kim Jong Seo - 창밖의 여자</div>
+<div>Kim Jang Hoon - 여름밤의 꿈</div>
+<div>Jang Pill Soon - 제비꽃</div>
+<div>Kim Minjong - 같은 하늘 아래</div>
+<div>Lee Jang Woo - 텅빈거리에서</div>
+<div>임형주 - Don`t Cry For Me Argentina</div>
+<div>Lee Sora - 내 곁에서 떠나가지 말아요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223262998' target='_blank'><img src='https://resources.tidal.com/images/2bfcd271/175a/4f48/a603/4148e92878c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] 딴따라</div>
+<div><a href='https://tidal.com/album/313932720' target='_blank'>https://tidal.com/album/313932720</a></div>
+<div>J.Y. Park - 나는</div>
+<div>J.Y. Park - 너를 보내기 전에</div>
+<div>J.Y. Park - 청혼가</div>
+<div>J.Y. Park - 엘리베이터</div>
+<div>J.Y. Park - 돌아서며</div>
+<div>J.Y. Park - 이별(Featuring 인순이)</div>
+<div>J.Y. Park - 영원히 둘이서</div>
+<div>J.Y. Park - 잊을 수 있어</div>
+<div>J.Y. Park - 이별을 먼저 배웠기에</div>
+<div>J.Y. Park - 기다렸던 고백</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/313932720' target='_blank'><img src='https://resources.tidal.com/images/5884fc8d/2ad8/49f7/b339/906288ab159d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] Blue City</div>
+<div><a href='https://tidal.com/album/313931392' target='_blank'>https://tidal.com/album/313931392</a></div>
+<div>J.Y. Park - 날 떠나지마</div>
+<div>J.Y. Park - 너에게 묻고싶어</div>
+<div>J.Y. Park - 마이 걸</div>
+<div>J.Y. Park - 아픔속에서</div>
+<div>J.Y. Park - 너의 뒤에서</div>
+<div>J.Y. Park - 사랑 일년</div>
+<div>J.Y. Park - 아직 기다리는지</div>
+<div>J.Y. Park - 사랑때문에</div>
+<div>J.Y. Park - 너에게 묻고싶어(Ending Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/313931392' target='_blank'><img src='https://resources.tidal.com/images/a40d3f3c/c6d2/4e90/9678/c8b245b991f4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/1_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ1) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/박진영 (J.Y.Park)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
