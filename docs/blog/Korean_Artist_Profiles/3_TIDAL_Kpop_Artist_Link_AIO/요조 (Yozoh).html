@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 요조 ( Tidal Yozoh )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 요조 ( Tidal Yozoh )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/cf272edf/a837/44ef/a14a/c22acd39b559/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/4783755' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 요조</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>요조 (Yozoh) - 소소한 일상 속 빛나는 감성, 'My Tteokbokki Memories'처럼 사랑스러운 이야기를 노래하는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Yozoh</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Yozoh - A singer-songwriter who sings lovely stories like 'My Tteokbokki Memories,' shining with emotions in everyday life.</div><p>싱어송라이터 요조는 소소한 일상에서 발견하는 특별한 감성을 노래하는 아티스트입니다. 그의 음악은 마치 친구와 나누는 따뜻한 대화처럼 편안하고 솔직하게 다가오죠. 섬세한 가사와 포근한 멜로디는 듣는 이의 마음을 부드럽게 어루만져 줍니다.</p><p>Singer-songwriter Yozoh is an artist who sings about the special emotions found in the small moments of everyday life. Her music is as comfortable and honest as a warm conversation with a friend. Delicate lyrics and cozy melodies gently caress the listener's heart.</p><p>✧</p><p>인디 씬의 작은 거인</p><p>요조는 2000년대 후반, 홍대 인디 씬에서 독특한 음색과 감성으로 주목받기 시작했어요. 어쿠스틱 기타 선율과 맑은 목소리는 많은 이들에게 신선한 충격을 선사했죠. 이후 다양한 활동을 통해 자신만의 음악 세계를 구축해 나가고 있습니다.</p><p>A Little Giant of the Indie Scene</p><p>Yozoh began to gain attention in the late 2000s in the Hongdae indie scene with her unique tone and sensibility. Acoustic guitar melodies and a clear voice presented a fresh shock to many. Since then, she has been building her own musical world through various activities.</p><p>✧</p><p>음악, 그 이상의 이야기</p><p>요조의 음악은 단순한 노래를 넘어, 우리의 삶과 사랑, 슬픔에 대한 이야기를 담고 있어요. 솔직하고 담백한 가사는 듣는 이로 하여금 자신의 경험과 감정을 투영하게 만들죠. 때로는 엉뚱하고 귀여운 상상력을 자극하는 곡들도 만날 수 있습니다.</p><p>Stories Beyond Music</p><p>Yozoh's music goes beyond simple songs, containing stories about our lives, love, and sorrow. Honest and plain lyrics allow listeners to project their own experiences and emotions. Sometimes you can find songs that stimulate quirky and cute imaginations.</p><p>✧</p><p>다양한 활동, 폭넓은 스펙트럼</p><p>요조는 음악 활동뿐만 아니라, 영화, 라디오, 에세이 등 다양한 분야에서 활약하고 있습니다. 특유의 감성과 따뜻한 시선으로 대중과 소통하며 폭넓은 사랑을 받고 있죠. 이러한 다재다능함이 요조라는 아티스트를 더욱 매력적으로 만들어 줍니다.</p><p>Diverse Activities, Wide Spectrum</p><p>Yozoh is active not only in music, but also in various fields such as film, radio, and essays. She communicates with the public with her unique sensibility and warm gaze, receiving wide love. This versatility makes the artist Yozoh even more attractive.</p><p>✧</p><p>앞으로도 기대되는 그녀의 음악</p><p>요조는 앞으로도 꾸준히 자신만의 색깔을 담은 음악을 선보일 것으로 기대됩니다. 그녀의 음악은 지친 일상에 작은 위로와 따뜻한 감성을 선물해 줄 거예요. 앞으로 그녀가 들려줄 이야기가 더욱 기대됩니다.</p><p>Her Music to Look Forward To</p><p>Yozoh is expected to continue to showcase music with her own unique color. Her music will gift small comfort and warm emotions to tired daily lives. We look forward to the stories she will tell in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] Names</div>
+<div><a href='https://tidal.com/album/400304849' target='_blank'>https://tidal.com/album/400304849</a></div>
+<div>Yozoh - Tommy</div>
+<div>Yozoh - Sad Sad</div>
+<div>Yozoh - My Determination!</div>
+<div>Yozoh - Unrequited Love</div>
+<div>Yozoh - I'm Turbid and Cold</div>
+<div>Yozoh - Unknown Horses</div>
+<div>Yozoh - B.O.O.K</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/400304849' target='_blank'><img src='https://resources.tidal.com/images/6ec08d7e/9b22/4157/a1b0/c8a4943aca37/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Weak People</div>
+<div><a href='https://tidal.com/album/343893114' target='_blank'>https://tidal.com/album/343893114</a></div>
+<div>Yozoh - Weak People</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343893114' target='_blank'><img src='https://resources.tidal.com/images/cf272edf/a837/44ef/a14a/c22acd39b559/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Quince Tree</div>
+<div><a href='https://tidal.com/album/341495966' target='_blank'>https://tidal.com/album/341495966</a></div>
+<div>Yozoh - Quince Tree</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/341495966' target='_blank'><img src='https://resources.tidal.com/images/b6249eff/4a1f/4fe3/96fb/82f872bcc09e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] My Tteokbokki Memories (Yozoh X BAEMIN)</div>
+<div><a href='https://tidal.com/album/203981198' target='_blank'>https://tidal.com/album/203981198</a></div>
+<div>Yozoh - My Tteokbokki Memories (Yozoh X BAEMIN)</div>
+<div>Yozoh - My Tteokbokki Memories (Yozoh X BAEMIN) (yum-yum v</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/203981198' target='_blank'><img src='https://resources.tidal.com/images/cbeb4d7e/bd05/4aa2/8160/800c1282d2c6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] School 2017 Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/98821283' target='_blank'>https://tidal.com/album/98821283</a></div>
+<div>Yozoh - Summer Vacation</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98821283' target='_blank'><img src='https://resources.tidal.com/images/169d6c1d/18cd/4030/a0d5/d031ba63c7d7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] School 2017 (Orignial Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/98833334' target='_blank'>https://tidal.com/album/98833334</a></div>
+<div>Yozoh - Summer Vacation</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98833334' target='_blank'><img src='https://resources.tidal.com/images/693cb2a7/ed06/484d/8342/21a60fa9663f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Best Driver</div>
+<div><a href='https://tidal.com/album/364437155' target='_blank'>https://tidal.com/album/364437155</a></div>
+<div>Yozoh - Passing by the airport</div>
+<div>Yozoh - Getting old</div>
+<div>Yozoh - A biscuit exists in nowhere</div>
+<div>Yozoh - An observer</div>
+<div>Yozoh - I want to make fun</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/364437155' target='_blank'><img src='https://resources.tidal.com/images/3fc81d2a/bd70/412d/b9da/5e4d114c949e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Lucy</div>
+<div><a href='https://tidal.com/album/366292377' target='_blank'>https://tidal.com/album/366292377</a></div>
+<div>Yozoh, Eric You - Lucy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366292377' target='_blank'><img src='https://resources.tidal.com/images/00477300/ca23/41a6/b066/d3b23a27eb58/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Love Has Left Fall Behind</div>
+<div><a href='https://tidal.com/album/52905324' target='_blank'>https://tidal.com/album/52905324</a></div>
+<div>Yozoh, Jae Il Jung - Love Has Left Fall Behind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/52905324' target='_blank'><img src='https://resources.tidal.com/images/53854c96/ab4d/4788/b09f/e3be7dddeed8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2014] You & Me Forever At Last</div>
+<div><a href='https://tidal.com/album/336678899' target='_blank'>https://tidal.com/album/336678899</a></div>
+<div>Yozoh - You & Me Forever At Last</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/336678899' target='_blank'><img src='https://resources.tidal.com/images/abe2e608/1774/47d1/851f/91b22a9ee5e7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Tiny bits of life Part.1</div>
+<div><a href='https://tidal.com/album/216075168' target='_blank'>https://tidal.com/album/216075168</a></div>
+<div>Yozoh - Day Dream</div>
+<div>Yozoh - Day Dream (Guitar Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216075168' target='_blank'><img src='https://resources.tidal.com/images/ce931094/0627/4c84/8427/c2a569ad114f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] High-school_Love on (Original Soundtrack) Vol.3</div>
+<div><a href='https://tidal.com/album/216048609' target='_blank'>https://tidal.com/album/216048609</a></div>
+<div>Mad Clown, Yozoh - Chocolat Cherrybomb</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216048609' target='_blank'><img src='https://resources.tidal.com/images/a6a0033e/bdd2/4de2/8299/ae60f2102a98/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Family's story (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/216046270' target='_blank'>https://tidal.com/album/216046270</a></div>
+<div>Yozoh - I told you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216046270' target='_blank'><img src='https://resources.tidal.com/images/27034468/a01a/45ab/95e1/299ddb07d505/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Existence and Happiness</div>
+<div><a href='https://tidal.com/album/366244719' target='_blank'>https://tidal.com/album/366244719</a></div>
+<div>Yozoh - Existence and Happiness</div>
+<div>Yozoh - Smiling Flower</div>
+<div>Yozoh - Laundry</div>
+<div>Yozoh - Restless Peace</div>
+<div>Yozoh - Dancing Sorrow</div>
+<div>Yozoh - Mr. Smith</div>
+<div>Yozoh, Lee Young Hoon - A Cat named Na-young (with Lee Young Hoon)</div>
+<div>Yozoh, Ruvin - We Are (with Ruvin)</div>
+<div>Yozoh - The Selfish</div>
+<div>Yozoh - My Name Is Yozoh (33 Years Old Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/366244719' target='_blank'><img src='https://resources.tidal.com/images/eea4b4da/d997/415f/bcd7/444d583f485a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 듀엣 (Original Motion Picture Soundtrack), Pt. 1 - Sitting in my room alone</div>
+<div><a href='https://tidal.com/album/413895694' target='_blank'>https://tidal.com/album/413895694</a></div>
+<div>Yozoh - 듀엣 (Original Motion Picture Soundtrack), Pt. 1 - S</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/413895694' target='_blank'><img src='https://resources.tidal.com/images/bd7641c2/182e/43a9/998e/a99129ec7bc9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] My Husband Got a Family (Original Television Soundtrack) Pt. 3</div>
+<div><a href='https://tidal.com/album/305930848' target='_blank'>https://tidal.com/album/305930848</a></div>
+<div>Yozoh - 빈 하늘 바라보며</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305930848' target='_blank'><img src='https://resources.tidal.com/images/ea8ea259/4ece/4203/8bb5/92664b9ebbe4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Time_ 전화, 나와 당신의 이야기 (MBC 창사특집 다큐멘터리) (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/241321529' target='_blank'>https://tidal.com/album/241321529</a></div>
+<div>Yozoh - 전화를 걸어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/241321529' target='_blank'><img src='https://resources.tidal.com/images/562d0f3f/bebb/462c/86ff/96276b33ec0e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 우리는 선처럼 가만히 누워</div>
+<div><a href='https://tidal.com/album/189140167' target='_blank'>https://tidal.com/album/189140167</a></div>
+<div>Yozoh - 우리는 선처럼 가만히 누워 (feat. Lee Sang Soon)</div>
+<div>Yozoh - 조금만 더 가까이</div>
+<div>Yozoh - 연애는 어떻게 하는 거였더라</div>
+<div>Yozoh - 조금만 더 가까이 (Cinema Version)</div>
+<div>Yozoh - 사랑해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189140167' target='_blank'><img src='https://resources.tidal.com/images/661dba05/b24e/4afa/8897/37d4a34dc91b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2009] 허니 허니 베이비</div>
+<div><a href='https://tidal.com/album/189098598' target='_blank'>https://tidal.com/album/189098598</a></div>
+<div>Yozoh - 허니 허니 베이비</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189098598' target='_blank'><img src='https://resources.tidal.com/images/11045a80/bf8f/4d65/9e6d/6b2e3c5c6183/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Vono - Sweet Step</div>
+<div><a href='https://tidal.com/album/189098567' target='_blank'>https://tidal.com/album/189098567</a></div>
+<div>Yozoh - Vono - Sweet Step</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189098567' target='_blank'><img src='https://resources.tidal.com/images/31f38fa9/fe95/48f7/aafa/e3b6dff1dd5e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Color Of City (Pink)</div>
+<div><a href='https://tidal.com/album/168870655' target='_blank'>https://tidal.com/album/168870655</a></div>
+<div>Yozoh, Kim Jin Pyo - 좋아해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168870655' target='_blank'><img src='https://resources.tidal.com/images/21c4c17f/a58d/46ca/bce5/033f20b693bc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Traveler</div>
+<div><a href='https://tidal.com/album/189098543' target='_blank'>https://tidal.com/album/189098543</a></div>
+<div>Yozoh - Giant</div>
+<div>Yozoh - 아침 먹고 땡</div>
+<div>Yozoh - 에구구구</div>
+<div>Yozoh - 하모니카 소리</div>
+<div>Yozoh - 모닝 스타 (Album Version)</div>
+<div>Yozoh - 아 외로워</div>
+<div>Yozoh - Happy Birthday</div>
+<div>Yozoh - 바오밥나무</div>
+<div>Yozoh - Sunday</div>
+<div>Yozoh - 하모니카 소리 (Belle Epoque Version)</div>
+<div>Yozoh - 그렇게 너에게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189098543' target='_blank'><img src='https://resources.tidal.com/images/564e4f9a/e56a/4f5b/92ff/42623fcbbcda/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Brown Classic 1st - Nostalgia</div>
+<div><a href='https://tidal.com/album/252578961' target='_blank'>https://tidal.com/album/252578961</a></div>
+<div>Yozoh, Eric - Brown Classic 1st - Nostalgia</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/252578961' target='_blank'><img src='https://resources.tidal.com/images/8f7259bd/7e84/4092/b56f/df575a3f373d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] My Name is Yozoh</div>
+<div><a href='https://tidal.com/album/189098814' target='_blank'>https://tidal.com/album/189098814</a></div>
+<div>Yozoh, Sogyumo Acacia Band - My Name Is Yozoh (With Sogyumo Acacia Band)</div>
+<div>Yozoh, Sogyumo Acacia Band - 슈팅스타 (With Sogyumo Acacia Band)</div>
+<div>Yozoh, Sogyumo Acacia Band - Love (With Sogyumo Acacia Band)</div>
+<div>Yozoh, Sogyumo Acacia Band - 낮잠 (With Sogyumo Acacia Band)</div>
+<div>Yozoh, Sogyumo Acacia Band - 바나나파티 (With Sogyumo Acacia Band)</div>
+<div>Yozoh, Sogyumo Acacia Band - 사랑의 롤러코스터 (With Sogyumo Acacia Band)</div>
+<div>Yozoh, Sogyumo Acacia Band - 숨바꼭질 (With Sogyumo Acacia Band)</div>
+<div>Yozoh, Sogyumo Acacia Band - 그런지 카 (With Sogyumo Acacia Band)</div>
+<div>Yozoh, Sogyumo Acacia Band - 꽃 (With Sogyumo Acacia Band)</div>
+<div>Yozoh, Sogyumo Acacia Band - My Name Is Yozoh (With Sogyumo Acacia Band) (Radio</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189098814' target='_blank'><img src='https://resources.tidal.com/images/fe048fa0/ab7e/4ce5/abfb/74bed3170d35/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/요조 (Yozoh)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
