@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 엘피지 ( Tidal LPG )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 엘피지 ( Tidal LPG )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/93f97441/d7c5/4c05/aec6/8e35c1b22169/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/3508446 ---------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 엘피지</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>엘피지 (LPG) - 트로트와 댄스의 경계를 넘나들며 '빵야빵야'처럼 신나는 에너지를 선사하는 걸그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> LPG</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>LPG - A girl group that crosses the boundaries of trot and dance, delivering exciting energy like 'Bangya Bangya'.</div><p>엘피지는 신나는 트로트 댄스 음악으로 대중에게 즐거움을 선사하는 걸그룹입니다. 그녀들은 트로트의 흥겨움과 댄스 음악의 트렌디함을 결합하여 독특한 매력을 발산하고 있어요. 무대 위에서의 에너지 넘치는 퍼포먼스는 보는 이들을 사로잡으며, 그녀들만의 색깔을 보여주고 있습니다.</p><p>LPG is a girl group that brings joy to the public with exciting trot dance music. They exude a unique charm by combining the excitement of trot and the trendiness of dance music. Their energetic performances on stage captivate viewers and showcase their unique style.</p><p>✧</p><p>그룹 탄생</p><p>엘피지는 'Long Pretty Girls'의 약자로, 모델 출신 멤버들을 중심으로 결성되어 화려한 비주얼을 자랑하며 데뷔했습니다. 트로트와 댄스 음악을 결합한 신선한 시도는 당시 가요계에 새로운 바람을 불러일으켰어요. 멤버 구성에 변화가 있었지만, 항상 밝고 에너지 넘치는 모습으로 대중에게 다가갔습니다.</p><p>Group Formation</p><p>LPG, short for 'Long Pretty Girls,' debuted with a focus on model-出身 members, boasting glamorous visuals. Their fresh attempt to combine trot and dance music brought a new wave to the music scene at the time. Although there have been changes in the member lineup, they have always approached the public with a bright and energetic appearance.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>엘피지의 음악은 트로트 리듬에 기반한 댄스곡이 주를 이루며, 중독성 강한 멜로디와 쉬운 가사가 특징입니다. '빵야빵야'와 같은 곡들은 그녀들의 대표적인 히트곡으로, 무대 위에서 보여주는 활기찬 퍼포먼스와 함께 많은 사랑을 받았어요. 또한, 트로트 버전으로 편곡된 곡들을 통해 다양한 연령층의 팬들에게 어필했습니다.</p><p>Music and Performance</p><p>LPG's music mainly consists of dance songs based on trot rhythms, characterized by highly addictive melodies and easy lyrics. Songs like 'Bangya Bangya' are among their representative hits, receiving much love along with their lively performances on stage. In addition, they appealed to fans of various ages through songs arranged in trot versions.</p><p>✧</p><p>주요 활동</p><p>엘피지는 다양한 음악 방송 프로그램과 행사 무대를 통해 활발한 활동을 펼쳤습니다. 그녀들은 특유의 친근함과 유쾌함으로 예능 프로그램에서도 두각을 나타내며 대중적인 인지도를 높였어요. 멤버들은 솔로 활동을 통해 각자의 개성을 드러내기도 했습니다.</p><p>Main Activities</p><p>LPG has been actively performing through various music broadcasting programs and event stages. They have increased their public recognition by standing out in entertainment programs with their unique friendliness and cheerfulness. Members have also revealed their individuality through solo activities.</p><p>✧</p><p>미래/의미</p><p>엘피지는 트로트 댄스라는 독특한 장르를 개척하며 걸그룹 시장에 새로운 가능성을 제시했습니다. 그녀들의 음악은 신나는 리듬과 솔직한 가사로 듣는 이들에게 즐거움과 위로를 전달하고 있어요. 앞으로도 엘피지만의 색깔을 잃지 않고 꾸준히 활동하며 대중에게 사랑받는 그룹으로 남기를 기대합니다.</p><p>Future/Meaning</p><p>LPG pioneered the unique genre of trot dance, presenting new possibilities to the girl group market. Their music delivers joy and comfort to listeners with its exciting rhythm and honest lyrics. We hope that they will continue to be loved by the public as a group that continues to be active without losing LPG's unique color.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2015] Slowpoke</div>
+<div><a href='https://tidal.com/album/167593601' target='_blank'>https://tidal.com/album/167593601</a></div>
+<div>LPG - Slowpoke</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167593601' target='_blank'><img src='https://resources.tidal.com/images/bf0df937/6c02/412d/9030/39cff3591cbb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 효녀시대</div>
+<div><a href='https://tidal.com/album/167593016' target='_blank'>https://tidal.com/album/167593016</a></div>
+<div>LPG - 효녀시대</div>
+<div>LPG - 빵야빵야</div>
+<div>LPG - Love's KTX</div>
+<div>LPG - 오빠 2013 Reamake Version</div>
+<div>LPG - 사랑의 KTX Dance Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167593016' target='_blank'><img src='https://resources.tidal.com/images/a8b5a70f/8c54/441d/8fc1/7b244080b01c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Doorbell of love</div>
+<div><a href='https://tidal.com/album/167593359' target='_blank'>https://tidal.com/album/167593359</a></div>
+<div>LPG - Doorbell of love</div>
+<div>LPG - Doorbell of love 트롯 Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167593359' target='_blank'><img src='https://resources.tidal.com/images/80934db9/2be6/48d0/b538/7a8671439824/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Lucky Girl</div>
+<div><a href='https://tidal.com/album/167593318' target='_blank'>https://tidal.com/album/167593318</a></div>
+<div>LPG - Duman River That Wet Because Of Tear</div>
+<div>LPG - Multiflora rose</div>
+<div>LPG - Riverside</div>
+<div>LPG - 장동건 이효리</div>
+<div>LPG, 낯선 - Lucky Girl (feat. 낯선)</div>
+<div>LPG - Princess of a sea</div>
+<div>LPG - Third Han River Bridge</div>
+<div>LPG - A South-bound Train</div>
+<div>LPG - First Car</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167593318' target='_blank'><img src='https://resources.tidal.com/images/9f125896/2218/4839/8873/d3b573e0db5e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Jang Dong Kun, Lee Hyo Lee</div>
+<div><a href='https://tidal.com/album/167593314' target='_blank'>https://tidal.com/album/167593314</a></div>
+<div>LPG - Jang Dong Kun, Lee Hyo Lee</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167593314' target='_blank'><img src='https://resources.tidal.com/images/56db04d8/653a/43e4/bb20/dbf4bfb98e15/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] Winter Story</div>
+<div><a href='https://tidal.com/album/167593440' target='_blank'>https://tidal.com/album/167593440</a></div>
+<div>LPG - The way to go Ski Resort</div>
+<div>LPG - Come back in this winter</div>
+<div>LPG - Woman living in love</div>
+<div>LPG - The way to go Ski Resort 2007 Mix Version</div>
+<div>LPG - Come back in this winter 2007 Mix Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167593440' target='_blank'><img src='https://resources.tidal.com/images/8c037250/33c4/4232/a6f7/ea473905b533/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] LPG 2nd Album</div>
+<div><a href='https://tidal.com/album/167593384' target='_blank'>https://tidal.com/album/167593384</a></div>
+<div>LPG - Arm Pillow</div>
+<div>LPG - At All times</div>
+<div>LPG - Woman living for love</div>
+<div>LPG - Glasses in my eyes</div>
+<div>LPG - Joroorook</div>
+<div>LPG - Look at me</div>
+<div>LPG - Love is---</div>
+<div>LPG - Rubber shoes</div>
+<div>LPG - Pathetic Woman</div>
+<div>LPG - I don't know</div>
+<div>LPG - Bad Man</div>
+<div>LPG - Tender Woman</div>
+<div>LPG - Farewell Mode</div>
+<div>LPG - Red Scarf</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167593384' target='_blank'><img src='https://resources.tidal.com/images/6417ab6e/8755/4973/8a47/e0eca2fcd0d4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] Long Pretty Girls</div>
+<div><a href='https://tidal.com/album/167593628' target='_blank'>https://tidal.com/album/167593628</a></div>
+<div>LPG - 캉캉</div>
+<div>LPG - 나쁜남자</div>
+<div>LPG - 이별모드</div>
+<div>LPG - 연상의 여인</div>
+<div>LPG - 내 마음 당신 곁으로</div>
+<div>LPG - 첫차</div>
+<div>LPG - 돌팔매</div>
+<div>LPG - 마음 약해서</div>
+<div>LPG - 남행열차</div>
+<div>LPG - 제3한강교</div>
+<div>LPG - 이별여행</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167593628' target='_blank'><img src='https://resources.tidal.com/images/5258e25f/de2a/4242/9278/cb4e23ffb225/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/엘피지 (LPG)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
