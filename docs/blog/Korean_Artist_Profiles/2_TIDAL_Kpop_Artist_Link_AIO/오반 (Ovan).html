@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 오반 ( Tidal Ovan )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 오반 ( Tidal Ovan )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/6c3ccf6d/406b/400c/8468/89c970a83dde/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7684316 ------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 오반</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>오반 (Ovan) - 솔직한 감정으로 청춘을 노래하는 아티스트, '불행' 속에서도 피어나는 '꽃'처럼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Ovan</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Ovan - An artist singing about youth with honest emotions, like a 'Flower' blooming even in 'misfortune'.</div><p>때로는 섬세하게, 때로는 강렬하게 자신의 이야기를 풀어내는 오반(Ovan)님을 소개합니다. 그는 진솔한 가사와 다양한 음악적 시도로 많은 이들의 공감을 얻고 있습니다. 자신만의 색깔로 음악계를 물들이는 그의 매력에 빠져보세요.</p><p>Let me introduce Ovan, who tells his story sometimes delicately and sometimes intensely. He gains empathy from many people with his sincere lyrics and various musical attempts. Fall into the charm of him painting the music scene with his own color.</p><p>✧</p><p>감성적인 시작</p><p>오반님은 특유의 감성적인 보이스와 솔직한 가사로 데뷔 초부터 주목받았어요. 그의 음악은 듣는 이로 하여금 자신의 감정을 되돌아보게 하는 힘을 지니고 있습니다. 특히, 다양한 피처링 아티스트들과의 협업을 통해 더욱 풍성한 음악 세계를 구축해 나가고 있습니다.</p><p>An Emotional Beginning</p><p>Ovan has been noted since his debut for his unique emotional voice and honest lyrics. His music has the power to make listeners reflect on their own feelings. In particular, he is building a richer musical world through collaborations with various featuring artists.</p><p>✧</p><p>음악적 스펙트럼의 확장</p><p>힙합을 기반으로 다양한 장르를 넘나드는 그의 음악적 시도는 놀라움을 자아냅니다. 발라드, 알앤비, 팝 등 다양한 스타일을 소화하며 자신만의 음악적 색깔을 확고히 하고 있어요. 이러한 장르적 다양성은 오반님의 음악을 더욱 폭넓은 대중에게 어필하게 만들었습니다.</p><p>Expanding the Musical Spectrum</p><p>His musical attempts to cross various genres based on hip-hop are surprising. He solidifies his own musical color by digesting various styles such as ballads, R&B, and pop. This genre diversity makes Ovan's music appeal to a wider audience.</p><p>✧</p><p>진솔한 이야기</p><p>그의 음악은 단순히 듣기 좋은 멜로디를 넘어, 삶에 대한 진솔한 고민과 감정을 담고 있습니다. 사랑, 이별, 아픔 등 누구나 공감할 수 있는 보편적인 주제를 자신만의 시선으로 풀어내죠. 그래서 그의 음악은 많은 이들에게 깊은 공감과 위로를 선사합니다.</p><p>A Sincere Story</p><p>His music goes beyond simply pleasing melodies to contain sincere thoughts and feelings about life. He expresses universal themes that anyone can relate to, such as love, separation, and pain, from his own perspective. Therefore, his music offers deep empathy and comfort to many.</p><p>✧</p><p>앞으로의 음악 여정</p><p>끊임없이 새로운 시도를 통해 음악적 성장을 거듭하는 오반님. 앞으로 어떤 음악으로 우리를 감동시킬지 기대가 됩니다. 그의 진솔한 음악 세계가 더욱 확장되기를 응원하며, 그의 미래를 함께 지켜봐 주세요.</p><p>The Future Musical Journey</p><p>Ovan is constantly growing musically through new attempts. I look forward to what kind of music he will impress us with in the future. I support the further expansion of his sincere musical world, and let's watch his future together.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Ромашкове поле</div>
+<div><a href='https://tidal.com/album/425909048' target='_blank'>https://tidal.com/album/425909048</a></div>
+<div>Ovan, Joosiq, Lunch, Piano Man, Im Soo, Kim Chang - The Year</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/425909048' target='_blank'><img src='https://resources.tidal.com/images/872b542c/9299/434a/bd7d/25824f17e44a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Необмежено придатні</div>
+<div><a href='https://tidal.com/album/443163382' target='_blank'>https://tidal.com/album/443163382</a></div>
+<div>Ovan - Flower</div>
+<div>Ovan - apgujeong</div>
+<div>Ovan - Good Melody</div>
+<div>Ovan, BobbY - Church OPPA (feat. BOBBY)</div>
+<div>Ovan, Lunch - how embarrace (feat. LUNCH)</div>
+<div>Ovan, Im Soo - early ending (feat. Im Soo)</div>
+<div>Ovan - song of old man</div>
+<div>Ovan - nothing is better than you</div>
+<div>Ovan, Im Soo, Vinxen - billionaire (feat. VINXEN, Im Soo)</div>
+<div>Ovan, Im Soo, Lunch, Parc Jae Jung - PRAISE (feat. Parc Jae Jung, LUNCH, Im Soo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/443163382' target='_blank'><img src='https://resources.tidal.com/images/4bf4dce4/a138/42d2/94cc/55007332abfd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] The Resolve</div>
+<div><a href='https://tidal.com/album/404090294' target='_blank'>https://tidal.com/album/404090294</a></div>
+<div>Ovan - The Resolve</div>
+<div>Ovan - Beyond Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/404090294' target='_blank'><img src='https://resources.tidal.com/images/148b5816/0109/4b16/9dff/a55e93cf3618/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Nightmare</div>
+<div><a href='https://tidal.com/album/383539980' target='_blank'>https://tidal.com/album/383539980</a></div>
+<div>Ovan - Nightmare</div>
+<div>Ovan - Love Only</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383539980' target='_blank'><img src='https://resources.tidal.com/images/d44a3849/c302/4a0a/853f/f2a6cffad735/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Свята мати</div>
+<div><a href='https://tidal.com/album/300064958' target='_blank'>https://tidal.com/album/300064958</a></div>
+<div>Ovan - Bitter Smile</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/300064958' target='_blank'><img src='https://resources.tidal.com/images/d0ba2910/7d4c/4362/8506/1e9ac6e738ab/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Най буде так</div>
+<div><a href='https://tidal.com/album/293729383' target='_blank'>https://tidal.com/album/293729383</a></div>
+<div>Ovan - Credit Cookie</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/293729383' target='_blank'><img src='https://resources.tidal.com/images/dcdabf72/2172/4a56/95a7/9a43f6b1be52/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Слава київському привиду</div>
+<div><a href='https://tidal.com/album/226909170' target='_blank'>https://tidal.com/album/226909170</a></div>
+<div>Ovan - Do I Do</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/226909170' target='_blank'><img src='https://resources.tidal.com/images/2fe54b00/ed3d/4360/9ef3/224e55c519b2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Слава зсу</div>
+<div><a href='https://tidal.com/album/227003934' target='_blank'>https://tidal.com/album/227003934</a></div>
+<div>Ovan - Cold World</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/227003934' target='_blank'><img src='https://resources.tidal.com/images/e11d1c44/2f87/4fd6/b886/f63919437b0c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Між нами з тобою</div>
+<div><a href='https://tidal.com/album/266289742' target='_blank'>https://tidal.com/album/266289742</a></div>
+<div>Ovan - Celebrate</div>
+<div>Ovan - So I'll be a star</div>
+<div>Ovan - Olympic Park</div>
+<div>Ovan - Do I Do</div>
+<div>Ovan - Our Dating is</div>
+<div>Ovan - Untitled</div>
+<div>Ovan - My Night</div>
+<div>Ovan - It's LUV</div>
+<div>Ovan - Cold World</div>
+<div>Ovan - Hometax</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/266289742' target='_blank'><img src='https://resources.tidal.com/images/013de0bf/a423/4f8d/81dd/4d24b5d73a8e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] 행복. 마이크스웨거 부스</div>
+<div><a href='https://tidal.com/album/287450965' target='_blank'>https://tidal.com/album/287450965</a></div>
+<div>Ovan - 안아줘 (MIC SWG LIVE VER)</div>
+<div>Ovan - 행복 (MIC SWG LIVE VER)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287450965' target='_blank'><img src='https://resources.tidal.com/images/27f80dc9/a91d/4002/b00e/ee0053f71f42/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Walk</div>
+<div><a href='https://tidal.com/album/205236635' target='_blank'>https://tidal.com/album/205236635</a></div>
+<div>Ovan - Walk</div>
+<div>Ovan - About Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/205236635' target='_blank'><img src='https://resources.tidal.com/images/1e356b3d/fcec/4b9f/b303/bcc493a51e5b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Sweet Heart</div>
+<div><a href='https://tidal.com/album/209593790' target='_blank'>https://tidal.com/album/209593790</a></div>
+<div>Vinxen, Ovan, Parc Jae Jung, Piano Man, Im Soo - Sweet Heart</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209593790' target='_blank'><img src='https://resources.tidal.com/images/20b5bf15/14f6/43ee/b40f/3a1751395f41/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] I'm Fine</div>
+<div><a href='https://tidal.com/album/178269256' target='_blank'>https://tidal.com/album/178269256</a></div>
+<div>Ovan - I'm Fine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/178269256' target='_blank'><img src='https://resources.tidal.com/images/48a002d7/92e0/4812/a546/cd87261115d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] I Am Yours</div>
+<div><a href='https://tidal.com/album/187975875' target='_blank'>https://tidal.com/album/187975875</a></div>
+<div>Ovan - I Am Yours</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/187975875' target='_blank'><img src='https://resources.tidal.com/images/07d13823/c99d/4749/b97d/01479a2e646a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Please Turn Off The Lights</div>
+<div><a href='https://tidal.com/album/148478595' target='_blank'>https://tidal.com/album/148478595</a></div>
+<div>Ovan, Joosiq - Please Turn Off The Lights</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148478595' target='_blank'><img src='https://resources.tidal.com/images/31b49624/fd24/41cf/ac44/ba8f431cefbb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Paris</div>
+<div><a href='https://tidal.com/album/160154301' target='_blank'>https://tidal.com/album/160154301</a></div>
+<div>Ovan, Lunch - Paris</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/160154301' target='_blank'><img src='https://resources.tidal.com/images/71338e13/cf8f/4744/a651/8d951a173359/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] JUNG</div>
+<div><a href='https://tidal.com/album/166500849' target='_blank'>https://tidal.com/album/166500849</a></div>
+<div>Vinxen, Ovan, Im Soo - JUNG</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/166500849' target='_blank'><img src='https://resources.tidal.com/images/221e6982/166e/4649/8128/35241fbc2580/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] I Need You</div>
+<div><a href='https://tidal.com/album/133096767' target='_blank'>https://tidal.com/album/133096767</a></div>
+<div>Ovan - I Need You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/133096767' target='_blank'><img src='https://resources.tidal.com/images/bc6e152e/003d/48b5/8846/cacdd96055b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Happy Birthday</div>
+<div><a href='https://tidal.com/album/154477032' target='_blank'>https://tidal.com/album/154477032</a></div>
+<div>Ovan - Happy Birthday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/154477032' target='_blank'><img src='https://resources.tidal.com/images/d43e8ef8/9c8d/411c/b263/4829023672ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] DINNER MATE (Original Television Soundtrack) Pt.1</div>
+<div><a href='https://tidal.com/album/302324697' target='_blank'>https://tidal.com/album/302324697</a></div>
+<div>Ovan - DINNER MATE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302324697' target='_blank'><img src='https://resources.tidal.com/images/ab216eb9/7267/4a82/8945/77892eecd713/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Snowflake</div>
+<div><a href='https://tidal.com/album/102809670' target='_blank'>https://tidal.com/album/102809670</a></div>
+<div>Ovan, Vinxen - Snowflake</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102809670' target='_blank'><img src='https://resources.tidal.com/images/d89fe469/d759/4ed3/ba99/0ae513896be7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Rain Drop</div>
+<div><a href='https://tidal.com/album/216488598' target='_blank'>https://tidal.com/album/216488598</a></div>
+<div>Soyou, Ovan - Rain Drop</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216488598' target='_blank'><img src='https://resources.tidal.com/images/28df4d64/4f22/4b8e/bff4/97a5c7a73f35/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Missed Call</div>
+<div><a href='https://tidal.com/album/119384346' target='_blank'>https://tidal.com/album/119384346</a></div>
+<div>Ovan - Missed Call</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/119384346' target='_blank'><img src='https://resources.tidal.com/images/f34a7119/0efc/4704/8602/6b24cd43b27e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Christmas Rose</div>
+<div><a href='https://tidal.com/album/124445945' target='_blank'>https://tidal.com/album/124445945</a></div>
+<div>Ovan, LEEBADA - Christmas Rose (feat. LEEBADA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/124445945' target='_blank'><img src='https://resources.tidal.com/images/1d7fbce7/98c3/4300/831f/7b84baaf07b4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Happiness</div>
+<div><a href='https://tidal.com/album/100172156' target='_blank'>https://tidal.com/album/100172156</a></div>
+<div>Ovan - Happiness</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/100172156' target='_blank'><img src='https://resources.tidal.com/images/ee2a5aae/7ce0/4539/b7a8/30b833db6969/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Confusion</div>
+<div><a href='https://tidal.com/album/86792344' target='_blank'>https://tidal.com/album/86792344</a></div>
+<div>Ovan, Jinsil - Confusion (feat. Jinsil)</div>
+<div>Ovan - Remember Our Tears</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/86792344' target='_blank'><img src='https://resources.tidal.com/images/5027f740/ca2e/4f0b/b2c8/b4e5e20457bf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] VIRGIN LOVE</div>
+<div><a href='https://tidal.com/album/125925580' target='_blank'>https://tidal.com/album/125925580</a></div>
+<div>Ovan, Chancellor - VIRGIN LOVE (feat. Chancellor)</div>
+<div>Ovan - Girl You Deserved It</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125925580' target='_blank'><img src='https://resources.tidal.com/images/0e880af4/9ca3/43a1/b0ef/596b46d9bdbf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] The Star of The Movie</div>
+<div><a href='https://tidal.com/album/125925566' target='_blank'>https://tidal.com/album/125925566</a></div>
+<div>Ovan, Jannabi - The Star of The Movie (feat. Jannabi)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125925566' target='_blank'><img src='https://resources.tidal.com/images/d898ac71/40a5/4bc4/82bb/ea046e304f40/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] IDWS (I Don't Wanna be Sad)</div>
+<div><a href='https://tidal.com/album/81767452' target='_blank'>https://tidal.com/album/81767452</a></div>
+<div>Ovan - IDWS (I Don't Wanna be Sad)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/81767452' target='_blank'><img src='https://resources.tidal.com/images/e6322d24/ff3a/4b4b/a1e1/0571972ad66f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] For Real</div>
+<div><a href='https://tidal.com/album/125926058' target='_blank'>https://tidal.com/album/125926058</a></div>
+<div>Ovan - For Real(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125926058' target='_blank'><img src='https://resources.tidal.com/images/37c63493/d057/496c/b36d/0a5d3263bf55/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] BON VOYAGE (feat. Piano Man)</div>
+<div><a href='https://tidal.com/album/75661998' target='_blank'>https://tidal.com/album/75661998</a></div>
+<div>Ovan, Piano Man - BON VOYAGE (feat. Piano Man)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/75661998' target='_blank'><img src='https://resources.tidal.com/images/a04dc454/d30a/4698/b777/3b79642d8f64/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/오반 (Ovan)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
