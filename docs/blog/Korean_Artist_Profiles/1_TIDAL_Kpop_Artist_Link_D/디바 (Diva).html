@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 디바 ( Tidal Diva )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 디바 ( Tidal Diva )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/fddef6d9/1e5b/435a/8817/ac8392974569/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/3589691' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 디바</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>디바 (Diva) – ‘웃어요’의 긍정 에너지와 ‘원더우먼’의 당당함으로 시대를 앞서간 걸크러쉬의 선구자</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Diva</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Diva – A pioneer of girl crush who led the era with the positive energy of 'Smile' and the confidence of 'Wonder Woman'.</div><p>90년대 후반 가요계를 강타했던 걸그룹 디바를 기억하시나요? 파워풀한 보컬과 걸크러쉬 매력으로 많은 사랑을 받았던 디바는 단순한 아이돌 그룹을 넘어선 존재였어요. 그녀들은 음악과 퍼포먼스를 통해 여성의 당당함을 표현하며 대중에게 깊은 인상을 남겼습니다.</p><p>Do you remember Diva, the girl group that swept the late 90s K-pop scene? Diva, who was loved for their powerful vocals and girl crush charm, was more than just an idol group. They expressed the confidence of women through music and performance, leaving a deep impression on the public.</p><p>✧</p><p>그룹 탄생</p><p>디바는 1997년 채리나를 중심으로 비키, 지니로 구성되어 탄생했어요. 데뷔 초부터 강렬한 이미지와 파워풀한 퍼포먼스로 대중의 시선을 사로잡았습니다. 그녀들의 등장은 가요계에 신선한 바람을 불어넣으며 걸그룹의 새로운 가능성을 제시했죠.</p><p>Group Formation</p><p>Diva was formed in 1997 with Chae Rina as the center, along with Vicki and Genie. From their debut, they captivated the public with their strong image and powerful performance. Their emergence brought a fresh breeze to the music industry and presented new possibilities for girl groups.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>디바의 음악은 힙합, R&B, 댄스 등 다양한 장르를 아우르며, 그녀들만의 독특한 스타일을 구축했어요. 특히, 여성의 솔직하고 당당한 모습을 담은 가사는 많은 여성 팬들의 공감을 얻었습니다. 무대 위에서의 에너지 넘치는 퍼포먼스는 디바의 트레이드 마크였죠.</p><p>Music and Performance</p><p>Diva's music encompasses various genres such as hip-hop, R&B, and dance, establishing their own unique style. In particular, the lyrics that contained the honest and confident image of women resonated with many female fans. Their energetic performances on stage were Diva's trademark.</p><p>✧</p><p>주요 활동</p><p>‘왜 불러’, ‘Joy’, ‘Up & Down’ 등 수많은 히트곡을 발표하며 디바는 90년대 후반과 2000년대 초반 가요계를 휩쓸었어요. 각종 음악 방송에서 1위를 차지하며 그녀들의 인기를 입증했습니다. 또한, 다양한 예능 프로그램에 출연하며 대중과의 소통을 활발히 이어갔죠.</p><p>Main Activities</p><p>Diva swept through the music scene in the late 90s and early 2000s with numerous hit songs such as 'Why Do You Call Me', 'Joy', and 'Up & Down'. They proved their popularity by taking first place on various music broadcasts. In addition, they actively communicated with the public by appearing on various entertainment programs.</p><p>✧</p><p>미래/의미</p><p>디바는 현재 활동을 중단했지만, 그녀들이 남긴 음악과 퍼포먼스는 여전히 많은 사람들에게 기억되고 있어요. 걸크러쉬 콘셉트의 시초로서, 후배 걸그룹들에게 큰 영향을 미쳤습니다. 디바는 단순한 걸그룹을 넘어, 한 시대를 대표하는 아이콘으로 자리매김했죠.</p><p>Future/Meaning</p><p>Diva has currently suspended activities, but the music and performances they left behind are still remembered by many people. As the origin of the girl crush concept, they had a great influence on younger girl groups. Diva has established itself as an icon representing an era, beyond just being a girl group.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2005] Only Diva</div>
+<div><a href='https://tidal.com/album/169751254' target='_blank'>https://tidal.com/album/169751254</a></div>
+<div>Diva - Diva Intro</div>
+<div>Diva - 웃어요</div>
+<div>Diva - 원더우먼</div>
+<div>Diva, Hoony Hoon - 서두르지 않아요 (feat. Hoony Hoon)</div>
+<div>Diva - My Style</div>
+<div>Diva, Realslow - 76-70=♡ (feat. Realslow)</div>
+<div>Diva - Chapter</div>
+<div>Diva - 미치도록</div>
+<div>Diva - 바다 그늘</div>
+<div>Diva - My Name Is V</div>
+<div>Diva - Tic Tac</div>
+<div>Diva - 두근두근 쿵쿵</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/169751254' target='_blank'><img src='https://resources.tidal.com/images/d8b04cbc/81f6/4bf9/bc56/d10ac538f784/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Renaissance</div>
+<div><a href='https://tidal.com/album/163380711' target='_blank'>https://tidal.com/album/163380711</a></div>
+<div>Diva - Satisfaction Guarantee</div>
+<div>Diva - Hey Boy</div>
+<div>Diva - 여우처럼</div>
+<div>Diva - Get The Party</div>
+<div>Diva - Good Girl</div>
+<div>Diva - Amoremio</div>
+<div>Diva - How To Loose A Guy</div>
+<div>Diva - 사랑을 시작할까요-</div>
+<div>Diva - Always I---</div>
+<div>Diva - Get Down</div>
+<div>Diva - Fed Up</div>
+<div>Diva - 그런 거죠 (From 때려)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163380711' target='_blank'><img src='https://resources.tidal.com/images/c4a33edf/d74f/43b8/8687/c952f9b5620d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] The Diva 5</div>
+<div><a href='https://tidal.com/album/163272005' target='_blank'>https://tidal.com/album/163272005</a></div>
+<div>Diva - Cream</div>
+<div>Diva - 딱이야!</div>
+<div>Diva - Black Maria</div>
+<div>Diva - 헷갈리나</div>
+<div>Diva - 몰라 몰라</div>
+<div>Diva - 인생은 아름다워</div>
+<div>Diva - Cherish</div>
+<div>Diva - 소문</div>
+<div>Diva - 튀어!</div>
+<div>Diva - D.V.D. (Let'S Go Together)</div>
+<div>Diva - 중독</div>
+<div>Diva - Lucky Boy</div>
+<div>Diva - Bye Bye</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163272005' target='_blank'><img src='https://resources.tidal.com/images/4ae9bf16/a246/4ff4/be03/fcf09eaafe27/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] Naughty</div>
+<div><a href='https://tidal.com/album/163271966' target='_blank'>https://tidal.com/album/163271966</a></div>
+<div>Diva - Intro Is Diva</div>
+<div>Diva - Up & Down</div>
+<div>Diva - 이 겨울에</div>
+<div>Diva - Secret</div>
+<div>Diva - Crazy</div>
+<div>Diva - Phone No. 1</div>
+<div>Diva - 탈피</div>
+<div>Diva - Phone No. 2</div>
+<div>Diva - Lady, Lady, Lady</div>
+<div>Diva - I Know</div>
+<div>Diva - Everybody Sing A Song</div>
+<div>Diva - Destiny Night</div>
+<div>Diva - Tune Sisters</div>
+<div>Diva - 천사의 키스</div>
+<div>Diva - 남과 여</div>
+<div>Diva - Diva Diva Diva</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163271966' target='_blank'><img src='https://resources.tidal.com/images/03e9e587/f350/492a/8ec8/2f8f5ba65585/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] Millennium</div>
+<div><a href='https://tidal.com/album/309013274' target='_blank'>https://tidal.com/album/309013274</a></div>
+<div>Diva - Link</div>
+<div>Diva - Feel it</div>
+<div>Diva - That's what happen when in love</div>
+<div>Diva - I.E. Ya</div>
+<div>Diva - Love like a coin</div>
+<div>Diva - Never Say Good Bye</div>
+<div>Diva - Round Round</div>
+<div>Diva - Tonight</div>
+<div>Diva - The one for me</div>
+<div>Diva - Rehearsal</div>
+<div>Diva - I'll Get Your Love</div>
+<div>Diva - Outro</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309013274' target='_blank'><img src='https://resources.tidal.com/images/1f44e975/f7ce/465d/a6e7/34b6708c61ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Snappy Diva's Second Album</div>
+<div><a href='https://tidal.com/album/309016549' target='_blank'>https://tidal.com/album/309016549</a></div>
+<div>Diva - Why calling</div>
+<div>Diva - sorrow-will of heaven</div>
+<div>Diva - I can't No more</div>
+<div>Diva - The Hardest Promise between Lovers</div>
+<div>Diva - Gal's Club</div>
+<div>Diva - Whoo</div>
+<div>Diva - short circuit</div>
+<div>Diva - Joy</div>
+<div>Diva - For Diva's</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309016549' target='_blank'><img src='https://resources.tidal.com/images/10342f93/0b98/4e78/87ac/9f3c077194a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Funky Diva</div>
+<div><a href='https://tidal.com/album/127783941' target='_blank'>https://tidal.com/album/127783941</a></div>
+<div>Diva - 골드</div>
+<div>Diva - The Dreamer</div>
+<div>Diva - The Price To Pay</div>
+<div>Diva - 그래</div>
+<div>Diva - Lady First</div>
+<div>Diva - The White Rose</div>
+<div>Diva - One</div>
+<div>Diva - Luv Ya</div>
+<div>Diva - The Drama Of December</div>
+<div>Diva - Yesterday Once More</div>
+<div>Diva - Gold</div>
+<div>Diva - The Award</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/127783941' target='_blank'><img src='https://resources.tidal.com/images/94c1fe43/38f5/412d/bd05/5b4c58863d24/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_D/1_TIDAL_Kpop_Artist_Link_D.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄷ1) TIDAL Kpop Artist Link (D)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_D/디바 (Diva)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
