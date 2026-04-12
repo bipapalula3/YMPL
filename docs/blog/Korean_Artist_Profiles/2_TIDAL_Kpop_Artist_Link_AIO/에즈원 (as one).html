@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 에즈원 ( Tidal as one )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 에즈원 ( Tidal as one )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/428dadaa/87f5/4b13/aab4/2b4bb1374218/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/3514305 --------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 에즈원</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>에즈원 (As One) – 시간을 초월하는 하모니, 'The Pain I Caused' 속 아련함과 'Winter Wonderland'의 따뜻함으로 기억되는 듀오</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> as one</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>As One – A Timeless Harmony, A Duo Remembered for the Poignancy of 'The Pain I Caused' and the Warmth of 'Winter Wonderland'</div><p>섬세한 감성으로 마음을 어루만지는 듀오, 에즈원(As One)을 소개합니다. 깊은 울림을 주는 하모니와 진솔한 가사로 오랜 시간 사랑받아온 여성 R&B 듀오예요. 그들의 음악은 우리 삶의 여러 순간들을 따뜻하게 감싸 안아줍니다.</p><p>Let us introduce As One, a duo that touches hearts with delicate emotions. They are a female R&B duo that has been loved for a long time for their deeply resonant harmonies and sincere lyrics. Their music warmly embraces many moments in our lives.</p><p>✧</p><p>그룹의 탄생</p><p>에즈원은 독특한 음색과 뛰어난 가창력을 지닌 두 멤버, 이민과 크리스탈로 이루어진 R&B 듀오예요. 데뷔 이후, 그들은 아름다운 하모니와 깊이 있는 감성으로 대중의 마음을 사로잡았습니다. 마치 오래된 친구처럼 편안하게 다가오는 음악은 에즈원만의 매력입니다.</p><p>The Birth of the Group</p><p>As One is an R&B duo composed of two members, Lee Min and Crystal, who possess unique tones and outstanding singing abilities. Since their debut, they have captivated the public with their beautiful harmonies and profound emotions. Their music, which feels as comfortable as an old friend, is the unique charm of As One.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>에즈원의 음악은 주로 R&B 발라드를 기반으로 하며, 소울풀한 보컬과 감성적인 멜로디가 특징입니다. 때로는 따뜻하게, 때로는 애절하게 다가오는 그들의 목소리는 듣는 이의 마음을 깊이 파고들어요. 다양한 감정을 섬세하게 표현하는 퍼포먼스는 에즈원의 음악을 더욱 풍성하게 만들어줍니다.</p><p>Music and Performance</p><p>As One's music is mainly based on R&B ballads, characterized by soulful vocals and emotional melodies. Their voices, sometimes warm and sometimes heartbreaking, deeply resonate with listeners. Performances that delicately express various emotions enrich As One's music even further.</p><p>✧</p><p>주요 활동</p><p>에즈원은 꾸준한 음반 활동과 더불어 다양한 드라마 OST에 참여하며 폭넓은 사랑을 받아왔어요. 그들의 음악은 수많은 이들에게 위로와 공감을 선사하며, 오랫동안 기억되는 명곡들을 탄생시켰습니다. 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀가고 있는 점도 주목할 만합니다.</p><p>Key Activities</p><p>As One has been widely loved for their consistent album releases and participation in various drama OSTs. Their music has provided comfort and empathy to countless people, creating memorable masterpieces that are remembered for a long time. It is also worth noting that they are expanding their musical spectrum through collaborations with various artists.</p><p>✧</p><p>미래/의미</p><p>에즈원은 앞으로도 변함없이 그들만의 감성적인 음악으로 대중과 소통할 것으로 기대됩니다. 시간을 초월하는 아름다운 하모니는 많은 이들에게 깊은 감동과 위로를 선사할 거예요. 에즈원의 음악은 우리 삶의 소중한 순간들을 더욱 특별하게 만들어주는 선물과 같습니다.</p><p>Future/Meaning</p><p>As One is expected to continue communicating with the public through their unique emotional music. Their timeless and beautiful harmonies will deeply move and comfort many people. As One's music is like a gift that makes the precious moments of our lives even more special.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Still My Baby</div>
+<div><a href='https://tidal.com/album/418393562' target='_blank'>https://tidal.com/album/418393562</a></div>
+<div>As One - Still My Baby (feat. BUMKEY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/418393562' target='_blank'><img src='https://resources.tidal.com/images/ea1f1068/e207/4f5e/a288/8faa30254a61/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Better</div>
+<div><a href='https://tidal.com/album/358055100' target='_blank'>https://tidal.com/album/358055100</a></div>
+<div>As One - Better</div>
+<div>As One - Better (Sped Up)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/358055100' target='_blank'><img src='https://resources.tidal.com/images/ca73842d/4dd2/40eb/8bf5/cce2ec94dc73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Winter Wonderland</div>
+<div><a href='https://tidal.com/album/335169577' target='_blank'>https://tidal.com/album/335169577</a></div>
+<div>As One - Winter Wonderland</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/335169577' target='_blank'><img src='https://resources.tidal.com/images/16922dab/0b58/470f/9ed6/e37f554740d6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Something Like a Miracle</div>
+<div><a href='https://tidal.com/album/323507628' target='_blank'>https://tidal.com/album/323507628</a></div>
+<div>As One - Something Like a Miracle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/323507628' target='_blank'><img src='https://resources.tidal.com/images/5c401ba0/72a6/4e34/8616/5045915469f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] February 29th</div>
+<div><a href='https://tidal.com/album/189570878' target='_blank'>https://tidal.com/album/189570878</a></div>
+<div>As One - February 29th</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189570878' target='_blank'><img src='https://resources.tidal.com/images/6e0ee2ad/29d0/4892/913e/bff344939b87/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] It's ok not to be ok</div>
+<div><a href='https://tidal.com/album/125835304' target='_blank'>https://tidal.com/album/125835304</a></div>
+<div>As One, LEE DAE HWI - It's ok not to be ok (feat. LEE DAE HWI )</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125835304' target='_blank'><img src='https://resources.tidal.com/images/5fa8e176/cb47/40e4/beaa/abf6e0291343/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Goodbye For Now</div>
+<div><a href='https://tidal.com/album/74781998' target='_blank'>https://tidal.com/album/74781998</a></div>
+<div>As One - Goodbye For Now</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/74781998' target='_blank'><img src='https://resources.tidal.com/images/e1a6771d/36c5/4a7a/9c3b/300a56d9f18b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 연애하고 싶어</div>
+<div><a href='https://tidal.com/album/189052663' target='_blank'>https://tidal.com/album/189052663</a></div>
+<div>Romantic City, As One - 연애하고 싶어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189052663' target='_blank'><img src='https://resources.tidal.com/images/d9127852/e718/4495/bd3c/1257ad6d281f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Outlast</div>
+<div><a href='https://tidal.com/album/62027920' target='_blank'>https://tidal.com/album/62027920</a></div>
+<div>As One - Don't Say Anything</div>
+<div>As One, Candle - Fall In You (feat. Candle)</div>
+<div>As One - The Pain I Caused</div>
+<div>As One - Don't Wither</div>
+<div>As One - Memory</div>
+<div>As One, Hanhae - Even For 1 Minute (feat. HANHAE)</div>
+<div>As One - Blue</div>
+<div>As One, KittiB - After Rain (feat. KittiB)</div>
+<div>As One - Waiting For You</div>
+<div>As One - For The Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/62027920' target='_blank'><img src='https://resources.tidal.com/images/06a2a81d/6594/4dc3/886f/520ff72f73e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] Hey Ya! (Korean Version)</div>
+<div><a href='https://tidal.com/album/125884108' target='_blank'>https://tidal.com/album/125884108</a></div>
+<div>As One - Hey Ya! (Korean Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125884108' target='_blank'><img src='https://resources.tidal.com/images/862c0d62/31f2/46d9/87fe/67ded437de5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Forever Summer</div>
+<div><a href='https://tidal.com/album/63933733' target='_blank'>https://tidal.com/album/63933733</a></div>
+<div>As One, Kang Min Hee, Mellie - Forever Summer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/63933733' target='_blank'><img src='https://resources.tidal.com/images/04728ff9/1ea1/43fc/86f4/0d1faf821da3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Five Enough (Original Television Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/171248543' target='_blank'>https://tidal.com/album/171248543</a></div>
+<div>As One - Happy song (feat. Kiggen)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/171248543' target='_blank'><img src='https://resources.tidal.com/images/af06d93a/1894/44f1/8e62/9b251d017877/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Don't Say Anything</div>
+<div><a href='https://tidal.com/album/61820156' target='_blank'>https://tidal.com/album/61820156</a></div>
+<div>As One - Don't Say Anything</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/61820156' target='_blank'><img src='https://resources.tidal.com/images/a2b8a4ab/ea35/4f2c/b4ad/c4ef137339e7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] After Rain (feat. KittiB)</div>
+<div><a href='https://tidal.com/album/58292062' target='_blank'>https://tidal.com/album/58292062</a></div>
+<div>As One, KittiB - After Rain (feat. KittiB)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/58292062' target='_blank'><img src='https://resources.tidal.com/images/ea1e8950/f3ca/496f/b79a/49f57c53357b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Even For 1 Minute</div>
+<div><a href='https://tidal.com/album/188891620' target='_blank'>https://tidal.com/album/188891620</a></div>
+<div>As One, Hanhae - Even For 1 Minute (feat. HANHAE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188891620' target='_blank'><img src='https://resources.tidal.com/images/bfbf2c3d/7973/4db7/894c/e8b73b33c303/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Candy Ball</div>
+<div><a href='https://tidal.com/album/125885553' target='_blank'>https://tidal.com/album/125885553</a></div>
+<div>As One - Candy Ball (韓)</div>
+<div>As One - Candy Ball (粵)</div>
+<div>As One - Candy Ball (純音樂)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125885553' target='_blank'><img src='https://resources.tidal.com/images/6fc58a0f/2c88/48e3/91d2/ae5b5052565c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 그저 눈물만</div>
+<div><a href='https://tidal.com/album/189134149' target='_blank'>https://tidal.com/album/189134149</a></div>
+<div>As One, Si Jin - 그저 눈물만</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189134149' target='_blank'><img src='https://resources.tidal.com/images/9b0f5ab4/0911/4515/a695/2f8eb85f0d15/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] New Girl</div>
+<div><a href='https://tidal.com/album/256187006' target='_blank'>https://tidal.com/album/256187006</a></div>
+<div>As One - New Girl</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/256187006' target='_blank'><img src='https://resources.tidal.com/images/b0cd1402/f530/4411/805a/3a0125a32ce5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2014] For The Night</div>
+<div><a href='https://tidal.com/album/188891626' target='_blank'>https://tidal.com/album/188891626</a></div>
+<div>As One - For The Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188891626' target='_blank'><img src='https://resources.tidal.com/images/1d46fd66/ba12/494a/a84c/8e32827dd22b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Be With U</div>
+<div><a href='https://tidal.com/album/125884897' target='_blank'>https://tidal.com/album/125884897</a></div>
+<div>As One - Be With U</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125884897' target='_blank'><img src='https://resources.tidal.com/images/4560ada6/390e/4a36/b9af/8c6c158b07f6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] All Day All Night</div>
+<div><a href='https://tidal.com/album/189111588' target='_blank'>https://tidal.com/album/189111588</a></div>
+<div>As One - All Day All Night (feat. Kanto)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189111588' target='_blank'><img src='https://resources.tidal.com/images/7fccc3e2/c0ef/40a6/8106/93f74dd8436d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 사랑이 어색해</div>
+<div><a href='https://tidal.com/album/189033317' target='_blank'>https://tidal.com/album/189033317</a></div>
+<div>As One - 사랑이 어색해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189033317' target='_blank'><img src='https://resources.tidal.com/images/a8133f59/1a14/4ef2/ae65/b39484da8df3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] THE S Part.3</div>
+<div><a href='https://tidal.com/album/215783444' target='_blank'>https://tidal.com/album/215783444</a></div>
+<div>As One, Miss $ - It's gonna be alright</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215783444' target='_blank'><img src='https://resources.tidal.com/images/88baaaa3/3d96/4029/b80d/dc739e9030ff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Simply As One</div>
+<div><a href='https://tidal.com/album/189052037' target='_blank'>https://tidal.com/album/189052037</a></div>
+<div>As One, Bumkey - 우리 무슨 사이야- (With BUMKEY)</div>
+<div>As One - 2=1</div>
+<div>As One - 동거</div>
+<div>As One - 혼잣말 (Simply Ver.)</div>
+<div>As One - 사랑이 어색해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189052037' target='_blank'><img src='https://resources.tidal.com/images/bf9e90aa/6d2f/4ed9/9dfd/62b469ef424e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] New Wave Studio (Vol.3)</div>
+<div><a href='https://tidal.com/album/216080357' target='_blank'>https://tidal.com/album/216080357</a></div>
+<div>As One - 2013 Desire And Hope</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216080357' target='_blank'><img src='https://resources.tidal.com/images/f826eb07/b618/488d/9485/5bb506303b68/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] AsOnE</div>
+<div><a href='https://tidal.com/album/125883566' target='_blank'>https://tidal.com/album/125883566</a></div>
+<div>As One - Catch Me Up</div>
+<div>As One - 4Ever</div>
+<div>As One - Red Hot Hits 2013</div>
+<div>As One - Catch Me Up (Re-mix version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125883566' target='_blank'><img src='https://resources.tidal.com/images/b85c3e25/ed6c/46da/a73c/15a44424eaf7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 4ever</div>
+<div><a href='https://tidal.com/album/125883543' target='_blank'>https://tidal.com/album/125883543</a></div>
+<div>As One - 4ever</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125883543' target='_blank'><img src='https://resources.tidal.com/images/d8014c1b/7552/49ff/af19/cff3c71421cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2012] Together</div>
+<div><a href='https://tidal.com/album/127539768' target='_blank'>https://tidal.com/album/127539768</a></div>
+<div>Freakx, As One - Together</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/127539768' target='_blank'><img src='https://resources.tidal.com/images/72431002/4f32/4bed/a990/24da1457d3ba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] The Thousandth Man (Original Soundtrack) Part.5</div>
+<div><a href='https://tidal.com/album/216151668' target='_blank'>https://tidal.com/album/216151668</a></div>
+<div>Verbal Jint, As One - Closer Closer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216151668' target='_blank'><img src='https://resources.tidal.com/images/aef18fbb/0bca/40d5/9361/d619f1663d7e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Red Hot Hit</div>
+<div><a href='https://tidal.com/album/125883288' target='_blank'>https://tidal.com/album/125883288</a></div>
+<div>As One - Red Hot Hit</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125883288' target='_blank'><img src='https://resources.tidal.com/images/917e082d/68dc/4ce2/841c/8cc5288413ea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Only U (feat. Donghae)</div>
+<div><a href='https://tidal.com/album/413571203' target='_blank'>https://tidal.com/album/413571203</a></div>
+<div>As One - Only U (feat. Donghae)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/413571203' target='_blank'><img src='https://resources.tidal.com/images/cad7a3e3/ec23/48e1/821f/5e90470a3335/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] MBN 주말드라마 사랑도 돈이 되나요 OST Part.1</div>
+<div><a href='https://tidal.com/album/288530667' target='_blank'>https://tidal.com/album/288530667</a></div>
+<div>As One - 아직도 사랑입니까</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288530667' target='_blank'><img src='https://resources.tidal.com/images/bb4a9bea/4dc7/4525/b68f/55a35efd9925/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Day by Day 2012</div>
+<div><a href='https://tidal.com/album/189148112' target='_blank'>https://tidal.com/album/189148112</a></div>
+<div>As One - Day by Day 2012 (feat. Verbal Jint)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189148112' target='_blank'><img src='https://resources.tidal.com/images/e84c064c/9ba8/44ed/a724/f9efeb46021a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Catch Me Up</div>
+<div><a href='https://tidal.com/album/125883301' target='_blank'>https://tidal.com/album/125883301</a></div>
+<div>As One - Catch Me Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125883301' target='_blank'><img src='https://resources.tidal.com/images/1e169c05/5986/4f9c/a5e0/edfda08ad41c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] A Masterpiece in my life (Channel A DRAMA) OST Part.3</div>
+<div><a href='https://tidal.com/album/189313976' target='_blank'>https://tidal.com/album/189313976</a></div>
+<div>As One - Regret or longing</div>
+<div>As One - Regret or longing (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189313976' target='_blank'><img src='https://resources.tidal.com/images/4c036d89/5f63/4081/a578/2ec4dbc8a5a9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Taste Of Love</div>
+<div><a href='https://tidal.com/album/168853698' target='_blank'>https://tidal.com/album/168853698</a></div>
+<div>As One - You Are My Baby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168853698' target='_blank'><img src='https://resources.tidal.com/images/be7eb4d0/64ba/489f/a83a/d080da37bda5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2010] Asone Season 1</div>
+<div><a href='https://tidal.com/album/189188888' target='_blank'>https://tidal.com/album/189188888</a></div>
+<div>As One - Sonnet</div>
+<div>As One - 눈물</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188888' target='_blank'><img src='https://resources.tidal.com/images/417492bb/789a/4dd6/ba94/cc84e3724713/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Sponge Remake 2008 As One</div>
+<div><a href='https://tidal.com/album/184486454' target='_blank'>https://tidal.com/album/184486454</a></div>
+<div>As One - Zza Zza La!! 2008 Remake Version</div>
+<div>As One - ABCD 2008 Remake Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184486454' target='_blank'><img src='https://resources.tidal.com/images/0633a212/5c81/4f41/9064/3f3ddef47de0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Love Is Only You</div>
+<div><a href='https://tidal.com/album/189448656' target='_blank'>https://tidal.com/album/189448656</a></div>
+<div>As One, G.O., Showgun - Love is only you (With G.O., Showgun)</div>
+<div>2NB, G.O., Showgun - Love is only you (With G.O., Showgun)</div>
+<div>2NB - You are a fool</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189448656' target='_blank'><img src='https://resources.tidal.com/images/ff56599e/3371/48f0/8784/a09d519d796c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] The 5 Love Stories We Know</div>
+<div><a href='https://tidal.com/album/215649673' target='_blank'>https://tidal.com/album/215649673</a></div>
+<div>As One - Is it love (Feat. Sean 2 slow)</div>
+<div>As One - it’s today (duet with ESang)</div>
+<div>As One - The First Time I Kissed You (Duet With AND)</div>
+<div>As One - Close To Me Again (Duet With Son,Ho-Young)</div>
+<div>As One - When I Love And When I Separate</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215649673' target='_blank'><img src='https://resources.tidal.com/images/fd9f75da/c395/439d/b0c8/bf56f2d814e5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2007] Holiday</div>
+<div><a href='https://tidal.com/album/189448629' target='_blank'>https://tidal.com/album/189448629</a></div>
+<div>As One, 2NB - Start (With 2NB)</div>
+<div>As One, 2NB - Holiday (With 2NB)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189448629' target='_blank'><img src='https://resources.tidal.com/images/7d8d812b/f460/4a5f/aec8/6ca4e7cf5ddd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Restoration</div>
+<div><a href='https://tidal.com/album/306572816' target='_blank'>https://tidal.com/album/306572816</a></div>
+<div>As One - Oriental Express (SST)</div>
+<div>As One - 위대한 유산</div>
+<div>As One - 사랑보다 아름다운 유혹</div>
+<div>As One - Another Try</div>
+<div>As One - My Girl Friend</div>
+<div>As One - As One Love</div>
+<div>As One - 그녀는</div>
+<div>As One - 니가있어</div>
+<div>As One - 사랑했던 날처럼</div>
+<div>As One - Beautiful Love</div>
+<div>As One - So Simple</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306572816' target='_blank'><img src='https://resources.tidal.com/images/428dadaa/87f5/4b13/aab4/2b4bb1374218/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/에즈원 (as one)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
