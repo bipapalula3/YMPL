@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 정동원 ( Tidal Jeong Dong Won )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 정동원 ( Tidal Jeong Dong Won )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/017c1605/23e2/45f6/8dcd/1f7dda063119/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9393128' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 정동원</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>‘사랑, 그 설렘’을 노래하는 트로트 왕자, ‘Gift’처럼 소중한 음색으로 마음을 따스하게 채우는 가수</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jeong Dong Won</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>The prince of trot singing about 'the thrill of love,' an artist who warmly fills hearts with a precious tone like a 'Gift'.</div><p>트로트계의 새로운 바람을 일으키며 등장한 정동원 님은 어린 나이에도 불구하고 깊은 감성과 뛰어난 가창력으로 많은 사랑을 받고 있어요. 특유의 맑고 청량한 음색은 듣는 이들에게 긍정적인 에너지를 전달하며 폭넓은 세대의 공감을 얻고 있습니다. 앞으로 보여줄 음악적 성장이 더욱 기대되는 아티스트입니다.</p><p>Jeong Dong Won, who emerged as a new force in the trot scene, is loved for his deep emotions and outstanding singing ability despite his young age. His unique, clear and refreshing tone conveys positive energy to listeners and resonates with a wide range of generations. He is an artist whose musical growth is even more anticipated.</p><p>✧</p><p>음악으로 싹 틔운 꿈</p><p>정동원 님은 어린 시절부터 음악에 대한 남다른 재능을 보이며 대중 앞에 섰습니다. 트로트라는 장르 안에서 자신만의 색깔을 만들어가며, 끊임없이 새로운 시도를 통해 음악적 스펙트럼을 넓혀가고 있습니다. 그의 음악은 단순한 유행을 넘어, 진심을 담아내는 매개체로서 더욱 빛을 발합니다.</p><p>Dreams Sprouting Through Music</p><p>Jeong Dong Won showed an exceptional talent for music from a young age and stood before the public. He is creating his own style within the genre of trot, and is constantly expanding his musical spectrum through new attempts. His music shines even more as a medium for conveying sincerity, beyond simple trends.</p><p>✧</p><p>다채로운 음악 세계</p><p>트로트를 기반으로 다양한 장르를 넘나드는 음악적 시도는 정동원 님의 큰 강점입니다. 힙합과의 콜라보레이션, 팝 스타일의 시도 등 장르에 국한되지 않는 폭넓은 음악 활동을 보여주고 있습니다. 이러한 도전은 그의 음악적 깊이를 더하고, 더욱 다양한 팬층을 확보하는 데 기여합니다.</p><p>A Diverse Musical World</p><p>Jeong Dong Won's musical attempts to cross various genres based on trot are a great strength. He shows a wide range of musical activities not limited to genres, such as collaborations with hip-hop and attempts at pop styles. These challenges add to his musical depth and contribute to securing a more diverse fan base.</p><p>✧</p><p>빛나는 활동 발자취</p><p>정동원 님은 음반 발매뿐만 아니라, 방송, 공연, 영화 등 다양한 분야에서 활약하며 대중과의 소통을 이어가고 있습니다. 특히, 콘서트를 통해 팬들과 직접 만나 소통하며 잊지 못할 추억을 선물하고 있습니다. 그의 진솔한 모습은 무대 위에서 더욱 빛을 발하며 감동을 선사합니다.</p><p>A Shining Footprint of Activities</p><p>Jeong Dong Won continues to communicate with the public by actively participating in various fields such as broadcasting, performances, and movies, as well as releasing albums. In particular, he meets and communicates directly with fans through concerts, giving them unforgettable memories. His sincere appearance shines even more on stage, delivering emotion.</p><p>✧</p><p>앞으로의 행보, 그리고 의미</p><p>끊임없는 노력과 음악에 대한 열정으로 성장하는 정동원 님의 미래는 더욱 밝게 빛날 것입니다. 자신만의 음악적 색깔을 더욱 깊이 있게 만들어가며, 트로트라는 장르의 새로운 가능성을 제시할 것으로 기대됩니다. 그의 음악은 앞으로도 많은 이들에게 위로와 희망을 전하며 오랫동안 사랑받을 것입니다.</p><p>Future Steps and Meaning</p><p>Jeong Dong Won's future, growing with constant effort and passion for music, will shine even brighter. He is expected to create his own musical color more deeply and present new possibilities for the genre of trot. His music will continue to be loved for a long time, conveying comfort and hope to many people.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] 네가 그리울 땐</div>
+<div><a href='https://tidal.com/album/412228777' target='_blank'>https://tidal.com/album/412228777</a></div>
+<div>Jeong Dong Won - 네가 그리울 땐</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412228777' target='_blank'><img src='https://resources.tidal.com/images/0779bc40/5dd2/4723/adff/a37bd8a97737/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] THE GIFT OF DADDY-LONG-LEGS</div>
+<div><a href='https://tidal.com/album/423706004' target='_blank'>https://tidal.com/album/423706004</a></div>
+<div>Jeong Dong Won - Gift</div>
+<div>Jeong Dong Won - Heung! (Feat. HAON)</div>
+<div>Jeong Dong Won - Only U</div>
+<div>Jeong Dong Won - First Love</div>
+<div>Jeong Dong Won - Glorious Days</div>
+<div>Jeong Dong Won - Show up</div>
+<div>Jeong Dong Won - The age to profess love</div>
+<div>Jeong Dong Won - Let's go 1,2,3,4</div>
+<div>Jeong Dong Won - Four Leaf Clover</div>
+<div>Jeong Dong Won - No matter what winds blow, no matter what season r</div>
+<div>Jeong Dong Won - Us, in the far future</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/423706004' target='_blank'><img src='https://resources.tidal.com/images/017c1605/23e2/45f6/8dcd/1f7dda063119/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Moving Away</div>
+<div><a href='https://tidal.com/album/418845518' target='_blank'>https://tidal.com/album/418845518</a></div>
+<div>Jeong Dong Won - Moving Away</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/418845518' target='_blank'><img src='https://resources.tidal.com/images/6c5a2cd9/4166/41ce/b5d2/544efe7b0254/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] For the first time, I'll try to forget you</div>
+<div><a href='https://tidal.com/album/430172354' target='_blank'>https://tidal.com/album/430172354</a></div>
+<div>Jeong Dong Won - For the first time, I'll try to forget you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/430172354' target='_blank'><img src='https://resources.tidal.com/images/40c287d3/4a34/4f5d/be42/145367e7360b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Dream High (From _SHOW MUSICAL Dream High_) [feat. Sejun & Yoon Seo bin]</div>
+<div><a href='https://tidal.com/album/427678078' target='_blank'>https://tidal.com/album/427678078</a></div>
+<div>Suzy, D.O., Jeong Dong Won, Sejun, YOON SEO BIN - Dream High (From -SHOW MUSICAL Dream High-) [feat.</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/427678078' target='_blank'><img src='https://resources.tidal.com/images/ed018e4e/69c9/440e/a557/b9d9e105cd5c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Loop of Love</div>
+<div><a href='https://tidal.com/album/398788441' target='_blank'>https://tidal.com/album/398788441</a></div>
+<div>Jeong Dong Won - Loop of Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/398788441' target='_blank'><img src='https://resources.tidal.com/images/1f8c425e/3043/49b0/a4d4/cda71086eec0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Live better than me</div>
+<div><a href='https://tidal.com/album/386098914' target='_blank'>https://tidal.com/album/386098914</a></div>
+<div>Jeong Dong Won - Live better than me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/386098914' target='_blank'><img src='https://resources.tidal.com/images/85ce15d1/b2cc/4e70/bc41/4de22e433642/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Don't run from me</div>
+<div><a href='https://tidal.com/album/370658978' target='_blank'>https://tidal.com/album/370658978</a></div>
+<div>Jeong Dong Won - Don't run from me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/370658978' target='_blank'><img src='https://resources.tidal.com/images/f90e62c6/f1fc/47f5/9e2c/d67af2f7f0b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Where the stars rise</div>
+<div><a href='https://tidal.com/album/304651976' target='_blank'>https://tidal.com/album/304651976</a></div>
+<div>Jeong Dong Won - Where the stars rise</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304651976' target='_blank'><img src='https://resources.tidal.com/images/7152d0d5/7e5a/4ee0/a314/b3fc803ae153/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] We will again</div>
+<div><a href='https://tidal.com/album/306252456' target='_blank'>https://tidal.com/album/306252456</a></div>
+<div>Jeong Dong Won - We will again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306252456' target='_blank'><img src='https://resources.tidal.com/images/08860afd/d33b/4abb/8c69/b9ff936fd1ed/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Moon in the day, Pt. 2 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346516777' target='_blank'>https://tidal.com/album/346516777</a></div>
+<div>Jeong Dong Won - Scattered Seasons</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346516777' target='_blank'><img src='https://resources.tidal.com/images/a0533385/14fa/4d04/818c/718fe70c67df/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Monologue</div>
+<div><a href='https://tidal.com/album/314007503' target='_blank'>https://tidal.com/album/314007503</a></div>
+<div>Jeong Dong Won - Monologue</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/314007503' target='_blank'><img src='https://resources.tidal.com/images/87609d79/aea8/4e5f/8b09/952f55fa9753/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] I'll see you again</div>
+<div><a href='https://tidal.com/album/337114567' target='_blank'>https://tidal.com/album/337114567</a></div>
+<div>Jeong Dong Won - I'll see you again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/337114567' target='_blank'><img src='https://resources.tidal.com/images/467a7629/3629/4559/9e27/bb5314ea9349/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] I love you even if it hurts</div>
+<div><a href='https://tidal.com/album/306121880' target='_blank'>https://tidal.com/album/306121880</a></div>
+<div>Seong Jae, Jeong Dong Won - I love you even if it hurts</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306121880' target='_blank'><img src='https://resources.tidal.com/images/422b1b61/fcf1/4523/800e/db3a6c5fd316/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Forever</div>
+<div><a href='https://tidal.com/album/277781260' target='_blank'>https://tidal.com/album/277781260</a></div>
+<div>Jeong Dong Won - Forever</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/277781260' target='_blank'><img src='https://resources.tidal.com/images/5b0ca105/6d7a/479a/be90/b3a93dfb4c6a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Collection of props Vol.1</div>
+<div><a href='https://tidal.com/album/317310777' target='_blank'>https://tidal.com/album/317310777</a></div>
+<div>Jeong Dong Won - Monologue</div>
+<div>Jeong Dong Won - If</div>
+<div>Jeong Dong Won - The cafe we met in a winter</div>
+<div>Jeong Dong Won - Little doll</div>
+<div>Jeong Dong Won - The time</div>
+<div>Jeong Dong Won - Serenade of recollection</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/317310777' target='_blank'><img src='https://resources.tidal.com/images/9d27cbb9/b241/42c9/a323/f8f23aa6b2c8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] A movie just between us</div>
+<div><a href='https://tidal.com/album/306155514' target='_blank'>https://tidal.com/album/306155514</a></div>
+<div>Jeong Dong Won - A movie just between us</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306155514' target='_blank'><img src='https://resources.tidal.com/images/5a7ce3c7/89e4/4076/ae57/c742753f057f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 친구보다 더 못한 사이</div>
+<div><a href='https://tidal.com/album/306293940' target='_blank'>https://tidal.com/album/306293940</a></div>
+<div>Jeong Dong Won - Worse than friends</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306293940' target='_blank'><img src='https://resources.tidal.com/images/2df50aed/81b0/4115/a816/54efe23f686f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] transparent tears (2022)</div>
+<div><a href='https://tidal.com/album/372219694' target='_blank'>https://tidal.com/album/372219694</a></div>
+<div>Jeong Dong Won - transparent tears (2022)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372219694' target='_blank'><img src='https://resources.tidal.com/images/ebe04ef3/9c00/4ad3/99fe/37b6e6483174/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] World Peace Project Vol.1</div>
+<div><a href='https://tidal.com/album/250966211' target='_blank'>https://tidal.com/album/250966211</a></div>
+<div>Jeong Dong Won, 박지원 - Love Actually</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/250966211' target='_blank'><img src='https://resources.tidal.com/images/c0687c26/8fc2/481d/858d/ca419922a6d1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Never give up, Pt. 6 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/346677056' target='_blank'>https://tidal.com/album/346677056</a></div>
+<div>Jeong Dong Won - My Dream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346677056' target='_blank'><img src='https://resources.tidal.com/images/ea8b9b18/58cd/4751/8268/269ea81e6232/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Never give up, Pt. 10 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/346685946' target='_blank'>https://tidal.com/album/346685946</a></div>
+<div>Jeong Dong Won, Basick - Alright</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346685946' target='_blank'><img src='https://resources.tidal.com/images/e32000ea/965a/4cef/bb4a/ba6258c3088c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] MAN</div>
+<div><a href='https://tidal.com/album/263766543' target='_blank'>https://tidal.com/album/263766543</a></div>
+<div>Jeong Dong Won - A Real Man</div>
+<div>Jeong Dong Won - Baennori</div>
+<div>Jeong Dong Won - OPPA</div>
+<div>Jeong Dong Won - Love is the seed of tears (2022 Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263766543' target='_blank'><img src='https://resources.tidal.com/images/158532e4/2e67/4867/8ee2/2ef3dafb24eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Handwritten Letter</div>
+<div><a href='https://tidal.com/album/226180560' target='_blank'>https://tidal.com/album/226180560</a></div>
+<div>Jeong Dong Won - Peter Pan</div>
+<div>Jeong Dong Won - Angel's Hair</div>
+<div>Jeong Dong Won - I Know Enough</div>
+<div>Jeong Dong Won - Flower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/226180560' target='_blank'><img src='https://resources.tidal.com/images/87d6a010/73d5/4782/a9da/2b5fbe5e39e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Endlessly</div>
+<div><a href='https://tidal.com/album/306692623' target='_blank'>https://tidal.com/album/306692623</a></div>
+<div>Jeong Dong Won - Endlessly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306692623' target='_blank'><img src='https://resources.tidal.com/images/f29b4a84/f311/4844/addb/0ed06a05beb3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Blow it</div>
+<div><a href='https://tidal.com/album/306316018' target='_blank'>https://tidal.com/album/306316018</a></div>
+<div>Jeong Dong Won - Blow it</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306316018' target='_blank'><img src='https://resources.tidal.com/images/141e42a4/3102/41ae/8a23/9304f071ca2f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Alone</div>
+<div><a href='https://tidal.com/album/306306276' target='_blank'>https://tidal.com/album/306306276</a></div>
+<div>Jeong Dong Won - Alone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306306276' target='_blank'><img src='https://resources.tidal.com/images/c8fde198/5b4b/4428/a8f4/4f60610959f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Young Lady And Gentleman (Original Television Soundtrack), Pt. 4</div>
+<div><a href='https://tidal.com/album/209413961' target='_blank'>https://tidal.com/album/209413961</a></div>
+<div>Jeong Dong Won - The Veiled Path</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209413961' target='_blank'><img src='https://resources.tidal.com/images/eb0c0eda/16c5/4896/8de7/81691c658409/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] The giving tree</div>
+<div><a href='https://tidal.com/album/216376000' target='_blank'>https://tidal.com/album/216376000</a></div>
+<div>Jeong Dong Won - Goodbye My Love</div>
+<div>Jeong Dong Won - Don't Forget Me</div>
+<div>Jeong Dong Won - Grandpa's Saxophone (Saxophone by JEONG DONG WON)</div>
+<div>Jeong Dong Won - My Town</div>
+<div>Jeong Dong Won - You You You</div>
+<div>Jeong Dong Won - Later Someday</div>
+<div>Jeong Dong Won - My girl</div>
+<div>Jeong Dong Won - Yuksimnyeong</div>
+<div>Jeong Dong Won - Who's Crying</div>
+<div>Jeong Dong Won - A Thousand Winds (Orchestra Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216376000' target='_blank'><img src='https://resources.tidal.com/images/9ffd1840/8bf6/4e95/ba80/a25776a9fc4c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Thanks for You _ My Favorite</div>
+<div><a href='https://tidal.com/album/259008689' target='_blank'>https://tidal.com/album/259008689</a></div>
+<div>Jeong Dong Won - My Favorite</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/259008689' target='_blank'><img src='https://resources.tidal.com/images/bd06558e/42bd/405e/aaa8/04f2b3cb113e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] No More Heartbreaks</div>
+<div><a href='https://tidal.com/album/286375033' target='_blank'>https://tidal.com/album/286375033</a></div>
+<div>Jeong Dong Won - No More Heartbreaks</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/286375033' target='_blank'><img src='https://resources.tidal.com/images/922c7226/d453/49f6/a0cd/b8c368827bdf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] My Favorite</div>
+<div><a href='https://tidal.com/album/216212155' target='_blank'>https://tidal.com/album/216212155</a></div>
+<div>Jeong Dong Won - My Favorite</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216212155' target='_blank'><img src='https://resources.tidal.com/images/435f3a76/9e1f/4f9b/9d2f/3dbe4814c210/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Memories of us</div>
+<div><a href='https://tidal.com/album/305874210' target='_blank'>https://tidal.com/album/305874210</a></div>
+<div>Jeong Dong Won - Memories of us</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305874210' target='_blank'><img src='https://resources.tidal.com/images/853eb230/3618/4b00/a2fb/88c8a5d1e3c3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Whenever, Wherever</div>
+<div><a href='https://tidal.com/album/131362236' target='_blank'>https://tidal.com/album/131362236</a></div>
+<div>Jeong Dong Won - Whenever, Wherever</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/131362236' target='_blank'><img src='https://resources.tidal.com/images/d116328e/4f17/4780/b528/d251feb6185b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Think Of You_ Seattle Music Series, Vol. 1</div>
+<div><a href='https://tidal.com/album/140615873' target='_blank'>https://tidal.com/album/140615873</a></div>
+<div>Jeong Dong Won - Think Of You</div>
+<div>Jeong Dong Won - Think Of You (Piano Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/140615873' target='_blank'><img src='https://resources.tidal.com/images/9fa93d8b/1ec6/4735/a7a5/cbf61e262f61/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Summer Star</div>
+<div><a href='https://tidal.com/album/147622433' target='_blank'>https://tidal.com/album/147622433</a></div>
+<div>Jeong Dong Won - Summer Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/147622433' target='_blank'><img src='https://resources.tidal.com/images/a7f15aca/0671/4379/ab2d/7e55505537a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Kkondae Intern (Original Soundtrack) Part 6</div>
+<div><a href='https://tidal.com/album/241048580' target='_blank'>https://tidal.com/album/241048580</a></div>
+<div>Jeong Dong Won - Hey Friend</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/241048580' target='_blank'><img src='https://resources.tidal.com/images/d9103828/c096/487c/9aca/f27a75a788af/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Kairos (Original Television Soundtrack, Pt. 4)</div>
+<div><a href='https://tidal.com/album/161451522' target='_blank'>https://tidal.com/album/161451522</a></div>
+<div>Jeong Dong Won - Next Story (From -Kairos- Original Television Soun</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/161451522' target='_blank'><img src='https://resources.tidal.com/images/e08cd6f0/276f/423c/ae38/2cf230e2d08f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Hit it off</div>
+<div><a href='https://tidal.com/album/216256456' target='_blank'>https://tidal.com/album/216256456</a></div>
+<div>Jeong Dong Won - Hit it off (Feat. Nam Seung Min) (Prod. Young Tak)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216256456' target='_blank'><img src='https://resources.tidal.com/images/274b2690/630a/4922/a038/362aa68fe658/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Because Of Nice Weather</div>
+<div><a href='https://tidal.com/album/136304325' target='_blank'>https://tidal.com/album/136304325</a></div>
+<div>Jeong Dong Won - Because Of Nice Weather</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/136304325' target='_blank'><img src='https://resources.tidal.com/images/30045c25/0031/4a38/a6ce/88cd0767c4ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] miracle</div>
+<div><a href='https://tidal.com/album/270711654' target='_blank'>https://tidal.com/album/270711654</a></div>
+<div>Jeong Dong Won - Let's be filial</div>
+<div>Jeong Dong Won - Rain of tears</div>
+<div>Jeong Dong Won - NILLILI MANMANSAE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/270711654' target='_blank'><img src='https://resources.tidal.com/images/4e9c9f46/0e2d/4e8b/a5a1/77003285a229/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Weather For Good Farewell</div>
+<div><a href='https://tidal.com/album/107975733' target='_blank'>https://tidal.com/album/107975733</a></div>
+<div>Jeong Dong Won - The Weather A Few Years Ago</div>
+<div>Jeong Dong Won - Weather For Good Farewell</div>
+<div>Jeong Dong Won - Painting My April</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/107975733' target='_blank'><img src='https://resources.tidal.com/images/2f4663d3/7ff0/4d14/b83c/808d354d9e71/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Still Alive</div>
+<div><a href='https://tidal.com/album/103303165' target='_blank'>https://tidal.com/album/103303165</a></div>
+<div>Jeong Dong Won - Still Alive</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/103303165' target='_blank'><img src='https://resources.tidal.com/images/6e9de394/8723/4233/a1e6/3fc7decc51f2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Love, Is Nothing</div>
+<div><a href='https://tidal.com/album/111234317' target='_blank'>https://tidal.com/album/111234317</a></div>
+<div>Jeong Dong Won - Love, Is Nothing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/111234317' target='_blank'><img src='https://resources.tidal.com/images/e310a9ec/8cd8/4975/8d47/280db772b636/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Jeong Dong Won X T.P RETRO</div>
+<div><a href='https://tidal.com/album/117545615' target='_blank'>https://tidal.com/album/117545615</a></div>
+<div>Jeong Dong Won - All My Days</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117545615' target='_blank'><img src='https://resources.tidal.com/images/fa8fafa6/bfcf/4f95/93e9/2fb63d548c4b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] Can You Hear Me</div>
+<div><a href='https://tidal.com/album/114621171' target='_blank'>https://tidal.com/album/114621171</a></div>
+<div>Jeong Dong Won - Can You Hear Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/114621171' target='_blank'><img src='https://resources.tidal.com/images/83c5c8e9/a8d1/4bf9/8071/b9bf11108c99/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] You Were My Love</div>
+<div><a href='https://tidal.com/album/85993964' target='_blank'>https://tidal.com/album/85993964</a></div>
+<div>Jeong Dong Won - You Were My Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/85993964' target='_blank'><img src='https://resources.tidal.com/images/e069ce16/8329/4d19/aa4b/6afac2c8686f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] When Will I See You Again_</div>
+<div><a href='https://tidal.com/album/98274491' target='_blank'>https://tidal.com/album/98274491</a></div>
+<div>Jeong Dong Won - When Will I See You Again-</div>
+<div>Jeong Dong Won - When Will I See You Again- (Piano Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98274491' target='_blank'><img src='https://resources.tidal.com/images/2b5960db/bcc9/4acb/8f59/6e3f12f24ae7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Sorry</div>
+<div><a href='https://tidal.com/album/95853875' target='_blank'>https://tidal.com/album/95853875</a></div>
+<div>Jeong Dong Won - Sorry</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/95853875' target='_blank'><img src='https://resources.tidal.com/images/27eb042c/94af/421e/b556/1505740ead40/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] My Wedding (One Day)</div>
+<div><a href='https://tidal.com/album/92332331' target='_blank'>https://tidal.com/album/92332331</a></div>
+<div>Jeong Dong Won - My Wedding (One Day)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/92332331' target='_blank'><img src='https://resources.tidal.com/images/5f31df93/1c4e/4391/b9d9/ab00868367e4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] After You</div>
+<div><a href='https://tidal.com/album/88081600' target='_blank'>https://tidal.com/album/88081600</a></div>
+<div>Jeong Dong Won - After You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/88081600' target='_blank'><img src='https://resources.tidal.com/images/72420852/d82b/4083/af08/7b267dec37e4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] I'm Crying</div>
+<div><a href='https://tidal.com/album/82887284' target='_blank'>https://tidal.com/album/82887284</a></div>
+<div>Jeong Dong Won - I'm Crying</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/82887284' target='_blank'><img src='https://resources.tidal.com/images/d61110c3/24c4/4c36/8737/8f487639b398/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/1_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ1) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/정동원 (Jeong Dong Won)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
