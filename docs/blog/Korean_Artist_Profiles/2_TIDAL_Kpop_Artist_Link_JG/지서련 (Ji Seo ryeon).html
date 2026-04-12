@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 지서련 ( Tidal Ji Seo ryeon )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 지서련 ( Tidal Ji Seo ryeon )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/0e77b078/435d/431b/9a76/706532d911c6/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/20440155' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 지서련</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>지서련 – 섬세한 감성으로 빚어낸 이야기, '술이 달다' 속 아련함과 '한 여름 밤의 Sea Of Love'의 청량함을 담아낸 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Ji Seo ryeon</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Ji Seo ryeon - A vocalist crafting stories with delicate emotions, capturing the wistfulness of '술이 달다 (The Liquor is Sweet)' and the refreshing feel of '한 여름 밤의 Sea Of Love (Sea Of Love on a Midsummer Night)'</div><p>지서련은 깊은 감성과 섬세한 표현력으로 듣는 이의 마음을 사로잡는 보컬리스트입니다. 그녀의 음악은 잔잔한 울림을 주며, 일상 속 다양한 감정을 노래합니다. 따뜻한 위로와 공감을 전하는 지서련의 음악 세계로 함께 떠나볼까요?</p><p>Ji Seo ryeon is a vocalist who captivates listeners with her profound emotions and delicate expressiveness. Her music provides a subtle resonance, singing about various emotions in everyday life. Shall we embark on a journey into the musical world of Ji Seo ryeon, who conveys warm comfort and empathy?</p><p>✧</p><p>감성 보컬의 탄생</p><p>지서련은 자신만의 색깔을 담은 음악으로 대중에게 다가가기 시작했습니다. 그녀의 음악은 솔직하고 진솔한 가사와 멜로디로 많은 이들의 공감을 얻고 있습니다. 꾸준한 음악 활동을 통해 자신만의 음악적 영역을 넓혀가고 있습니다.</p><p>The Birth of an Emotional Vocalist</p><p>Ji Seo ryeon began to approach the public with music that contained her own unique color. Her music resonates with many through its honest and sincere lyrics and melodies. She is constantly expanding her musical territory through consistent musical activities.</p><p>✧</p><p>음악적 스펙트럼과 퍼포먼스</p><p>지서련은 발라드, 어쿠스틱 팝 등 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여줍니다. 그녀의 보컬은 감정을 섬세하게 표현하며, 듣는 이들에게 깊은 감동을 선사합니다. 때로는 청량하게, 때로는 애절하게, 다채로운 감성을 노래합니다.</p><p>Musical Spectrum and Performance</p><p>Ji Seo ryeon showcases a wide musical spectrum by embracing various genres such as ballads and acoustic pop. Her vocals delicately express emotions, offering deep emotion to listeners. Sometimes refreshing, sometimes sorrowful, she sings of diverse emotions.</p><p>✧</p><p>주요 음악 활동</p><p>지서련은 꾸준히 음원을 발표하며 팬들과 소통하고 있습니다. 그녀의 음악은 다양한 플랫폼을 통해 소개되고 있으며, 많은 리스너들의 플레이리스트에 자리 잡고 있습니다. 진솔한 음악으로 대중과 교감하며 자신만의 음악 세계를 구축해나가고 있습니다.</p><p>Key Musical Activities</p><p>Ji Seo ryeon has been steadily releasing music and communicating with fans. Her music is introduced through various platforms and has found its place on many listeners' playlists. She connects with the public through sincere music and builds her own musical world.</p><p>✧</p><p>앞으로의 음악, 그리고 의미</p><p>지서련은 앞으로도 진솔한 음악으로 더 많은 사람들에게 위로와 공감을 전하고 싶어 합니다. 그녀의 음악은 단순한 노래를 넘어, 삶의 이야기를 담아내는 매개체가 될 것입니다. 앞으로 그녀가 들려줄 이야기가 더욱 기대됩니다.</p><p>Future Music and Meaning</p><p>Ji Seo ryeon hopes to continue conveying comfort and empathy to more people with her sincere music. Her music will become a medium that captures the stories of life, beyond mere songs. We look forward to the stories she will tell in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2016] 한 여름 밤의 Sea Of Love</div>
+<div><a href='https://tidal.com/album/182585965' target='_blank'>https://tidal.com/album/182585965</a></div>
+<div>Ji Seo Ryeon - 한 여름 밤의 Sea Of Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182585965' target='_blank'><img src='https://resources.tidal.com/images/140c0eb4/ce46/4873/b2c7/6f5f59cd71c4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 내 눈을 가져가</div>
+<div><a href='https://tidal.com/album/182585086' target='_blank'>https://tidal.com/album/182585086</a></div>
+<div>Ji Seo Ryeon - 내 눈을 가져가</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182585086' target='_blank'><img src='https://resources.tidal.com/images/4b28c8b9/27bb/40bd/a086/358f3607b450/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 술이 달다</div>
+<div><a href='https://tidal.com/album/182585711' target='_blank'>https://tidal.com/album/182585711</a></div>
+<div>Ji Seo Ryeon - 술이 달다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182585711' target='_blank'><img src='https://resources.tidal.com/images/e30a1081/edbc/4053/8428/fbb3830ca762/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Yang Jung Seung Project 6</div>
+<div><a href='https://tidal.com/album/230622996' target='_blank'>https://tidal.com/album/230622996</a></div>
+<div>Ji Seo Ryeon - How can I</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230622996' target='_blank'><img src='https://resources.tidal.com/images/ce2998d8/5ea4/4408/915d/9a5cede63052/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 버릇처럼</div>
+<div><a href='https://tidal.com/album/412429473' target='_blank'>https://tidal.com/album/412429473</a></div>
+<div>Ji Seo Ryeon - 버릇처럼</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412429473' target='_blank'><img src='https://resources.tidal.com/images/6c61678a/2fc0/40f6/8e80/f3e92c460a4c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 된거죠</div>
+<div><a href='https://tidal.com/album/344393359' target='_blank'>https://tidal.com/album/344393359</a></div>
+<div>Ji Seo Ryeon - 된거죠</div>
+<div>Ji Seo Ryeon - 울고싶어지는 오후 (2013 Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344393359' target='_blank'><img src='https://resources.tidal.com/images/0eb3108a/438d/4f4b/b683/b5aec06da7de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Do you know_</div>
+<div><a href='https://tidal.com/album/230623042' target='_blank'>https://tidal.com/album/230623042</a></div>
+<div>Ji Seo Ryeon - Do you know-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230623042' target='_blank'><img src='https://resources.tidal.com/images/c0905949/a515/4b28/b5f7/003456184a85/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 향수 -우리 소리로 듣는 그리운 나의 고향 보고픈 얼굴</div>
+<div><a href='https://tidal.com/album/241375895' target='_blank'>https://tidal.com/album/241375895</a></div>
+<div>Ji Seo Ryeon - 하늘새</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/241375895' target='_blank'><img src='https://resources.tidal.com/images/a8bad35b/19a9/4f4d/a758/e3655dbdf42b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] 눈물에 피는 꽃</div>
+<div><a href='https://tidal.com/album/182585218' target='_blank'>https://tidal.com/album/182585218</a></div>
+<div>Ji Seo Ryeon - 눈물에 피는 꽃</div>
+<div>Ji Seo Ryeon - 너여야만---</div>
+<div>Ji Seo Ryeon - 하늘새</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182585218' target='_blank'><img src='https://resources.tidal.com/images/0e77b078/435d/431b/9a76/706532d911c6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2006] Sky, Wind, Bright Moon</div>
+<div><a href='https://tidal.com/album/168872475' target='_blank'>https://tidal.com/album/168872475</a></div>
+<div>Ji Seo Ryeon - 사랑이 사랑을</div>
+<div>Ji Seo Ryeon - 하늘에서 내린 편지</div>
+<div>Ji Seo Ryeon - 기억을 부르는 숨소리</div>
+<div>Ji Seo Ryeon - 조각</div>
+<div>Ji Seo Ryeon - 몇 번이나</div>
+<div>Ji Seo Ryeon - 모닝콜</div>
+<div>Ji Seo Ryeon - 너의 뒤에서</div>
+<div>Ji Seo Ryeon - P.M 2-40</div>
+<div>Ji Seo Ryeon - 애심가</div>
+<div>Ji Seo Ryeon - 잊을 수 없는 그대</div>
+<div>Ji Seo Ryeon - 뭘 쳐다봐</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168872475' target='_blank'><img src='https://resources.tidal.com/images/824c1446/77e4/46e2/aff4/5686019c39aa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] 울고 싶어지는 오후</div>
+<div><a href='https://tidal.com/album/216011097' target='_blank'>https://tidal.com/album/216011097</a></div>
+<div>Ji Seo Ryeon - LOST IN LOVE</div>
+<div>Ji Seo Ryeon - 울고 싶어지는 오후</div>
+<div>Ji Seo Ryeon - 심연</div>
+<div>Ji Seo Ryeon - PURPLE RAIN</div>
+<div>Ji Seo Ryeon - BLUE</div>
+<div>Ji Seo Ryeon - 연화 (蓮花)</div>
+<div>Ji Seo Ryeon - 애천가</div>
+<div>Ji Seo Ryeon - 천국보다 아름다운</div>
+<div>Ji Seo Ryeon - 다가올 그 어떤 날에는…</div>
+<div>Ji Seo Ryeon - 이루지 못할 사랑</div>
+<div>Ji Seo Ryeon - 미련</div>
+<div>Ji Seo Ryeon - LOVE LETTER</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216011097' target='_blank'><img src='https://resources.tidal.com/images/cee7a902/489a/4602/adf0/69cf491c8e5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/지서련 (Ji Seo ryeon)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
