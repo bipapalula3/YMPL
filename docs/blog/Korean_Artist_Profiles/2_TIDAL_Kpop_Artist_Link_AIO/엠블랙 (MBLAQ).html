@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 엠블랙 ( Tidal MBLAQ )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 엠블랙 ( Tidal MBLAQ )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4aaf1818/92a0/4dd6/981e/7f8b2a361f4e/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6010294' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 엠블랙</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>엠블랙 (MBLAQ) – ‘전쟁이야’ 속 강렬함과 ‘소녀’의 섬세함을 동시에 담아낸 다섯 빛깔의 하모니</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> MBLAQ</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>MBLAQ – A five-member harmony encapsulating both the intensity of ‘This is War’ and the delicacy of ‘Girl’</div><p>강렬한 퍼포먼스와 다채로운 음악 스타일로 팬들의 마음을 사로잡았던 그룹, 엠블랙입니다. 2009년 데뷔 이후, 그들은 끊임없이 변화하며 자신들만의 색깔을 만들어왔어요. 무대 위 카리스마 넘치는 모습 뒤에는 진솔한 음악적 고민과 노력이 숨겨져 있답니다.</p><p>MBLAQ is a group that captured fans' hearts with their intense performances and diverse musical styles. Since their debut in 2009, they have continuously evolved and created their own unique color. Behind their charismatic stage presence lies sincere musical contemplation and effort.</p><p>✧</p><p>그룹 탄생</p><p>엠블랙은 가수 비(Rain)가 프로듀싱한 그룹으로 데뷔 전부터 큰 주목을 받았어요. 데뷔 싱글 'Just BLAQ'을 통해 강렬한 퍼포먼스와 차별화된 음악으로 대중에게 깊은 인상을 남겼습니다. 멤버들은 각자의 개성과 재능을 바탕으로 팀의 시너지를 극대화했죠.</p><p>Group Formation</p><p>MBLAQ, produced by singer Rain, received significant attention even before their debut. Through their debut single 'Just BLAQ,' they left a lasting impression on the public with their intense performances and distinctive music. The members maximized the team's synergy based on their individual personalities and talents.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>엠블랙은 댄스곡뿐만 아니라 R&B, 발라드 등 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여줬습니다. 강렬한 비트와 섬세한 감성 표현이 공존하는 그들의 음악은 듣는 이들에게 다양한 감정을 선사하죠. 특히, 무대 위에서 보여주는 완벽한 퍼포먼스는 엠블랙만의 트레이드 마크입니다.</p><p>Music and Performance</p><p>MBLAQ showcased a wide musical spectrum by performing not only dance songs but also various genres such as R&B and ballads. Their music, where intense beats and delicate emotional expressions coexist, offers listeners a variety of emotions. In particular, the perfect performance they show on stage is MBLAQ's trademark.</p><p>✧</p><p>주요 활동</p><p>‘Y’, ‘모나리자’ 등의 히트곡을 통해 엠블랙은 국내외 팬들에게 큰 사랑을 받았어요. 음악 활동 외에도 드라마, 영화, 예능 프로그램 등 다양한 분야에서 활약하며 대중과의 접점을 넓혔습니다. 멤버들은 솔로 활동을 통해 각자의 역량을 더욱 발전시키기도 했죠.</p><p>Key Activities</p><p>Through hit songs such as 'Y' and 'Mona Lisa,' MBLAQ received great love from fans both domestically and internationally. In addition to their music activities, they expanded their reach to the public by appearing in various fields such as dramas, movies, and entertainment programs. The members also further developed their capabilities through solo activities.</p><p>✧</p><p>미래/의미</p><p>엠블랙은 잠시 활동을 멈췄지만, 그들이 남긴 음악과 무대는 여전히 많은 이들에게 깊은 인상을 주고 있습니다. 그들의 음악은 단순히 듣는 음악을 넘어, 하나의 예술 작품으로서 기억될 것입니다. 앞으로 각자의 자리에서 어떤 모습을 보여줄지 기대가 됩니다.</p><p>Future/Meaning</p><p>Although MBLAQ has temporarily suspended their activities, the music and performances they left behind continue to impress many. Their music will be remembered as more than just something to listen to, but as a work of art. It will be exciting to see what they will show in their respective positions in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2014] 소녀괴담 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/381005797' target='_blank'>https://tidal.com/album/381005797</a></div>
+<div>MBLAQ - 니가 떠난 그 자리</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381005797' target='_blank'><img src='https://resources.tidal.com/images/e57f39e1/a503/42db/be2f/8650d07eee2a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] SEXY BEAT</div>
+<div><a href='https://tidal.com/album/99313287' target='_blank'>https://tidal.com/album/99313287</a></div>
+<div>MBLAQ - Sexy Beat</div>
+<div>MBLAQ - Smoky Girl</div>
+<div>MBLAQ - R U OK-</div>
+<div>MBLAQ - Celebrate</div>
+<div>MBLAQ - 소녀</div>
+<div>MBLAQ - Dress Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/99313287' target='_blank'><img src='https://resources.tidal.com/images/05daf17a/0b48/4122/9f3a/2ab3919c2b10/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] The lord of the drama (Original Soundtrack) Part 4</div>
+<div><a href='https://tidal.com/album/215782645' target='_blank'>https://tidal.com/album/215782645</a></div>
+<div>MBLAQ - Winter rain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215782645' target='_blank'><img src='https://resources.tidal.com/images/c0cd5e21/556f/4c3b/8093/ea6b8eb36c80/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] MBLAQ 4th Mini Album</div>
+<div><a href='https://tidal.com/album/99313258' target='_blank'>https://tidal.com/album/99313258</a></div>
+<div>MBLAQ - Run</div>
+<div>MBLAQ - 전쟁이야</div>
+<div>MBLAQ - 낙서</div>
+<div>MBLAQ - 아찔한 그녀</div>
+<div>MBLAQ - Hello My Ex</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/99313258' target='_blank'><img src='https://resources.tidal.com/images/718feaba/51ea/4448/90ea/d53465eb419c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] GHOST (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/215832453' target='_blank'>https://tidal.com/album/215832453</a></div>
+<div>MBLAQ - YOORYEONG (GACHI SARANG HAIT ZANA)</div>
+<div>SHIN BORA - GRIWOE WOONDA</div>
+<div>Lee Soo Young - GRIWOESEO NUNMULNASEO</div>
+<div>Block B - Burn Out</div>
+<div>Lee Ki-chan - EO THEO KE</div>
+<div>Various Artists - GHOST</div>
+<div>Various Artists - Save You</div>
+<div>Various Artists - Goodbye,My Face</div>
+<div>Various Artists - Mysterious Man</div>
+<div>Various Artists - Steganography</div>
+<div>Various Artists - New Life</div>
+<div>Various Artists - Beautiful Agony</div>
+<div>Various Artists - Stuxnet</div>
+<div>Various Artists - Slow Walking</div>
+<div>Various Artists - Black Out</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215832453' target='_blank'><img src='https://resources.tidal.com/images/50457e65/fe0e/4aec/8e7b/a1441fe08091/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Scent Of A Woman (Original Television Soundtrack), Pt. 1</div>
+<div><a href='https://tidal.com/album/171248175' target='_blank'>https://tidal.com/album/171248175</a></div>
+<div>MBLAQ - U&I</div>
+<div>Rottyful Sky - Bluebird</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/171248175' target='_blank'><img src='https://resources.tidal.com/images/03afbf2f/a3b8/41c7/a544/a823e1e36f6b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Mona Lisa</div>
+<div><a href='https://tidal.com/album/99313331' target='_blank'>https://tidal.com/album/99313331</a></div>
+<div>MBLAQ - Ojos Frios 고상지 Bandoneon Version</div>
+<div>MBLAQ - Mona Lisa</div>
+<div>MBLAQ - 모르겠어요</div>
+<div>MBLAQ - 알면서 그래</div>
+<div>MBLAQ - ONE</div>
+<div>MBLAQ - 말하지 말걸--</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/99313331' target='_blank'><img src='https://resources.tidal.com/images/5a5b0832/bbeb/426d/92f7/5dcaf38b5a4c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] BLAQ Style</div>
+<div><a href='https://tidal.com/album/99313178' target='_blank'>https://tidal.com/album/99313178</a></div>
+<div>MBLAQ - Sad Memories</div>
+<div>MBLAQ - 다시</div>
+<div>MBLAQ - 돌아올 수 없는</div>
+<div>MBLAQ - You</div>
+<div>MBLAQ - Stay</div>
+<div>MBLAQ - Cry</div>
+<div>MBLAQ - 그대여</div>
+<div>MBLAQ - 버린다</div>
+<div>MBLAQ - 녹</div>
+<div>MBLAQ - Tonight</div>
+<div>MBLAQ - 이러지 않았으면해</div>
+<div>MBLAQ - You're My +</div>
+<div>MBLAQ - Rolling U</div>
+<div>MBLAQ - Oh Yeah</div>
+<div>MBLAQ - Y</div>
+<div>MBLAQ - 또다른 시작</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/99313178' target='_blank'><img src='https://resources.tidal.com/images/4aaf1818/92a0/4dd6/981e/7f8b2a361f4e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] BLAQ Style 3D Edition Version</div>
+<div><a href='https://tidal.com/album/99313202' target='_blank'>https://tidal.com/album/99313202</a></div>
+<div>MBLAQ - Sad Memories Intro</div>
+<div>MBLAQ - Stay</div>
+<div>MBLAQ - Cry</div>
+<div>MBLAQ - 그대여</div>
+<div>MBLAQ - 버린다</div>
+<div>MBLAQ - 녹</div>
+<div>MBLAQ - Tonight</div>
+<div>MBLAQ - 이러지 않았으면해</div>
+<div>MBLAQ - You're my +</div>
+<div>MBLAQ - Rolling U</div>
+<div>MBLAQ - 또 다른시작 Outro</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/99313202' target='_blank'><img src='https://resources.tidal.com/images/c5dd7bff/7229/440a/a864/d29073794baf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2010] Y</div>
+<div><a href='https://tidal.com/album/99313302' target='_blank'>https://tidal.com/album/99313302</a></div>
+<div>MBLAQ - 4 Ya' Stereo - Intro</div>
+<div>MBLAQ - Y</div>
+<div>MBLAQ - One Better Day</div>
+<div>MBLAQ - What U Want</div>
+<div>MBLAQ - Last Luv</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/99313302' target='_blank'><img src='https://resources.tidal.com/images/02b63d08/5e09/4543/95af/acaa1629719e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/엠블랙 (MBLAQ)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
