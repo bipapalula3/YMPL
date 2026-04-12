@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 여행스케치 ( Tidal Tour Sketch )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 여행스케치 ( Tidal Tour Sketch )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/a01508ac/50f3/4139/bc9e/0cf55abb23dd/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/20993713' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/25092120' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 여행스케치</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>여행스케치 – ‘별이 뜬다’처럼 맑고 따뜻한 감성으로 일상에 작은 행복을 그려내는 음악 친구</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Tour Sketch</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Tour Sketch – A musical companion painting small moments of happiness into everyday life with a clear and warm sensibility like in 'The Star Comes Up'.</div><p>소소한 일상 속 이야기를 따뜻한 멜로디와 포근한 가사로 풀어내는 그룹, 여행스케치입니다. 듣는 이의 마음을 편안하게 감싸 안아주는 음악으로 오랫동안 사랑받고 있어요. 마치 오랜 친구처럼, 늘 곁에서 위로와 응원을 건네는 음악을 선사합니다.</p><p>Tour Sketch is a group that weaves stories of everyday life into warm melodies and cozy lyrics. They have been loved for a long time for their music that comfortably embraces the listener's heart. Like an old friend, they always offer comfort and support through their music.</p><p>✧</p><p>그룹 탄생</p><p>여행스케치는 1989년 조병석을 중심으로 결성되어, 맑고 서정적인 음악으로 대중에게 다가갔습니다. 포크를 기반으로 한 어쿠스틱 사운드는 듣는 이들에게 편안함과 따뜻함을 선물하며 큰 인기를 얻었어요. 멤버 변화를 거치면서도 고유의 음악 색깔은 변함없이 이어져 왔습니다.</p><p>Group's Origins</p><p>Tour Sketch was formed in 1989 around Cho Byung-seok, approaching the public with clear and lyrical music. Their acoustic sound, based on folk, gifted listeners with comfort and warmth, gaining great popularity. Despite changes in members, their unique musical color has remained consistent.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>여행스케치의 음악은 듣기 편안한 멜로디와 공감 가는 가사가 특징입니다. 때로는 잔잔하게, 때로는 밝고 경쾌하게 다양한 감정을 노래하며, 듣는 이들에게 깊은 공감대를 형성해요. 꾸밈없는 진솔한 음악은 오랫동안 많은 사람들의 사랑을 받고 있습니다.</p><p>Music and Performance</p><p>Tour Sketch's music is characterized by easy-listening melodies and relatable lyrics. They sing various emotions, sometimes calmly and sometimes brightly and cheerfully, forming a deep connection with listeners. Their unadorned and sincere music has been loved by many for a long time.</p><p>✧</p><p>주요 활동</p><p>다양한 공연과 방송 활동을 통해 꾸준히 팬들과 소통하고 있으며, 여러 드라마와 영화 OST에 참여하여 음악적 스펙트럼을 넓혀왔습니다. 특히, 여러 객원 보컬과의 협업을 통해 다채로운 음악적 시도를 보여주며 새로운 매력을 선보이고 있어요. 그들의 음악은 시대를 초월하여 꾸준히 사랑받고 있습니다.</p><p>Key Activities</p><p>They consistently communicate with fans through various performances and broadcasting activities, and have expanded their musical spectrum by participating in several drama and film OSTs. In particular, they are showing new charms through diverse musical attempts through collaborations with various guest vocalists. Their music is steadily loved beyond generations.</p><p>✧</p><p>미래/의미</p><p>앞으로도 여행스케치는 변함없이 따뜻하고 편안한 음악으로 우리 곁을 찾아올 것입니다. 그들의 음악은 지친 일상에 작은 위로와 행복을 선사하며, 오랫동안 우리의 마음속에 깊이 자리 잡을 거예요. 마치 오래된 친구처럼, 언제나 곁에서 함께하는 음악을 기대해 봅니다.</p><p>Future/Meaning</p><p>In the future, Tour Sketch will continue to come to us with unchangingly warm and comfortable music. Their music will provide small comfort and happiness in tiring daily life, and will take a deep place in our hearts for a long time. Like an old friend, we look forward to their music that is always with us.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] Daddy Long Legs</div>
+<div><a href='https://tidal.com/album/416506380' target='_blank'>https://tidal.com/album/416506380</a></div>
+<div>Tour Sketch - Daddy Long Legs (feat. EUNJU)</div>
+<div>Tour Sketch - Daddy Long Legs (feat. Mijinee)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/416506380' target='_blank'><img src='https://resources.tidal.com/images/0bcec493/3750/471a/9d94/c400baa791af/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Fingertip Rainbow</div>
+<div><a href='https://tidal.com/album/419607841' target='_blank'>https://tidal.com/album/419607841</a></div>
+<div>Tour Sketch - Fingertip Rainbow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/419607841' target='_blank'><img src='https://resources.tidal.com/images/b93fc462/bfc3/4479/a27a/24c3f8be6ea4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] ZIPBOB</div>
+<div><a href='https://tidal.com/album/216043465' target='_blank'>https://tidal.com/album/216043465</a></div>
+<div>Tour Sketch - ZIPBOB (Special ment. UmAnglan)</div>
+<div>Tour Sketch - ZIPBOB (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216043465' target='_blank'><img src='https://resources.tidal.com/images/6bce53a6/2554/4466/a8e0/ac3778fcbfa9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] The Star Comes Up</div>
+<div><a href='https://tidal.com/album/215782164' target='_blank'>https://tidal.com/album/215782164</a></div>
+<div>Tour Sketch - Blue Camel Walking On The Past -Prologue-</div>
+<div>Tour Sketch - The Star Comes Up (Feat. Kim Jung-Eun)</div>
+<div>Tour Sketch - The Y's Congratuation Song</div>
+<div>Tour Sketch - Living Like This</div>
+<div>Tour Sketch - Break Into Tears (Dear Hop-Dear Bloom)</div>
+<div>Tour Sketch - MY FRIEND GOOD FRIEND</div>
+<div>Tour Sketch - Sleeping Beauty -Epilogue-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215782164' target='_blank'><img src='https://resources.tidal.com/images/96e75b66/a1ad/4280/a8cc/a70d575597ab/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] The Best of The Best</div>
+<div><a href='https://tidal.com/album/229485770' target='_blank'>https://tidal.com/album/229485770</a></div>
+<div>Tour Sketch - Chiki Chiki</div>
+<div>Tour Sketch - 별이진다네</div>
+<div>Tour Sketch, Kim SangMin - 여행스케치</div>
+<div>Tour Sketch, 곽윤찬 - 라일락 향기 날리면</div>
+<div>Tour Sketch, 윤사라 - 난 나직이 그의 이름을 불러 보았어</div>
+<div>Tour Sketch, Park Hakki, 한동준 - 초등학교 동창회 가던 날</div>
+<div>Tour Sketch, 문형석 - 옛 친구에게</div>
+<div>Tour Sketch, 권진원 - 산다는건 그런게 아니겠니-</div>
+<div>Tour Sketch - 시종일관</div>
+<div>Tour Sketch, 성윤용, 윤사라 - 운명</div>
+<div>Tour Sketch - 눈을 감으면</div>
+<div>Tour Sketch, 김범수 - 별이진다네</div>
+<div>Tour Sketch - 나에게 쓰는 편지</div>
+<div>Tour Sketch, Suh Young Eun, 곽윤찬 - 바다를 닮은 그대</div>
+<div>Tour Sketch, 유리상자 - 향수</div>
+<div>Tour Sketch, 자전거를 탄 풍경 - 뻥튀기 아저씨</div>
+<div>Tour Sketch, 이한진 - 할머니와 빨간 스웨터</div>
+<div>Tour Sketch - 널 위한 자리 (With 린애)</div>
+<div>Tour Sketch - 왠지 느낌이 좋아</div>
+<div>Tour Sketch, Meen, 박소아 - Jr-</div>
+<div>Tour Sketch, 김동완 - 달팽이와 해바라기</div>
+<div>Tour Sketch, 더더밴드 - 니가 없는 나의 하루는</div>
+<div>Tour Sketch, Kim HyungJoong, 이본 - 기분 좋은 상상</div>
+<div>Tour Sketch, 이정열 - My life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/229485770' target='_blank'><img src='https://resources.tidal.com/images/4fa20480/7bc0/48a0/94ce/e870dc9b7fee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] 이소라의 프로포즈 2집</div>
+<div><a href='https://tidal.com/album/223263041' target='_blank'>https://tidal.com/album/223263041</a></div>
+<div>Tour Sketch - 별이 진다네 Live Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223263041' target='_blank'><img src='https://resources.tidal.com/images/10142c38/55bd/41f5/9399/2614b5c307c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] 처음타본 타임머신</div>
+<div><a href='https://tidal.com/album/184616822' target='_blank'>https://tidal.com/album/184616822</a></div>
+<div>여행스케치 - 애국가</div>
+<div>여행스케치 - 서른을 바라보며</div>
+<div>여행스케치 - 진실에 관하여</div>
+<div>여행스케치 - 우리가 함께 있는 이유</div>
+<div>여행스케치 - 난 나직이 그의 이름을 불러 보았어</div>
+<div>여행스케치 - 산다는건 다 그런게 아니겠니</div>
+<div>여행스케치 - 별이 진다네</div>
+<div>여행스케치 - 초등학교 동창회 가던 날</div>
+<div>여행스케치 - 영화속의 너</div>
+<div>여행스케치 - 옛 친구에게</div>
+<div>여행스케치 - 운명</div>
+<div>여행스케치 - 나의 노래는</div>
+<div>여행스케치 - 시종일관</div>
+<div>여행스케치 - 난치병</div>
+<div>여행스케치 - 여행스케치</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184616822' target='_blank'><img src='https://resources.tidal.com/images/a5c57c04/f2ec/45a5/9d24/717c5c5d1c7a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] 여행스케치 Best</div>
+<div><a href='https://tidal.com/album/215691395' target='_blank'>https://tidal.com/album/215691395</a></div>
+<div>Tour Sketch - 시종일관</div>
+<div>Tour Sketch - 난치병</div>
+<div>Tour Sketch - 옛 친구에게</div>
+<div>Tour Sketch - 난 나직이 그의 이름을 불러 보았어</div>
+<div>Tour Sketch - 운명</div>
+<div>Tour Sketch - 별이 진다네</div>
+<div>Tour Sketch - 산다는 건 다 그런게 아니겠니</div>
+<div>Tour Sketch - 국민학교 동창회 가던 날</div>
+<div>Tour Sketch - 어린 시절로</div>
+<div>Tour Sketch - 이 세상속에서</div>
+<div>Tour Sketch - 나의 노래는</div>
+<div>Tour Sketch - 우리 함께 있는 이유</div>
+<div>Tour Sketch - 그 녀석들과 여행</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215691395' target='_blank'><img src='https://resources.tidal.com/images/a01508ac/50f3/4139/bc9e/0cf55abb23dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] 여행스케치 오래된 이야기 - 동요집</div>
+<div><a href='https://tidal.com/album/215691153' target='_blank'>https://tidal.com/album/215691153</a></div>
+<div>Tour Sketch - 학교종</div>
+<div>Tour Sketch - 어머님 은혜</div>
+<div>Tour Sketch - 스카이 콩콩</div>
+<div>Tour Sketch - 오빠 생각</div>
+<div>Tour Sketch - 가을</div>
+<div>Tour Sketch - 태권 V</div>
+<div>Tour Sketch - 반달</div>
+<div>Tour Sketch - 등대지기</div>
+<div>Tour Sketch - 어린시절로 Ⅱ</div>
+<div>Tour Sketch - 고무줄 노래</div>
+<div>Tour Sketch - 섬집아이</div>
+<div>Tour Sketch - 녹음후기</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215691153' target='_blank'><img src='https://resources.tidal.com/images/712804a6/0ab6/48f2/88fe/0e101de45610/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1994] 다 큰 애들 이야기</div>
+<div><a href='https://tidal.com/album/215691230' target='_blank'>https://tidal.com/album/215691230</a></div>
+<div>Tour Sketch - 산다는 건 다 그런게 아니겠니</div>
+<div>Tour Sketch - 시종일관</div>
+<div>Tour Sketch - 이사가던 날</div>
+<div>Tour Sketch - 사랑의 얼굴</div>
+<div>Tour Sketch - 운명</div>
+<div>Tour Sketch - 오늘이 내 인생에 마지막인 것처럼</div>
+<div>Tour Sketch - 예전의 느낌 그대로</div>
+<div>Tour Sketch - 내가 원하는 건</div>
+<div>Tour Sketch - Korean Time</div>
+<div>Tour Sketch - 서른을 바라보며</div>
+<div>Tour Sketch - 친구에게(나레이션)</div>
+<div>Tour Sketch - 우리가 함께 있는 이유</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215691230' target='_blank'><img src='https://resources.tidal.com/images/f2876d40/9dc6/443c/b0ec/cc0b12103142/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1992] 세가지 소원</div>
+<div><a href='https://tidal.com/album/215691892' target='_blank'>https://tidal.com/album/215691892</a></div>
+<div>Tour Sketch - 프롤로그</div>
+<div>Tour Sketch - 소원 하나</div>
+<div>Tour Sketch - 옛 친구에게</div>
+<div>Tour Sketch - 난치병</div>
+<div>Tour Sketch - 가을 나무의 고백</div>
+<div>Tour Sketch - 소원 둘</div>
+<div>Tour Sketch - 국민학교 동창회 가던 날</div>
+<div>Tour Sketch - 어린 시절로</div>
+<div>Tour Sketch - 좋은 친구들</div>
+<div>Tour Sketch - 소원 셋</div>
+<div>Tour Sketch - 나의 노래는</div>
+<div>Tour Sketch - 길</div>
+<div>Tour Sketch - 또 하나의 계절을 찾아서</div>
+<div>Tour Sketch - 아침을 기다리는 사람들</div>
+<div>Tour Sketch - 실수모음</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215691892' target='_blank'><img src='https://resources.tidal.com/images/e44d07d8/7ff1/42de/8c7d/377badb435ea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1991] 추억여행(새벽에서 꿈까지)</div>
+<div><a href='https://tidal.com/album/215692597' target='_blank'>https://tidal.com/album/215692597</a></div>
+<div>Tour Sketch - 잠에서 현실로 돌아오는 순간</div>
+<div>Tour Sketch - 이 세상속에서</div>
+<div>Tour Sketch - 껍데기 속에서</div>
+<div>Tour Sketch - 그 녀석들과 여행</div>
+<div>Tour Sketch - 난 나직이 그의 이름을 불러보았어</div>
+<div>Tour Sketch - 영원히 잊혀지지 않는</div>
+<div>Tour Sketch - 꿈을 찍던 사진관 김씨 할아버지</div>
+<div>Tour Sketch - 우리 마음에도 귀 기울이게 해 주세요</div>
+<div>Tour Sketch - 열다섯살 소녀로부터</div>
+<div>Tour Sketch - 아무도 청하지 않는 앵콜곡</div>
+<div>Tour Sketch - 막내의 첫 느낌</div>
+<div>Tour Sketch - 이 세상 모든 것들에 감사하며</div>
+<div>Tour Sketch - 자장가</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215692597' target='_blank'><img src='https://resources.tidal.com/images/d4060b2f/5a6c/4384/8d9a/efe0de5cd0a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1989] 여행스케치 1집</div>
+<div><a href='https://tidal.com/album/215692370' target='_blank'>https://tidal.com/album/215692370</a></div>
+<div>Tour Sketch - 별이 진다네</div>
+<div>Tour Sketch - 작은 마음 시절</div>
+<div>Tour Sketch - 혼자라고 느껴질 때</div>
+<div>Tour Sketch - 당신에게 나의 모든 사랑을</div>
+<div>Tour Sketch - 이리저리 둘러도 찾을 수 없는 그대</div>
+<div>Tour Sketch - 너를 위하여</div>
+<div>Tour Sketch - 휘청거리는 오후</div>
+<div>Tour Sketch - 하루</div>
+<div>Tour Sketch - 그대만을</div>
+<div>Tour Sketch - 여행스케치</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215692370' target='_blank'><img src='https://resources.tidal.com/images/d87edc2d/19c0/446f/8a0b/6013c588a950/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/여행스케치 (Tour Sketch)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
