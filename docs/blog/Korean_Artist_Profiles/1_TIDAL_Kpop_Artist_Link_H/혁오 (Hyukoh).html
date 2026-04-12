@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 혁오 ( Tidal Hyukoh )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 혁오 ( Tidal Hyukoh )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4fd8fa67/60f5/4ad0/a8bf/94f296bbe347/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6067118' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 혁오</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>몽환적인 밤의 선율을 담아, 'Clair de Lune'처럼 흐르는 혁오의 독창적인 음악 세계</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Hyukoh</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Capturing the dreamy melodies of the night, the unique musical world of Hyukoh flows like 'Clair de Lune'.</div><p>독특한 감성과 실험적인 사운드로 가득한 밴드 혁오를 소개합니다. 그들의 음악은 단순한 유행을 넘어, 깊은 울림을 전달하며 많은 이들의 공감을 얻고 있어요. 혁오만의 색깔로 가득한 음악 세계로 함께 떠나볼까요?</p><p>Introducing Hyukoh, a band full of unique sensibilities and experimental sounds. Their music transcends mere trends, delivering deep resonance and gaining empathy from many. Shall we embark on a musical journey filled with Hyukoh's unique colors?</p><p>✧</p><p>그룹 탄생</p><p>혁오는 보컬 오혁을 중심으로 결성된 4인조 밴드입니다. 멤버들은 각자의 개성을 음악에 녹여내며 독창적인 사운드를 만들어가고 있어요. 그들의 음악은 인디씬에서 빠르게 주목받으며 대중적인 인기를 얻기 시작했습니다.</p><p>Band's Origin</p><p>Hyukoh is a four-member band formed around vocalist Oh Hyuk. The members blend their individual personalities into the music, creating a unique sound. Their music quickly gained attention in the indie scene and began to gain mainstream popularity.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>혁오의 음악은 몽환적인 분위기와 실험적인 사운드가 특징입니다. 다양한 장르를 넘나들면서도 혁오만의 독특한 색깔을 잃지 않아요. 그들의 라이브 퍼포먼스는 음악적 완성도와 더불어 강렬한 에너지로 관객들을 사로잡습니다.</p><p>Music and Performance</p><p>Hyukoh's music is characterized by a dreamy atmosphere and experimental sounds. While crossing various genres, they never lose their unique color. Their live performances captivate audiences with intense energy as well as musical perfection.</p><p>✧</p><p>주요 활동</p><p>혁오는 데뷔 이후 꾸준한 음반 발매와 공연 활동을 이어왔습니다. 국내외 다양한 페스티벌에 참여하며 글로벌 팬들에게도 많은 사랑을 받고 있어요. 또한, 다양한 브랜드와의 협업을 통해 음악 외적인 영역에서도 활발하게 활동하고 있습니다.</p><p>Main Activities</p><p>Since their debut, Hyukoh has continued to release albums and perform consistently. They have participated in various festivals both domestically and internationally, gaining much love from global fans. They are also actively engaged in areas outside of music through collaborations with various brands.</p><p>✧</p><p>미래/의미</p><p>혁오는 앞으로도 끊임없는 음악적 실험을 통해 새로운 사운드를 탐구할 것으로 기대됩니다. 그들의 음악은 단순한 즐거움을 넘어, 듣는 이들에게 깊은 감동과 위로를 전달하며 오랫동안 기억될 거예요. 혁오가 앞으로 어떤 음악을 들려줄지 기대하며 응원합니다.</p><p>Future/Meaning</p><p>Hyukoh is expected to continue exploring new sounds through constant musical experimentation. Their music transcends mere enjoyment, delivering deep emotion and comfort to listeners, and will be remembered for a long time. We look forward to and support what kind of music Hyukoh will bring us in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] AAA LIVE</div>
+<div><a href='https://tidal.com/album/432108050' target='_blank'>https://tidal.com/album/432108050</a></div>
+<div>HYUKOH, Sunset Rollercoaster - Clair de Lune</div>
+<div>HYUKOH, Sunset Rollercoaster - Kite War</div>
+<div>HYUKOH, Sunset Rollercoaster - Burgundy Red</div>
+<div>HYUKOH, Sunset Rollercoaster - Young Man</div>
+<div>HYUKOH, Sunset Rollercoaster - Goodbye Seoul</div>
+<div>HYUKOH, Sunset Rollercoaster - Flat dog</div>
+<div>HYUKOH, Sunset Rollercoaster - Citizen Kane</div>
+<div>HYUKOH, Sunset Rollercoaster - Pinky Pinky</div>
+<div>HYUKOH, Sunset Rollercoaster - Hogi Hogi LaLa Jo</div>
+<div>HYUKOH, Sunset Rollercoaster - Tokyo Inn</div>
+<div>HYUKOH, Sunset Rollercoaster - Comes and Goes</div>
+<div>HYUKOH, Sunset Rollercoaster - Little Balcony</div>
+<div>HYUKOH, Sunset Rollercoaster - New Drug</div>
+<div>HYUKOH, Sunset Rollercoaster - Glue</div>
+<div>HYUKOH, Sunset Rollercoaster - Y</div>
+<div>HYUKOH, Sunset Rollercoaster - New born</div>
+<div>HYUKOH, Sunset Rollercoaster - Antenna</div>
+<div>HYUKOH, Sunset Rollercoaster - Candlelight</div>
+<div>HYUKOH, Sunset Rollercoaster - Let There Be Light Again</div>
+<div>HYUKOH, Sunset Rollercoaster - Vanilla</div>
+<div>HYUKOH, Sunset Rollercoaster - Villa</div>
+<div>HYUKOH, Sunset Rollercoaster - TOMBOY</div>
+<div>HYUKOH, Sunset Rollercoaster - Help</div>
+<div>HYUKOH, Sunset Rollercoaster - Silverhair Express</div>
+<div>HYUKOH, Sunset Rollercoaster - Do Nothing</div>
+<div>HYUKOH, Sunset Rollercoaster - LOVE YA!</div>
+<div>HYUKOH, Sunset Rollercoaster - My Jinji</div>
+<div>HYUKOH, Sunset Rollercoaster - 2F 年轻人</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/432108050' target='_blank'><img src='https://resources.tidal.com/images/9b28f968/021e/4338/bfe5/1ce9f4ac7a5b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Young Man</div>
+<div><a href='https://tidal.com/album/371610434' target='_blank'>https://tidal.com/album/371610434</a></div>
+<div>HYUKOH, Sunset Rollercoaster - Young Man</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/371610434' target='_blank'><img src='https://resources.tidal.com/images/227e07c4/1162/4d9b/b1da/783c2306b776/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] AAA</div>
+<div><a href='https://tidal.com/album/372609712' target='_blank'>https://tidal.com/album/372609712</a></div>
+<div>HYUKOH, Sunset Rollercoaster - Kite War</div>
+<div>HYUKOH, Sunset Rollercoaster - Y</div>
+<div>HYUKOH, Sunset Rollercoaster - Antenna</div>
+<div>HYUKOH, Sunset Rollercoaster - Glue</div>
+<div>HYUKOH, Sunset Rollercoaster - Young Man</div>
+<div>HYUKOH, Sunset Rollercoaster - Do Nothing</div>
+<div>HYUKOH, Sunset Rollercoaster - Aaaannnnteeeeennnaaaaaa</div>
+<div>HYUKOH, Sunset Rollercoaster - 2F 年轻人</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372609712' target='_blank'><img src='https://resources.tidal.com/images/e3de3b69/031e/475c/8599/d526dfdbcdad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] We Are (우리는) (Martyn's Come Back Mix)</div>
+<div><a href='https://tidal.com/album/319646870' target='_blank'>https://tidal.com/album/319646870</a></div>
+<div>Nosaj Thing, HYUKOH, MARTYN - We Are (우리는) (Martyn's Come Back Mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/319646870' target='_blank'><img src='https://resources.tidal.com/images/9486c721/0017/4ca3/9736/b73b7c75c94b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Christmas Tears</div>
+<div><a href='https://tidal.com/album/168065516' target='_blank'>https://tidal.com/album/168065516</a></div>
+<div>HYUKOH, Joon Park - Christmas Tears</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/168065516' target='_blank'><img src='https://resources.tidal.com/images/779eeb8e/7960/4125/9410/430bfd9eb999/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] through love</div>
+<div><a href='https://tidal.com/album/214221091' target='_blank'>https://tidal.com/album/214221091</a></div>
+<div>HYUKOH - Help</div>
+<div>HYUKOH - Hey Sun</div>
+<div>HYUKOH - Silverhair Express</div>
+<div>HYUKOH - Flat dog</div>
+<div>HYUKOH - World of the Forgotten</div>
+<div>HYUKOH - New born</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/214221091' target='_blank'><img src='https://resources.tidal.com/images/9cc3d2be/e66b/4564/829a/68ddd89540a2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Help (Sunset Rollercoaster Remake)</div>
+<div><a href='https://tidal.com/album/189818984' target='_blank'>https://tidal.com/album/189818984</a></div>
+<div>HYUKOH, Sunset Rollercoaster - Help (Sunset Rollercoaster Remake)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189818984' target='_blank'><img src='https://resources.tidal.com/images/6dfdd0b6/55e1/4f4c/9714/4f301b2e73f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] NOWHERE MAN (A Netflix Original Series Soundtrack)</div>
+<div><a href='https://tidal.com/album/206616529' target='_blank'>https://tidal.com/album/206616529</a></div>
+<div>HYUKOH - SI SHI GU REN LAI</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/206616529' target='_blank'><img src='https://resources.tidal.com/images/3285be9d/c255/42ab/a2eb/ac8aa64f3274/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The Way You Keep Friendship - SSaW Tribute Vol.1</div>
+<div><a href='https://tidal.com/album/216078071' target='_blank'>https://tidal.com/album/216078071</a></div>
+<div>HYUKOH OHHYUK x INWOO - DAY BY DAY (Feat. Jay Marie)</div>
+<div>HYUKOH OHHYUK x INWOO - DAY BY DAY (feat. Jay Marie) (New Jack Swing Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216078071' target='_blank'><img src='https://resources.tidal.com/images/0c4e84a6/0832/4b47/89ac/b7ae828cb3b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] 24 _ How to find true love and happiness</div>
+<div><a href='https://tidal.com/album/185366390' target='_blank'>https://tidal.com/album/185366390</a></div>
+<div>HYUKOH - Graduation</div>
+<div>HYUKOH - SkyWorld</div>
+<div>HYUKOH - LOVE YA!</div>
+<div>HYUKOH - Citizen Kane</div>
+<div>HYUKOH - Gang Gang Schiele</div>
+<div>HYUKOH - Goodbye Seoul(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185366390' target='_blank'><img src='https://resources.tidal.com/images/aa2655ee/3df7/4b20/84c0/010c51d372d6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 23</div>
+<div><a href='https://tidal.com/album/188795598' target='_blank'>https://tidal.com/album/188795598</a></div>
+<div>HYUKOH - Burning youth</div>
+<div>HYUKOH - Tokyo Inn</div>
+<div>HYUKOH - Leather Jacket</div>
+<div>HYUKOH - TOMBOY</div>
+<div>HYUKOH - 2002WorldCup</div>
+<div>HYUKOH - Jesus lived in a motel room</div>
+<div>HYUKOH - Wanli万里</div>
+<div>HYUKOH - Die alone</div>
+<div>HYUKOH - Reserved seat</div>
+<div>HYUKOH - Simon</div>
+<div>HYUKOH - Paul</div>
+<div>HYUKOH - Surf boy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188795598' target='_blank'><img src='https://resources.tidal.com/images/0ee3821a/c1af/4f7a/a292/e97b7c2775d8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Entourage MIXTAPE #1</div>
+<div><a href='https://tidal.com/album/196122893' target='_blank'>https://tidal.com/album/196122893</a></div>
+<div>HYUKOH - MASITNONSOUL</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196122893' target='_blank'><img src='https://resources.tidal.com/images/a8f91485/8fa5/49a0/9bd4/97e0fe52c874/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Panda Bear</div>
+<div><a href='https://tidal.com/album/188795593' target='_blank'>https://tidal.com/album/188795593</a></div>
+<div>HYUKOH - Bamboo</div>
+<div>HYUKOH - Panda Bear</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188795593' target='_blank'><img src='https://resources.tidal.com/images/97ed4c65/1c8a/4d16/973d/c7a56a128c9f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 22</div>
+<div><a href='https://tidal.com/album/188795665' target='_blank'>https://tidal.com/album/188795665</a></div>
+<div>HYUKOH - Settled Down</div>
+<div>HYUKOH - Comes and Goes</div>
+<div>HYUKOH - Big Bird</div>
+<div>HYUKOH - Mer</div>
+<div>HYUKOH - Hooka</div>
+<div>HYUKOH - Gondry</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188795665' target='_blank'><img src='https://resources.tidal.com/images/cbfdcadf/e61d/4709/8e57/c9dc29d54675/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 20</div>
+<div><a href='https://tidal.com/album/188795496' target='_blank'>https://tidal.com/album/188795496</a></div>
+<div>HYUKOH - Lonely</div>
+<div>HYUKOH - Feels Like Roller-Coaster Ride</div>
+<div>HYUKOH - Ohio</div>
+<div>HYUKOH - Wi Ing Wi Ing</div>
+<div>HYUKOH - Our Place</div>
+<div>HYUKOH - I Have No Hometown</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188795496' target='_blank'><img src='https://resources.tidal.com/images/bb73e66e/7e11/41be/bcd1/4c39ad825bbf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/1_TIDAL_Kpop_Artist_Link_H.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅎ1) TIDAL Kpop Artist Link (H)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/혁오 (Hyukoh)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
