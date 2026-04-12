@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 룰라 ( Tidal Roo'Ra )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 룰라 ( Tidal Roo'Ra )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/d41bb108/9108/45fc/bf97/d6f2aab59c4b/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/17945655' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/8085073' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 룰라</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>룰라 (Roo'Ra) – '날개 잃은 천사'의 흥겨움부터 '3!4!'의 청량함까지, 시대를 춤추게 한 아이콘</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Roo'Ra</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Roo'Ra – From the excitement of 'Angel Without Wings' to the refreshing vibe of '3!4!', icons who made generations dance</div><p>90년대 가요계를 휩쓸었던 룰라를 기억하시나요? 신나는 댄스곡과 독특한 퍼포먼스로 많은 사랑을 받았던 혼성 그룹이에요. 지금 들어도 어깨를 들썩이게 하는 룰라의 음악 세계로 함께 떠나볼까요?</p><p>Do you remember Roo'Ra, who swept through the Korean music scene in the 90s? They were a popular co-ed group known for their exciting dance tracks and unique performances. Shall we explore the musical world of Roo'Ra, which still makes us want to dance?</p><p>✧</p><p>그룹 탄생</p><p>룰라는 1994년 데뷔하여 당시 가요계에 신선한 충격을 주었어요. 혼성 그룹이라는 점과 다양한 장르를 시도하는 음악 스타일이 돋보였죠. 멤버 교체를 거치면서도 끊임없이 새로운 모습을 보여주려고 노력했답니다.</p><p>Group Formation</p><p>Roo'Ra debuted in 1994 and brought a fresh wave to the music scene. They stood out as a co-ed group with a musical style that explored various genres. Despite member changes, they constantly strived to show new sides of themselves.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>룰라의 음악은 댄스, 힙합, 레게 등 다양한 장르를 넘나들었어요. 중독성 강한 멜로디와 따라 하기 쉬운 안무는 룰라의 음악을 더욱 특별하게 만들었죠. 무대 위에서 보여주는 에너지 넘치는 모습은 팬들을 열광하게 했답니다.</p><p>Music and Performance</p><p>Roo'Ra's music crossed various genres such as dance, hip-hop, and reggae. Addictive melodies and easy-to-follow choreography made Roo'Ra's music even more special. Their energetic performances on stage thrilled fans.</p><p>✧</p><p>주요 활동</p><p>룰라는 '날개 잃은 천사', '3!4!', '루디고' 등 수많은 히트곡을 발표하며 90년대 가요계를 대표하는 그룹으로 자리매김했어요. 각종 음악 방송에서 1위를 차지하고, 연말 가요 시상식에서도 많은 상을 받았죠. 그들의 음악은 시대를 초월하여 여전히 많은 사람들에게 사랑받고 있답니다.</p><p>Key Activities</p><p>Roo'Ra released numerous hits such as 'Angel Without Wings,' '3!4!,' and 'Rudigo,' establishing themselves as a representative group of the 90s music scene. They topped various music shows and received many awards at year-end music awards ceremonies. Their music transcends generations and is still loved by many.</p><p>✧</p><p>미래/의미</p><p>룰라의 음악은 단순한 유행을 넘어, 그 시대를 살아간 사람들의 추억과 감성을 담고 있어요. 앞으로도 룰라의 음악은 우리에게 즐거움과 향수를 불러일으키며 오랫동안 기억될 거예요. 그들의 음악은 영원히 우리의 마음속에 살아 숨 쉴 겁니다.</p><p>Future/Meaning</p><p>Roo'Ra's music goes beyond mere trends, capturing the memories and emotions of those who lived through that era. Roo'Ra's music will continue to evoke joy and nostalgia and will be remembered for a long time. Their music will live on forever in our hearts.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2009] A9ain - Again</div>
+<div><a href='https://tidal.com/album/215751729' target='_blank'>https://tidal.com/album/215751729</a></div>
+<div>Roo'Ra - Going Going</div>
+<div>Roo'Ra - Let's Play Together</div>
+<div>Roo'Ra - DANCE DANCE</div>
+<div>Roo'Ra - EVERYBODY</div>
+<div>Roo'Ra - Wanna go</div>
+<div>Roo'Ra - We're Going</div>
+<div>Roo'Ra - Our Festival</div>
+<div>Roo'Ra - Drunken</div>
+<div>Roo'Ra - BEAUTIFUL</div>
+<div>Roo'Ra - SMILE AGAIN</div>
+<div>Roo'Ra - Stars set</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215751729' target='_blank'><img src='https://resources.tidal.com/images/9af9d1e7/7737/4ddf/8f53/4a3866477055/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] 룰라와 투투의 크리스마스</div>
+<div><a href='https://tidal.com/album/306031004' target='_blank'>https://tidal.com/album/306031004</a></div>
+<div>Roo'Ra, TwoTwo - 울면 안돼</div>
+<div>Roo'Ra, TwoTwo - Silver Bell</div>
+<div>Roo'Ra, TwoTwo - 루돌프 사슴코</div>
+<div>Roo'Ra, TwoTwo - Jingle Bell</div>
+<div>Roo'Ra, TwoTwo - 저 들밖에 한밤중엔</div>
+<div>Roo'Ra, TwoTwo - 동화 속의 크리스마스</div>
+<div>Roo'Ra, TwoTwo - 석별의 정</div>
+<div>Roo'Ra, TwoTwo - 꿈 속의 크리스마스</div>
+<div>Roo'Ra, TwoTwo - White Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306031004' target='_blank'><img src='https://resources.tidal.com/images/9270351c/1543/47e3/bbdf/3d2496a2e46f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] Sound of flag blowing in the wind</div>
+<div><a href='https://tidal.com/album/309009258' target='_blank'>https://tidal.com/album/309009258</a></div>
+<div>Roo'Ra - Arirang</div>
+<div>Roo'Ra - Sound of flag blowing in the wind</div>
+<div>Roo'Ra - Summer Of Love</div>
+<div>Roo'Ra - Thinking</div>
+<div>Roo'Ra - Fun</div>
+<div>Roo'Ra - Merry love</div>
+<div>Roo'Ra - Remember</div>
+<div>Roo'Ra - Love letter</div>
+<div>Roo'Ra - Big, Big</div>
+<div>Roo'Ra - Sweet Game</div>
+<div>Roo'Ra - Mystery</div>
+<div>Roo'Ra - My Life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309009258' target='_blank'><img src='https://resources.tidal.com/images/c5702e6b/94c8/4669/a360/34881d243cfe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] 날개 잃은 천사</div>
+<div><a href='https://tidal.com/album/127784321' target='_blank'>https://tidal.com/album/127784321</a></div>
+<div>룰라 - Roo`Ra In 1995</div>
+<div>룰라 - 날개 잃은 천사</div>
+<div>룰라 - 안녕</div>
+<div>룰라 - 사랑의 기도</div>
+<div>룰라 - 친구를 보내며</div>
+<div>룰라 - 영웅은 어디로</div>
+<div>룰라 - 프로와 아마츄어</div>
+<div>룰라 - 그후로 3년후 (내가 잠못드는 이유 Ⅱ)</div>
+<div>룰라 - Hotel California</div>
+<div>룰라 - Koreana In New York</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/127784321' target='_blank'><img src='https://resources.tidal.com/images/d41bb108/9108/45fc/bf97/d6f2aab59c4b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] The Final 5집</div>
+<div><a href='https://tidal.com/album/127784061' target='_blank'>https://tidal.com/album/127784061</a></div>
+<div>룰라 - Introlude</div>
+<div>룰라 - 연인</div>
+<div>룰라 - 미래로</div>
+<div>룰라 - 영혼식</div>
+<div>룰라 - Go Go</div>
+<div>룰라 - 난 너의…</div>
+<div>룰라 - Party</div>
+<div>룰라 - 뚝! (내가 잠못드는 이유 Ⅲ)</div>
+<div>룰라 - Tonight Is The Night</div>
+<div>룰라 - The Final</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/127784061' target='_blank'><img src='https://resources.tidal.com/images/f2301b4c/8087/417b/8bc5/6fe2f0dd8493/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Roo`ra Best Album</div>
+<div><a href='https://tidal.com/album/127783989' target='_blank'>https://tidal.com/album/127783989</a></div>
+<div>룰라 - 반추(反芻)</div>
+<div>룰라 - 100일째 만남</div>
+<div>룰라 - 비밀은 없어</div>
+<div>룰라 - 친구를 보내며</div>
+<div>룰라 - 날개 잃은 천사</div>
+<div>룰라 - 안녕</div>
+<div>룰라 - Rap Hop</div>
+<div>룰라 - 3!4!</div>
+<div>룰라 - 아자</div>
+<div>룰라 - 연인</div>
+<div>룰라 - The Final</div>
+<div>룰라 - 자유! 해석-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/127783989' target='_blank'><img src='https://resources.tidal.com/images/8e2ee625/0fe7/4e2c/a09d/b7417545d084/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Reincarnation Of The Legend</div>
+<div><a href='https://tidal.com/album/127784293' target='_blank'>https://tidal.com/album/127784293</a></div>
+<div>룰라 - Roo`Ra In 1996</div>
+<div>룰라 - 천상유애(天上有愛)</div>
+<div>룰라 - 사랑법</div>
+<div>룰라 - 하얀새</div>
+<div>룰라 - 아스라이</div>
+<div>룰라 - 인간인가-</div>
+<div>룰라 - 착한 사랑</div>
+<div>룰라 - 웃긴 아이</div>
+<div>룰라 - Rap-Hop</div>
+<div>룰라 - Come Together</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/127784293' target='_blank'><img src='https://resources.tidal.com/images/f89b397d/937e/42d8/a92f/0e992354f049/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] All System Go</div>
+<div><a href='https://tidal.com/album/127784110' target='_blank'>https://tidal.com/album/127784110</a></div>
+<div>룰라 - All System Go!</div>
+<div>룰라 - 3!4!</div>
+<div>룰라 - 오늘</div>
+<div>룰라 - 그대 곁에서</div>
+<div>룰라 - 우리에겐</div>
+<div>룰라 - 흔들리며</div>
+<div>룰라 - 아자</div>
+<div>룰라 - 내 슬픈 사랑은</div>
+<div>룰라 - 일,상,성</div>
+<div>룰라 - 희망의 이름으로</div>
+<div>룰라 - 다같이</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/127784110' target='_blank'><img src='https://resources.tidal.com/images/b6d1efed/209b/495a/ab88/d4b2eea97729/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] Roo`Ra Live</div>
+<div><a href='https://tidal.com/album/127784149' target='_blank'>https://tidal.com/album/127784149</a></div>
+<div>룰라 - Opening</div>
+<div>룰라 - 꼬마 룰라</div>
+<div>룰라 - 안녕</div>
+<div>룰라 - 영웅은 어디로</div>
+<div>룰라 - 프로와 아마추어</div>
+<div>룰라 - Hotel California</div>
+<div>룰라 - Korean In New York</div>
+<div>룰라 - Kulcha</div>
+<div>룰라 - 마지막 사랑</div>
+<div>룰라 - 사랑하기 때문에</div>
+<div>룰라 - 후유증</div>
+<div>룰라 - 내가 잠 못드는 이유</div>
+<div>룰라 - 통일</div>
+<div>룰라 - 비밀은 없어-100일째 만남</div>
+<div>룰라 - 친구를 보내며</div>
+<div>룰라 - 날개 잃은 천사</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/127784149' target='_blank'><img src='https://resources.tidal.com/images/17c17379/fbd1/4c0a/9815/45f45655b46e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1994] Roots Of Reggae</div>
+<div><a href='https://tidal.com/album/188703987' target='_blank'>https://tidal.com/album/188703987</a></div>
+<div>룰라 - Roots Of Reggae (Roo`Ra Thema)</div>
+<div>룰라 - 100일째 만남</div>
+<div>룰라 - 너의 작은 기억 하나까지</div>
+<div>룰라 - 공주와 하인</div>
+<div>룰라 - Roots Of Reggae</div>
+<div>룰라 - 내가 잠못드는 이유</div>
+<div>룰라 - 비밀은 없어</div>
+<div>룰라 - 통일</div>
+<div>룰라 - 100일째 만남 (Club Mix Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188703987' target='_blank'><img src='https://resources.tidal.com/images/f51ca078/1e14/44e7/9db3/19cfafa38494/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/1_TIDAL_Kpop_Artist_Link_LR.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄹ1) TIDAL Kpop Artist Link (LR)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/룰라 (Roo'Ra)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
