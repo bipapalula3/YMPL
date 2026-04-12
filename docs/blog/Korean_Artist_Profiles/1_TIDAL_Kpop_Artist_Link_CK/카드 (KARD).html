@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 카드 ( Tidal KARD )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 카드 ( Tidal KARD )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/2e724906/4b69/4f9d/9354/c3e3e820ffe2/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5014275' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 카드</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>KARD (카드) - 다채로운 색깔로 물들이는 무대, 'Oh NaNa'부터 'Ring The Alarm'까지, 그 멈추지 않는 음악적 스펙트럼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> KARD</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>KARD - Painting the stage with diverse colors, from 'Oh NaNa' to 'Ring The Alarm', their never-ending musical spectrum</div><p>독특한 콘셉트와 멤버 구성으로 주목받는 그룹, KARD를 소개합니다! 남녀 혼성 그룹이라는 차별점을 가지고, 강렬한 퍼포먼스와 매력적인 음악으로 글로벌 팬들을 사로잡고 있어요. 그들의 음악 세계로 함께 빠져볼까요?</p><p>Let me introduce KARD, a group attracting attention with its unique concept and member composition! With the distinction of being a co-ed group, they are captivating global fans with intense performances and charming music. Shall we fall into their musical world together?</p><p>✧</p><p>그룹 탄생: 특별한 조합의 시작</p><p>KARD는 DSP미디어에서 야심차게 선보인 남녀 혼성 그룹이에요. 멤버 각각의 개성과 실력이 조화롭게 어우러져 독특한 시너지를 만들어내죠. 데뷔 전부터 프로젝트 앨범을 통해 탄탄한 팬덤을 쌓았습니다.</p><p>Group Formation: The Beginning of a Special Combination</p><p>KARD is a co-ed group ambitiously introduced by DSP Media. The individuality and skills of each member harmoniously blend to create a unique synergy. They built a solid fan base through project albums even before their debut.</p><p>✧</p><p>음악 및 퍼포먼스: 다채로운 매력의 향연</p><p>KARD의 음악은 뭄바톤, EDM, 힙합 등 다양한 장르를 융합하여 독창적인 스타일을 선보입니다. 강렬한 비트와 중독성 있는 멜로디, 그리고 멤버들의 개성 넘치는 보컬과 랩이 조화롭게 어우러져요. 특히, 파워풀하면서도 섹시한 퍼포먼스는 KARD만의 트레이드마크라고 할 수 있습니다.</p><p>Music and Performance: A Feast of Diverse Charms</p><p>KARD's music showcases an original style by fusing various genres such as Moombahton, EDM, and hip-hop. Intense beats, addictive melodies, and the members' unique vocals and rap harmoniously blend together. In particular, their powerful yet sexy performance is KARD's trademark.</p><p>✧</p><p>주요 활동: 글로벌 팬덤을 사로잡다</p><p>KARD는 국내뿐 아니라 해외에서도 뜨거운 반응을 얻으며 활발하게 활동하고 있어요. 데뷔 초부터 해외 투어를 통해 글로벌 팬들과 소통하며 인기를 높여왔습니다. 그들은 다양한 국가의 팬들과 함께 성장하는 글로벌 그룹입니다.</p><p>Main Activities: Captivating the Global Fandom</p><p>KARD is actively performing, receiving enthusiastic responses not only in Korea but also abroad. Since their debut, they have been communicating with global fans through overseas tours, increasing their popularity. They are a global group growing with fans from various countries.</p><p>✧</p><p>미래/의미: 멈추지 않는 도전</p><p>KARD는 앞으로도 끊임없이 새로운 음악과 퍼포먼스를 선보이며 팬들의 기대에 부응할 거예요. 독특한 콘셉트와 음악 스타일을 바탕으로 더욱 성장해 나갈 KARD의 미래를 기대해주세요. 그들은 앞으로도 세계 무대에서 더욱 빛나는 존재가 될 것입니다.</p><p>Future/Meaning: Unstoppable Challenge</p><p>KARD will continue to present new music and performances, meeting the expectations of fans. Please look forward to KARD's future growth based on their unique concept and musical style. They will continue to shine on the world stage.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] KARD 7th Mini Album 'Where To Now_ (Part.1 _ Yellow Light)'</div>
+<div><a href='https://tidal.com/album/380953125' target='_blank'>https://tidal.com/album/380953125</a></div>
+<div>KARD - Waste My Time</div>
+<div>KARD - Tell My Momma</div>
+<div>KARD - Boombox</div>
+<div>KARD - SHIMMY SHIMMY</div>
+<div>KARD - SPIN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/380953125' target='_blank'><img src='https://resources.tidal.com/images/48459d7e/6c79/42b0/a958/fb36b0aaacbf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] KARD 4th Digital Single 'Detox'</div>
+<div><a href='https://tidal.com/album/406308848' target='_blank'>https://tidal.com/album/406308848</a></div>
+<div>KARD - Detox</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406308848' target='_blank'><img src='https://resources.tidal.com/images/dca49cde/d40a/44d3/9080/9ac935a48dc9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] KARD 3rd Digital Single 'Without You'</div>
+<div><a href='https://tidal.com/album/288253310' target='_blank'>https://tidal.com/album/288253310</a></div>
+<div>KARD - Without You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288253310' target='_blank'><img src='https://resources.tidal.com/images/88821576/5f07/41a2/a151/77ef6cc9fea5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Fireworks</div>
+<div><a href='https://tidal.com/album/328092203' target='_blank'>https://tidal.com/album/328092203</a></div>
+<div>KARD - Fireworks</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/328092203' target='_blank'><img src='https://resources.tidal.com/images/568e61b6/ef99/4e20/b507/1db15978a46f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] KARD 5th Mini Album 'Re_'</div>
+<div><a href='https://tidal.com/album/234784347' target='_blank'>https://tidal.com/album/234784347</a></div>
+<div>KARD - Break Down</div>
+<div>KARD - Ring The Alarm</div>
+<div>KARD - Good Love</div>
+<div>KARD - Whip!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/234784347' target='_blank'><img src='https://resources.tidal.com/images/0a81b3d9/63ec/4e13/ae10/2126f9e23c1a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] KARD 4th Mini Album 'RED MOON'</div>
+<div><a href='https://tidal.com/album/216487425' target='_blank'>https://tidal.com/album/216487425</a></div>
+<div>KARD - GO BABY</div>
+<div>KARD - RED MOON</div>
+<div>KARD - ENEMY</div>
+<div>KARD - INFERNO</div>
+<div>KARD - Dumb Litty</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216487425' target='_blank'><img src='https://resources.tidal.com/images/a109ce09/1f68/4cff/b9ca/4a2cc9250c84/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] KARD 1st Single ‘Way With Words’</div>
+<div><a href='https://tidal.com/album/216466061' target='_blank'>https://tidal.com/album/216466061</a></div>
+<div>KARD - AH EE YAH</div>
+<div>KARD - GUNSHOT</div>
+<div>KARD - HOLD ON</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216466061' target='_blank'><img src='https://resources.tidal.com/images/98db3996/8634/4677/9801/444c72e8148b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] KARD 2nd Digital Single ‘Dumb Litty’</div>
+<div><a href='https://tidal.com/album/216487793' target='_blank'>https://tidal.com/album/216487793</a></div>
+<div>KARD - Dumb Litty</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216487793' target='_blank'><img src='https://resources.tidal.com/images/3dd7ca8d/d160/43da/8093/ec8e30cbc0eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] KARD 1st Digital Single ‘Bomb Bomb’</div>
+<div><a href='https://tidal.com/album/216502898' target='_blank'>https://tidal.com/album/216502898</a></div>
+<div>KARD - Bomb Bomb</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216502898' target='_blank'><img src='https://resources.tidal.com/images/0b7d3212/d20e/4821/9516/e84c80b740fd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] KARD 3rd Mini Album 'RIDE ON THE WIND'</div>
+<div><a href='https://tidal.com/album/216121286' target='_blank'>https://tidal.com/album/216121286</a></div>
+<div>KARD - INTRO - Humming</div>
+<div>KARD - Moonlight</div>
+<div>KARD - Ride on the wind</div>
+<div>KARD - Knockin' on my heaven's door</div>
+<div>KARD - Dímelo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216121286' target='_blank'><img src='https://resources.tidal.com/images/d410af21/c9c1/48cd/9e81/203ab4ca4dc5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Lovebird_ First Year Season 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196137414' target='_blank'>https://tidal.com/album/196137414</a></div>
+<div>KARD - Here We Now</div>
+<div>KARD - Afternoon Tea</div>
+<div>KARD - i-Diary</div>
+<div>KARD - Meal Meal</div>
+<div>KARD - Moonlight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137414' target='_blank'><img src='https://resources.tidal.com/images/67bf0354/7e9b/4db0/8c07/8081eafd1f60/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] KARD 2nd Mini Album 'YOU & ME'</div>
+<div><a href='https://tidal.com/album/216076720' target='_blank'>https://tidal.com/album/216076720</a></div>
+<div>KARD - INTO YOU</div>
+<div>KARD - Trust Me (J.seph&Jiwoo ver.)</div>
+<div>KARD - Push & Pull</div>
+<div>KARD - JINIKKA</div>
+<div>KARD - You In Me</div>
+<div>KARD - Trust Me (BM&Somin ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216076720' target='_blank'><img src='https://resources.tidal.com/images/4484f8f1/a92c/46df/b9ea/76475879b56c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] KARD 1st Mini Album 'Hola Hola'</div>
+<div><a href='https://tidal.com/album/216093877' target='_blank'>https://tidal.com/album/216093877</a></div>
+<div>KARD - Oh NaNa (Hidden. HUR YOUNG JI)</div>
+<div>KARD - Don't Recall</div>
+<div>KARD - RUMOR</div>
+<div>KARD - Hola Hola</div>
+<div>KARD - I can't stop</div>
+<div>KARD - Living Good (Special thanks to.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216093877' target='_blank'><img src='https://resources.tidal.com/images/d64e7740/c82a/49fd/9975/bf59141ce688/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] K.A.R.D Project Vol.3 _RUMOR_</div>
+<div><a href='https://tidal.com/album/215944599' target='_blank'>https://tidal.com/album/215944599</a></div>
+<div>KARD - RUMOR</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215944599' target='_blank'><img src='https://resources.tidal.com/images/146deb2c/4406/4bdf/8a41/37f1da515e27/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] K.A.R.D Project Vol.2 _Don't Recall_</div>
+<div><a href='https://tidal.com/album/216438033' target='_blank'>https://tidal.com/album/216438033</a></div>
+<div>KARD - Don't Recall</div>
+<div>KARD - Don't Recall (Hidden ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216438033' target='_blank'><img src='https://resources.tidal.com/images/7b759b7c/4e29/4bdc/9c5e/1cb59ca48ddf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] K.A.R.D Project Vol.1 _Oh NaNa_</div>
+<div><a href='https://tidal.com/album/215944432' target='_blank'>https://tidal.com/album/215944432</a></div>
+<div>KARD - Oh NaNa (Hidden. HUR YOUNG JI)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215944432' target='_blank'><img src='https://resources.tidal.com/images/ca42659c/e2f0/4612/8030/ae8900f83196/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/1_TIDAL_Kpop_Artist_Link_CK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅋ1) TIDAL Kpop Artist Link (CK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/카드 (KARD)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
