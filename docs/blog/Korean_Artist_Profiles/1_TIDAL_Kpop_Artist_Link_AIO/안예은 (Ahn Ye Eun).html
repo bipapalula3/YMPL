@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 안예은 ( Tidal Ahn Ye Eun )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 안예은 ( Tidal Ahn Ye Eun )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/eead5d07/a531/4782/93b5/c7a0839045b2/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/8331886' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 안예은</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>안예은 – 국악의 숨결로 빚어낸 독창적인 이야기, '홍연'의 애절함과 '창귀'의 강렬함을 넘나드는 목소리</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Ahn Ye Eun</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Ahn Ye Eun – A unique storyteller crafting tales with the breath of Korean traditional music, a voice that transcends the sorrow of 'Hongyeon' and the intensity of 'Changgui'.</div><p>독특한 음악 세계를 구축하며 많은 사랑을 받고 있는 싱어송라이터 안예은님을 소개합니다. 그녀는 국악을 기반으로 한 다채로운 음악 스타일과 깊이 있는 가사로 듣는 이들의 마음을 사로잡고 있어요. 자신만의 색깔로 한국 음악계에 새로운 바람을 불어넣고 있답니다.</p><p>Let me introduce you to singer-songwriter Ahn Ye Eun, who is much loved for building a unique musical world. She captivates listeners with her diverse musical style based on Korean traditional music and her profound lyrics. She is bringing a new wave to the Korean music scene with her own unique color.</p><p>✧</p><p>음악적 씨앗</p><p>안예은님은 어린 시절부터 국악을 접하며 음악적 감수성을 키웠다고 합니다. 그녀의 음악에는 전통적인 요소들이 자연스럽게 녹아들어 독특한 분위기를 자아내요. 섬세한 표현력과 깊이 있는 음악성은 오랜 시간 다져온 실력에서 비롯되었음을 알 수 있습니다.</p><p>Musical Seeds</p><p>Ahn Ye Eun cultivated her musical sensitivity by experiencing Korean traditional music from a young age. Traditional elements are naturally woven into her music, creating a unique atmosphere. Her delicate expressiveness and profound musicality stem from skills honed over a long period.</p><p>✧</p><p>장르를 넘나드는 음악성</p><p>안예은님의 음악은 국악, 포크, 팝 등 다양한 장르를 아우르는 폭넓은 스펙트럼을 보여줍니다. 전통적인 악기 선율과 현대적인 사운드의 조화는 신선하면서도 깊은 울림을 선사하죠. 실험적인 시도를 두려워하지 않는 그녀의 음악적 탐구 정신이 돋보입니다.</p><p>Music Beyond Genres</p><p>Ahn Ye Eun's music showcases a broad spectrum that encompasses various genres such as Korean traditional music, folk, and pop. The harmony between traditional instrument melodies and modern sounds offers a fresh yet profound resonance. Her spirit of musical exploration, unafraid of experimental attempts, stands out.</p><p>✧</p><p>섬세한 감정 표현</p><p>그녀의 노래 가사는 삶의 다양한 감정을 섬세하게 포착하여 진한 공감을 불러일으킵니다. 때로는 애절하게, 때로는 강렬하게 감정을 표현하는 그녀의 목소리는 듣는 이의 마음을 깊숙이 파고들죠. 진솔한 가사와 호소력 짙은 보컬은 안예은님 음악의 가장 큰 매력입니다.</p><p>Delicate Expression of Emotions</p><p>The lyrics of her songs delicately capture various emotions of life, evoking deep empathy. Her voice, expressing emotions sometimes sorrowfully and sometimes intensely, deeply penetrates the listener's heart. Sincere lyrics and appealing vocals are the biggest charms of Ahn Ye Eun's music.</p><p>✧</p><p>깊어지는 음악 세계</p><p>끊임없이 새로운 시도를 통해 자신만의 음악 세계를 확장해 나가는 안예은님. 앞으로 그녀가 들려줄 또 다른 이야기가 벌써부터 기대됩니다. 그녀의 음악은 앞으로도 많은 사람들에게 위로와 감동을 선사할 것입니다.</p><p>A Deepening Musical World</p><p>Ahn Ye Eun continues to expand her musical world through constant new attempts. I'm already looking forward to the other stories she will tell in the future. Her music will continue to provide comfort and inspiration to many people.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] My spring, or yours</div>
+<div><a href='https://tidal.com/album/431400305' target='_blank'>https://tidal.com/album/431400305</a></div>
+<div>AHN YEEUN - ANNYEONG (Feat. Jung hyung suk)</div>
+<div>AHN YEEUN - ANYWAY ANYTHING</div>
+<div>AHN YEEUN - Can’t</div>
+<div>AHN YEEUN - Swallow</div>
+<div>AHN YEEUN - See you tomorrow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431400305' target='_blank'><img src='https://resources.tidal.com/images/fbd00cee/803f/4552/85f7/96497893e0c8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] not me not mine</div>
+<div><a href='https://tidal.com/album/340170643' target='_blank'>https://tidal.com/album/340170643</a></div>
+<div>AHN YEEUN - not me not mine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340170643' target='_blank'><img src='https://resources.tidal.com/images/a8b0e953/5900/4a87/887e/c2bb6d1aab72/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Tales From A Wanderer</div>
+<div><a href='https://tidal.com/album/400421120' target='_blank'>https://tidal.com/album/400421120</a></div>
+<div>AHN YEEUN - King Carp</div>
+<div>AHN YEEUN - Soon</div>
+<div>AHN YEEUN - Waning Moon</div>
+<div>AHN YEEUN - Not me Not mine</div>
+<div>AHN YEEUN - Remain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/400421120' target='_blank'><img src='https://resources.tidal.com/images/8f907f59/58e1/4bec/ae02/e9fb0f0e5372/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Soon</div>
+<div><a href='https://tidal.com/album/368681296' target='_blank'>https://tidal.com/album/368681296</a></div>
+<div>AHN YEEUN - Soon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/368681296' target='_blank'><img src='https://resources.tidal.com/images/bd97e3c3/1424/4875/80f1/a0fbf120db49/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Songstealer - RU BI _ Sorrowful Tears</div>
+<div><a href='https://tidal.com/album/369181936' target='_blank'>https://tidal.com/album/369181936</a></div>
+<div>AHN YEEUN - RU BI - Sorrowful Tears</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/369181936' target='_blank'><img src='https://resources.tidal.com/images/8c4b4a27/6408/479d/8d44/ed2c57f88b45/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Korea-Khitan War (Original Soundtrack), Pt. 3</div>
+<div><a href='https://tidal.com/album/340159591' target='_blank'>https://tidal.com/album/340159591</a></div>
+<div>AHN YEEUN - a Red Winter</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340159591' target='_blank'><img src='https://resources.tidal.com/images/9d58f8da/8240/48e2/afbc/1f893e6b5e0d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] GAWUI</div>
+<div><a href='https://tidal.com/album/377499420' target='_blank'>https://tidal.com/album/377499420</a></div>
+<div>AHN YEEUN - GAWUI</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/377499420' target='_blank'><img src='https://resources.tidal.com/images/f63b256b/a3fe/4c21/b348/08fdba5bb55a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] The Moon during the Day</div>
+<div><a href='https://tidal.com/album/281754168' target='_blank'>https://tidal.com/album/281754168</a></div>
+<div>AHN YEEUN - The Moon during the Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/281754168' target='_blank'><img src='https://resources.tidal.com/images/7f9ef4fd/692f/4fad/af6b/fdd27d9ee3c0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Journey</div>
+<div><a href='https://tidal.com/album/346779066' target='_blank'>https://tidal.com/album/346779066</a></div>
+<div>AHN YEEUN - Heavy</div>
+<div>AHN YEEUN - Wandering</div>
+<div>AHN YEEUN - Slide</div>
+<div>AHN YEEUN - Dreamville</div>
+<div>AHN YEEUN - Hide away</div>
+<div>AHN YEEUN - I knew it</div>
+<div>AHN YEEUN - Glass</div>
+<div>AHN YEEUN - Dissolve</div>
+<div>AHN YEEUN - Useless</div>
+<div>AHN YEEUN - Cistus albidus</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346779066' target='_blank'><img src='https://resources.tidal.com/images/bb220cff/1722/4c3d/818e/3fdc221bfccf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] Into My Playlist Pt. 7</div>
+<div><a href='https://tidal.com/album/346351546' target='_blank'>https://tidal.com/album/346351546</a></div>
+<div>AHN YEEUN - Please</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346351546' target='_blank'><img src='https://resources.tidal.com/images/944a5cb2/02b0/4ab2/860a/2d686d282a8e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] HONGRYEON</div>
+<div><a href='https://tidal.com/album/346808480' target='_blank'>https://tidal.com/album/346808480</a></div>
+<div>AHN YEEUN - HONGRYEON</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346808480' target='_blank'><img src='https://resources.tidal.com/images/09761af2/b341/4af4/b296/6caf7431597d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Ear</div>
+<div><a href='https://tidal.com/album/313787714' target='_blank'>https://tidal.com/album/313787714</a></div>
+<div>Room306, AHN YEEUN - Ear (HIFI Ver.)</div>
+<div>Room306, AHN YEEUN - Ear (lofi Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/313787714' target='_blank'><img src='https://resources.tidal.com/images/d55b19ca/e124/4882/8b48/d1d6a05a7f4f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Yongcheon Cave</div>
+<div><a href='https://tidal.com/album/346651546' target='_blank'>https://tidal.com/album/346651546</a></div>
+<div>AHN YEEUN - Yongcheon Cave</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346651546' target='_blank'><img src='https://resources.tidal.com/images/9d294c33/a44e/419b/927b/c990f8c5760c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Words of Wisdom</div>
+<div><a href='https://tidal.com/album/346665724' target='_blank'>https://tidal.com/album/346665724</a></div>
+<div>AHN YEEUN - Words of Wisdom</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346665724' target='_blank'><img src='https://resources.tidal.com/images/df82a596/39f9/4972/ac0d/1e5b9eefbd22/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Webtoon 'Return of the Blossoming Blade' Part.2 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/394133198' target='_blank'>https://tidal.com/album/394133198</a></div>
+<div>AHN YEEUN - Full Bloom</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/394133198' target='_blank'><img src='https://resources.tidal.com/images/62271eb9/2e50/469a/aa82/06c257a4d799/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] RATvolution</div>
+<div><a href='https://tidal.com/album/346704493' target='_blank'>https://tidal.com/album/346704493</a></div>
+<div>AHN YEEUN - RATvolution</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346704493' target='_blank'><img src='https://resources.tidal.com/images/2b0ac4d6/742c/4336/8062/c6b5c1bb50ba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Line</div>
+<div><a href='https://tidal.com/album/346657565' target='_blank'>https://tidal.com/album/346657565</a></div>
+<div>AHN YEEUN - Line</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346657565' target='_blank'><img src='https://resources.tidal.com/images/ae6365b0/7d36/4415/a77b/e21c7e4c5c9a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] HAECHI</div>
+<div><a href='https://tidal.com/album/346636319' target='_blank'>https://tidal.com/album/346636319</a></div>
+<div>AHN YEEUN - HAECHI</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346636319' target='_blank'><img src='https://resources.tidal.com/images/b62abb9b/c927/484c/b9c9/815bdecfca8d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Celebration song for 50th anniversary of Amnesty International's Korean branch</div>
+<div><a href='https://tidal.com/album/346720429' target='_blank'>https://tidal.com/album/346720429</a></div>
+<div>AHN YEEUN - We Are Here</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346720429' target='_blank'><img src='https://resources.tidal.com/images/3365620b/2843/4e28/a5d5/218e46c40986/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Burn Like a Star</div>
+<div><a href='https://tidal.com/album/346684276' target='_blank'>https://tidal.com/album/346684276</a></div>
+<div>AHN YEEUN, Woo Ye Rin - Burn Like a Star</div>
+<div>AHN YEEUN, Woo Ye Rin - Burn Like a Star (Piano Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346684276' target='_blank'><img src='https://resources.tidal.com/images/9a7e2f31/f1a4/4dab/be5b/b44904d86878/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Yujin and Yujin (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346439645' target='_blank'>https://tidal.com/album/346439645</a></div>
+<div>AHN YEEUN - Forgetting is not enough (feat. Kim MiJa)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346439645' target='_blank'><img src='https://resources.tidal.com/images/09c4e589/c01d/43c5/94e4/bea125b106a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] To The Island</div>
+<div><a href='https://tidal.com/album/343646986' target='_blank'>https://tidal.com/album/343646986</a></div>
+<div>AHN YEEUN - Prologue</div>
+<div>AHN YEEUN - Beginning</div>
+<div>AHN YEEUN - Sailing</div>
+<div>AHN YEEUN - Voyage</div>
+<div>AHN YEEUN - Shipwreck</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343646986' target='_blank'><img src='https://resources.tidal.com/images/10f709dd/0e66/45fb/a958/d017edb74098/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Proust</div>
+<div><a href='https://tidal.com/album/343948298' target='_blank'>https://tidal.com/album/343948298</a></div>
+<div>AHN YEEUN - Proust</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343948298' target='_blank'><img src='https://resources.tidal.com/images/c53a1bfb/e1f9/4241/894a/8e43dc880f0f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Octopus' Dream</div>
+<div><a href='https://tidal.com/album/183194953' target='_blank'>https://tidal.com/album/183194953</a></div>
+<div>AHN YEEUN, Pororo the little penguin - Octopus' Dream (YEEUN AHN, Pororo the Little Pengu</div>
+<div>AHN YEEUN, Pororo the little penguin - Octopus' Dream (Pororo the Little Penguin Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183194953' target='_blank'><img src='https://resources.tidal.com/images/66435a39/1b20/4fb5/8f1f/681ff24f8fd2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Octopus' Dream YEEUN AHN X Pororo the Little Penguin</div>
+<div><a href='https://tidal.com/album/346501164' target='_blank'>https://tidal.com/album/346501164</a></div>
+<div>AHN YEEUN - Octopus' Dream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346501164' target='_blank'><img src='https://resources.tidal.com/images/b7186094/bcea/4a7c/a415/5bac82cf8b47/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] I'm Flying (From _TWO COLORS PROJECT_)</div>
+<div><a href='https://tidal.com/album/343562384' target='_blank'>https://tidal.com/album/343562384</a></div>
+<div>No Brain, AHN YEEUN - I'm Flying (From -TWO COLORS PROJECT-)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343562384' target='_blank'><img src='https://resources.tidal.com/images/b06ef651/69e5/490c/96b6/d772240868f7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Hangeul</div>
+<div><a href='https://tidal.com/album/346427225' target='_blank'>https://tidal.com/album/346427225</a></div>
+<div>AHN YEEUN - 1009</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346427225' target='_blank'><img src='https://resources.tidal.com/images/e3cb0f9d/8bfd/4fc8/b7ef/b104df9f4d65/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] From The Island</div>
+<div><a href='https://tidal.com/album/346497464' target='_blank'>https://tidal.com/album/346497464</a></div>
+<div>AHN YEEUN - Far, far away</div>
+<div>AHN YEEUN - The Word</div>
+<div>AHN YEEUN - Nothin'</div>
+<div>AHN YEEUN - Door</div>
+<div>AHN YEEUN - Epilogue</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346497464' target='_blank'><img src='https://resources.tidal.com/images/d8618c22/b123/4a7d/a2d1/0aeaa5ab225d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] CHANGGWI</div>
+<div><a href='https://tidal.com/album/346387334' target='_blank'>https://tidal.com/album/346387334</a></div>
+<div>AHN YEEUN - CHANGGWI</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346387334' target='_blank'><img src='https://resources.tidal.com/images/650f5f55/8825/499a/91d0/d82eff3d94cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Waltz</div>
+<div><a href='https://tidal.com/album/346376020' target='_blank'>https://tidal.com/album/346376020</a></div>
+<div>AHN YEEUN - Waltz</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346376020' target='_blank'><img src='https://resources.tidal.com/images/ec8fe851/e615/4d1a/b263/eebe13837988/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Trumpet Creeper</div>
+<div><a href='https://tidal.com/album/346319301' target='_blank'>https://tidal.com/album/346319301</a></div>
+<div>AHN YEEUN - Trumpet Creeper</div>
+<div>AHN YEEUN - Trumpet Creeper (Piano Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346319301' target='_blank'><img src='https://resources.tidal.com/images/8319c364/d6b3/4b6b/833a/d6eb703ab853/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] OOO</div>
+<div><a href='https://tidal.com/album/132069253' target='_blank'>https://tidal.com/album/132069253</a></div>
+<div>AHN YEEUN - Whispering Gallery</div>
+<div>AHN YEEUN - KAKOTOPIA</div>
+<div>AHN YEEUN - Goblin</div>
+<div>AHN YEEUN - Dream</div>
+<div>AHN YEEUN - Ship</div>
+<div>AHN YEEUN - Loop</div>
+<div>AHN YEEUN - Light</div>
+<div>AHN YEEUN - Octopus' Dream</div>
+<div>AHN YEEUN - Zero</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/132069253' target='_blank'><img src='https://resources.tidal.com/images/f192800f/28a4/4664/8364/d75f36d0e2c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] The BANKER, Pt. 4 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/346696867' target='_blank'>https://tidal.com/album/346696867</a></div>
+<div>AHN YEEUN - Keep Alive</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346696867' target='_blank'><img src='https://resources.tidal.com/images/8fbcbdf9/bf13/4ead/afd4/8f8a5fe3a3a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Same Thought</div>
+<div><a href='https://tidal.com/album/82113989' target='_blank'>https://tidal.com/album/82113989</a></div>
+<div>AHN YEEUN - Same Thought</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/82113989' target='_blank'><img src='https://resources.tidal.com/images/3b8973de/77ac/4cae/8909/7a878e7e814e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] One Day</div>
+<div><a href='https://tidal.com/album/77736845' target='_blank'>https://tidal.com/album/77736845</a></div>
+<div>AHN YEEUN - Yes !</div>
+<div>AHN YEEUN - Little Kingdom</div>
+<div>AHN YEEUN - Spring, Hand, Night, Dream</div>
+<div>AHN YEEUN - Deep Blue</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/77736845' target='_blank'><img src='https://resources.tidal.com/images/59c729d1/708b/4fb5/a2ae/c1154f829405/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/1_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ1) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/안예은 (Ahn Ye Eun)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
