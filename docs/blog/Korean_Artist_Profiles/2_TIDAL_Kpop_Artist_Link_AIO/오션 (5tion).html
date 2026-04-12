@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 오션 ( Tidal 5tion )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 오션 ( Tidal 5tion )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/304cf7d6/af7a/454f/a97c/a055ead18ce9/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/4527621' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 오션</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>오션 (5tion) - 감미로운 하모니로 빚어낸 사랑의 온도, 'Because of You'처럼 따뜻한 감성을 전하는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 5tion</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>5tion - A group that crafts love's temperature with sweet harmonies, delivering warm emotions like in 'Because of You'</div><p>부드러운 보컬과 섬세한 감성으로 사랑받는 그룹, 오션 (5tion)을 소개합니다. 멤버 교체를 거치며 변화를 시도했지만, 특유의 로맨틱한 감성은 여전히 빛나고 있어요. 그들의 음악은 듣는 이의 마음을 포근하게 감싸 안아주는 매력이 있습니다.</p><p>Let me introduce 5tion, a group loved for their smooth vocals and delicate emotions. While they have undergone changes with member replacements, their unique romantic sensibility still shines. Their music has the charm of warmly embracing the hearts of listeners.</p><p>✧</p><p>그룹 탄생</p><p>2001년 데뷔, 다양한 멤버 변화를 겪으며 현재까지 활동을 이어오고 있습니다. 멤버 구성의 변화 속에서도 그룹의 정체성을 유지하며 꾸준히 음악 활동을 펼쳐왔어요. 새로운 멤버들의 합류는 그룹에 신선한 에너지를 불어넣었습니다.</p><p>Group Formation</p><p>Debuted in 2001 and has continued its activities to this day, experiencing various member changes. Despite the changes in the member composition, the group has maintained its identity and consistently engaged in musical activities. The addition of new members has injected fresh energy into the group.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>오션은 감미로운 보컬과 하모니를 기반으로 R&B, 팝 등 다양한 장르를 소화합니다. 사랑과 이별을 주제로 한 서정적인 가사는 많은 이들의 공감을 얻고 있어요. 무대 위에서 보여주는 섬세한 감정 표현은 곡의 몰입도를 높입니다.</p><p>Music and Performance</p><p>5tion digests various genres such as R&B and pop based on sweet vocals and harmony. The lyrical lyrics about love and separation resonate with many people. The delicate emotional expression shown on stage enhances the immersion of the song.</p><p>✧</p><p>주요 활동</p><p>국내뿐 아니라 해외에서도 활발한 활동을 펼치며 글로벌 팬들에게 사랑받고 있습니다. 드라마 OST 참여, 예능 출연 등 다양한 분야에서 활동 영역을 넓혀왔어요. 꾸준한 음반 발매와 공연을 통해 팬들과 소통하고 있습니다.</p><p>Main Activities</p><p>They are loved by global fans, actively performing not only in Korea but also overseas. They have expanded their activities in various fields such as participating in drama OSTs and appearing in entertainment programs. They communicate with fans through continuous album releases and performances.</p><p>✧</p><p>미래/의미</p><p>오션은 앞으로도 꾸준한 음악 활동을 통해 팬들에게 감동과 위로를 전할 것입니다. 변화를 두려워하지 않고 새로운 시도를 통해 더욱 발전된 음악을 선보일 것으로 기대됩니다. 그들의 음악은 시대를 초월하여 오랫동안 사랑받을 것입니다.</p><p>Future/Meaning</p><p>5tion will continue to deliver emotion and comfort to fans through consistent musical activities in the future. They are expected to showcase more developed music through new attempts without fearing change. Their music will be loved for a long time, transcending generations.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2020] Rebirth</div>
+<div><a href='https://tidal.com/album/162413566' target='_blank'>https://tidal.com/album/162413566</a></div>
+<div>5tion - Final Destination</div>
+<div>5tion - Stupid Game</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/162413566' target='_blank'><img src='https://resources.tidal.com/images/e515e027/c224/4292/ab89/257ee141d0dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Wanna Know You</div>
+<div><a href='https://tidal.com/album/189198758' target='_blank'>https://tidal.com/album/189198758</a></div>
+<div>5tion - Wanna Know You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189198758' target='_blank'><img src='https://resources.tidal.com/images/bf6d0d48/43c8/4a6e/be2e/21a81b837253/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] TEMPERATURE</div>
+<div><a href='https://tidal.com/album/142550466' target='_blank'>https://tidal.com/album/142550466</a></div>
+<div>5tion - TEMPERATURE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142550466' target='_blank'><img src='https://resources.tidal.com/images/ec9c326f/c211/4852/a5a4/767a33d447e5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 돌아와줘요</div>
+<div><a href='https://tidal.com/album/186548796' target='_blank'>https://tidal.com/album/186548796</a></div>
+<div>5tion - 돌아와줘요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/186548796' target='_blank'><img src='https://resources.tidal.com/images/fd117d0f/9283/4577/bd7f/77dcefc10015/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Someone Like You</div>
+<div><a href='https://tidal.com/album/188719643' target='_blank'>https://tidal.com/album/188719643</a></div>
+<div>5tion - Someone Like You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188719643' target='_blank'><img src='https://resources.tidal.com/images/f4c7b51e/1cef/4b08/a3b2/44a8f08f4980/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Love Takes Time</div>
+<div><a href='https://tidal.com/album/186548787' target='_blank'>https://tidal.com/album/186548787</a></div>
+<div>5tion - Love Takes Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/186548787' target='_blank'><img src='https://resources.tidal.com/images/c61254c1/fc72/45d2/8a91/f7fba6515065/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] My Valentine</div>
+<div><a href='https://tidal.com/album/184485781' target='_blank'>https://tidal.com/album/184485781</a></div>
+<div>5tion - My Valentine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184485781' target='_blank'><img src='https://resources.tidal.com/images/39825ddc/a560/422b/8c39/bdb951d4fbb9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Lie</div>
+<div><a href='https://tidal.com/album/142632538' target='_blank'>https://tidal.com/album/142632538</a></div>
+<div>5tion - Lie</div>
+<div>5tion - Lie</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142632538' target='_blank'><img src='https://resources.tidal.com/images/15553b3c/8e9d/4e25/b79f/0583d8694090/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Because Of You</div>
+<div><a href='https://tidal.com/album/234090424' target='_blank'>https://tidal.com/album/234090424</a></div>
+<div>5tion - Because Of You</div>
+<div>5tion - Because of You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/234090424' target='_blank'><img src='https://resources.tidal.com/images/b2273742/a226/4933/a800/9f44bbc545c8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2013] Love Love Love</div>
+<div><a href='https://tidal.com/album/142625182' target='_blank'>https://tidal.com/album/142625182</a></div>
+<div>5tion - Love Love Love</div>
+<div>5tion - Love Love Love</div>
+<div>5tion - Love Love Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142625182' target='_blank'><img src='https://resources.tidal.com/images/0ecaf3eb/b911/481d/8187/ae5160238a9b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Rebirth</div>
+<div><a href='https://tidal.com/album/167593144' target='_blank'>https://tidal.com/album/167593144</a></div>
+<div>5tion, 카인 - Four seasons garden (feat. 카인)</div>
+<div>5tion - Even Get Married</div>
+<div>5tion - Papillon</div>
+<div>5tion - Deep Slow</div>
+<div>5tion, 현영 - Even Get Married (feat. 현영)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167593144' target='_blank'><img src='https://resources.tidal.com/images/379e9aad/eda7/468f/b3fb/1e9be8258a4d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Only 4 U</div>
+<div><a href='https://tidal.com/album/215831621' target='_blank'>https://tidal.com/album/215831621</a></div>
+<div>5tion - Only 4 U</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215831621' target='_blank'><img src='https://resources.tidal.com/images/8103c25c/5ac2/44e3/b36e/50cd1f0931a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Let's get married</div>
+<div><a href='https://tidal.com/album/170046674' target='_blank'>https://tidal.com/album/170046674</a></div>
+<div>5tion - Let's get married</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170046674' target='_blank'><img src='https://resources.tidal.com/images/d8c7fe2e/e003/4ce7/bac1/f687e3d44cf8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 내 사람인가 봐</div>
+<div><a href='https://tidal.com/album/163271827' target='_blank'>https://tidal.com/album/163271827</a></div>
+<div>5tion - 내 사람인가 봐</div>
+<div>5tion - 우리 다시 사랑하자 Acoustic Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163271827' target='_blank'><img src='https://resources.tidal.com/images/8e61fa89/e933/43bf/aa58/7f763ee080bf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] MANNY (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/216081298' target='_blank'>https://tidal.com/album/216081298</a></div>
+<div>5tion - Love Made In Heaven</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216081298' target='_blank'><img src='https://resources.tidal.com/images/b28fc8c3/f7ec/4ef5/8ede/dbd1a249932e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 우리 다시 사랑하자</div>
+<div><a href='https://tidal.com/album/163271789' target='_blank'>https://tidal.com/album/163271789</a></div>
+<div>5tion - 우리 다시 사랑하자</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163271789' target='_blank'><img src='https://resources.tidal.com/images/34e6612e/0759/4540/a8f1/59fd63f98685/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 메세지가 도착했습니다</div>
+<div><a href='https://tidal.com/album/142624969' target='_blank'>https://tidal.com/album/142624969</a></div>
+<div>5tion - 메세지가 도착했습니다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/142624969' target='_blank'><img src='https://resources.tidal.com/images/07e9de7b/ecc0/4468/a5b9/fa7ea53dcba9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] Album Of The Ear</div>
+<div><a href='https://tidal.com/album/184617413' target='_blank'>https://tidal.com/album/184617413</a></div>
+<div>5tion - 24-7</div>
+<div>5tion - I Wish U</div>
+<div>5tion - Come 2 Me My Love</div>
+<div>5tion - I Miss U</div>
+<div>5tion - 겨울 선물</div>
+<div>5tion - Eternity</div>
+<div>5tion - Everythin'</div>
+<div>5tion - 감사</div>
+<div>5tion - Atta Boy!</div>
+<div>5tion - U & I Dream</div>
+<div>5tion - You End Me</div>
+<div>5tion - 진달래</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184617413' target='_blank'><img src='https://resources.tidal.com/images/ed24a386/66da/47f0/a947/3a448ea4bb01/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2001] True Image Of New</div>
+<div><a href='https://tidal.com/album/184928241' target='_blank'>https://tidal.com/album/184928241</a></div>
+<div>5tion - Feel</div>
+<div>5tion - More Than Words</div>
+<div>5tion - 이제 우리</div>
+<div>5tion - Always</div>
+<div>5tion - Bye Bye</div>
+<div>5tion - She's Gone</div>
+<div>5tion - My Girl</div>
+<div>5tion - With You</div>
+<div>5tion - 말해</div>
+<div>5tion - Happy</div>
+<div>5tion - 미로</div>
+<div>5tion - Good Night</div>
+<div>5tion - 벽</div>
+<div>5tion - Without You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184928241' target='_blank'><img src='https://resources.tidal.com/images/304cf7d6/af7a/454f/a97c/a055ead18ce9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/오션 (5tion)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
