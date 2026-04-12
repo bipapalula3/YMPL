@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 장연주 ( Tidal Jang Yeonju )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 장연주 ( Tidal Jang Yeonju )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/7731a8f1/92af/4466/ba6e/2bec76248196/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/17438983' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 장연주</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>장연주 - 소소한 일상 속 특별한 순간을 노래하는 싱어송라이터, 'GamGyul Love Song'처럼 달콤하고 '여가'처럼 편안한 음악</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jang Yeonju</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Jang Yeonju - A singer-songwriter who sings about special moments in everyday life, with music as sweet as 'GamGyul Love Song' and as comfortable as 'Leisure'.</div><p>싱어송라이터 장연주는 일상 속의 작은 이야기들을 섬세하게 담아내는 음악가에요. 그녀의 음악은 마치 따뜻한 햇살 아래 감귤을 까먹는 듯한 편안함과 달콤함을 선사하죠. 진솔한 가사와 포근한 멜로디는 듣는 이의 마음을 부드럽게 감싸 안아 준답니다.</p><p>Singer-songwriter Jang Yeonju is a musician who delicately captures small stories of everyday life. Her music offers a sense of comfort and sweetness, like peeling a tangerine under warm sunshine. Her sincere lyrics and cozy melodies gently embrace the listener's heart.</p><p>✧</p><p>음악적 색깔</p><p>장연주의 음악은 어쿠스틱 사운드를 기반으로 하여 편안하고 따뜻한 분위기를 자아내요. 그녀는 일상적인 소재를 활용하여 누구나 공감할 수 있는 이야기를 풀어내는 것이 특징이죠. 때로는 사랑스럽고, 때로는 솔직한 감정을 담아내며 듣는 이들에게 진솔한 울림을 전달합니다.</p><p>Musical Palette</p><p>Jang Yeonju's music is based on acoustic sounds, creating a comfortable and warm atmosphere. She is characterized by unraveling stories that everyone can relate to, using everyday subjects. Sometimes lovely, sometimes honest, she conveys sincere resonance to listeners.</p><p>✧</p><p>진솔한 가사와 멜로디</p><p>그녀의 곡들은 솔직하고 담백한 가사가 돋보이며, 듣기 편안한 멜로디가 조화를 이루고 있어요. '말이야'나 '꺼내줘'처럼 솔직한 감정을 표현하는 곡들은 많은 이들의 공감을 얻고 있죠. 이러한 진솔함이 장연주 음악의 가장 큰 매력이라고 할 수 있습니다.</p><p>Sincere Lyrics and Melody</p><p>Her songs feature honest and straightforward lyrics, harmonizing with easy-to-listen melodies. Songs that express sincere feelings, such as 'Tell Me' and 'Take It Out,' resonate with many. This sincerity is the biggest charm of Jang Yeonju's music.</p><p>✧</p><p>다채로운 음악 활동</p><p>장연주는 꾸준히 자신의 음악 세계를 확장해 나가고 있어요. 다양한 공연과 음악 작업을 통해 팬들과 소통하며, 자신만의 음악적 색깔을 더욱 뚜렷하게 만들어가고 있죠. 앞으로 그녀가 보여줄 새로운 음악적 시도들이 더욱 기대됩니다.</p><p>Diverse Musical Activities</p><p>Jang Yeonju is constantly expanding her musical world. She communicates with fans through various performances and musical works, further clarifying her unique musical color. We look forward to the new musical attempts she will show in the future.</p><p>✧</p><p>따뜻한 위로와 공감</p><p>장연주의 음악은 듣는 이들에게 따뜻한 위로와 공감을 선사하는 힘을 가지고 있어요. 복잡한 세상 속에서 잠시 쉬어갈 수 있는 여유를 선물하며, 잔잔한 감동을 안겨주죠. 그녀의 음악은 앞으로도 많은 이들에게 긍정적인 영향을 줄 것으로 기대됩니다.</p><p>Warm Comfort and Empathy</p><p>Jang Yeonju's music has the power to provide warm comfort and empathy to listeners. It gives them the space to rest for a while in a complex world and brings quiet emotion. Her music is expected to continue to have a positive impact on many people.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] GamGyul Love Song</div>
+<div><a href='https://tidal.com/album/399446500' target='_blank'>https://tidal.com/album/399446500</a></div>
+<div>장연주 - GamGyul Love Song</div>
+<div>장연주 - GamGyul Love Song (CM Song Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/399446500' target='_blank'><img src='https://resources.tidal.com/images/0c555daf/8f5d/4518/b19b/52a3c199f51c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] 본심</div>
+<div><a href='https://tidal.com/album/184931026' target='_blank'>https://tidal.com/album/184931026</a></div>
+<div>장연주 - Intro</div>
+<div>장연주 - Happy Then</div>
+<div>장연주 - 여가</div>
+<div>장연주 - Love1</div>
+<div>장연주 - 말이야</div>
+<div>장연주 - 꺼내줘</div>
+<div>장연주 - 의외로 순진해요(In Cafe)</div>
+<div>장연주 - 의외로 순진해요</div>
+<div>장연주 - 대통령 아저씨께</div>
+<div>장연주 - 本心은---</div>
+<div>장연주 - 본심</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184931026' target='_blank'><img src='https://resources.tidal.com/images/7731a8f1/92af/4466/ba6e/2bec76248196/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] Something Special</div>
+<div><a href='https://tidal.com/album/184928559' target='_blank'>https://tidal.com/album/184928559</a></div>
+<div>장연주 - 얼굴이 못생겨서 미안해</div>
+<div>장연주 - 락 큰 Roll</div>
+<div>장연주 - P.S I Love You</div>
+<div>장연주 - 안녕</div>
+<div>장연주 - Something Special</div>
+<div>장연주 - 가시리</div>
+<div>장연주 - 처음엔</div>
+<div>장연주 - 떠날거야</div>
+<div>장연주 - Last Scene</div>
+<div>장연주 - Blue Concerto</div>
+<div>장연주 - 인과응보(因果應報) 2.3 Version</div>
+<div>장연주 - 얼굴이 못생겨서 미안해 Main Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184928559' target='_blank'><img src='https://resources.tidal.com/images/fa279c7c/b2ec/4ed4/a41f/b2cfa655be8a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/1_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ1) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/장연주 (Jang Yeonju)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
