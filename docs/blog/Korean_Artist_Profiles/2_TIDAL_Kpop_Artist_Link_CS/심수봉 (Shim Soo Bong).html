@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 심수봉 ( Tidal Shim Soo Bong )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 심수봉 ( Tidal Shim Soo Bong )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/6705a612/3baa/4e4a/9c89/6e1374e0781d/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9956068' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 심수봉</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>사랑과 인생의 깊이를 노래하는 영혼의 디바, ‘사랑밖에 난 몰라’의 애절함과 ‘백만송이 장미’의 희망을 전하는 가수</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Shim Soo Bong</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A soulful diva singing about the depths of love and life, delivering the heart-wrenching emotions of 'I Don't Know Anything But Love' and the hope of 'Million Roses'</div><p>한국 가요계의 독보적인 존재, 심수봉 님을 소개합니다. 그녀는 피아노를 치며 노래하는 싱어송라이터로, 깊은 감성과 진솔한 음악으로 오랫동안 많은 사랑을 받아왔습니다. 그녀의 음악은 단순한 유행을 넘어 시대를 초월하는 감동을 선사합니다.</p><p>Introducing Shim Soo Bong, an unparalleled presence in the Korean music scene. She is a singer-songwriter who plays the piano and has been loved for a long time for her deep emotions and sincere music. Her music transcends mere trends and delivers timeless emotions.</p><p>✧</p><p>음악과의 만남</p><p>심수봉 님은 어릴 적부터 음악적 재능을 보이며 피아노를 독학으로 익혔다고 합니다. 대학가요제에서 자작곡으로 데뷔하며 대중에게 깊은 인상을 남겼습니다. 그녀의 음악 여정은 그렇게 시작되었습니다.</p><p>Encounter with Music</p><p>Shim Soo Bong showed musical talent from a young age and taught herself to play the piano. She made a deep impression on the public with her self-composed song at the University Song Festival. That's how her musical journey began.</p><p>✧</p><p>다채로운 음악 세계</p><p>심수봉 님의 음악은 트로트, 팝, 가곡 등 다양한 장르를 아우릅니다. 그녀는 사랑, 인생, 고향 등 다양한 주제를 자신만의 감성으로 노래합니다. 국악과의 접목을 시도하는 등 끊임없이 새로운 시도를 보여줍니다.</p><p>A Diverse Musical World</p><p>Shim Soo Bong's music encompasses various genres such as trot, pop, and art songs. She sings about various themes such as love, life, and hometown with her own emotions. She constantly shows new attempts, such as trying to incorporate Korean traditional music.</p><p>✧</p><p>주요 활동과 대표곡</p><p>‘사랑밖에 난 몰라’, ‘미워요’, ‘백만송이 장미’ 등 수많은 히트곡을 발표하며 대중적인 사랑을 받았습니다. 영화 음악 작곡, 국악과의 협연 등 폭넓은 활동을 펼치고 있습니다. 그녀의 음악은 시대를 초월하여 많은 사람들에게 감동을 선사합니다.</p><p>Major Activities and Representative Songs</p><p>She has received popular love by releasing numerous hit songs such as 'I Don't Know Anything But Love', 'I Hate You', and 'Million Roses'. She is engaged in a wide range of activities, including composing film music and collaborating with Korean traditional music. Her music transcends time and impresses many people.</p><p>✧</p><p>음악이 주는 깊은 울림</p><p>심수봉 님의 음악은 단순한 노래를 넘어, 삶의 희로애락을 담아낸 깊이 있는 예술 작품입니다. 그녀의 음악은 앞으로도 오랫동안 많은 사람들에게 위로와 감동을 전할 것입니다. 그녀의 음악은 영원히 우리 곁에 남아있을 것입니다.</p><p>Deep Resonance of Music</p><p>Shim Soo Bong's music is more than just a song; it is a profound work of art that captures the joys and sorrows of life. Her music will continue to comfort and inspire many people for a long time to come. Her music will remain with us forever.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] March of the Married</div>
+<div><a href='https://tidal.com/album/288661967' target='_blank'>https://tidal.com/album/288661967</a></div>
+<div>Shim Soo Bong - March of the Married</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288661967' target='_blank'><img src='https://resources.tidal.com/images/a799685d/cfd2/40b1/91a7/fae779f986db/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Bloom Korea, Shim Soo Bong</div>
+<div><a href='https://tidal.com/album/209569056' target='_blank'>https://tidal.com/album/209569056</a></div>
+<div>Shim Soo Bong, Big choir - Grand Opening (with Big Choir)</div>
+<div>Shim Soo Bong, Kim Si Eun - Rose of Sharon (with Kim Si Eun)</div>
+<div>Shim Soo Bong - My Country</div>
+<div>Shim Soo Bong - Then That Person</div>
+<div>Shim Soo Bong - I Don't Know Anything But Love</div>
+<div>Shim Soo Bong, Big choir - Arirang (with Big Choir)</div>
+<div>Shim Soo Bong - Gugak Special Stage</div>
+<div>Shim Soo Bong - Men Are Ships, Women Are Ports</div>
+<div>Shim Soo Bong - Romance Grey</div>
+<div>Shim Soo Bong - What a Person Like You</div>
+<div>Shim Soo Bong - From Time to Time</div>
+<div>Shim Soo Bong, Choi Jung Hoon - Because I Am Woman (with Choi Jung Hoon)</div>
+<div>Shim Soo Bong - Hate You</div>
+<div>Shim Soo Bong, Forte Di Quattro - Dear My Bride (with Forte di Quattro)</div>
+<div>Shim Soo Bong - Drum Solo</div>
+<div>Shim Soo Bong, JUNG YONG HWA - Praying (with Jung Yong Hwa)</div>
+<div>Shim Soo Bong - Will Love In This Autumn</div>
+<div>Shim Soo Bong, YDG, Klark - YOU (with YDG & KLARK)</div>
+<div>Shim Soo Bong - Rosy, Our Love Is</div>
+<div>Shim Soo Bong, YDG - Regret (with YDG)</div>
+<div>Shim Soo Bong - Beloved Songs Medley</div>
+<div>Shim Soo Bong - Young Sun</div>
+<div>Shim Soo Bong - One Million Roses</div>
+<div>Shim Soo Bong - Rapids</div>
+<div>Shim Soo Bong - I'm In Yours</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209569056' target='_blank'><img src='https://resources.tidal.com/images/7bddb679/e801/4865/a12b/291ed51d6915/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] My Life Began to Shine</div>
+<div><a href='https://tidal.com/album/90279855' target='_blank'>https://tidal.com/album/90279855</a></div>
+<div>Shim Soo Bong - Dear My Bride</div>
+<div>Shim Soo Bong - Arirang</div>
+<div>Shim Soo Bong - I Am with You</div>
+<div>Shim Soo Bong - Then That Person</div>
+<div>Shim Soo Bong - Binari</div>
+<div>Shim Soo Bong - Love of Tonight</div>
+<div>Shim Soo Bong - Men Are Ships, Women Are Ports</div>
+<div>Shim Soo Bong - I Don't Know Anything But Love</div>
+<div>Shim Soo Bong - Today, Suddenly</div>
+<div>Shim Soo Bong - Rosy, Our Love Is</div>
+<div>Shim Soo Bong - Cry (Hesed)</div>
+<div>Shim Soo Bong - Daddy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/90279855' target='_blank'><img src='https://resources.tidal.com/images/6705a612/3baa/4e4a/9c89/6e1374e0781d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Hesed, The Promise of Love</div>
+<div><a href='https://tidal.com/album/24980174' target='_blank'>https://tidal.com/album/24980174</a></div>
+<div>Shim Soo Bong - Our Rose Love</div>
+<div>Shim Soo Bong - Flattering</div>
+<div>Shim Soo Bong - Rose of Sharon</div>
+<div>Shim Soo Bong - I Am with You</div>
+<div>Shim Soo Bong - Dear My Bride</div>
+<div>Shim Soo Bong - Don't Know Nothing but Love</div>
+<div>Shim Soo Bong - Person in Moments</div>
+<div>Shim Soo Bong - Why Don't You Cry (Southern Men Northern Women)</div>
+<div>Shim Soo Bong - Hesed</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/24980174' target='_blank'><img src='https://resources.tidal.com/images/a834232f/ea7d/4357/8633/480faac167c4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Dear My Bride</div>
+<div><a href='https://tidal.com/album/20663346' target='_blank'>https://tidal.com/album/20663346</a></div>
+<div>Shim Soo Bong - Dear My Bride</div>
+<div>Shim Soo Bong - Why Don't You Cry (Souhern Men Northern Women)</div>
+<div>Shim Soo Bong - I Am With You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/20663346' target='_blank'><img src='https://resources.tidal.com/images/d17c0c2a/2524/4eb9/b00a/14b4369477ee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Beautiful Love (Shim Soo-Bong 30th Anniversary)</div>
+<div><a href='https://tidal.com/album/72809690' target='_blank'>https://tidal.com/album/72809690</a></div>
+<div>Shim Soo Bong - In the shadow of your wings</div>
+<div>Shim Soo Bong - Million roses</div>
+<div>Shim Soo Bong - The man of the time</div>
+<div>Shim Soo Bong - Hymn of wish</div>
+<div>Shim Soo Bong - I only know love</div>
+<div>Shim Soo Bong - You have me</div>
+<div>Shim Soo Bong - Hate you</div>
+<div>Shim Soo Bong - I am fan of baseball</div>
+<div>Shim Soo Bong - Rosy, our love is</div>
+<div>Shim Soo Bong - Creek</div>
+<div>Shim Soo Bong - Man is ship, Woman is port</div>
+<div>Shim Soo Bong - Will love in this autumn</div>
+<div>Shim Soo Bong - Because I am a girl</div>
+<div>Shim Soo Bong - Rose of sharon</div>
+<div>Shim Soo Bong - Today, all of a sudden---</div>
+<div>Shim Soo Bong - Forever like this</div>
+<div>Shim Soo Bong - My Four Seasons 2</div>
+<div>Shim Soo Bong - The man of the time (jazz ver.)</div>
+<div>Shim Soo Bong - I only know love (Piano Version)</div>
+<div>Shim Soo Bong - Tango with you</div>
+<div>Shim Soo Bong - Winter wanderer</div>
+<div>Shim Soo Bong - Attraction</div>
+<div>Shim Soo Bong - Rose of Sharon</div>
+<div>Shim Soo Bong - Winter rose</div>
+<div>Shim Soo Bong - Festival story</div>
+<div>Shim Soo Bong - Heart of love</div>
+<div>Shim Soo Bong - The Gypsy</div>
+<div>Shim Soo Bong - What a person like you</div>
+<div>Shim Soo Bong - When love turns into poem</div>
+<div>Shim Soo Bong - Young Sun</div>
+<div>Shim Soo Bong - How good it will be</div>
+<div>Shim Soo Bong - To you</div>
+<div>Shim Soo Bong - YOU</div>
+<div>Shim Soo Bong - My Dear</div>
+<div>Shim Soo Bong - Romance Grey</div>
+<div>Shim Soo Bong - The last dance is bolero</div>
+<div>Shim Soo Bong - Adoro</div>
+<div>Shim Soo Bong - I smile because I am a woman</div>
+<div>Shim Soo Bong - My Four Seasons 1</div>
+<div>Shim Soo Bong - Donde Voy</div>
+<div>Shim Soo Bong - Love without break-up</div>
+<div>Shim Soo Bong - There is a stranger</div>
+<div>Shim Soo Bong - Lost love</div>
+<div>Shim Soo Bong - Promise</div>
+<div>Shim Soo Bong - We are strangers</div>
+<div>Shim Soo Bong - Ah, Traveler</div>
+<div>Shim Soo Bong - My Kid</div>
+<div>Shim Soo Bong - Alcohol of tears</div>
+<div>Shim Soo Bong - My Country</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/72809690' target='_blank'><img src='https://resources.tidal.com/images/f245c84b/db76/4c21/8cfd/5d4af5a43a38/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] Best Of Best</div>
+<div><a href='https://tidal.com/album/215924462' target='_blank'>https://tidal.com/album/215924462</a></div>
+<div>Shim Soo Bong - One Million Roses</div>
+<div>Shim Soo Bong - Then That Person</div>
+<div>Shim Soo Bong - I Don't Know Anything But Love</div>
+<div>Shim Soo Bong - Rose of Sharon</div>
+<div>Shim Soo Bong - Praying</div>
+<div>Shim Soo Bong - When Love Becomes A Poem</div>
+<div>Shim Soo Bong - My Four Seasons</div>
+<div>Shim Soo Bong - Tango With You</div>
+<div>Shim Soo Bong - What a Person Like You</div>
+<div>Shim Soo Bong - Will Love In This Autumn</div>
+<div>Shim Soo Bong - I Don't Know Anything But Love (Piano Version)</div>
+<div>Shim Soo Bong - Rosy, Our Love Is</div>
+<div>Shim Soo Bong - Alcohol of tears</div>
+<div>Shim Soo Bong - Donde Voy</div>
+<div>Shim Soo Bong - Hate You</div>
+<div>Shim Soo Bong - Men Are Ships, Women Are Ports</div>
+<div>Shim Soo Bong - Stranger</div>
+<div>Shim Soo Bong - To My Love</div>
+<div>Shim Soo Bong - Romance Grey</div>
+<div>Shim Soo Bong - To Beside You</div>
+<div>Shim Soo Bong - Dear</div>
+<div>Shim Soo Bong - I Yah</div>
+<div>Shim Soo Bong - I Hope It's True</div>
+<div>Shim Soo Bong - Winter Rose</div>
+<div>Shim Soo Bong - One Summer Night</div>
+<div>Shim Soo Bong - Sunflower</div>
+<div>Shim Soo Bong - Festival Story</div>
+<div>Shim Soo Bong - Mind Of Love</div>
+<div>Shim Soo Bong - We Are Strangers</div>
+<div>Shim Soo Bong - Winter Traveler</div>
+<div>Shim Soo Bong - Ah! Traveler</div>
+<div>Shim Soo Bong - True Love</div>
+<div>Shim Soo Bong - Then That Person (Jazz Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215924462' target='_blank'><img src='https://resources.tidal.com/images/a0ddfda6/9555/4d83/85b4/f1efe297feda/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] Hymn of Wish</div>
+<div><a href='https://tidal.com/album/115253336' target='_blank'>https://tidal.com/album/115253336</a></div>
+<div>Shim Soo Bong - Rosy, our love is</div>
+<div>Shim Soo Bong - Hymn of wish</div>
+<div>Shim Soo Bong - Romance Grey</div>
+<div>Shim Soo Bong - Million roses</div>
+<div>Shim Soo Bong - Alcohol of tears</div>
+<div>Shim Soo Bong - How good it will be</div>
+<div>Shim Soo Bong - Sunflower</div>
+<div>Shim Soo Bong - My Kid</div>
+<div>Shim Soo Bong - There is a stranger</div>
+<div>Shim Soo Bong - Donde Voy</div>
+<div>Shim Soo Bong - One Summer Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115253336' target='_blank'><img src='https://resources.tidal.com/images/730d3021/72ef/4ded/bcf7/7b31007b8c43/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/심수봉 (Shim Soo Bong)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
