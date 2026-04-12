@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 비오 ( Tidal BE'O )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 비오 ( Tidal BE'O )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/6072f998/4bc9/498d/a3f1/551f1ae56490/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/23422977' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 비오</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>몽환적인 멜로디 속 진솔한 이야기, '밤새'도록 듣게 만드는 섬세한 감성의 래퍼</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> BE'O</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A sincere storyteller in dreamy melodies, a rapper with delicate emotions that makes you listen 'All Night Long'</div><p>독특한 음색과 솔직한 가사로 리스너들의 마음을 사로잡는 아티스트, 비오(BE'O)를 소개합니다. 그는 자신만의 색깔로 힙합씬에 신선한 바람을 불어넣으며 많은 사랑을 받고 있어요. 그의 음악은 단순한 유행을 넘어, 깊은 공감대를 형성하며 우리의 일상에 스며듭니다.</p><p>Let me introduce BE'O, an artist who captivates listeners with his unique voice and honest lyrics. He is loved for bringing a fresh vibe to the hip-hop scene with his own style. His music goes beyond simple trends, forming a deep connection and permeating our daily lives.</p><p>✧</p><p>새로운 시작</p><p>비오는 자신만의 음악적 색깔을 찾아 꾸준히 활동하며 이름을 알리기 시작했습니다. 그는 다양한 협업을 통해 스펙트럼을 넓히고, 자신만의 독창적인 스타일을 구축해나가고 있어요. 그의 음악은 힙합이라는 장르 안에서 다채로운 시도를 보여줍니다.</p><p>A New Beginning</p><p>BE'O steadily began to make a name for himself by pursuing his own musical style. He is expanding his spectrum through various collaborations and building his unique style. His music showcases diverse attempts within the hip-hop genre.</p><p>✧</p><p>음악적 스펙트럼</p><p>비오의 음악은 힙합을 기반으로 다양한 장르를 넘나드는 폭넓은 스펙트럼을 자랑합니다. 그는 감성적인 멜로디와 진솔한 가사를 통해 듣는 이로 하여금 깊은 공감을 불러일으킵니다. 때로는 위로를, 때로는 강렬한 에너지를 전달하며 음악 팬들을 매료시키고 있어요.</p><p>Musical Spectrum</p><p>BE'O's music boasts a wide spectrum that crosses various genres based on hip-hop. He evokes deep empathy in listeners through emotional melodies and honest lyrics. Sometimes delivering comfort, sometimes intense energy, he is captivating music fans.</p><p>✧</p><p>주요 활동</p><p>비오는 꾸준한 음원 발매와 더불어 다양한 아티스트와의 협업을 통해 활발한 활동을 이어가고 있습니다. 그는 자신만의 음악적 색깔을 잃지 않으면서도 새로운 시도를 두려워하지 않는 모습을 보여주고 있어요. 앞으로 그가 보여줄 더욱 다양한 음악적 변신이 기대됩니다.</p><p>Main Activities</p><p>BE'O continues to be active through steady music releases and collaborations with various artists. He shows that he is not afraid of new attempts while maintaining his own musical color. We look forward to the more diverse musical transformations he will show in the future.</p><p>✧</p><p>앞으로의 행보</p><p>비오는 자신만의 음악 세계를 더욱 깊고 넓게 확장해 나갈 것으로 기대됩니다. 그의 음악은 단순한 유행을 따르는 것이 아닌, 자신만의 진솔한 이야기를 담아내고 있어요. 앞으로도 그의 음악이 많은 사람들에게 위로와 공감을 전해줄 수 있기를 바랍니다.</p><p>Future Direction</p><p>BE'O is expected to expand his own musical world even deeper and wider. His music does not simply follow trends, but contains his own sincere stories. We hope that his music will continue to bring comfort and empathy to many people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Criminal (Feat. MC MONG (MC몽))</div>
+<div><a href='https://tidal.com/album/406302368' target='_blank'>https://tidal.com/album/406302368</a></div>
+<div>BE′O - Criminal (Feat. MC MONG (MC몽))</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406302368' target='_blank'><img src='https://resources.tidal.com/images/c2d4edb0/5a52/4f0b/9c2c/b9115e5105ea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Affection</div>
+<div><a href='https://tidal.com/album/406302350' target='_blank'>https://tidal.com/album/406302350</a></div>
+<div>BE′O - 우선순위</div>
+<div>BE′O - 우연 (Feat. Kim Feelsun)</div>
+<div>BE′O - Selfish (Feat. BANG YEDAM)</div>
+<div>BE′O - Lavender (Feat. Paul Blanco)</div>
+<div>BE′O - 밤새</div>
+<div>BE′O - 우주 (Feat. BIG Naughty)</div>
+<div>BE′O - SORRY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406302350' target='_blank'><img src='https://resources.tidal.com/images/4565dc45/33e4/43ac/b2a8/00bdb536e31d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 미쳐버리겠다 (MAD)</div>
+<div><a href='https://tidal.com/album/406273547' target='_blank'>https://tidal.com/album/406273547</a></div>
+<div>BE′O - 미쳐버리겠다 (MAD)</div>
+<div>BE′O - 미쳐버리겠다 (MAD) (English Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406273547' target='_blank'><img src='https://resources.tidal.com/images/ab8694e6/f16f/4e3d/baec/1a099a5b5294/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] [BILLION MUSIC PROJECT VOL.1]</div>
+<div><a href='https://tidal.com/album/306123543' target='_blank'>https://tidal.com/album/306123543</a></div>
+<div>SUNMI, BE′O - Lights Out</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306123543' target='_blank'><img src='https://resources.tidal.com/images/63e8b48c/f62a/49f2/a701/b3580b6219af/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Baby</div>
+<div><a href='https://tidal.com/album/302129755' target='_blank'>https://tidal.com/album/302129755</a></div>
+<div>BE′O, Paul Blanco - Baby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302129755' target='_blank'><img src='https://resources.tidal.com/images/50832dfe/53af/4d41/884f/b2e1e6744b52/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Akita</div>
+<div><a href='https://tidal.com/album/406296104' target='_blank'>https://tidal.com/album/406296104</a></div>
+<div>BE′O - Akita (Feat. hartts) (Prod. OBSN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406296104' target='_blank'><img src='https://resources.tidal.com/images/0c77e746/def1/42bc/a43c/f360920e812a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Take It To The End</div>
+<div><a href='https://tidal.com/album/256980997' target='_blank'>https://tidal.com/album/256980997</a></div>
+<div>BE′O, Sa-Fiya Adams - Take It To The End</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/256980997' target='_blank'><img src='https://resources.tidal.com/images/39e3702d/d187/45d1/b7a0/b8fdaf4cd06d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] LOVE me</div>
+<div><a href='https://tidal.com/album/406299666' target='_blank'>https://tidal.com/album/406299666</a></div>
+<div>BE′O - LOVE me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406299666' target='_blank'><img src='https://resources.tidal.com/images/1c1d3c9f/d659/40c7/92d0/71febaf9c97e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] FIVE SENSES</div>
+<div><a href='https://tidal.com/album/406300942' target='_blank'>https://tidal.com/album/406300942</a></div>
+<div>BE′O - Brunch (Feat. Wonstein, Sion)</div>
+<div>BE′O - Rope (Feat. Kwon Jin Ah)</div>
+<div>BE′O - Complex (Feat. ZICO)</div>
+<div>BE′O - BBI YONG (Feat. Loco, GRAY)</div>
+<div>BE′O - Nostalgia</div>
+<div>BE′O - Burnout Syndrome</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406300942' target='_blank'><img src='https://resources.tidal.com/images/622deae8/e142/4553/b1a7/99f7905c7b54/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Blurry in my Hotel room</div>
+<div><a href='https://tidal.com/album/196165945' target='_blank'>https://tidal.com/album/196165945</a></div>
+<div>BE′O - Blurry in my hotel room (Feat. Kuzi)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196165945' target='_blank'><img src='https://resources.tidal.com/images/b8097d14/697f/426a/bf01/193c3ed91d37/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Bipolar</div>
+<div><a href='https://tidal.com/album/196167897' target='_blank'>https://tidal.com/album/196167897</a></div>
+<div>BE′O - Brand (Feat. Layone)</div>
+<div>BE′O - Suddenly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196167897' target='_blank'><img src='https://resources.tidal.com/images/cef189bf/b905/4c01/a3c1/6540c34bc511/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] BAD LOVE</div>
+<div><a href='https://tidal.com/album/196167417' target='_blank'>https://tidal.com/album/196167417</a></div>
+<div>BE′O - BAD LOVE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196167417' target='_blank'><img src='https://resources.tidal.com/images/22783156/cae5/4fcd/beef/f2f85ddae73a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] B.O.T.B. (Best Of The Best)</div>
+<div><a href='https://tidal.com/album/208173193' target='_blank'>https://tidal.com/album/208173193</a></div>
+<div>Gaeko, CHANGMO, Don Mills, Los, DeVita, SOLE, SINCE, BE′O, GRAY - B.O.T.B. (Prod. GRAY)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208173193' target='_blank'><img src='https://resources.tidal.com/images/543aa063/a1c3/4342/b12a/c71ee55c33ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Monster</div>
+<div><a href='https://tidal.com/album/196162077' target='_blank'>https://tidal.com/album/196162077</a></div>
+<div>BE′O - That′s Wolf</div>
+<div>BE′O - Vampire</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196162077' target='_blank'><img src='https://resources.tidal.com/images/1b1fc18c/272b/49a3/b814/c9d0b3cb25ad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/2_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ2) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/비오 (BE'O)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
