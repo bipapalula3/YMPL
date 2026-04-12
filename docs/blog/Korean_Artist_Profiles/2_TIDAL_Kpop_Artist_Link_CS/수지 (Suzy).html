@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 수지 ( Tidal Suzy )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 수지 ( Tidal Suzy )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/1d9aa9f0/9bc5/481e/9bfd/5150b1c385bb/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/15130622' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 수지</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>‘Satellite’처럼 몽환적인 분위기부터 ‘Undercover’의 강렬함까지, 다채로운 색깔로 자신만의 세계를 구축하는 아티스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Suzy</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>From the dreamlike atmosphere of ‘Satellite’ to the intensity of ‘Undercover,’ an artist building her own world with diverse colors.</div><p>청순한 이미지와 뛰어난 연기력으로 대중의 사랑을 받아온 수지 님을 소개합니다. 가수로서도 꾸준히 자신만의 음악적 색깔을 보여주며 폭넓은 스펙트럼을 입증하고 있어요. 그녀의 음악은 듣는 이로 하여금 깊은 감성에 빠져들게 하는 매력이 있습니다.</p><p>Introducing Suzy, who has been loved by the public for her pure image and outstanding acting skills. As a singer, she continues to show her unique musical color, proving a wide spectrum. Her music has the charm of immersing listeners in deep emotions.</p><p>✧</p><p>그룹에서 솔로로, 새로운 시작</p><p>걸그룹 멤버로서 데뷔하여 큰 성공을 거둔 수지 님은 솔로 아티스트로서도 성공적인 변신을 이루었어요. 그룹 활동을 통해 쌓은 경험을 바탕으로 자신만의 음악 세계를 구축해 나가고 있습니다. 그녀의 솔로 활동은 단순한 인기를 넘어, 아티스트로서의 성장을 보여주는 중요한 발걸음입니다.</p><p>From Group to Solo, a New Beginning</p><p>Having debuted as a member of a successful girl group, Suzy has also made a successful transformation as a solo artist. Based on the experience gained through group activities, she is building her own musical world. Her solo activities are an important step showing her growth as an artist beyond simple popularity.</p><p>✧</p><p>섬세한 감정 표현과 다양한 장르 소화</p><p>수지 님의 음악은 섬세한 감정 표현이 돋보입니다. 발라드부터 댄스, 팝까지 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여주고 있어요. 특히, 그녀만의 몽환적인 음색은 듣는 이로 하여금 깊은 감성에 젖어 들게 합니다.</p><p>Delicate Emotional Expression and Diverse Genre Digestion</p><p>Suzy's music stands out for its delicate emotional expression. She showcases a wide musical spectrum by digesting various genres from ballads to dance and pop. In particular, her unique dreamy tone immerses listeners in deep emotions.</p><p>✧</p><p>꾸준한 작품 활동과 다채로운 콜라보</p><p>솔로 앨범 발매뿐만 아니라 드라마 OST 참여, 다양한 아티스트와의 협업 등 꾸준한 작품 활동을 이어가고 있어요. 이를 통해 그녀는 끊임없이 새로운 음악적 시도를 하며 자신의 가능성을 넓혀가고 있습니다. 그녀의 다채로운 콜라보는 음악 팬들에게 신선한 즐거움을 선사합니다.</p><p>Continuous Work and Diverse Collaborations</p><p>She continues to work steadily, not only releasing solo albums but also participating in drama OSTs and collaborating with various artists. Through this, she is constantly trying new musical approaches and expanding her potential. Her diverse collaborations provide fresh enjoyment to music fans.</p><p>✧</p><p>자신만의 색깔을 찾아가는 여정</p><p>수지 님의 음악은 단순히 듣기 좋은 음악을 넘어, 자신만의 이야기를 담아내는 여정입니다. 앞으로 그녀가 어떤 음악으로 우리를 감동시킬지 기대가 됩니다. 그녀의 음악은 앞으로도 많은 사람들에게 위로와 공감을 선사할 것입니다.</p><p>A Journey to Find Her Own Color</p><p>Suzy's music is more than just pleasant to listen to; it's a journey of incorporating her own story. It is exciting to see what kind of music she will impress us with in the future. Her music will continue to provide comfort and empathy to many people.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] R U Next_ Theme Song</div>
+<div><a href='https://tidal.com/album/299087849' target='_blank'>https://tidal.com/album/299087849</a></div>
+<div>수지 Suzy - R.U.N</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/299087849' target='_blank'><img src='https://resources.tidal.com/images/1edb27ef/4f0f/4636/aa63/267c66596d84/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Midnight</div>
+<div><a href='https://tidal.com/album/305639491' target='_blank'>https://tidal.com/album/305639491</a></div>
+<div>수지 Suzy, Yiruma - Midnight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305639491' target='_blank'><img src='https://resources.tidal.com/images/84bf15f5/35f0/43f7/823b/5cb72e3e71f7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Doona! (Music from The Netflix Series)</div>
+<div><a href='https://tidal.com/album/321964587' target='_blank'>https://tidal.com/album/321964587</a></div>
+<div>수지 Suzy - Ordinary Days</div>
+<div>수지 Suzy - Undercover</div>
+<div>수지 Suzy - Ordinary Days (Live Band Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/321964587' target='_blank'><img src='https://resources.tidal.com/images/76d75763/c7b3/4bf1/800b/f6eebbcf244a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Classic</div>
+<div><a href='https://tidal.com/album/303062703' target='_blank'>https://tidal.com/album/303062703</a></div>
+<div>J.Y. Park, Jang Wooyoung, Taecyeon, 수지 Suzy - Classic</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303062703' target='_blank'><img src='https://resources.tidal.com/images/6385ef59/63d8/42cd/898b/60bfe7bca7f2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 님오는 원주역</div>
+<div><a href='https://tidal.com/album/266696514' target='_blank'>https://tidal.com/album/266696514</a></div>
+<div>수지 Suzy - 님오는 원주역</div>
+<div>수지 Suzy - 나는야 잠꾸러기</div>
+<div>수지 Suzy - 님오는 원주역 (MR)</div>
+<div>수지 Suzy - 나는야 잠꾸러기 (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/266696514' target='_blank'><img src='https://resources.tidal.com/images/3fbc1cd7/4827/4a45/9e61/f782af1d038f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Satellite</div>
+<div><a href='https://tidal.com/album/217115773' target='_blank'>https://tidal.com/album/217115773</a></div>
+<div>수지 Suzy - Satellite</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/217115773' target='_blank'><img src='https://resources.tidal.com/images/a3b0f346/8356/4dd3/8d1b/449856279451/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Extraordinary Attorney Woo (Original Television Soundtrack) Pt. 5</div>
+<div><a href='https://tidal.com/album/306278329' target='_blank'>https://tidal.com/album/306278329</a></div>
+<div>수지 Suzy - Inevitable</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306278329' target='_blank'><img src='https://resources.tidal.com/images/4c9fad4d/6b47/4e7d/bcb8/f0be0e9ded14/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Cape</div>
+<div><a href='https://tidal.com/album/252617415' target='_blank'>https://tidal.com/album/252617415</a></div>
+<div>수지 Suzy - Cape</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/252617415' target='_blank'><img src='https://resources.tidal.com/images/845c9135/eb10/4f36/ba28/ac58ccd48637/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Because I Love You</div>
+<div><a href='https://tidal.com/album/230623088' target='_blank'>https://tidal.com/album/230623088</a></div>
+<div>수지 Suzy, Kang Seungwon - Because I Love You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230623088' target='_blank'><img src='https://resources.tidal.com/images/b810e065/7b36/434a/ae1a/2973126f5e27/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] 결혼작사 이혼작곡 OST Part 2</div>
+<div><a href='https://tidal.com/album/170598282' target='_blank'>https://tidal.com/album/170598282</a></div>
+<div>수지 Suzy - 말하지 않아도 알아요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170598282' target='_blank'><img src='https://resources.tidal.com/images/032dcd65/a187/4f62/81be/13891efa841c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 내 나이 육십</div>
+<div><a href='https://tidal.com/album/153294997' target='_blank'>https://tidal.com/album/153294997</a></div>
+<div>수지 Suzy - 내 나이 육십</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/153294997' target='_blank'><img src='https://resources.tidal.com/images/d972dc98/a050/4974/9f39/1ffd1ba866f7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 그때가 좋았네</div>
+<div><a href='https://tidal.com/album/153747134' target='_blank'>https://tidal.com/album/153747134</a></div>
+<div>Suzy - 그때가 좋았네</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/153747134' target='_blank'><img src='https://resources.tidal.com/images/ceb6dc78/acf1/41b6/8803/5c068289f911/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] START-UP (Original Television Soundtrack) Pt. 14</div>
+<div><a href='https://tidal.com/album/295749763' target='_blank'>https://tidal.com/album/295749763</a></div>
+<div>수지 Suzy - My Dear Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/295749763' target='_blank'><img src='https://resources.tidal.com/images/b62a29ec/ce23/4756/84ee/ec1ddfde47ad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Out of Breath</div>
+<div><a href='https://tidal.com/album/118133940' target='_blank'>https://tidal.com/album/118133940</a></div>
+<div>Babylon, Suzy - Out of Breath</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/118133940' target='_blank'><img src='https://resources.tidal.com/images/6f6d0065/af45/482c/88fa/d1be9610b4e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Faces of Love</div>
+<div><a href='https://tidal.com/album/305836619' target='_blank'>https://tidal.com/album/305836619</a></div>
+<div>수지 Suzy - I’m in Love with Someone Else</div>
+<div>수지 Suzy, DPR LIVE - HOLIDAY</div>
+<div>수지 Suzy - SObeR</div>
+<div>수지 Suzy - Bxatxh</div>
+<div>수지 Suzy - Midnight</div>
+<div>수지 Suzy - Confession</div>
+<div>수지 Suzy - Sleeplessness</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305836619' target='_blank'><img src='https://resources.tidal.com/images/cb6b6e50/71f1/4284/8731/1036af147814/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Yes_ No_</div>
+<div><a href='https://tidal.com/album/305639484' target='_blank'>https://tidal.com/album/305639484</a></div>
+<div>수지 Suzy - Pretend</div>
+<div>수지 Suzy - Yes No Maybe</div>
+<div>수지 Suzy, REDDY - Sick and Tired</div>
+<div>수지 Suzy - Les Préférences</div>
+<div>수지 Suzy - Question Mark</div>
+<div>수지 Suzy - Little Wildflower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305639484' target='_blank'><img src='https://resources.tidal.com/images/b9e72215/2983/4854/ad7d/f79ccb503f5f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] While You Were Sleeping, Pt. 4 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/295736322' target='_blank'>https://tidal.com/album/295736322</a></div>
+<div>수지 Suzy - I Love You Boy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/295736322' target='_blank'><img src='https://resources.tidal.com/images/3cc378ac/2d6c/49f8/ab42/7ba5871d44ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] While You Were Sleeping, Pt. 13 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/294568811' target='_blank'>https://tidal.com/album/294568811</a></div>
+<div>수지 Suzy - I Wanna Say To You</div>
+<div>수지 Suzy - I Wanna Say To you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/294568811' target='_blank'><img src='https://resources.tidal.com/images/511bd4be/ff2f/42c0/bb9c/6432160ea625/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] Don’t Wait For Your Love</div>
+<div><a href='https://tidal.com/album/215969631' target='_blank'>https://tidal.com/album/215969631</a></div>
+<div>Park Won, 수지 Suzy - Don’t Wait For Your Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215969631' target='_blank'><img src='https://resources.tidal.com/images/62e39d2b/2de3/449c/b041/0970d57c3f4a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Dream</div>
+<div><a href='https://tidal.com/album/215946380' target='_blank'>https://tidal.com/album/215946380</a></div>
+<div>수지 Suzy, BAEKHYUN - Dream</div>
+<div>수지 Suzy, BAEKHYUN - Dream (Club Live Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215946380' target='_blank'><img src='https://resources.tidal.com/images/6807088f/dbdc/4574/a17c/86b4bc3ebc82/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Moment</div>
+<div><a href='https://tidal.com/album/305341075' target='_blank'>https://tidal.com/album/305341075</a></div>
+<div>수지 Suzy, 덕원 - Moment</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305341075' target='_blank'><img src='https://resources.tidal.com/images/0f41c24c/bd9e/4dc9/8755/14e281a48d2d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Indie Of Indie Indie Of Indie</div>
+<div><a href='https://tidal.com/album/247059694' target='_blank'>https://tidal.com/album/247059694</a></div>
+<div>수지 Suzy - Face the issue Face the issue</div>
+<div>수지 Suzy - Ask your lips(feat. 김동수) Ask your lips(feat. 김동수)</div>
+<div>수지 Suzy - DEL DEL</div>
+<div>수지 Suzy - 사랑의 비(feat. 김동수) 사랑의 비(feat. 김동수)</div>
+<div>수지 Suzy - Hate(feat. 김동수) Hate(feat. 김동수)</div>
+<div>수지 Suzy - Helium Helium</div>
+<div>수지 Suzy - Mood Cela(Live) Mood Cela(Live)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/247059694' target='_blank'><img src='https://resources.tidal.com/images/2d5290e4/6ed3/4659/8961/3c38507b1d15/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/수지 (Suzy)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
