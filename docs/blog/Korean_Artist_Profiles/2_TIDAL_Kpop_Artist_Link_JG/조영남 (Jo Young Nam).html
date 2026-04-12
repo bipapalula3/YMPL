@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 조영남 ( Tidal Jo Young Nam )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 조영남 ( Tidal Jo Young Nam )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/3de6ebce/929e/4c4a/b8c6/eaeeb1f2901a/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/15732714' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 조영남</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>조영남 - 인생의 희로애락을 담아 부르는 영원한 오빠, '딜라일라'부터 '화개장터'까지 시대를 초월하는 감동</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jo Young Nam</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Jo Young Nam - The eternal 'oppa' singing life's joys and sorrows, delivering timeless emotions from 'Delilah' to 'Hwagae Market'.</div><p>한국 대중음악사에 독특한 족적을 남긴 조영남 님을 소개합니다. 그는 가수는 물론 화가, 방송인, 작가 등 다방면에서 재능을 발휘하며 대중과 소통해왔습니다. 특유의 개성과 솔직함으로 논란의 중심에 서기도 하지만, 그의 음악은 여전히 많은 사람들에게 사랑받고 있습니다.</p><p>Introducing Jo Young Nam, who has left a unique mark on Korean popular music history. He has communicated with the public, showcasing his talents not only as a singer but also as a painter, broadcaster, and writer. While his unique personality and honesty sometimes put him at the center of controversy, his music continues to be loved by many.</p><p>✧</p><p>다양한 예술 세계의 시작</p><p>조영남 님은 서울대학교 성악과를 중퇴하고, 미국에서 미술을 공부하는 등 파격적인 행보를 보였습니다. 이후 가수로 데뷔하여 '딜라일라'를 히트시키며 대중적인 인기를 얻기 시작했어요. 그의 음악 활동은 단순히 노래를 부르는 것을 넘어, 다양한 예술적 시도를 담고 있습니다.</p><p>The Beginning of a Diverse Art World</p><p>Jo Young Nam took unconventional steps, dropping out of the vocal music department at Seoul National University and studying art in the United States. He later debuted as a singer and gained popular recognition with the hit song 'Delilah.' His musical activities go beyond just singing, encompassing various artistic endeavors.</p><p>✧</p><p>음악과 퍼포먼스, 그 경계를 넘어서</p><p>조영남 님의 음악은 팝, 포크, 가요 등 다양한 장르를 아우르며, 때로는 실험적인 시도를 보여주기도 합니다. 그는 라이브 무대에서 특유의 유머와 재치 있는 입담을 선보이며 관객들과 소통하는 것을 즐깁니다. 그의 공연은 단순한 음악 감상을 넘어, 하나의 퍼포먼스 예술로 평가받기도 합니다.</p><p>Beyond the Boundaries of Music and Performance</p><p>Jo Young Nam's music encompasses various genres such as pop, folk, and traditional Korean songs, sometimes showcasing experimental attempts. He enjoys communicating with the audience by presenting his unique humor and witty remarks on live stages. His performances are often regarded as a form of performance art that goes beyond simple music appreciation.</p><p>✧</p><p>시대와 함께한 주요 활동</p><p>조영남 님은 '화개장터', '모란동백' 등 수많은 히트곡을 발표하며 대중음악계에 큰 영향을 미쳤습니다. 또한, 다양한 방송 프로그램에 출연하여 특유의 입담을 과시하며 예능인으로서의 면모도 보여주었습니다. 그림 화가로서의 활동 또한 꾸준히 이어가며 다재다능한 면모를 보여주고 있습니다.</p><p>Major Activities Throughout the Eras</p><p>Jo Young Nam has had a significant impact on the popular music scene, releasing numerous hit songs such as 'Hwagae Market' and 'Peony Camellia.' He has also showcased his talent as an entertainer by appearing on various television programs and displaying his unique wit. His activities as a painter have also continued steadily, demonstrating his versatility.</p><p>✧</p><p>앞으로의 여정과 음악의 의미</p><p>논란 속에서도 조영남 님은 끊임없이 새로운 시도를 하며 자신의 예술 세계를 확장해 나갈 것으로 예상됩니다. 그의 음악은 단순히 듣는 즐거움을 넘어, 인생의 희로애락을 담아내는 깊이 있는 메시지를 전달합니다. 앞으로도 그의 독특한 음악 세계가 어떻게 펼쳐질지 기대됩니다.</p><p>Future Journey and the Meaning of Music</p><p>Despite controversies, Jo Young Nam is expected to continue making new attempts and expanding his art world. His music goes beyond mere listening pleasure, delivering a profound message that encompasses the joys and sorrows of life. It remains to be seen how his unique musical world will unfold in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Mirror</div>
+<div><a href='https://tidal.com/album/412895531' target='_blank'>https://tidal.com/album/412895531</a></div>
+<div>조영남 - Mirror</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/412895531' target='_blank'><img src='https://resources.tidal.com/images/1f984fa7/9b1e/49f4/b366/ada3256f1fe9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Funny Thing</div>
+<div><a href='https://tidal.com/album/420913732' target='_blank'>https://tidal.com/album/420913732</a></div>
+<div>조영남 - Funny Thing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/420913732' target='_blank'><img src='https://resources.tidal.com/images/9ff6738e/56a2/45e2/90f8/23021fbe2c76/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 휘어진 인생</div>
+<div><a href='https://tidal.com/album/350509767' target='_blank'>https://tidal.com/album/350509767</a></div>
+<div>조영남 - Disc1 - 휘어진 인생</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/350509767' target='_blank'><img src='https://resources.tidal.com/images/d70bf38c/8093/4393/bc97/1fba64cb00c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 조영남 쎄시봉 콘서트 그 후 45년</div>
+<div><a href='https://tidal.com/album/353562784' target='_blank'>https://tidal.com/album/353562784</a></div>
+<div>조영남 - Disc1 - 물레방아 도는 인생 (Live Version)</div>
+<div>조영남 - Disc1 - GREEN GREEN GRASS OF HOME (Live Version)</div>
+<div>조영남 - Disc1 - 내 고향 충청도 (Live Version)</div>
+<div>조영남 - Disc1 - 도시여 안녕 (Live Version)</div>
+<div>조영남 - Disc1 - 제비 (Live Version)</div>
+<div>조영남 - Disc1 - 불꺼진 창 (Live Version)</div>
+<div>조영남 - Disc1 - 인생 (Live Version)</div>
+<div>조영남 - Disc1 - 지금 (Live Version)</div>
+<div>조영남 - Disc1 - 서시 (Live Version)</div>
+<div>조영남 - Disc1 - 화개장터 (Live Version)</div>
+<div>조영남 - Disc1 - 모란동백 (Live Version)</div>
+<div>조영남 - Disc1 - How Great Thou Art (Live Version)</div>
+<div>조영남 - Disc1 - 송학사 (Live Version)</div>
+<div>조영남 - Disc1 - 딜라일라 (Live Version)</div>
+<div>조영남 - Disc1 - 그대 그리고 나 (Live Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353562784' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] 조영남 LIVE CONCERT</div>
+<div><a href='https://tidal.com/album/353657627' target='_blank'>https://tidal.com/album/353657627</a></div>
+<div>조영남 - 물레방아 도는 인생 (Live)</div>
+<div>조영남 - 낙엽은지는데 (Live)</div>
+<div>조영남 - 사랑이란 (Live)</div>
+<div>조영남 - 지금 (Live)</div>
+<div>조영남 - GREEN GREEN GRASS OF HOME (Live)</div>
+<div>조영남 - 제비 (Live)</div>
+<div>조영남 - 불꺼진창 (Live)</div>
+<div>조영남 - 화개장터 (Live)</div>
+<div>조영남 - 사랑없인못살아요 (Live)</div>
+<div>조영남 - 모란동벽 (Live)</div>
+<div>조영남 - 내고향충청도 (Live)</div>
+<div>조영남 - 그대그리오나 (Live)</div>
+<div>조영남 - 딜라일라 (Live)</div>
+<div>조영남 - 은퇴의 노래 (Live)</div>
+<div>조영남 - 울고넘는박달재 (Live)</div>
+<div>조영남 - 내생에단한번만이라도 (Live)</div>
+<div>조영남 - 인생은미완성 (Live)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353657627' target='_blank'><img src='https://resources.tidal.com/images/3de6ebce/929e/4c4a/b8c6/eaeeb1f2901a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] The Slug</div>
+<div><a href='https://tidal.com/album/369786485' target='_blank'>https://tidal.com/album/369786485</a></div>
+<div>조영남 - The Slug (Studio Live Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/369786485' target='_blank'><img src='https://resources.tidal.com/images/5a615525/622c/478c/b388/f5340d674f32/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 조영남2024</div>
+<div><a href='https://tidal.com/album/321337948' target='_blank'>https://tidal.com/album/321337948</a></div>
+<div>조영남 - 나처럼 살지마세요</div>
+<div>조영남 - 후회하네</div>
+<div>조영남 - 삽다리곱창리</div>
+<div>조영남 - REGRET</div>
+<div>조영남 - 조영남의 등잔불</div>
+<div>조영남 - 우리어머니</div>
+<div>조영남 - 부산엑스포</div>
+<div>조영남 - Cho's Lamp</div>
+<div>조영남 - 나처럼 살지마세요 (MR)</div>
+<div>조영남 - 후회하네 (MR)</div>
+<div>조영남 - 삽다리곱창리 (MR)</div>
+<div>조영남 - REGRET (MR)</div>
+<div>조영남 - 조영남의 등잔불 (MR)</div>
+<div>조영남 - 우리어머니 (MR)</div>
+<div>조영남 - 부산엑스포 (MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/321337948' target='_blank'><img src='https://resources.tidal.com/images/6dc640eb/22b6/4e49/9cd7/88808253e685/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 조영남 50주년 기념앨범</div>
+<div><a href='https://tidal.com/album/310173133' target='_blank'>https://tidal.com/album/310173133</a></div>
+<div>조영남 - 힘내라 대한민국아</div>
+<div>조영남 - 이순신</div>
+<div>조영남 - 세종대왕</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/310173133' target='_blank'><img src='https://resources.tidal.com/images/70b798a6/d21a/4a87/a5df/83042710197f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 깜빡깜빡 _ 하루를 살아도</div>
+<div><a href='https://tidal.com/album/122562080' target='_blank'>https://tidal.com/album/122562080</a></div>
+<div>조영남 - 깜빡깜빡</div>
+<div>조영남 - 하루를 살아도</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/122562080' target='_blank'><img src='https://resources.tidal.com/images/b0489cfd/a900/439e/91e3/e2dd552476be/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/조영남 (Jo Young Nam)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
