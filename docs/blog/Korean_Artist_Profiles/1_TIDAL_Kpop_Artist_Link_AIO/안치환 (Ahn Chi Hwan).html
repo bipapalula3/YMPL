@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 안치환 ( Tidal Ahn Chi Hwan )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 안치환 ( Tidal Ahn Chi Hwan )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/00cd9966/437e/4c12/990e/6264a5207b88/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10642443' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/10562481' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 안치환</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>안치환 - 시대의 아픔을 노래하는, '난 언제나'처럼 굳건한 희망을 이야기하는 음유시인</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Ahn Chi Hwan</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Ahn Chi Hwan - A musical poet singing of the era's pain, and telling of steadfast hope like in 'I'm Always'</div><p>깊은 울림을 주는 목소리와 진솔한 가사로 오랫동안 사랑받아온 가수, 안치환님을 소개합니다. 그의 음악은 단순한 노래를 넘어, 삶의 희로애락과 사회에 대한 깊은 성찰을 담고 있어 많은 이들에게 위로와 공감을 전하고 있습니다. 시대의 아픔을 어루만지며 희망을 노래하는 그의 음악 세계로 함께 떠나볼까요?</p><p>Let me introduce Ahn Chi Hwan, a singer who has been loved for a long time with a deeply resonant voice and sincere lyrics. His music goes beyond simple songs, containing the joys and sorrows of life and deep reflections on society, conveying comfort and empathy to many. Shall we embark on a journey into his musical world, where he soothes the pain of the times and sings of hope?</p><p>✧</p><p>그룹 탄생</p><p>안치환님은 솔로 활동 이전 '노래마을'이라는 그룹에서 활동하며 음악 여정을 시작했어요. 당시 그는 사회 비판적인 메시지를 담은 노래들을 통해 대중에게 강렬한 인상을 남겼습니다. 그룹 활동을 통해 다져진 음악적 역량은 훗날 그의 솔로 활동에 든든한 기반이 되었답니다.</p><p>Group Origins</p><p>Before his solo career, Ahn Chi Hwan began his musical journey as a member of the group 'Norae Maeul'. At that time, he left a strong impression on the public through songs containing socially critical messages. The musical skills honed through group activities became a solid foundation for his later solo career.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>안치환님의 음악은 포크를 기반으로 하지만, 록, 팝 등 다양한 장르의 요소를 포용하고 있습니다. 그의 공연은 진솔한 감정 표현과 열정적인 무대 매너로 관객들에게 깊은 감동을 선사해요. 특유의 호소력 짙은 목소리는 그의 음악을 더욱 특별하게 만들어줍니다.</p><p>Music and Performance</p><p>Ahn Chi Hwan's music is based on folk, but also incorporates elements of various genres such as rock and pop. His performances deeply move audiences with sincere emotional expression and passionate stage presence. His unique, appealing voice makes his music even more special.</p><p>✧</p><p>주요 활동</p><p>안치환님은 꾸준한 음반 발매와 공연 활동을 통해 대중과 소통하고 있어요. 그의 노래는 삶의 고뇌와 희망, 사회 비판적인 시각을 담고 있어 많은 이들에게 공감을 얻고 있습니다. 다양한 사회 문제에 대한 관심을 표명하며 사회 참여 활동에도 적극적으로 참여하고 있다고 해요.</p><p>Main Activities</p><p>Ahn Chi Hwan communicates with the public through continuous album releases and performances. His songs, containing the pain and hope of life and socially critical perspectives, resonate with many. He expresses interest in various social issues and actively participates in social engagement activities.</p><p>✧</p><p>미래/의미</p><p>안치환님의 음악은 단순한 유행을 넘어, 시대를 반영하고 사람들의 마음을 어루만지는 힘을 지니고 있습니다. 앞으로도 그는 진솔한 음악을 통해 우리 사회에 깊은 울림을 주는 아티스트로 기억될 거예요. 그의 음악이 앞으로 우리에게 어떤 위로와 용기를 줄지 기대됩니다.</p><p>Future/Meaning</p><p>Ahn Chi Hwan's music transcends mere trends and has the power to reflect the times and soothe people's hearts. In the future, he will be remembered as an artist who gives deep resonance to our society through sincere music. We look forward to what comfort and courage his music will give us in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Always in my heart</div>
+<div><a href='https://tidal.com/album/355113224' target='_blank'>https://tidal.com/album/355113224</a></div>
+<div>An Chi Hwan - Disc1 - 난 언제나</div>
+<div>An Chi Hwan - Disc1 - 이것 또한 지나가리라</div>
+<div>An Chi Hwan - Disc1 - 흔들리며 피는 꽃</div>
+<div>An Chi Hwan - Disc1 - 우리가 눈발이라면</div>
+<div>An Chi Hwan - Disc1 - 어떤 기쁨</div>
+<div>An Chi Hwan - Disc1 - 여기에 있네</div>
+<div>An Chi Hwan - Disc1 - 가을이 오는가봐</div>
+<div>An Chi Hwan - Disc1 - 두 갈래 길</div>
+<div>An Chi Hwan - Disc1 - 새로운 길</div>
+<div>An Chi Hwan - Disc1 - 귀천</div>
+<div>An Chi Hwan - Disc1 - 11월</div>
+<div>An Chi Hwan - Disc1 - 난 사랑이 필요해</div>
+<div>An Chi Hwan - Disc1 - 너무나 많은 것들</div>
+<div>An Chi Hwan - Disc1 - 언제나 내 마음속에</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/355113224' target='_blank'><img src='https://resources.tidal.com/images/9a109332/08e7/40af/b847/3df7c812452e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 이 감덩어리가…</div>
+<div><a href='https://tidal.com/album/256398639' target='_blank'>https://tidal.com/album/256398639</a></div>
+<div>An Chi Hwan - 이 감덩어리가…</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/256398639' target='_blank'><img src='https://resources.tidal.com/images/81328248/f9fa/4458/961a/77a3eb44e98e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 마이클 잭슨을 닮은 여인</div>
+<div><a href='https://tidal.com/album/216105285' target='_blank'>https://tidal.com/album/216105285</a></div>
+<div>An Chi Hwan - 마이클 잭슨을 닮은 여인</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216105285' target='_blank'><img src='https://resources.tidal.com/images/e64c3cb9/3beb/4783/b23f/813ab48cb59a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 껍데기는 가라</div>
+<div><a href='https://tidal.com/album/271238297' target='_blank'>https://tidal.com/album/271238297</a></div>
+<div>An Chi Hwan - 껍데기는 가라  (1 Version)</div>
+<div>An Chi Hwan - 껍데기는 가라  (2 Version)</div>
+<div>An Chi Hwan - 껍데기는 가라  (3 Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/271238297' target='_blank'><img src='https://resources.tidal.com/images/c600a4f8/2bd6/4b80/b776/f6a8798a7ee0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] You're Not Alone</div>
+<div><a href='https://tidal.com/album/223746391' target='_blank'>https://tidal.com/album/223746391</a></div>
+<div>An Chi Hwan - You're Not Alone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223746391' target='_blank'><img src='https://resources.tidal.com/images/6e295f1a/412b/46f5/8774/31ef6147ee17/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 잠들지 않는 남도</div>
+<div><a href='https://tidal.com/album/179108058' target='_blank'>https://tidal.com/album/179108058</a></div>
+<div>An Chi Hwan - 잠들지 않는 남도</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/179108058' target='_blank'><img src='https://resources.tidal.com/images/dd08539d/3900/4927/a168/42d8035d66fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 일단 한 잠 푹 주무세요</div>
+<div><a href='https://tidal.com/album/200352668' target='_blank'>https://tidal.com/album/200352668</a></div>
+<div>An Chi Hwan - 일단 한 잠 푹 주무세요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200352668' target='_blank'><img src='https://resources.tidal.com/images/d5346ac8/f2ba/4392/bbcb/4e59cb5c6140/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 빨갱이</div>
+<div><a href='https://tidal.com/album/203826699' target='_blank'>https://tidal.com/album/203826699</a></div>
+<div>An Chi Hwan - 빨갱이</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/203826699' target='_blank'><img src='https://resources.tidal.com/images/f83412e5/8ea4/4097/8490/358fd976c05a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 봄길</div>
+<div><a href='https://tidal.com/album/175177713' target='_blank'>https://tidal.com/album/175177713</a></div>
+<div>An Chi Hwan - 봄길</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175177713' target='_blank'><img src='https://resources.tidal.com/images/0544402e/d634/4431/b14a/8330f05d2737/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] 여기에 있네</div>
+<div><a href='https://tidal.com/album/155655869' target='_blank'>https://tidal.com/album/155655869</a></div>
+<div>안치환 - 여기에 있네</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/155655869' target='_blank'><img src='https://resources.tidal.com/images/2da9c606/e453/4468/a4a4/7d9d226ca716/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 아이러니</div>
+<div><a href='https://tidal.com/album/148004909' target='_blank'>https://tidal.com/album/148004909</a></div>
+<div>An Chi Hwan - 아이러니</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/148004909' target='_blank'><img src='https://resources.tidal.com/images/54ebcbf8/66e5/4542/9274/e24f1697506a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 봄이 오면</div>
+<div><a href='https://tidal.com/album/140695501' target='_blank'>https://tidal.com/album/140695501</a></div>
+<div>An Chi Hwan - 봄이 오면</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/140695501' target='_blank'><img src='https://resources.tidal.com/images/88041791/d2a9/42e9/b019/633bffe4e091/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 바이러스 클럽</div>
+<div><a href='https://tidal.com/album/136618561' target='_blank'>https://tidal.com/album/136618561</a></div>
+<div>An Chi Hwan - 바이러스 클럽</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/136618561' target='_blank'><img src='https://resources.tidal.com/images/b9f61bc8/2a00/4842/9213/0c52f5b72363/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 11월</div>
+<div><a href='https://tidal.com/album/159990728' target='_blank'>https://tidal.com/album/159990728</a></div>
+<div>An Chi Hwan - 11월</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/159990728' target='_blank'><img src='https://resources.tidal.com/images/e489146a/0432/4423/a452/e5869a6dd4cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 백년의 함성</div>
+<div><a href='https://tidal.com/album/102481165' target='_blank'>https://tidal.com/album/102481165</a></div>
+<div>An Chi Hwan - 백년의 함성</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/102481165' target='_blank'><img src='https://resources.tidal.com/images/6bf10849/d0ac/4356/8600/400e18425bb9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 53</div>
+<div><a href='https://tidal.com/album/184479806' target='_blank'>https://tidal.com/album/184479806</a></div>
+<div>An Chi Hwan - Intro 2</div>
+<div>An Chi Hwan - 가을의 소원</div>
+<div>An Chi Hwan - 봄보로봄봄봄</div>
+<div>An Chi Hwan - 지나가네</div>
+<div>An Chi Hwan - 불현듯 지는 꽃잎을 보며 떠오른 얼굴들</div>
+<div>An Chi Hwan - 풍림화산</div>
+<div>An Chi Hwan - On The Road</div>
+<div>An Chi Hwan - 권력을 바라보는 두가지 시선</div>
+<div>An Chi Hwan - 오, 마이 갓!</div>
+<div>An Chi Hwan, SON BYUNG HEUI, Baekja - 너와 내가 모이면</div>
+<div>An Chi Hwan - 난 여름이 좋아</div>
+<div>An Chi Hwan - 카오스</div>
+<div>An Chi Hwan - 막걸리 1 - 막걸리 2</div>
+<div>An Chi Hwan - 빨갱이</div>
+<div>An Chi Hwan - 4월 동백</div>
+<div>An Chi Hwan - 빨간 스카프를 맨 여자</div>
+<div>An Chi Hwan - 나를 잊지 말아요!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184479806' target='_blank'><img src='https://resources.tidal.com/images/75fd63ca/c8a8/41c7/9c92/174090abea85/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 4월 동백</div>
+<div><a href='https://tidal.com/album/184487121' target='_blank'>https://tidal.com/album/184487121</a></div>
+<div>안치환 - 4월 동백</div>
+<div>안치환 - 4월 동백 Piano Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184487121' target='_blank'><img src='https://resources.tidal.com/images/77b871b9/81b1/4fd4/b64b/f1ebe4157dea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Anthology - Complete Myself (Love, Life, Resistance)</div>
+<div><a href='https://tidal.com/album/302160544' target='_blank'>https://tidal.com/album/302160544</a></div>
+<div>An Chi Hwan - 그 사랑 잊을 순 없겠죠</div>
+<div>An Chi Hwan - 나의 꿈</div>
+<div>An Chi Hwan - 빨갱이</div>
+<div>An Chi Hwan - 소금인형</div>
+<div>An Chi Hwan - 얼마나 더</div>
+<div>An Chi Hwan - 자유</div>
+<div>An Chi Hwan - 똥파리와 인간</div>
+<div>An Chi Hwan - 사랑하게 되면 (부제 - 훨훨)</div>
+<div>An Chi Hwan - 산국화</div>
+<div>An Chi Hwan - 우물 안 개구리</div>
+<div>An Chi Hwan - 카오스</div>
+<div>An Chi Hwan - 행여 지리산에 오시려거든</div>
+<div>An Chi Hwan - 개새끼들</div>
+<div>An Chi Hwan - 물 속 반딧불이 정원</div>
+<div>An Chi Hwan - 세상이 달라졌다</div>
+<div>An Chi Hwan - 알바트로스</div>
+<div>An Chi Hwan - 지리산, 너 지리산 이여!</div>
+<div>An Chi Hwan - 풍경 달다</div>
+<div>An Chi Hwan - 강변역에서</div>
+<div>An Chi Hwan - 늑대</div>
+<div>An Chi Hwan - 마흔 즈음</div>
+<div>An Chi Hwan - 선운사에서</div>
+<div>An Chi Hwan - 이무기</div>
+<div>An Chi Hwan - 잠들지 않는 남도</div>
+<div>An Chi Hwan - 그런 길은 없소</div>
+<div>An Chi Hwan - 사랑하기나 했던걸까</div>
+<div>An Chi Hwan - 솔아 푸르른 솔아</div>
+<div>An Chi Hwan - 인생은 나에게 술 한 잔 사주지 않았다</div>
+<div>An Chi Hwan - 평행선</div>
+<div>An Chi Hwan - 한다</div>
+<div>An Chi Hwan - 나도 그렇게</div>
+<div>An Chi Hwan - 돌멩이 하나</div>
+<div>An Chi Hwan - 마른 잎 다시 살아나</div>
+<div>An Chi Hwan - 사람들 사이에 꽃이 필 때</div>
+<div>An Chi Hwan - 저 창살에 햇살이</div>
+<div>An Chi Hwan - 저물면서 빛나는 바다</div>
+<div>An Chi Hwan - 13년만의 고백</div>
+<div>An Chi Hwan - 고백</div>
+<div>An Chi Hwan - 광야에서</div>
+<div>An Chi Hwan - 담쟁이</div>
+<div>An Chi Hwan - 떠남이 아름다운 사람들이여</div>
+<div>An Chi Hwan - 사랑하려네</div>
+<div>An Chi Hwan - 그대는 아름다운 여인</div>
+<div>An Chi Hwan - 그래, 나는 386이다</div>
+<div>An Chi Hwan - 내가 만일</div>
+<div>An Chi Hwan - 노동자의 길</div>
+<div>An Chi Hwan - 사람이 꽃보다 아름다워</div>
+<div>An Chi Hwan - 안개 속에 길을 잃다</div>
+<div>An Chi Hwan - 고향집에서</div>
+<div>An Chi Hwan - 그대 있음에</div>
+<div>An Chi Hwan - 수풀을 헤치며</div>
+<div>An Chi Hwan - 슬럼프</div>
+<div>An Chi Hwan - 아내에게</div>
+<div>An Chi Hwan - 철의 노동자</div>
+<div>An Chi Hwan - 고래를 위하여</div>
+<div>An Chi Hwan - 굿 나잇</div>
+<div>An Chi Hwan - 그대만을 위한 노래</div>
+<div>An Chi Hwan - 산맥과 파도</div>
+<div>An Chi Hwan - 아이고! I go!</div>
+<div>An Chi Hwan - 악몽 `98</div>
+<div>An Chi Hwan - 3.8선은 3.8선에만 있는 것이 아니다</div>
+<div>An Chi Hwan - 가을 은행나무 아래서</div>
+<div>An Chi Hwan - 내 가는 이길 험난하여도</div>
+<div>An Chi Hwan - 사랑합니다</div>
+<div>An Chi Hwan - 어머니 전상서</div>
+<div>An Chi Hwan - 연탄 한 장</div>
+<div>An Chi Hwan - 내 꿈의 방향을 묻는다</div>
+<div>An Chi Hwan - 내가 사랑하는 사람</div>
+<div>An Chi Hwan - 너를 사랑한 이유</div>
+<div>An Chi Hwan - 떨림</div>
+<div>An Chi Hwan - 우리가 어느 별에서</div>
+<div>An Chi Hwan - 철망 앞에서</div>
+<div>An Chi Hwan - 귀뚜라미</div>
+<div>An Chi Hwan - 그 옛날 우리처럼</div>
+<div>An Chi Hwan - 나는 노래하는 노동자다</div>
+<div>An Chi Hwan - 수선화에게</div>
+<div>An Chi Hwan - 오늘이 좋다!</div>
+<div>An Chi Hwan - 혼자서 가는 길 아니라네</div>
+<div>An Chi Hwan - 고해</div>
+<div>An Chi Hwan - 물 따라 나도 가면서</div>
+<div>An Chi Hwan - 삶이여, 감사합니다!</div>
+<div>An Chi Hwan - 언제나 언제까지나</div>
+<div>An Chi Hwan - 오직 그대만이</div>
+<div>An Chi Hwan - 위하여!!</div>
+<div>An Chi Hwan - 나무의 서</div>
+<div>An Chi Hwan - 내버려둬!</div>
+<div>An Chi Hwan - 아무 의미가 없어</div>
+<div>An Chi Hwan - 지는 잎새 쌓이거든</div>
+<div>An Chi Hwan - 처음처럼</div>
+<div>An Chi Hwan - 피 묻은 운동화</div>
+<div>An Chi Hwan - 내 안의 나</div>
+<div>An Chi Hwan - 내가 만일  (Reggae Version)</div>
+<div>An Chi Hwan - 당당하게</div>
+<div>An Chi Hwan - 부메랑</div>
+<div>An Chi Hwan - 희망이 있다 (나와 함께 이 모든 노래가 사라진다면)</div>
+<div>An Chi Hwan - 그 곳으로</div>
+<div>An Chi Hwan - 모란이 피기까지는</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302160544' target='_blank'><img src='https://resources.tidal.com/images/a145f117/9203/4b67/9631/5b3d8c31317a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] 안치환 앤솔로지 - COMPLETE MYSELF</div>
+<div><a href='https://tidal.com/album/302139667' target='_blank'>https://tidal.com/album/302139667</a></div>
+<div>An Chi Hwan - 내가 만일</div>
+<div>An Chi Hwan - 솔아 솔아 푸르른 솔아</div>
+<div>An Chi Hwan - 사랑하게 되면 (부제 - 훨훨)</div>
+<div>An Chi Hwan - 자유</div>
+<div>An Chi Hwan - 소금인형</div>
+<div>An Chi Hwan - 수풀을 헤치며</div>
+<div>An Chi Hwan - 마른 잎 다시 살아나</div>
+<div>An Chi Hwan - 우리가 어느 별에서</div>
+<div>An Chi Hwan - 그대 있음에</div>
+<div>An Chi Hwan - 그래, 나는 386이다</div>
+<div>An Chi Hwan - 사람이 꽃보다 아름다워</div>
+<div>An Chi Hwan - 산국화</div>
+<div>An Chi Hwan - 개새끼들</div>
+<div>An Chi Hwan - 물 속 반딧불이 정원</div>
+<div>An Chi Hwan - 담쟁이</div>
+<div>An Chi Hwan - 인생은 나에게 술 한잔 사주지 않았다</div>
+<div>An Chi Hwan - 모란이 피기까지는</div>
+<div>An Chi Hwan - 오늘이 좋다!</div>
+<div>An Chi Hwan - 위하여!</div>
+<div>An Chi Hwan - 행여 지리산에 오시려거든</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302139667' target='_blank'><img src='https://resources.tidal.com/images/4ae6d71d/866c/4d40/b098/fbc12987b87b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 권력을 바라보는 두가지 시선</div>
+<div><a href='https://tidal.com/album/305356522' target='_blank'>https://tidal.com/album/305356522</a></div>
+<div>안치환 - 권력을 바라보는 두가지 시선</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305356522' target='_blank'><img src='https://resources.tidal.com/images/eb7fe830/a8a2/4d1d/adfd/f0d3532cc2cd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 50</div>
+<div><a href='https://tidal.com/album/381008558' target='_blank'>https://tidal.com/album/381008558</a></div>
+<div>An Chi Hwan - 사랑이 떠나버려 나는 울고 있어</div>
+<div>An Chi Hwan - 나는 암환자</div>
+<div>An Chi Hwan - 병상에 누워</div>
+<div>An Chi Hwan - 바람의 영혼</div>
+<div>An Chi Hwan - 희망을 만드는 사람</div>
+<div>An Chi Hwan - 무지개 (Remake Version)</div>
+<div>An Chi Hwan - 회상 (Remake Version)</div>
+<div>An Chi Hwan - 길지 않으리</div>
+<div>An Chi Hwan - 천국이 있다면</div>
+<div>An Chi Hwan - Shame on You!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381008558' target='_blank'><img src='https://resources.tidal.com/images/86373e80/e431/4be6/8242/defa26d40310/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 안치환 모음집</div>
+<div><a href='https://tidal.com/album/276574498' target='_blank'>https://tidal.com/album/276574498</a></div>
+<div>안치환 - 솔아 푸르른 솔아</div>
+<div>안치환 - 백두여 한라까지 한라여 백두까지</div>
+<div>안치환 - 행복은 성적순이 아니잖아요</div>
+<div>안치환 - 마른 잎 다시 살아나</div>
+<div>안치환 - 광야에서</div>
+<div>안치환 - 저 창살에 햇살이</div>
+<div>안치환 - 그곳으로</div>
+<div>안치환 - 떠남이 아름다운 사람들이여</div>
+<div>안치환 - 철의 노동자</div>
+<div>안치환 - 우리의 손으로</div>
+<div>안치환 - 그 옛날 우리처럼</div>
+<div>안치환 - 노동자의 길</div>
+<div>안치환 - 언제나 언제까지나</div>
+<div>안치환 - 아무 일 없었다는 듯</div>
+<div>안치환 - 잠들지 않는 남도</div>
+<div>안치환 - 그렇지요</div>
+<div>안치환 - 내가 그린 그림</div>
+<div>안치환 - 늘 푸르른 생명처럼</div>
+<div>안치환 - 내 가는 이 길 험난하여도</div>
+<div>안치환 - 지리산 너 지리산이여</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/276574498' target='_blank'><img src='https://resources.tidal.com/images/7485fb44/b0d8/44b3/a97e/0de4639295a0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 안치환 2집</div>
+<div><a href='https://tidal.com/album/274680499' target='_blank'>https://tidal.com/album/274680499</a></div>
+<div>안치환 - 아무 일 없었다는 듯</div>
+<div>안치환 - 솔아 푸르른 솔아</div>
+<div>안치환 - 잠들지 않는 남도</div>
+<div>안치환 - 마른 잎 다시 살아나</div>
+<div>안치환 - 그곳으로</div>
+<div>안치환 - 저 창살에 햇살이</div>
+<div>안치환 - 늘 푸르른 생명처럼</div>
+<div>안치환 - 떠남이 아름다운 사람들이여</div>
+<div>안치환 - 지리산 너 지리산이여</div>
+<div>안치환 - 광야에서</div>
+<div>안치환 - 백두여 한라까지 한라여 백두까지</div>
+<div>안치환 - 노동자의 길</div>
+<div>안치환 - 언제나 언제까지나</div>
+<div>안치환 - 내 가는 이 길 험난하여도</div>
+<div>안치환 - 철의 노동자</div>
+<div>안치환 - 우리의 손으로</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/274680499' target='_blank'><img src='https://resources.tidal.com/images/78d90fc9/ba2b/4229/ad47/c5aec978a831/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 안치환 1집</div>
+<div><a href='https://tidal.com/album/274678533' target='_blank'>https://tidal.com/album/274678533</a></div>
+<div>안치환 - 저 창살에 햇살이</div>
+<div>안치환 - 그 곳으로</div>
+<div>안치환 - 행복은 성적순이 아니잖아요</div>
+<div>안치환 - 백두여 한라까지 한라여 백두까지</div>
+<div>안치환 - 그렇지요</div>
+<div>안치환 - 조그만 공간</div>
+<div>안치환 - 내가 그린 그림</div>
+<div>안치환 - 그 옛날 우리처럼</div>
+<div>안치환 - 떠남이 아름다운 사람들이여</div>
+<div>안치환 - 솔아 푸르른 솔아</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/274678533' target='_blank'><img src='https://resources.tidal.com/images/2aac5aac/5182/4299/a6d8/997fe0674f73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Single2012</div>
+<div><a href='https://tidal.com/album/305341811' target='_blank'>https://tidal.com/album/305341811</a></div>
+<div>An Chi Hwan - 카오스</div>
+<div>An Chi Hwan - 나의 꿈</div>
+<div>An Chi Hwan - 액맥이 타령</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305341811' target='_blank'><img src='https://resources.tidal.com/images/bde4c928/e0a2/45a5/9741/872978d96ac6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 오늘이 좋다</div>
+<div><a href='https://tidal.com/album/184474891' target='_blank'>https://tidal.com/album/184474891</a></div>
+<div>안치환 - 개망초</div>
+<div>안치환 - 모란이 피기까지는</div>
+<div>안치환 - 그래, 나는 386이다</div>
+<div>안치환 - 오늘이 좋다</div>
+<div>안치환 - 마흔 즈음</div>
+<div>안치환 - 선운사에서</div>
+<div>안치환 - 떨림</div>
+<div>안치환 - 사랑하기나 했던 걸까</div>
+<div>안치환 - 아무 의미가 없어</div>
+<div>안치환 - 어떤 유언</div>
+<div>안치환 - 바다로 가는 길</div>
+<div>안치환 - 삶이여, 감사합니다</div>
+<div>안치환 - 더 행복하길 바래</div>
+<div>안치환 - 이무기</div>
+<div>안치환 - 내 이름은 비정규직</div>
+<div>안치환 - 사랑합니다</div>
+<div>안치환 - 내 친구 그의 이름은</div>
+<div>안치환 - 하늘을 보는 나는</div>
+<div>안치환 - 나는 노래하는 노동자다</div>
+<div>안치환 - 대지의 노래</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184474891' target='_blank'><img src='https://resources.tidal.com/images/85b7e18b/eca0/4e38/8003/33c76fac0b39/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 정호승을 노래하다</div>
+<div><a href='https://tidal.com/album/184476744' target='_blank'>https://tidal.com/album/184476744</a></div>
+<div>안치환 - 고래를 위하여</div>
+<div>안치환 - 인생은 나에게 술 한잔 사주지 않았다</div>
+<div>안치환 - 꽃 지는 저녁</div>
+<div>안치환 - 내가 사랑하는 사람</div>
+<div>안치환 - 또 기다리는 편지</div>
+<div>안치환 - 우리가 어느 별에서</div>
+<div>안치환 - 수선화에게</div>
+<div>안치환 - 이별노래</div>
+<div>안치환 - 강변역에서</div>
+<div>안치환 - 북한강에서</div>
+<div>안치환 - 풍경 달다</div>
+<div>안치환 - 어머니를 위한 자장가</div>
+<div>안치환 - 눈물꽃</div>
+<div>안치환 - 맹인부부가수</div>
+<div>안치환 (feat. 정호승) - 연어 시낭송 Version</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184476744' target='_blank'><img src='https://resources.tidal.com/images/512f14aa/3575/4fbe/a513/04e95fd100dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2007] 안치환 9</div>
+<div><a href='https://tidal.com/album/184473850' target='_blank'>https://tidal.com/album/184473850</a></div>
+<div>안치환 - 처음처럼</div>
+<div>안치환 - 알바트로스</div>
+<div>안치환 - 늑대</div>
+<div>안치환 - 세상이 달라졌다</div>
+<div>안치환 - 혼자서 가는 길 아니라네(원제- 동행)</div>
+<div>안치환 - 담쟁이</div>
+<div>안치환 - 오직 그대만이</div>
+<div>안치환 - 아내에게</div>
+<div>안치환 - 너의 환상</div>
+<div>안치환 - 내 안의 나</div>
+<div>안치환 - 안개 속에 길을 잃다</div>
+<div>안치환 - 행여 지리산에 오시려거든</div>
+<div>안치환 - 굿나잇</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184473850' target='_blank'><img src='https://resources.tidal.com/images/7e481db7/fc63/48b0/9587/d34def4a3cfa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] Beyond Nostalgia</div>
+<div><a href='https://tidal.com/album/184476658' target='_blank'>https://tidal.com/album/184476658</a></div>
+<div>An Chi Hwan - 신개발 지구에서</div>
+<div>An Chi Hwan - 해방가</div>
+<div>An Chi Hwan - 기러기</div>
+<div>An Chi Hwan - 약수 뜨러 가는 길</div>
+<div>An Chi Hwan - 빼앗긴 들에도 봄은 오는가</div>
+<div>An Chi Hwan - 새</div>
+<div>An Chi Hwan - 농민가</div>
+<div>An Chi Hwan - 영산강</div>
+<div>An Chi Hwan - 까치길</div>
+<div>An Chi Hwan - 편지</div>
+<div>An Chi Hwan - 찔레꽃</div>
+<div>An Chi Hwan - 햇살(민주)</div>
+<div>An Chi Hwan - 땅의 사람들</div>
+<div>An Chi Hwan - 청산이 소리쳐 부르거든</div>
+<div>An Chi Hwan - 부용산</div>
+<div>An Chi Hwan - 희망가</div>
+<div>An Chi Hwan - 부서지지 않으리</div>
+<div>An Chi Hwan - 출정가</div>
+<div>An Chi Hwan - 이 세계 절반은 나</div>
+<div>An Chi Hwan - 진달래</div>
+<div>An Chi Hwan - 민중의 아버지</div>
+<div>An Chi Hwan - 타는 목마름으로</div>
+<div>An Chi Hwan - 미칠 것 같은 이 세상</div>
+<div>An Chi Hwan - 언덕에 서서</div>
+<div>An Chi Hwan - 꽃상여 타고</div>
+<div>An Chi Hwan - 친구 2</div>
+<div>An Chi Hwan - 겨울거리에서</div>
+<div>An Chi Hwan - 잘가오</div>
+<div>An Chi Hwan - 쐬주</div>
+<div>An Chi Hwan - 작업장</div>
+<div>An Chi Hwan - 친구에게</div>
+<div>An Chi Hwan - 코카콜라</div>
+<div>An Chi Hwan - 맹인부부가수</div>
+<div>An Chi Hwan - 하얀 비행기</div>
+<div>An Chi Hwan - 가자! 가자!(전진가)</div>
+<div>An Chi Hwan - 흔들리지 않게</div>
+<div>An Chi Hwan - 이 세상 사는 동안</div>
+<div>An Chi Hwan - 우리</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184476658' target='_blank'><img src='https://resources.tidal.com/images/99c6b8f8/c42d/4dc3/8298/ef6647f37e5b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] 안치환 8집</div>
+<div><a href='https://tidal.com/album/381008998' target='_blank'>https://tidal.com/album/381008998</a></div>
+<div>안치환 - 외침 Intro</div>
+<div>안치환 - 산맥과 파도</div>
+<div>안치환 - 해방구</div>
+<div>안치환 - 사람들 사이에 꽃이 필 때</div>
+<div>안치환 - 물 속 반딧불이 정원</div>
+<div>안치환 - 개새끼들</div>
+<div>안치환 - 부메랑</div>
+<div>안치환 - 피 묻은 운동화</div>
+<div>안치환 - America</div>
+<div>안치환 - Stop The War</div>
+<div>안치환 - 총알받이</div>
+<div>안치환 - 오늘도 미국 대사관 앞엔</div>
+<div>안치환 - 꼭두각시</div>
+<div>안치환 - 내버려둬</div>
+<div>안치환 - 연탄 한 장</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381008998' target='_blank'><img src='https://resources.tidal.com/images/5dd6372b/cbd4/4b28/ae1e/7bc8f4bfeab0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2002] 안치환과 자유 Live Best '01~02'</div>
+<div><a href='https://tidal.com/album/378039595' target='_blank'>https://tidal.com/album/378039595</a></div>
+<div>An Chi Hwan - 내 꿈의 방향을 묻는다</div>
+<div>An Chi Hwan - 돌멩이 하나</div>
+<div>An Chi Hwan - 나무의 서</div>
+<div>An Chi Hwan - 우리가 어느 별에서</div>
+<div>An Chi Hwan - 내가 만일</div>
+<div>An Chi Hwan - 평행선</div>
+<div>An Chi Hwan - 산</div>
+<div>An Chi Hwan - 훨훨(사랑하게 되면)</div>
+<div>An Chi Hwan - 겨울새</div>
+<div>An Chi Hwan - 귀뚜라미</div>
+<div>An Chi Hwan - 수선화에게</div>
+<div>An Chi Hwan - 우물안 개구리</div>
+<div>An Chi Hwan - 너를 사랑한 이유</div>
+<div>An Chi Hwan - 사랑하려네</div>
+<div>An Chi Hwan - 그런 길은 없소</div>
+<div>An Chi Hwan - 수풀을 헤치며</div>
+<div>An Chi Hwan - 그 곳으로</div>
+<div>An Chi Hwan - 똥파리와 인간</div>
+<div>An Chi Hwan - 사람이 꽃보다 아름다워</div>
+<div>An Chi Hwan - 저물면서 빛나는 바다</div>
+<div>An Chi Hwan - 당당하게</div>
+<div>An Chi Hwan - 소금인형 (+Ment)</div>
+<div>An Chi Hwan - 얼마나 더 (+Ment)</div>
+<div>An Chi Hwan - 한다</div>
+<div>An Chi Hwan - 살고지고 살고지고</div>
+<div>An Chi Hwan - 위하여!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/378039595' target='_blank'><img src='https://resources.tidal.com/images/4de997bd/0bed/4d62/870e/b6f18dce8ee5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] Good Luck!</div>
+<div><a href='https://tidal.com/album/184928708' target='_blank'>https://tidal.com/album/184928708</a></div>
+<div>An Chi Hwan - 내 꿈의 방향을 묻는다</div>
+<div>An Chi Hwan - 우물 안 개구리</div>
+<div>An Chi Hwan - 슬럼프</div>
+<div>An Chi Hwan - 위하여!!</div>
+<div>An Chi Hwan - 가을 은행나무 아래서</div>
+<div>An Chi Hwan - 철망 앞에서</div>
+<div>An Chi Hwan - 동행</div>
+<div>An Chi Hwan - 아, 봄이런가</div>
+<div>An Chi Hwan - 산</div>
+<div>An Chi Hwan - 수선화에게- 외로우니까 사람이다</div>
+<div>An Chi Hwan - 고해</div>
+<div>An Chi Hwan - 내 손을 잡아요</div>
+<div>An Chi Hwan - 13년만의 고백</div>
+<div>An Chi Hwan - 배웅</div>
+<div>An Chi Hwan - 매향리의 봄</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184928708' target='_blank'><img src='https://resources.tidal.com/images/396e3dd0/d138/423d/b1a6/c457fdcbe6c9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] Remember</div>
+<div><a href='https://tidal.com/album/243345602' target='_blank'>https://tidal.com/album/243345602</a></div>
+<div>An Chi Hwan - 똥파리와 인간</div>
+<div>An Chi Hwan - 자유</div>
+<div>An Chi Hwan - 지는 잎새 쌓이거든</div>
+<div>An Chi Hwan - 저 창살에 햇살이</div>
+<div>An Chi Hwan - 물따라 나도 가면서</div>
+<div>An Chi Hwan - 돌멩이 하나</div>
+<div>An Chi Hwan - 38선은 38선에만 있는 것은 아니다</div>
+<div>An Chi Hwan - 산국화</div>
+<div>An Chi Hwan - 희망이 있다</div>
+<div>An Chi Hwan - 아이고! I GO!</div>
+<div>An Chi Hwan - 노래</div>
+<div>An Chi Hwan - 함께 가자 우리 이 길을</div>
+<div>An Chi Hwan - 이 가을에 나는</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/243345602' target='_blank'><img src='https://resources.tidal.com/images/e7ebe832/a8a6/450b/bbb4/d0070c015dcc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] I Still Believe</div>
+<div><a href='https://tidal.com/album/381009857' target='_blank'>https://tidal.com/album/381009857</a></div>
+<div>안치환 - 나무의 序</div>
+<div>안치환 - 그런길은 없소!</div>
+<div>안치환 - 돌멩이 하나 A</div>
+<div>안치환 - 살구꽃 지고 복사꽃 피던 날</div>
+<div>안치환 - 살고지고... 살고지고---</div>
+<div>안치환 - 악몽 `98</div>
+<div>안치환 - 어머니 전상서</div>
+<div>안치환 - 삶을 위하여</div>
+<div>안치환 - 그대 있음에</div>
+<div>안치환 - 사랑하게 되면</div>
+<div>안치환 - 강변역에서</div>
+<div>안치환 - 나도 그렇게</div>
+<div>안치환 - 돌멩이 하나 B</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/381009857' target='_blank'><img src='https://resources.tidal.com/images/21feceab/fd4c/4118/a6d9/d2d4a9459bee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Desire</div>
+<div><a href='https://tidal.com/album/184474684' target='_blank'>https://tidal.com/album/184474684</a></div>
+<div>An Chi Hwan - 희망이 있다 (나와 함께 모든 노래가 사라진다면)</div>
+<div>An Chi Hwan - 사람이 꽃보다 아름다워</div>
+<div>An Chi Hwan - 얼마나 더</div>
+<div>An Chi Hwan - 사랑하려네</div>
+<div>An Chi Hwan - 그대는 아름다운 여인</div>
+<div>An Chi Hwan - 사랑, 그 이름 하나로</div>
+<div>An Chi Hwan - 저물면서 빛나는 바다</div>
+<div>An Chi Hwan - 하나를 위한 연가</div>
+<div>An Chi Hwan - 바램</div>
+<div>An Chi Hwan - 3.8선은 3.8선에만 있는 것은 아니다</div>
+<div>An Chi Hwan - 한다</div>
+<div>An Chi Hwan - 아이고! I Go! (날마다 날마다)</div>
+<div>An Chi Hwan - 우리의 꿈이 있는 한---</div>
+<div>An Chi Hwan - 청년</div>
+<div>An Chi Hwan - 바람</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184474684' target='_blank'><img src='https://resources.tidal.com/images/6ae77a40/97e1/40ae/b484/dc13e0dff6ee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] Nostalgia</div>
+<div><a href='https://tidal.com/album/184474428' target='_blank'>https://tidal.com/album/184474428</a></div>
+<div>An Chi Hwan - 신개발지구에서</div>
+<div>An Chi Hwan - 약수 뜨러 가는 길</div>
+<div>An Chi Hwan - 새</div>
+<div>An Chi Hwan - 영산강</div>
+<div>An Chi Hwan - 편지</div>
+<div>An Chi Hwan - 햇살(민주)</div>
+<div>An Chi Hwan - 청산이 소리쳐 부르거든</div>
+<div>An Chi Hwan - 부용산</div>
+<div>An Chi Hwan - 부서지지 않으리</div>
+<div>An Chi Hwan - 이 세계 절반은 나</div>
+<div>An Chi Hwan - 타는 목마름으로</div>
+<div>An Chi Hwan - 언덕에 서서</div>
+<div>An Chi Hwan - 꽃상여 타고</div>
+<div>An Chi Hwan - 겨울 거리에서</div>
+<div>An Chi Hwan - 쐬주</div>
+<div>An Chi Hwan - 친구에게</div>
+<div>An Chi Hwan - 하얀 비행기</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184474428' target='_blank'><img src='https://resources.tidal.com/images/53da095c/fc1c/4c6f/995b/fdd0173ae1d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1995] 안치환 4</div>
+<div><a href='https://tidal.com/album/184474402' target='_blank'>https://tidal.com/album/184474402</a></div>
+<div>An Chi Hwan - 너를 사랑한 이유 A</div>
+<div>An Chi Hwan - 수풀을 헤치며</div>
+<div>An Chi Hwan - 당당하게</div>
+<div>An Chi Hwan - 고향집에서</div>
+<div>An Chi Hwan - 시인과 소년</div>
+<div>An Chi Hwan - 그대만을 위한 노래</div>
+<div>An Chi Hwan - 평행선</div>
+<div>An Chi Hwan - 물따라 나도 가면서</div>
+<div>An Chi Hwan - 겨울나무</div>
+<div>An Chi Hwan - 생의 의미를 찾아서</div>
+<div>An Chi Hwan - 내가 만일</div>
+<div>An Chi Hwan - 그 사랑 잊을 순 없겠죠</div>
+<div>An Chi Hwan - 너를 사랑한 이유 B</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184474402' target='_blank'><img src='https://resources.tidal.com/images/d155c21d/e61d/4585/b16f/273dc00cf3ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] Confession</div>
+<div><a href='https://tidal.com/album/184617579' target='_blank'>https://tidal.com/album/184617579</a></div>
+<div>An Chi Hwan - 고백</div>
+<div>An Chi Hwan - 자유</div>
+<div>An Chi Hwan - 소금인형</div>
+<div>An Chi Hwan - 섬</div>
+<div>An Chi Hwan - 우리가 어느 별에서</div>
+<div>An Chi Hwan - 귀뚜라미</div>
+<div>An Chi Hwan - 또 하나의 내일</div>
+<div>An Chi Hwan - 겨울새</div>
+<div>An Chi Hwan - 그것인데</div>
+<div>An Chi Hwan - 또 하나의 시작을 위해(졸업)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184617579' target='_blank'><img src='https://resources.tidal.com/images/5d239f61/0a91/4203/b2ba/56e8c0d148f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] 안치환 1+2</div>
+<div><a href='https://tidal.com/album/184619399' target='_blank'>https://tidal.com/album/184619399</a></div>
+<div>안치환 - 그곳으로</div>
+<div>안치환 - 저 창살에 햇살이</div>
+<div>안치환 - 솔아! 푸르른 솔아</div>
+<div>안치환 (with 배훈) - 내 가는 이 길 험난하여도</div>
+<div>안치환 - 노동자의 길</div>
+<div>안치환 - 그렇지요-</div>
+<div>안치환 - 행복은 성적순이 아니잖아요</div>
+<div>안치환 - 언제나 언제까지나</div>
+<div>안치환 - 광야에서</div>
+<div>안치환 - 잠들지 않는 남도</div>
+<div>안치환 - 지리산 너 지리산이여!</div>
+<div>안치환 - 마른잎 다시 살아나</div>
+<div>안치환 - 떠남이 아름다운 사람들이여</div>
+<div>안치환 (with 장필순) - 우리가 어느 별에서</div>
+<div>안치환 - 아무일 없었다는 듯</div>
+<div>안치환 - 철의 노동자</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184619399' target='_blank'><img src='https://resources.tidal.com/images/00cd9966/437e/4c12/990e/6264a5207b88/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] 마른 잎 다시 살아나 마른 잎 다시 살아나</div>
+<div><a href='https://tidal.com/album/255065124' target='_blank'>https://tidal.com/album/255065124</a></div>
+<div>안치환 - 아무일 없었다는 듯 아무일 없었다는 듯</div>
+<div>안치환 - 솔아 푸르른 솔아 솔아 푸르른 솔아</div>
+<div>안치환 - 잠들지 않는 남도 잠들지 않는 남도</div>
+<div>안치환 - 마른 잎 다시 살아나 마른 잎 다시 살아나</div>
+<div>안치환 - 그곳에서 그곳에서</div>
+<div>안치환 - 저 창살에 햇살이 저 창살에 햇살이</div>
+<div>안치환 - 늘 푸른 생명처럼 늘 푸른 생명처럼</div>
+<div>안치환 - 떠남이 아름다운 사람들이여 떠남이 아름다운 사람들이여</div>
+<div>안치환 - 지리산, 너 지리산이여 지리산, 너 지리산이여</div>
+<div>안치환 - 광야에서 광야에서</div>
+<div>안치환 - 백두여 한라까지, 한라여 백두까지 백두여 한라까지, 한라여 백두까지</div>
+<div>안치환 - 노동자의 길 노동자의 길</div>
+<div>안치환 - 언제나 언제까지나 언제나 언제까지나</div>
+<div>안치환 - 내 가는 이길 험란하여도 내 가는 이길 험란하여도</div>
+<div>안치환 - 철의 노동자 철의 노동자</div>
+<div>안치환 - 우리의 손으로 우리의 손으로</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/255065124' target='_blank'><img src='https://resources.tidal.com/images/52b31098/63d7/4c42/950c/698d1c6469fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1991] 노래 한마당 노래 한마당</div>
+<div><a href='https://tidal.com/album/255068097' target='_blank'>https://tidal.com/album/255068097</a></div>
+<div>안치환 - 아무일 없었다는듯 아무일 없었다는듯</div>
+<div>안치환 - 노동자의 길 노동자의 길</div>
+<div>안치환 - 철의 노동자 철의 노동자</div>
+<div>안치환 - 지리산, 너 지리산이여! 지리산, 너 지리산이여!</div>
+<div>안치환 - 잠들지 않는 남도 잠들지 않는 남도</div>
+<div>안치환 - 마른 잎 다시 살아나 마른 잎 다시 살아나</div>
+<div>안치환 - 늘 푸른 생명처럼 늘 푸른 생명처럼</div>
+<div>안치환 - 내 가는 이길 험난하여도 내 가는 이길 험난하여도</div>
+<div>안치환 - 솔아 푸르른 솔아 솔아 푸르른 솔아</div>
+<div>안치환 - 언제나 언제까지나 언제나 언제까지나</div>
+<div>안치환 - 백두여 한라까지, 한라여 백두까지 백두여 한라까지, 한라여 백두까지</div>
+<div>안치환 - 우리의 손으로 우리의 손으로</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/255068097' target='_blank'><img src='https://resources.tidal.com/images/505677f6/5a04/47c1/b050/4c5aa26ccfd1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1990] 저 창살에 햇살이_행복은 성적순이 아니잖아요_백두여 한라까지, 한라여 백두까지 저 창살에 햇살이_행복은 성적순이 아니잖아요_백두여 한라까지, 한라여 백두까지</div>
+<div><a href='https://tidal.com/album/255068119' target='_blank'>https://tidal.com/album/255068119</a></div>
+<div>안치환 - 저 창살에 햇살이 저 창살에 햇살이</div>
+<div>안치환 - 그곳으로 그곳으로</div>
+<div>안치환 - 행복은 성적순이 아니잖아요 행복은 성적순이 아니잖아요</div>
+<div>안치환 - 백두여 한라까지, 한라여 백두까지 백두여 한라까지, 한라여 백두까지</div>
+<div>안치환 - 그렇지요 그렇지요</div>
+<div>안치환 - 조그만 공간 조그만 공간</div>
+<div>안치환 - 내가 그린 그림 내가 그린 그림</div>
+<div>안치환 - 그 옛날 우리처럼 그 옛날 우리처럼</div>
+<div>안치환 - 떠남이 아름다운 사람들이여 떠남이 아름다운 사람들이여</div>
+<div>안치환 - 솔아 푸르른 솔아 솔아 푸르른 솔아</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/255068119' target='_blank'><img src='https://resources.tidal.com/images/12343b14/d416/4861/b5c2/50781946fc7c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/1_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ1) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/안치환 (Ahn Chi Hwan)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
