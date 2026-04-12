@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 지소울 ( Tidal Gsoul )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 지소울 ( Tidal Gsoul )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/e1ca5c46/3de8/40b1/b4d9/3902f01baeec/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10079407' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 지소울</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>지소울 (GSoul) – 깊은 밤의 위로, ‘Love Me Again’의 애절함과 ‘Far, Far Away’의 몽환을 담아 노래하는 R&B 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Gsoul</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>GSoul – A comforting voice in the deep night, an R&B vocalist singing with the ache of ‘Love Me Again’ and the dreaminess of ‘Far, Far Away’</div><p>독보적인 음색과 깊은 감성으로 듣는 이의 마음을 사로잡는 아티스트, 지소울(GSoul)을 소개합니다. 그의 음악은 단순한 멜로디를 넘어, 진솔한 이야기와 섬세한 감정 표현으로 깊은 울림을 선사합니다. 지소울은 자신만의 음악적 색깔을 뚜렷하게 드러내며 꾸준히 성장하는 모습을 보여주고 있어요.</p><p>Introducing GSoul, an artist who captivates listeners with his unique voice and profound emotions. His music transcends simple melodies, delivering deep resonance through sincere stories and delicate emotional expression. GSoul consistently demonstrates growth, clearly showcasing his own musical color.</p><p>✧</p><p>음악적 여정의 시작</p><p>지소울은 오랜 연습생 기간을 거쳐 가요계에 데뷔했습니다. 그의 음악은 데뷔 초부터 R&B와 Soul 장르에 대한 깊은 이해와 애정을 보여줬어요. 특유의 감성적인 보컬과 진솔한 가사는 많은 이들의 공감을 얻으며 빠르게 자리매김했습니다.</p><p>The Beginning of a Musical Journey</p><p>GSoul debuted in the music industry after a long period of training. From his debut, his music showed a deep understanding and affection for the R&B and Soul genres. His unique emotional vocals and sincere lyrics quickly resonated with many, establishing his presence in the scene.</p><p>✧</p><p>다채로운 음악 세계</p><p>지소울의 음악은 R&B와 Soul을 기반으로 다양한 장르를 넘나들며 폭넓은 스펙트럼을 자랑합니다. 그는 어쿠스틱한 사운드부터 몽환적인 분위기, 강렬한 비트까지 소화하며 자신만의 음악적 색깔을 구축했어요. 실험적인 시도와 끊임없는 변화를 통해 늘 새로운 모습을 보여주고 있습니다.</p><p>A Diverse Musical World</p><p>GSoul's music boasts a wide spectrum, crossing various genres based on R&B and Soul. He has built his own musical identity by handling everything from acoustic sounds to dreamy atmospheres and intense beats. He always shows a new side of himself through experimental attempts and constant change.</p><p>✧</p><p>진심을 담은 노래</p><p>그의 음악은 사랑, 이별, 고독 등 다양한 감정을 솔직하게 담아냅니다. 특히, 지소울 특유의 섬세한 감정 표현은 듣는 이로 하여금 깊은 공감과 위로를 느끼게 합니다. 진심을 담아 노래하는 그의 목소리는 많은 이들에게 깊은 인상을 남기고 있어요.</p><p>Songs Filled with Sincerity</p><p>His music honestly captures various emotions such as love, parting, and loneliness. In particular, GSoul's unique delicate emotional expression allows listeners to feel deep empathy and comfort. His voice, singing with sincerity, leaves a lasting impression on many.</p><p>✧</p><p>앞으로의 음악 여정</p><p>지소울은 앞으로도 끊임없이 새로운 음악적 시도를 통해 자신만의 색깔을 더욱 깊게 만들어갈 것입니다. 그의 음악은 단순한 유행을 따르기보다, 오랫동안 듣는 이들의 마음속에 남는 깊은 울림을 선사할 것입니다. 앞으로 그가 보여줄 음악적 성장에 많은 기대와 응원을 보내주세요.</p><p>The Future Musical Journey</p><p>GSoul will continue to deepen his own color through constant new musical attempts in the future. Rather than simply following trends, his music will deliver a deep resonance that remains in the hearts of listeners for a long time. Please look forward to and support his musical growth in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] פואטיקות</div>
+<div><a href='https://tidal.com/album/382608242' target='_blank'>https://tidal.com/album/382608242</a></div>
+<div>Ballagan Sessions בלאגן סשנז, GSoul - פואטיקות</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382608242' target='_blank'><img src='https://resources.tidal.com/images/62301a9d/53e0/46ba/886f/995d217ea75a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] You (Acoustic Version)</div>
+<div><a href='https://tidal.com/album/304469600' target='_blank'>https://tidal.com/album/304469600</a></div>
+<div>GSoul - You (Acoustic Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304469600' target='_blank'><img src='https://resources.tidal.com/images/1ca3c3d8/89f6/422e/9e8f/508f1604a33d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Love Me Again</div>
+<div><a href='https://tidal.com/album/304581630' target='_blank'>https://tidal.com/album/304581630</a></div>
+<div>GSoul - Love Me Again(Explicit)</div>
+<div>GSoul - Beautiful Goodbye</div>
+<div>GSoul - Stop Running From Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304581630' target='_blank'><img src='https://resources.tidal.com/images/150ddb41/6c37/4945/8a72/13d4cc458d84/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Far, Far Away</div>
+<div><a href='https://tidal.com/album/304469597' target='_blank'>https://tidal.com/album/304469597</a></div>
+<div>GSoul - Far, Far Away</div>
+<div>GSoul - Where Do We Go From Here</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304469597' target='_blank'><img src='https://resources.tidal.com/images/794ad83b/468c/450f/ba04/81b11b31335b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Dirty</div>
+<div><a href='https://tidal.com/album/304565957' target='_blank'>https://tidal.com/album/304565957</a></div>
+<div>GSoul - Dirty (Intro)</div>
+<div>GSoul - Dirty</div>
+<div>GSoul - Till I Die</div>
+<div>GSoul - Stop The Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304565957' target='_blank'><img src='https://resources.tidal.com/images/5e89d9ba/ea39/43bc/a3e0/f11570eb999e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] [Vol.137] You Hee yul's Sketchbook With you _ 89th Voice 'Sketchbook X GSoul'</div>
+<div><a href='https://tidal.com/album/231360683' target='_blank'>https://tidal.com/album/231360683</a></div>
+<div>GSoul - Meaning of you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/231360683' target='_blank'><img src='https://resources.tidal.com/images/900be3f4/6b9b/4ab6/bdd5/5b1cc05f7b61/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] [Vol.136] You Hee yul's Sketchbook With you _ 89th Voice 'Sketchbook X GSoul'</div>
+<div><a href='https://tidal.com/album/230443561' target='_blank'>https://tidal.com/album/230443561</a></div>
+<div>GSoul - HOLO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230443561' target='_blank'><img src='https://resources.tidal.com/images/176a8731/cee1/4e19/9dc6/00382ff7ae6c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Revenge of Others (Original Television Soundtrack), Pt.1</div>
+<div><a href='https://tidal.com/album/260697167' target='_blank'>https://tidal.com/album/260697167</a></div>
+<div>GSoul - Lost Game</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/260697167' target='_blank'><img src='https://resources.tidal.com/images/ebeb8968/45e3/4f1a/924c/ba39eb99ab53/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Need You (Outro)</div>
+<div><a href='https://tidal.com/album/215560247' target='_blank'>https://tidal.com/album/215560247</a></div>
+<div>GSoul - Need You (Outro)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215560247' target='_blank'><img src='https://resources.tidal.com/images/4d2bf8a9/51fe/4d85/a5a9/e4ba7e48270f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Everytime</div>
+<div><a href='https://tidal.com/album/236422950' target='_blank'>https://tidal.com/album/236422950</a></div>
+<div>GSoul - Everytime</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/236422950' target='_blank'><img src='https://resources.tidal.com/images/f5b50c53/665f/4c2a/81cb/575ccaa2041f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] SISYPHUS_ THE MYTH (Original Television Soundtrack, Pt. 1)</div>
+<div><a href='https://tidal.com/album/173776796' target='_blank'>https://tidal.com/album/173776796</a></div>
+<div>GSoul - Stay- tempus</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/173776796' target='_blank'><img src='https://resources.tidal.com/images/98fde9ad/e4ef/4659/896c/42eeae263370/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Natural</div>
+<div><a href='https://tidal.com/album/207011890' target='_blank'>https://tidal.com/album/207011890</a></div>
+<div>GSoul - By My Side</div>
+<div>GSoul - Natural</div>
+<div>GSoul - Free (I'm Gonna Be)</div>
+<div>GSoul - Another Day</div>
+<div>GSoul - Natural (Korean Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/207011890' target='_blank'><img src='https://resources.tidal.com/images/102be2d8/1418/4e9d/b115/24cec4e622b2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] For You</div>
+<div><a href='https://tidal.com/album/196167138' target='_blank'>https://tidal.com/album/196167138</a></div>
+<div>GSoul - For You (Prod. WOOGIE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196167138' target='_blank'><img src='https://resources.tidal.com/images/385acb75/3401/4dd7/a12c/8845a630ee31/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Can Love Be Fair</div>
+<div><a href='https://tidal.com/album/174835257' target='_blank'>https://tidal.com/album/174835257</a></div>
+<div>GSoul, BEN - Can Love Be Fair</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/174835257' target='_blank'><img src='https://resources.tidal.com/images/0f791562/eeee/443e/8425/691e3e5e07fd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Begin Again Open Mic Episode.24</div>
+<div><a href='https://tidal.com/album/254564220' target='_blank'>https://tidal.com/album/254564220</a></div>
+<div>GSoul - Hate Everything</div>
+<div>GSoul - Natural</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/254564220' target='_blank'><img src='https://resources.tidal.com/images/96f4b676/90e1/4d89/85b3/1c61ea15d7ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Another Sad Love Song</div>
+<div><a href='https://tidal.com/album/196164797' target='_blank'>https://tidal.com/album/196164797</a></div>
+<div>GSoul - Another Sad Love Song (Korean Ver.)</div>
+<div>GSoul - Another Sad Love Song</div>
+<div>GSoul - Let Me Know (Bonus Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196164797' target='_blank'><img src='https://resources.tidal.com/images/12914050/c12b/46b8/ad54/bd62eaf1acff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Hate Everything</div>
+<div><a href='https://tidal.com/album/196152569' target='_blank'>https://tidal.com/album/196152569</a></div>
+<div>GSoul - Hate Everything</div>
+<div>GSoul - Broken Record</div>
+<div>GSoul - Confidence</div>
+<div>GSoul - Get Up</div>
+<div>GSoul - Hate Everything (Korean Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196152569' target='_blank'><img src='https://resources.tidal.com/images/1a5be7c8/4efe/4c5e/a4e6/00a687489f25/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] bad habit</div>
+<div><a href='https://tidal.com/album/196136453' target='_blank'>https://tidal.com/album/196136453</a></div>
+<div>GSoul - bad habit</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196136453' target='_blank'><img src='https://resources.tidal.com/images/81369f6a/bc2a/47b8/bfbf/4f199d80e457/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] Tequila</div>
+<div><a href='https://tidal.com/album/196135907' target='_blank'>https://tidal.com/album/196135907</a></div>
+<div>GSoul - Tequila (Feat. Hoody)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196135907' target='_blank'><img src='https://resources.tidal.com/images/bb71adbb/5f1d/49bb/bc43/b7f9faf8a50a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] I′ll Be There</div>
+<div><a href='https://tidal.com/album/196137987' target='_blank'>https://tidal.com/album/196137987</a></div>
+<div>GSoul - I′ll Be There</div>
+<div>GSoul - No Answer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137987' target='_blank'><img src='https://resources.tidal.com/images/e2f0461c/8046/445b/9ef5/366ccef1c865/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Circles</div>
+<div><a href='https://tidal.com/album/196137026' target='_blank'>https://tidal.com/album/196137026</a></div>
+<div>GSoul - Tequila (Feat. Hoody)</div>
+<div>GSoul - 술버릇 (bad habit)</div>
+<div>GSoul - Can′t</div>
+<div>GSoul - Circles</div>
+<div>GSoul - Found You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196137026' target='_blank'><img src='https://resources.tidal.com/images/4acb0e65/1307/4d80/9268/b55a1e85e294/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Coming Home</div>
+<div><a href='https://tidal.com/album/304581665' target='_blank'>https://tidal.com/album/304581665</a></div>
+<div>GSoul - Coming Home</div>
+<div>GSoul - Superstar</div>
+<div>GSoul - You</div>
+<div>GSoul - First Love</div>
+<div>GSoul - Excuses</div>
+<div>GSoul - Once More</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/304581665' target='_blank'><img src='https://resources.tidal.com/images/f83e1156/4d64/42d3/8d29/4fbb1567c489/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/지소울 (Gsoul)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
