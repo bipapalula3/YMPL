@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 일레인 ( Tidal Elaine )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 일레인 ( Tidal Elaine )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/bb441edb/0c25/474c/952d/a8f2267740b5/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/46016787' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 일레인</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>일레인 — 깊은 밤을 밝히는 섬세한 목소리, 'In the Darkest Night'의 위로와 'Child'의 순수한 울림을 담아내는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Elaine</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Elaine — A delicate voice that brightens the darkest night, a singer-songwriter capturing the comfort of 'In the Darkest Night' and the pure resonance of 'Child'.</div><p>감성적인 보이스와 섬세한 표현력으로 듣는 이의 마음을 어루만지는 아티스트, 일레인입니다. 그녀의 음악은 마치 한 편의 영화를 보는 듯한 깊은 몰입감을 선사하며, 잔잔한 감동을 안겨줍니다. 자신만의 색깔로 다양한 장르를 소화하며 꾸준히 음악 활동을 이어가고 있습니다.</p><p>Elaine is an artist who touches listeners' hearts with her emotional voice and delicate expression. Her music offers a deep immersion, like watching a movie, and brings a quiet emotion. She continues to work on music, digesting various genres with her unique color.</p><p>✧</p><p>섬세한 감성으로 빚어낸 음악</p><p>일레인은 특유의 섬세한 감성을 바탕으로 다양한 분위기의 곡들을 선보입니다. 그녀의 음악은 어둠 속에서 희망을 발견하는 듯한 따뜻함을 전달하며, 듣는 이들에게 깊은 공감과 위로를 선사합니다. 꾸밈없이 진솔한 가사와 멜로디는 오랜 시간 동안 잔잔한 여운을 남깁니다.</p><p>Music Crafted with Delicate Emotion</p><p>Elaine presents songs of various moods based on her unique delicate sensibility. Her music conveys warmth as if discovering hope in the dark, providing listeners with deep empathy and comfort. The unadorned, sincere lyrics and melodies leave a lasting impression for a long time.</p><p>✧</p><p>다채로운 음악적 스펙트럼</p><p>팝, 발라드 등 다양한 장르를 넘나들며 폭넓은 음악적 스펙트럼을 보여줍니다. 그녀의 음악에는 진솔한 이야기가 담겨 있으며, 듣는 이들은 그녀의 노래를 통해 자신의 감정을 발견하고 위로받을 수 있습니다. 깊은 감정선과 호소력 짙은 보이스는 그녀의 음악을 더욱 특별하게 만듭니다.</p><p>Diverse Musical Spectrum</p><p>She crosses various genres such as pop and ballad, showing a wide musical spectrum. Her music contains sincere stories, and listeners can discover and be comforted by their emotions through her songs. The deep emotional lines and appealing voice make her music even more special.</p><p>✧</p><p>꾸준한 활동과 성장</p><p>일레인은 드라마 OST 참여, 싱글 앨범 발매 등 꾸준한 음악 활동을 통해 자신만의 음악 세계를 구축해나가고 있습니다. 그녀의 음악은 점차 더 많은 사람들에게 알려지고 있으며, 독보적인 감성으로 대중들의 마음을 사로잡고 있습니다. 앞으로 그녀가 보여줄 음악적 성장이 더욱 기대됩니다.</p><p>Constant Activity and Growth</p><p>Elaine is building her own musical world through constant musical activities such as participating in drama OSTs and releasing single albums. Her music is gradually becoming known to more people, and she is captivating the public's hearts with her unique sensitivity. Her future musical growth is highly anticipated.</p><p>✧</p><p>음악이 전하는 따뜻한 위로</p><p>일레인의 음악은 단순한 음악을 넘어, 듣는 이들에게 따뜻한 위로와 공감을 전하는 매개체가 됩니다. 그녀의 노래는 힘든 시간을 보내는 사람들에게 작은 희망을 선사하고, 잊고 지냈던 감성을 깨워줍니다. 앞으로도 그녀만의 감성으로 더욱 많은 사람들에게 감동을 선사할 것입니다.</p><p>Warm Comfort Delivered by Music</p><p>Elaine's music goes beyond mere melodies, becoming a medium for delivering warm comfort and empathy to listeners. Her songs offer a small hope to those going through difficult times and awaken forgotten emotions. She will continue to impress even more people with her unique sensibility in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] EVILIVE, Pt. 1 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346571162' target='_blank'>https://tidal.com/album/346571162</a></div>
+<div>Elaine - In the Darkest Night</div>
+<div>Elaine - In the Darkest Night (Kor Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346571162' target='_blank'><img src='https://resources.tidal.com/images/82de451d/4ea5/434e/a07e/ccb6d4de4fd5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Under the Queen's Umbrella OST Part 1</div>
+<div><a href='https://tidal.com/album/256803760' target='_blank'>https://tidal.com/album/256803760</a></div>
+<div>Elaine - Child</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/256803760' target='_blank'><img src='https://resources.tidal.com/images/ca32fea7/7a41/496e/9e0a/cbc216d3185c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Kill Heel OST Part 2</div>
+<div><a href='https://tidal.com/album/222147377' target='_blank'>https://tidal.com/album/222147377</a></div>
+<div>Elaine - George</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222147377' target='_blank'><img src='https://resources.tidal.com/images/93fc0ce1/e0b5/4892/af5d/af370fc19394/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Artificial City (Original Television Soundtrack), Pt. 1</div>
+<div><a href='https://tidal.com/album/211322055' target='_blank'>https://tidal.com/album/211322055</a></div>
+<div>Elaine - Let Me Be There</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/211322055' target='_blank'><img src='https://resources.tidal.com/images/6aa9e0e9/e89f/44c7/a10a/596429ba4a84/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 2</div>
+<div><a href='https://tidal.com/album/346737534' target='_blank'>https://tidal.com/album/346737534</a></div>
+<div>Elaine - Will You</div>
+<div>Elaine - Wherever You Are</div>
+<div>Elaine - What Is Love</div>
+<div>Elaine - Why Are Memories (Nothing But a Dream)</div>
+<div>Elaine - So Stay</div>
+<div>Elaine - Star</div>
+<div>Elaine - Sorry</div>
+<div>Elaine - Coffee & Cigarettes</div>
+<div>Elaine - Yours Tonight</div>
+<div>Elaine - Mistake</div>
+<div>Elaine - Walle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346737534' target='_blank'><img src='https://resources.tidal.com/images/3e1fb51e/7658/45ec/b9b1/c5418073f1ca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Youth Moments</div>
+<div><a href='https://tidal.com/album/305865744' target='_blank'>https://tidal.com/album/305865744</a></div>
+<div>New Authors, KLANG, Elaine - Youth</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305865744' target='_blank'><img src='https://resources.tidal.com/images/e2f1216d/f8cf/444f/a8d6/55ddf4b4bfd5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] You Raise Me Up OST Part 2</div>
+<div><a href='https://tidal.com/album/196271659' target='_blank'>https://tidal.com/album/196271659</a></div>
+<div>Elaine - Hold me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196271659' target='_blank'><img src='https://resources.tidal.com/images/1372378b/7975/48a1/82d5/6eb0e6073350/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Voice4 (Original Drama Sound Track, Pt. 4)</div>
+<div><a href='https://tidal.com/album/190666507' target='_blank'>https://tidal.com/album/190666507</a></div>
+<div>Elaine - Hear For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/190666507' target='_blank'><img src='https://resources.tidal.com/images/0c041ac2/b330/482e/afbc/a8aab95d99a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] The Veil OST Part 2</div>
+<div><a href='https://tidal.com/album/198907226' target='_blank'>https://tidal.com/album/198907226</a></div>
+<div>Elaine - Stay With Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/198907226' target='_blank'><img src='https://resources.tidal.com/images/a44227b7/84cd/43b8/bf4c/0d4ae5b14f83/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] My Dear (Crime Puzzle Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346450583' target='_blank'>https://tidal.com/album/346450583</a></div>
+<div>Elaine - My Dear</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346450583' target='_blank'><img src='https://resources.tidal.com/images/e4a669f5/b0b3/48a8/8a6b/8da3e78e2a8d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Headache</div>
+<div><a href='https://tidal.com/album/346721587' target='_blank'>https://tidal.com/album/346721587</a></div>
+<div>Elaine - Headache</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346721587' target='_blank'><img src='https://resources.tidal.com/images/aa39d138/6d47/4bde/90df/e97edc30a3a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Things I didn't know (when in love with you) [feat. DINDIN]</div>
+<div><a href='https://tidal.com/album/343960931' target='_blank'>https://tidal.com/album/343960931</a></div>
+<div>Elaine - Things I didn't know (when in love with you) [feat</div>
+<div>Elaine - Things I didn't know (when in love with you) [feat</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343960931' target='_blank'><img src='https://resources.tidal.com/images/2ed32e0c/68c7/40d7/babe/9b77a825a1e7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Money Game OST Part 1</div>
+<div><a href='https://tidal.com/album/196153736' target='_blank'>https://tidal.com/album/196153736</a></div>
+<div>Elaine - Fallin′</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196153736' target='_blank'><img src='https://resources.tidal.com/images/c67d71f9/cfa0/4158/80eb/8d12ee169381/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] It's Okay to Not Be Okay (Original Television Soundtrack) Special Track vol.1</div>
+<div><a href='https://tidal.com/album/189867108' target='_blank'>https://tidal.com/album/189867108</a></div>
+<div>Elaine - Wake Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189867108' target='_blank'><img src='https://resources.tidal.com/images/b7603081/7342/4ef6/8b82/6aedf6f1a85f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Deep Breath</div>
+<div><a href='https://tidal.com/album/346219625' target='_blank'>https://tidal.com/album/346219625</a></div>
+<div>Elaine - Deep Breath (TSH CM)</div>
+<div>Elaine - Deep Breath (KOR ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346219625' target='_blank'><img src='https://resources.tidal.com/images/ee54412f/979f/47f3/be09/f5687560b9c7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] AMANZA Original Soundtrack Part.2</div>
+<div><a href='https://tidal.com/album/216465694' target='_blank'>https://tidal.com/album/216465694</a></div>
+<div>Elaine - Running Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216465694' target='_blank'><img src='https://resources.tidal.com/images/e8d7d51b/819a/469b/85f5/a3e4c021506c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] A PIECE OF YOUR MIND OST Part 2</div>
+<div><a href='https://tidal.com/album/196154510' target='_blank'>https://tidal.com/album/196154510</a></div>
+<div>Elaine - Rain or Shine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196154510' target='_blank'><img src='https://resources.tidal.com/images/4d2f4b7b/3ac3/4a07/8b01/8a2546b242d8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Would you [From _I’m not a robot (Original Soundtrack), Pt. 3_]</div>
+<div><a href='https://tidal.com/album/346168667' target='_blank'>https://tidal.com/album/346168667</a></div>
+<div>Elaine - Would you [From -I’m not a robot (Original Soundtr</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346168667' target='_blank'><img src='https://resources.tidal.com/images/e9118b40/5699/4562/8f8b/ef6e990ec852/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] VIP (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/339852749' target='_blank'>https://tidal.com/album/339852749</a></div>
+<div>Elaine - Don't Bring Me Down</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339852749' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] VAGABOND Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/119025093' target='_blank'>https://tidal.com/album/119025093</a></div>
+<div>Elaine - Fallen Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/119025093' target='_blank'><img src='https://resources.tidal.com/images/8c9808a2/b6a2/4fb0/969c/761965c1eff9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Search_ WWW (Original Television Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/196148404' target='_blank'>https://tidal.com/album/196148404</a></div>
+<div>Elaine - Search</div>
+<div>Elaine - Search</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196148404' target='_blank'><img src='https://resources.tidal.com/images/6d156464/a93a/47c0/b964/d27b22ccac40/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Want your love</div>
+<div><a href='https://tidal.com/album/183835135' target='_blank'>https://tidal.com/album/183835135</a></div>
+<div>New Authors, Elaine - Want your love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183835135' target='_blank'><img src='https://resources.tidal.com/images/ca2e5f9d/1be7/4db7/aff4/025eda945873/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Wake Me Up</div>
+<div><a href='https://tidal.com/album/346055819' target='_blank'>https://tidal.com/album/346055819</a></div>
+<div>Elaine - Wake Me Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346055819' target='_blank'><img src='https://resources.tidal.com/images/1c8e1582/096c/46c7/85dc/d5294f08240b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Mr. Sunshine, Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196141981' target='_blank'>https://tidal.com/album/196141981</a></div>
+<div>Elaine - Sad March</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141981' target='_blank'><img src='https://resources.tidal.com/images/408403f1/a8ac/437e/b87b/3cf9808e27cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Memories of the Alhambra, Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196145396' target='_blank'>https://tidal.com/album/196145396</a></div>
+<div>Elaine - Daydream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196145396' target='_blank'><img src='https://resources.tidal.com/images/6458481d/244a/4afa/8cf5/b0e99fbb9e97/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Goodbye (Acoustic Version)</div>
+<div><a href='https://tidal.com/album/183865814' target='_blank'>https://tidal.com/album/183865814</a></div>
+<div>New Authors, Elaine - Goodbye (Acoustic Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183865814' target='_blank'><img src='https://resources.tidal.com/images/de9ee770/349b/437e/9290/474102039f58/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/5_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ5) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/5_TIDAL_Kpop_Artist_Link_AIO/일레인 (Elaine)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
