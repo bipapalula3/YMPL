@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 원어스 ( Tidal ONEUS )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 원어스 ( Tidal ONEUS )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/1dd0c68e/1853/4c95/b84b/c0d56f1d7d1b/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/19697943' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 원어스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>원어스 (ONEUS) – ‘발키리’의 강렬함과 ‘쉽게 쓰여진 노래’의 서정성을 담아낸, 무대 위 예술을 펼치는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> ONEUS</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>ONEUS – A group that unfolds stage art, capturing the intensity of 'Valkyrie' and the lyricism of 'A Song Written Easily'</div><p>강렬한 퍼포먼스와 다채로운 음악 스타일로 팬들의 마음을 사로잡는 그룹, 원어스입니다. 멤버들의 뛰어난 실력과 무대 장악력은 매 컴백마다 새로운 모습을 기대하게 만들어요. 앞으로 원어스가 보여줄 음악적 스펙트럼은 더욱 넓어질 것으로 예상됩니다.</p><p>ONEUS is a group that captivates fans with its intense performances and diverse musical styles. The members' exceptional skills and stage presence make us look forward to new aspects with each comeback. The musical spectrum that ONEUS will showcase in the future is expected to expand even further.</p><p>✧</p><p>그룹 탄생</p><p>원어스는 RBW에서 야심차게 선보인 보이 그룹으로, 오랜 연습 기간을 거쳐 2019년 1월 데뷔했습니다. 데뷔 전부터 다양한 프로젝트를 통해 멤버들의 개성과 실력을 알리며 팬덤을 쌓아왔어요. 멤버들은 각자 보컬, 랩, 퍼포먼스 등 다양한 포지션에서 뛰어난 역량을 발휘하고 있습니다.</p><p>Group Formation</p><p>ONEUS is a boy group ambitiously introduced by RBW, debuting in January 2019 after a long period of training. Since before their debut, they have built a fan base by showcasing the members' individuality and skills through various projects. The members excel in various positions such as vocals, rap, and performance.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>원어스는 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여주고 있습니다. 힙합, 댄스, 발라드 등 다양한 스타일을 자신들만의 색깔로 재해석하는 능력이 돋보여요. 특히, 한국적인 요소를 가미한 퍼포먼스는 원어스만의 독특한 매력으로 자리 잡았습니다.</p><p>Music and Performance</p><p>ONEUS showcases a wide musical spectrum by digesting various genres. They excel at reinterpreting various styles such as hip-hop, dance, and ballad with their own unique color. In particular, performances incorporating Korean elements have established themselves as ONEUS's unique charm.</p><p>✧</p><p>주요 활동</p><p>데뷔 이후 원어스는 꾸준한 앨범 발매와 활발한 공연 활동을 통해 팬들과 소통하고 있습니다. 국내뿐만 아니라 해외 팬들을 위한 다양한 활동도 펼치며 글로벌 팬덤을 확장하고 있어요. 뮤직비디오, 자체 제작 콘텐츠 등 다양한 볼거리를 제공하며 팬들에게 즐거움을 선사하고 있습니다.</p><p>Key Activities</p><p>Since their debut, ONEUS has been communicating with fans through consistent album releases and active concert activities. They are also expanding their global fandom by engaging in various activities for overseas fans as well as domestic ones. They provide a variety of attractions such as music videos and self-produced content, bringing joy to their fans.</p><p>✧</p><p>미래/의미</p><p>원어스는 끊임없이 새로운 시도를 통해 성장하는 그룹입니다. 자신들만의 음악적 색깔을 더욱 확고히 하고, 퍼포먼스 역량을 강화하며 더욱 발전된 모습을 보여줄 것으로 기대돼요. 앞으로 원어스가 K팝 씬에 어떤 새로운 바람을 불러일으킬지 귀추가 주목됩니다.</p><p>Future/Meaning</p><p>ONEUS is a group that grows through constant new attempts. They are expected to further solidify their unique musical color and show a more developed appearance by strengthening their performance capabilities. Attention is focused on what new trends ONEUS will bring to the K-pop scene in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] TIME MACHINE</div>
+<div><a href='https://tidal.com/album/432475157' target='_blank'>https://tidal.com/album/432475157</a></div>
+<div>ONEUS - TIME MACHINE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/432475157' target='_blank'><img src='https://resources.tidal.com/images/86625141/d27d/425a/91ae/e4760c5f2bdf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Dear.M</div>
+<div><a href='https://tidal.com/album/411479078' target='_blank'>https://tidal.com/album/411479078</a></div>
+<div>ONEUS - IKUK</div>
+<div>ONEUS - We Are Young</div>
+<div>ONEUS - DEVILISH LOVE</div>
+<div>ONEUS - W</div>
+<div>ONEUS - Rupert's drop</div>
+<div>ONEUS - Valkyrie (Penta Ver.)</div>
+<div>ONEUS - Twilight (Penta Ver.)</div>
+<div>ONEUS - LIT (Penta Ver.)</div>
+<div>ONEUS - A Song Written Easily (Penta Ver.)</div>
+<div>ONEUS - TO BE OR NOT TO BE (Penta Ver.)</div>
+<div>ONEUS - BBUSYEO (Penta Ver.)</div>
+<div>ONEUS - No diggity (Penta Ver.)</div>
+<div>ONEUS - BLACK MIRROR (Penta Ver.)</div>
+<div>ONEUS - Life is Beautiful (Penta Ver.)</div>
+<div>ONEUS - LUNA (Penta Ver.)</div>
+<div>ONEUS - Bring it on (Penta Ver.)</div>
+<div>ONEUS - Same Scent (Penta Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/411479078' target='_blank'><img src='https://resources.tidal.com/images/2b9c8d5a/5020/432d/b96a/381c5afa96a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Rupert's drop</div>
+<div><a href='https://tidal.com/album/404528822' target='_blank'>https://tidal.com/album/404528822</a></div>
+<div>ONEUS - Rupert's drop</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/404528822' target='_blank'><img src='https://resources.tidal.com/images/96b4ef5d/ea93/4139/b5ea/2b82af836ab6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] ROAD TO KINGDOM _ ACE OF ACE 〈VS〉 Part. 2</div>
+<div><a href='https://tidal.com/album/390772856' target='_blank'>https://tidal.com/album/390772856</a></div>
+<div>ONEUS - Kick It</div>
+<div>The CrewOne - WATCH IT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/390772856' target='_blank'><img src='https://resources.tidal.com/images/888b7cf2/f7ef/46d0/afb7/8d96d2396789/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] ROAD TO KINGDOM _ ACE OF ACE 〈IDENTITY〉 Part. 2</div>
+<div><a href='https://tidal.com/album/410665182' target='_blank'>https://tidal.com/album/410665182</a></div>
+<div>ONEUS - No diggity</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/410665182' target='_blank'><img src='https://resources.tidal.com/images/91c09be3/f564/4008/b48e/29a7d5ff305c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Now (Original by Fin.K.L)</div>
+<div><a href='https://tidal.com/album/364738689' target='_blank'>https://tidal.com/album/364738689</a></div>
+<div>ONEUS - Now (Original by Fin.K.L)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/364738689' target='_blank'><img src='https://resources.tidal.com/images/9943deaa/e8fa/4b36/92c0/85b96fc7f90b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] PYGMALION</div>
+<div><a href='https://tidal.com/album/293754898' target='_blank'>https://tidal.com/album/293754898</a></div>
+<div>ONEUS - Intro - LETHE</div>
+<div>ONEUS - ERASE ME</div>
+<div>ONEUS - Unforgettable</div>
+<div>ONEUS - ECHO</div>
+<div>ONEUS - Halley's Comet</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/293754898' target='_blank'><img src='https://resources.tidal.com/images/12116aff/f5bd/42c9/90cc/ac4944a22481/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] La Dolce Vita</div>
+<div><a href='https://tidal.com/album/318410476' target='_blank'>https://tidal.com/album/318410476</a></div>
+<div>ONEUS - Intro - Beggin’ you</div>
+<div>ONEUS - Baila Conmigo</div>
+<div>ONEUS - Simulation</div>
+<div>ONEUS - Epilogue</div>
+<div>ONEUS - Baila Conmigo (Spanish ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318410476' target='_blank'><img src='https://resources.tidal.com/images/fa9298c7/849a/4264/b6f7/b8747444e932/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] TRICKSTER</div>
+<div><a href='https://tidal.com/album/229626369' target='_blank'>https://tidal.com/album/229626369</a></div>
+<div>ONEUS - Intro - Who Got the Joker-</div>
+<div>ONEUS - Bring it on</div>
+<div>ONEUS - Skydivin’</div>
+<div>ONEUS - Firebomb</div>
+<div>ONEUS - Fragile</div>
+<div>ONEUS - Mr. Wolf</div>
+<div>ONEUS - Bring it on (English ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/229626369' target='_blank'><img src='https://resources.tidal.com/images/4bd266c4/926a/470d/b43e/8843e3c57ca2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] MALUS</div>
+<div><a href='https://tidal.com/album/246679962' target='_blank'>https://tidal.com/album/246679962</a></div>
+<div>ONEUS - Intro - EDEN</div>
+<div>ONEUS - Same Scent</div>
+<div>ONEUS - STUPID LOVE</div>
+<div>ONEUS - Gravitation</div>
+<div>ONEUS - Mermaid</div>
+<div>ONEUS - FULL MOON</div>
+<div>ONEUS - Same Scent (English ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/246679962' target='_blank'><img src='https://resources.tidal.com/images/571420a3/0c33/43b7/bb5b/e4f34ac1e38e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Listen-Up Bonus</div>
+<div><a href='https://tidal.com/album/253509810' target='_blank'>https://tidal.com/album/253509810</a></div>
+<div>ONEUS, Las - Ma Boy (Ma Girl) (Prod. LAS (라스))</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/253509810' target='_blank'><img src='https://resources.tidal.com/images/8ae907ab/b775/44aa/aca7/7292b6911a0d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] STAY</div>
+<div><a href='https://tidal.com/album/216503616' target='_blank'>https://tidal.com/album/216503616</a></div>
+<div>ONEWE, ONEUS - STAY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216503616' target='_blank'><img src='https://resources.tidal.com/images/fa01e461/e1ae/4a61/95f8/03a8bed4583f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] ONEUS THEATRE _ Shut Up 받고 Crazy Hot!</div>
+<div><a href='https://tidal.com/album/216299841' target='_blank'>https://tidal.com/album/216299841</a></div>
+<div>ONEUS - Shut Up 받고 Crazy Hot!</div>
+<div>ONEUS - Shut Up 받고 Crazy Hot! (English ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216299841' target='_blank'><img src='https://resources.tidal.com/images/15fcc008/6f55/40a8/a5e8/0c9e97c7cedf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] ONEUS THEATRE _ Life is Beautiful</div>
+<div><a href='https://tidal.com/album/216299572' target='_blank'>https://tidal.com/album/216299572</a></div>
+<div>ONEUS - Life is Beautiful</div>
+<div>ONEUS - Life is Beautiful (English ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216299572' target='_blank'><img src='https://resources.tidal.com/images/b2f44bad/f71d/44ae/a986/dbfe1e3604e4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] DEVIL</div>
+<div><a href='https://tidal.com/album/216255462' target='_blank'>https://tidal.com/album/216255462</a></div>
+<div>ONEUS - Intro - Devil is in the detail</div>
+<div>ONEUS - No diggity</div>
+<div>ONEUS - Leftover</div>
+<div>ONEUS - Incomplete</div>
+<div>ONEUS - Youth</div>
+<div>ONEUS - BBUSYEO</div>
+<div>ONEUS - Rewind</div>
+<div>ONEUS - Lion Heart</div>
+<div>ONEUS - What You Doing-</div>
+<div>ONEUS - I.P.U</div>
+<div>ONEUS - Outro - Connect with US</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216255462' target='_blank'><img src='https://resources.tidal.com/images/95875b6c/3118/4b85/b8c5/5293484f9107/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] BLOOD MOON</div>
+<div><a href='https://tidal.com/album/216279132' target='_blank'>https://tidal.com/album/216279132</a></div>
+<div>ONEUS - Intro - Window (Feat. Choi Ye Lim)</div>
+<div>ONEUS - LUNA</div>
+<div>ONEUS - Yes Or No</div>
+<div>ONEUS - Life is Beautiful</div>
+<div>ONEUS - Shut Up 받고 Crazy Hot!</div>
+<div>ONEUS - We're in Love</div>
+<div>ONEUS - Who You Are</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216279132' target='_blank'><img src='https://resources.tidal.com/images/5d94ac82/8614/473d/bb50/a96ec9da6729/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] BINARY CODE</div>
+<div><a href='https://tidal.com/album/216182800' target='_blank'>https://tidal.com/album/216182800</a></div>
+<div>ONEUS - BLACK MIRROR</div>
+<div>ONEUS - Connect with US</div>
+<div>ONEUS - Polarity</div>
+<div>ONEUS - Happy Birthday</div>
+<div>ONEUS - Valkyrie (Rock ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216182800' target='_blank'><img src='https://resources.tidal.com/images/20934870/6fa4/4a61/b4c5/bbb1b437996f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] LIVED</div>
+<div><a href='https://tidal.com/album/216466154' target='_blank'>https://tidal.com/album/216466154</a></div>
+<div>ONEUS - Intro - LIVED</div>
+<div>ONEUS - TO BE OR NOT TO BE</div>
+<div>ONEUS - Dead Or Alive</div>
+<div>ONEUS - Dizzy</div>
+<div>ONEUS - Airplane</div>
+<div>ONEUS - COME BACK HOME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216466154' target='_blank'><img src='https://resources.tidal.com/images/f83d42f4/b2db/44fd/bc70/29716a6f3637/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] IN ITS TIME</div>
+<div><a href='https://tidal.com/album/216449301' target='_blank'>https://tidal.com/album/216449301</a></div>
+<div>ONEUS - A Song Written Easily</div>
+<div>ONEUS - Hide and Seek</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216449301' target='_blank'><img src='https://resources.tidal.com/images/d8e04a15/4f6f/4149/be49/4e0c87ca1938/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] BBUSYEO</div>
+<div><a href='https://tidal.com/album/216449662' target='_blank'>https://tidal.com/album/216449662</a></div>
+<div>ONEUS - BBUSYEO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216449662' target='_blank'><img src='https://resources.tidal.com/images/8d2f4465/03ff/4cea/a2f8/365b6244d775/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] RAISE US</div>
+<div><a href='https://tidal.com/album/216488514' target='_blank'>https://tidal.com/album/216488514</a></div>
+<div>ONEUS - Intro - Time</div>
+<div>ONEUS - Twilight</div>
+<div>ONEUS - English Girl</div>
+<div>ONEUS - BingBing</div>
+<div>ONEUS - White Night</div>
+<div>ONEUS - Now</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216488514' target='_blank'><img src='https://resources.tidal.com/images/9e4a3498/7eb9/40fb/8844/e56ec2f3596a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] LIGHT US</div>
+<div><a href='https://tidal.com/album/216503085' target='_blank'>https://tidal.com/album/216503085</a></div>
+<div>ONEUS - Intro - LIGHT US</div>
+<div>ONEUS - ZigZag</div>
+<div>ONEUS - Valkyrie</div>
+<div>ONEUS - Red Thread</div>
+<div>ONEUS - EYE CONTACT</div>
+<div>ONEUS - HERO</div>
+<div>ONEUS - CRAZY & CRAZY (Prod. CyA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216503085' target='_blank'><img src='https://resources.tidal.com/images/172d402c/ea23/49df/a182/962a6f642608/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] FLY WITH US</div>
+<div><a href='https://tidal.com/album/216449093' target='_blank'>https://tidal.com/album/216449093</a></div>
+<div>ONEUS - Intro - Fly me to the moon</div>
+<div>ONEUS - Plastic Flower</div>
+<div>ONEUS - LIT</div>
+<div>ONEUS - Blue Sky</div>
+<div>ONEUS - Level Up</div>
+<div>ONEUS - Stand By</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216449093' target='_blank'><img src='https://resources.tidal.com/images/9af37c70/b3e9/4063/b137/569636d3e1c9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] I Shall Debut</div>
+<div><a href='https://tidal.com/album/216079344' target='_blank'>https://tidal.com/album/216079344</a></div>
+<div>ONEWE, ONEUS - LAST SONG</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216079344' target='_blank'><img src='https://resources.tidal.com/images/2ce16496/02c8/490e/a227/4984bc704e6e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/원어스 (ONEUS)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
