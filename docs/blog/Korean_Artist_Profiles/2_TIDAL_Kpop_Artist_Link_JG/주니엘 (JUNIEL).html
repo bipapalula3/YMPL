@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 주니엘 ( Tidal JUNIEL )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 주니엘 ( Tidal JUNIEL )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/69ed5048/3f38/4b2e/b5db/01d00cb188f4/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5985984 ---' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 주니엘</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>주니엘 (JUNIEL) – 섬세한 감성으로 노래하는 싱어송라이터, 'Bye'의 아련함과 'Fall In Love'의 설렘을 담아내다</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> JUNIEL</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>JUNIEL – A singer-songwriter who sings with delicate emotions, capturing the wistfulness of 'Bye' and the excitement of 'Fall In Love'</div><p>감성적인 목소리와 진솔한 음악으로 많은 사랑을 받고 있는 싱어송라이터 주니엘을 소개합니다. 그녀는 어쿠스틱 기타 선율과 함께 자신만의 이야기를 노래하며, 듣는 이들의 마음을 따뜻하게 어루만집니다. 다채로운 음악적 스펙트럼을 통해 꾸준히 성장하는 주니엘의 음악 세계를 함께 알아볼까요?</p><p>Let me introduce the singer-songwriter JUNIEL, who is loved for her emotional voice and sincere music. She sings her own stories with acoustic guitar melodies, warmly touching the hearts of listeners. Shall we explore the musical world of JUNIEL, who is constantly growing through her diverse musical spectrum?</p><p>✧</p><p>홀로서기의 시작</p><p>주니엘은 어린 시절부터 음악에 대한 꿈을 키우며 솔로 아티스트로서의 길을 걷기 시작했어요. 일본에서 음악 활동을 시작하며 경험을 쌓았고, 한국으로 돌아와 자신만의 음악 색깔을 확립했습니다. 그녀의 음악 여정은 끊임없는 도전과 성장의 연속이라고 할 수 있습니다.</p><p>The Beginning of Standing Alone</p><p>JUNIEL began to pursue her dream of music from a young age and started her journey as a solo artist. She gained experience by starting her music career in Japan and returned to Korea to establish her own unique musical style. Her musical journey can be described as a continuous series of challenges and growth.</p><p>✧</p><p>음악적 색깔과 다채로운 시도</p><p>주니엘의 음악은 어쿠스틱 팝을 기반으로 다양한 장르를 넘나드는 폭넓은 스펙트럼을 자랑합니다. 섬세한 감성 표현과 솔직한 가사는 그녀의 음악을 더욱 매력적으로 만들죠. 때로는 사랑의 설렘을, 때로는 이별의 아픔을 자신만의 스타일로 풀어냅니다.</p><p>Musical Color and Diverse Attempts</p><p>JUNIEL's music boasts a broad spectrum that crosses various genres based on acoustic pop. Delicate emotional expressions and honest lyrics make her music even more attractive. Sometimes she expresses the excitement of love, and sometimes the pain of parting, in her own style.</p><p>✧</p><p>꾸준한 활동과 성장</p><p>주니엘은 꾸준한 음반 발매와 공연 활동을 통해 팬들과 소통하고 있습니다. 드라마 OST 참여, 다른 아티스트와의 협업 등 다양한 활동을 통해 음악적 역량을 넓혀가고 있죠. 그녀의 음악은 듣는 이들에게 깊은 공감과 위로를 전하며, 오랫동안 사랑받고 있습니다.</p><p>Continuous Activity and Growth</p><p>JUNIEL communicates with fans through continuous album releases and performances. She is expanding her musical capabilities through various activities such as participating in drama OSTs and collaborating with other artists. Her music conveys deep empathy and comfort to listeners, and is loved for a long time.</p><p>✧</p><p>앞으로의 음악, 그리고 의미</p><p>주니엘은 앞으로도 진솔한 음악으로 대중과 소통하며 자신만의 음악 세계를 더욱 깊이 있게 만들어갈 것입니다. 그녀의 음악은 단순한 노래를 넘어, 삶의 이야기와 감정을 공유하는 소중한 매개체가 될 것입니다. 앞으로 그녀가 들려줄 음악 이야기가 더욱 기대됩니다.</p><p>Future Music, and Meaning</p><p>JUNIEL will continue to communicate with the public through sincere music and create her own musical world more deeply. Her music will be more than just a song, it will be a precious medium for sharing life stories and emotions. I am looking forward to the music story she will tell in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Flying (From _Odd Girl Out_ [Original Soundtrack])</div>
+<div><a href='https://tidal.com/album/345248109' target='_blank'>https://tidal.com/album/345248109</a></div>
+<div>JUNIEL - Flying</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/345248109' target='_blank'><img src='https://resources.tidal.com/images/1a9df4be/9735/44b5/a0ef/8e26a111b3c9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Bye</div>
+<div><a href='https://tidal.com/album/352277875' target='_blank'>https://tidal.com/album/352277875</a></div>
+<div>JUNIEL - Bye</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352277875' target='_blank'><img src='https://resources.tidal.com/images/69459c9a/0c95/47b8/a6f0/0043a3625c7d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 삼남매가 용감하게 (Original Soundtrack), Pt.12</div>
+<div><a href='https://tidal.com/album/278511506' target='_blank'>https://tidal.com/album/278511506</a></div>
+<div>JUNIEL - 너만 있으면 돼</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278511506' target='_blank'><img src='https://resources.tidal.com/images/f8ec4218/612c/41fd/aedd/281db717dc47/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 너에게 주고 싶은 세 가지</div>
+<div><a href='https://tidal.com/album/318164155' target='_blank'>https://tidal.com/album/318164155</a></div>
+<div>JUNIEL - 너에게 주고 싶은 세 가지</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318164155' target='_blank'><img src='https://resources.tidal.com/images/7e15337e/11cb/4dff/86e1/8b3e3965e786/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 내일이 아름답도록 (졸업식 노래)</div>
+<div><a href='https://tidal.com/album/334500239' target='_blank'>https://tidal.com/album/334500239</a></div>
+<div>JUNIEL - 내일이 아름답도록 (졸업식 노래)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334500239' target='_blank'><img src='https://resources.tidal.com/images/e7e80f63/737a/42fc/98b2/180018fa6ea4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Night (From _Lies hidden in my garden Original Soundtrack, Pt. 1_)</div>
+<div><a href='https://tidal.com/album/346836125' target='_blank'>https://tidal.com/album/346836125</a></div>
+<div>JUNIEL - Night (From -Lies hidden in my garden Original Sou</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346836125' target='_blank'><img src='https://resources.tidal.com/images/653bc40f/4605/47ca/a3e0/c037d973f6ca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Is this love_ (with Yountoven)</div>
+<div><a href='https://tidal.com/album/306146558' target='_blank'>https://tidal.com/album/306146558</a></div>
+<div>JUNIEL, Yountoven - Is this love- (with Yountoven)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306146558' target='_blank'><img src='https://resources.tidal.com/images/81be5639/6748/445e/ba47/36087bc26423/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 크레이지 러브 OST Part 6</div>
+<div><a href='https://tidal.com/album/302754107' target='_blank'>https://tidal.com/album/302754107</a></div>
+<div>JUNIEL - Wide Open</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302754107' target='_blank'><img src='https://resources.tidal.com/images/f9d969f9/8413/48bd/ae1c/160036e1c8a5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Somewhere Only We Know</div>
+<div><a href='https://tidal.com/album/263364619' target='_blank'>https://tidal.com/album/263364619</a></div>
+<div>JUNIEL - Somewhere Only We Know</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263364619' target='_blank'><img src='https://resources.tidal.com/images/05882755/2131/40a8/b53e/704739b26950/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Dear.</div>
+<div><a href='https://tidal.com/album/306199393' target='_blank'>https://tidal.com/album/306199393</a></div>
+<div>JUNIEL - Dear-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306199393' target='_blank'><img src='https://resources.tidal.com/images/d802753a/586a/4d2f/befe/3b414d857153/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] KARMA</div>
+<div><a href='https://tidal.com/album/193355921' target='_blank'>https://tidal.com/album/193355921</a></div>
+<div>JUNIEL - KARMA(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/193355921' target='_blank'><img src='https://resources.tidal.com/images/df115e47/82d4/4045/afdc/5f573de24ba8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Meow the secret boy</div>
+<div><a href='https://tidal.com/album/189648513' target='_blank'>https://tidal.com/album/189648513</a></div>
+<div>JUNIEL - Fall In Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189648513' target='_blank'><img src='https://resources.tidal.com/images/d2113c3d/e12d/4fcf/91ab/c059b9cebda4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Love is Annoying, But I Hate Being Lonely! (Original Television Soundtrack) Pt. 5</div>
+<div><a href='https://tidal.com/album/156094120' target='_blank'>https://tidal.com/album/156094120</a></div>
+<div>JUNIEL - Delight</div>
+<div>JUNIEL - Delight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/156094120' target='_blank'><img src='https://resources.tidal.com/images/1e77a649/f291/438b/b130/76aea22a5fe2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] ZIGZAG</div>
+<div><a href='https://tidal.com/album/216007936' target='_blank'>https://tidal.com/album/216007936</a></div>
+<div>JUNIEL - ZIGZAG (Feat. SangJae)</div>
+<div>JUNIEL - ZIGZAG (Feat.SangJae) (Acoustic ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216007936' target='_blank'><img src='https://resources.tidal.com/images/28061e58/ee81/4b10/af5d/6280de3511b6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Catch the Ghost (Original Television Soundtrack), Pt. 2</div>
+<div><a href='https://tidal.com/album/196151459' target='_blank'>https://tidal.com/album/196151459</a></div>
+<div>JUNIEL - The Star</div>
+<div>JUNIEL - The Star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196151459' target='_blank'><img src='https://resources.tidal.com/images/5ec985a7/2150/4167/a1f4/cd44d576f130/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 로봇이 아니야 OST Part.5</div>
+<div><a href='https://tidal.com/album/301364850' target='_blank'>https://tidal.com/album/301364850</a></div>
+<div>JUNIEL - 여기 서 있어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/301364850' target='_blank'><img src='https://resources.tidal.com/images/c10ad868/0894/4e2f/be18/f87d8614b69b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Your House Helper, Pt. 5</div>
+<div><a href='https://tidal.com/album/301490899' target='_blank'>https://tidal.com/album/301490899</a></div>
+<div>JUNIEL - Smile Again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/301490899' target='_blank'><img src='https://resources.tidal.com/images/bddd3e01/c7b9/4165/96aa/4c9ebe7fd172/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Ordinary Things</div>
+<div><a href='https://tidal.com/album/216014178' target='_blank'>https://tidal.com/album/216014178</a></div>
+<div>JUNIEL - Last Carnival</div>
+<div>JUNIEL - Merry-Go-Round</div>
+<div>JUNIEL - I Drink Alone</div>
+<div>JUNIEL - Letter</div>
+<div>JUNIEL - Song for you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216014178' target='_blank'><img src='https://resources.tidal.com/images/f98b33e8/9fbf/4c96/9ff5/9157ae5b47eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] Last Carnival</div>
+<div><a href='https://tidal.com/album/216094251' target='_blank'>https://tidal.com/album/216094251</a></div>
+<div>JUNIEL - Last Carnival</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216094251' target='_blank'><img src='https://resources.tidal.com/images/917ad41a/c554/4ab1/914f/bf8556762cb5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Pisces</div>
+<div><a href='https://tidal.com/album/216016447' target='_blank'>https://tidal.com/album/216016447</a></div>
+<div>JUNIEL - Pisces</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216016447' target='_blank'><img src='https://resources.tidal.com/images/0d93d249/9117/42ce/8dd1/9cc7f913926a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Beautiful Gong Shim (Original Soundtrack) Part.6</div>
+<div><a href='https://tidal.com/album/339897767' target='_blank'>https://tidal.com/album/339897767</a></div>
+<div>DinDin, JUNIEL - You Look Pretty</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339897767' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Sorry</div>
+<div><a href='https://tidal.com/album/237733731' target='_blank'>https://tidal.com/album/237733731</a></div>
+<div>JUNIEL - Sorry</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237733731' target='_blank'><img src='https://resources.tidal.com/images/72e44de1/574c/4442/8763/8a90a98efee5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 다음날</div>
+<div><a href='https://tidal.com/album/230975763' target='_blank'>https://tidal.com/album/230975763</a></div>
+<div>JUNIEL - 다음날</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230975763' target='_blank'><img src='https://resources.tidal.com/images/dab74f2e/f16b/4742/b989/1dc7bed9381a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] I think I'm in love</div>
+<div><a href='https://tidal.com/album/237733859' target='_blank'>https://tidal.com/album/237733859</a></div>
+<div>JUNIEL - I think I'm in love</div>
+<div>JUNIEL - Bug Off!</div>
+<div>JUNIEL - Please</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237733859' target='_blank'><img src='https://resources.tidal.com/images/31b6c505/eb96/4f69/b315/619731d9157e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Romantic J</div>
+<div><a href='https://tidal.com/album/237771109' target='_blank'>https://tidal.com/album/237771109</a></div>
+<div>Lee Jong-hyun, JUNIEL - Love Falls</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237771109' target='_blank'><img src='https://resources.tidal.com/images/dd33c594/a2e6/4a96/b870/b83115dcb3eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Fall in L</div>
+<div><a href='https://tidal.com/album/215967396' target='_blank'>https://tidal.com/album/215967396</a></div>
+<div>JUNIEL - A Cute Guy</div>
+<div>JUNIEL - Date</div>
+<div>JUNIEL - Sleep Talking</div>
+<div>JUNIEL - My Lips</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215967396' target='_blank'><img src='https://resources.tidal.com/images/b7e6f4f3/d820/4eb8/a0d9/cdbf9fea3dec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] DOKKUN Project Pt.3</div>
+<div><a href='https://tidal.com/album/216093784' target='_blank'>https://tidal.com/album/216093784</a></div>
+<div>JUNIEL - Love You More than Ever (Feat. Hanhae of Phantom)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216093784' target='_blank'><img src='https://resources.tidal.com/images/5cca354a/30cf/4233/ab6a/48908b18d91b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2012] My First June</div>
+<div><a href='https://tidal.com/album/215967372' target='_blank'>https://tidal.com/album/215967372</a></div>
+<div>JUNIEL - illa illa</div>
+<div>JUNIEL - Ready Go!</div>
+<div>JUNIEL - Everlasting Sunset</div>
+<div>JUNIEL - Mask</div>
+<div>JUNIEL - Fool</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215967372' target='_blank'><img src='https://resources.tidal.com/images/69ed5048/3f38/4b2e/b5db/01d00cb188f4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 1&1</div>
+<div><a href='https://tidal.com/album/215967383' target='_blank'>https://tidal.com/album/215967383</a></div>
+<div>JUNIEL - Bad boy</div>
+<div>JUNIEL - Oh! Happy Day</div>
+<div>JUNIEL - The boy</div>
+<div>JUNIEL - One Day of the Cat</div>
+<div>JUNIEL - Happy Ending</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215967383' target='_blank'><img src='https://resources.tidal.com/images/27e5a7ae/e081/42b0/8dfa/9a9fcabd2c34/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/주니엘 (JUNIEL)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
