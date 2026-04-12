@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 트웰브 ( Tidal TWLV )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 트웰브 ( Tidal TWLV )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/66160c52/4915/4e60/9253/83b5fe37236a/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9286301' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 트웰브</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>트웰브 (TWLV) – 도시의 밤을 물들이는 감각적인 R&B, 'Pinot Noir'처럼 깊고 'Toxic'처럼 아찔한 매력</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> TWLV</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>TWLV – Sensuous R&B that paints the city night, with a charm as deep as 'Pinot Noir' and as thrilling as 'Toxic'</div><p>섬세한 감성과 트렌디한 사운드로 리스너들을 사로잡는 아티스트, 트웰브(TWLV)를 소개합니다. 그는 특유의 분위기 있는 보컬과 솔직한 가사로 자신만의 음악 세계를 구축하고 있어요. 다양한 장르를 넘나들며 끊임없이 새로운 시도를 하는 그의 음악은 듣는 이들에게 깊은 인상을 남깁니다.</p><p>Introducing TWLV, an artist captivating listeners with delicate emotions and trendy sounds. He establishes his own musical world with his unique atmospheric vocals and honest lyrics. His music, which constantly attempts new things across various genres, leaves a deep impression on listeners.</p><p>✧</p><p>감성적인 음악의 시작</p><p>트웰브는 자신만의 색깔을 담아낸 음악들로 대중에게 서서히 이름을 알리기 시작했어요. 그는 특정 그룹에 소속되어 활동하기보다는, 솔로 아티스트로서 독립적인 행보를 걸으며 자신만의 음악적 개성을 드러내고 있습니다. 이러한 자유로운 활동 방식은 그의 음악적 스펙트럼을 더욱 넓혀주고 있죠.</p><p>The Beginning of Emotional Music</p><p>TWLV gradually began to make a name for himself with music that captured his own unique style. Rather than being affiliated with a specific group, he has been working independently as a solo artist, revealing his own musical personality. This free-spirited approach further broadens his musical spectrum.</p><p>✧</p><p>다채로운 음악적 스펙트럼</p><p>트웰브의 음악은 R&B를 기반으로 다양한 장르를 아우르는 폭넓은 스펙트럼을 보여줘요. 그는 섬세한 감정 표현과 트렌디한 사운드를 결합하여 독특한 분위기를 만들어냅니다. 피쳐링에 참여한 다양한 아티스트들과의 시너지를 통해 더욱 풍성하고 완성도 높은 음악을 선보이고 있어요.</p><p>A Diverse Musical Spectrum</p><p>TWLV's music showcases a broad spectrum that encompasses various genres based on R&B. He creates a unique atmosphere by combining delicate emotional expression with trendy sounds. Through synergy with various featured artists, he presents richer and more complete music.</p><p>✧</p><p>주요 작품과 콜라보레이션</p><p>그는 'YES'에서 Jay Park, Reddy와 함께하며 대중적인 인기를 얻었으며, oceanfromtheblue, Gist 등 다양한 아티스트들과 협업하며 음악적 깊이를 더했어요. 트웰브는 자신만의 감각적인 스타일을 유지하면서도 끊임없이 새로운 시도를 통해 음악적 성장을 거듭하고 있습니다. 이러한 노력이 그의 음악을 더욱 특별하게 만들어 주는 것 같아요.</p><p>Key Works and Collaborations</p><p>He gained popularity with 'YES' featuring Jay Park and Reddy, and added musical depth by collaborating with various artists such as oceanfromtheblue and Gist. TWLV continues to grow musically through constant new attempts while maintaining his own sensual style. This effort seems to make his music even more special.</p><p>✧</p><p>앞으로의 음악 여정</p><p>트웰브는 앞으로도 자신만의 음악적 색깔을 더욱 짙게 드러낼 것으로 기대됩니다. 솔직하고 감각적인 그의 음악은 많은 이들에게 위로와 공감을 선사하며 오랫동안 사랑받을 거예요. 앞으로 그가 보여줄 음악적 행보에 더욱 기대가 됩니다.</p><p>The Musical Journey Ahead</p><p>It is expected that TWLV will continue to reveal his own musical color more deeply in the future. His honest and sensual music will provide comfort and empathy to many, and will be loved for a long time. We look forward to the musical steps he will take in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Транзит</div>
+<div><a href='https://tidal.com/album/408315964' target='_blank'>https://tidal.com/album/408315964</a></div>
+<div>TWLV - Do I-(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/408315964' target='_blank'><img src='https://resources.tidal.com/images/2fbcaab8/ddde/4587/8cb5/38bcce0c689e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] UNCONDITIONAL (feat. DON FVBIO)</div>
+<div><a href='https://tidal.com/album/380954432' target='_blank'>https://tidal.com/album/380954432</a></div>
+<div>TWLV - UNCONDITIONAL (feat. DON FVBIO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/380954432' target='_blank'><img src='https://resources.tidal.com/images/139a34e3/bbce/4ad7/8f9a/18bbdfec5a73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Diminished</div>
+<div><a href='https://tidal.com/album/357388029' target='_blank'>https://tidal.com/album/357388029</a></div>
+<div>TWLV - Pinot Noir</div>
+<div>TWLV - Take It Off (feat. Godi)</div>
+<div>TWLV - Toxic (feat. SE YOUNG)(Explicit)</div>
+<div>TWLV - Rendezvous (feat. Horim, Godi)</div>
+<div>TWLV - Trust(Explicit)</div>
+<div>TWLV - Will You</div>
+<div>TWLV - YES (feat. Jay Park, REDDY)</div>
+<div>TWLV - The One (feat. Gist, oceanfromtheblue)</div>
+<div>TWLV - Wherever</div>
+<div>TWLV - Carol</div>
+<div>TWLV - Youth (feat. Jiselle)</div>
+<div>TWLV - Polaris</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/357388029' target='_blank'><img src='https://resources.tidal.com/images/d9a205da/5c58/4a92/9c94/11d9fbff3ab7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Tonite</div>
+<div><a href='https://tidal.com/album/306127765' target='_blank'>https://tidal.com/album/306127765</a></div>
+<div>TWLV - Tonite</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306127765' target='_blank'><img src='https://resources.tidal.com/images/e875acca/faa5/498c/a9a7/6039b69de703/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] The sword of Aramun, Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/317004666' target='_blank'>https://tidal.com/album/317004666</a></div>
+<div>TWLV - Knock Down The Giants</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/317004666' target='_blank'><img src='https://resources.tidal.com/images/29ea83ad/33d7/4043/9413/1d1c0cf21a25/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Serenade</div>
+<div><a href='https://tidal.com/album/306148724' target='_blank'>https://tidal.com/album/306148724</a></div>
+<div>TWLV - Serenade</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306148724' target='_blank'><img src='https://resources.tidal.com/images/3c098e67/359b/44d0/8cbb/db90298fae3a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Like a Miracle</div>
+<div><a href='https://tidal.com/album/306104036' target='_blank'>https://tidal.com/album/306104036</a></div>
+<div>TWLV - Like a Miracle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306104036' target='_blank'><img src='https://resources.tidal.com/images/12a1a610/7dc2/40b5/8dbd/8312bcdcb3bf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Island (Feat. REDDY)</div>
+<div><a href='https://tidal.com/album/307095505' target='_blank'>https://tidal.com/album/307095505</a></div>
+<div>TWLV - Island (Feat. REDDY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/307095505' target='_blank'><img src='https://resources.tidal.com/images/783f1ea6/1514/4e83/a233/7282ccbbafc3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Honeymoon</div>
+<div><a href='https://tidal.com/album/306824420' target='_blank'>https://tidal.com/album/306824420</a></div>
+<div>TWLV - Honeymoon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306824420' target='_blank'><img src='https://resources.tidal.com/images/318c9b75/10c1/4eca/a1b0/fe11ec25cdf6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] F.W.B. (English Ver.)</div>
+<div><a href='https://tidal.com/album/311952975' target='_blank'>https://tidal.com/album/311952975</a></div>
+<div>TWLV - F.W.B. (English Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/311952975' target='_blank'><img src='https://resources.tidal.com/images/09cc3fc5/dad2/4593/9a0d/9f10a7f1d8c3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] YDP</div>
+<div><a href='https://tidal.com/album/306214635' target='_blank'>https://tidal.com/album/306214635</a></div>
+<div>TWLV - YDP (feat. packxday)(Explicit)</div>
+<div>TWLV - car sick (feat. packxday)(Explicit)</div>
+<div>TWLV - knock out (feat. packxday)(Explicit)</div>
+<div>TWLV - letter (feat. packxday)(Explicit)</div>
+<div>TWLV - jacuzzi (feat. packxday)(Explicit)</div>
+<div>TWLV - black tf out (feat. Howl)(Explicit)</div>
+<div>TWLV - 30(Explicit)</div>
+<div>TWLV - bingshin (feat. packxday)(Explicit)</div>
+<div>TWLV - twlv(Explicit)</div>
+<div>TWLV - the end (feat. packxday)(Explicit)</div>
+<div>TWLV - march(Explicit)</div>
+<div>TWLV - beat it (feat. REDDY & DON FVBIO)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306214635' target='_blank'><img src='https://resources.tidal.com/images/67111d69/17b1/4968/8a87/a4b043ef3127/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Neo Seoul</div>
+<div><a href='https://tidal.com/album/306311446' target='_blank'>https://tidal.com/album/306311446</a></div>
+<div>TWLV - Hope you(Explicit)</div>
+<div>TWLV - Over</div>
+<div>TWLV - Playboy(Explicit)</div>
+<div>TWLV - Dec 18th</div>
+<div>TWLV - Roxie(Explicit)</div>
+<div>TWLV - Excuses(Explicit)</div>
+<div>TWLV - Love, Hate(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306311446' target='_blank'><img src='https://resources.tidal.com/images/328fea4d/2767/401c/8593/902c63dc6c5d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Hugs & Loyalty (feat. REDDY, DON FVBIO, Owell Mood)</div>
+<div><a href='https://tidal.com/album/306283624' target='_blank'>https://tidal.com/album/306283624</a></div>
+<div>TWLV - Hugs & Loyalty (feat. REDDY, DON FVBIO, Owell Mood</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306283624' target='_blank'><img src='https://resources.tidal.com/images/f346e7b6/cb37/4fd4/9661/c90d27539c83/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Bad Prosecutor (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/252420843' target='_blank'>https://tidal.com/album/252420843</a></div>
+<div>TWLV - DEEP END</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/252420843' target='_blank'><img src='https://resources.tidal.com/images/be5b6fbc/61b8/4fde/8866/726279aa9e42/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Echoes</div>
+<div><a href='https://tidal.com/album/181936103' target='_blank'>https://tidal.com/album/181936103</a></div>
+<div>TWLV - Rewind</div>
+<div>TWLV - Angel</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/181936103' target='_blank'><img src='https://resources.tidal.com/images/6110ed8f/b6eb/427e/bf36/6e39751eb708/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Dear Santa</div>
+<div><a href='https://tidal.com/album/305873938' target='_blank'>https://tidal.com/album/305873938</a></div>
+<div>TWLV - Dear Santa</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305873938' target='_blank'><img src='https://resources.tidal.com/images/66160c52/4915/4e60/9253/83b5fe37236a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] ALL IN</div>
+<div><a href='https://tidal.com/album/305855386' target='_blank'>https://tidal.com/album/305855386</a></div>
+<div>TWLV - ALL IN(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305855386' target='_blank'><img src='https://resources.tidal.com/images/04c920bd/c845/4363/b675/02e77d4eaf62/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Take It Easy</div>
+<div><a href='https://tidal.com/album/216143433' target='_blank'>https://tidal.com/album/216143433</a></div>
+<div>TWLV - Take It Easy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216143433' target='_blank'><img src='https://resources.tidal.com/images/e30929b4/e864/41bc/a1b9/9eb1cf49afd8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] TWERKING</div>
+<div><a href='https://tidal.com/album/216466639' target='_blank'>https://tidal.com/album/216466639</a></div>
+<div>TWLV - TWERKING (Feat. RAVI)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216466639' target='_blank'><img src='https://resources.tidal.com/images/63860238/f7ee/4631/af3d/8d6ebd347dca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Press!</div>
+<div><a href='https://tidal.com/album/216216664' target='_blank'>https://tidal.com/album/216216664</a></div>
+<div>TWLV, HORSE KING - Press! (Prod. twlv)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216216664' target='_blank'><img src='https://resources.tidal.com/images/f2597a4e/ac5b/46e6/a0ff/5a5091282732/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] K.I.S.S</div>
+<div><a href='https://tidal.com/album/216124646' target='_blank'>https://tidal.com/album/216124646</a></div>
+<div>TWLV - K.I.S.S</div>
+<div>TWLV - DRIP DRIP!</div>
+<div>TWLV - Girls.. (Feat. CHANGMO, SUPERBEE)</div>
+<div>TWLV - Te Quiero (Feat. BIBI)</div>
+<div>TWLV - Grrrr</div>
+<div>TWLV - I.F.M.Y</div>
+<div>TWLV - Easily (Feat. MELOH)</div>
+<div>TWLV - Goddamn</div>
+<div>TWLV - No More (Feat. Paul Blanco)</div>
+<div>TWLV - Perfume (Feat. Owell Mood)</div>
+<div>TWLV - California</div>
+<div>TWLV - OUTRO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216124646' target='_blank'><img src='https://resources.tidal.com/images/44a096b2/b5bc/4728/8ca4/ced6777cf321/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Dingo X Yng & Rich Records (Part 2)</div>
+<div><a href='https://tidal.com/album/298944833' target='_blank'>https://tidal.com/album/298944833</a></div>
+<div>Superbee, Uneducated Kid, TWLV, Yuzion - Summer!</div>
+<div>Superbee, Uneducated Kid, TWLV, Yuzion - Trotrap (Melody Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/298944833' target='_blank'><img src='https://resources.tidal.com/images/2b232967/7c87/4bb9/b56b/d074a2e9ba19/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Dingo X Yng & Rich Records (Part 1)</div>
+<div><a href='https://tidal.com/album/298945845' target='_blank'>https://tidal.com/album/298945845</a></div>
+<div>Superbee, Uneducated Kid, TWLV, Yuzion - trotrap</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/298945845' target='_blank'><img src='https://resources.tidal.com/images/c928dab5/0ba0/441c/8c6a/f0accca27a73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Bad Guys</div>
+<div><a href='https://tidal.com/album/216487253' target='_blank'>https://tidal.com/album/216487253</a></div>
+<div>Superbee, Uneducated Kid, TWLV, Yuzion - Bad Guys</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216487253' target='_blank'><img src='https://resources.tidal.com/images/874207c2/d764/4784/91b2/b664e87bddbc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] AUTOMATIC</div>
+<div><a href='https://tidal.com/album/216247210' target='_blank'>https://tidal.com/album/216247210</a></div>
+<div>Chancellor, Babylon, TWLV, Moon Sujin, BIBI, Jisel - AUTOMATIC</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216247210' target='_blank'><img src='https://resources.tidal.com/images/baa64ef8/a3c9/4cb2/9bea/0a438400a8ea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] ANTIFORMAL</div>
+<div><a href='https://tidal.com/album/216149974' target='_blank'>https://tidal.com/album/216149974</a></div>
+<div>TWLV - Today (Feat. MELOH)</div>
+<div>TWLV - Highway</div>
+<div>TWLV - Celebrate</div>
+<div>TWLV - Holiday (Feat. Paloalto, LEE YOUNG JI)</div>
+<div>TWLV - Do Not Disturb</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216149974' target='_blank'><img src='https://resources.tidal.com/images/08b61eb7/2cc6/43e2/84ea/6bfad273d2c4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Blueline</div>
+<div><a href='https://tidal.com/album/216006497' target='_blank'>https://tidal.com/album/216006497</a></div>
+<div>TWLV - Blueline</div>
+<div>TWLV - Eleven (Feat. BIBI)</div>
+<div>TWLV - In The Room</div>
+<div>TWLV - You (Live)</div>
+<div>TWLV - VEN (Live)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216006497' target='_blank'><img src='https://resources.tidal.com/images/324e336a/2f7b/4677/af08/35e6864777af/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] 8282(Party) (Feat. SUPERBEE, UNEDUCATED KID)</div>
+<div><a href='https://tidal.com/album/216123908' target='_blank'>https://tidal.com/album/216123908</a></div>
+<div>TWLV - 8282(Party) (Feat. SUPERBEE, UNEDUCATED KID)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216123908' target='_blank'><img src='https://resources.tidal.com/images/baaef883/6db0/4869/8b91/46bc258ad3ca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Where You From</div>
+<div><a href='https://tidal.com/album/216094249' target='_blank'>https://tidal.com/album/216094249</a></div>
+<div>TWLV - Where You From</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216094249' target='_blank'><img src='https://resources.tidal.com/images/df194927/a312/4ccf/a4ff/20b091a946b4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Contents ½</div>
+<div><a href='https://tidal.com/album/216119988' target='_blank'>https://tidal.com/album/216119988</a></div>
+<div>TWLV - BODYTALK</div>
+<div>TWLV - CRZY (Feat. CHANGMO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216119988' target='_blank'><img src='https://resources.tidal.com/images/b84443b7/ebb0/4655/8512/da108577d033/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Let You Know</div>
+<div><a href='https://tidal.com/album/81340921' target='_blank'>https://tidal.com/album/81340921</a></div>
+<div>THΞNΞD, TWLV - Let You Know</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/81340921' target='_blank'><img src='https://resources.tidal.com/images/0b858c17/cf62/416c/a3e6/cced58f6094a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_T/1_TIDAL_Kpop_Artist_Link_T.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅌ1) TIDAL Kpop Artist Link (T)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_T/트웰브 (TWLV)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
