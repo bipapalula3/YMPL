@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 조장혁 ( Tidal Cho Jang Hyuk )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 조장혁 ( Tidal Cho Jang Hyuk )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/00049b52/32d9/4557/8ec7/ed7852f56c0a/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10861849' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 조장혁</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>‘그대도 날 떠나가나요’ 애절한 목소리로 마음을 울리는, 섬세한 감정 표현의 대가</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Cho Jang Hyuk</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A master of delicate emotional expression, touching hearts with a sorrowful voice like in 'You also go away'.</div><p>깊은 감성과 호소력 짙은 목소리로 듣는 이의 마음을 사로잡는 가수 조장혁님을 소개합니다. 그는 특유의 감성적인 발라드로 오랫동안 사랑받고 있으며, 폭넓은 음악적 스펙트럼을 보여주고 있어요. 그의 음악은 단순한 노래를 넘어, 진심을 담은 이야기처럼 다가옵니다.</p><p>Let me introduce Cho Jang Hyuk, a singer who captivates listeners with deep emotion and a voice full of appeal. He has been loved for a long time for his unique emotional ballads and shows a broad musical spectrum. His music goes beyond simple songs and comes across as a sincere story.</p><p>✧</p><p>섬세한 감성의 시작</p><p>조장혁님은 데뷔 이후 특유의 허스키하면서도 감성적인 보이스로 많은 이들의 심금을 울렸습니다. 그의 음악은 사랑과 이별의 아픔, 그리고 삶의 고독을 섬세하게 표현하며 깊은 공감을 자아내죠. 꾸밈없이 진솔한 그의 목소리는 듣는 이에게 위로와 감동을 선사합니다.</p><p>The Beginning of Delicate Emotion</p><p>Since his debut, Cho Jang Hyuk has touched the hearts of many with his unique husky and emotional voice. His music delicately expresses the pain of love and separation, as well as the solitude of life, creating deep empathy. His unadorned and sincere voice offers comfort and inspiration to listeners.</p><p>✧</p><p>음악적 깊이와 넓이</p><p>조장혁님은 발라드에 기반을 두면서도 다양한 장르를 넘나드는 음악적 시도를 보여주었습니다. 그는 리메이크 곡을 통해 새로운 해석을 제시하고, 어쿠스틱 버전을 통해 색다른 감성을 전달하기도 합니다. 그의 음악은 끊임없이 변화하고 발전하며, 폭넓은 음악적 스펙트럼을 자랑합니다.</p><p>Musical Depth and Breadth</p><p>Cho Jang Hyuk has shown musical attempts that cross various genres while based on ballads. He presents new interpretations through remakes and conveys different emotions through acoustic versions. His music is constantly changing and developing, boasting a broad musical spectrum.</p><p>✧</p><p>꾸준한 활동과 영향력</p><p>조장혁님은 다양한 드라마 OST 참여와 공연 활동을 통해 꾸준히 팬들과 소통하고 있습니다. 그의 음악은 시대를 초월하여 많은 사람들에게 사랑받고 있으며, 후배 가수들에게도 큰 영향을 주고 있습니다. 그의 음악은 단순한 유행을 넘어, 깊은 울림을 주는 예술로 자리매김했습니다.</p><p>Steady Activity and Influence</p><p>Cho Jang Hyuk has been steadily communicating with fans through participation in various drama OSTs and performances. His music is loved by many people beyond generations and has a great influence on younger singers. His music has become an art that gives deep resonance, going beyond simple trends.</p><p>✧</p><p>앞으로의 음악 여정</p><p>앞으로도 조장혁님은 특유의 감성을 담은 음악으로 우리 곁에 머물 것입니다. 그의 음악은 지친 일상에 위로를 건네고, 잊고 지냈던 감정을 되살리는 힘을 가지고 있습니다. 그의 음악 여정이 앞으로도 많은 이들에게 따뜻한 감동을 선사하길 기대합니다.</p><p>The Musical Journey Ahead</p><p>In the future, Cho Jang Hyuk will continue to stay with us with music that contains his unique emotions. His music offers comfort in tiring daily life and has the power to revive forgotten emotions. I hope his musical journey will continue to bring warm inspiration to many people.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Shaving</div>
+<div><a href='https://tidal.com/album/388321344' target='_blank'>https://tidal.com/album/388321344</a></div>
+<div>Cho Jang Hyuck - Shaving</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/388321344' target='_blank'><img src='https://resources.tidal.com/images/85135a96/9113/4faf/871e/abdb95a4c517/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] One the Woman (Original Television Soundtrack, Pt. 5) - Single</div>
+<div><a href='https://tidal.com/album/409145225' target='_blank'>https://tidal.com/album/409145225</a></div>
+<div>Cho Jang Hyuck - Still in my heart</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/409145225' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] I'm so sorry and I love you</div>
+<div><a href='https://tidal.com/album/216250017' target='_blank'>https://tidal.com/album/216250017</a></div>
+<div>Cho Jang Hyuck - I'm so sorry and I love you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216250017' target='_blank'><img src='https://resources.tidal.com/images/a62d32a9/9bde/48f4/82f0/2941aa3f9dc9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] You also go away (Remake)</div>
+<div><a href='https://tidal.com/album/216044653' target='_blank'>https://tidal.com/album/216044653</a></div>
+<div>Cho Jang Hyuck - You also go away</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216044653' target='_blank'><img src='https://resources.tidal.com/images/e318c64b/24e7/4617/bc38/bc1843ef80ce/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Singderella Special Song Vol.3</div>
+<div><a href='https://tidal.com/album/216006653' target='_blank'>https://tidal.com/album/216006653</a></div>
+<div>Cho Jang Hyuck - Don't Worry Dear</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216006653' target='_blank'><img src='https://resources.tidal.com/images/1203bdae/f1b2/4cc0/8de5/da9cec7e60dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] every time i breathe</div>
+<div><a href='https://tidal.com/album/216419854' target='_blank'>https://tidal.com/album/216419854</a></div>
+<div>Cho Jang Hyuck - every time i breathe</div>
+<div>Cho Jang Hyuck - Love (Remake Ver.)</div>
+<div>Cho Jang Hyuck - every time i breathe (Acoustic Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216419854' target='_blank'><img src='https://resources.tidal.com/images/2c284c4b/dc06/4197/b89f/73615fd5c89d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 조선총잡이 (Original Television Soundtrack) Pt.6</div>
+<div><a href='https://tidal.com/album/365859213' target='_blank'>https://tidal.com/album/365859213</a></div>
+<div>Cho Jang Hyuck - Disc1 - 무한지애</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/365859213' target='_blank'><img src='https://resources.tidal.com/images/ebedc9f8/0f57/4605/93e8/3ec4fd16b2c4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Now…</div>
+<div><a href='https://tidal.com/album/216345532' target='_blank'>https://tidal.com/album/216345532</a></div>
+<div>Cho Jang Hyuck - when i still have to love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216345532' target='_blank'><img src='https://resources.tidal.com/images/6522a610/543e/4067/89f4/02f86942db62/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2003] When I Still Have to Love</div>
+<div><a href='https://tidal.com/album/339889937' target='_blank'>https://tidal.com/album/339889937</a></div>
+<div>Cho Jang Hyuck - Feel Empty</div>
+<div>Cho Jang Hyuck - When I Still Have to Love</div>
+<div>Cho Jang Hyuck - as much as a fingernail</div>
+<div>Cho Jang Hyuck - A day that hurts more than a breakup</div>
+<div>Cho Jang Hyuck - a beautiful story for everyone</div>
+<div>Cho Jang Hyuck - Pasion Noctura</div>
+<div>Cho Jang Hyuck - worry</div>
+<div>Cho Jang Hyuck - My Lady</div>
+<div>Cho Jang Hyuck - the way i'm on my way</div>
+<div>Cho Jang Hyuck - Amore</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339889937' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2001] Sad…</div>
+<div><a href='https://tidal.com/album/339657139' target='_blank'>https://tidal.com/album/339657139</a></div>
+<div>Cho Jang Hyuck - Prologue</div>
+<div>Cho Jang Hyuck - Sad</div>
+<div>Cho Jang Hyuck - For you---</div>
+<div>Cho Jang Hyuck - You're more precious than love</div>
+<div>Cho Jang Hyuck - Forgiveness</div>
+<div>Cho Jang Hyuck - The Letter</div>
+<div>Cho Jang Hyuck - Bi Yoil</div>
+<div>Cho Jang Hyuck - Man</div>
+<div>Cho Jang Hyuck - Don't Cry</div>
+<div>Cho Jang Hyuck - Farewell without parting</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339657139' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] Love</div>
+<div><a href='https://tidal.com/album/184469195' target='_blank'>https://tidal.com/album/184469195</a></div>
+<div>Cho Jang Hyuck - Prologue</div>
+<div>Cho Jang Hyuck - 중독된 사랑</div>
+<div>Cho Jang Hyuck - The Last</div>
+<div>Cho Jang Hyuck - Love</div>
+<div>Cho Jang Hyuck - You Believe---</div>
+<div>Cho Jang Hyuck - 체념</div>
+<div>Cho Jang Hyuck - 비안오던날</div>
+<div>Cho Jang Hyuck - 모순</div>
+<div>Cho Jang Hyuck - Love Game</div>
+<div>Cho Jang Hyuck - 독2</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184469195' target='_blank'><img src='https://resources.tidal.com/images/00049b52/32d9/4557/8ec7/ed7852f56c0a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Yesterday (From Christmas To Christmas)</div>
+<div><a href='https://tidal.com/album/167381426' target='_blank'>https://tidal.com/album/167381426</a></div>
+<div>Cho Jang Hyuck - Remember</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167381426' target='_blank'><img src='https://resources.tidal.com/images/933b927f/9b52/4544/8049/cb036c9aaf28/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1997] In Side Your Heart</div>
+<div><a href='https://tidal.com/album/139533377' target='_blank'>https://tidal.com/album/139533377</a></div>
+<div>Cho Jang Hyuck - 널 알기에…</div>
+<div>Cho Jang Hyuck - 실연</div>
+<div>Cho Jang Hyuck - 안녕</div>
+<div>Cho Jang Hyuck - 친구에게</div>
+<div>Cho Jang Hyuck - 잿빛거리</div>
+<div>Cho Jang Hyuck - 사랑이란 것은</div>
+<div>Cho Jang Hyuck - 사랑해</div>
+<div>Cho Jang Hyuck - Don't Go Baby</div>
+<div>Cho Jang Hyuck - 나를 바라보는 너의 눈빛</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/139533377' target='_blank'><img src='https://resources.tidal.com/images/113eca73/0be4/44a1/99cf/b2b873d20f77/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] 그대 떠나가도</div>
+<div><a href='https://tidal.com/album/301335682' target='_blank'>https://tidal.com/album/301335682</a></div>
+<div>Cho Jang Hyuck - Change</div>
+<div>Cho Jang Hyuck - 그대 떠나가도</div>
+<div>Cho Jang Hyuck - 너를 위한 나의 마음</div>
+<div>Cho Jang Hyuck - 떠날 수 밖에</div>
+<div>Cho Jang Hyuck - 독</div>
+<div>Cho Jang Hyuck - 뭐가 보이니-</div>
+<div>Cho Jang Hyuck - 현실이라고-</div>
+<div>Cho Jang Hyuck - First Kiss</div>
+<div>Cho Jang Hyuck - 비오는 날의 소풍</div>
+<div>Cho Jang Hyuck - Change (from 'Change' Original Motion Picture Soun</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/301335682' target='_blank'><img src='https://resources.tidal.com/images/0658ccc3/9d27/4cf7/9a3c/cf0e1d887584/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/조장혁 (Cho Jang Hyuk)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
