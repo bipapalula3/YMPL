@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 서태지와아이들 ( Tidal Seo Taiji and Boys )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 서태지와아이들 ( Tidal Seo Taiji and Boys )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/e5e00a07/32c4/4672/8b21/e189477154ac/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/23422969' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 서태지와아이들</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>서태지와아이들 – 시대의 아픔을 춤과 음악으로 승화시킨 혁명가들, ‘컴백홈’의 따뜻한 위로와 ‘시대유감’의 날카로운 저항</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Seo Taiji and Boys</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Seo Taiji and Boys – Revolutionaries who transformed the pain of an era into dance and music, offering warm comfort in 'Come Back Home' and sharp resistance in 'Regret of the Times'</div><p>한국 대중음악사에 획을 그은 전설적인 그룹, 서태지와아이들입니다. 1990년대 초, 기존의 틀을 깨는 음악과 파격적인 퍼포먼스로 젊은 세대의 아이콘으로 떠올랐습니다. 그들의 음악은 단순한 유행을 넘어 사회적 메시지를 담아내며 큰 반향을 일으켰습니다.</p><p>Seo Taiji and Boys is a legendary group that marked a milestone in Korean popular music history. In the early 1990s, they emerged as icons of the younger generation with their groundbreaking music and unconventional performances. Their music went beyond simple trends, resonating deeply with its social messages.</p><p>✧</p><p>그룹 탄생</p><p>서태지와아이들은 1992년, 서태지를 중심으로 이주노, 양현석이 합류하며 탄생했습니다. 데뷔곡 '난 알아요'는 당시 가요계에 신선한 충격을 안겨주며 폭발적인 인기를 얻었습니다. 이는 한국 대중음악의 흐름을 바꾸는 중요한 계기가 되었습니다.</p><p>The Birth of the Group</p><p>Seo Taiji and Boys was formed in 1992, with Seo Taiji as the center, joined by Lee Juno and Yang Hyun-suk. Their debut song, 'Nan Arayo (I Know),' brought a fresh shock to the music scene and gained explosive popularity. This became an important turning point in changing the course of Korean popular music.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그들의 음악은 랩, 록, 테크노 등 다양한 장르를 혼합하여 실험적인 사운드를 선보였습니다. 사회 비판적인 가사와 강렬한 퍼포먼스는 젊은이들의 공감을 얻으며 큰 인기를 끌었습니다. 특히 춤과 패션은 당시 젊은 세대의 문화에 큰 영향을 미쳤습니다.</p><p>Music and Performance</p><p>Their music featured experimental sounds, blending various genres such as rap, rock, and techno. Socially critical lyrics and intense performances resonated with young people, gaining immense popularity. In particular, their dance and fashion greatly influenced the culture of the younger generation at the time.</p><p>✧</p><p>주요 활동</p><p>'난 알아요', '하여가', '컴백홈' 등 수많은 히트곡을 발표하며 1990년대 가요계를 휩쓸었습니다. 시대의 아픔을 대변하는 메시지를 담은 음악들은 사회적으로 큰 반향을 일으켰습니다. 그들의 음악은 단순한 엔터테인먼트를 넘어 사회적 담론을 이끌어내는 힘을 지녔습니다.</p><p>Key Activities</p><p>They swept through the music scene in the 1990s, releasing numerous hit songs such as 'Nan Arayo (I Know),' 'Hayagga,' and 'Come Back Home.' Their music, containing messages that represented the pain of the era, caused great social repercussions. Their music had the power to lead social discourse beyond simple entertainment.</p><p>✧</p><p>미래/의미</p><p>서태지와아이들은 짧은 활동 기간에도 불구하고 한국 대중음악사에 지대한 영향을 미쳤습니다. 그들의 실험적인 시도와 사회 비판적인 메시지는 후대 뮤지션들에게 큰 영감을 주었습니다. 지금도 그들의 음악은 끊임없이 재조명되며, 한국 대중문화의 중요한 유산으로 남아있습니다.</p><p>Future/Meaning</p><p>Despite their short period of activity, Seo Taiji and Boys had a significant impact on Korean popular music history. Their experimental attempts and socially critical messages greatly inspired later musicians. Even now, their music is constantly being re-examined, and it remains an important legacy of Korean pop culture.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 시대유감 Regret of the Times (时代遗憾) (2024 Remastered Version)</div>
+<div><a href='https://tidal.com/album/338818119' target='_blank'>https://tidal.com/album/338818119</a></div>
+<div>Seotaiji and Boys - 시대유감 Regret of the Times (时代遗憾) (2024 Remastered Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/338818119' target='_blank'><img src='https://resources.tidal.com/images/f69e9575/0351/462f/9ff4/b3fb2793fea8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] Seotaiji and Boys IV</div>
+<div><a href='https://tidal.com/album/196161703' target='_blank'>https://tidal.com/album/196161703</a></div>
+<div>Seotaiji and Boys - Yo! Taiji</div>
+<div>Seotaiji and Boys - Sad Pain</div>
+<div>Seotaiji and Boys - Must Triumph</div>
+<div>Seotaiji and Boys - Come Back Home</div>
+<div>Seotaiji and Boys - Regret of the Times</div>
+<div>Seotaiji and Boys - 1996, When They Conquered the World</div>
+<div>Seotaiji and Boys - Taiji Boys</div>
+<div>Seotaiji and Boys - Good Bye (Vocal Version)</div>
+<div>Seotaiji and Boys - Free Style</div>
+<div>Seotaiji and Boys - Inabilisnabi</div>
+<div>Seotaiji and Boys - Sad Pain (′04 Zero) [Live]</div>
+<div>Seotaiji and Boys - Must Triumph (′05 Zero) [Live]</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196161703' target='_blank'><img src='https://resources.tidal.com/images/9c1c826c/7ce0/49da/ad50/eda75be455fe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] Seotaiji and Boys III</div>
+<div><a href='https://tidal.com/album/196161684' target='_blank'>https://tidal.com/album/196161684</a></div>
+<div>Seotaiji and Boys - Yo! Taiji!</div>
+<div>Seotaiji and Boys - Dreaming of Bal-Hae</div>
+<div>Seotaiji and Boys - Through the Eyes of Children</div>
+<div>Seotaiji and Boys - Classroom Idea</div>
+<div>Seotaiji and Boys - It′s My Business</div>
+<div>Seotaiji and Boys - Dr. Jekyll and Mr. Hyde</div>
+<div>Seotaiji and Boys - Eternity</div>
+<div>Seotaiji and Boys - I′m Going to Erase You</div>
+<div>Seotaiji and Boys - Opening (′95 Farewell to the Sky) [Live]</div>
+<div>Seotaiji and Boys - I′m Going to Erase You (′95 Farewell to the Sky) [Live]</div>
+<div>Seotaiji and Boys - To You (′95 Farewell to the Sky) [Live]</div>
+<div>Seotaiji and Boys - Farewell to Love (′95 Farewell to the Sky) [Live]</div>
+<div>Seotaiji and Boys - Taiji Solo (′95 Farewell to the Sky) [Live]</div>
+<div>Seotaiji and Boys - Classroom Idea (′95 Farewell to the Sky) [Live]</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196161684' target='_blank'><img src='https://resources.tidal.com/images/b21aa677/a83d/479f/9a18/c9cf9f7534c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1993] Seotaiji and Boys II</div>
+<div><a href='https://tidal.com/album/196161662' target='_blank'>https://tidal.com/album/196161662</a></div>
+<div>Seotaiji and Boys - Yo! Taiji!</div>
+<div>Seotaiji and Boys - Anyhow Song</div>
+<div>Seotaiji and Boys - Our Own Memories</div>
+<div>Seotaiji and Boys - Swamp of Death</div>
+<div>Seotaiji and Boys - To You</div>
+<div>Seotaiji and Boys - Who am I</div>
+<div>Seotaiji and Boys - Last Festival</div>
+<div>Seotaiji and Boys - Opening (The Taiji Boys) [′93 Last Festival] [Live]</div>
+<div>Seotaiji and Boys - Last Festival (′93 Last Festival) [Live]</div>
+<div>Seotaiji and Boys - Who am I (′93 Last Festival) [Live]</div>
+<div>Seotaiji and Boys - Our Own Memories, Pt. 1 (′93 Last Festival) [Live]</div>
+<div>Seotaiji and Boys - Our Own Memories, Pt. 2 (′93 Last Festival) [Live]</div>
+<div>Seotaiji and Boys - Swamp of Death (′04 Zero) [Live]</div>
+<div>Seotaiji and Boys - Anyhow Song (′93 TV Edit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196161662' target='_blank'><img src='https://resources.tidal.com/images/4e40fa97/a5c4/40c1/8413/cc50151d5749/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1992] Seotaiji and Boys</div>
+<div><a href='https://tidal.com/album/196161645' target='_blank'>https://tidal.com/album/196161645</a></div>
+<div>Seotaiji and Boys - Yo! Taiji!</div>
+<div>Seotaiji and Boys - I Know (Club Mix)</div>
+<div>Seotaiji and Boys - You, In the Fantasy</div>
+<div>Seotaiji and Boys - In the Time Spent With You</div>
+<div>Seotaiji and Boys - As the Night Goes On</div>
+<div>Seotaiji and Boys - My Everything (Live Mix)</div>
+<div>Seotaiji and Boys - Now</div>
+<div>Seotaiji and Boys - Blind Love (English Version)</div>
+<div>Seotaiji and Boys - Missing</div>
+<div>Seotaiji and Boys - You, In the Fantasy, Pt. 3 (Techno Taiji Mix)</div>
+<div>Seotaiji and Boys - As the Night Goes On (Extended Dance Mix)</div>
+<div>Seotaiji and Boys - I Know (′04 Zero) [Live]</div>
+<div>Seotaiji and Boys - I Know (′92 TV Edit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196161645' target='_blank'><img src='https://resources.tidal.com/images/e5e00a07/32c4/4672/8b21/e189477154ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/1_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ1) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/서태지와아이들 (Seo Taiji and Boys)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
