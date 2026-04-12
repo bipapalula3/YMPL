@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 에이스 ( Tidal A.C.E )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 에이스 ( Tidal A.C.E )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/20ad752c/9de9/4429/b084/e6246f4a75fc/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5360173' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 에이스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A.C.E – 강렬함과 섬세함을 넘나드는, ‘PINATA’처럼 다채로운 매력을 지닌 다섯 개의 별</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> A.C.E</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A.C.E – Five Stars Shining with Intense and Delicate Charms, as Colorful as ‘PINATA’</div><p>개성 넘치는 음악과 퍼포먼스로 글로벌 팬들을 사로잡은 그룹, A.C.E를 소개합니다. 다섯 멤버의 조화로운 에너지와 끊임없는 음악적 시도는 늘 새로운 모습을 기대하게 만들죠. 독특한 콘셉트와 완성도 높은 무대로 자신들만의 색깔을 뚜렷하게 보여주고 있답니다.</p><p>Introducing A.C.E, the group that has captivated global fans with their unique music and performance. The harmonious energy of the five members and their continuous musical experimentation always make us look forward to new aspects. They clearly show their own color with unique concepts and high-quality stages.</p><p>✧</p><p>그룹 탄생</p><p>A.C.E는 2017년, 강렬한 데뷔 싱글로 가요계에 첫 발을 내딛었습니다. 데뷔 전부터 버스킹 공연과 커버 영상으로 실력을 인정받으며 팬덤을 쌓아왔죠. 탄탄한 기본기를 바탕으로 완성도 높은 무대를 선보이며 빠르게 성장했습니다.</p><p>Group's Genesis</p><p>A.C.E made their debut in the music industry in 2017 with a powerful debut single. They had already built a fan base by demonstrating their skills through busking performances and cover videos before their debut. Based on solid basics, they quickly grew by showcasing high-quality stages.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>A.C.E는 다양한 장르를 아우르는 폭넓은 음악적 스펙트럼을 자랑합니다. 강렬한 퍼포먼스와 섬세한 감정 표현이 공존하는 무대는 늘 감탄을 자아내죠. 실험적인 사운드와 독특한 콘셉트는 A.C.E만의 차별화된 매력을 더욱 돋보이게 합니다.</p><p>Music and Performance</p><p>A.C.E boasts a broad musical spectrum that encompasses various genres. Their stages, where intense performance and delicate emotional expression coexist, always evoke admiration. Experimental sounds and unique concepts further highlight A.C.E's differentiated charm.</p><p>✧</p><p>주요 활동</p><p>국내 활동뿐만 아니라 해외 팬들과의 소통에도 적극적으로 나서고 있습니다. 다양한 글로벌 프로젝트 참여와 해외 투어를 통해 세계적인 인기를 얻고 있죠. 끊임없는 노력과 열정으로 글로벌 팬덤을 더욱 확장해 나가고 있습니다.</p><p>Main Activities</p><p>They are actively engaged in communicating with overseas fans as well as domestic activities. They are gaining worldwide popularity through participation in various global projects and overseas tours. They are further expanding their global fandom with continuous effort and passion.</p><p>✧</p><p>미래/의미</p><p>A.C.E는 앞으로도 음악적 성장을 멈추지 않고 더욱 다양한 모습을 보여줄 것으로 기대됩니다. 그들의 음악은 단순한 즐거움을 넘어, 깊은 감동과 위로를 전하며 팬들의 마음속에 자리 잡을 것입니다. A.C.E의 미래는 더욱 밝게 빛날 것입니다.</p><p>Future/Meaning</p><p>A.C.E is expected to continue their musical growth and show even more diverse aspects in the future. Their music will go beyond simple enjoyment, delivering deep emotion and comfort, and establishing itself in the hearts of fans. The future of A.C.E will shine even brighter.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] BLINDZ</div>
+<div><a href='https://tidal.com/album/428244724' target='_blank'>https://tidal.com/album/428244724</a></div>
+<div>A.C.E, Streameum - BLINDZ(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/428244724' target='_blank'><img src='https://resources.tidal.com/images/41b6d6e0/9b3f/40ce/b6f1/d6de3810a119/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] The Late Regret</div>
+<div><a href='https://tidal.com/album/406761996' target='_blank'>https://tidal.com/album/406761996</a></div>
+<div>A.C.E - The Late Regret</div>
+<div>A.C.E - The Late Regret (Eng Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406761996' target='_blank'><img src='https://resources.tidal.com/images/3c40a1a5/25c3/41cb/be5d/658b05f0d991/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Supernatural</div>
+<div><a href='https://tidal.com/album/365829364' target='_blank'>https://tidal.com/album/365829364</a></div>
+<div>A.C.E - Supernatural</div>
+<div>A.C.E - Supernatural (Kor Version)</div>
+<div>A.C.E - Supernatural (sped-up)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/365829364' target='_blank'><img src='https://resources.tidal.com/images/38e62fd7/e9fb/4e5f/8a3e/6a980f16d259/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Sad Night (feat. Kwak Tae-hee)</div>
+<div><a href='https://tidal.com/album/371403982' target='_blank'>https://tidal.com/album/371403982</a></div>
+<div>A.C.E - Sad Night (feat. Kwak Tae-hee)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/371403982' target='_blank'><img src='https://resources.tidal.com/images/0d6a5dc2/7972/49d5/a783/d29e6707c1e2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] PINATA</div>
+<div><a href='https://tidal.com/album/400235403' target='_blank'>https://tidal.com/album/400235403</a></div>
+<div>A.C.E - Intro - Recuerda, recuerda</div>
+<div>A.C.E - PINATA</div>
+<div>A.C.E - PINATA (Eng ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/400235403' target='_blank'><img src='https://resources.tidal.com/images/72288bdc/4afb/4fdb/8e2f/6183487cbeb4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] My Girl _ “My Choice”</div>
+<div><a href='https://tidal.com/album/431226572' target='_blank'>https://tidal.com/album/431226572</a></div>
+<div>A.C.E - Effortless</div>
+<div>A.C.E - My Girl</div>
+<div>A.C.E - Angel</div>
+<div>A.C.E - Facetime</div>
+<div>A.C.E - Effortless (Eng ver.)</div>
+<div>A.C.E - My Girl (Eng ver.)</div>
+<div>A.C.E - Angel (Eng ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431226572' target='_blank'><img src='https://resources.tidal.com/images/8dacd0a3/1ed2/43f3/b264/1322e799a0d9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Just Better</div>
+<div><a href='https://tidal.com/album/389700319' target='_blank'>https://tidal.com/album/389700319</a></div>
+<div>A.C.E - Just Better</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/389700319' target='_blank'><img src='https://resources.tidal.com/images/abb3ac02/4e28/4268/b860/4ab5b192d0c5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Anymore</div>
+<div><a href='https://tidal.com/album/385658683' target='_blank'>https://tidal.com/album/385658683</a></div>
+<div>A.C.E - Anymore</div>
+<div>A.C.E - Anymore (sped-up)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/385658683' target='_blank'><img src='https://resources.tidal.com/images/d3f618f0/0019/4ee0/92e0/9d795aa579cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Effortless</div>
+<div><a href='https://tidal.com/album/431224574' target='_blank'>https://tidal.com/album/431224574</a></div>
+<div>A.C.E - Effortless</div>
+<div>A.C.E - Effortless (Kor Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431224574' target='_blank'><img src='https://resources.tidal.com/images/fb853254/d604/4682/8e42/48119e110704/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] Christmas Love</div>
+<div><a href='https://tidal.com/album/335167556' target='_blank'>https://tidal.com/album/335167556</a></div>
+<div>A.C.E - Christmas Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/335167556' target='_blank'><img src='https://resources.tidal.com/images/9b87f962/afc9/484f/96d2/5728b1b164b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Angel</div>
+<div><a href='https://tidal.com/album/431225207' target='_blank'>https://tidal.com/album/431225207</a></div>
+<div>A.C.E - Angel</div>
+<div>A.C.E - Angel (Kor Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431225207' target='_blank'><img src='https://resources.tidal.com/images/c5ca5db5/399e/45a6/9314/c231b85f5d1a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Tracer (Original Television Soundtrack) Pt. 1</div>
+<div><a href='https://tidal.com/album/305880680' target='_blank'>https://tidal.com/album/305880680</a></div>
+<div>A.C.E - Buzzer Beater</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305880680' target='_blank'><img src='https://resources.tidal.com/images/57527e73/3344/47a4/a83a/d7aae8c61aa3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 썸툰 2021' OST - PART.1 어떻게 할까_ SOMETOON 2021' OST - PART.1 Something</div>
+<div><a href='https://tidal.com/album/184484526' target='_blank'>https://tidal.com/album/184484526</a></div>
+<div>A.C.E - 어떻게 할까- Something</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184484526' target='_blank'><img src='https://resources.tidal.com/images/5030e87e/46cb/462c/be72/d16eb5302c63/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] SIREN _ DAWN</div>
+<div><a href='https://tidal.com/album/432551015' target='_blank'>https://tidal.com/album/432551015</a></div>
+<div>A.C.E - INTRO - Miserere Mei Deus (We Fall Down)</div>
+<div>A.C.E - Atlantis</div>
+<div>A.C.E - Higher</div>
+<div>A.C.E - Chasing Love</div>
+<div>A.C.E - Story</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/432551015' target='_blank'><img src='https://resources.tidal.com/images/31b3ff64/dd6a/4c87/a112/28b905dbb3cd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Make It Happen or Make Excuses</div>
+<div><a href='https://tidal.com/album/332349531' target='_blank'>https://tidal.com/album/332349531</a></div>
+<div>A.C.E - Vibes(Explicit)</div>
+<div>A.C.E - 100(Explicit)</div>
+<div>A.C.E - Imagine(Explicit)</div>
+<div>A.C.E - Iconic(Explicit)</div>
+<div>A.C.E - Show Em(Explicit)</div>
+<div>A.C.E - Freestyle(Explicit)</div>
+<div>A.C.E - Wait(Explicit)</div>
+<div>A.C.E, Hoodieyearround - Ready(Explicit)</div>
+<div>A.C.E - My Flo(Explicit)</div>
+<div>A.C.E - Doe(Explicit)</div>
+<div>A.C.E - Preach(Explicit)</div>
+<div>A.C.E - Rain(Explicit)</div>
+<div>A.C.E - Problems(Explicit)</div>
+<div>A.C.E - Finish Line(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/332349531' target='_blank'><img src='https://resources.tidal.com/images/7111ba8b/b467/47bc/81ae/14a26da71ca0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Light on Me (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/194647760' target='_blank'>https://tidal.com/album/194647760</a></div>
+<div>A.C.E - SPARK</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/194647760' target='_blank'><img src='https://resources.tidal.com/images/8ad55cba/13c3/4552/8dcc/273f7c9655a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Down</div>
+<div><a href='https://tidal.com/album/180444922' target='_blank'>https://tidal.com/album/180444922</a></div>
+<div>A.C.E, Grey - Down (feat. Grey)</div>
+<div>A.C.E - Down</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/180444922' target='_blank'><img src='https://resources.tidal.com/images/7907efeb/c85c/4fc8/896e/4fb99e7d4db4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Christmas Time</div>
+<div><a href='https://tidal.com/album/432959731' target='_blank'>https://tidal.com/album/432959731</a></div>
+<div>A.C.E, Son Ho Young, Forestella - Christmas Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/432959731' target='_blank'><img src='https://resources.tidal.com/images/0511eff9/36c5/4eae/a45a/a00e1cddb7e2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Changer _ Dear Eris</div>
+<div><a href='https://tidal.com/album/432551968' target='_blank'>https://tidal.com/album/432551968</a></div>
+<div>A.C.E - INTRO - Revolutions</div>
+<div>A.C.E - Changer</div>
+<div>A.C.E - Black and Blue (Complete ver.)</div>
+<div>A.C.E - Down (Kor ver.)</div>
+<div>A.C.E - Talk you down</div>
+<div>A.C.E - Jindo Arirang (Prequel)</div>
+<div>A.C.E - CACTUS (Eng ver.)</div>
+<div>A.C.E - Remember Us</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/432551968' target='_blank'><img src='https://resources.tidal.com/images/221599be/1139/44dc/8e7d/76639d6f59d5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Stand By You</div>
+<div><a href='https://tidal.com/album/324347686' target='_blank'>https://tidal.com/album/324347686</a></div>
+<div>A.C.E - Stand by you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/324347686' target='_blank'><img src='https://resources.tidal.com/images/0a4b56e5/3163/437b/92cf/041ee6bca713/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Kairos (Original Television Soundtrack, Pt. 9)</div>
+<div><a href='https://tidal.com/album/163543202' target='_blank'>https://tidal.com/album/163543202</a></div>
+<div>A.C.E - Where Are you (From -Kairos- Original Television S</div>
+<div>A.C.E - Where Are you (From -Kairos- Original Television S</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/163543202' target='_blank'><img src='https://resources.tidal.com/images/41a32b4b/fb47/4341/a1b7/79b16e4185b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] HJZM _ The Butterfly Phantasy</div>
+<div><a href='https://tidal.com/album/324349049' target='_blank'>https://tidal.com/album/324349049</a></div>
+<div>A.C.E - Golden Goose</div>
+<div>A.C.E - Goblin (Favorite Boys)</div>
+<div>A.C.E - Baby Tonight</div>
+<div>A.C.E - Stand by you</div>
+<div>A.C.E - Clover</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/324349049' target='_blank'><img src='https://resources.tidal.com/images/c0dd43f5/226a/42ae/bacf/1bcbe81c7240/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] UNDER COVER</div>
+<div><a href='https://tidal.com/album/324382558' target='_blank'>https://tidal.com/album/324382558</a></div>
+<div>A.C.E - Intro - Escape</div>
+<div>A.C.E - SAVAGE</div>
+<div>A.C.E - Slow Dive</div>
+<div>A.C.E - So Sick</div>
+<div>A.C.E - Holiday</div>
+<div>A.C.E - Take Me Higher (Complete Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/324382558' target='_blank'><img src='https://resources.tidal.com/images/20ca2c90/2a56/48c1/8669/1d7e7c088105/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] A.C.E Adventures in Wonderland</div>
+<div><a href='https://tidal.com/album/324350880' target='_blank'>https://tidal.com/album/324350880</a></div>
+<div>A.C.E - CACTUS</div>
+<div>A.C.E - Callin'</div>
+<div>A.C.E - Black and Blue</div>
+<div>A.C.E - Take Me Higher</div>
+<div>A.C.E - DESSERT</div>
+<div>A.C.E - 5TAR (Incompletion)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/324350880' target='_blank'><img src='https://resources.tidal.com/images/e3780114/ff22/4d40/8ab8/e44983260ab4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 5TAR (Incompletion)</div>
+<div><a href='https://tidal.com/album/324346990' target='_blank'>https://tidal.com/album/324346990</a></div>
+<div>A.C.E - 5TAR (Incompletion)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/324346990' target='_blank'><img src='https://resources.tidal.com/images/dac014bb/12a5/43f0/85e5/6991c93bb37b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Callin'</div>
+<div><a href='https://tidal.com/album/324381688' target='_blank'>https://tidal.com/album/324381688</a></div>
+<div>A.C.E - Callin'</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/324381688' target='_blank'><img src='https://resources.tidal.com/images/0d18bea2/bd0e/4fb9/9e42/0eaf12dbdf14/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] CACTUS</div>
+<div><a href='https://tidal.com/album/324352572' target='_blank'>https://tidal.com/album/324352572</a></div>
+<div>A.C.E - CACTUS</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/324352572' target='_blank'><img src='https://resources.tidal.com/images/64d3df5a/85f5/4636/84cd/a93021ef736b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/1_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ1) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/에이스 (A.C.E)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
