@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+                    <html lang="ko">
+                    <head>
+                      <meta charset="UTF-8">
+                      <title>타이달 클론 ( Tidal Clon ) - Tracks</title>
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      <link href="https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap" rel="stylesheet">
+                      <style>
+                        body {
+                          background: #111;
+                          color: #e6eef6;
+                          font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+                          margin: 0;
+                          padding: 0;
+                        }
+
+                        /* 상단 여백 확보용 */
+                        .top-spacer {
+                          height: 30px;
+                        }                   
+
+                        /* 🔹 상단 다운로드 바 전용: 본문과 띄우기 */
+                        .top-bar {
+                          margin-bottom: 40px;
+                        }
+
+                        /* 🔹 버튼 래퍼: 세로 정렬(column)로 변경 */
+                        .btn-container {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 40px;
+                            margin-bottom: 40px;
+                            /* 여기서 좌우 공간을 20px씩 확보합니다 */
+                            padding: 0 20px; 
+                            box-sizing: border-box;
+                        }
+
+                        /* 🔹 프리미엄 골드 버튼 스타일 */
+                        .premium-btn {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90%; 
+                            max-width: 400px;
+                            padding: 15px 20px;
+                            background: linear-gradient(145deg, #3d341a, #1f1a0d);
+                            color: #ffd966 !important;
+                            text-decoration: none !important;
+                            border: 0.4px solid #ffd966;
+                            border-radius: 8px;
+                            text-align: center;
+                            font-weight: 700;
+                            position: relative;
+                            overflow: hidden;
+                            box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+                            animation: pulseTranslate 3s infinite ease-in-out;
+                            transition: transform 0.2s;
+                        }
+                        
+                        .premium-btn:hover { transform: scale(1.02); } 
+                        
+                        /* 🔹 쉬머 효과 */
+                        .premium-btn::after {
+                            content: ''; position: absolute; top: -50%; left: -150%;
+                            width: 50%; height: 200%;
+                            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+                            transform: rotate(30deg);
+                            animation: shimmerTranslate 5s infinite linear;
+                        }
+
+                        @keyframes shimmerTranslate { 0% { left: -150%; } 100% { left: 150%; } }
+                        @keyframes pulseTranslate {
+                            0%, 100% { border-color: #ffd966; box-shadow: 0 0 10px rgba(255, 217, 102, 0.2); }
+                            50% { border-color: #fffb00; box-shadow: 0 0 20px rgba(255, 251, 0, 0.6); }
+                        }
+
+                        .track-content {
+                          padding: 4px;
+                        }
+
+                        pre {
+                          white-space: pre-wrap;
+                          font-size: 15px;
+                          line-height: 1.2;
+                          letter-spacing: -0.5px;
+                          font-family: 'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+                          margin: 0;
+                        }
+                        
+                        pre b {
+                            color: #ffd700 !important;   /* !important로 색상 강제 유지 */
+                            font-size: 1.1em;
+                            font-weight: 400; 
+                            
+                            display: inline-block;
+                            border-bottom: 1px solid #ffd700; 
+                            padding-bottom: 1px;  
+                            margin-bottom: 8px;   
+                        }
+
+                        /* 🔹 링크가 포함되어도 색상을 부모(b태그)와 동일하게 유지 */
+                        pre b a {
+                            color: #ffd700 !important;   /* 노란색 유지 */
+                            text-decoration: none;       /* 기본 밑줄 제거 */
+                            outline: none;               /* 클릭 시 테두리 제거 */
+                        }
+
+                        /* 마우스 올렸을 때 살짝 밝아지는 효과 (선택사항) */
+                        pre b a:hover {
+                            filter: brightness(1.2);
+                        }
+
+                        .bottom-spacer {
+                          height: 30px;
+                        }
+                      </style>
+                    </head>
+                    <body>
+
+                      <div class="top-spacer"></div>
+
+                      <div class="btn-container">
+                        <a class="premium-btn" href="./클론 (Clon)_trk.txt" download="클론 (Clon)_trk.txt">
+                           ⬇️ Download Track Data: Artist - Title
+                        </a>
+                          
+                        <a class="premium-btn" href="https://m.bugs.co.kr/search/lyrics?q=%ED%81%B4%EB%A1%A0%20%28%20Clon%20%29" target="_blank">
+                           🔍 View Lyrics & Albums at Bugs.co.kr
+                        </a>
+                      </div>
+
+                      <div class="track-content">
+                        <pre>💿 <b><a href='https://tidal.com/album/368352806' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Холодная весна</a></b>
+▶️Album link : <a href="https://tidal.com/album/368352806" target="_blank">https://tidal.com/album/368352806</a>
+
+Clon - First Love (Techno Mix) (2024 Remaster)
+EN ⇄ KR : 첫사랑 (Techno Mix) (2024 Remaster)
+ES     : Primer amor
+ZH-CN  : 初恋
+
+Clon - It’s You (feat. Yunjin) (2024 Remaster)
+EN ⇄ KR : 너야 (feat. Yunjin) (2024 Remaster)
+ES     : Eres tú
+ZH-CN  : 是你
+
+Clon - New World (feat. Yunjin) (2024 Remaster)
+EN ⇄ KR : 새로운 세계 (feat. Yunjin) (2024 Remaster)
+ES     : Nuevo Mundo
+ZH-CN  : 新世界
+
+Clon - A Lie (feat. Yunjin) (2024 Remaster)
+EN ⇄ KR : 거짓말 (feat. Yunjin) (2024 Remaster)
+ES     : Una Mentira
+ZH-CN  : 一个谎言
+
+Clon - Shutbari (feat. Yunjin) (2024 Remaster)
+EN ⇄ KR : 슛바리 (feat. Yunjin) (2024 Remaster)
+ES     : Empujón
+ZH-CN  : Shutbari (保持原样，可能是人名或地名)
+
+Clon - Necessary Evil (feat. Yunjin) (2024 Remaster)
+EN ⇄ KR : 필연적인 악 (feat. Yunjin) (2024 Remaster)
+ES     : Mal Necesario
+ZH-CN  : 必要之恶
+
+Clon - I’m Sorry (feat. Yunjin) (2024 Remaster)
+EN ⇄ KR : 미안해요 (feat. Yunjin) (2024 Remaster)
+ES     : Lo Siento
+ZH-CN  : 对不起
+
+Clon - Now Concert (feat. Yunjin) (2024 Remaster)
+EN ⇄ KR : 지금 콘서트 (feat. Yunjin) (2024 Remaster)
+ES     : Concierto Ahora
+ZH-CN  : 现在演唱会
+
+Clon - Twisted (feat. Kangmin, Baek sujin & Yunjin) (2024
+EN ⇄ KR : 꼬인 (feat. 강민, 백수진 & 윤진) (2024)
+ES     : Retorcido (feat. Kangmin, Baek sujin & Yunjin) (2024)
+ZH-CN  : 扭曲 (feat. Kangmin, Baek sujin & Yunjin) (2024
+
+Clon - A Different You (feat. Yunjin) (2024 Remaster)
+EN ⇄ KR : 색다른 너 (feat. Yunjin) (2024 Remaster)
+ES     : Un Tú Diferente
+ZH-CN  : 不同的你
+
+Clon - First Love (Original Mix) (2024 Remaster)
+EN ⇄ KR : 첫사랑 (Original Mix) (2024 Remaster)
+ES     : Primer amor
+ZH-CN  : 初恋
+
+Clon - Lie (Techno Re-Mix, Feat. 윤진) (2024 Remaster)
+EN ⇄ KR : 거짓말 (Techno Re-Mix, Feat. 윤진) (2024 Remaster)
+ES     : Mentira
+ZH-CN  : 谎言
+
+
+💿 <b><a href='https://tidal.com/album/361427795' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] На глубине</a></b>
+▶️Album link : <a href="https://tidal.com/album/361427795" target="_blank">https://tidal.com/album/361427795</a>
+
+Clon - Funky Tonight (2024 Remaster)
+EN ⇄ KR : 펑키한 오늘 밤 (2024 Remaster)
+ES     : Funky Esta Noche
+ZH-CN  : 今晚真棒
+
+Clon - Come Back (2024 Remaster)
+EN ⇄ KR : 돌아와 (2024 Remaster)
+ES     : VUELVE
+ZH-CN  : 回来
+
+Clon - Love and Soul (feat. Kim Taeyoung) (2024 Remaster)
+EN ⇄ KR : 사랑과 영혼 (feat. Kim Taeyoung) (2024 Remaster)
+ES     : Amor y Alma
+ZH-CN  : 爱与灵魂
+
+Clon - Blue In The Night (feat. Kim Taeyoung & Kuwata Kei
+EN ⇄ KR : 밤의 푸르름 (feat. 김태영 & 쿠와타 케이)
+ES     : Tristeza En La Noche (con Kim Taeyoung & Kuwata Kei)
+ZH-CN  : 夜晚忧郁 (feat. Kim Taeyoung & Kuwata Kei)
+
+Clon - Destined Farewell (2024 Remaster)
+EN ⇄ KR : 정해진 이별 (2024 Remaster)
+ES     : Despedida Destinada
+ZH-CN  : 注定的离别
+
+Clon - Didn't Know Back Then (2024 Remaster)
+EN ⇄ KR : 그때는 몰랐어 (2024 Remaster)
+ES     : No Lo Sabía Entonces
+ZH-CN  : 当时不知道
+
+Clon - Left Alone (feat. Kim Taeyoung) (2024 Remaster)
+EN ⇄ KR : 홀로 남겨져 (feat. Kim Taeyoung) (2024 Remaster)
+ES     : Abandonado
+ZH-CN  : 独自一人
+
+Clon - Mamaboy (feat. Kim Taeyoung) (2024 Remaster)
+EN ⇄ KR : 마마보이 (feat. Kim Taeyoung) (2024 Remaster)
+ES     : Niño de Mamá
+ZH-CN  : 妈宝男
+
+Clon - It's Over (1999 Break Mix) (2024 Remaster)
+EN ⇄ KR : 끝났어 (1999 Break Mix) (2024 Remaster)
+ES     : Se acabó
+ZH-CN  : 结束了
+
+Clon - Worldcup Song (2024 Remaster)
+EN ⇄ KR : 월드컵 노래 (2024 Remaster)
+ES     : Canción del Mundial
+ZH-CN  : 世界杯之歌
+
+Clon - Tonight Is The Night (Soul House Mix) (2024 Remast
+EN ⇄ KR : 오늘 밤이 바로 그 밤 (소울 하우스 믹스) (2024 리마스터)
+ES     : Esta Noche Es La Noche (Soul House Mix) (Remasterización 2024)
+ZH-CN  : 今晚就是今晚 (灵魂浩室混音) (2024重制)
+
+Clon - Come Back To Me (Electric Techno Mix) (2024 Remast
+EN ⇄ KR : 내게 돌아와 (일렉트릭 테크노 믹스) (2024 리마스터)
+ES     : Vuelve A Mí (Electric Techno Mix) (Remasterización 2024)
+ZH-CN  : 回到我身边 (电子舞曲混音) (2024重制)
+
+
+💿 <b><a href='https://tidal.com/album/404408473' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2024] Бег по кругу</a></b>
+▶️Album link : <a href="https://tidal.com/album/404408473" target="_blank">https://tidal.com/album/404408473</a>
+
+Clon - Getaway (2024 Remaster)
+EN ⇄ KR : 도피 (2024 Remaster)
+ES     : Escapada
+ZH-CN  : 逃脱
+
+Clon - Crazy For Movie (2024 Remaster)
+EN ⇄ KR : 영화에 미치다 (2024 Remaster)
+ES     : Loco por el cine
+ZH-CN  : 为电影疯狂
+
+Clon - Bing Bing Bing (2024 Remaster)
+EN ⇄ KR : 뱅뱅뱅 (2024 Remaster)
+ES     : Bing Bing Bing
+ZH-CN  : 叮叮叮
+
+Clon - My Father (2024 Remaster)
+EN ⇄ KR : 나의 아버지 (2024 Remaster)
+ES     : Mi Padre
+ZH-CN  : 我的父亲
+
+Clon - What's Wrong (2024 Remaster)
+EN ⇄ KR : 뭐가 문제야 (2024 Remaster)
+ES     : ¿Qué pasa?
+ZH-CN  : 怎么了
+
+Clon - On Your Birthday (2024 Remaster)
+EN ⇄ KR : 네 생일에 (2024 Remaster)
+ES     : En tu cumpleaños
+ZH-CN  : 在你生日那天
+
+Clon - Feeling good (2024 Remaster)
+EN ⇄ KR : 기분 좋아 (2024 Remaster)
+ES     : Sintiéndome bien
+ZH-CN  : 感觉良好
+
+Clon - Stop it! (2024 Remaster)
+EN ⇄ KR : 그만 해! (2024 Remaster)
+ES     : ¡Basta! / ¡Para!
+ZH-CN  : 住手！
+
+Clon - Destined Day (2024 Remaster)
+EN ⇄ KR : 정해진 날 (2024 Remaster)
+ES     : Día Destinado / Día Señalado
+ZH-CN  : 注定的日子
+
+Clon - Betrayal (2024 Remaster)
+EN ⇄ KR : 배신 (2024 Remaster)
+ES     : Traición
+ZH-CN  : 背叛
+
+
+💿 <b><a href='https://tidal.com/album/261829453' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2022] 2022 World Cup Song 'Let's Go' (Clon avata ver)</a></b>
+▶️Album link : <a href="https://tidal.com/album/261829453" target="_blank">https://tidal.com/album/261829453</a>
+
+META CLON, Clon - Let’s Go (Fighting)
+EN ⇄ KR : 갑시다 (Fighting)
+ES     : Vámonos
+ZH-CN  : 走吧
+
+
+💿 <b><a href='https://tidal.com/album/189860155' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] We Are</a></b>
+▶️Album link : <a href="https://tidal.com/album/189860155" target="_blank">https://tidal.com/album/189860155</a>
+
+Clon - Everybody
+EN ⇄ KR : 모두
+ES     : TODO EL MUNDO
+ZH-CN  : 所有人
+
+Clon - Bamdeelalila (feat. AILEE)
+EN ⇄ KR : 밤디라릴라 (feat. AILEE)
+ES     : Bamdeelalila
+ZH-CN  : 巴姆迪拉里拉
+
+Clon - Go Tomorrow
+EN ⇄ KR : 내일 가세요
+ES     : Ir a Mañana
+ZH-CN  : 明天出发
+
+Clon - 90’s DJ Koo Driving Mix
+EN ⇄ KR : 90년대 DJ Koo 운전 믹스
+ES     : Mezcla de DJ Koo de los 90 para conducir
+ZH-CN  : 90年代 DJ Koo 驾驶混音
+
+
+💿 <b><a href='https://tidal.com/album/189860139' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2017] Bamdeelalila (feat. AILEE)</a></b>
+▶️Album link : <a href="https://tidal.com/album/189860139" target="_blank">https://tidal.com/album/189860139</a>
+
+Clon - Bamdeelalila (feat. AILEE)
+EN ⇄ KR : 밤디라릴라 (feat. AILEE)
+ES     : Bamdeelalila
+ZH-CN  : 巴姆迪拉里拉
+
+
+💿 <b><a href='https://tidal.com/album/343729561' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2011] World Cup Song And Clon Non-Stop Mix</a></b>
+▶️Album link : <a href="https://tidal.com/album/343729561" target="_blank">https://tidal.com/album/343729561</a>
+
+Clon - World Cup Song (Long Verion)
+EN ⇄ KR : 월드컵 노래 (Long Verion)
+ES     : Himno del Mundial
+ZH-CN  : 世界杯歌曲
+
+Clon - World Cup Song (Bomb Bass Version)
+EN ⇄ KR : 월드컵 노래 (Bomb Bass Version)
+ES     : Himno del Mundial
+ZH-CN  : 世界杯歌曲
+
+Clon - Clon Non-Stop Mix
+EN ⇄ KR : Clon 논스톱 믹스
+ES     : Mix Clon Sin Parar
+ZH-CN  : Clon 不停歇混音
+
+
+💿 <b><a href='https://tidal.com/album/343726182' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2005] Victory</a></b>
+▶️Album link : <a href="https://tidal.com/album/343726182" target="_blank">https://tidal.com/album/343726182</a>
+
+Clon - Out To The World
+EN ⇄ KR : 세상 밖으로
+ES     : Hacia el mundo
+ZH-CN  : 走向世界
+
+Clon - O.K! Alright! (feat. Chae Yeon)
+EN ⇄ KR : 좋아! 좋아요! (feat. Chae Yeon)
+ES     : ¡O.K! ¡De acuerdo!
+ZH-CN  : O.K! 没问题！
+
+Clon - OOH HA
+EN ⇄ KR : 우 하
+ES     : OOH HA
+ZH-CN  : 哦 哈
+
+Clon - Ready To Go (feat. Lee Jiyoung)
+EN ⇄ KR : 갈 준비 완료 (feat. Lee Jiyoung)
+ES     : Listo Para Ir
+ZH-CN  : 准备出发
+
+Clon - Dear My Love, Song-I (feat. Wonwoo)
+EN ⇄ KR : 나의 사랑, 송이에게 (feat. Wonwoo)
+ES     : Querida Song-I, mi amor
+ZH-CN  : 亲爱的我的爱，颂伊
+
+Clon - Let’s Go (feat. Lee Jiyoung)
+EN ⇄ KR : 갑시다 (feat. Lee Jiyoung)
+ES     : Vámonos
+ZH-CN  : 走吧
+
+Clon - No More Silence
+EN ⇄ KR : 더 이상의 침묵은 없어
+ES     : No más silencio
+ZH-CN  : 不再沉默
+
+Clon - Isolated
+EN ⇄ KR : 고립된
+ES     : aislado
+ZH-CN  : 孤立
+
+Clon - Face To Face (Interlude)
+EN ⇄ KR : 마주보기 (Interlude)
+ES     : Cara a cara
+ZH-CN  : 面对面
+
+Clon - Silent Step (feat. Lee Jung)
+EN ⇄ KR : 조용한 발걸음 (feat. Lee Jung)
+ES     : Paso silencioso
+ZH-CN  : 无声的脚步
+
+Clon - Still… (Interlude)
+EN ⇄ KR : 여전히… (Interlude)
+ES     : Aún…
+ZH-CN  : 依然…
+
+Clon - Blue People
+EN ⇄ KR : 파란 사람들
+ES     : Gente azul
+ZH-CN  : 蓝色的人
+
+Clon - Letter To You
+EN ⇄ KR : 너에게 보내는 편지
+ES     : Carta para ti
+ZH-CN  : 给你的信
+
+Clon - Diary from 2001.4 (feat. Park Mi Kyung)
+EN ⇄ KR : 2001년 4월의 일기 (feat. Park Mi Kyung)
+ES     : Diario de 2001.4
+ZH-CN  : 2001年4月的日记
+
+Clon - Dear My Love, Song-e (Video Version)
+EN ⇄ KR : 나의 사랑, 송이에게 (Video Version)
+ES     : Querida Song-e, mi amor
+ZH-CN  : 亲爱的我的爱，颂娥
+
+
+💿 <b><a href='https://tidal.com/album/343718367' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [2002] The Best Hits Of Clon 2002 (The History Of Clon 1996-2000)</a></b>
+▶️Album link : <a href="https://tidal.com/album/343718367" target="_blank">https://tidal.com/album/343718367</a>
+
+Clon - Friend
+EN ⇄ KR : 친구
+ES     : Amigo/a
+ZH-CN  : 朋友
+
+Clon - I
+EN ⇄ KR : 나
+ES     : Yo
+ZH-CN  : 我
+
+Clon - Like A Movie (Funky Mix)
+EN ⇄ KR : 영화처럼 (Funky Mix)
+ES     : Como una película
+ZH-CN  : 像电影一样
+
+Clon - Bing Bing Bing (Funky Mix)
+EN ⇄ KR : 뱅뱅뱅 (Funky Mix)
+ES     : Bing Bing Bing
+ZH-CN  : 叮叮叮
+
+Clon - La La La
+EN ⇄ KR : 라 라 라
+ES     : La La La
+ZH-CN  : 啦啦啦
+
+Clon - My Father
+EN ⇄ KR : 나의 아버지
+ES     : Mi Padre
+ZH-CN  : 我的父亲
+
+Clon - Funky Tonight
+EN ⇄ KR : 펑키한 오늘 밤
+ES     : Funky Esta Noche
+ZH-CN  : 今晚真棒
+
+Clon - Kick It
+EN ⇄ KR : 날려 버려
+ES     : Dale un Empujón / Pégale
+ZH-CN  : 踢它
+
+Clon - Twisted (Funky Mix)
+EN ⇄ KR : 꼬인 (Funky Mix)
+ES     : Retorcido/a
+ZH-CN  : 扭曲
+
+Clon - It's All Good (Funky Mix)
+EN ⇄ KR : 다 괜찮아 (Funky Mix)
+ES     : Todo Está Bien
+ZH-CN  : 一切都好
+
+Clon - It's Over
+EN ⇄ KR : 끝났어
+ES     : Se acabó
+ZH-CN  : 结束了
+
+Clon - World Cup Song
+EN ⇄ KR : 월드컵 노래
+ES     : Himno del Mundial
+ZH-CN  : 世界杯歌曲
+
+Clon - Bing Bing Bing
+EN ⇄ KR : 뱅뱅뱅
+ES     : Bing Bing Bing
+ZH-CN  : 叮叮叮
+
+Clon - Blue (Funky Mix)
+EN ⇄ KR : 파란색 (Funky Mix)
+ES     : Azul
+ZH-CN  : 蓝色
+
+Clon - On Your Birthday
+EN ⇄ KR : 네 생일에
+ES     : En tu cumpleaños
+ZH-CN  : 在你生日那天
+
+Clon - Didn’t Know (Funky Mix)
+EN ⇄ KR : 몰랐어 (Funky Mix)
+ES     : No Sabía
+ZH-CN  : 不知道
+
+Clon - Kung Ddari Sha Bah Rah
+EN ⇄ KR : 쿵따리 샤바라
+ES     : Kung Ddari Sha Bah Rah (This likely needs transliteration, as it appears to be a made-up or culturally specific phrase. A direct translation would be meaningless. Keeping the original title is the best option.)
+ZH-CN  : Kung Ddari Sha Bah Rah (保持原样，这是一个专有名词或独特的表达方式)
+
+Clon - Love and Soul
+EN ⇄ KR : 사랑과 영혼
+ES     : Amor y Alma
+ZH-CN  : 爱与灵魂
+
+Clon - First Love
+EN ⇄ KR : 첫사랑
+ES     : Primer amor
+ZH-CN  : 初恋
+
+Clon - Funky Tonight (Funky Mix)
+EN ⇄ KR : 펑키한 오늘 밤 (Funky Mix)
+ES     : Funky Esta Noche
+ZH-CN  : 今晚真棒
+
+Clon - Like A Movie
+EN ⇄ KR : 영화처럼
+ES     : Como una película
+ZH-CN  : 像电影一样
+
+Clon - Come Back
+EN ⇄ KR : 돌아와
+ES     : VUELVE
+ZH-CN  : 回来
+
+Clon - Left Alone
+EN ⇄ KR : 홀로 남겨져
+ES     : Abandonado
+ZH-CN  : 独自一人
+
+Clon - Love + Lie = Over (Funky Mix)
+EN ⇄ KR : 사랑 + 거짓말 = 끝 (Funky Mix)
+ES     : Amor + Mentira = Se Acabó
+ZH-CN  : 爱 + 谎言 = 结束
+
+Clon - A Lie
+EN ⇄ KR : 거짓말
+ES     : Una Mentira
+ZH-CN  : 一个谎言
+
+Clon - I’m Sorry
+EN ⇄ KR : 미안해요
+ES     : Lo Siento
+ZH-CN  : 对不起
+
+Clon - What's Wrong with Me (Funky Mix)
+EN ⇄ KR : 내가 뭐가 문제야 (Funky Mix)
+ES     : ¿Qué Me Pasa?
+ZH-CN  : 我怎么了
+
+Clon - Destined Farewell
+EN ⇄ KR : 정해진 이별
+ES     : Despedida Destinada
+ZH-CN  : 注定的离别
+
+Clon - Getaway (Funky Mix)
+EN ⇄ KR : 도피 (Funky Mix)
+ES     : Escapada
+ZH-CN  : 逃脱
+
+Clon - New World
+EN ⇄ KR : 새로운 세계
+ES     : Nuevo Mundo
+ZH-CN  : 新世界
+
+Clon - Crazy For Movie
+EN ⇄ KR : 영화에 미치다
+ES     : Loco por el cine
+ZH-CN  : 为电影疯狂
+
+Clon - I (Euro Mix)
+EN ⇄ KR : 나 (Euro Mix)
+ES     : Yo
+ZH-CN  : 我
+
+Clon - What's Wrong
+EN ⇄ KR : 뭐가 문제야
+ES     : ¿Qué pasa?
+ZH-CN  : 怎么了
+
+Clon - It’s You
+EN ⇄ KR : 너야
+ES     : Eres tú
+ZH-CN  : 是你
+
+Clon - My Father (Euro Mix)
+EN ⇄ KR : 나의 아버지 (Euro Mix)
+ES     : Mi Padre
+ZH-CN  : 我的父亲
+
+Clon - Why I Gave You Away
+EN ⇄ KR : 너를 준 이유
+ES     : Por Qué Te Regalé
+ZH-CN  : 我为什么把你送走
+
+Clon - Crazy For Movie (Euro Mix)
+EN ⇄ KR : 영화에 미치다 (Euro Mix)
+ES     : Loco por el cine
+ZH-CN  : 为电影疯狂
+
+Clon - Good Day (Euro Mix)
+EN ⇄ KR : 좋은 날 (Euro Mix)
+ES     : Buen Día
+ZH-CN  : 美好的一天
+
+Clon - Eve's Warning (Euro Mix)
+EN ⇄ KR : 이브의 경고 (Euro Mix)
+ES     : Advertencia De Eva
+ZH-CN  : 夏娃的警告
+
+Clon - World Cup Song (Euro Mix)
+EN ⇄ KR : 월드컵 노래 (Euro Mix)
+ES     : Himno del Mundial
+ZH-CN  : 世界杯歌曲
+
+Clon - Shutbari (Euro Mix)
+EN ⇄ KR : 슛바리 (Euro Mix)
+ES     : Empujón
+ZH-CN  : Shutbari (保持原样，可能是人名或地名)
+
+Clon - Kung Ddari Sha Bah Rah (Euro Mix)
+EN ⇄ KR : 쿵따리 샤바라 (Euro Mix)
+ES     : Kung Ddari Sha Bah Rah (This likely needs transliteration, as it appears to be a made-up or culturally specific phrase. A direct translation would be meaningless. Keeping the original title is the best option.)
+ZH-CN  : Kung Ddari Sha Bah Rah (保持原样，这是一个专有名词或独特的表达方式)
+
+Clon - Come Back (Euro Mix)
+EN ⇄ KR : 돌아와 (Euro Mix)
+ES     : VUELVE
+ZH-CN  : 回来
+
+Clon - Wrongful Meeting (Euro Mix)
+EN ⇄ KR : 잘못된 만남 (Euro Mix)
+ES     : Encuentro Injusto
+ZH-CN  : 错误的相遇
+
+Clon - A Lie (Euro Mix)
+EN ⇄ KR : 거짓말 (Euro Mix)
+ES     : Una Mentira
+ZH-CN  : 一个谎言
+
+Clon - New World (Euro Mix)
+EN ⇄ KR : 새로운 세계 (Euro Mix)
+ES     : Nuevo Mundo
+ZH-CN  : 新世界
+
+Clon - First Love (Euro Mix)
+EN ⇄ KR : 첫사랑 (Euro Mix)
+ES     : Primer amor
+ZH-CN  : 初恋
+
+Clon - On Your Birthday (Euro Mix)
+EN ⇄ KR : 네 생일에 (Euro Mix)
+ES     : En tu cumpleaños
+ZH-CN  : 在你生日那天
+
+
+💿 <b><a href='https://tidal.com/album/343821377' target='_blank' style='color: #ffd700; text-decoration: none;'>Album: [1996] Are You Ready_</a></b>
+▶️Album link : <a href="https://tidal.com/album/343821377" target="_blank">https://tidal.com/album/343821377</a>
+
+Clon - Kung Ddari Sha Bah Rah (2024 Remaster)
+EN ⇄ KR : 쿵따리 샤바라 (2024 Remaster)
+ES     : Kung Ddari Sha Bah Rah (This likely needs transliteration, as it appears to be a made-up or culturally specific phrase. A direct translation would be meaningless. Keeping the original title is the best option.)
+ZH-CN  : Kung Ddari Sha Bah Rah (保持原样，这是一个专有名词或独特的表达方式)
+
+Clon - Why Am I.. (2024 Remaster)
+EN ⇄ KR : 나는 왜.. (2024 Remaster)
+ES     : ¿Por qué yo...?
+ZH-CN  : 我是为什么……
+
+Clon - Like A Movie (2024 Remaster)
+EN ⇄ KR : 영화처럼 (2024 Remaster)
+ES     : Como una película
+ZH-CN  : 像电影一样
+
+Clon - Why I Gave You Away (2024 Remaster)
+EN ⇄ KR : 너를 준 이유 (2024 Remaster)
+ES     : Por Qué Te Regalé
+ZH-CN  : 我为什么把你送走
+
+Clon - I (2024 Remaster)
+EN ⇄ KR : 나 (2024 Remaster)
+ES     : Yo
+ZH-CN  : 我
+
+Clon - Love + Lie = Over (2024 Remaster)
+EN ⇄ KR : 사랑 + 거짓말 = 끝 (2024 Remaster)
+ES     : Amor + Mentira = Se Acabó
+ZH-CN  : 爱 + 谎言 = 结束
+
+Clon - Chaos (2024 Remaster)
+EN ⇄ KR : 혼돈 (2024 Remaster)
+ES     : CAOS
+ZH-CN  : 混沌
+
+Clon - Can’t Stop (Queen of Fools) (2024 Remaster)
+EN ⇄ KR : 멈출 수 없어 (Queen of Fools) (2024 Remaster)
+ES     : No puedo parar
+ZH-CN  : 无法停止
+
+Clon - I (Broadcast Re-Mix) (2024 Remaster)
+EN ⇄ KR : 나 (Broadcast Re-Mix) (2024 Remaster)
+ES     : Yo
+ZH-CN  : 我</pre>
+                      </div>
+
+                      <div class="btn-container">
+                        <a href="javascript:void(0);" 
+                               style="
+                                   color:#fca5a5; 
+                                   font-size:1.0em;
+                                   line-height:1.6;
+                                   display:inline-block;
+                                   margin-bottom:4em;
+                                   cursor:pointer;
+                                   transition:color 0.2s ease, transform 0.1s ease;
+                                   text-decoration:none;
+                               "
+                               onmouseover="
+                                   this.style.color='#ef4444';
+                                   this.querySelector('.icon').style.transform='scale(1.2)';
+                               "
+                               onmouseout="
+                                   this.style.color='#fca5a5';
+                                   this.querySelector('.icon').style.transform='scale(1)';
+                               "
+                               onmousedown="
+                                   this.style.transform='scale(0.96)';
+                               "
+                               onmouseup="
+                                   this.style.transform='scale(1)';
+                               "
+                               onclick="
+                               if (window.ReactNativeWebView) {
+                                   window.ReactNativeWebView.postMessage('go_home');
+                               } else {
+                                   window.location.href='https://bipapalula3.github.io/';
+                               }">
+
+                            <span class="icon" style="
+                                display:inline-block; 
+                                transition:transform 0.2s ease;
+                            ">
+                            🏠
+                            </span>
+
+                            <span style="
+                                margin-left:6px;
+                                text-decoration:underline;
+                                text-decoration-thickness:1px;
+                                text-underline-offset: 4px;
+                            ">
+                            Search K-pop Artists, Albums & Playlists
+                            </span>
+
+                            </a>
+                      </div>
+
+                      <div class="bottom-spacer"></div>
+
+                    </body>
+                    </html>
+                    
