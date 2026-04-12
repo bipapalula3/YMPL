@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 화요비 ( Tidal Hwayobi )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 화요비 ( Tidal Hwayobi )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/73e4d87d/7f46/48d8/bec4/c319b18d9588/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6027362' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 화요비</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>화요비 – R&B의 깊은 감성으로 마음을 적시는 목소리, 'Can't Wait For Love'처럼 섬세한 사랑을 노래하는 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Hwayobi</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Hwayobi – A voice that touches the heart with deep R&B emotions, a diva who sings about delicate love like in 'Can't Wait For Love'.</div><p>독보적인 음색과 깊은 감성으로 많은 사랑을 받고 있는 R&B 싱어송라이터 화요비님을 소개합니다. 그녀의 음악은 사랑과 이별, 삶의 다양한 감정을 솔직하게 담아내 듣는 이들의 마음을 울립니다. 섬세하면서도 파워풀한 보컬은 화요비님만의 매력이라고 할 수 있죠.</p><p>Let me introduce Hwayobi, an R&B singer-songwriter who is much loved for her unique tone and deep emotions. Her music honestly captures various emotions of love, parting, and life, touching the hearts of listeners. Her delicate yet powerful vocals are a unique charm of Hwayobi.</p><p>✧</p><p>음악적 여정의 시작</p><p>화요비님은 어린 시절부터 음악에 대한 남다른 재능을 보이며 가수의 꿈을 키웠습니다. 데뷔 이후 꾸준히 자신만의 음악 세계를 구축하며 대중과 평단의 호평을 동시에 받았죠. 그녀의 음악은 단순한 유행을 따르기보다는 진솔한 감정을 담아내는 데 집중합니다.</p><p>The Beginning of a Musical Journey</p><p>Hwayobi showed exceptional talent for music from a young age, nurturing her dream of becoming a singer. Since her debut, she has steadily built her own musical world, receiving critical and popular acclaim. Her music focuses on conveying sincere emotions rather than simply following trends.</p><p>✧</p><p>깊이 있는 음악과 퍼포먼스</p><p>화요비님의 음악은 R&B를 기반으로 재즈, 팝 등 다양한 장르를 아우르는 폭넓은 스펙트럼을 자랑합니다. 특히 그녀의 호소력 짙은 보컬은 곡의 감성을 극대화하며 듣는 이들에게 깊은 울림을 선사합니다. 라이브 무대에서는 더욱 진가를 발휘하며 관객들을 압도하는 카리스마를 보여주죠.</p><p>Deep Music and Performance</p><p>Hwayobi's music boasts a wide spectrum that encompasses various genres such as jazz and pop based on R&B. In particular, her appealing vocals maximize the emotion of the song, delivering a deep resonance to listeners. She shows her true worth on the live stage, displaying a charisma that overwhelms the audience.</p><p>✧</p><p>주요 활동과 대표곡</p><p>화요비님은 솔로 활동뿐만 아니라 다양한 드라마 OST 참여, 다른 아티스트와의 콜라보레이션을 통해 폭넓은 음악 활동을 펼쳐왔습니다. 그녀의 대표곡들은 시간이 흘러도 변치 않는 감동을 선사하며 많은 이들에게 사랑받고 있습니다. 'Never Say Goodbye'와 같은 곡은 그녀의 음악적 깊이를 잘 보여주는 예시입니다.</p><p>Major Activities and Representative Songs</p><p>Hwayobi has been actively involved in various musical activities, not only as a solo artist but also through participation in various drama OSTs and collaborations with other artists. Her representative songs offer timeless emotions and are loved by many. Songs like 'Never Say Goodbye' are examples that showcase her musical depth.</p><p>✧</p><p>앞으로의 음악과 의미</p><p>끊임없이 새로운 시도를 거듭하며 음악적 성장을 추구하는 화요비님. 그녀의 음악은 앞으로도 우리 삶의 다양한 순간들을 더욱 풍요롭게 만들어줄 것입니다. 진솔한 감성과 깊이 있는 음악으로 오랫동안 사랑받는 아티스트로 남을 것이라고 기대합니다.</p><p>Future Music and Meaning</p><p>Hwayobi constantly seeks musical growth by repeatedly trying new things. Her music will continue to enrich the various moments of our lives. I expect her to remain an artist who is loved for a long time for her sincere emotions and profound music.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2017] R-rated</div>
+<div><a href='https://tidal.com/album/80420960' target='_blank'>https://tidal.com/album/80420960</a></div>
+<div>Hwayobi - R-rated</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/80420960' target='_blank'><img src='https://resources.tidal.com/images/75502a0f/3063/41e5/9044/e79db060c848/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Never Say Goodbye</div>
+<div><a href='https://tidal.com/album/69172592' target='_blank'>https://tidal.com/album/69172592</a></div>
+<div>Hwayobi - Never Say Goodbye</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/69172592' target='_blank'><img src='https://resources.tidal.com/images/6b8b66e4/a0c6/4dcb/90d5/0d786d21110c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Oh Summer</div>
+<div><a href='https://tidal.com/album/80699247' target='_blank'>https://tidal.com/album/80699247</a></div>
+<div>Hwayobi - Oh Summer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/80699247' target='_blank'><img src='https://resources.tidal.com/images/16deeb22/17fa/41bf/b519/01077143f917/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] 8</div>
+<div><a href='https://tidal.com/album/65539046' target='_blank'>https://tidal.com/album/65539046</a></div>
+<div>Hwayobi - Can't Wait For Love</div>
+<div>Hwayobi - Come Back To You</div>
+<div>Hwayobi - One In A Million</div>
+<div>Hwayobi - Closer</div>
+<div>Hwayobi - Do You Love Somebody..-</div>
+<div>Hwayobi - What If--</div>
+<div>Hwayobi - Liar On Wire</div>
+<div>Hwayobi - Dream's Beautiful</div>
+<div>Hwayobi - Sparkling River</div>
+<div>Hwayobi - Purple Summer</div>
+<div>Hwayobi - Please, Don't Pick It Up (East4A Mix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/65539046' target='_blank'><img src='https://resources.tidal.com/images/73e4d87d/7f46/48d8/bec4/c319b18d9588/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Don't Take My Call</div>
+<div><a href='https://tidal.com/album/80826262' target='_blank'>https://tidal.com/album/80826262</a></div>
+<div>Hwayobi - Don't Take My Call</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/80826262' target='_blank'><img src='https://resources.tidal.com/images/e304d020/134c/4f3f/a12e/deecaf922626/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 820211</div>
+<div><a href='https://tidal.com/album/40996135' target='_blank'>https://tidal.com/album/40996135</a></div>
+<div>Hwayobi - Prologue</div>
+<div>Hwayobi - My Man</div>
+<div>Hwayobi - Fire & Ice</div>
+<div>Hwayobi - I'm In -33-</div>
+<div>Hwayobi - Standing For Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/40996135' target='_blank'><img src='https://resources.tidal.com/images/a780efd7/ebaa/4dc3/b756/587747244457/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Closer</div>
+<div><a href='https://tidal.com/album/215931626' target='_blank'>https://tidal.com/album/215931626</a></div>
+<div>Hwayobi - Closer (Feat. Wutan)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931626' target='_blank'><img src='https://resources.tidal.com/images/d514d863/7eef/4cb3/8077/b781e4828c47/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 같이 있어줘</div>
+<div><a href='https://tidal.com/album/133034297' target='_blank'>https://tidal.com/album/133034297</a></div>
+<div>Hwayobi, 태하 - 같이 있어줘</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/133034297' target='_blank'><img src='https://resources.tidal.com/images/eedd6ff0/9e90/45dc/a893/7df6531babd5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Believe in love (Original Soundtrack) Part.2</div>
+<div><a href='https://tidal.com/album/215905425' target='_blank'>https://tidal.com/album/215905425</a></div>
+<div>Hwayobi - At this rate (feat.PANDA) (RAP VER.)</div>
+<div>Hwayobi - At this rate</div>
+<div>Hwayobi - So cool</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215905425' target='_blank'><img src='https://resources.tidal.com/images/f4f7cfb3/2a8b/41ca/9ac4/607ca453b066/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2010] Hwayobi</div>
+<div><a href='https://tidal.com/album/215931425' target='_blank'>https://tidal.com/album/215931425</a></div>
+<div>Hwayobi - Booty Call</div>
+<div>Hwayobi - Bye Bye Bye</div>
+<div>Hwayobi - Ssso What (Feat. Beenzino)</div>
+<div>Hwayobi - Baby Gone Baby Gone (Feat. Outsider)</div>
+<div>Hwayobi - 2CreAm NoSuGar</div>
+<div>Hwayobi - Men sometimes</div>
+<div>Hwayobi - More Than Love</div>
+<div>Hwayobi - iLuvMe</div>
+<div>Hwayobi - Zero</div>
+<div>Hwayobi - Cloud 9</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215931425' target='_blank'><img src='https://resources.tidal.com/images/074f9cd9/efd9/4542/87bf/2deec5930d87/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Girl Like Me</div>
+<div><a href='https://tidal.com/album/215930909' target='_blank'>https://tidal.com/album/215930909</a></div>
+<div>Hwayobi - Girl Like Me</div>
+<div>Hwayobi - Bad boy</div>
+<div>Hwayobi - u N i</div>
+<div>Hwayobi - Girl Like Me (Acoustic Guitar Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215930909' target='_blank'><img src='https://resources.tidal.com/images/e6513a77/1603/4e58/ae08/83a965c3b3e5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] SUMMER</div>
+<div><a href='https://tidal.com/album/215751691' target='_blank'>https://tidal.com/album/215751691</a></div>
+<div>Hwayobi - Rose</div>
+<div>Hwayobi - PYGMALION EFFECT</div>
+<div>Hwayobi - KISS KISS KISS (Feat. SLEEPY)</div>
+<div>Hwayobi - It takes two</div>
+<div>Hwayobi - A Young Child (Feat. BASICK)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215751691' target='_blank'><img src='https://resources.tidal.com/images/2c4ed13e/c605/4377/9222/c4c4404cf98c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Sunshine</div>
+<div><a href='https://tidal.com/album/94238577' target='_blank'>https://tidal.com/album/94238577</a></div>
+<div>Hwayobi - 비상 Intro</div>
+<div>Hwayobi - 사랑해---</div>
+<div>Hwayobi - 남자는 모른다</div>
+<div>Hwayobi - 딜레마</div>
+<div>Hwayobi - 참 바보 같죠</div>
+<div>Hwayobi - 한걸음도</div>
+<div>Hwayobi - Fly Away</div>
+<div>Hwayobi - 고마웠어요</div>
+<div>Hwayobi, Untouchable - 흐르고 멈추다</div>
+<div>Hwayobi, 수호 - Long Kiss Good Night</div>
+<div>Hwayobi - 잊고 싶은 것</div>
+<div>Hwayobi - 거짓말 하기 싫어요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/94238577' target='_blank'><img src='https://resources.tidal.com/images/60d59a76/f0a3/4504/99aa/8f88f2838b7d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2004] Soul 4 Life</div>
+<div><a href='https://tidal.com/album/150394158' target='_blank'>https://tidal.com/album/150394158</a></div>
+<div>Hwayobi - 슬퍼 말아요</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/150394158' target='_blank'><img src='https://resources.tidal.com/images/7cbc7878/5c54/4a9c/bcb5/8baa167ceed4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/1_TIDAL_Kpop_Artist_Link_H.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅎ1) TIDAL Kpop Artist Link (H)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/화요비 (Hwayobi)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
