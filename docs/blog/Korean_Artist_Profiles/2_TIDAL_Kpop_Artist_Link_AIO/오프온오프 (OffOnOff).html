@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 오프온오프 ( Tidal OffOnOff )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 오프온오프 ( Tidal OffOnOff )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/005dabde/d274/4911/bdee/d9bb4a9d214f/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/3586038' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 오프온오프</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>오프온오프 (OffOnOff) - 도시의 밤, 몽환적인 사운드와 감각적인 멜로디로 채우는 두 청춘의 이야기</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> OffOnOff</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>OffOnOff - The story of two youths filling the city night with dreamy sounds and sensual melodies.</div><p>감각적인 음악으로 리스너들의 감성을 자극하는 오프온오프를 소개합니다. 콜드(Colde)와 0channel, 두 프로듀서 겸 싱어송라이터로 이루어진 팀입니다. 이들은 독특한 분위기와 트렌디한 사운드로 많은 사랑을 받고 있어요.</p><p>Introducing OffOnOff, who stimulate listeners' emotions with their sensual music. They are a team consisting of two producers and singer-songwriters, Colde and 0channel. They are loved for their unique atmosphere and trendy sound.</p><p>✧</p><p>그룹의 시작</p><p>오프온오프는 콜드와 0channel이 만나 탄생했어요. 두 사람은 각자의 음악적 개성을 조화롭게 융합하여 독창적인 사운드를 만들어냅니다. 이들의 만남은 힙합, 알앤비, 신스팝 등 다양한 장르를 아우르는 새로운 음악적 시너지 효과를 창출했답니다.</p><p>The Beginning of the Group</p><p>OffOnOff was born from the meeting of Colde and 0channel. The two artists harmoniously blend their individual musical personalities to create a unique sound. Their meeting created a new musical synergy that encompasses various genres such as hip-hop, R&B, and synth-pop.</p><p>✧</p><p>음악과 퍼포먼스</p><p>몽환적인 분위기와 세련된 사운드가 오프온오프 음악의 특징이에요. 이들은 감각적인 비트와 멜로디 위에 자신들만의 섬세한 감성을 녹여냅니다. 라이브 공연에서는 그들의 음악적 매력이 더욱 돋보이며, 시각적인 연출 또한 훌륭하다는 평가를 받고 있어요.</p><p>Music and Performance</p><p>The dreamy atmosphere and sophisticated sound are the characteristics of OffOnOff's music. They melt their own delicate emotions onto sensual beats and melodies. Their musical charm is further highlighted in live performances, and their visual presentation is also highly regarded.</p><p>✧</p><p>주요 활동</p><p>오프온오프는 데뷔 이후 꾸준히 싱글과 EP를 발표하며 활동을 이어왔습니다. 다양한 아티스트들과의 협업을 통해 음악적 스펙트럼을 넓혀왔어요. 특히, DEAN, Tablo, Rad Museum 등과의 작업은 큰 화제를 모았습니다.</p><p>Main Activities</p><p>OffOnOff has been steadily releasing singles and EPs since their debut. They have expanded their musical spectrum through collaborations with various artists. In particular, their work with DEAN, Tablo, and Rad Museum has garnered significant attention.</p><p>✧</p><p>미래와 의미</p><p>오프온오프는 앞으로도 실험적인 시도를 멈추지 않을 것으로 기대됩니다. 그들의 음악은 단순한 유행을 넘어, 하나의 예술 작품으로서 깊은 울림을 전달합니다. 앞으로 이들이 보여줄 새로운 음악 세계가 더욱 기대되는 이유입니다.</p><p>Future and Meaning</p><p>OffOnOff is expected to continue their experimental attempts in the future. Their music goes beyond simple trends and delivers a deep resonance as a work of art. This is why there is great anticipation for the new musical world they will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2017] Boy.</div>
+<div><a href='https://tidal.com/album/344597635' target='_blank'>https://tidal.com/album/344597635</a></div>
+<div>Offonoff - In the Car</div>
+<div>Offonoff - Cigarette (feat. Tablo, Miso)</div>
+<div>Offonoff - gold (feat. DEAN)</div>
+<div>Offonoff - Good2me (feat. punchnello)</div>
+<div>Offonoff - Boy</div>
+<div>Offonoff - Photograph</div>
+<div>Offonoff - Film Roll</div>
+<div>Offonoff - Dance</div>
+<div>Offonoff - Midnight</div>
+<div>Offonoff - Moon, 12-04Am</div>
+<div>Offonoff - homeless door (feat. Rad Museum)</div>
+<div>Offonoff - Overthinking</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344597635' target='_blank'><img src='https://resources.tidal.com/images/005dabde/d274/4911/bdee/d9bb4a9d214f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Photograph</div>
+<div><a href='https://tidal.com/album/344533809' target='_blank'>https://tidal.com/album/344533809</a></div>
+<div>Offonoff - Photograph</div>
+<div>Offonoff - Moon, 12-04AM</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344533809' target='_blank'><img src='https://resources.tidal.com/images/7f44fb14/b049/4b86/84b5/da25040d4368/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Bath</div>
+<div><a href='https://tidal.com/album/344533603' target='_blank'>https://tidal.com/album/344533603</a></div>
+<div>Offonoff - Bath</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344533603' target='_blank'><img src='https://resources.tidal.com/images/c846360e/3a0e/4e50/a5e1/f59a681a47d9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Slap and Tickle</div>
+<div><a href='https://tidal.com/album/162443841' target='_blank'>https://tidal.com/album/162443841</a></div>
+<div>Offonoff - Slap</div>
+<div>Offonoff - Tickle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/162443841' target='_blank'><img src='https://resources.tidal.com/images/5f03d0ec/9cf1/4a6a/a1cd/f290dbdfc321/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Clash</div>
+<div><a href='https://tidal.com/album/162441311' target='_blank'>https://tidal.com/album/162441311</a></div>
+<div>Offonoff - Rabbit Punch</div>
+<div>Offonoff - Calls</div>
+<div>Offonoff - Kicking Stones</div>
+<div>Offonoff - Bone Meat</div>
+<div>Offonoff - Clash</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/162441311' target='_blank'><img src='https://resources.tidal.com/images/eff59f97/f74a/47c5/9017/850d27e2acd4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/오프온오프 (OffOnOff)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
