@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 지드래곤 ( Tidal G-Dragon )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 지드래곤 ( Tidal G-Dragon )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/94f4d902/46d5/4a11/a18d/5f798f1cd014/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5092715' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 지드래곤</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>솔로, 유닛, 그룹을 넘나드는 팔색조 매력, 'POWER'로 증명한 끊임없는 도전과 실험 정신</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> G-Dragon</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A chameleon-like charm that transcends solo work, units, and groups, proven by the constant challenges and experimental spirit of 'POWER'.</div><p>패션, 아트, 음악 등 다양한 분야에서 독보적인 존재감을 드러내는 지드래곤(G-Dragon)입니다. 그는 단순한 아이돌을 넘어, 자신만의 색깔로 대중문화에 큰 영향을 미치는 아티스트입니다. 끊임없는 변화와 실험을 통해 늘 새로운 모습을 보여주는 그의 음악 세계를 함께 탐험해 볼까요?</p><p>G-Dragon stands out in various fields such as fashion, art, and music. He is not just an idol but an artist who significantly influences pop culture with his unique style. Shall we explore his musical world, which always presents a new look through constant change and experimentation?</p><p>✧</p><p>그룹 탄생</p><p>지드래곤은 YG 엔터테인먼트에서 오랜 연습생 기간을 거쳐 그룹의 리더이자 핵심 멤버로 데뷔했습니다. 팀 내에서 작사, 작곡, 프로듀싱을 담당하며 음악적 역량을 발휘하며 그룹의 색깔을 만들어나갔습니다. 그의 활약은 그룹을 K팝 대표 아이콘으로 만드는 데 크게 기여했습니다.</p><p>Group Formation</p><p>G-Dragon debuted as the leader and key member of a group after a long period of training at YG Entertainment. He showcased his musical capabilities by taking charge of writing, composing, and producing within the team, shaping the group's unique style. His contributions were significant in establishing the group as a representative icon of K-pop.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>지드래곤의 음악은 힙합을 기반으로 다양한 장르를 넘나드는 실험적인 사운드가 특징입니다. 그는 트렌드를 선도하는 패셔니스타로서, 무대 위에서 독창적인 퍼포먼스와 스타일을 선보입니다. 그의 음악과 퍼포먼스는 전 세계 팬들에게 신선한 영감을 주고 있습니다.</p><p>Music and Performance</p><p>G-Dragon's music is characterized by experimental sounds that cross various genres based on hip-hop. As a trend-leading fashionista, he presents unique performances and styles on stage. His music and performances provide fresh inspiration to fans around the world.</p><p>✧</p><p>주요 활동</p><p>솔로 활동을 통해 지드래곤은 자신만의 음악적 색깔을 더욱 확고히 했습니다. 유닛 활동에서는 색다른 조합과 콘셉트를 시도하며 음악적 스펙트럼을 넓혔습니다. 다양한 브랜드와의 협업을 통해 패션 아이콘으로서의 영향력을 보여주기도 합니다.</p><p>Main Activities</p><p>Through his solo activities, G-Dragon has further solidified his unique musical identity. In unit activities, he expanded his musical spectrum by attempting different combinations and concepts. He also demonstrates his influence as a fashion icon through collaborations with various brands.</p><p>✧</p><p>미래/의미</p><p>지드래곤은 끊임없는 음악적 실험과 도전을 통해 자신만의 영역을 구축해나가고 있습니다. 그의 음악은 단순한 유행을 넘어, 시대를 반영하는 예술 작품으로 평가받고 있습니다. 앞으로 그가 보여줄 새로운 음악과 행보가 더욱 기대됩니다.</p><p>Future/Meaning</p><p>G-Dragon is building his own domain through constant musical experimentation and challenges. His music is evaluated as an artwork that reflects the times, beyond simple trends. We look forward to the new music and steps he will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Übermensch</div>
+<div><a href='https://tidal.com/album/419602520' target='_blank'>https://tidal.com/album/419602520</a></div>
+<div>G-Dragon, Taeyang, Daesung - HOME SWEET HOME</div>
+<div>G-Dragon - POWER</div>
+<div>G-Dragon, Anderson .Paak - TOO BAD</div>
+<div>G-Dragon - DRAMA</div>
+<div>G-Dragon - IBELONGIIU</div>
+<div>G-Dragon - TAKE ME</div>
+<div>G-Dragon - 보나마나 (BONAMANA)</div>
+<div>G-Dragon - GYRO-DROP</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/419602520' target='_blank'><img src='https://resources.tidal.com/images/edae2138/9126/49ca/b295/6e68bc0e13d6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Good Day 2025 (Telepathy + By the Moonlight Window)</div>
+<div><a href='https://tidal.com/album/431393070' target='_blank'>https://tidal.com/album/431393070</a></div>
+<div>G-Dragon, Hwang Jung Min, Defconn, HONG JIN KYUNG, - Good Day 2025 (Telepathy + By the Moonlight Window</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431393070' target='_blank'><img src='https://resources.tidal.com/images/d97547b1/f814/488b/85fb/4c8f0373a9be/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] POWER</div>
+<div><a href='https://tidal.com/album/396233953' target='_blank'>https://tidal.com/album/396233953</a></div>
+<div>G-Dragon - POWER</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/396233953' target='_blank'><img src='https://resources.tidal.com/images/2928ca92/0dea/443c/9b1c/4844f6fd78a6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] HOME SWEET HOME (feat. TAEYANG & DAESUNG)</div>
+<div><a href='https://tidal.com/album/400583267' target='_blank'>https://tidal.com/album/400583267</a></div>
+<div>G-Dragon, Taeyang, Daesung - HOME SWEET HOME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/400583267' target='_blank'><img src='https://resources.tidal.com/images/c5ffd497/68a5/4f07/b509/c58b29b50c14/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] KWON JI YONG</div>
+<div><a href='https://tidal.com/album/170271702' target='_blank'>https://tidal.com/album/170271702</a></div>
+<div>G-Dragon - INTRO. 권지용 (Middle Fingers-Up)(Explicit)</div>
+<div>G-Dragon - 개소리 (BULLSHIT)(Explicit)</div>
+<div>G-Dragon - SUPER STAR</div>
+<div>G-Dragon - 무제(無題) (Untitled, 2014)</div>
+<div>G-Dragon - OUTRO. 신곡(神曲) (Divina Commedia)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170271702' target='_blank'><img src='https://resources.tidal.com/images/a93a9ccb/9795/433f/a776/071230178448/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 쿠데타 (COUP D'ETAT)</div>
+<div><a href='https://tidal.com/album/172945640' target='_blank'>https://tidal.com/album/172945640</a></div>
+<div>G-Dragon - 쿠데타 (COUP D'ETAT) (Feat. Diplo & Baauer)</div>
+<div>G-Dragon - 늴리리야 (Niliria) (Feat. Missy Elliott) (Missy Elliot</div>
+<div>G-Dragon - R.O.D. (Feat. Lydia Paek)</div>
+<div>G-Dragon - Black (Feat. Sky Ferreira)</div>
+<div>G-Dragon - 니가 뭔데 (Who You-)</div>
+<div>G-Dragon - 세상을 흔들어 (Shake The World)</div>
+<div>G-Dragon - 미치GO (GO)</div>
+<div>G-Dragon - 삐딱하게 (Crooked)</div>
+<div>G-Dragon - 늴리리야 (Niliria) (G-Dragon Ver.)</div>
+<div>G-Dragon - Runaway</div>
+<div>G-Dragon - 너무 좋아 (I Love It) (Feat. Zion.T & Boys Noize)</div>
+<div>G-Dragon - You Do (Outro)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/172945640' target='_blank'><img src='https://resources.tidal.com/images/5ec7b10d/191b/48b8/aeda/a0224cfdb9ee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] COUP D'ETAT (Korean Version)</div>
+<div><a href='https://tidal.com/album/246276286' target='_blank'>https://tidal.com/album/246276286</a></div>
+<div>G-Dragon - COUP D'ETAT</div>
+<div>G-Dragon - NILIRIA - Missy Elliott Version</div>
+<div>G-Dragon - R.O.D-</div>
+<div>G-Dragon - Black (Feat. JENNIE of BLACKPINK)</div>
+<div>G-Dragon - WHO YOU-</div>
+<div>G-Dragon - SHAKE THE WORLD</div>
+<div>G-Dragon - GO</div>
+<div>G-Dragon - CROOKED</div>
+<div>G-Dragon - NILIRIA - G-Dragon Version</div>
+<div>G-Dragon - RUNAWAY</div>
+<div>G-Dragon - I LOVE IT</div>
+<div>G-Dragon - YOU DO (Outro)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/246276286' target='_blank'><img src='https://resources.tidal.com/images/c460d9c3/27d6/4871/9794/2791bfec0a39/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 2013 G-DRAGON WORLD TOUR 'ONE OF A KIND in SEOUL'</div>
+<div><a href='https://tidal.com/album/223614225' target='_blank'>https://tidal.com/album/223614225</a></div>
+<div>G-Dragon - 미치GO!</div>
+<div>G-Dragon - Heartbreaker</div>
+<div>G-Dragon - One Of A Kind</div>
+<div>G-Dragon - Butterfly</div>
+<div>G-Dragon - Missing You</div>
+<div>G-Dragon - 그 XX</div>
+<div>G-Dragon - 결국 (Feat. 이하이)</div>
+<div>G-Dragon - Today</div>
+<div>G-Dragon - 소년이여</div>
+<div>G-Dragon - This Love</div>
+<div>G-Dragon - 1년 정거장</div>
+<div>G-Dragon - 악몽</div>
+<div>G-Dragon - She's Gone</div>
+<div>G-Dragon - 크레용 + Fantastic Baby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223614225' target='_blank'><img src='https://resources.tidal.com/images/7954df35/dc90/4874/bf9c/36d74e302969/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] One of a Kind</div>
+<div><a href='https://tidal.com/album/170261023' target='_blank'>https://tidal.com/album/170261023</a></div>
+<div>G-Dragon - One Of A Kind</div>
+<div>G-Dragon - 크레용 (Crayon)</div>
+<div>G-Dragon - 결국 (Feat. 로제 of BLACKPINK)</div>
+<div>G-Dragon - 그XX(Explicit)</div>
+<div>G-Dragon - Missing You (Feat. 김윤아 of 자우림)</div>
+<div>G-Dragon - Today (Feat. 김종완 of Nell)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170261023' target='_blank'><img src='https://resources.tidal.com/images/7250de99/63c7/43e1/9b2b/db86eabac8e6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2010] Shine A Light</div>
+<div><a href='https://tidal.com/album/223617795' target='_blank'>https://tidal.com/album/223617795</a></div>
+<div>G-Dragon - Heartbreaker (Feat. Flo Rida)</div>
+<div>G-Dragon - Heartbreaker</div>
+<div>G-Dragon - This Love</div>
+<div>G-Dragon - Hello (Feat. DARA)</div>
+<div>G-Dragon - Gossip Man (Feat. Kim Gun Mo)</div>
+<div>G-Dragon - Korean Dream + Storm + Hip Hop Gentlemen + G-DRAGO</div>
+<div>G-Dragon - A Boy</div>
+<div>G-Dragon - The Leaders (Feat. Teddy, CL)</div>
+<div>G-Dragon - Breathe</div>
+<div>G-Dragon - Butterfly (Feat. Jin Jung)</div>
+<div>G-Dragon - But I Love U</div>
+<div>G-Dragon - She's Gone (Feat. KUSH)(Explicit)</div>
+<div>태양, G-DRAGON - Only Look At Me</div>
+<div>G-Dragon - Korean Dream (Feat. TAEYANG)(Explicit)</div>
+<div>G-Dragon - 1 Year</div>
+<div>G-Dragon - Lies</div>
+<div>G-Dragon - Heartbreaker (Encore)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223617795' target='_blank'><img src='https://resources.tidal.com/images/9e0d38c8/afab/4703/b8ba/09eb59251622/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Heartbreaker</div>
+<div><a href='https://tidal.com/album/172945657' target='_blank'>https://tidal.com/album/172945657</a></div>
+<div>G-Dragon - 소년이여</div>
+<div>G-Dragon - Heartbreaker</div>
+<div>G-Dragon - Breathe</div>
+<div>G-Dragon - Butterfly (Feat. Jin Jung)</div>
+<div>G-Dragon - Hello (Feat. 다라)</div>
+<div>G-Dragon - Gossip Man (Feat. 김건모)</div>
+<div>G-Dragon - Korean Dream (Feat. 태양)(Explicit)</div>
+<div>G-Dragon - The Leaders (Feat. Teddy, CL)</div>
+<div>G-Dragon - She's Gone (Feat. Kush)(Explicit)</div>
+<div>G-Dragon - 1년 정거장</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/172945657' target='_blank'><img src='https://resources.tidal.com/images/87790450/0307/4d6b/bb0b/493e29c709bc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 나만 바라봐 Part.2</div>
+<div><a href='https://tidal.com/album/223608260' target='_blank'>https://tidal.com/album/223608260</a></div>
+<div>G-Dragon - 나만 바라봐 (Part 2)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223608260' target='_blank'><img src='https://resources.tidal.com/images/f963ea53/e0c5/4706/ac90/fd944aa04b03/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/지드래곤 (G-Dragon)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
