@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 박미경 ( Tidal Park Mi Kyung )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 박미경 ( Tidal Park Mi Kyung )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/d731a084/f12d/4de9/99c4/b2bb287aca05/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9830605' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/9830606' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 박미경</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>이브의 경고, 모두 가져가 버려… 폭발적인 가창력으로 무대를 압도하는 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Park Mi Kyung</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Eve's Warning, Take It All Away... A diva who overwhelms the stage with explosive singing ability</div><p>시원한 고음과 파워풀한 가창력으로 90년대를 휩쓴 디바, 박미경을 소개합니다. 그녀의 무대는 에너지 넘치는 퍼포먼스와 깊은 감성으로 가득 차 관객들을 사로잡았죠. 다양한 장르를 소화하며 자신만의 음악 세계를 구축해온 그녀의 이야기를 함께 알아볼까요?</p><p>Let me introduce Park Mi Kyung, the diva who swept through the 90s with her cool high notes and powerful singing ability. Her stage is full of energetic performances and deep emotions, captivating the audience. Shall we explore the story of her, who has built her own musical world by mastering various genres?</p><p>✧</p><p>폭발적인 가창력의 탄생</p><p>박미경은 1985년 MBC 강변가요제에서 '민들레 홀씨 되어'로 데뷔했습니다. 이후 다양한 라이브 무대 경험을 통해 탄탄한 가창력을 쌓았어요. 그녀의 무대는 단순히 노래를 부르는 것을 넘어, 혼신의 힘을 다하는 열정적인 에너지로 가득했답니다.</p><p>The Birth of Explosive Singing Ability</p><p>Park Mi Kyung debuted in 1985 with 'Dandelion Seed' at the MBC Riverside Song Festival. Since then, she has built a solid singing ability through various live stage experiences. Her stage was more than just singing a song; it was full of passionate energy with all her heart and soul.</p><p>✧</p><p>장르를 넘나드는 음악과 퍼포먼스</p><p>댄스, 팝, 발라드 등 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여줬습니다. 특히 라이브 무대에서 선보이는 그녀의 폭발적인 가창력과 무대 매너는 압도적이었죠. '이브의 경고', '모두 가져가 버려' 같은 곡들은 그녀의 대표적인 히트곡으로 손꼽힙니다.</p><p>Music and Performances Across Genres</p><p>She has shown a wide musical spectrum by mastering various genres such as dance, pop, and ballad. In particular, her explosive singing ability and stage presence on live stages were overwhelming. Songs like 'Eve's Warning' and 'Take It All Away' are considered her representative hit songs.</p><p>✧</p><p>시대를 초월하는 주요 활동</p><p>90년대 가요계를 휩쓴 그녀는 이후에도 꾸준히 활동하며 다양한 음악적 시도를 이어갔습니다. 라이브 공연을 통해 팬들과 소통하며, 여전히 변치 않는 가창력을 선보이고 있어요. 다양한 방송 출연을 통해 대중과의 접점을 넓히고 있답니다.</p><p>Major Activities Transcending Time</p><p>She, who swept through the pop music scene in the 90s, has continued to be active and has continued various musical attempts. She communicates with fans through live performances, and still shows off her unchanging singing ability. She is expanding her contact with the public through various broadcast appearances.</p><p>✧</p><p>앞으로의 음악, 그리고 의미</p><p>박미경은 앞으로도 끊임없이 새로운 음악을 선보이며 대중들에게 감동을 선사할 것입니다. 그녀의 음악은 단순히 듣는 즐거움을 넘어, 삶의 희망과 용기를 주는 메시지를 담고 있어요. 앞으로 그녀가 보여줄 음악적 행보에 많은 기대와 응원을 보냅니다.</p><p>Future Music, and Meaning</p><p>Park Mi Kyung will continue to present new music and impress the public. Her music goes beyond just the pleasure of listening; it contains a message that gives hope and courage in life. We look forward to and support her future musical journey.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 박미경 라이브 콘서트</div>
+<div><a href='https://tidal.com/album/356697461' target='_blank'>https://tidal.com/album/356697461</a></div>
+<div>Park Mi Kyung - Disc1 - 민들레 홀씨되어 (Live Version)</div>
+<div>Park Mi Kyung - Disc1 - 화요일에 비가 내리면 (Live Version)</div>
+<div>Park Mi Kyung - Disc1 - 남겨진 아픔 (Live Version)</div>
+<div>Park Mi Kyung - Disc1 - 모두 가져가 버려 (Live Version)</div>
+<div>Park Mi Kyung - Disc1 - 날 도와줘 (Live Version)</div>
+<div>Park Mi Kyung - Disc1 - I Love you for sentimental reasons (Live Version)</div>
+<div>Park Mi Kyung - Disc1 - Autumn leaves (Live Version)</div>
+<div>Park Mi Kyung - Disc1 - This masquerade (Live Version)</div>
+<div>Park Mi Kyung - Disc1 - If it's over (Live Version)</div>
+<div>Park Mi Kyung - Disc1 - 넌 그렇게 살지마 (Live Version)</div>
+<div>Park Mi Kyung - Disc1 - 이브의 경고 (Live Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/356697461' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 다시, 첫사랑, Pt. 4_ 사랑하기 때문에 (Original TV Series Soundtrack)</div>
+<div><a href='https://tidal.com/album/90239521' target='_blank'>https://tidal.com/album/90239521</a></div>
+<div>박미경 - 사랑하기 때문에</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/90239521' target='_blank'><img src='https://resources.tidal.com/images/faf19b79/ee11/47a1/a35f/535b90b887c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Fantastic Duo 2 Part.10</div>
+<div><a href='https://tidal.com/album/326021025' target='_blank'>https://tidal.com/album/326021025</a></div>
+<div>Park Mi Kyung, Lee Jiyoung - 기억속의 먼 그대에게</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/326021025' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Lane Changing</div>
+<div><a href='https://tidal.com/album/215969424' target='_blank'>https://tidal.com/album/215969424</a></div>
+<div>Park Mi Kyung - Lane Changing (Bossa Nova Version)</div>
+<div>Park Mi Kyung - Lane Changing (Jazz Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215969424' target='_blank'><img src='https://resources.tidal.com/images/c4b4a974/df2a/40ad/9bc6/b9605007b9bd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 2010 Deluxe Edition</div>
+<div><a href='https://tidal.com/album/343817983' target='_blank'>https://tidal.com/album/343817983</a></div>
+<div>Park Mi Kyung - Leave Me Now</div>
+<div>Park Mi Kyung - How-</div>
+<div>Park Mi Kyung - Love is Coming (with Kim Gun Mo)</div>
+<div>Park Mi Kyung - Come Back</div>
+<div>Park Mi Kyung - I Can't Cry</div>
+<div>Park Mi Kyung - Reason To Be Comfortable</div>
+<div>Park Mi Kyung - Why</div>
+<div>Park Mi Kyung - The End of A Long Lost</div>
+<div>Park Mi Kyung - Always Be The Same</div>
+<div>Park Mi Kyung - Far Away (2009 Live Version)</div>
+<div>Park Mi Kyung - Unreasonable Reason (2009 Remastering)</div>
+<div>Park Mi Kyung - Eve's Warning (2009 Remastering)</div>
+<div>Park Mi Kyung - Don't Live Like That (2009 Remastering)</div>
+<div>Park Mi Kyung - Obsession (2009 Remastering)</div>
+<div>Park Mi Kyung - Adam's Way of Thinking (2009 Remastering)</div>
+<div>Park Mi Kyung - Becoming A Dandelion Spore (2010 New Edition)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343817983' target='_blank'><img src='https://resources.tidal.com/images/d731a084/f12d/4de9/99c4/b2bb287aca05/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] Miky Seven New Style</div>
+<div><a href='https://tidal.com/album/212295200' target='_blank'>https://tidal.com/album/212295200</a></div>
+<div>Park Mi Kyung - Prologue [My Music]</div>
+<div>Park Mi Kyung - 봄날</div>
+<div>Park Mi Kyung - 재회</div>
+<div>Park Mi Kyung - Sexy Lady</div>
+<div>Park Mi Kyung - Bad Boy</div>
+<div>Park Mi Kyung - 이별속으로</div>
+<div>Park Mi Kyung - Woman</div>
+<div>Park Mi Kyung - 할말---</div>
+<div>Park Mi Kyung - 사랑했어요 (리메이크)</div>
+<div>Park Mi Kyung - 처음처럼...지금처럼---</div>
+<div>Park Mi Kyung - Violet</div>
+<div>Park Mi Kyung - 결별</div>
+<div>Park Mi Kyung - 눈물이 되어</div>
+<div>Park Mi Kyung - 사랑할수록... (Remake Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/212295200' target='_blank'><img src='https://resources.tidal.com/images/96aee144/dcba/41d3/91eb/9dc44ab08aa9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] Park Mi Kyung Vol.3</div>
+<div><a href='https://tidal.com/album/343710730' target='_blank'>https://tidal.com/album/343710730</a></div>
+<div>Park Mi Kyung - Help Me</div>
+<div>Park Mi Kyung - Far Away</div>
+<div>Park Mi Kyung - A Dreadful Woman</div>
+<div>Park Mi Kyung - Women's Choice</div>
+<div>Park Mi Kyung - Night Full of Love</div>
+<div>Park Mi Kyung - Adam's Way of Thinking</div>
+<div>Park Mi Kyung - Regret</div>
+<div>Park Mi Kyung - Serendipity</div>
+<div>Park Mi Kyung - Take It All Away-</div>
+<div>Park Mi Kyung - Memories of Sad Young Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343710730' target='_blank'><img src='https://resources.tidal.com/images/21f54f3e/0be2/4869/a84d/f9d295639eea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1995] Jungle New Style (2024 Remasterd)</div>
+<div><a href='https://tidal.com/album/359659448' target='_blank'>https://tidal.com/album/359659448</a></div>
+<div>Park Mi Kyung - Eve's Warning (2024 Remaster)</div>
+<div>Park Mi Kyung - After You Left (2024 Remaster)</div>
+<div>Park Mi Kyung - Lovely (2024 Remaster)</div>
+<div>Park Mi Kyung - You in The Past (2024 Remaster)</div>
+<div>Park Mi Kyung - Give Up (N.J.S. Funky) (2024 Remaster)</div>
+<div>Park Mi Kyung - Don't Live Like That (2024 Remaster)</div>
+<div>Park Mi Kyung - Actually… (2024 Remaster)</div>
+<div>Park Mi Kyung - Killing Me Softly With His Song (2024 Remaster)</div>
+<div>Park Mi Kyung - Rainy Day (2024 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/359659448' target='_blank'><img src='https://resources.tidal.com/images/bd541976/d67c/4059/a6ad/983a47e37fb3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1994] Unreasonable Reason</div>
+<div><a href='https://tidal.com/album/343704382' target='_blank'>https://tidal.com/album/343704382</a></div>
+<div>Park Mi Kyung - Tonight (2024 Remaster)</div>
+<div>Park Mi Kyung - Unreasonable Reason (2024 Remaster)</div>
+<div>Park Mi Kyung - An Old Letter (2024 Remaster)</div>
+<div>Park Mi Kyung - Breakup Practice (2024 Remaster)</div>
+<div>Park Mi Kyung - My Mistake (2024 Remaster)</div>
+<div>Park Mi Kyung - Creating The Love (2024 Remaster)</div>
+<div>Park Mi Kyung - Sad Song (2024 Remaster)</div>
+<div>Park Mi Kyung - Travel To You (2024 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343704382' target='_blank'><img src='https://resources.tidal.com/images/2be8791c/f075/471b/ad5f/7c92a9e9c8f2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1990] 사랑이 그런 것처럼 _ 화요일에 비가 내리면 _ 민들레 홀씨 되어</div>
+<div><a href='https://tidal.com/album/243393013' target='_blank'>https://tidal.com/album/243393013</a></div>
+<div>Park Mi Kyung - 어쩌면</div>
+<div>Park Mi Kyung - 사랑이 그런것처럼</div>
+<div>Park Mi Kyung - 그대 알고 있는지</div>
+<div>Park Mi Kyung - 그대와 단둘이</div>
+<div>Park Mi Kyung - 화요일에 비가 내리면</div>
+<div>Park Mi Kyung - 오늘이 가기 전에</div>
+<div>Park Mi Kyung - 다시 볼 수 없는 내사랑</div>
+<div>Park Mi Kyung - 민들레 홀씨되어</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/243393013' target='_blank'><img src='https://resources.tidal.com/images/6925c3af/f718/4a5e/9b44/07ff34c5fdf0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/1_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ1) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/박미경 (Park Mi Kyung)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
