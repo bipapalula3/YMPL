@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 하이키 ( Tidal H1-KEY )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 하이키 ( Tidal H1-KEY )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/6639a3de/f286/4d06/9fda/35145c646684/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/29793164' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 하이키</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>하이키 (H1-KEY) – 내면의 불꽃을 피워 올리는 당당한 에너지, 'Rose Blossom'처럼 역경 속에서 피어나는 희망을 노래하는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> H1-KEY</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>H1-KEY – A confident energy that ignites inner flames, a group that sings about hope blooming in adversity like 'Rose Blossom'.</div><p>4인조 걸그룹 하이키(H1-KEY)는 강렬한 퍼포먼스와 진솔한 메시지로 대중의 마음을 사로잡고 있습니다. 멤버 개개인의 매력과 탄탄한 실력은 물론, 음악을 통해 긍정적인 영향력을 전달하고자 노력하는 모습이 돋보여요. 앞으로 하이키가 보여줄 다채로운 음악 세계가 더욱 기대됩니다.</p><p>The four-member girl group H1-KEY is captivating the public with their intense performances and sincere messages. The charm and solid skills of each member, as well as their efforts to deliver a positive influence through music, stand out. We look forward to the diverse musical world that H1-KEY will show in the future.</p><p>✧</p><p>그룹 탄생</p><p>하이키는 각기 다른 매력을 지닌 멤버들이 모여 탄생했습니다. 데뷔 이후, 끊임없는 노력과 연습으로 실력을 쌓아 올리며 독보적인 존재감을 드러내고 있어요. 멤버들의 시너지는 하이키만의 음악적 색깔을 만들어내는 원동력이 됩니다.</p><p>Group Formation</p><p>H1-KEY was formed by members with unique charms. Since their debut, they have been building their skills through constant effort and practice, revealing a unique presence. The synergy of the members is the driving force behind creating H1-KEY's unique musical color.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>하이키는 다채로운 장르를 소화하며 음악적 스펙트럼을 넓혀가고 있습니다. 강렬한 비트와 중독성 있는 멜로디, 파워풀한 퍼포먼스는 하이키의 음악을 더욱 돋보이게 만들어요. 솔직하고 진솔한 가사는 듣는 이들에게 깊은 공감과 위로를 선사합니다.</p><p>Music and Performance</p><p>H1-KEY is expanding their musical spectrum by digesting various genres. The intense beats, addictive melodies, and powerful performances make H1-KEY's music stand out even more. Honest and sincere lyrics offer deep empathy and comfort to listeners.</p><p>✧</p><p>주요 활동</p><p>하이키는 국내외를 넘나들며 활발한 활동을 이어가고 있습니다. 다양한 무대 경험을 통해 더욱 성장하는 모습을 보여주고 있으며, 팬들과의 소통에도 적극적으로 참여하고 있어요. 음악 방송뿐만 아니라 다양한 콘텐츠를 통해 매력을 발산하고 있습니다.</p><p>Main Activities</p><p>H1-KEY continues to be active both domestically and internationally. They are showing growth through various stage experiences and actively participating in communication with fans. They are radiating their charm not only on music shows but also through various content.</p><p>✧</p><p>미래/의미</p><p>하이키는 앞으로도 끊임없이 변화하고 성장하는 모습을 보여줄 것입니다. 음악을 통해 세상에 긍정적인 메시지를 전달하고, 많은 사람들에게 희망과 용기를 주는 그룹이 되고 싶어해요. 하이키의 음악은 단순한 즐거움을 넘어, 우리 삶에 의미 있는 울림을 선사할 것입니다.</p><p>Future/Meaning</p><p>H1-KEY will continue to show constant change and growth in the future. They want to deliver a positive message to the world through music and become a group that gives hope and courage to many people. H1-KEY's music will go beyond simple enjoyment and bring meaningful resonance to our lives.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Re_ Thinkin' About You</div>
+<div><a href='https://tidal.com/album/398964629' target='_blank'>https://tidal.com/album/398964629</a></div>
+<div>H1-KEY, Josh Cullen - Re- Thinkin' About You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/398964629' target='_blank'><img src='https://resources.tidal.com/images/c2a6e4fe/0ada/4782/87c7/da99569b8e73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] H1-KEYnote #2 [Deeper]</div>
+<div><a href='https://tidal.com/album/343083212' target='_blank'>https://tidal.com/album/343083212</a></div>
+<div>H1-KEY - Deeper</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343083212' target='_blank'><img src='https://resources.tidal.com/images/693cc929/e2c0/4829/94ca/521282c5a6f9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] H1-KEYnote #1 [Thinkin' About You]</div>
+<div><a href='https://tidal.com/album/338998220' target='_blank'>https://tidal.com/album/338998220</a></div>
+<div>H1-KEY - Thinkin' About You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/338998220' target='_blank'><img src='https://resources.tidal.com/images/0464676b/48af/4ced/a0dd/c435d4e1062b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] H1-KEY 3rd Mini Album [LOVE or HATE]</div>
+<div><a href='https://tidal.com/album/369445387' target='_blank'>https://tidal.com/album/369445387</a></div>
+<div>H1-KEY - Let It Burn</div>
+<div>H1-KEY - ♥ Letter</div>
+<div>H1-KEY - Iconic</div>
+<div>H1-KEY - Rainfalls</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/369445387' target='_blank'><img src='https://resources.tidal.com/images/68921cfb/5ac1/4bce/bb76/2e32c122295e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Time to Shine</div>
+<div><a href='https://tidal.com/album/311950638' target='_blank'>https://tidal.com/album/311950638</a></div>
+<div>H1-KEY - Time to Shine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/311950638' target='_blank'><img src='https://resources.tidal.com/images/48944a52/4fb5/44b0/bf3a/8718a70645b2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Rose Blossom (Chinese Version) (楼宇间盛放的玫瑰)</div>
+<div><a href='https://tidal.com/album/361737553' target='_blank'>https://tidal.com/album/361737553</a></div>
+<div>H1-KEY - Rose Blossom (Chinese Version) (楼宇间盛放的玫瑰)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/361737553' target='_blank'><img src='https://resources.tidal.com/images/ef7ddafa/8406/4762/ba55/c140f1e3ee2c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] H1-KEY 2nd Mini Album [Seoul Dreaming]</div>
+<div><a href='https://tidal.com/album/312178160' target='_blank'>https://tidal.com/album/312178160</a></div>
+<div>H1-KEY - Intro - Seoul Dreaming</div>
+<div>H1-KEY - SEOUL (Such a Beautiful City)</div>
+<div>H1-KEY - Time to Shine</div>
+<div>H1-KEY - Low-key Scared But H1-KEY Ready</div>
+<div>H1-KEY - Magical Dream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/312178160' target='_blank'><img src='https://resources.tidal.com/images/beedba31/638b/46d2/8179/4bdada423a50/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] H1-KEY 1st Mini Album [Rose Blossom]</div>
+<div><a href='https://tidal.com/album/268129661' target='_blank'>https://tidal.com/album/268129661</a></div>
+<div>H1-KEY - Ring the Alarm</div>
+<div>H1-KEY - Rose Blossom</div>
+<div>H1-KEY, Tachaya - Crown Jewel (feat. Tachaya)</div>
+<div>H1-KEY - You Are My Key (for M1-KEY)</div>
+<div>H1-KEY - Dream Trip</div>
+<div>H1-KEY - ATHLETIC GIRL (2023 Remaster)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/268129661' target='_blank'><img src='https://resources.tidal.com/images/ba8b85e9/6b10/4ab3/8336/0a21493ef520/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Family, Pt. 1 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/289180559' target='_blank'>https://tidal.com/album/289180559</a></div>
+<div>H1-KEY - Danger</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/289180559' target='_blank'><img src='https://resources.tidal.com/images/5df50c76/3032/4d2f/85f9/5611871c2eec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] RUN</div>
+<div><a href='https://tidal.com/album/236002593' target='_blank'>https://tidal.com/album/236002593</a></div>
+<div>H1-KEY - RUN</div>
+<div>H1-KEY - Catch 'n' Release</div>
+<div>H1-KEY - Heart Light</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/236002593' target='_blank'><img src='https://resources.tidal.com/images/84f2233c/2fb9/40b0/9cc6/13fd4d0d66c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] ATHLETIC GIRL</div>
+<div><a href='https://tidal.com/album/209592308' target='_blank'>https://tidal.com/album/209592308</a></div>
+<div>H1-KEY - ATHLETIC GIRL</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/209592308' target='_blank'><img src='https://resources.tidal.com/images/1b336e08/040f/4291/ac58/5ceff965abb2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/1_TIDAL_Kpop_Artist_Link_H.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅎ1) TIDAL Kpop Artist Link (H)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/하이키 (H1-KEY)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
