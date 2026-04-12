@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 몬스타엑스 ( Tidal Monsta X )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 몬스타엑스 ( Tidal Monsta X )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/7752b530/d67d/412d/ae92/f9cf6bba7713/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/6324994' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 몬스타엑스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>몬스타엑스 – 강렬함 속에 숨겨진 섬세함, 'Beautiful Liar'처럼 아슬아슬한 줄타기를 선보이는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Monsta X</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Monsta X – Delicacy Hidden Within Intensity, a group that walks a tightrope like 'Beautiful Liar'.</div><p>힙합의 강렬함과 트렌디한 감각을 동시에 지닌 그룹, 몬스타엑스에 대해 알아볼까요? 파워풀한 퍼포먼스와 매력적인 음악으로 글로벌 팬들을 사로잡은 그들의 이야기를 지금부터 시작해 볼게요. 다양한 장르를 소화하며 끊임없이 변화를 시도하는 몬스타엑스의 매력에 빠져보세요!</p><p>Let's explore Monsta X, a group that possesses both the intensity of hip-hop and trendy sensibilities. We will now begin their story, which has captivated global fans with powerful performances and captivating music. Fall into the charm of Monsta X, who constantly attempts to change by taking on various genres!</p><p>✧</p><p>그룹의 탄생과 성장</p><p>몬스타엑스는 서바이벌 프로그램을 통해 탄생하여 데뷔 초부터 강렬한 콘셉트를 선보였어요. 멤버들의 노력과 팀워크를 바탕으로 꾸준히 성장하며 글로벌 팬덤을 확장해 나갔죠. 음악적 스펙트럼을 넓히며 다양한 스타일을 시도하는 모습이 인상적이에요.</p><p>The Birth and Growth of the Group</p><p>Monsta X was formed through a survival program and showcased a strong concept from their debut. Based on the members' efforts and teamwork, they have steadily grown and expanded their global fandom. It is impressive to see them broaden their musical spectrum and try various styles.</p><p>✧</p><p>음악 및 퍼포먼스 스타일</p><p>몬스타엑스는 힙합을 기반으로 팝, R&B 등 다양한 장르를 융합한 음악을 선보입니다. 강렬한 비트와 중독성 있는 멜로디, 멤버들의 개성이 돋보이는 보컬과 랩이 특징이죠. 파워풀하면서도 절제된 퍼포먼스는 몬스타엑스만의 독보적인 매력으로 손꼽혀요.</p><p>Music and Performance Style</p><p>Monsta X presents music that blends various genres such as pop and R&B based on hip-hop. It is characterized by strong beats, addictive melodies, and vocals and rap that highlight the individuality of the members. The powerful yet restrained performance is considered Monsta X's unique charm.</p><p>✧</p><p>주요 활동과 글로벌 영향력</p><p>몬스타엑스는 국내외를 넘나들며 활발한 활동을 펼치고 있습니다. 다양한 앨범 발매와 콘서트 투어를 통해 팬들과 소통하고, 각종 시상식에서 수상하며 글로벌한 인기를 입증했죠. 멤버들의 솔로 활동 또한 활발히 진행되며 음악적 역량을 보여주고 있어요.</p><p>Major Activities and Global Influence</p><p>Monsta X is active both domestically and internationally. They communicate with fans through various album releases and concert tours, and have proven their global popularity by winning awards at various awards ceremonies. The members' solo activities are also actively underway, demonstrating their musical capabilities.</p><p>✧</p><p>미래와 음악적 의미</p><p>끊임없이 변화하고 성장하는 몬스타엑스는 앞으로도 더욱 다채로운 음악을 선보일 것으로 기대됩니다. 그들의 음악은 단순한 즐거움을 넘어, 청춘의 고민과 사랑, 성장의 메시지를 담고 있죠. 몬스타엑스가 앞으로 어떤 음악으로 우리를 감동시킬지 기대해 주세요.</p><p>Future and Musical Meaning</p><p>Monsta X, which is constantly changing and growing, is expected to present even more diverse music in the future. Their music goes beyond simple enjoyment and contains messages of youth's worries, love, and growth. Please look forward to what kind of music Monsta X will impress us with in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[E] [2021] The Dreaming</div>
+<div><a href='https://tidal.com/album/204327983' target='_blank'>https://tidal.com/album/204327983</a></div>
+<div>Monsta X - One Day</div>
+<div>Monsta X - You Problem</div>
+<div>Monsta X - Tied to Your Body</div>
+<div>Monsta X - Whispers in the Dark</div>
+<div>Monsta X - Blame Me</div>
+<div>Monsta X - Secrets</div>
+<div>Monsta X - About Last Night</div>
+<div>Monsta X - Better(Explicit)</div>
+<div>Monsta X - Blow Your Mind</div>
+<div>Monsta X - The Dreaming</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204327983' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] SWING</div>
+<div><a href='https://tidal.com/album/279801256' target='_blank'>https://tidal.com/album/279801256</a></div>
+<div>Play-N-Skillz, Monsta X, Lil Jon, Bun B, Symba - SWING</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/279801256' target='_blank'><img src='https://resources.tidal.com/images/efc54528/5e6d/4e67/8ed3/bd2e77670498/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] REASON</div>
+<div><a href='https://tidal.com/album/267057474' target='_blank'>https://tidal.com/album/267057474</a></div>
+<div>Monsta X - Beautiful Liar</div>
+<div>Monsta X - Daydream</div>
+<div>Monsta X - Crescendo</div>
+<div>Monsta X - LONE RANGER</div>
+<div>Monsta X - Deny</div>
+<div>Monsta X - IT'S ALRIGHT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/267057474' target='_blank'><img src='https://resources.tidal.com/images/491eadd8/fc53/4ba1/a0d2/2ca5c62ce96a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] SHAPE OF LOVE</div>
+<div><a href='https://tidal.com/album/224812904' target='_blank'>https://tidal.com/album/224812904</a></div>
+<div>Monsta X - LOVE</div>
+<div>Monsta X, R3HAB - Burning Up (feat. R3HAB)</div>
+<div>Monsta X - Breathe</div>
+<div>Monsta X - Wildfire</div>
+<div>Monsta X - 사랑한다</div>
+<div>Monsta X - AND</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/224812904' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Late Night Feels</div>
+<div><a href='https://tidal.com/album/235140360' target='_blank'>https://tidal.com/album/235140360</a></div>
+<div>Sam Feldt, Monsta X - Late Night Feels</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/235140360' target='_blank'><img src='https://resources.tidal.com/images/40524f62/6dfb/4086/9775/3cf7e578bb71/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] If with U</div>
+<div><a href='https://tidal.com/album/346709434' target='_blank'>https://tidal.com/album/346709434</a></div>
+<div>Monsta X - If with U</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346709434' target='_blank'><img src='https://resources.tidal.com/images/ab947e61/0331/4ea8/a02a/70f214f5748c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Wanted</div>
+<div><a href='https://tidal.com/album/175640588' target='_blank'>https://tidal.com/album/175640588</a></div>
+<div>Monsta X - Wanted</div>
+<div>Monsta X - Neo Universe</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/175640588' target='_blank'><img src='https://resources.tidal.com/images/004e7ca9/a91e/4ebe/9e09/b08ecd30674f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Taste of Korea</div>
+<div><a href='https://tidal.com/album/216278112' target='_blank'>https://tidal.com/album/216278112</a></div>
+<div>Rain, Monsta X, Brave Girls, ATEEZ - Summer Taste</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216278112' target='_blank'><img src='https://resources.tidal.com/images/afeb4015/095d/4578/873b/cf7f0fc8b4fa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] One of a Kind</div>
+<div><a href='https://tidal.com/album/185552475' target='_blank'>https://tidal.com/album/185552475</a></div>
+<div>Monsta X - GAMBLER</div>
+<div>Monsta X - Heaven</div>
+<div>Monsta X - Addicted</div>
+<div>Monsta X - Secrets</div>
+<div>Monsta X - BEBE</div>
+<div>Monsta X - Rotate</div>
+<div>Monsta X - Livin' It Up (Korean Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/185552475' target='_blank'><img src='https://resources.tidal.com/images/f652600e/0dea/4e2a/a937/9608a626cada/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] One Day</div>
+<div><a href='https://tidal.com/album/202106400' target='_blank'>https://tidal.com/album/202106400</a></div>
+<div>Monsta X - One Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/202106400' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] NO LIMIT</div>
+<div><a href='https://tidal.com/album/204653507' target='_blank'>https://tidal.com/album/204653507</a></div>
+<div>Monsta X - Rush Hour</div>
+<div>Monsta X - Autobahn</div>
+<div>Monsta X - Ride with U</div>
+<div>Monsta X - Got me in chains</div>
+<div>Monsta X - Just love</div>
+<div>Monsta X - Mercy</div>
+<div>Monsta X - I got love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/204653507' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] KISS OR DEATH</div>
+<div><a href='https://tidal.com/album/346706989' target='_blank'>https://tidal.com/album/346706989</a></div>
+<div>Monsta X - KISS OR DEATH</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346706989' target='_blank'><img src='https://resources.tidal.com/images/f4d94240/7ae4/4adc/9fba/d2136c392f54/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Flavors Of Love</div>
+<div><a href='https://tidal.com/album/182145323' target='_blank'>https://tidal.com/album/182145323</a></div>
+<div>Monsta X - Flavors Of Love</div>
+<div>Monsta X - Wanted</div>
+<div>Monsta X - Follow (Japanese Version)</div>
+<div>Monsta X - Fantasia (Japanese Version)</div>
+<div>Monsta X - Re-Verseday</div>
+<div>Monsta X - Diamond Heart</div>
+<div>Monsta X - Secret</div>
+<div>Monsta X - Love Killa (Japanese Version)</div>
+<div>Monsta X - Detox</div>
+<div>Monsta X - Wish On The Same Sky</div>
+<div>Monsta X - Neo Universe</div>
+<div>Monsta X - Flavors Of Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182145323' target='_blank'><img src='https://resources.tidal.com/images/2a5587be/f4c1/4674/9094/9d04ef190008/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Fatal Love</div>
+<div><a href='https://tidal.com/album/160049139' target='_blank'>https://tidal.com/album/160049139</a></div>
+<div>Monsta X - Love Killa</div>
+<div>Monsta X - 갈증</div>
+<div>Monsta X - Thriller</div>
+<div>Monsta X - Guess Who</div>
+<div>Monsta X - Nobody Else</div>
+<div>Monsta X - BEASTMODE</div>
+<div>Monsta X - 대동단결</div>
+<div>Monsta X - Night View</div>
+<div>Monsta X - Last Carnival</div>
+<div>Monsta X - Sorry I'm Not Sorry</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/160049139' target='_blank'><img src='https://resources.tidal.com/images/d05ce296/845e/42f5/84fd/26585c5bdd10/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Wish On The Same Sky</div>
+<div><a href='https://tidal.com/album/136803515' target='_blank'>https://tidal.com/album/136803515</a></div>
+<div>Monsta X - Wish On The Same Sky</div>
+<div>Monsta X - Follow (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/136803515' target='_blank'><img src='https://resources.tidal.com/images/534ba512/c79b/42d6/8b8e/d5bfd6a64e2f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Reckless</div>
+<div><a href='https://tidal.com/album/216534771' target='_blank'>https://tidal.com/album/216534771</a></div>
+<div>Monsta X - Reckless (with TTG)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216534771' target='_blank'><img src='https://resources.tidal.com/images/d6f7cf73/1c2e/4fbc/8d42/406e6aed9b06/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Love Killa</div>
+<div><a href='https://tidal.com/album/165455531' target='_blank'>https://tidal.com/album/165455531</a></div>
+<div>Monsta X - Love Killa (Japanese Version)</div>
+<div>Monsta X - Fantasia (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/165455531' target='_blank'><img src='https://resources.tidal.com/images/d49995e8/2015/4291/8b49/64b40164ef11/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Here We Are</div>
+<div><a href='https://tidal.com/album/216487370' target='_blank'>https://tidal.com/album/216487370</a></div>
+<div>Monsta X - Here We Are (with TTG)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216487370' target='_blank'><img src='https://resources.tidal.com/images/c8e67a98/cf34/405d/8c25/672a6b4c3662/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] FANTASIA X</div>
+<div><a href='https://tidal.com/album/139671580' target='_blank'>https://tidal.com/album/139671580</a></div>
+<div>Monsta X - FANTASIA</div>
+<div>Monsta X - FLOW</div>
+<div>Monsta X - ZONE</div>
+<div>Monsta X - Chaotic</div>
+<div>Monsta X - Beautiful Night</div>
+<div>Monsta X - IT AIN'T OVER</div>
+<div>Monsta X - Stand Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/139671580' target='_blank'><img src='https://resources.tidal.com/images/32727f77/cd68/4a93/8d53/96247b933094/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] ALL ABOUT LUV</div>
+<div><a href='https://tidal.com/album/130671211' target='_blank'>https://tidal.com/album/130671211</a></div>
+<div>Monsta X, French Montana - WHO DO U LOVE- (feat. French Montana)</div>
+<div>Monsta X - LOVE U</div>
+<div>Monsta X - HAPPY WITHOUT ME</div>
+<div>Monsta X - GOT MY NUMBER</div>
+<div>Monsta X - SOMEONE'S SOMEONE</div>
+<div>Monsta X - MIDDLE OF THE NIGHT</div>
+<div>Monsta X - SHE'S THE ONE</div>
+<div>Monsta X - YOU CAN'T HOLD MY HEART</div>
+<div>Monsta X - MISBEHAVE</div>
+<div>Monsta X, Pitbull - BESIDE U (feat. Pitbull)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/130671211' target='_blank'><img src='https://resources.tidal.com/images/2f382afc/fa32/4fbe/b436/a50127151487/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] X-Phenomenon</div>
+<div><a href='https://tidal.com/album/112820487' target='_blank'>https://tidal.com/album/112820487</a></div>
+<div>Monsta X - X-Phenomenon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/112820487' target='_blank'><img src='https://resources.tidal.com/images/ecfc66cc/ba28/4f6f/90e2/9c4d937969b9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] WHO DO U LOVE- (feat. French Montana)</div>
+<div><a href='https://tidal.com/album/111051309' target='_blank'>https://tidal.com/album/111051309</a></div>
+<div>Monsta X, French Montana - WHO DO U LOVE- (feat. French Montana)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/111051309' target='_blank'><img src='https://resources.tidal.com/images/8ac8fc46/9e54/41de/b525/b0d57bceb457/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Take.2 We Are Here-</div>
+<div><a href='https://tidal.com/album/103987423' target='_blank'>https://tidal.com/album/103987423</a></div>
+<div>Monsta X - INTRO-  WE ARE HERE</div>
+<div>Monsta X - Alligator</div>
+<div>Monsta X - 악몽</div>
+<div>Monsta X, Steve Aoki - Play It Cool</div>
+<div>Monsta X - No Reason</div>
+<div>Monsta X - Give Me Dat</div>
+<div>Monsta X - 난기류</div>
+<div>Monsta X - Rodeo</div>
+<div>Monsta X - Stealer</div>
+<div>Monsta X - Party Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/103987423' target='_blank'><img src='https://resources.tidal.com/images/671ae155/e324/48fd/82bd/971b5f03311c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Shoot Out</div>
+<div><a href='https://tidal.com/album/106151354' target='_blank'>https://tidal.com/album/106151354</a></div>
+<div>Monsta X - Shoot Out (Japanese Version)</div>
+<div>Monsta X - Flash Back</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/106151354' target='_blank'><img src='https://resources.tidal.com/images/bbf633fe/fb01/4578/a662/36dc5da71d4d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Shoot Out (Japanese Version)</div>
+<div><a href='https://tidal.com/album/104358814' target='_blank'>https://tidal.com/album/104358814</a></div>
+<div>Monsta X - Shoot Out (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/104358814' target='_blank'><img src='https://resources.tidal.com/images/bfe93aa2/81fe/4fb3/b39f/6119f417d321/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Shoot Out (English Version)</div>
+<div><a href='https://tidal.com/album/97896027' target='_blank'>https://tidal.com/album/97896027</a></div>
+<div>Monsta X - Shoot Out (English Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/97896027' target='_blank'><img src='https://resources.tidal.com/images/3fee9fe8/9a26/4a5d/abaa/50a68772672e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] SOMEONE'S SOMEONE</div>
+<div><a href='https://tidal.com/album/119291505' target='_blank'>https://tidal.com/album/119291505</a></div>
+<div>Monsta X - SOMEONE'S SOMEONE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/119291505' target='_blank'><img src='https://resources.tidal.com/images/6cc6ab40/4538/4748/97bb/1e331a2c0139/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] Play It Cool</div>
+<div><a href='https://tidal.com/album/105189192' target='_blank'>https://tidal.com/album/105189192</a></div>
+<div>Steve Aoki, Monsta X - Play It Cool</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/105189192' target='_blank'><img src='https://resources.tidal.com/images/7d372b81/54ff/42af/9cfd/1b2229500b50/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Phenomenon</div>
+<div><a href='https://tidal.com/album/115441868' target='_blank'>https://tidal.com/album/115441868</a></div>
+<div>Monsta X - X-Phenomenon</div>
+<div>Monsta X - Livin' It Up</div>
+<div>Monsta X - My Beast</div>
+<div>Monsta X - Alligator (Japanese Version)</div>
+<div>Monsta X - Shoot Out (Japanese Version)</div>
+<div>Monsta X - Black Swan</div>
+<div>Monsta X - Flash Back</div>
+<div>Monsta X - Swish</div>
+<div>Monsta X - Carry On</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/115441868' target='_blank'><img src='https://resources.tidal.com/images/4f46bf4f/202c/4244/8196/c5486559dce6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Magnetic</div>
+<div><a href='https://tidal.com/album/125439263' target='_blank'>https://tidal.com/album/125439263</a></div>
+<div>Monsta X, Sebastián Yatra - Magnetic</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/125439263' target='_blank'><img src='https://resources.tidal.com/images/6884eba0/44aa/4980/b33f/a43a556d57e2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] MIDDLE OF THE NIGHT</div>
+<div><a href='https://tidal.com/album/124277384' target='_blank'>https://tidal.com/album/124277384</a></div>
+<div>Monsta X - MIDDLE OF THE NIGHT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/124277384' target='_blank'><img src='https://resources.tidal.com/images/6b4472c8/561a/427c/bf24/bc43d42f2bdc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] LOVE U</div>
+<div><a href='https://tidal.com/album/118170071' target='_blank'>https://tidal.com/album/118170071</a></div>
+<div>Monsta X - LOVE U</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/118170071' target='_blank'><img src='https://resources.tidal.com/images/8918bc58/db86/4ae6/8d98/a6615c17a98b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] FOLLOW - FIND YOU</div>
+<div><a href='https://tidal.com/album/120660389' target='_blank'>https://tidal.com/album/120660389</a></div>
+<div>Monsta X - Find you</div>
+<div>Monsta X - Follow</div>
+<div>Monsta X - Monsta Truck</div>
+<div>Monsta X - U R</div>
+<div>Monsta X - Disaster</div>
+<div>Monsta X - Burn it up</div>
+<div>Monsta X - Mirror</div>
+<div>Monsta X - See You Again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/120660389' target='_blank'><img src='https://resources.tidal.com/images/652a9b1e/cd8c/42af/b89c/b7a12be12d9d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Carry On</div>
+<div><a href='https://tidal.com/album/114772385' target='_blank'>https://tidal.com/album/114772385</a></div>
+<div>Monsta X - Carry On</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/114772385' target='_blank'><img src='https://resources.tidal.com/images/35978590/89db/4e18/9bf0/2c385bc57c02/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Breathe For You</div>
+<div><a href='https://tidal.com/album/113642361' target='_blank'>https://tidal.com/album/113642361</a></div>
+<div>Monsta X - Breathe For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/113642361' target='_blank'><img src='https://resources.tidal.com/images/aca81335/6405/4ed5/9fa6/1a3a61e6c6df/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Alligator</div>
+<div><a href='https://tidal.com/album/110616060' target='_blank'>https://tidal.com/album/110616060</a></div>
+<div>Monsta X - Alligator (Japanese Version)</div>
+<div>Monsta X - Swish</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/110616060' target='_blank'><img src='https://resources.tidal.com/images/000dcf3e/74f0/423e/86d2/a1e50d18908f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Take.1 Are You There-</div>
+<div><a href='https://tidal.com/album/96817421' target='_blank'>https://tidal.com/album/96817421</a></div>
+<div>Monsta X - INTRO - ARE YOU THERE-</div>
+<div>Monsta X - Underwater</div>
+<div>Monsta X - Shoot Out</div>
+<div>Monsta X - Heart Attack</div>
+<div>Monsta X - 널하다 (I Do Love U)</div>
+<div>Monsta X - 어디서 뭐해 (MOHAE)</div>
+<div>Monsta X - Oh My</div>
+<div>Monsta X - Myself</div>
+<div>Monsta X - By My Side</div>
+<div>Monsta X - Spotlight (Korean Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/96817421' target='_blank'><img src='https://resources.tidal.com/images/5895cb24/6192/4fda/8d2f/f8b1b6aed82b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] THE CONNECT - DEJAVU</div>
+<div><a href='https://tidal.com/album/237701024' target='_blank'>https://tidal.com/album/237701024</a></div>
+<div>Monsta X - Jealousy</div>
+<div>Monsta X - Destroyer</div>
+<div>Monsta X - Fallin'</div>
+<div>Monsta X - Crazy in Love</div>
+<div>Monsta X - Lost in the Dream</div>
+<div>Monsta X - If Only</div>
+<div>Monsta X - Special</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237701024' target='_blank'><img src='https://resources.tidal.com/images/4b92ef34/4e5b/444c/a94b/627d8a61ac1e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Spotlight</div>
+<div><a href='https://tidal.com/album/83767362' target='_blank'>https://tidal.com/album/83767362</a></div>
+<div>Monsta X - Spotlight</div>
+<div>Monsta X - Shine Forever (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/83767362' target='_blank'><img src='https://resources.tidal.com/images/928eb507/8e5f/46e9/97ba/42de8b3c552f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] STARSHIP PLANET 2018</div>
+<div><a href='https://tidal.com/album/237526919' target='_blank'>https://tidal.com/album/237526919</a></div>
+<div>K.will, Soyou, Boyfriend, Monsta X, WJSN, Yu Seung Woo, BrotherSu, MIND U, Duetto, Jeong Sewoon - Christmas Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237526919' target='_blank'><img src='https://resources.tidal.com/images/b6ca1396/7c22/4e8e/92f2/5171c867e573/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Puzzle</div>
+<div><a href='https://tidal.com/album/86762739' target='_blank'>https://tidal.com/album/86762739</a></div>
+<div>Monsta X - Puzzle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/86762739' target='_blank'><img src='https://resources.tidal.com/images/ee89a373/ecb7/45bb/a9bb/dfe8e1e3c8f1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Piece</div>
+<div><a href='https://tidal.com/album/87598600' target='_blank'>https://tidal.com/album/87598600</a></div>
+<div>Monsta X - Killin’ Me</div>
+<div>Monsta X - Shine Forever (Japanese Version)</div>
+<div>Monsta X - Stuck (Japanese Version)</div>
+<div>Monsta X - Ready Or Not (Japanese Version)</div>
+<div>Monsta X - Hero (Japanese Version)</div>
+<div>Monsta X - Spotlight</div>
+<div>Monsta X - Aura</div>
+<div>Monsta X - Beautiful (Japanese Version)</div>
+<div>Monsta X - Puzzle</div>
+<div>Monsta X - #GFYL</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/87598600' target='_blank'><img src='https://resources.tidal.com/images/1ae1fc65/141e/4482/853c/88929404d53c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Livin' It Up</div>
+<div><a href='https://tidal.com/album/94580115' target='_blank'>https://tidal.com/album/94580115</a></div>
+<div>Monsta X - Livin' It Up</div>
+<div>Monsta X - Black Swan</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/94580115' target='_blank'><img src='https://resources.tidal.com/images/8696d79f/8fe0/4290/aae8/7a56f2efa09f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] THE CODE</div>
+<div><a href='https://tidal.com/album/237701066' target='_blank'>https://tidal.com/album/237701066</a></div>
+<div>Monsta X - DRAMARAMA</div>
+<div>Monsta X - Now or Never</div>
+<div>Monsta X - In Time</div>
+<div>Monsta X - From Zero</div>
+<div>Monsta X - X</div>
+<div>Monsta X - Tropical Night</div>
+<div>Monsta X - Deja Vu</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237701066' target='_blank'><img src='https://resources.tidal.com/images/f59d145f/9572/4f3f/bb26/9ccd125742bf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] STARSHIP PLANET 2017</div>
+<div><a href='https://tidal.com/album/237563385' target='_blank'>https://tidal.com/album/237563385</a></div>
+<div>K.will, Soyou, Boyfriend, Mad Clown, Junggigo, Yu Seung Woo, BrotherSu, Monsta X, WJSN, #Gun, MIND U - Christmas Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237563385' target='_blank'><img src='https://resources.tidal.com/images/7027944e/fe2e/4007/b093/600961f86bf8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] SHINE FOREVER</div>
+<div><a href='https://tidal.com/album/237733768' target='_blank'>https://tidal.com/album/237733768</a></div>
+<div>Monsta X - SHINE FOREVER</div>
+<div>Monsta X - GRAVITY</div>
+<div>Monsta X - Ready or Not</div>
+<div>Monsta X - Beautiful</div>
+<div>Monsta X - Incomparable</div>
+<div>Monsta X - Need U</div>
+<div>Monsta X - Oi</div>
+<div>Monsta X - Miss You</div>
+<div>Monsta X - Calm Down</div>
+<div>Monsta X - All I Do</div>
+<div>Monsta X - 5-14 (Last Page)</div>
+<div>Monsta X - I'll Be There</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237733768' target='_blank'><img src='https://resources.tidal.com/images/90e7f5a2/76cd/4a6a/a49e/237f769207c4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] NEWTON</div>
+<div><a href='https://tidal.com/album/237733737' target='_blank'>https://tidal.com/album/237733737</a></div>
+<div>Monsta X - NEWTON</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237733737' target='_blank'><img src='https://resources.tidal.com/images/4f09b468/5d50/415a/be05/6c63dd8941e5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Lonely Christmas</div>
+<div><a href='https://tidal.com/album/237701018' target='_blank'>https://tidal.com/album/237701018</a></div>
+<div>Monsta X - Lonely Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237701018' target='_blank'><img src='https://resources.tidal.com/images/d86d9a62/df04/4bc7/a41f/581c12ea7d2f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Hero (Japanese Version)</div>
+<div><a href='https://tidal.com/album/73796771' target='_blank'>https://tidal.com/album/73796771</a></div>
+<div>Monsta X - Hero (Japanese Version)</div>
+<div>Monsta X - Stuck (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/73796771' target='_blank'><img src='https://resources.tidal.com/images/2bac744c/76d0/4c1b/8d44/5a24b084455c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Beautiful (Japanese Version)</div>
+<div><a href='https://tidal.com/album/76671014' target='_blank'>https://tidal.com/album/76671014</a></div>
+<div>Monsta X - Beautiful (Japanese Version)</div>
+<div>Monsta X - Ready Or Not (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/76671014' target='_blank'><img src='https://resources.tidal.com/images/7de09ebf/d05c/4983/9187/488e1b368e0b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] THE CLAN pt.1 [LOST]</div>
+<div><a href='https://tidal.com/album/374811170' target='_blank'>https://tidal.com/album/374811170</a></div>
+<div>Monsta X - Ex Girl (feat.Whee In Of MAMAMOO)</div>
+<div>Monsta X - All in</div>
+<div>Monsta X - Stuck</div>
+<div>Monsta X - Sweetheart</div>
+<div>Monsta X - Unfair Love</div>
+<div>Monsta X - Because of U</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/374811170' target='_blank'><img src='https://resources.tidal.com/images/dd5b986f/b681/4bde/9f0a/6ce1be393ea7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] STARSHIP PLANET 2015</div>
+<div><a href='https://tidal.com/album/237494561' target='_blank'>https://tidal.com/album/237494561</a></div>
+<div>K.will, SISTAR, Boyfriend, Mad Clown, Junggigo, JooYoung, Yu Seung Woo, Monsta X, BrotherSu, Exy - Softly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237494561' target='_blank'><img src='https://resources.tidal.com/images/bf06c985/f986/46ff/936a/72ecffd76122/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] RUSH</div>
+<div><a href='https://tidal.com/album/374809669' target='_blank'>https://tidal.com/album/374809669</a></div>
+<div>Monsta X - RUSH</div>
+<div>Monsta X - HERO</div>
+<div>Monsta X - Perfect Girl</div>
+<div>Monsta X - Amen</div>
+<div>Monsta X - Gone Bad</div>
+<div>Monsta X - Broken Heart</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/374809669' target='_blank'><img src='https://resources.tidal.com/images/307917e1/5703/4b74/8a3c/fbb1ad5f31c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Orange Marmalade (Original Soundtrack) Part.2</div>
+<div><a href='https://tidal.com/album/216008067' target='_blank'>https://tidal.com/album/216008067</a></div>
+<div>Monsta X - Attracted Woman (Performed by KIHYUN, JOOHEON)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216008067' target='_blank'><img src='https://resources.tidal.com/images/0a99f1eb/411a/49f5/a499/374333270f9a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/1_TIDAL_Kpop_Artist_Link_M.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅁ1) TIDAL Kpop Artist Link (M)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/몬스타엑스 (Monsta X)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
