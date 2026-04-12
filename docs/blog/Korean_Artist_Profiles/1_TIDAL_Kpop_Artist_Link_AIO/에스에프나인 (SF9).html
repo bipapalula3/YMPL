@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 에스에프나인 ( Tidal SF9 )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 에스에프나인 ( Tidal SF9 )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/2a86b9f2/ce70/4dfc/9900/3b4b35ad1495/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/8627240' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 에스에프나인</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>SF9 - ‘LOVE RACE’의 강렬함과 ‘Suited’의 세련됨을 담아, 다채로운 매력으로 팬들을 사로잡는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> SF9</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>SF9 - Capturing the intensity of ‘LOVE RACE’ and the sophistication of ‘Suited,’ a group captivating fans with diverse charms.</div><p>9명의 매력적인 멤버로 구성된 SF9은 독특한 음악적 색깔과 퍼포먼스로 대중의 마음을 사로잡고 있어요. 다양한 콘셉트를 소화하며 끊임없이 변화를 시도하는 모습이 인상적이죠. 앞으로 그들이 보여줄 음악적 스펙트럼이 더욱 기대됩니다.</p><p>SF9, composed of nine charming members, captivates the public with their unique musical colors and performances. They impress with their ability to take on various concepts and constantly strive for change. We look forward to the musical spectrum they will show in the future.</p><p>✧</p><p>그룹의 탄생과 성장</p><p>SF9은 FNC엔터테인먼트에서 야심차게 선보인 첫 번째 댄스 보이 그룹이에요. 데뷔 전부터 서바이벌 프로그램을 통해 실력을 입증하며 팬덤을 쌓았죠. 탄탄한 기본기를 바탕으로 다양한 음악적 시도를 보여주고 있습니다.</p><p>Birth and Growth of the Group</p><p>SF9 is the first dance boy group ambitiously introduced by FNC Entertainment. Before their debut, they proved their skills through a survival program and built a fan base. They are showing various musical attempts based on solid basics.</p><p>✧</p><p>음악 및 퍼포먼스 스타일</p><p>SF9의 음악은 댄스 팝을 기반으로 다양한 장르를 융합하는 것이 특징이에요. 강렬한 퍼포먼스와 섬세한 감정 표현이 돋보이는 무대를 선보이죠. 멤버들의 뛰어난 비주얼 또한 SF9의 매력을 더하는 요소입니다.</p><p>Music and Performance Style</p><p>SF9's music is characterized by the fusion of various genres based on dance-pop. They present stages with intense performances and delicate emotional expressions. The outstanding visuals of the members also add to SF9's charm.</p><p>✧</p><p>주요 활동과 성과</p><p>SF9은 꾸준한 앨범 발매와 함께 국내외에서 활발한 활동을 펼치고 있어요. 다양한 예능 프로그램 출연과 연기 활동을 통해 멤버 개개인의 인지도를 높여가고 있죠. 글로벌 팬들과 소통하며 꾸준히 성장하는 모습이 보기 좋아요.</p><p>Major Activities and Achievements</p><p>SF9 is actively engaged in domestic and international activities along with consistent album releases. They are increasing the individual recognition of members through appearances in various entertainment programs and acting activities. It's great to see them steadily growing while communicating with global fans.</p><p>✧</p><p>미래와 의미</p><p>SF9은 끊임없는 음악적 도전을 통해 자신들만의 색깔을 만들어가고 있어요. 앞으로 더욱 다양한 콘셉트와 음악을 선보이며 K팝 씬에서 독보적인 존재감을 드러낼 것으로 기대됩니다. 그들의 성장을 계속 지켜봐 주세요.</p><p>Future and Meaning</p><p>SF9 is creating their own unique color through continuous musical challenges. They are expected to show more diverse concepts and music in the future and reveal a unique presence in the K-pop scene. Please continue to watch their growth.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] LOVE RACE</div>
+<div><a href='https://tidal.com/album/423232495' target='_blank'>https://tidal.com/album/423232495</a></div>
+<div>SF9 - LOVE RACE</div>
+<div>SF9 - Suited</div>
+<div>SF9 - Side by Side</div>
+<div>SF9 - WARURU</div>
+<div>SF9 - No No No</div>
+<div>SF9 - Love Puzzle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/423232495' target='_blank'><img src='https://resources.tidal.com/images/86535f68/53ea/49fd/9fc6/05c7fbe615e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Sequence</div>
+<div><a href='https://tidal.com/album/338821831' target='_blank'>https://tidal.com/album/338821831</a></div>
+<div>SF9 - BIBORA</div>
+<div>SF9 - Midnight Sun</div>
+<div>SF9 - Domino</div>
+<div>SF9 - Strings</div>
+<div>SF9 - Morning Coffee</div>
+<div>SF9 - Superconductor</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/338821831' target='_blank'><img src='https://resources.tidal.com/images/714e2a24/fdc6/49ce/b1ed/7367fd0e0cb4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] FANTASY</div>
+<div><a href='https://tidal.com/album/382054796' target='_blank'>https://tidal.com/album/382054796</a></div>
+<div>SF9 - Don’t Worry, Be Happy</div>
+<div>SF9 - Cruel Love</div>
+<div>SF9 - Just</div>
+<div>SF9 - My Fantasia</div>
+<div>SF9 - Melodrama</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382054796' target='_blank'><img src='https://resources.tidal.com/images/a51193e8/1267/4d32/b815/fd4fb326abae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] D.W.B.H</div>
+<div><a href='https://tidal.com/album/406517397' target='_blank'>https://tidal.com/album/406517397</a></div>
+<div>SF9 - Dont Worry, Be Happy (Japanese ver.)</div>
+<div>SF9 - Cruel Love (feat. JAE YOON)</div>
+<div>SF9 - Just (feat. JAE YOON)</div>
+<div>SF9 - My Fantasia (feat. JAE YOON)</div>
+<div>SF9 - Melodrama (feat. JAE YOON)</div>
+<div>SF9 - Don't Worry, Be Happy (feat. JAE YOON)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/406517397' target='_blank'><img src='https://resources.tidal.com/images/26865629/7c10/4763/8282/e80b1746fb1a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] THE PIECE OF9</div>
+<div><a href='https://tidal.com/album/270515856' target='_blank'>https://tidal.com/album/270515856</a></div>
+<div>SF9 - Puzzle</div>
+<div>SF9 - Love Colour</div>
+<div>SF9 - New World</div>
+<div>SF9 - Fighter</div>
+<div>SF9 - Tight</div>
+<div>SF9 - Stay with me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/270515856' target='_blank'><img src='https://resources.tidal.com/images/8e3a86c1/c5c0/4ab5/a1a0/346e23eecbbb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Star Struck (Original Television Soundtrack, Pt. 1)</div>
+<div><a href='https://tidal.com/album/296091043' target='_blank'>https://tidal.com/album/296091043</a></div>
+<div>SF9 - Question Mark</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296091043' target='_blank'><img src='https://resources.tidal.com/images/9b58ff43/638a/4129/beea/f903e4f02ebd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Tear Drop (Japanese Version)</div>
+<div><a href='https://tidal.com/album/230958394' target='_blank'>https://tidal.com/album/230958394</a></div>
+<div>SF9 - Tear Drop (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230958394' target='_blank'><img src='https://resources.tidal.com/images/b1d79799/53a7/4558/9b12/bb0933084713/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] THE WAVE OF9</div>
+<div><a href='https://tidal.com/album/237700871' target='_blank'>https://tidal.com/album/237700871</a></div>
+<div>SF9 - SCREAM</div>
+<div>SF9 - OK OK</div>
+<div>SF9 - Summertime Bounce (Don’t Kill My Vibe)</div>
+<div>SF9 - Driver</div>
+<div>SF9 - Crazy Crazy Love</div>
+<div>SF9 - Butterfly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237700871' target='_blank'><img src='https://resources.tidal.com/images/e836e747/b7b7/4b18/a1da/618fd4138724/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] THE BEST ~Dear Fantasy~</div>
+<div><a href='https://tidal.com/album/232652245' target='_blank'>https://tidal.com/album/232652245</a></div>
+<div>SF9 - Trauma (Japanese Version)</div>
+<div>SF9 - Tear Drop (Japanese Version)</div>
+<div>SF9 - Fanfare (Japanese Version)</div>
+<div>SF9 - Roar (Japanese Version)</div>
+<div>SF9 - Easy Love (Japanese Version)</div>
+<div>SF9 - Boku No Taiyo- O Sole Mio</div>
+<div>SF9 - Mamma Mia!</div>
+<div>SF9 - Now or Never (Japanese Version)</div>
+<div>SF9 - Enough (Japanese Version)</div>
+<div>SF9 - RPM (Japanese Version)</div>
+<div>SF9 - Good Guy (Japanese Version)</div>
+<div>SF9 - Summer Breeze (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/232652245' target='_blank'><img src='https://resources.tidal.com/images/d011901d/e4a1/4d15/9387/4a7ed06e3c6e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] TURN OVER</div>
+<div><a href='https://tidal.com/album/343988475' target='_blank'>https://tidal.com/album/343988475</a></div>
+<div>SF9 - Tear Drop</div>
+<div>SF9 - -Believer-</div>
+<div>SF9 - Love Again</div>
+<div>SF9 - Off My Mind</div>
+<div>SF9 - Fanatic</div>
+<div>SF9 - Hey Hi Bye</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343988475' target='_blank'><img src='https://resources.tidal.com/images/f1ab99fe/5562/4414/bac4/66a670449d44/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Savior</div>
+<div><a href='https://tidal.com/album/210238066' target='_blank'>https://tidal.com/album/210238066</a></div>
+<div>SF9 - Savior</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210238066' target='_blank'><img src='https://resources.tidal.com/images/4cd7bfb1/d4c3/4702/9be9/dbd5832625e6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] RUMINATION</div>
+<div><a href='https://tidal.com/album/343989698' target='_blank'>https://tidal.com/album/343989698</a></div>
+<div>SF9 - Trauma</div>
+<div>SF9 - Memory</div>
+<div>SF9 - Dreams</div>
+<div>SF9 - Gentleman</div>
+<div>SF9 - On And On</div>
+<div>SF9 - Scenario</div>
+<div>SF9 - For Fantasy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343989698' target='_blank'><img src='https://resources.tidal.com/images/8d1a724f/4dc0/4dad/8cf1/e062084d3102/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] KINGDOM ＜NO LIMIT＞</div>
+<div><a href='https://tidal.com/album/196168618' target='_blank'>https://tidal.com/album/196168618</a></div>
+<div>SF9 - Move</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196168618' target='_blank'><img src='https://resources.tidal.com/images/f5d9c1c6/0812/42dc/923b/781116ad8c08/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Summer Breeze (Japanese Version)</div>
+<div><a href='https://tidal.com/album/157662771' target='_blank'>https://tidal.com/album/157662771</a></div>
+<div>SF9 - Summer Breeze (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/157662771' target='_blank'><img src='https://resources.tidal.com/images/b1e589ef/afdf/41dc/a92a/771465df5c06/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] SPECIAL HISTORY BOOK</div>
+<div><a href='https://tidal.com/album/216247485' target='_blank'>https://tidal.com/album/216247485</a></div>
+<div>SF9 - Shine Together</div>
+<div>SF9 - Forever</div>
+<div>SF9 - Love No.5</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216247485' target='_blank'><img src='https://resources.tidal.com/images/f0131927/93b8/4c23/894e/6a793e154b88/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Good Guy</div>
+<div><a href='https://tidal.com/album/143765059' target='_blank'>https://tidal.com/album/143765059</a></div>
+<div>SF9 - Good Guy (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/143765059' target='_blank'><img src='https://resources.tidal.com/images/eacf73d3/6c4e/40cf/a275/531d3fdb6f8a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Good Guy (Japanese Version)</div>
+<div><a href='https://tidal.com/album/130436150' target='_blank'>https://tidal.com/album/130436150</a></div>
+<div>SF9 - Good Guy (Japanese Version)</div>
+<div>SF9 - One Love (Japanese Version)</div>
+<div>SF9 - Am I The Only One (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/130436150' target='_blank'><img src='https://resources.tidal.com/images/ce9922fa/64bd/4344/ae99/fe62e6d1ab1f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] GOLDEN ECHO</div>
+<div><a href='https://tidal.com/album/162793815' target='_blank'>https://tidal.com/album/162793815</a></div>
+<div>SF9 - Summer Breeze (Japanese Version)</div>
+<div>SF9 - One Love (Japanese Version)</div>
+<div>SF9 - Go High (Japanese Version)</div>
+<div>SF9 - RPM (Japanese Version)</div>
+<div>SF9 - My Story, My Song (Japanese Version)</div>
+<div>SF9 - See U Tomorrow (Japanese Version)</div>
+<div>SF9 - Good Guy (Japanese Version)</div>
+<div>SF9 - Round and Round (Japanese Version)</div>
+<div>SF9 - Like The Hands Held Tight (Japanese Version)</div>
+<div>SF9 - Beautiful Light (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/162793815' target='_blank'><img src='https://resources.tidal.com/images/e1758b54/39fc/488a/a2e1/28aabd8e6eb7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] FIRST COLLECTION</div>
+<div><a href='https://tidal.com/album/216141915' target='_blank'>https://tidal.com/album/216141915</a></div>
+<div>SF9 - Good Guy</div>
+<div>SF9 - Am I The Only One</div>
+<div>SF9 - Shh</div>
+<div>SF9 - Lullu Lalla</div>
+<div>SF9 - One Love</div>
+<div>SF9 - Like The Hands Held Tight</div>
+<div>SF9 - Fire</div>
+<div>SF9 - Stop It Now</div>
+<div>SF9 - Dance With Us</div>
+<div>SF9 - Beautiful Light</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216141915' target='_blank'><img src='https://resources.tidal.com/images/5a87c5c3/6b27/48d4/86b8/6c08a5d016dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 9loryUS</div>
+<div><a href='https://tidal.com/album/216123485' target='_blank'>https://tidal.com/album/216123485</a></div>
+<div>SF9 - Summer Breeze</div>
+<div>SF9 - Into The Night</div>
+<div>SF9 - OK Sign</div>
+<div>SF9 - All Day All Night</div>
+<div>SF9 - Go High</div>
+<div>SF9 - My Story, My Song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216123485' target='_blank'><img src='https://resources.tidal.com/images/8a471986/1c5a/49ef/aac4/3e459c4e6f48/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] SF9 6TH MINI ALBUM 'NARCISSUS'</div>
+<div><a href='https://tidal.com/album/344189120' target='_blank'>https://tidal.com/album/344189120</a></div>
+<div>SF9 - Enough</div>
+<div>SF9 - Play Hard</div>
+<div>SF9 - Heartbeat</div>
+<div>SF9 - Life Is So Beautiful</div>
+<div>SF9 - Fall In Love</div>
+<div>SF9 - The Beat Goes On</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344189120' target='_blank'><img src='https://resources.tidal.com/images/e961d3a7/cd09/4210/a88a/7241d4e4cf13/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] RPM</div>
+<div><a href='https://tidal.com/album/343987340' target='_blank'>https://tidal.com/album/343987340</a></div>
+<div>SF9 - RPM (Japanese Version)</div>
+<div>SF9 - RPM</div>
+<div>SF9 - Round And Round</div>
+<div>SF9 - Round and Round (Japanese Version)</div>
+<div>SF9 - Dreamer</div>
+<div>SF9 - Echo (Japanese Version)</div>
+<div>SF9 - Liar</div>
+<div>SF9 - See U Tomorrow</div>
+<div>SF9 - Echo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343987340' target='_blank'><img src='https://resources.tidal.com/images/11a77fe4/56db/45cf/ad46/acc16a733986/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] RPM</div>
+<div><a href='https://tidal.com/album/116049163' target='_blank'>https://tidal.com/album/116049163</a></div>
+<div>SF9 - RPM (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/116049163' target='_blank'><img src='https://resources.tidal.com/images/caa02f61/b065/496a/8077/7a61264bc3e4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Illuminate</div>
+<div><a href='https://tidal.com/album/104653763' target='_blank'>https://tidal.com/album/104653763</a></div>
+<div>SF9 - Enough (Japanese Version)</div>
+<div>SF9 - Now or Never (Japanese Version)</div>
+<div>SF9 - Unlimited (Japanese Version)</div>
+<div>SF9 - Play Hard (Japanese Version)</div>
+<div>SF9 - Photograph</div>
+<div>SF9 - Be My Baby</div>
+<div>SF9 - Life Is so Beautiful (Japanese Version)</div>
+<div>SF9 - The Beat Goes On (Japanese Version)</div>
+<div>SF9 - Mamma Mia!</div>
+<div>SF9 - Dear Fantasy (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/104653763' target='_blank'><img src='https://resources.tidal.com/images/59146565/6258/4630/b0fc/649591c23df3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Enough (Japanese Version)</div>
+<div><a href='https://tidal.com/album/104653755' target='_blank'>https://tidal.com/album/104653755</a></div>
+<div>SF9 - Enough (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/104653755' target='_blank'><img src='https://resources.tidal.com/images/1b5c9cb4/8593/4e8b/9f68/1dacc2654b94/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] SF9 5th Mini Album [ Sensuous ]</div>
+<div><a href='https://tidal.com/album/239789786' target='_blank'>https://tidal.com/album/239789786</a></div>
+<div>SF9 - Now or Never</div>
+<div>SF9 - Different</div>
+<div>SF9 - Unlimited</div>
+<div>SF9 - PHOTOGRAPH</div>
+<div>SF9 - SHADOW</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/239789786' target='_blank'><img src='https://resources.tidal.com/images/a8750e3f/5910/418e/a05c/d21e0b899a72/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] SF9 4th Mini Album [ MAMMA MIA! ]</div>
+<div><a href='https://tidal.com/album/344210998' target='_blank'>https://tidal.com/album/344210998</a></div>
+<div>SF9 - MAMMA MIA</div>
+<div>SF9 - Never Say Goodbye</div>
+<div>SF9 - Go back in Time</div>
+<div>SF9 - Be my Baby</div>
+<div>SF9 - Midnight Road</div>
+<div>SF9 - Dear Fantasy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344210998' target='_blank'><img src='https://resources.tidal.com/images/ac71764d/a7c5/44ff/878a/1283aa119430/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Now or Never</div>
+<div><a href='https://tidal.com/album/97216060' target='_blank'>https://tidal.com/album/97216060</a></div>
+<div>SF9 - Now or Never (Japanese Version)</div>
+<div>SF9 - Photograph</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/97216060' target='_blank'><img src='https://resources.tidal.com/images/09791e86/4ce0/4947/a7b4/5980bc97bd36/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Mamma Mia!</div>
+<div><a href='https://tidal.com/album/88686888' target='_blank'>https://tidal.com/album/88686888</a></div>
+<div>SF9 - Mamma Mia!</div>
+<div>SF9 - Never Say Goodbye</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/88686888' target='_blank'><img src='https://resources.tidal.com/images/02708f03/5004/413c/8886/5af2439ed62a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Familiar Wife, Pt. 1 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196142548' target='_blank'>https://tidal.com/album/196142548</a></div>
+<div>SF9 - Love Me Again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142548' target='_blank'><img src='https://resources.tidal.com/images/34f9d09f/8638/4a43/ac38/b54ca47b91db/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Different</div>
+<div><a href='https://tidal.com/album/97216054' target='_blank'>https://tidal.com/album/97216054</a></div>
+<div>SF9 - Different</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/97216054' target='_blank'><img src='https://resources.tidal.com/images/42f0391e/0b38/404f/8ce2/825161699b29/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Be My Baby</div>
+<div><a href='https://tidal.com/album/88686847' target='_blank'>https://tidal.com/album/88686847</a></div>
+<div>SF9 - Be My Baby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/88686847' target='_blank'><img src='https://resources.tidal.com/images/a13bd60e/7e17/44e6/b765/022835391048/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Still My Lady (Chinese Ver.) - 无法忘记的美</div>
+<div><a href='https://tidal.com/album/344194575' target='_blank'>https://tidal.com/album/344194575</a></div>
+<div>SF9 - 无法忘记的美</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344194575' target='_blank'><img src='https://resources.tidal.com/images/88c77e58/0394/4980/885a/2ccb404c1374/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Sensational Feeling Nine</div>
+<div><a href='https://tidal.com/album/81948069' target='_blank'>https://tidal.com/album/81948069</a></div>
+<div>SF9 - Boku No Taiyo- O Sole Mio</div>
+<div>SF9 - Fanfare (Japanese ver.)</div>
+<div>SF9 - Roar (Japanese Version)</div>
+<div>SF9 - Together (Japanese ver.)</div>
+<div>SF9 - Hide and Seek (Japanese ver.)</div>
+<div>SF9 - Easy Love (Japanese ver.)</div>
+<div>SF9 - Just on My Way (Japanese ver.)</div>
+<div>SF9 - Watch Out (Japanese ver.)</div>
+<div>SF9 - Kuuhaku</div>
+<div>SF9 - Still My Lady (Sensational Feeling Nine Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/81948069' target='_blank'><img src='https://resources.tidal.com/images/3186a452/1713/48a3/af18/0f7d4bba99ea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] SF9 First Mini Album [Burning Sensation]</div>
+<div><a href='https://tidal.com/album/344226176' target='_blank'>https://tidal.com/album/344226176</a></div>
+<div>SF9 - 靑春;tell me what it is</div>
+<div>SF9 - ROAR</div>
+<div>SF9 - Still My Lady</div>
+<div>SF9 - Shut Up N' Lemme Go</div>
+<div>SF9 - 4 Step</div>
+<div>SF9 - Jungle Game</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344226176' target='_blank'><img src='https://resources.tidal.com/images/c0851c45/ab6b/4c84/b1d2/7b5828a5f320/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] SF9 3rd Mini Album [ Knights of the Sun ]</div>
+<div><a href='https://tidal.com/album/343986354' target='_blank'>https://tidal.com/album/343986354</a></div>
+<div>SF9 - 詩; 00-00</div>
+<div>SF9 - O Sole Mio</div>
+<div>SF9 - Let's Hang Out</div>
+<div>SF9 - Blank-</div>
+<div>SF9 - Scold</div>
+<div>SF9 - Just On My Way</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343986354' target='_blank'><img src='https://resources.tidal.com/images/cacfcf69/5a84/4fc3/b605/b0ca265ba756/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] SF9 2nd Mini Album [Breaking Sensation]</div>
+<div><a href='https://tidal.com/album/344198615' target='_blank'>https://tidal.com/album/344198615</a></div>
+<div>SF9 - Intro;</div>
+<div>SF9 - Easy Love</div>
+<div>SF9 - Watch Out</div>
+<div>SF9 - Hide and Seek</div>
+<div>SF9 - Fall Down</div>
+<div>SF9 - Why</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344198615' target='_blank'><img src='https://resources.tidal.com/images/e0811079/e5f6/4566/9dc4/0103171bf057/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Fanfare</div>
+<div><a href='https://tidal.com/album/74265538' target='_blank'>https://tidal.com/album/74265538</a></div>
+<div>SF9 - Fanfare (Japanese Version)</div>
+<div>SF9 - ROAR</div>
+<div>SF9 - K.O-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/74265538' target='_blank'><img src='https://resources.tidal.com/images/1a9e0829/e70c/4978/8de0/e58280aba21e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Easy Love</div>
+<div><a href='https://tidal.com/album/76660163' target='_blank'>https://tidal.com/album/76660163</a></div>
+<div>SF9 - Easy Love (Japanese Version)</div>
+<div>SF9 - Still My Lady</div>
+<div>SF9 - Jungle Game</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/76660163' target='_blank'><img src='https://resources.tidal.com/images/eb593599/5c51/40c9/bceb/e704a22dbb94/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] SF9 Special Digital Single [So Beautiful]</div>
+<div><a href='https://tidal.com/album/344225432' target='_blank'>https://tidal.com/album/344225432</a></div>
+<div>SF9 - So Beautiful</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344225432' target='_blank'><img src='https://resources.tidal.com/images/cb5914f6/e1c2/4f11/a538/1d8002f8d15b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] SF9 1st Debut Single Album [Feeling Sensation]</div>
+<div><a href='https://tidal.com/album/237733851' target='_blank'>https://tidal.com/album/237733851</a></div>
+<div>SF9 - Fanfare</div>
+<div>SF9 - K.O-</div>
+<div>SF9 - Together</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237733851' target='_blank'><img src='https://resources.tidal.com/images/de3806e5/0b2e/4121/8385/5f62dc336bed/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/1_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ1) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/에스에프나인 (SF9)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
