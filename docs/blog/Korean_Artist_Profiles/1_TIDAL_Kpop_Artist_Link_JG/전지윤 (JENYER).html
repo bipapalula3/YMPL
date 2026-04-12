@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 전지윤 ( Tidal JENYER )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 전지윤 ( Tidal JENYER )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/26814a7e/20a8/4cb2/b566/7129b60d995a/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10069073' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 전지윤</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>전지윤 (JENYER) – ‘알면서도’ 멈출 수 없는 끌림, ‘illusion’ 속 몽환적인 진실을 노래하는 아티스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> JENYER</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>JENYER – An artist singing about irresistible attraction in ‘알면서도’ and the dreamy truth within ‘illusion’.</div><p>솔직하고 섬세한 감정 표현으로 자신만의 음악 세계를 구축해 온 전지윤(JENYER)님을 소개합니다. 그는 다양한 장르를 넘나들며 독창적인 음악 색깔을 보여주고 있어요. 음악을 통해 끊임없이 새로운 모습을 보여주는 그의 이야기에 귀 기울여 보세요.</p><p>Let me introduce JENYER, who has built her own musical world with honest and delicate emotional expression. She crosses various genres and shows her unique musical color. Listen to her story, which constantly shows new aspects through music.</p><p>✧</p><p>그룹 탄생</p><p>전지윤님은 과거 걸그룹 4Minute의 멤버로 데뷔하여 강렬한 퍼포먼스와 개성 있는 스타일로 대중에게 깊은 인상을 남겼습니다. 그룹 활동을 통해 쌓은 경험은 솔로 아티스트로서의 성장에 밑거름이 되었죠. 다양한 콘셉트를 소화하며 넓은 음악적 스펙트럼을 보여주었어요.</p><p>Group Origins</p><p>JENYER debuted as a member of the girl group 4Minute, leaving a deep impression on the public with her intense performances and unique style. The experience gained through group activities became the foundation for her growth as a solo artist. She showcased a wide musical spectrum, taking on various concepts.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>그의 음악은 팝, R&B, 힙합 등 다양한 장르를 아우르며, 솔직하고 섬세한 가사가 특징입니다. 몽환적인 분위기와 강렬한 비트가 조화를 이루는 곡들은 듣는 이로 하여금 깊은 감정에 빠져들게 만들죠. 특히, 그는 자신만의 감성을 담아내는 독특한 보컬 스타일을 선보입니다.</p><p>Music and Performance</p><p>Her music encompasses various genres such as pop, R&B, and hip-hop, characterized by honest and delicate lyrics. The harmony between dreamy atmospheres and intense beats immerses listeners in deep emotions. In particular, she showcases a unique vocal style that captures her own sensibility.</p><p>✧</p><p>주요 활동</p><p>솔로 아티스트로 전향 후, 전지윤님은 꾸준히 싱글 앨범을 발표하며 자신만의 음악적 색깔을 확고히 해왔습니다. 피처링 참여 및 다양한 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀가고 있죠. 솔직한 감정을 담은 가사와 개성 넘치는 음악 스타일로 많은 사랑을 받고 있습니다.</p><p>Main Activities</p><p>Since transitioning to a solo artist, JENYER has steadily released single albums, solidifying her own musical color. She is expanding her musical spectrum through featuring participations and collaborations with various artists. She is loved for her honest lyrics and unique musical style.</p><p>✧</p><p>미래/의미</p><p>전지윤님은 앞으로도 끊임없는 음악적 실험과 도전을 통해 더욱 깊이 있는 음악 세계를 펼쳐나갈 것으로 기대됩니다. 자신만의 색깔을 담은 음악으로 대중과 소통하며 진솔한 아티스트로서 성장해 나갈 그의 행보를 응원합니다. 그녀의 음악은 앞으로도 많은 이들에게 위로와 공감을 선사할 것입니다.</p><p>Future/Meaning</p><p>JENYER is expected to develop a deeper musical world through continuous musical experimentation and challenges. We support her journey as she communicates with the public through music that contains her own color and grows as a sincere artist. Her music will continue to offer comfort and empathy to many in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] 알면서도</div>
+<div><a href='https://tidal.com/album/275450681' target='_blank'>https://tidal.com/album/275450681</a></div>
+<div>JENYER - 알면서도</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/275450681' target='_blank'><img src='https://resources.tidal.com/images/79493406/95bd/4db3/8083/11e8275ae01d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 내 눈에 콩깍지 (Original Soundtrack), Pt.9</div>
+<div><a href='https://tidal.com/album/263146430' target='_blank'>https://tidal.com/album/263146430</a></div>
+<div>JENYER - 그런 너였는데</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263146430' target='_blank'><img src='https://resources.tidal.com/images/13495de2/698e/487e/88f9/875cec5e7495/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] SOOP</div>
+<div><a href='https://tidal.com/album/216279089' target='_blank'>https://tidal.com/album/216279089</a></div>
+<div>JENYER - SOOP (Feat. Heo Gayoon)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216279089' target='_blank'><img src='https://resources.tidal.com/images/90808028/311a/4d27/9bdd/1c321ae19c8d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Hanging On (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/346322543' target='_blank'>https://tidal.com/album/346322543</a></div>
+<div>JENYER - Don’t Lose Your Mind</div>
+<div>JENYER - Don't Lose My Hand</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346322543' target='_blank'><img src='https://resources.tidal.com/images/80684ce2/c321/4103/8ab5/7e45f9480380/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] BAD</div>
+<div><a href='https://tidal.com/album/216466078' target='_blank'>https://tidal.com/album/216466078</a></div>
+<div>JENYER - to this which the world all are bad</div>
+<div>JENYER - BAD (Feat. KIMMUSEUM)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216466078' target='_blank'><img src='https://resources.tidal.com/images/26814a7e/20a8/4cb2/b566/7129b60d995a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] the moment i loved</div>
+<div><a href='https://tidal.com/album/196147650' target='_blank'>https://tidal.com/album/196147650</a></div>
+<div>JENYER - illusion</div>
+<div>JENYER - analog</div>
+<div>JENYER - because I can not decide</div>
+<div>JENYER - like the first time (Bonus Track)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196147650' target='_blank'><img src='https://resources.tidal.com/images/be132388/c0c0/4dcd/a140/27097e57a1c8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Shower</div>
+<div><a href='https://tidal.com/album/97790286' target='_blank'>https://tidal.com/album/97790286</a></div>
+<div>JENYER - Shower</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/97790286' target='_blank'><img src='https://resources.tidal.com/images/248f9224/8a9a/4755/bf8b/74cbfec92276/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Bus</div>
+<div><a href='https://tidal.com/album/196141904' target='_blank'>https://tidal.com/album/196141904</a></div>
+<div>JENYER - Bus</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196141904' target='_blank'><img src='https://resources.tidal.com/images/ec4c81f3/c802/450c/a76b/80dd275e2766/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Watchman (Original Television Soundtrack) Pt. 4</div>
+<div><a href='https://tidal.com/album/84395123' target='_blank'>https://tidal.com/album/84395123</a></div>
+<div>JENYER, DAVII - Taken (feat. DAVII)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/84395123' target='_blank'><img src='https://resources.tidal.com/images/ea0facfc/7a06/4074/80fc/58dc7f1700f4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] Hello</div>
+<div><a href='https://tidal.com/album/305397893' target='_blank'>https://tidal.com/album/305397893</a></div>
+<div>JENYER - Hello</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305397893' target='_blank'><img src='https://resources.tidal.com/images/47cf6e0e/8c2f/420c/969b/f8434a28e4b5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 소울메이트</div>
+<div><a href='https://tidal.com/album/167381796' target='_blank'>https://tidal.com/album/167381796</a></div>
+<div>JENYER, Dickpunks - 소울메이트</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/167381796' target='_blank'><img src='https://resources.tidal.com/images/10257930/1706/4219/84ae/c33b7184d1a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 사랑과 우정사이</div>
+<div><a href='https://tidal.com/album/344396527' target='_blank'>https://tidal.com/album/344396527</a></div>
+<div>JENYER - 사랑과 우정사이</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344396527' target='_blank'><img src='https://resources.tidal.com/images/16898857/98e6/49cd/80d4/e48eb071d4a9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/1_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ1) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_JG/전지윤 (JENYER)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
