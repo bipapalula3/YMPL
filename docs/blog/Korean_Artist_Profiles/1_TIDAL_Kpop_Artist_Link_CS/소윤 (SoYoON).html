@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 소윤 ( Tidal So!YoON! )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 소윤 ( Tidal So!YoON! )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/1a5fe517/c8e5/4b49/a11d/53a8b9104bca/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10436826' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 소윤</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>소윤 (So!YoON!) – 경계를 허무는 독창적인 사운드, 'Smoke Sprite'처럼 몽환적인 실험과 'CANADA'처럼 강렬한 에너지를 넘나드는 아티스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> So!YoON!</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>So!YoON! – A uniquely creative sound that blurs boundaries, an artist navigating from dreamy experiments like 'Smoke Sprite' to intense energy like 'CANADA'.</div><p>독특한 음악 세계를 구축하며 자신만의 영역을 넓혀가는 아티스트 소윤(So!YoON!)을 소개합니다. 실험적인 사운드와 개성 넘치는 퍼포먼스로 많은 이들의 이목을 사로잡고 있어요. 그녀의 음악은 단순한 장르의 틀을 넘어선 새로운 시도를 보여줍니다.</p><p>Introducing So!YoON!, an artist who is expanding her realm by establishing a unique musical world. She captivates many with her experimental sound and distinctive performances. Her music showcases new attempts beyond the boundaries of simple genres.</p><p>✧</p><p>새로운 시작</p><p>소윤은 밴드 새소년의 기타리스트이자 보컬로 처음 이름을 알렸습니다. 밴드 활동을 통해 쌓은 경험을 바탕으로 솔로 아티스트로서 자신만의 색깔을 더욱 뚜렷하게 드러내기 시작했어요.</p><p>A New Beginning</p><p>So!YoON! first made her name as the guitarist and vocalist of the band SE SO NEON. Based on her experience with the band, she began to clearly express her own colors as a solo artist.</p><p>✧</p><p>장르를 넘나드는 음악</p><p>소윤의 음악은 한 가지 스타일로 정의하기 어려울 만큼 다채로운 매력을 지니고 있어요. 록, 팝, 얼터너티브, 일렉트로니카 등 다양한 장르를 융합하여 독창적인 사운드를 만들어냅니다.</p><p>Music Beyond Genres</p><p>So!YoON!'s music has a diverse appeal that is difficult to define by one style. She creates an original sound by blending various genres such as rock, pop, alternative, and electronica.</p><p>✧</p><p>실험적인 시도와 협업</p><p>소윤은 끊임없이 새로운 시도를 감행하며 음악적 스펙트럼을 넓혀가고 있습니다. 다양한 아티스트와의 협업을 통해 예상치 못한 시너지를 창출하며 더욱 풍성한 음악을 선보이고 있어요.</p><p>Experimental Attempts and Collaborations</p><p>So!YoON! is constantly expanding her musical spectrum by making new attempts. Through collaborations with various artists, she creates unexpected synergy and presents richer music.</p><p>✧</p><p>앞으로의 가능성</p><p>소윤은 앞으로도 더욱 다양한 음악적 시도를 통해 자신만의 색깔을 더욱 깊게 만들어갈 것으로 기대됩니다. 그녀의 음악은 단순한 유행을 넘어 오랫동안 기억될 예술 작품으로 남을 거예요.</p><p>Future Possibilities</p><p>It is expected that So!YoON! will continue to deepen her own colors through more diverse musical attempts in the future. Her music will remain as a work of art that will be remembered for a long time, beyond simple trends.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] Prologue _ Love</div>
+<div><a href='https://tidal.com/album/292467504' target='_blank'>https://tidal.com/album/292467504</a></div>
+<div>So!YoON! - Bad</div>
+<div>So!YoON! - CANADA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/292467504' target='_blank'><img src='https://resources.tidal.com/images/a212d7be/2645/4a1e/9bc8/107130d5e233/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Episode1 _ Love</div>
+<div><a href='https://tidal.com/album/424632446' target='_blank'>https://tidal.com/album/424632446</a></div>
+<div>So!YoON! - IN (Void)</div>
+<div>So!YoON! - Smoke Sprite (feat. RM)</div>
+<div>So!YoON! - Till the sun goes up</div>
+<div>So!YoON! - Bad</div>
+<div>So!YoON! - why don’t you take me out- (skit)</div>
+<div>So!YoON! - Gave you all my love (feat. jibin)</div>
+<div>So!YoON! - zone out; (skit)</div>
+<div>So!YoON! - EXIT</div>
+<div>So!YoON! - LOVE (a secret visitor) [feat. parkjiyoon]</div>
+<div>So!YoON! - CANADA</div>
+<div>So!YoON! - OUT (to be continued… -)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/424632446' target='_blank'><img src='https://resources.tidal.com/images/6f6b5362/a039/44d1/8d48/6ea97315f7a7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Album Commentary_ [Episode1 _ Love]</div>
+<div><a href='https://tidal.com/album/288722313' target='_blank'>https://tidal.com/album/288722313</a></div>
+<div>So!YoON!, kixxikim - IN (Void) - Commentary [with kixxikim]</div>
+<div>So!YoON!, RM - Smoke Sprite - Commentary (with RM of BTS)</div>
+<div>So!YoON!, Che Yubina, Hoonch - Till the sun goes up - Commentary (with Che Yubina, Hoonch)</div>
+<div>So!YoON!, Song Taejong - Bad - Commentary (with Song Taejong)</div>
+<div>So!YoON!, Kim Doeon - why don’t you take me out- (skit) - Commentary [with Kim Doeon]</div>
+<div>So!YoON!, Kwangjae Jeon - Gave you all my love - Commentary (with Kwangjae Jeon)</div>
+<div>So!YoON!, TE RIM - EXIT - Commentary (with Te Rim)</div>
+<div>So!YoON!, parkjiyoon - LOVE (a secret visitor) - Commentary [with parkjiyoon]</div>
+<div>So!YoON!, Jon Nellen - CANADA - Commentary (with Jon Nellen)</div>
+<div>So!YoON!, TEAM So!YoON! - OUT (to be continued... -) - Commentary [with TEAM So!YoON!]</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288722313' target='_blank'><img src='https://resources.tidal.com/images/3608453d/d19d/4d8f/ac8d/34f1bbd350f0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Wings</div>
+<div><a href='https://tidal.com/album/196162870' target='_blank'>https://tidal.com/album/196162870</a></div>
+<div>So!YoON! - Wings</div>
+<div>So!YoON!, Phum Viphurit - Wings</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196162870' target='_blank'><img src='https://resources.tidal.com/images/2b2a4621/0ead/44d4/9b72/fd11fc0773d7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] So!YoON!</div>
+<div><a href='https://tidal.com/album/189198898' target='_blank'>https://tidal.com/album/189198898</a></div>
+<div>So!YoON! - So!YoON!</div>
+<div>So!YoON! - Zz'City</div>
+<div>So!YoON! - Noonwalk (feat. SUMIN)</div>
+<div>So!YoON! - Holiday</div>
+<div>So!YoON! - Mirae</div>
+<div>So!YoON! - Fntsy (feat. Jvcki Wai)</div>
+<div>So!YoON! - A-DC= (feat. Mid-Air Thief)</div>
+<div>So!YoON! - Forever Dumb (feat. SAM KIM)</div>
+<div>So!YoON! - Athena (feat. SE SO NEON)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189198898' target='_blank'><img src='https://resources.tidal.com/images/82a2710d/f9cb/4424/bd71/b874c5702775/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Holiday</div>
+<div><a href='https://tidal.com/album/189173594' target='_blank'>https://tidal.com/album/189173594</a></div>
+<div>So!YoON! - Holiday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189173594' target='_blank'><img src='https://resources.tidal.com/images/c2a0b025/997a/4262/a5e6/df29a60710bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Album Commentary_ So!YoON!</div>
+<div><a href='https://tidal.com/album/189198965' target='_blank'>https://tidal.com/album/189198965</a></div>
+<div>So!YoON!, Gomsajang - So!YoON! - Commentary (with Gomsajang)</div>
+<div>So!YoON!, Nahzam Sue - Zz'City - Commentary (with Nahzam Sue)</div>
+<div>So!YoON!, Sumin - Noonwalk - Commentary (with SUMIN)</div>
+<div>So!YoON!, Sunwoojunga - Holiday - Commentary (with sunwoojunga)</div>
+<div>So!YoON!, TE RIM - Mirae + Fntsy - Commentary (with TE RIM)</div>
+<div>So!YoON!, Mid-Air Thief - A-DC= - Commentary (with Mid-Air Thief)</div>
+<div>So!YoON!, SAM KIM - Forever Dumb - Commentary (with SAM KIM)</div>
+<div>So!YoON!, MUJIGAE - Athena - Commentary (with MUJIGAE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189198965' target='_blank'><img src='https://resources.tidal.com/images/7d49812f/1b74/44ce/875c/5894a400986e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/1_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ1) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/소윤 (So!YoON!)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
