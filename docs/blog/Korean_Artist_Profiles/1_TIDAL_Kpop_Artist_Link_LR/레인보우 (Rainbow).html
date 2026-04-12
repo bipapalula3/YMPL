@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 레인보우 ( Tidal Rainbow )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 레인보우 ( Tidal Rainbow )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/fe9916f2/b2f1/4266/b517/1e866f667e8a/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/31999343' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 레인보우</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>레인보우 (Rainbow) - 일곱 빛깔 무지개처럼 다채로운 매력, 'Whoo'의 상큼함과 'Black Swan'의 몽환적인 대비를 담아내다</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Rainbow</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Rainbow - A spectrum of charms like a seven-colored rainbow, capturing the freshness of 'Whoo' and the dreamy contrast of 'Black Swan'</div><p>상큼함부터 몽환적인 분위기까지, 팔색조 매력을 뽐내는 그룹 레인보우를 소개합니다. 각기 다른 개성을 가진 일곱 멤버들이 모여 다채로운 음악과 퍼포먼스를 선보였죠. 그녀들의 이야기에 함께 빠져볼까요?</p><p>Let me introduce Rainbow, a group that boasts a spectrum of charms from freshness to dreamlike atmosphere. Seven members with unique personalities came together to showcase diverse music and performances. Shall we dive into their story together?</p><p>✧</p><p>그룹 탄생</p><p>레인보우는 DSP미디어에서 야심차게 데뷔시킨 7인조 걸그룹입니다. 데뷔 전부터 많은 기대를 모았으며, 2009년 'Gossip Girl'로 가요계에 첫 발을 내딛었습니다.</p><p>Group Formation</p><p>Rainbow is a seven-member girl group ambitiously debuted by DSP Media. They garnered much anticipation before their debut and took their first step into the music industry with 'Gossip Girl' in 2009.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>레인보우는 다양한 장르를 소화하며 폭넓은 음악 스펙트럼을 보여줬습니다. 상큼 발랄한 댄스곡부터 성숙하고 몽환적인 분위기의 곡까지, 팔색조 매력을 뽐냈죠.</p><p>Music and Performance</p><p>Rainbow showcased a wide musical spectrum by taking on various genres. From fresh and lively dance songs to mature and dreamy tracks, they boasted a spectrum of charms.</p><p>✧</p><p>주요 활동</p><p>레인보우는 'A', 'Mach', 'Sweet Dream' 등 다양한 히트곡을 발표하며 많은 사랑을 받았습니다. 유닛 활동을 통해 멤버들의 개성을 더욱 부각시키기도 했죠.</p><p>Key Activities</p><p>Rainbow released various hit songs such as 'A', 'Mach', and 'Sweet Dream', receiving much love. They also highlighted the individuality of the members through unit activities.</p><p>✧</p><p>미래/의미</p><p>레인보우는 활동 기간 동안 다채로운 음악과 퍼포먼스로 팬들에게 즐거움을 선사했습니다. 그녀들의 음악은 시간이 흘러도 여전히 빛나는 무지개처럼 기억될 것입니다.</p><p>Future/Significance</p><p>Rainbow provided joy to fans with diverse music and performances during their active period. Their music will be remembered like a rainbow that still shines even as time passes.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2019] Over the Rainbow</div>
+<div><a href='https://tidal.com/album/216542084' target='_blank'>https://tidal.com/album/216542084</a></div>
+<div>Rainbow - I Dream of You</div>
+<div>Rainbow - Aurora</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216542084' target='_blank'><img src='https://resources.tidal.com/images/e2138605/82db/4821/becd/5ac7a12e4f80/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 구름</div>
+<div><a href='https://tidal.com/album/287761383' target='_blank'>https://tidal.com/album/287761383</a></div>
+<div>Rainbow - 구름</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287761383' target='_blank'><img src='https://resources.tidal.com/images/0f6e8b02/2854/4dd5/8f49/bdea29c3fb03/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] RAINBOW 4th Mini Album 'Prism'</div>
+<div><a href='https://tidal.com/album/215945914' target='_blank'>https://tidal.com/album/215945914</a></div>
+<div>Rainbow - Pretend</div>
+<div>Rainbow - Whoo</div>
+<div>Rainbow - Black & White</div>
+<div>Rainbow - Click!</div>
+<div>Rainbow - Eye Contact</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215945914' target='_blank'><img src='https://resources.tidal.com/images/3a3af30e/8c6c/4e6e/8561/615299023930/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] RAINBOW 3rd Mini Album 'INNOCENT'</div>
+<div><a href='https://tidal.com/album/216014918' target='_blank'>https://tidal.com/album/216014918</a></div>
+<div>Rainbow - Bad Man Crying</div>
+<div>Rainbow - Black Swan</div>
+<div>Rainbow - Mr.Lee</div>
+<div>Rainbow - PIERROT</div>
+<div>Rainbow - Privacy</div>
+<div>Rainbow - Some More</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216014918' target='_blank'><img src='https://resources.tidal.com/images/f9ed065a/5958/4d7f/881c/e281d9a4f050/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] DSP Special Album 'White Letter'</div>
+<div><a href='https://tidal.com/album/216043531' target='_blank'>https://tidal.com/album/216043531</a></div>
+<div>Rainbow - One More Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216043531' target='_blank'><img src='https://resources.tidal.com/images/f55d824c/f40f/4c8f/9ac4/ae93aaff9b32/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Rainbow Syndrome</div>
+<div><a href='https://tidal.com/album/216047244' target='_blank'>https://tidal.com/album/216047244</a></div>
+<div>Rainbow - Golden Touch</div>
+<div>Rainbow - Close Your Eyes</div>
+<div>Rainbow - Tell Me Tell Me</div>
+<div>Rainbow - Cosmic Girl</div>
+<div>Rainbow - The Story Only I Know You Will Never Know</div>
+<div>Rainbow - In Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216047244' target='_blank'><img src='https://resources.tidal.com/images/bae037a1/a31d/4c87/9fac/9ebeb277823f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Rainbow Syndrome PART. 2</div>
+<div><a href='https://tidal.com/album/215782948' target='_blank'>https://tidal.com/album/215782948</a></div>
+<div>Rainbow - KISS ME</div>
+<div>Rainbow - SUNSHINE</div>
+<div>Rainbow - DON’T TOUCH</div>
+<div>Rainbow - LET’S DANCE</div>
+<div>Rainbow - I'LL WAIT FOR YOU</div>
+<div>Rainbow - EENIE MEENIE MINIE MOE</div>
+<div>Rainbow - CHEWING TIME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215782948' target='_blank'><img src='https://resources.tidal.com/images/fe9916f2/b2f1/4266/b517/1e866f667e8a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Twinkle Twinkle (Original Soundtrack) part.1</div>
+<div><a href='https://tidal.com/album/216542100' target='_blank'>https://tidal.com/album/216542100</a></div>
+<div>Rainbow - Sad too Romantic</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216542100' target='_blank'><img src='https://resources.tidal.com/images/f34777e1/6923/4c21/938c/6ba729d87ed9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Sweet Dream</div>
+<div><a href='https://tidal.com/album/216047478' target='_blank'>https://tidal.com/album/216047478</a></div>
+<div>Rainbow - Sweet Dream</div>
+<div>Rainbow - Kiss (Acoustic ver.)</div>
+<div>Rainbow - To Me</div>
+<div>Rainbow - To Me (Club Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216047478' target='_blank'><img src='https://resources.tidal.com/images/4588bc3c/9a1c/49bc/8c53/76b0dbe7cbc0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2011] So 女</div>
+<div><a href='https://tidal.com/album/216047423' target='_blank'>https://tidal.com/album/216047423</a></div>
+<div>Rainbow - So Cool</div>
+<div>Rainbow - To Me</div>
+<div>Rainbow - I Said You're The One</div>
+<div>Rainbow - Mach</div>
+<div>Rainbow - A</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216047423' target='_blank'><img src='https://resources.tidal.com/images/12cd6702/3586/4f66/be87/9f644ebea5f4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Mach</div>
+<div><a href='https://tidal.com/album/199576332' target='_blank'>https://tidal.com/album/199576332</a></div>
+<div>Rainbow - Mach</div>
+<div>Rainbow - Not Your Girl</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/199576332' target='_blank'><img src='https://resources.tidal.com/images/9e4aa337/2d4d/4204/bb4a/d8f1df8743f3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] Call of the Country (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/372201483' target='_blank'>https://tidal.com/album/372201483</a></div>
+<div>Rainbow - Love you, Like you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/372201483' target='_blank'><img src='https://resources.tidal.com/images/a8c7203a/1123/485f/bcc7/982d58b08756/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] A (Digital Single)</div>
+<div><a href='https://tidal.com/album/216047676' target='_blank'>https://tidal.com/album/216047676</a></div>
+<div>Rainbow - A</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216047676' target='_blank'><img src='https://resources.tidal.com/images/92af2bd3/2d46/48c3/8251/7ea8418940b2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Gossip Girl</div>
+<div><a href='https://tidal.com/album/216047943' target='_blank'>https://tidal.com/album/216047943</a></div>
+<div>Rainbow - Not Your Girl</div>
+<div>Rainbow - Gossip Girl</div>
+<div>Rainbow - I Believe</div>
+<div>Rainbow - Kiss</div>
+<div>Rainbow - Let's Put It Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216047943' target='_blank'><img src='https://resources.tidal.com/images/30821521/0807/4cda/8949/73985c8f752a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/1_TIDAL_Kpop_Artist_Link_LR.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄹ1) TIDAL Kpop Artist Link (LR)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/레인보우 (Rainbow)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
