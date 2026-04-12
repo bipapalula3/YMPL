@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 아일릿 ( Tidal ILLIT )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 아일릿 ( Tidal ILLIT )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/f44ba6ca/0822/4aed/bb11/9bf11c571e78/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/46672296' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 아일릿</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>아일릿 (ILLIT) – 풋풋한 설렘과 자유로운 에너지로 가득한, 'Almond Chocolate'처럼 달콤한 음악을 선사하는 그룹</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> ILLIT</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>ILLIT – A group brimming with youthful excitement and free-spirited energy, delivering sweet music like 'Almond Chocolate'.</div><p>새로운 시작의 설렘을 노래하는 그룹, 아일릿(ILLIT)을 소개합니다. 다섯 멤버의 다채로운 매력과 음악적 시너지가 돋보이는 팀인데요. 듣는 이에게 긍정적인 에너지를 전달하며, 자신들만의 색깔을 만들어가고 있어요.</p><p>Introducing ILLIT, a group that sings about the excitement of new beginnings. This team showcases the diverse charms and musical synergy of its five members. They deliver positive energy to listeners and are creating their own unique style.</p><p>✧</p><p>그룹 탄생</p><p>아일릿은 데뷔 전부터 서바이벌 프로그램을 통해 대중에게 얼굴을 알렸습니다. 프로그램에서 보여준 멤버들의 성장 과정과 케미는 팬덤 형성에 큰 영향을 주었는데요. 정식 데뷔 후에는 더욱 완성된 모습으로 음악 팬들을 사로잡고 있습니다.</p><p>Group Formation</p><p>ILLIT gained public recognition through a survival program even before their debut. The members' growth process and chemistry shown in the program had a significant impact on the formation of their fan base. After their official debut, they are captivating music fans with an even more polished image.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>아일릿의 음악은 풋풋한 감성과 통통 튀는 매력이 돋보입니다. 편안하게 들을 수 있는 멜로디와 공감 가는 가사가 특징인데요. 무대 위에서는 에너지 넘치는 퍼포먼스를 선보이며 보는 이들을 즐겁게 합니다.</p><p>Music and Performance</p><p>ILLIT's music stands out with its youthful emotions and bubbly charm. Their melodies are easy to listen to, and their lyrics are relatable. On stage, they showcase energetic performances that delight viewers.</p><p>✧</p><p>주요 활동</p><p>아일릿은 데뷔와 동시에 다양한 음악 방송 및 콘텐츠에 출연하며 활발한 활동을 펼치고 있습니다. 음반 발매뿐만 아니라, 팬들과 소통하는 다양한 이벤트도 진행하고 있는데요. 앞으로의 활동이 더욱 기대되는 그룹입니다.</p><p>Key Activities</p><p>ILLIT is actively engaged in various music broadcasts and content appearances since their debut. In addition to releasing albums, they also conduct various events to communicate with fans. They are a group whose future activities are highly anticipated.</p><p>✧</p><p>미래/의미</p><p>아일릿은 자신들만의 음악적 색깔을 구축하며 성장해 나갈 가능성이 큽니다. 동시대 청춘들의 감성을 대변하는 음악을 통해 더욱 많은 사랑을 받을 것으로 예상되는데요. 앞으로 아일릿이 보여줄 음악적 스펙트럼 확장에 주목해 주세요.</p><p>Future/Meaning</p><p>ILLIT has a high potential to grow while establishing their own musical color. They are expected to receive even more love through music that represents the emotions of young people in the same era. Please pay attention to the expansion of the musical spectrum that ILLIT will show in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] Sunday Morning</div>
+<div><a href='https://tidal.com/album/487158902' target='_blank'>https://tidal.com/album/487158902</a></div>
+<div>ILLIT - Sunday Morning</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/487158902' target='_blank'><img src='https://resources.tidal.com/images/abbf7006/bedc/4d97/b76e/1d7cc4e7718a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Topping</div>
+<div><a href='https://tidal.com/album/452222182' target='_blank'>https://tidal.com/album/452222182</a></div>
+<div>ILLIT - Topping</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/452222182' target='_blank'><img src='https://resources.tidal.com/images/9c50b5df/30d4/4cac/82c2/9137a1218911/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Toki Yo Tomare</div>
+<div><a href='https://tidal.com/album/456099707' target='_blank'>https://tidal.com/album/456099707</a></div>
+<div>ILLIT - Toki Yo Tomare</div>
+<div>ILLIT - Topping</div>
+<div>ILLIT - Karitekita Neko (Do the Dance) (Japanese Ver.)</div>
+<div>ILLIT - Almond Chocolate</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/456099707' target='_blank'><img src='https://resources.tidal.com/images/274f2fed/e105/4814/b089/bee56d71df24/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Pokémon  Secret Quest (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/469761973' target='_blank'>https://tidal.com/album/469761973</a></div>
+<div>ILLIT - Secret Quest</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/469761973' target='_blank'><img src='https://resources.tidal.com/images/79bb5b9e/7017/49db/b7dc/2b085e480e33/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] NOT CUTE ANYMORE</div>
+<div><a href='https://tidal.com/album/475449955' target='_blank'>https://tidal.com/album/475449955</a></div>
+<div>ILLIT - NOT CUTE ANYMORE</div>
+<div>ILLIT - NOT ME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/475449955' target='_blank'><img src='https://resources.tidal.com/images/7e6057fc/2f56/4dd7/b047/d9419b6d0657/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Almond Chocolate</div>
+<div><a href='https://tidal.com/album/416247083' target='_blank'>https://tidal.com/album/416247083</a></div>
+<div>ILLIT - Almond Chocolate</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/416247083' target='_blank'><img src='https://resources.tidal.com/images/16b64e9c/3130/479e/adc2/f99c32cf43ab/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] ALL FOR YOU, 2027</div>
+<div><a href='https://tidal.com/album/481666241' target='_blank'>https://tidal.com/album/481666241</a></div>
+<div>ILLIT - ALL FOR YOU</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/481666241' target='_blank'><img src='https://resources.tidal.com/images/13b3577e/baf3/4a17/80f7/221622c4c562/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] SUPER REAL ME</div>
+<div><a href='https://tidal.com/album/352538102' target='_blank'>https://tidal.com/album/352538102</a></div>
+<div>ILLIT - My World</div>
+<div>ILLIT - Magnetic</div>
+<div>ILLIT - Midnight Fiction</div>
+<div>ILLIT - Lucky Girl Syndrome</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352538102' target='_blank'><img src='https://resources.tidal.com/images/a5ea5d66/6fac/4977/aa9a/b946f2935749/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] SUPER REAL ME (Sped Up)</div>
+<div><a href='https://tidal.com/album/354667115' target='_blank'>https://tidal.com/album/354667115</a></div>
+<div>ILLIT - My World (Sped Up)</div>
+<div>ILLIT - Magnetic (Sped Up)</div>
+<div>ILLIT - Midnight Fiction (Sped Up)</div>
+<div>ILLIT - Lucky Girl Syndrome (Sped Up)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/354667115' target='_blank'><img src='https://resources.tidal.com/images/55c11649/ab7d/4ef9/affb/7fd20215f958/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] I'LL LIKE YOU</div>
+<div><a href='https://tidal.com/album/393845091' target='_blank'>https://tidal.com/album/393845091</a></div>
+<div>ILLIT - I'll Like You</div>
+<div>ILLIT - Cherish (My Love)</div>
+<div>ILLIT - IYKYK (If You Know You Know)</div>
+<div>ILLIT - Pimple</div>
+<div>ILLIT - Tick-Tack</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/393845091' target='_blank'><img src='https://resources.tidal.com/images/8f9ddabf/dade/4454/9eb5/6afc43dfc9cd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Baby It’s Both (Tick-Tack English Ver.) (Feat. Ava Max)</div>
+<div><a href='https://tidal.com/album/400702758' target='_blank'>https://tidal.com/album/400702758</a></div>
+<div>Ava Max, ILLIT - Baby It’s Both (Tick-Tack English Ver.) (Feat. Ava Max)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/400702758' target='_blank'><img src='https://resources.tidal.com/images/ade2211a/096e/41bd/8f8b/bd553c71ea40/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/1_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ1) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_AIO/아일릿 (ILLIT)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
