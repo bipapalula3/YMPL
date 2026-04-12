@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 하춘화 ( Tidal Ha Choon Hwa )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 하춘화 ( Tidal Ha Choon Hwa )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/be790dfb/9f41/423c/af74/f22f1b52eee8/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/32213495' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/16792192' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 하춘화</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>하춘화 — ‘물새 한 마리’의 애절함부터 ‘나는 열일곱 살이예요’의 싱그러움까지, 시대를 노래한 영원한 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Ha Choon Hwa</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Ha Choon Hwa — From the poignant emotion of 'A Water Bird' to the youthful freshness of 'I'm Seventeen Years Old,' a timeless diva who sang the eras.</div><p>대한민국 가요계의 살아있는 역사, 하춘화 선생님을 소개합니다. 어린 나이에 데뷔하여 폭넓은 음악적 스펙트럼과 뛰어난 가창력으로 대중의 사랑을 꾸준히 받아온 국민 가수예요. 그녀의 노래는 단순한 유행가를 넘어, 시대의 희로애락을 담아내는 거울과 같습니다.</p><p>Introducing Ha Choon Hwa, a living legend in Korean popular music. Debuting at a young age, she has consistently received love from the public with her broad musical spectrum and outstanding singing ability. Her songs are more than just popular tunes; they are mirrors that reflect the joys and sorrows of an era.</p><p>✧</p><p>어린 나이에 피어난 재능</p><p>하춘화 선생님은 어린 시절부터 뛰어난 재능을 보이며 가요계에 데뷔했어요. 그녀의 음악은 트로트를 기반으로 하면서도 다양한 장르를 아우르는 폭넓은 시도를 보여줍니다. 어린 나이에도 불구하고 깊이 있는 감정 표현과 안정적인 가창력을 선보이며 대중을 사로잡았습니다.</p><p>Talent Blooming at a Young Age</p><p>Ha Choon Hwa debuted in the music industry, displaying exceptional talent from a young age. Her music is based on trot but also demonstrates a broad range of attempts encompassing various genres. Despite her young age, she captivated the public with her profound emotional expression and stable singing ability.</p><p>✧</p><p>다채로운 음악 세계</p><p>하춘화 선생님의 음악은 트로트의 깊은 감성을 바탕으로, 때로는 밝고 경쾌한 멜로디, 때로는 애절한 가사로 듣는 이의 마음을 사로잡습니다. 항구를 배경으로 한 서정적인 노래부터, 인생의 희로애락을 담은 깊이 있는 노래까지 폭넓은 레퍼토리를 자랑해요. 그녀의 음악은 한국인의 정서를 대변하며 오랜 시간 사랑받고 있습니다.</p><p>A Diverse Musical World</p><p>Based on the deep emotions of trot, Ha Choon Hwa's music captivates listeners with melodies that are sometimes bright and cheerful, and lyrics that are sometimes mournful. She boasts a wide repertoire, from lyrical songs set against the backdrop of ports to profound songs containing the joys and sorrows of life. Her music represents Korean sentiments and has been loved for a long time.</p><p>✧</p><p>시대를 초월하는 활동</p><p>하춘화 선생님은 오랜 기간 동안 꾸준한 활동을 이어오며, 다양한 무대와 방송을 통해 대중과 소통해왔습니다. 단순히 노래를 부르는 것을 넘어, 사회봉사 활동에도 적극적으로 참여하며 선한 영향력을 펼치고 있어요. 그녀의 끊임없는 노력과 봉사 정신은 많은 이들에게 귀감이 되고 있습니다.</p><p>Activities Transcending Eras</p><p>Ha Choon Hwa has continued her steady activities for a long time, communicating with the public through various stages and broadcasts. Beyond simply singing, she actively participates in social service activities, spreading a positive influence. Her continuous efforts and spirit of service are becoming an example to many.</p><p>✧</p><p>영원한 디바, 그리고 미래</p><p>하춘화 선생님은 끊임없는 노력과 열정으로 한국 가요계의 한 획을 그은 영원한 디바입니다. 그녀의 음악은 시대를 초월하여 앞으로도 많은 사람들에게 감동과 위로를 전해줄 거예요. 앞으로도 하춘화 선생님의 아름다운 목소리가 오랫동안 울려 퍼지기를 기대합니다.</p><p>The Eternal Diva, and the Future</p><p>Ha Choon Hwa is an eternal diva who has marked a milestone in Korean popular music with her continuous efforts and passion. Her music will transcend the times and continue to deliver emotion and comfort to many people in the future. We look forward to Ha Choon Hwa's beautiful voice resonating for a long time to come.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2014] Golden Best</div>
+<div><a href='https://tidal.com/album/117568475' target='_blank'>https://tidal.com/album/117568475</a></div>
+<div>Ha Choon-Hwa(하춘화) - A Water Bird (물새 한 마리)</div>
+<div>Ha Choon-Hwa(하춘화) - I'm Seventeen years old (나는 열일곱 살이예요)</div>
+<div>Ha Choon-Hwa(하춘화) - San Francisco (샌프란시스코)</div>
+<div>Ha Choon-Hwa(하춘화) - Yeonpo Lady (연포 아가씨)</div>
+<div>Ha Choon-Hwa(하춘화) - Downtown Beautiful Girl (아랫마을 이쁜이)</div>
+<div>Ha Choon-Hwa(하춘화) - Hadong Wharf Of Lady (하동포구 아가씨)</div>
+<div>Ha Choon-Hwa(하춘화) - Mokpo Is Port (목포는 항구다)</div>
+<div>Ha Choon-Hwa(하춘화) - Seoul Customer (서울손님)</div>
+<div>Ha Choon-Hwa(하춘화) - Accumulated Feeling (쌓인 정)</div>
+<div>Ha Choon-Hwa(하춘화) - Tears Shed In Mokpo (목포의 눈물)</div>
+<div>Ha Choon-Hwa(하춘화) - Hangang (한강)</div>
+<div>Ha Choon-Hwa(하춘화) - Maengkkongi Taryeong (맹꽁이 타령)</div>
+<div>Ha Choon-Hwa(하춘화) - Daekwanryeong Arirang (대관령 아리랑)</div>
+<div>Ha Choon-Hwa(하춘화) - The Honam Railroad In The Rain (비내리는 호남선)</div>
+<div>Ha Choon-Hwa(하춘화) - Rain Falling In Yangsando (비오는 양산도)</div>
+<div>Ha Choon-Hwa(하춘화) - This My Home In A Dream (꿈에 본 내 고향)</div>
+<div>Ha Choon-Hwa(하춘화) - The Crying Undutiful Son (불효자는 웁니다)</div>
+<div>Ha Choon-Hwa(하춘화) - Why Don't You Tell Me (왜 말 못해)</div>
+<div>Ha Choon-Hwa(하춘화) - Rain Falling In Gomoryeong (비 내리는 고모령)</div>
+<div>Ha Choon-Hwa(하춘화) - Well Done, Great Job (잘했군, 잘했어)</div>
+<div>Ha Choon-Hwa(하춘화) - Flower Garden Of First Love (첫 사랑의 화원)</div>
+<div>Ha Choon-Hwa(하춘화) - Turn Waterwheel (물레방아 도는데)</div>
+<div>Ha Choon-Hwa(하춘화) - Goodbye Busan Port (잘있거라 부산항)</div>
+<div>Ha Choon-Hwa(하춘화) - The First To Know (알고 계세요)</div>
+<div>Ha Choon-Hwa(하춘화) - Gangwondo Arirang (강원도 아리랑)</div>
+<div>Ha Choon-Hwa(하춘화) - Port Where Double Horns Yell (쌍고동 우는 항구)</div>
+<div>Ha Choon-Hwa(하춘화) - Street Trees (두줄기 가로수)</div>
+<div>Ha Choon-Hwa(하춘화) - The Miarigogae Of Sadness (단장의 미아리고개)</div>
+<div>Ha Choon-Hwa(하춘화) - Between Us (우리사이)</div>
+<div>Ha Choon-Hwa(하춘화) - The Old Sites Of The Ruined Fort Walls (황성 옛터)</div>
+<div>Ha Choon-Hwa(하춘화) - Eight Beauty Spots Of Korea (대한 팔경)</div>
+<div>Ha Choon-Hwa(하춘화) - The Appointed Time (약속 시간)</div>
+<div>Ha Choon-Hwa(하춘화) - I'm Your Shadow (나는 너의 그림자)</div>
+<div>Ha Choon-Hwa(하춘화) - Met The Man From The Lakeside (호반에서 만난 사람)</div>
+<div>Ha Choon-Hwa(하춘화) - Straw Hat Ranch Lady (밀짚모자 목장아가씨)</div>
+<div>Ha Choon-Hwa(하춘화) - The First Love Story (첫사랑 이야기)</div>
+<div>Ha Choon-Hwa(하춘화) - Arirang Shepherd (아리랑 목동)</div>
+<div>Ha Choon-Hwa(하춘화) - Beach That Waterfowl Crying (물새 우는 해변)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117568475' target='_blank'><img src='https://resources.tidal.com/images/37d800b5/446a/4c53/86b8/363922dc7368/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Best Hit Vol.1</div>
+<div><a href='https://tidal.com/album/117581679' target='_blank'>https://tidal.com/album/117581679</a></div>
+<div>Ha Choon-Hwa(하춘화) - A Water Bird (물새 한 마리)</div>
+<div>Ha Choon-Hwa(하춘화) - The First To Know (알고 계세요)</div>
+<div>Ha Choon-Hwa(하춘화) - Yeonpo Lady (연포 아가씨)</div>
+<div>Ha Choon-Hwa(하춘화) - Hadong Wharf Of Lady (하동포구 아가씨)</div>
+<div>Ha Choon-Hwa(하춘화) - Accumulated Feeling (쌓인 정)</div>
+<div>Ha Choon-Hwa(하춘화) - Gangwondo Arirang (강원도 아리랑)</div>
+<div>Ha Choon-Hwa(하춘화) - Well Done, Great Job (잘했군, 잘했어)</div>
+<div>Ha Choon-Hwa(하춘화) - Seoul Customer (서울손님)</div>
+<div>Ha Choon-Hwa(하춘화) - Street Trees (두줄기 가로수)</div>
+<div>Ha Choon-Hwa(하춘화) - Between Us (우리사이)</div>
+<div>Ha Choon-Hwa(하춘화) - Daekwanryeong Arirang (대관령 아리랑)</div>
+<div>Ha Choon-Hwa(하춘화) - The Appointed Time (약속 시간)</div>
+<div>Ha Choon-Hwa(하춘화) - I'm Your Shadow (나는 너의 그림자)</div>
+<div>Ha Choon-Hwa(하춘화) - The First Love Story (첫사랑 이야기)</div>
+<div>Ha Choon-Hwa(하춘화) - A Young Lady (숙녀 초년생)</div>
+<div>Ha Choon-Hwa(하춘화) - Met The Man From The Lakeside (호반에서 만난 사람)</div>
+<div>Ha Choon-Hwa(하춘화) - Flower Garden Of First Love (첫 사랑의 화원)</div>
+<div>Ha Choon-Hwa(하춘화) - Rain Falling In Yangsando (비오는 양산도)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/117581679' target='_blank'><img src='https://resources.tidal.com/images/b5c44401/663f/41ff/a6a7/e7a82cf82a52/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] The 50th Anniversary The 50th Anniversary</div>
+<div><a href='https://tidal.com/album/245027063' target='_blank'>https://tidal.com/album/245027063</a></div>
+<div>하춘화 - 간다는데 Says He's Leaving</div>
+<div>하춘화 - 외길春花 Single Path Spring Flower</div>
+<div>하춘화 - 월출산 연가 Wolchulsan Love Song</div>
+<div>하춘화 - 탐진강아 병영성아 Oh Tamjingang Oh Byeongyeongseong</div>
+<div>하춘화 - 간다는데(MR) Says He's Leaving(MR)</div>
+<div>하춘화 - 외길春花(MR) Single Path Spring Flower(MR)</div>
+<div>하춘화 - 월출산 연가(MR) Wolchulsan Love Song(MR)</div>
+<div>하춘화 - 탐진강아 병영성아(MR) Oh Tamjingang Oh Byeongyeongseong(MR</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/245027063' target='_blank'><img src='https://resources.tidal.com/images/be790dfb/9f41/423c/af74/f22f1b52eee8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] 하춘화의 애창곡 하춘화의 애창곡</div>
+<div><a href='https://tidal.com/album/242440718' target='_blank'>https://tidal.com/album/242440718</a></div>
+<div>하춘화 - 하동포구 아가씨 하동포구 아가씨</div>
+<div>하춘화 - 연포아가씨 연포아가씨</div>
+<div>하춘화 - 쌓인정 쌓인정</div>
+<div>하춘화 - 아리랑 목동 아리랑 목동</div>
+<div>하춘화 - 밀짚모자 목장아가씨 밀짚모자 목장아가씨</div>
+<div>하춘화 - 호반에서 만난 사람 호반에서 만난 사람</div>
+<div>하춘화 - 물새우는 해변 물새우는 해변</div>
+<div>하춘화 - 첫사랑의 화원 첫사랑의 화원</div>
+<div>하춘화 - 한오백년 한오백년</div>
+<div>하춘화 - 그대여 변치마오 그대여 변치마오</div>
+<div>하춘화 - 아랫마을 이쁜이 아랫마을 이쁜이</div>
+<div>하춘화 - 이슬비 이슬비</div>
+<div>하춘화 - 아네모네 아네모네</div>
+<div>하춘화 - 샌프란시스코 샌프란시스코</div>
+<div>하춘화 - 무정한 마도로스 무정한 마도로스</div>
+<div>하춘화 - 잘있거라 부산항 잘있거라 부산항</div>
+<div>하춘화 - 무역선 아가씨 무역선 아가씨</div>
+<div>하춘화 - 아메리카 마도로스 아메리카 마도로스</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/242440718' target='_blank'><img src='https://resources.tidal.com/images/6013c055/188f/4efd/b638/da46532f9d1a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] 전곡 BEST HIT All Songs BEST HIT</div>
+<div><a href='https://tidal.com/album/242434279' target='_blank'>https://tidal.com/album/242434279</a></div>
+<div>하춘화 - 물새한마리 One Waterbird</div>
+<div>하춘화 - 알고계세요 Do You Know</div>
+<div>하춘화 - 연포아가씨 Miss Yeonpo</div>
+<div>하춘화 - 하동포구 아가씨 Young Lady from Hadongpogu</div>
+<div>하춘화 - 쌓인 정 Piled Affection</div>
+<div>하춘화 - 강원도 아리랑 Gangwondo Arirang</div>
+<div>하춘화 - 잘했군 잘했어 That was Good</div>
+<div>하춘화 - 서울손님 Seoul Guest</div>
+<div>하춘화 - 두줄기 가로수 Two Rooted Tree</div>
+<div>하춘화 - 우리사이 Us</div>
+<div>하춘화 - 대관령 아리랑 Daegwallyeong Arirang</div>
+<div>하춘화 - 약속시간 Appointment Time</div>
+<div>하춘화 - 나는 너의 그림자 I am Your Shadow</div>
+<div>하춘화 - 첫사랑의 이야기 First Love Story</div>
+<div>하춘화 - 숙녀 초년생 A Beginner Being a Lady</div>
+<div>하춘화 - 호반에서 만난 사람 Person I Met on the Lakeside</div>
+<div>하춘화 - 첫사랑의 화원 First Love's Garden</div>
+<div>하춘화 - 비오는 양산도 Raining Yangsando</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/242434279' target='_blank'><img src='https://resources.tidal.com/images/337b2ab1/a473/47c9/aa84/c083c94fa337/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/1_TIDAL_Kpop_Artist_Link_H.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅎ1) TIDAL Kpop Artist Link (H)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/하춘화 (Ha Choon Hwa)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
