@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 영재 ( Tidal YongJae )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 영재 ( Tidal YongJae )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4ab4d23e/cdcb/4d33/b423/2dfd7e548abc/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/9978763' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 영재</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>영재 (YongJae) - 다채로운 색깔로 물들이는 세상, 'The most beautiful in the world'처럼 아름다운 감성을 노래하는 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> YongJae</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>YongJae - A vocalist who paints the world with diverse colors, singing beautiful emotions like 'The most beautiful in the world'</div><p>영재님은 섬세한 감정 표현과 폭넓은 음악 스펙트럼으로 사랑받는 아티스트입니다. 솔로 활동을 통해 자신만의 음악적 색깔을 뚜렷하게 보여주고 계시죠. 다양한 장르를 소화하며 리스너들에게 즐거움을 선사하는 매력적인 보컬리스트랍니다.</p><p>YongJae is an artist loved for his delicate emotional expression and broad musical spectrum. Through his solo activities, he clearly shows his own musical color. He is an attractive vocalist who brings joy to listeners by digesting various genres.</p><p>✧</p><p>그룹 탄생</p><p>아이돌 그룹의 멤버로서 처음 대중에게 이름을 알리셨습니다. 그룹 활동을 통해 쌓은 경험은 솔로 아티스트로서의 성장에 밑거름이 되었죠. 다양한 무대 경험은 영재님만의 독특한 음악 세계를 구축하는 데 큰 영향을 주었습니다.</p><p>Birth of a Group</p><p>He first became known to the public as a member of an idol group. The experience gained through group activities became the foundation for his growth as a solo artist. Various stage experiences have had a great influence on building YongJae's unique musical world.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>영재님은 발라드, 댄스, R&B 등 다양한 장르를 넘나드는 음악적 스펙트럼을 보여주십니다. 감미로운 보컬과 섬세한 감정 표현이 특징이며, 듣는 이로 하여금 깊은 공감을 불러일으키죠. 무대 위에서의 에너지 넘치는 퍼포먼스 또한 빼놓을 수 없는 매력 포인트입니다.</p><p>Music and Performance</p><p>YongJae shows a musical spectrum that crosses various genres such as ballads, dance, and R&B. His sweet vocals and delicate emotional expressions are his trademarks, evoking deep sympathy from listeners. The energetic performance on stage is also an indispensable charm.</p><p>✧</p><p>주요 활동</p><p>솔로 앨범 발매 외에도 드라마 OST 참여, 뮤지컬 활동 등 다방면에서 활약하고 계십니다. 다양한 협업을 통해 음악적 역량을 넓혀가고 있으며, 끊임없이 새로운 시도를 하는 모습이 인상적이죠. 솔로 아티스트로서의 입지를 굳건히 다져나가고 있습니다.</p><p>Main Activities</p><p>In addition to releasing solo albums, he is active in various fields such as participating in drama OSTs and musical activities. He is expanding his musical capabilities through various collaborations, and his constant attempts at new things are impressive. He is solidifying his position as a solo artist.</p><p>✧</p><p>미래/의미</p><p>영재님의 음악은 듣는 이들에게 위로와 희망을 전달합니다. 앞으로도 진솔한 음악을 통해 더욱 많은 사람들에게 감동을 선사할 것으로 기대됩니다. 자신만의 색깔을 담은 음악으로 오랫동안 사랑받는 아티스트가 되기를 응원합니다.</p><p>Future/Meaning</p><p>YongJae's music conveys comfort and hope to listeners. It is expected that he will continue to impress more people through his sincere music in the future. I hope he will become an artist who is loved for a long time with music that contains his own color.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] The most beautiful in the world</div>
+<div><a href='https://tidal.com/album/429314392' target='_blank'>https://tidal.com/album/429314392</a></div>
+<div>YoungJae - The most beautiful in the world</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/429314392' target='_blank'><img src='https://resources.tidal.com/images/38df6165/ad56/4cff/b26b/20d0f3a0ac56/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Starlight (From _SHOW MUSICAL Dream High_)</div>
+<div><a href='https://tidal.com/album/409090733' target='_blank'>https://tidal.com/album/409090733</a></div>
+<div>YoungJae - Starlight (From -SHOW MUSICAL Dream High-)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/409090733' target='_blank'><img src='https://resources.tidal.com/images/a65240e6/6abd/4419/a746/4506748d1038/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] HELLO 80s</div>
+<div><a href='https://tidal.com/album/413567121' target='_blank'>https://tidal.com/album/413567121</a></div>
+<div>YoungJae - HELLO 80s</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/413567121' target='_blank'><img src='https://resources.tidal.com/images/f8ce89bd/6451/4280/b65e/a631b0a8aa28/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] T.P.O</div>
+<div><a href='https://tidal.com/album/373280522' target='_blank'>https://tidal.com/album/373280522</a></div>
+<div>YoungJae - T.P.O</div>
+<div>YoungJae - Summer Happening</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/373280522' target='_blank'><img src='https://resources.tidal.com/images/80a36271/50ed/4775/86ce/b3502e93276b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Errr Day</div>
+<div><a href='https://tidal.com/album/281497073' target='_blank'>https://tidal.com/album/281497073</a></div>
+<div>YoungJae - Errr Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/281497073' target='_blank'><img src='https://resources.tidal.com/images/d7510c07/9947/4cad/ac61/5adc3d560ef8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Do It</div>
+<div><a href='https://tidal.com/album/327269092' target='_blank'>https://tidal.com/album/327269092</a></div>
+<div>YoungJae - Flower</div>
+<div>YoungJae - Do It</div>
+<div>YoungJae - Deal</div>
+<div>YoungJae - Dreaming Again</div>
+<div>YoungJae - Problem</div>
+<div>YoungJae - Errr Day</div>
+<div>YoungJae - Fluffy</div>
+<div>YoungJae - Snooze</div>
+<div>YoungJae - Thinking Of You</div>
+<div>YoungJae - Never Leave You Alone</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/327269092' target='_blank'><img src='https://resources.tidal.com/images/bc967c5d/b3b2/43fd/9d18/394ac55a5c06/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Best Friend (Feat. coco) (Full Ver.)</div>
+<div><a href='https://tidal.com/album/285946941' target='_blank'>https://tidal.com/album/285946941</a></div>
+<div>YoungJae - Best Friend (Feat. COCO) (Full Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/285946941' target='_blank'><img src='https://resources.tidal.com/images/dc854d4a/0364/4626/ab74/e92efd270946/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] The Golden Spoon (Original Television Soundtrack, Pt. 7)</div>
+<div><a href='https://tidal.com/album/257948045' target='_blank'>https://tidal.com/album/257948045</a></div>
+<div>YoungJae - On My Way</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/257948045' target='_blank'><img src='https://resources.tidal.com/images/82ea096d/ca49/4a63/8144/20c1069d35eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] She Rockin</div>
+<div><a href='https://tidal.com/album/421096158' target='_blank'>https://tidal.com/album/421096158</a></div>
+<div>Lil Zahh, YoungJae - She Rockin(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/421096158' target='_blank'><img src='https://resources.tidal.com/images/0a6143c8/67de/475d/8216/9b2f74b5a84e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] SUGAR</div>
+<div><a href='https://tidal.com/album/234608196' target='_blank'>https://tidal.com/album/234608196</a></div>
+<div>YoungJae - SUGAR</div>
+<div>YoungJae - Focus</div>
+<div>YoungJae - Crema</div>
+<div>YoungJae - Nothing</div>
+<div>YoungJae - With You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/234608196' target='_blank'><img src='https://resources.tidal.com/images/2e52c682/7e17/447e/94c9/e28153e6ff4a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] IRREPLACEABLE</div>
+<div><a href='https://tidal.com/album/242846369' target='_blank'>https://tidal.com/album/242846369</a></div>
+<div>F.HERO, YoungJae, The Toys - IRREPLACEABLE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/242846369' target='_blank'><img src='https://resources.tidal.com/images/fd87d605/47c8/4302/b476/4bad2f1b40f9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Good Job (Original Television Soundtrack, Pt. 1)</div>
+<div><a href='https://tidal.com/album/247970611' target='_blank'>https://tidal.com/album/247970611</a></div>
+<div>Jay B, YoungJae - Closer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/247970611' target='_blank'><img src='https://resources.tidal.com/images/7afabb18/5022/4110/9710/14e5dc82a38b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Colors</div>
+<div><a href='https://tidal.com/album/253434015' target='_blank'>https://tidal.com/album/253434015</a></div>
+<div>YoungJae, YERIN - Colors</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/253434015' target='_blank'><img src='https://resources.tidal.com/images/66497857/a017/4c28/a15e/c146bd2bc481/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Walk With Me</div>
+<div><a href='https://tidal.com/album/216346670' target='_blank'>https://tidal.com/album/216346670</a></div>
+<div>YoungJae - Walk With Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216346670' target='_blank'><img src='https://resources.tidal.com/images/52741c47/73d8/4679/96ab/d434b22b6ddf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] So I Married The Anti-fan (Original Television Soundtrack) Pt. 1</div>
+<div><a href='https://tidal.com/album/215284200' target='_blank'>https://tidal.com/album/215284200</a></div>
+<div>YoungJae - Pop star</div>
+<div>CHOI TAE JOON - Pop star</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215284200' target='_blank'><img src='https://resources.tidal.com/images/9ac557a9/b5cd/492a/9c3a/0ea2981898e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Meet Me When The Sun Goes Down (From _Midnight Sun_ Original Musical Soundtrack, Pt. 1)</div>
+<div><a href='https://tidal.com/album/179807883' target='_blank'>https://tidal.com/album/179807883</a></div>
+<div>YoungJae - Meet Me When The Sun Goes Down (From -Midnight Sun</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/179807883' target='_blank'><img src='https://resources.tidal.com/images/b5122c73/277c/497a/a7dd/b6d081b17b45/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] COLORS from Ars</div>
+<div><a href='https://tidal.com/album/216300159' target='_blank'>https://tidal.com/album/216300159</a></div>
+<div>YoungJae - Beautiful</div>
+<div>YoungJae - Tasty</div>
+<div>YoungJae - Vibin</div>
+<div>YoungJae - Roses</div>
+<div>YoungJae - Eternal</div>
+<div>YoungJae - Moonlight</div>
+<div>YoungJae - Lonely</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216300159' target='_blank'><img src='https://resources.tidal.com/images/738285a8/b584/432b/a381/7e54661cf348/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] When My Love Blooms OST Part 2</div>
+<div><a href='https://tidal.com/album/196162038' target='_blank'>https://tidal.com/album/196162038</a></div>
+<div>YoungJae, CHOI JUNG YOON - Fall in Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196162038' target='_blank'><img src='https://resources.tidal.com/images/8a970353/a76f/4964/971f/87880060ae6c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Everything For You</div>
+<div><a href='https://tidal.com/album/165694444' target='_blank'>https://tidal.com/album/165694444</a></div>
+<div>YoungJae - Everything For You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/165694444' target='_blank'><img src='https://resources.tidal.com/images/8d8318ea/8b7f/48d3/bcf7/de9e85135713/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Woman of 99 Billion (Original Television Soundtrack), Pt.4</div>
+<div><a href='https://tidal.com/album/237844723' target='_blank'>https://tidal.com/album/237844723</a></div>
+<div>YoungJae - The first day she cried</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237844723' target='_blank'><img src='https://resources.tidal.com/images/c7ee8edd/5025/4d47/8efc/771def4d1b2d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] O,on</div>
+<div><a href='https://tidal.com/album/216120532' target='_blank'>https://tidal.com/album/216120532</a></div>
+<div>YoungJae - Forever Love</div>
+<div>YoungJae - Feel it with this</div>
+<div>YoungJae - Our story (Feat. PLUMA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216120532' target='_blank'><img src='https://resources.tidal.com/images/94d7ab51/dc16/40a2/ad0d/589e287a64cb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Wok of Love (SBS Drama) OST Part. 2</div>
+<div><a href='https://tidal.com/album/184754196' target='_blank'>https://tidal.com/album/184754196</a></div>
+<div>YoungJae - At that time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184754196' target='_blank'><img src='https://resources.tidal.com/images/1b93d33c/65c0/45e3/876f/c53c29b3d10b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Ready to Listen [From (Life Insurance Social Philanthropy Foundation), Pt. 2]</div>
+<div><a href='https://tidal.com/album/196143455' target='_blank'>https://tidal.com/album/196143455</a></div>
+<div>YoungJae, Jimin Park - I’m All Ears</div>
+<div>YoungJae, Jimin Park - I’m All Ears</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196143455' target='_blank'><img src='https://resources.tidal.com/images/9b8df2e0/4d92/4ca5/9ebe/3b27b3022d0f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/영재 (YongJae)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
