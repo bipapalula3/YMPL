@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 마이티마우스 ( Tidal Mighyy Mouth )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 마이티마우스 ( Tidal Mighyy Mouth )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/47543509/2ae8/432f/9ded/4f6de2153696/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7487853' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 마이티마우스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>마이티마우스 – ‘에너지’ 넘치는 긍정 바이브와 ‘사랑해’ 속 감성적인 멜로디를 선사하는 유쾌한 듀오</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Mighyy Mouth</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Mighty Mouth - A delightful duo delivering 'energetic' positive vibes and emotional melodies from 'I Love You'.</div><p>힙합 듀오 마이티마우스는 긍정적인 에너지와 유쾌한 음악으로 많은 사랑을 받고 있어요. 신나는 비트와 공감 가는 가사로 듣는 이들에게 즐거움을 선사하며, 때로는 감성적인 면모도 보여주는 매력적인 그룹입니다.</p><p>The hip-hop duo Mighty Mouth is loved for their positive energy and cheerful music. They bring joy to listeners with exciting beats and relatable lyrics, and are also an attractive group that sometimes shows emotional aspects.</p><p>✧</p><p>그룹 탄생</p><p>마이티마우스는 상추와 쇼리로 구성된 힙합 듀오예요. 두 멤버는 각자의 개성을 살려 팀을 이루었으며, 독특한 조합으로 음악 팬들에게 신선함을 안겨주었답니다.</p><p>Group Formation</p><p>Mighty Mouth is a hip-hop duo composed of Sangchu and Shorry. The two members formed a team that highlighted their individual personalities, bringing freshness to music fans with their unique combination.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>이들은 신나는 힙합 비트를 기반으로 다양한 장르를 융합하는 시도를 보여줘요. 특히, 여러 여성 보컬리스트와의 협업을 통해 다채로운 매력을 선보이며, 듣는 재미를 더하고 있습니다.</p><p>Music and Performance</p><p>They show attempts to fuse various genres based on exciting hip-hop beats. In particular, they showcase various charms through collaborations with several female vocalists, adding to the fun of listening.</p><p>✧</p><p>주요 활동</p><p>마이티마우스는 데뷔 이후 꾸준히 음반을 발표하며 활동을 이어왔어요. 방송 출연, 공연 등 다양한 무대를 통해 대중과의 소통을 활발히 펼치고 있답니다.</p><p>Key Activities</p><p>Mighty Mouth has been steadily releasing albums and continuing their activities since their debut. They are actively communicating with the public through various stages such as broadcasting appearances and performances.</p><p>✧</p><p>미래/의미</p><p>마이티마우스는 앞으로도 긍정적인 에너지와 유쾌한 음악으로 팬들에게 즐거움을 선사할 거예요. 그들의 음악은 듣는 이들에게 힘을 주고, 함께 웃을 수 있는 시간을 선물할 것이라 기대됩니다.</p><p>Future/Meaning</p><p>Mighty Mouth will continue to bring joy to fans with their positive energy and cheerful music in the future. Their music is expected to give strength to listeners and give them time to laugh together.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[E] [2009] Energy</div>
+<div><a href='https://tidal.com/album/189000203' target='_blank'>https://tidal.com/album/189000203</a></div>
+<div>Mighty Mouth - 출동!</div>
+<div>Mighty Mouth, SunYe - 에너지 (feat. 선예)</div>
+<div>Mighty Mouth, Solbi - All 4 U (feat. Solbi)</div>
+<div>Mighty Mouth, JJ - Come On Come (feat. JJ)</div>
+<div>Mighty Mouth, 윤은혜 - 사랑해 (feat. 윤은혜)</div>
+<div>Mighty Mouth - Skit No. 1</div>
+<div>Mighty Mouth - Mighty Mouth(Explicit)</div>
+<div>Mighty Mouth, Horan - Cry (feat. Horan)</div>
+<div>Mighty Mouth, 유리 - Since 2004 (feat. 유리)</div>
+<div>Mighty Mouth, Beatbox Dg - Skit No. 2 (feat. Beatbox DG)</div>
+<div>Mighty Mouth - 오! 예!</div>
+<div>Mighty Mouth, 김창렬 - 랄랄라 (feat. 김창렬)</div>
+<div>Mighty Mouth - 꽐라송(Explicit)</div>
+<div>Mighty Mouth - 된장걸(Explicit)</div>
+<div>Mighty Mouth - Movie Star</div>
+<div>Mighty Mouth, DOUBLE K, Ruda - M.U.S.I.C (feat. Double K & Ruda)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189000203' target='_blank'><img src='https://resources.tidal.com/images/47543509/2ae8/432f/9ded/4f6de2153696/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] UNGDUNGY</div>
+<div><a href='https://tidal.com/album/367968612' target='_blank'>https://tidal.com/album/367968612</a></div>
+<div>Mighty Mouth - UNGDUNGY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/367968612' target='_blank'><img src='https://resources.tidal.com/images/4f5e0b6a/822a/4a1d/a699/9a137c399141/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] HELLO SUMMER</div>
+<div><a href='https://tidal.com/album/374346086' target='_blank'>https://tidal.com/album/374346086</a></div>
+<div>Mighty Mouth, soya - HELLO SUMMER</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/374346086' target='_blank'><img src='https://resources.tidal.com/images/92536ebc/737b/4b84/955f/afce467c88a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] GOOD TIME</div>
+<div><a href='https://tidal.com/album/358822776' target='_blank'>https://tidal.com/album/358822776</a></div>
+<div>Mighty Mouth, soya - GOOD TIME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/358822776' target='_blank'><img src='https://resources.tidal.com/images/ed0c7961/0146/4e47/8707/533bc5798ab6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Slam Dunk</div>
+<div><a href='https://tidal.com/album/407006039' target='_blank'>https://tidal.com/album/407006039</a></div>
+<div>Mighty Mouth - Slam Dunk (Feat. EUNHA of VIVIZ)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/407006039' target='_blank'><img src='https://resources.tidal.com/images/8202d34c/65fb/456a/b217/cdaa17782a87/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] MEXICO</div>
+<div><a href='https://tidal.com/album/383191829' target='_blank'>https://tidal.com/album/383191829</a></div>
+<div>Mighty Mouth - MEXICO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383191829' target='_blank'><img src='https://resources.tidal.com/images/bd71eb80/9d8a/4287/821e/3e5266686f07/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Can I Fall In Love Again (2021 Version)</div>
+<div><a href='https://tidal.com/album/383191827' target='_blank'>https://tidal.com/album/383191827</a></div>
+<div>Mighty Mouth, Baek Z Young - Can I Fall In Love Again (2021 Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383191827' target='_blank'><img src='https://resources.tidal.com/images/653d687a/b92f/42cb/9b43/7c4f99d1414e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 죄송합니다-</div>
+<div><a href='https://tidal.com/album/263526474' target='_blank'>https://tidal.com/album/263526474</a></div>
+<div>Mighty Mouth, KCM - 죄송합니다. (feat. 케이씨엠)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263526474' target='_blank'><img src='https://resources.tidal.com/images/7d7d7c7e/2bb3/41e3/9bb2/83e94c543025/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] WOO</div>
+<div><a href='https://tidal.com/album/263526479' target='_blank'>https://tidal.com/album/263526479</a></div>
+<div>Mighty Mouth - WOO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263526479' target='_blank'><img src='https://resources.tidal.com/images/cbe49267/416d/4824/a8be/d25ad49e8f6b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Fase Menuju Akhir</div>
+<div><a href='https://tidal.com/album/341226247' target='_blank'>https://tidal.com/album/341226247</a></div>
+<div>Mighty Mouth - Fase Menuju Akhir</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/341226247' target='_blank'><img src='https://resources.tidal.com/images/93ec5926/0bf3/490e/b283/757f8bf7bfa1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Who You Represent</div>
+<div><a href='https://tidal.com/album/107394089' target='_blank'>https://tidal.com/album/107394089</a></div>
+<div>Mighty Mouth - Who You Represent</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/107394089' target='_blank'><img src='https://resources.tidal.com/images/1efb63ce/6f5e/4f1d/b776/22bae22c04dd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Temperature (feat. Park Hyeonseo)</div>
+<div><a href='https://tidal.com/album/104387687' target='_blank'>https://tidal.com/album/104387687</a></div>
+<div>Mighty Mouth, Park Hyeonseo - Temperature (feat. Park Hyeonseo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/104387687' target='_blank'><img src='https://resources.tidal.com/images/98821d6c/6178/4a38/92a2/fb15f8ed5d5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Love issue</div>
+<div><a href='https://tidal.com/album/263526468' target='_blank'>https://tidal.com/album/263526468</a></div>
+<div>Mighty Mouth, Aki - Love issue (feat. Aki)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263526468' target='_blank'><img src='https://resources.tidal.com/images/e58c5f6c/5c0e/4164/b78a/33f649c92027/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] IRENE</div>
+<div><a href='https://tidal.com/album/263526484' target='_blank'>https://tidal.com/album/263526484</a></div>
+<div>Mighty Mouth - IRENE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263526484' target='_blank'><img src='https://resources.tidal.com/images/5061206f/04de/4e84/b120/5fc136fc11c8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] UBER</div>
+<div><a href='https://tidal.com/album/84486174' target='_blank'>https://tidal.com/album/84486174</a></div>
+<div>Mighty Mouth - UBER</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/84486174' target='_blank'><img src='https://resources.tidal.com/images/ea94e098/b176/4953/8360/044dba5f6702/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Pretty Girl (feat. BOMI Of Apink)</div>
+<div><a href='https://tidal.com/album/92415163' target='_blank'>https://tidal.com/album/92415163</a></div>
+<div>Mighty Mouth, BOMI Of Apink - Pretty Girl (feat. BOMI Of Apink)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/92415163' target='_blank'><img src='https://resources.tidal.com/images/83254bda/ba72/4320/9783/bbde9dc7f57c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Laser Beam (feat. Cho Hyun Young)</div>
+<div><a href='https://tidal.com/album/98590536' target='_blank'>https://tidal.com/album/98590536</a></div>
+<div>Mighty Mouth, Cho Hyun Young - Laser Beam (feat. Cho Hyun Young)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/98590536' target='_blank'><img src='https://resources.tidal.com/images/d964fe07/433b/43d7/9dbb/0b6bf28302bd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] SUGAR SUGAR</div>
+<div><a href='https://tidal.com/album/222493829' target='_blank'>https://tidal.com/album/222493829</a></div>
+<div>Mighty Mouth, Chancellor - SUGAR SUGAR (feat. Chancellor)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222493829' target='_blank'><img src='https://resources.tidal.com/images/25b96e38/d0bd/4a33/9253/83726068cdc9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] NICE 2 MEET U (feat. SOYA) [Prod. ZICO]</div>
+<div><a href='https://tidal.com/album/222013099' target='_blank'>https://tidal.com/album/222013099</a></div>
+<div>Mighty Mouth, soya - NICE 2 MEET U (feat. SOYA) [Prod. ZICO]</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/222013099' target='_blank'><img src='https://resources.tidal.com/images/49b58b15/88ee/40df/a473/43997d7ade65/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 뿌러졌어 (feat. 임윤택 & Soul King)</div>
+<div><a href='https://tidal.com/album/221578192' target='_blank'>https://tidal.com/album/221578192</a></div>
+<div>Mighty Mouth - 뿌러졌어 (feat. 임윤택 & Soul King)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/221578192' target='_blank'><img src='https://resources.tidal.com/images/0ead7561/95a7/4800/938d/8d0c048977c0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 네비게이션</div>
+<div><a href='https://tidal.com/album/221578213' target='_blank'>https://tidal.com/album/221578213</a></div>
+<div>Mighty Mouth - 네비게이션 (feat. Crying Nut)</div>
+<div>Mighty Mouth - 뿌러졌어 (feat. Im Yun Taek, Soul King)</div>
+<div>Mighty Mouth - 이럴때면 (feat. Lyn)</div>
+<div>Mighty Mouth - N.O.S.E (feat. Jessi)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/221578213' target='_blank'><img src='https://resources.tidal.com/images/025d0b17/f457/4f7f/92f5/6973aed35dd7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] 나쁜놈</div>
+<div><a href='https://tidal.com/album/196943444' target='_blank'>https://tidal.com/album/196943444</a></div>
+<div>Mighty Mouth, soya - 나쁜놈</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196943444' target='_blank'><img src='https://resources.tidal.com/images/ae0404db/df7d/492a/bf67/d01573c234b9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] Good-Bye (feat. 소야)</div>
+<div><a href='https://tidal.com/album/221578190' target='_blank'>https://tidal.com/album/221578190</a></div>
+<div>Mighty Mouth - Good-Bye (feat. 소야)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/221578190' target='_blank'><img src='https://resources.tidal.com/images/89e63c29/0f15/4643/ad29/e3c45f6709cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] 랄랄라</div>
+<div><a href='https://tidal.com/album/215904838' target='_blank'>https://tidal.com/album/215904838</a></div>
+<div>Mighty Mouth - 랄랄라 (Feat. SOYA)</div>
+<div>Mighty Mouth - 랄랄라 (Feat. SOYA) (CLUB MIX VER.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215904838' target='_blank'><img src='https://resources.tidal.com/images/81803120/6426/47a1/ba89/1c548cf2654c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] TOK TOK (Original Ver.)</div>
+<div><a href='https://tidal.com/album/215905481' target='_blank'>https://tidal.com/album/215905481</a></div>
+<div>Mighty Mouth - TOK TOK (feat. Kim Bum Soo) (ORIGINAL VER.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215905481' target='_blank'><img src='https://resources.tidal.com/images/7f0de119/991d/4f6a/a051/5bb631386171/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Mighty Fresh</div>
+<div><a href='https://tidal.com/album/215930706' target='_blank'>https://tidal.com/album/215930706</a></div>
+<div>Mighty Mouth - MIGHTY FRESH</div>
+<div>Mighty Mouth - Manager (Feat. Yoo Sung Eun)</div>
+<div>Mighty Mouth - TOK TOK (Feat. SOYA)</div>
+<div>Mighty Mouth - Mess (Feat. Jun Hye Won)</div>
+<div>Mighty Mouth - INTERNET GANGSTAR</div>
+<div>Mighty Mouth - SKIT</div>
+<div>Mighty Mouth - SEXY STAR (Feat. Yu Ri)</div>
+<div>Mighty Mouth - I DON'T (Feat. KOFFEE)</div>
+<div>Mighty Mouth - SangChu & Shorry (Feat. SOYA)</div>
+<div>Mighty Mouth - Smile (Feat. InSooni)</div>
+<div>Mighty Mouth - REAL MAN</div>
+<div>Mighty Mouth - Love is (Feat. Kim Hee Sun)</div>
+<div>Mighty Mouth - TOK TOK (Feat. Kim Bum Soo) (ORIGINAL VER.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215930706' target='_blank'><img src='https://resources.tidal.com/images/98686d18/2b78/4f42/a8a7/87f05e04b30b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] 사랑이 올까요</div>
+<div><a href='https://tidal.com/album/189000222' target='_blank'>https://tidal.com/album/189000222</a></div>
+<div>Mighty Mouth, Baek Z Young - 사랑이 올까요 (with. 백지영)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189000222' target='_blank'><img src='https://resources.tidal.com/images/8d050602/059c/47dc/abb6/5b5db3aa5ec1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2010] Love is</div>
+<div><a href='https://tidal.com/album/215930915' target='_blank'>https://tidal.com/album/215930915</a></div>
+<div>Mighty Mouth - Love is (Feat. Kim Hee Sun)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215930915' target='_blank'><img src='https://resources.tidal.com/images/67975dab/5497/4605/9983/a3ac1c4b96af/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] SMILE</div>
+<div><a href='https://tidal.com/album/216095719' target='_blank'>https://tidal.com/album/216095719</a></div>
+<div>Mighty Mouth - SMILE</div>
+<div>Mighty Mouth - REAL MAN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216095719' target='_blank'><img src='https://resources.tidal.com/images/741c4a7a/42dc/49bf/a11e/227aa76f0480/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] LOVE CLASS</div>
+<div><a href='https://tidal.com/album/215751678' target='_blank'>https://tidal.com/album/215751678</a></div>
+<div>Mighty Mouth - Wish List (FEAT. IU)</div>
+<div>Mighty Mouth - Special lecture for LOVE (FEAT. Han Ye Seul)</div>
+<div>Mighty Mouth - The Happy Person (FEAT. ENNE)</div>
+<div>Mighty Mouth - WHY (FEAT. K.Will)</div>
+<div>Mighty Mouth - MISS U (FEAT. Back Ji Young)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215751678' target='_blank'><img src='https://resources.tidal.com/images/06e85976/bc85/4e8c/9b61/3a2bda865928/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 패밀리</div>
+<div><a href='https://tidal.com/album/189000187' target='_blank'>https://tidal.com/album/189000187</a></div>
+<div>Mighty Mouth, Son Dam Bi - 패밀리 (feat. 손담비)</div>
+<div>Mighty Mouth, 이정표 - 그 약속 (feat. 이정표)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189000187' target='_blank'><img src='https://resources.tidal.com/images/2ce4887c/63b6/42bf/9888/3b0fdd9dc1cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] 사랑해</div>
+<div><a href='https://tidal.com/album/189000172' target='_blank'>https://tidal.com/album/189000172</a></div>
+<div>Mighty Mouth, 윤은혜 - 사랑해 (feat. 윤은혜)</div>
+<div>Mighty Mouth - Movie Star</div>
+<div>Mighty Mouth - 사랑해 (Radio Edit Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189000172' target='_blank'><img src='https://resources.tidal.com/images/b8bf1c45/e8d0/4238/bd87/73c549d19a7f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/1_TIDAL_Kpop_Artist_Link_M.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅁ1) TIDAL Kpop Artist Link (M)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_M/마이티마우스 (Mighyy Mouth)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
