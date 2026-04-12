@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 천둥 ( Tidal Cheon dung )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 천둥 ( Tidal Cheon dung )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/7aec2e2e/bd44/4097/8104/33b447177dd5/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10642076' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/19928703' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 천둥</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>천둥 (Cheon Dung) - 다채로운 색깔로 물드는 음악, 'Red Wine'처럼 깊고 'Bunny'처럼 사랑스러운 아티스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Cheon dung</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Cheon Dung - A Musician Coloring the World with Diverse Sounds, as Deep as 'Red Wine' and as Lovely as 'Bunny'</div><p>무대 위 카리스마 넘치는 모습부터 섬세한 감성이 묻어나는 음악까지, 천둥은 끊임없이 변화를 시도하는 아티스트입니다. 장르에 얽매이지 않고 자신만의 색깔을 담아내는 그의 음악 세계는 듣는 이들을 매료시키죠. 솔로 아티스트로서 더욱 깊어진 천둥의 이야기를 함께 알아볼까요?</p><p>From his charismatic presence on stage to his music imbued with delicate emotions, Cheon Dung is an artist who constantly strives for change. His musical world, which embraces his unique style without being bound by genre, captivates listeners. Shall we explore the deeper story of Cheon Dung as a solo artist?</p><p>✧</p><p>그룹 탄생</p><p>천둥은 아이돌 그룹 MBLAQ의 멤버로 데뷔하여 강렬한 퍼포먼스와 독특한 매력으로 많은 사랑을 받았어요. 그룹 활동을 통해 다양한 무대 경험을 쌓으며 아티스트로서의 기반을 다졌습니다. 지금은 솔로 아티스트로서 자신만의 음악적 색깔을 펼쳐나가고 있죠.</p><p>The Birth of a Group</p><p>Cheon Dung debuted as a member of the idol group MBLAQ, gaining much love for his intense performances and unique charm. Through group activities, he built a foundation as an artist, gaining diverse stage experience. Now, he is expanding his musical style as a solo artist.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>천둥의 음악은 특정 장르에 국한되지 않고 다양한 시도를 보여줍니다. 몽환적인 분위기의 곡부터 강렬한 비트가 돋보이는 곡까지, 폭넓은 음악적 스펙트럼을 자랑하죠. 그의 퍼포먼스는 섬세한 감정 표현과 절제된 움직임이 조화를 이루며, 보는 이들의 몰입도를 높입니다.</p><p>Music and Performance</p><p>Cheon Dung's music is not limited to a specific genre and shows various attempts. From dreamy tracks to songs with intense beats, he boasts a wide musical spectrum. His performances combine delicate emotional expression with restrained movement, increasing the immersion of viewers.</p><p>✧</p><p>주요 활동</p><p>솔로 활동을 시작한 후 천둥은 꾸준히 자신만의 음악을 발표하며 팬들과 소통하고 있어요. 다양한 아티스트와의 협업을 통해 음악적 역량을 넓혀가고 있으며, 작사, 작곡에도 참여하며 프로듀서로서의 면모도 보여주고 있습니다. 그의 음악은 진솔한 감정과 메시지를 담아내며 많은 이들에게 공감을 얻고 있죠.</p><p>Main Activities</p><p>Since starting his solo career, Cheon Dung has been steadily releasing his music and communicating with fans. He is expanding his musical capabilities through collaborations with various artists and showing his side as a producer by participating in songwriting and composing. His music contains sincere emotions and messages, gaining empathy from many.</p><p>✧</p><p>미래/의미</p><p>끊임없이 새로운 음악적 시도를 감행하는 천둥의 행보는 앞으로가 더욱 기대됩니다. 자신만의 색깔을 더욱 깊이 있게 만들어가며, 대중들에게 더욱 다양한 감동을 선사할 것으로 예상됩니다. 앞으로 그가 보여줄 음악적 성장과 변화를 기대하며 응원합니다.</p><p>Future/Meaning</p><p>Cheon Dung's steps, who constantly dares new musical attempts, are even more anticipated in the future. It is expected that he will create his unique color more deeply and deliver more diverse emotions to the public. We look forward to and support his musical growth and change in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2021] 5Seconds before the explosion</div>
+<div><a href='https://tidal.com/album/193067509' target='_blank'>https://tidal.com/album/193067509</a></div>
+<div>Cheon Dung, YOON SEO BIN - 5Seconds before the explosion</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/193067509' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Red Wine</div>
+<div><a href='https://tidal.com/album/146759656' target='_blank'>https://tidal.com/album/146759656</a></div>
+<div>Cheon Dung - Red Wine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146759656' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Game</div>
+<div><a href='https://tidal.com/album/146759369' target='_blank'>https://tidal.com/album/146759369</a></div>
+<div>Cheon Dung - Game</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146759369' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Bunny</div>
+<div><a href='https://tidal.com/album/146759061' target='_blank'>https://tidal.com/album/146759061</a></div>
+<div>Cheon Dung - Bunny</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146759061' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Winter Trip</div>
+<div><a href='https://tidal.com/album/146760012' target='_blank'>https://tidal.com/album/146760012</a></div>
+<div>Cheon Dung - Winter Trip</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146760012' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Walkman _ Thunder Mix Vol. 1 - 뒤돌아보게 해</div>
+<div><a href='https://tidal.com/album/146798682' target='_blank'>https://tidal.com/album/146798682</a></div>
+<div>Cheon Dung - Walkman - Thunder Mix Vol. 1 - 뒤돌아보게 해</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146798682' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Speaker Volume</div>
+<div><a href='https://tidal.com/album/146760608' target='_blank'>https://tidal.com/album/146760608</a></div>
+<div>Cheon Dung - Speaker Volume</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146760608' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Colorless Rain</div>
+<div><a href='https://tidal.com/album/146798928' target='_blank'>https://tidal.com/album/146798928</a></div>
+<div>Cheon Dung - Colorless Rain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/146798928' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] `THE BLAQ%` TOUR Pt. 2</div>
+<div><a href='https://tidal.com/album/99313172' target='_blank'>https://tidal.com/album/99313172</a></div>
+<div>MBLAQ (천둥) - 가지마</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/99313172' target='_blank'><img src='https://resources.tidal.com/images/7aec2e2e/bd44/4097/8104/33b447177dd5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_Ch/1_TIDAL_Kpop_Artist_Link_Ch.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅊ1) TIDAL Kpop Artist Link (Ch)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_Ch/천둥 (Cheon dung)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
