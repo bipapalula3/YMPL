@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 신스 ( Tidal SINCE )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 신스 ( Tidal SINCE )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/f888996d/cfdd/4f9c/8d16/f22e40f9ad51/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/7187021 ---------' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 신스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>신스 (SINCE) – 어둠 속에서도 빛을 찾는 멜로디, 'Blind Melody'처럼 솔직하게 감정을 드러내는 아티스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> SINCE</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>SINCE – A melody that finds light even in darkness, an artist who expresses emotions honestly like in 'Blind Melody'</div><p>독특한 음색과 진솔한 가사로 리스너들의 마음을 사로잡는 아티스트, 신스(SINCE)를 소개합니다. 그는 힙합을 기반으로 다양한 장르를 넘나들며 자신만의 음악 세계를 구축하고 있어요. 섬세한 감정 표현과 실험적인 시도가 돋보이는 뮤지션입니다.</p><p>Introducing SINCE, an artist who captivates listeners with a unique tone and sincere lyrics. He is building his own musical world by crossing various genres based on hip-hop. He is a musician notable for his delicate emotional expression and experimental attempts.</p><p>✧</p><p>새로운 시작</p><p>신스는 자신만의 색깔을 담아 음악을 시작하며 이름을 알렸어요. 다양한 아티스트와의 협업을 통해 꾸준히 음악적 스펙트럼을 넓혀가고 있습니다. 그의 음악은 솔직한 자기 고백과도 같아요.</p><p>A New Beginning</p><p>SINCE made his name known by starting his music career with his own unique style. He is constantly expanding his musical spectrum through collaborations with various artists. His music is like an honest self-confession.</p><p>✧</p><p>음악적 탐구</p><p>신스는 힙합이라는 틀 안에서 다양한 시도를 통해 자신만의 스타일을 만들어가고 있어요. 몽환적인 분위기와 강렬한 비트를 넘나드는 그의 음악은 듣는 이로 하여금 깊은 감정에 빠져들게 합니다. 그는 끊임없이 새로운 사운드를 추구합니다.</p><p>Musical Exploration</p><p>SINCE is creating his own style through various attempts within the framework of hip-hop. His music, which goes back and forth between a dreamy atmosphere and intense beats, immerses listeners in deep emotions. He is constantly pursuing new sounds.</p><p>✧</p><p>다채로운 활동</p><p>신스는 꾸준한 음원 발매뿐만 아니라 다양한 아티스트와의 협업을 통해 활발하게 활동하고 있습니다. 특히 Lean$moke와의 협업은 그의 음악적 색깔을 더욱 돋보이게 합니다. 그는 자신만의 음악적 영역을 확장하고 있습니다.</p><p>Diverse Activities</p><p>SINCE is actively working not only by steadily releasing music but also through collaborations with various artists. In particular, his collaboration with Lean$moke further highlights his musical color. He is expanding his own musical territory.</p><p>✧</p><p>미래를 향한 발걸음</p><p>신스는 앞으로도 솔직하고 진솔한 음악으로 대중과 소통하며 더욱 깊은 음악 세계를 펼쳐나갈 것으로 기대됩니다. 그의 음악은 단순한 유행을 넘어 오랫동안 사람들의 마음속에 남을 거예요. 그의 성장이 더욱 기대됩니다.</p><p>Steps Toward the Future</p><p>SINCE is expected to communicate with the public through honest and sincere music and develop a deeper musical world in the future. His music will transcend simple trends and remain in people's hearts for a long time. His growth is highly anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] RAP_PUBLIC Block 3 MIXTAPE '〈3'</div>
+<div><a href='https://tidal.com/album/422876888' target='_blank'>https://tidal.com/album/422876888</a></div>
+<div>BBULKUP, SINCE, James An, Chaboom - Moon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/422876888' target='_blank'><img src='https://resources.tidal.com/images/4647227c/d6d2/4718/acec/7063d4078232/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] NOIZE</div>
+<div><a href='https://tidal.com/album/414912762' target='_blank'>https://tidal.com/album/414912762</a></div>
+<div>SINCE - None(Explicit)</div>
+<div>SINCE - NOIZE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/414912762' target='_blank'><img src='https://resources.tidal.com/images/ec18f8de/99ca/44c8/b32c/4c6a8235a445/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Love Me No More</div>
+<div><a href='https://tidal.com/album/367495095' target='_blank'>https://tidal.com/album/367495095</a></div>
+<div>YUNGIN, SINCE, sokodomo - Love Me No More(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/367495095' target='_blank'><img src='https://resources.tidal.com/images/b6fbc0aa/4490/4266/a4bb/d77d46f51550/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Iceberg Syndrome</div>
+<div><a href='https://tidal.com/album/377108417' target='_blank'>https://tidal.com/album/377108417</a></div>
+<div>SINCE, Lean$moke - 5AM</div>
+<div>SINCE, Lean$moke - STAY TOGETHER</div>
+<div>SINCE, Lean$moke - Acrophobia</div>
+<div>SINCE, Lean$moke - Workaholic</div>
+<div>SINCE, Lean$moke - Sea turtle</div>
+<div>SINCE, Lean$moke - Dream</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/377108417' target='_blank'><img src='https://resources.tidal.com/images/36defc62/b857/43f7/b283/c71c838dee4e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] THE SOLOEST</div>
+<div><a href='https://tidal.com/album/326474303' target='_blank'>https://tidal.com/album/326474303</a></div>
+<div>SINCE - Blind Melody</div>
+<div>SINCE - Black Genesis</div>
+<div>SINCE - MECHANISM</div>
+<div>SINCE, Ck - WING (feat. CK)(Explicit)</div>
+<div>SINCE, Hash Swan - EST (feat. Hash Swan)(Explicit)</div>
+<div>SINCE, lobonabeat! - DIET (feat. lobonabeat!)</div>
+<div>SINCE - SEESAW</div>
+<div>SINCE, Nucksal - Fake Flower (feat. Nucksal)</div>
+<div>SINCE - Marge</div>
+<div>SINCE - No Matter What</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/326474303' target='_blank'><img src='https://resources.tidal.com/images/09691997/ca81/4592/9cdb/db435045e811/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] SWALLOW</div>
+<div><a href='https://tidal.com/album/308392454' target='_blank'>https://tidal.com/album/308392454</a></div>
+<div>Bryn, SINCE - SWALLOW</div>
+<div>Bryn, SINCE - BACKSPACE(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308392454' target='_blank'><img src='https://resources.tidal.com/images/a3a4ead9/865c/4c02/8037/c8c20efb06a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] SMASH! (feat. Skinny Brown)</div>
+<div><a href='https://tidal.com/album/290402321' target='_blank'>https://tidal.com/album/290402321</a></div>
+<div>SINCE, Skinny Brown - SMASH! (feat. Skinny Brown)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/290402321' target='_blank'><img src='https://resources.tidal.com/images/48cdfe92/cbcc/45b8/990d/fd9157888d5f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 휘파람</div>
+<div><a href='https://tidal.com/album/215095009' target='_blank'>https://tidal.com/album/215095009</a></div>
+<div>SINCE - 휘파람</div>
+<div>SINCE - 20</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215095009' target='_blank'><img src='https://resources.tidal.com/images/1f16744e/2750/4d19/a562/84f729be157a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Next Year</div>
+<div><a href='https://tidal.com/album/268521051' target='_blank'>https://tidal.com/album/268521051</a></div>
+<div>SINCE - Next Year</div>
+<div>SINCE - Don't say anything</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/268521051' target='_blank'><img src='https://resources.tidal.com/images/5741b05f/c639/48bf/b10a/037e468c285c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] HIGH RISK HIGH RETURN</div>
+<div><a href='https://tidal.com/album/243300385' target='_blank'>https://tidal.com/album/243300385</a></div>
+<div>SINCE - For Win (Prod. Lean$moke)</div>
+<div>SINCE - HIGH RISK HIGH RETURN (Feat. Polodared)</div>
+<div>SINCE - Seat Belt (Prod. Tez_Toy & Jumal of SMGS)</div>
+<div>SINCE - MIRACLE(Album version)</div>
+<div>SINCE - COMPASS (Feat. Chin)</div>
+<div>SINCE - EMPTY GLASS (Feat. Bona Zoe) (Prod. TOIL)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/243300385' target='_blank'><img src='https://resources.tidal.com/images/5d09c5ce/6b95/42c9/8779/c7db8352f5ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Dingo X SINCE, HAHOE, Bona Zoe – WE HERE</div>
+<div><a href='https://tidal.com/album/306311460' target='_blank'>https://tidal.com/album/306311460</a></div>
+<div>SINCE, Hahoe, Bona Zoe - Dingo X SINCE, HAHOE, Bona Zoe – WE HERE(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306311460' target='_blank'><img src='https://resources.tidal.com/images/4481d706/1a52/42b2/9806/4d1cce0d960c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] SINCE 16'</div>
+<div><a href='https://tidal.com/album/191039655' target='_blank'>https://tidal.com/album/191039655</a></div>
+<div>SINCE - 홀로 (Hol' up)</div>
+<div>SINCE - Cop (feat. 365LIT)</div>
+<div>SINCE - HONEST</div>
+<div>SINCE - Fist Down (feat. Don Mills)</div>
+<div>SINCE - 탑승</div>
+<div>SINCE - Railroad (feat. Ourealgoat)</div>
+<div>SINCE - Interlude</div>
+<div>SINCE - 봄비 (feat. Rakon)</div>
+<div>SINCE - 추억엔 힘이 없지 (feat. MELOH)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/191039655' target='_blank'><img src='https://resources.tidal.com/images/90e6f02b/d4de/46f8/bd1f/22400ca10fc7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] MY LIFE (Prod. Lean$moke)</div>
+<div><a href='https://tidal.com/album/195840550' target='_blank'>https://tidal.com/album/195840550</a></div>
+<div>SINCE - MY LIFE (Prod. Lean$moke)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/195840550' target='_blank'><img src='https://resources.tidal.com/images/eb4c0210/447c/43d3/85b4/65e66f6499cd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] HOT SAUCE (feat. 372)</div>
+<div><a href='https://tidal.com/album/172026262' target='_blank'>https://tidal.com/album/172026262</a></div>
+<div>SINCE - HOT SAUCE (feat. 372)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/172026262' target='_blank'><img src='https://resources.tidal.com/images/98b19986/44be/466f/b424/9fe69a809dfc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] GO UP</div>
+<div><a href='https://tidal.com/album/188908070' target='_blank'>https://tidal.com/album/188908070</a></div>
+<div>SINCE - WINTER (Prod. Lean$moke)</div>
+<div>SINCE - GO UP (Feat. HAHOE) (Prod. Lean$moke)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188908070' target='_blank'><img src='https://resources.tidal.com/images/a97b132e/0fd1/4f29/bfe2/3dff432d9d3a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] B.O.T.B. (Best Of The Best)</div>
+<div><a href='https://tidal.com/album/208173193' target='_blank'>https://tidal.com/album/208173193</a></div>
+<div>Gaeko, CHANGMO, Don Mills, Los, DeVita, SOLE, SINCE, BE′O, GRAY - B.O.T.B. (Prod. GRAY)(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208173193' target='_blank'><img src='https://resources.tidal.com/images/543aa063/a1c3/4342/b12a/c71ee55c33ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] TANG (feat. Mirani)</div>
+<div><a href='https://tidal.com/album/189842617' target='_blank'>https://tidal.com/album/189842617</a></div>
+<div>SINCE - TANG (feat. Mirani)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189842617' target='_blank'><img src='https://resources.tidal.com/images/d6545f9c/dfc3/4e85/807d/aa571e8b3d09/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] NEW SHIT</div>
+<div><a href='https://tidal.com/album/189559485' target='_blank'>https://tidal.com/album/189559485</a></div>
+<div>SINCE - NEW SHIT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189559485' target='_blank'><img src='https://resources.tidal.com/images/c318136a/50d9/4826/9667/dce74c6c5e19/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Last 20’s</div>
+<div><a href='https://tidal.com/album/471252222' target='_blank'>https://tidal.com/album/471252222</a></div>
+<div>SINCE - Friday light</div>
+<div>SINCE - 담배피러가자구</div>
+<div>SINCE, 372 - 29 사랑노래</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/471252222' target='_blank'><img src='https://resources.tidal.com/images/8b9f11dc/173b/4e23/ab7e/ade79556fff1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] He Said</div>
+<div><a href='https://tidal.com/album/189895672' target='_blank'>https://tidal.com/album/189895672</a></div>
+<div>SINCE - He Said</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189895672' target='_blank'><img src='https://resources.tidal.com/images/a2b2cb2c/9b5d/4b5d/b4df/eff1fd226adb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/신스 (SINCE)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
