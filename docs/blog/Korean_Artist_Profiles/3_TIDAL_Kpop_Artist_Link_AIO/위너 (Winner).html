@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 위너 ( Tidal Winner )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 위너 ( Tidal Winner )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/78a687dd/2ccc/4ea2/9d92/2e7ebcdbadb6/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/27983478' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 위너</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>위너 (WINNER) – '뜸' 들이다 피어나는 청춘의 자화상, 'I LOVE U' 외치는 감각적인 위트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Winner</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>WINNER - A portrait of youth blooming with deliberate care like 'Hold,' shouting witty affection in 'I LOVE U'</div><p>독창적인 음악 세계와 다채로운 매력으로 팬들을 사로잡는 그룹, 위너입니다. 멤버들의 개성이 조화롭게 어우러져 위너만의 색깔을 만들어내고, 끊임없이 새로운 시도를 하며 음악적 스펙트럼을 넓혀가고 있어요. 진솔한 음악과 무대 퍼포먼스로 많은 사랑을 받고 있죠.</p><p>WINNER is a group that captivates fans with its unique musical world and diverse charms. The members' personalities blend harmoniously to create WINNER's own color, and they are constantly trying new things to expand their musical spectrum. They are loved for their sincere music and stage performances.</p><p>✧</p><p>그룹 탄생</p><p>위너는 서바이벌 프로그램 'WIN: Who Is Next'를 통해 대중에게 처음 이름을 알렸습니다. 치열한 경쟁을 뚫고 최종 우승을 차지하며 YG엔터테인먼트 소속으로 데뷔하게 되었죠. 데뷔 전부터 탄탄한 팬덤을 구축하며 큰 기대를 모았습니다.</p><p>The Birth of the Group</p><p>WINNER first made their name known to the public through the survival program 'WIN: Who Is Next.' They won the final victory after fierce competition and debuted under YG Entertainment. They built a solid fan base even before their debut and gathered great expectations.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>위너의 음악은 특정 장르에 얽매이지 않고 다양한 시도를 합니다. 트렌디한 팝, 감성적인 발라드, 힙합 등 폭넓은 장르를 소화하며 위너만의 스타일로 재해석하죠. 멤버들의 작사, 작곡 참여율이 높아 음악적 진정성을 더하고 있습니다.</p><p>Music and Performance</p><p>WINNER's music is not bound by specific genres and makes various attempts. They digest a wide range of genres, including trendy pop, emotional ballads, and hip-hop, and reinterpret them in WINNER's own style. The high participation rate of members in writing and composing adds musical authenticity.</p><p>✧</p><p>주요 활동</p><p>위너는 데뷔 이후 꾸준히 음반을 발매하며 활발한 활동을 이어왔습니다. 국내뿐만 아니라 해외 팬들의 사랑도 받으며 글로벌한 인기를 얻고 있죠. 멤버들은 솔로 활동을 통해 각자의 음악적 역량을 보여주기도 합니다.</p><p>Key Activities</p><p>WINNER has been actively releasing albums since their debut. They are loved by fans not only in Korea but also overseas, gaining global popularity. The members also show their musical capabilities through solo activities.</p><p>✧</p><p>미래/의미</p><p>위너는 앞으로도 끊임없이 변화하고 발전하는 모습을 보여줄 것입니다. 음악을 통해 팬들과 소통하고, 긍정적인 영향력을 전달하며 성장해 나갈 거예요. 위너만의 음악적 색깔을 더욱 깊이 있게 만들어갈 미래가 기대됩니다.</p><p>Future/Meaning</p><p>WINNER will continue to show a constantly changing and developing 모습 in the future. They will communicate with fans through music, convey a positive influence, and grow. The future of creating WINNER's own musical color more deeply is expected.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] HOLIDAY</div>
+<div><a href='https://tidal.com/album/236174392' target='_blank'>https://tidal.com/album/236174392</a></div>
+<div>WINNER - I LOVE U</div>
+<div>WINNER - 10 MIN</div>
+<div>WINNER - HOLIDAY</div>
+<div>WINNER - SWEET HOME</div>
+<div>WINNER - FAMILY</div>
+<div>WINNER - LITTLE FINGER</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/236174392' target='_blank'><img src='https://resources.tidal.com/images/7d8dd76f/ee5a/434d/8358/a9983654757f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 뜸</div>
+<div><a href='https://tidal.com/album/170273030' target='_blank'>https://tidal.com/album/170273030</a></div>
+<div>WINNER - 뜸</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170273030' target='_blank'><img src='https://resources.tidal.com/images/16c990dc/582e/4860/a052/3c06d252914f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Remember</div>
+<div><a href='https://tidal.com/album/170273036' target='_blank'>https://tidal.com/album/170273036</a></div>
+<div>WINNER - Remember</div>
+<div>WINNER - 뚝 (JINU SOLO)</div>
+<div>WINNER - 뜸</div>
+<div>WINNER - 막춤</div>
+<div>WINNER - My bad</div>
+<div>WINNER - Teaser</div>
+<div>WINNER - Well</div>
+<div>WINNER - 세레나데 (HOONY SOLO)</div>
+<div>WINNER - 공허해 (4 ver.)</div>
+<div>WINNER - 끼부리지마 (4 ver.)</div>
+<div>WINNER - 컬러링 (4 ver.)</div>
+<div>WINNER - Different (4 ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170273036' target='_blank'><img src='https://resources.tidal.com/images/db5ba8e0/8852/4a72/b24e/42b212bb478f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] WE</div>
+<div><a href='https://tidal.com/album/170272847' target='_blank'>https://tidal.com/album/170272847</a></div>
+<div>WINNER - AH YEAH (아예)</div>
+<div>WINNER - 동물의 왕국</div>
+<div>WINNER - 몰라도 너무 몰라</div>
+<div>WINNER - BOOM</div>
+<div>WINNER - 첫사랑 (2019)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170272847' target='_blank'><img src='https://resources.tidal.com/images/b354c07a/6673/4524/b594/862a653fcc11/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] CROSS</div>
+<div><a href='https://tidal.com/album/170272973' target='_blank'>https://tidal.com/album/170272973</a></div>
+<div>WINNER - SOSO</div>
+<div>WINNER - OMG</div>
+<div>WINNER - 빼입어 (DRESS UP)</div>
+<div>WINNER - FLAMENCO (HOONY SOLO)</div>
+<div>WINNER - 바람 (WIND) (YOON SOLO)</div>
+<div>WINNER - 끄덕끄덕 (DON'T BE SHY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170272973' target='_blank'><img src='https://resources.tidal.com/images/239455bf/ee4c/444c/9d4e/fba285e4fb09/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] MILLIONS</div>
+<div><a href='https://tidal.com/album/170272755' target='_blank'>https://tidal.com/album/170272755</a></div>
+<div>WINNER - MILLIONS</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170272755' target='_blank'><img src='https://resources.tidal.com/images/c3c7fde0/380a/434b/b1b2/bc49a9cef1cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] EVERYD4Y</div>
+<div><a href='https://tidal.com/album/170272582' target='_blank'>https://tidal.com/album/170272582</a></div>
+<div>WINNER - EVERYDAY</div>
+<div>WINNER - AIR</div>
+<div>WINNER - 여보세요 (HELLO)</div>
+<div>WINNER - 손만 잡고 자자 (TURN OFF THE LIGHT) (MINO SOLO)</div>
+<div>WINNER - LA LA</div>
+<div>WINNER - 애 걔 (FOR)</div>
+<div>WINNER - 예뻤더라 (WE WERE)</div>
+<div>WINNER - 사치 (LUXURY)</div>
+<div>WINNER - MOVIE STAR</div>
+<div>WINNER - SPECIAL NIGHT</div>
+<div>WINNER - RAINING</div>
+<div>WINNER - HAVE A GOOD DAY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170272582' target='_blank'><img src='https://resources.tidal.com/images/26a7c2da/51c9/4178/a796/793bee4011e4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] OUR TWENTY FOR</div>
+<div><a href='https://tidal.com/album/170271855' target='_blank'>https://tidal.com/album/170271855</a></div>
+<div>WINNER - LOVE ME LOVE ME</div>
+<div>WINNER - ISLAND</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170271855' target='_blank'><img src='https://resources.tidal.com/images/6c967bb8/2c76/4776/b262/f9493310bf3c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] FATE NUMBER FOR</div>
+<div><a href='https://tidal.com/album/170271580' target='_blank'>https://tidal.com/album/170271580</a></div>
+<div>WINNER, 강욱진, MINO (송민호) - REALLY REALLY</div>
+<div>WINNER, KANG SEUNG YOON - FOOL</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170271580' target='_blank'><img src='https://resources.tidal.com/images/f1bb9432/8862/4f21/8128/981b41bcc96e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] EXIT _ E</div>
+<div><a href='https://tidal.com/album/170268287' target='_blank'>https://tidal.com/album/170268287</a></div>
+<div>WINNER - BABY BABY</div>
+<div>WINNER - 센치해</div>
+<div>WINNER - 철없어</div>
+<div>WINNER - 좋더라 (태현 SOLO)</div>
+<div>WINNER - 사랑가시 (민호&태현)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170268287' target='_blank'><img src='https://resources.tidal.com/images/4d193bc9/d836/437e/a60c/af90036f1f0a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 2014 S_S</div>
+<div><a href='https://tidal.com/album/170260773' target='_blank'>https://tidal.com/album/170260773</a></div>
+<div>WINNER - 공허해</div>
+<div>WINNER - 컬러링</div>
+<div>WINNER - 끼부리지마</div>
+<div>WINNER - 걔 세</div>
+<div>WINNER - 척</div>
+<div>WINNER - 고백하는 거야</div>
+<div>WINNER - 사랑하지마</div>
+<div>WINNER - Different</div>
+<div>WINNER - 이 밤</div>
+<div>WINNER - Smile Again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/170260773' target='_blank'><img src='https://resources.tidal.com/images/3f40c1d0/e16c/4309/b978/06cf7b76c145/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/위너 (Winner)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
