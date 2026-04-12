@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 조유리 ( Tidal Jo yury )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 조유리 ( Tidal Jo yury )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/3682d30a/161a/4999/bd10/50ff429255fa/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/22813208' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 조유리</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>조유리 (Jo Yuri) - 다채로운 색깔로 물드는 보컬, 'TAXI'처럼 때로는 강렬하게, 'Lemon Black Tea'처럼 때로는 부드럽게</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Jo yury</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Jo Yuri - A vocalist painting with diverse colors, sometimes intense like 'TAXI', sometimes soft like 'Lemon Black Tea'</div><p>매력적인 음색과 다재다능한 면모를 가진 솔로 아티스트 조유리님을 소개합니다. 그룹 활동을 통해 다져진 실력과 독보적인 개성으로 솔로 아티스트로서의 입지를 굳건히 하고 계시죠. 그녀의 음악은 끊임없이 변화하고 성장하며, 듣는 이들에게 다양한 감정을 선물합니다.</p><p>Let me introduce Jo Yuri, a solo artist with an attractive voice and versatile talent. She has solidified her position as a solo artist with the skills and unique personality she developed through group activities. Her music is constantly changing and growing, gifting listeners with a variety of emotions.</p><p>✧</p><p>그룹 탄생</p><p>조유리님은 오디션 프로그램을 통해 대중에게 처음 얼굴을 알렸습니다. 뛰어난 가창력과 무대 매너로 많은 팬들의 사랑을 받으며 그룹의 멤버로 데뷔하게 되었죠. 그룹 활동을 통해 다양한 무대 경험을 쌓으며 아티스트로서의 기반을 다졌습니다.</p><p>Group Origins</p><p>Jo Yuri first became known to the public through an audition program. She debuted as a member of the group, receiving a lot of love from fans for her outstanding singing ability and stage presence. Through group activities, she gained various stage experiences and built the foundation for her career as an artist.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>조유리님의 음악은 특정 장르에 얽매이지 않고 폭넓은 스펙트럼을 보여줍니다. 톡톡 튀는 상큼함부터 깊은 감성을 자극하는 발라드까지, 다양한 스타일을 소화하죠. 섬세한 감정 표현과 파워풀한 보컬은 그녀의 음악을 더욱 매력적으로 만들어 줍니다.</p><p>Music and Performance</p><p>Jo Yuri's music shows a broad spectrum without being confined to a specific genre. From fresh and popping songs to ballads that stimulate deep emotions, she digests various styles. Her delicate emotional expression and powerful vocals make her music even more attractive.</p><p>✧</p><p>주요 활동</p><p>솔로 데뷔 이후, 조유리님은 꾸준히 음반을 발매하며 활발한 활동을 이어가고 있습니다. 다양한 드라마 OST 참여는 물론, 다른 아티스트와의 협업을 통해 음악적 스펙트럼을 넓혀가고 있죠. 솔로 아티스트로서 자신만의 색깔을 확고히 다져나가고 있습니다.</p><p>Main Activities</p><p>Since her solo debut, Jo Yuri has been actively releasing albums. In addition to participating in various drama OSTs, she is expanding her musical spectrum through collaborations with other artists. As a solo artist, she is firmly establishing her own color.</p><p>✧</p><p>미래/의미</p><p>조유리님은 앞으로 더욱 다양한 음악적 시도를 통해 대중들에게 새로운 모습을 보여줄 것으로 기대됩니다. 그녀의 음악은 단순한 즐거움을 넘어, 듣는 이들에게 위로와 공감을 선사합니다. 앞으로 그녀가 만들어갈 음악 세계가 더욱 기대됩니다.</p><p>Future/Meaning</p><p>Jo Yuri is expected to show the public a new side of herself through more diverse musical attempts in the future. Her music goes beyond simple enjoyment, offering comfort and empathy to listeners. Her future musical world is highly anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] True Beauty Season 1, Part.1 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/375922465' target='_blank'>https://tidal.com/album/375922465</a></div>
+<div>JO YURI - My Highlight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/375922465' target='_blank'><img src='https://resources.tidal.com/images/c2e867fc/bd22/46db/af03/6541a678c98c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Jeongnyeon_ The Star is Born, Pt. 3 _ Spring days pass (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/395067832' target='_blank'>https://tidal.com/album/395067832</a></div>
+<div>JO YURI - Spring days pass</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/395067832' target='_blank'><img src='https://resources.tidal.com/images/f2d6dca2/1145/4ac0/a1c5/c5549aed2d3b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Yellow Circle</div>
+<div><a href='https://tidal.com/album/296545707' target='_blank'>https://tidal.com/album/296545707</a></div>
+<div>Chae Soobin, JO YURI - Yellow Circle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296545707' target='_blank'><img src='https://resources.tidal.com/images/5401ab02/1e92/4d39/93a1/4e05f7d15d4e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Work Later Drink Now S2 OST Part 5</div>
+<div><a href='https://tidal.com/album/269980043' target='_blank'>https://tidal.com/album/269980043</a></div>
+<div>JO YURI - Drink it, Girls!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269980043' target='_blank'><img src='https://resources.tidal.com/images/13876dd2/632f/4630/a0ad/64146c37dff6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] See You in My 19th Life, Pt. 3 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/302131001' target='_blank'>https://tidal.com/album/302131001</a></div>
+<div>JO YURI - DOWN (Juicy Juicy)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302131001' target='_blank'><img src='https://resources.tidal.com/images/424157e0/87cf/4097/9ec6/fa0edeffe3eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] My Lovely Liar, Pt. 5 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/313171594' target='_blank'>https://tidal.com/album/313171594</a></div>
+<div>JO YURI, SUNG HAN BIN - Luv Luv Luv</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/313171594' target='_blank'><img src='https://resources.tidal.com/images/137a0797/56d9/4fa9/be7f/686447a245b6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] LOVE ALL</div>
+<div><a href='https://tidal.com/album/309478445' target='_blank'>https://tidal.com/album/309478445</a></div>
+<div>JO YURI - TAXI</div>
+<div>JO YURI - Lemon Black Tea</div>
+<div>JO YURI - Bitter Taste</div>
+<div>JO YURI - Hang On</div>
+<div>JO YURI - Bruise</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309478445' target='_blank'><img src='https://resources.tidal.com/images/a4f38135/b55f/4016/a3fb/429911b23239/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Alcohol is</div>
+<div><a href='https://tidal.com/album/321283189' target='_blank'>https://tidal.com/album/321283189</a></div>
+<div>JO YURI - Alcohol is</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/321283189' target='_blank'><img src='https://resources.tidal.com/images/7d63d939/22a9/4fdc/b790/4c798c66d94d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] A Poem Titled You</div>
+<div><a href='https://tidal.com/album/302515698' target='_blank'>https://tidal.com/album/302515698</a></div>
+<div>JO YURI - A Poem Titled You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302515698' target='_blank'><img src='https://resources.tidal.com/images/68a7317a/25f9/4ee3/b65f/db0556f37804/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] The Law Cafe (Original Television Soundtrack), Pt.2</div>
+<div><a href='https://tidal.com/album/246861571' target='_blank'>https://tidal.com/album/246861571</a></div>
+<div>JO YURI - Can You Feel My Heart</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/246861571' target='_blank'><img src='https://resources.tidal.com/images/1cf837b4/7b85/40bd/9034/8542cb37d429/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] The Fabulous OST Part 2</div>
+<div><a href='https://tidal.com/album/267837091' target='_blank'>https://tidal.com/album/267837091</a></div>
+<div>JO YURI - Run (Female Ver.)</div>
+<div>Xydo - Run (Male Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/267837091' target='_blank'><img src='https://resources.tidal.com/images/8170d36a/8800/41b8/9bf9/04689f3a2b69/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Op.22 Y-Waltz _ in Minor</div>
+<div><a href='https://tidal.com/album/255071653' target='_blank'>https://tidal.com/album/255071653</a></div>
+<div>JO YURI - Loveable</div>
+<div>JO YURI - Blank</div>
+<div>JO YURI - Favorite Part</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/255071653' target='_blank'><img src='https://resources.tidal.com/images/a79504bf/2ac5/4552/ac18/0361e1f3be89/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Op.22 Y-Waltz _ in Major</div>
+<div><a href='https://tidal.com/album/230954713' target='_blank'>https://tidal.com/album/230954713</a></div>
+<div>JO YURI - Round and Around</div>
+<div>JO YURI - Love Shhh!</div>
+<div>JO YURI - Rolla Skates</div>
+<div>JO YURI - This Time</div>
+<div>JO YURI - Opening</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/230954713' target='_blank'><img src='https://resources.tidal.com/images/62eb84f2/c9dd/43d6/ac6e/8923870fe972/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Maybe</div>
+<div><a href='https://tidal.com/album/346710673' target='_blank'>https://tidal.com/album/346710673</a></div>
+<div>JO YURI - Maybe</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346710673' target='_blank'><img src='https://resources.tidal.com/images/2cb9ccbb/462b/4d18/ab37/d40ab251c1d7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] GLASSY</div>
+<div><a href='https://tidal.com/album/200477687' target='_blank'>https://tidal.com/album/200477687</a></div>
+<div>JO YURI - GLASSY</div>
+<div>JO YURI - Express Moon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/200477687' target='_blank'><img src='https://resources.tidal.com/images/01070601/15db/41da/bc6a/ae1bc74bfa22/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Autumn Memories</div>
+<div><a href='https://tidal.com/album/198650987' target='_blank'>https://tidal.com/album/198650987</a></div>
+<div>JO YURI - Autumn Memories (with LEE SEOKHOON)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/198650987' target='_blank'><img src='https://resources.tidal.com/images/107fd936/1eb1/4878/90ae/24e0efe86cc5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Do You Like Brahms_ (Original Television Soundtrack) Pt. 7</div>
+<div><a href='https://tidal.com/album/306301265' target='_blank'>https://tidal.com/album/306301265</a></div>
+<div>JO YURI - My Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306301265' target='_blank'><img src='https://resources.tidal.com/images/5c344cd0/5b4f/4263/b76b/180c42cd8067/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/2_TIDAL_Kpop_Artist_Link_JG.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_JG/조유리 (Jo yury)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
