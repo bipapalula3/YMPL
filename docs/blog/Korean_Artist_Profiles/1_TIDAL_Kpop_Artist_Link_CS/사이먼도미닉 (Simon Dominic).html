@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 사이먼도미닉 ( Tidal Simon Dominic )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 사이먼도미닉 ( Tidal Simon Dominic )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/1a1675f3/3b6e/4e24/97f3/efac6e243f05/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/8081441' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 사이먼도미닉</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>사이먼 도미닉 – 거침없는 솔직함으로 청춘을 노래하는 래퍼, ‘RUN AWAY’의 방황과 ‘Party Forever’의 자유를 담아내다</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Simon Dominic</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Simon Dominic – A rapper singing about youth with unrestrained honesty, capturing the wandering of 'RUN AWAY' and the freedom of 'Party Forever'.</div><p>힙합 씬에서 독보적인 존재감을 드러내는 사이먼 도미닉, 다재다능한 매력으로 대중을 사로잡고 있어요. 그는 특유의 솔직한 가사와 트렌디한 음악 스타일로 많은 사랑을 받고 있으며, 끊임없이 새로운 시도를 보여주고 있습니다. 무대 위 카리스마 넘치는 모습 뒤에 숨겨진 인간적인 면모 또한 그의 음악을 더욱 특별하게 만들죠.</p><p>Simon Dominic, a unique presence in the hip-hop scene, captivates the public with his versatile charm. He is loved for his unique honest lyrics and trendy music style, and constantly shows new attempts. The human side hidden behind his charismatic stage presence also makes his music even more special.</p><p>✧</p><p>그룹 탄생</p><p>사이먼 도미닉은 2000년대 후반, 힙합 크루 'Iguana'와 'Supreme Team'을 통해 이름을 알리기 시작했어요. 슈프림팀 해체 이후 솔로 아티스트로서 본격적인 활동을 시작하며 자신만의 음악적 색깔을 확립해 나갔습니다. 그의 음악은 빠르게 대중의 귀를 사로잡았죠.</p><p>Formation of Groups</p><p>Simon Dominic began to make a name for himself in the late 2000s through the hip-hop crews 'Iguana' and 'Supreme Team'. After Supreme Team disbanded, he began his full-fledged activities as a solo artist and established his own musical color. His music quickly captured the public's attention.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>사이먼 도미닉의 음악은 힙합을 기반으로 다양한 장르를 넘나드는 폭넓은 스펙트럼을 자랑합니다. 그는 특유의 톤과 플로우로 솔직하고 직설적인 가사를 전달하며, 듣는 이들에게 깊은 공감대를 형성합니다. 무대 위에서는 에너지 넘치는 퍼포먼스로 관객들을 압도하죠.</p><p>Music and Performance</p><p>Simon Dominic's music boasts a broad spectrum that crosses various genres based on hip-hop. He delivers honest and straightforward lyrics with his unique tone and flow, creating a deep sense of empathy for listeners. On stage, he overwhelms the audience with his energetic performance.</p><p>✧</p><p>주요 활동</p><p>솔로 앨범 발매 외에도, 사이먼 도미닉은 다양한 아티스트들과의 협업을 통해 음악적 역량을 넓혀왔습니다. 그는 여러 방송 프로그램에 출연하며 대중적인 인지도를 높였고, AOMG의 공동 대표로서 레이블을 이끌기도 했습니다. 그의 다재다능함은 끊임없이 새로운 도전을 가능하게 하죠.</p><p>Main Activities</p><p>In addition to releasing solo albums, Simon Dominic has expanded his musical capabilities through collaborations with various artists. He has increased his public awareness by appearing on several broadcasting programs, and has also led the label as the co-CEO of AOMG. His versatility enables him to constantly take on new challenges.</p><p>✧</p><p>미래/의미</p><p>사이먼 도미닉은 앞으로도 솔직하고 진솔한 음악을 통해 대중과 소통하며, 힙합 씬에 긍정적인 영향을 미칠 것으로 기대됩니다. 그의 음악은 단순한 유행을 넘어, 시대를 반영하는 메시지를 담고 있으며, 앞으로도 많은 이들에게 영감을 줄 것입니다. 그는 늘 새로운 모습을 보여줄 준비가 되어있죠.</p><p>Future/Meaning</p><p>Simon Dominic is expected to continue to communicate with the public through honest and sincere music and have a positive impact on the hip-hop scene. His music transcends simple trends, contains messages that reflect the times, and will continue to inspire many people. He is always ready to show a new side of himself.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] TTFU</div>
+<div><a href='https://tidal.com/album/248537245' target='_blank'>https://tidal.com/album/248537245</a></div>
+<div>Simon Dominic, Loco, Woo, Coogie - TTFU</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/248537245' target='_blank'><img src='https://resources.tidal.com/images/175ef467/0380/4d3b/a80b/2c9c743e8f93/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] WIN (THE SOLDIERS X Simon Dominic)</div>
+<div><a href='https://tidal.com/album/206281366' target='_blank'>https://tidal.com/album/206281366</a></div>
+<div>Simon Dominic - WIN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/206281366' target='_blank'><img src='https://resources.tidal.com/images/9a43615f/4e88/43e3/b465/e0e8e10ab49d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Taxidriver (Original Soundtrack) Part.5</div>
+<div><a href='https://tidal.com/album/216181926' target='_blank'>https://tidal.com/album/216181926</a></div>
+<div>Simon Dominic - RUN AWAY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216181926' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Party Forever</div>
+<div><a href='https://tidal.com/album/196166645' target='_blank'>https://tidal.com/album/196166645</a></div>
+<div>Simon Dominic - Party Forever</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196166645' target='_blank'><img src='https://resources.tidal.com/images/11a894cf/c925/45ba/b8d5/d719ba6810c6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] At Night</div>
+<div><a href='https://tidal.com/album/196167616' target='_blank'>https://tidal.com/album/196167616</a></div>
+<div>Simon Dominic - At Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196167616' target='_blank'><img src='https://resources.tidal.com/images/66ed559b/a0e6/42c5/b081/93d0495786b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] RECONNECT</div>
+<div><a href='https://tidal.com/album/216252741' target='_blank'>https://tidal.com/album/216252741</a></div>
+<div>CODE KUNST, Choi Jung Hoon, Simon Dominic - For the gone(with ELLE KOREA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216252741' target='_blank'><img src='https://resources.tidal.com/images/cd7bd7ec/bfa7/4360/9a98/ac1aa715d60a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Dingo X DAMOIM (Part 4)</div>
+<div><a href='https://tidal.com/album/428143000' target='_blank'>https://tidal.com/album/428143000</a></div>
+<div>Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic - RUN</div>
+<div>Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic - RUN (Acapella, BPM 92.4)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/428143000' target='_blank'><img src='https://resources.tidal.com/images/0d1bd2b9/07d1/420b/a1a5/a9d88d52788a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] make her dance</div>
+<div><a href='https://tidal.com/album/196149265' target='_blank'>https://tidal.com/album/196149265</a></div>
+<div>Simon Dominic - make her dance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196149265' target='_blank'><img src='https://resources.tidal.com/images/ce1ab0b6/9b32/469b/8836/48a3124d9e05/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] SignHere episode1</div>
+<div><a href='https://tidal.com/album/216772193' target='_blank'>https://tidal.com/album/216772193</a></div>
+<div>RYNO,sogumm,YELLA D - Game Good (Feat. Simon Dominic) (Prod. GooseBumps & Simon Dominic)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216772193' target='_blank'><img src='https://resources.tidal.com/images/53319712/a726/42e2/8f54/11c8d1473e5c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] No Open Flames</div>
+<div><a href='https://tidal.com/album/196149591' target='_blank'>https://tidal.com/album/196149591</a></div>
+<div>Simon Dominic - intro</div>
+<div>Simon Dominic - DAx4</div>
+<div>Simon Dominic - GOTT</div>
+<div>Simon Dominic - make her dance</div>
+<div>Simon Dominic - POSE!</div>
+<div>Simon Dominic - room type</div>
+<div>Simon Dominic - ya aint gang</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196149591' target='_blank'><img src='https://resources.tidal.com/images/1a1675f3/3b6e/4e24/97f3/efac6e243f05/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Dingo X DAMOIM (Part 3)</div>
+<div><a href='https://tidal.com/album/428142992' target='_blank'>https://tidal.com/album/428142992</a></div>
+<div>Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic - J2B</div>
+<div>Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic - J2B (Acapella)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/428142992' target='_blank'><img src='https://resources.tidal.com/images/63891f84/53ec/462a/b409/4d80bdc511de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Dingo X DAMOIM (Part 2)</div>
+<div><a href='https://tidal.com/album/428142986' target='_blank'>https://tidal.com/album/428142986</a></div>
+<div>Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic, Woo, Keem Hyo-Eun, Nucksal, Huckleberry P - I′MMA DO (feat. WOO, Keem Hyo-Eun, Nucksal, Huckleberry P)</div>
+<div>Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic, Woo, Keem Hyo-Eun, Nucksal, Huckleberry P - I′MMA DO (feat. WOO, Keem Hyo-Eun, Nucksal, Huckleberry P) (Acapella)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/428142986' target='_blank'><img src='https://resources.tidal.com/images/5b3c7dd5/8575/418c/854d/adf852313c51/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Dingo X DAMOIM (Part 1)</div>
+<div><a href='https://tidal.com/album/428142980' target='_blank'>https://tidal.com/album/428142980</a></div>
+<div>Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic - Forever 84</div>
+<div>Yumdda, Deepflow, PaloAlto, The Quiett, Simon Dominic - Forever 84 (Acapella)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/428142980' target='_blank'><img src='https://resources.tidal.com/images/b11bc567/e1ce/4e5d/88a2/6d10d4d0460b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Upside Down</div>
+<div><a href='https://tidal.com/album/276076711' target='_blank'>https://tidal.com/album/276076711</a></div>
+<div>Jay Park, Simon Dominic, Loco, Gray - Upside Down</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/276076711' target='_blank'><img src='https://resources.tidal.com/images/b3e73a60/0dc4/4c5d/9006/763fa53a9170/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Simon Says</div>
+<div><a href='https://tidal.com/album/276076789' target='_blank'>https://tidal.com/album/276076789</a></div>
+<div>Simon Dominic, Pharoahe Monch - Simon Says (Feat. Pharoahe Monch)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/276076789' target='_blank'><img src='https://resources.tidal.com/images/2bbd63eb/40c8/4de0/9549/218a61b0b962/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Me No Jay Park</div>
+<div><a href='https://tidal.com/album/276076730' target='_blank'>https://tidal.com/album/276076730</a></div>
+<div>Simon Dominic - Me No Jay Park</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/276076730' target='_blank'><img src='https://resources.tidal.com/images/5c3d9406/2b30/4b7f/9866/1ceefeff0d27/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] DARKROOM</div>
+<div><a href='https://tidal.com/album/276076718' target='_blank'>https://tidal.com/album/276076718</a></div>
+<div>Simon Dominic - roommates only</div>
+<div>Simon Dominic - 06076</div>
+<div>Simon Dominic - winterlude ‘17</div>
+<div>Simon Dominic - Jung Jin Chul</div>
+<div>Simon Dominic - Bathtub</div>
+<div>Simon Dominic, Kim Jong Seo - Demolition Man (Feat. Kim Jong Seo)(Explicit)</div>
+<div>Simon Dominic, Jinbo - Home Sh-t Home (Feat. JINBO)</div>
+<div>Simon Dominic - Ullah</div>
+<div>Simon Dominic - in my hood</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/276076718' target='_blank'><img src='https://resources.tidal.com/images/533b2d1e/054f/49f3/8fcb/e8d86107b0a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] ￦ & ONLY</div>
+<div><a href='https://tidal.com/album/276059864' target='_blank'>https://tidal.com/album/276059864</a></div>
+<div>Simon Dominic, Jay Park - WON & ONLY (Feat. Jay Park)</div>
+<div>Simon Dominic - Simon Dominic</div>
+<div>Simon Dominic - Money Don′t Lie (Re-Mastered)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/276059864' target='_blank'><img src='https://resources.tidal.com/images/fd5857e9/4b41/498b/bc8f/3aa9d4742c03/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2012] 여섯시 반</div>
+<div><a href='https://tidal.com/album/269759277' target='_blank'>https://tidal.com/album/269759277</a></div>
+<div>Simon Dominic, Lady Jane - 여섯시 반</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/269759277' target='_blank'><img src='https://resources.tidal.com/images/dd0f3c23/7e96/4083/ac68/92f0f1b21f17/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2012] AIR</div>
+<div><a href='https://tidal.com/album/196089858' target='_blank'>https://tidal.com/album/196089858</a></div>
+<div>Gaeko, CHOIZA, Simon Dominic, Primary - AIR</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196089858' target='_blank'><img src='https://resources.tidal.com/images/ad6cdb7d/5c13/44ab/8b67/18c674ac52b3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Stay Cool</div>
+<div><a href='https://tidal.com/album/196089544' target='_blank'>https://tidal.com/album/196089544</a></div>
+<div>Simon Dominic, Zion.T - Stay Cool (Feat. Zion.T)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196089544' target='_blank'><img src='https://resources.tidal.com/images/c80045f4/2267/48b8/ad4d/626b0b26b11c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Simon Dominic Presents 'SNL LEAGUE BEGINS'</div>
+<div><a href='https://tidal.com/album/196089528' target='_blank'>https://tidal.com/album/196089528</a></div>
+<div>Simon Dominic, DJ Friz - Intro (Feat. dj friz)(Explicit)</div>
+<div>Simon Dominic, The Black Skirts - Eh Hey (Feat. Jo Hyu-il Of The Black Skirts)</div>
+<div>Simon Dominic, B-Free, Geegooin - Complex 3 (Feat. B-Free & Geegooin Of Rhythm Power)(Explicit)</div>
+<div>Simon Dominic - Cheerz</div>
+<div>Simon Dominic - Hero(Explicit)</div>
+<div>Simon Dominic, Zion.T - Stay Cool (Feat. Zion.T)</div>
+<div>Simon Dominic, Junggigo - No More (Feat. Junggigo)</div>
+<div>Simon Dominic - Body Rock(Explicit)</div>
+<div>Simon Dominic, Dynamicduo, Boston Horns - We Got (Feat. Dynamicduo & Boston Horns)</div>
+<div>Simon Dominic - Gettin′Better</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196089528' target='_blank'><img src='https://resources.tidal.com/images/93ed2e85/39af/4ee0/8669/373650df6432/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2011] Hero</div>
+<div><a href='https://tidal.com/album/316866816' target='_blank'>https://tidal.com/album/316866816</a></div>
+<div>Simon Dominic - Hero(Explicit)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/316866816' target='_blank'><img src='https://resources.tidal.com/images/7d7e8b80/cac6/4857/970e/dcd933d0e99d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/1_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ1) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/사이먼도미닉 (Simon Dominic)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
