@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 영파씨 ( Tidal Young Posse )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 영파씨 ( Tidal Young Posse )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/c620767f/a568/48be/a884/92c67b88be5a/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/42998937' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 영파씨</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>영파씨 (Young Posse) - 거침없는 에너지와 개성으로 무장한 신예, ‘YSSR’의 당당함과 ‘ADHD’의 자유분방함을 노래하다</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Young Posse</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Young Posse - An up-and-coming group armed with fearless energy and individuality, singing the confidence of 'YSSR' and the free spirit of 'ADHD'.</div><p>힙합 씬에 신선한 바람을 일으키고 있는 영파씨를 소개합니다. 다섯 멤버의 개성이 톡톡 터지는 음악과 퍼포먼스는 듣는 이들을 사로잡습니다. 그녀들은 자신들만의 색깔로 음악계를 물들이며 새로운 가능성을 보여주고 있습니다.</p><p>Introducing Young Posse, who are bringing a breath of fresh air to the hip-hop scene. The music and performances, bursting with the individuality of the five members, captivate listeners. They are coloring the music scene with their own unique style and showing new possibilities.</p><p>✧</p><p>그룹 탄생</p><p>영파씨는 독특한 콘셉트와 음악적 방향성을 가지고 탄생했습니다. 멤버들은 각자의 개성을 살려 팀의 시너지를 극대화하고 있습니다. 그녀들의 조합은 기존 걸그룹과는 차별화된 매력을 선사합니다.</p><p>Group Formation</p><p>Young Posse was formed with a unique concept and musical direction. The members maximize the team's synergy by highlighting their individual personalities. Their combination offers a charm that is differentiated from existing girl groups.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>영파씨의 음악은 힙합을 기반으로 다양한 장르를 넘나드는 실험적인 사운드를 선보입니다. 강렬한 비트와 중독성 있는 멜로디, 그리고 멤버들의 개성 넘치는 랩과 보컬이 조화를 이룹니다. 그녀들의 퍼포먼스는 에너지 넘치고 자유분방한 매력을 발산합니다.</p><p>Music and Performance</p><p>Young Posse's music showcases experimental sounds that cross various genres based on hip-hop. The intense beats, addictive melodies, and the members' unique rap and vocals are in harmony. Their performances exude energetic and free-spirited charm.</p><p>✧</p><p>주요 활동</p><p>영파씨는 데뷔 이후 꾸준히 음원을 발표하며 활동 영역을 넓혀가고 있습니다. 다양한 아티스트들과의 협업을 통해 음악적 스펙트럼을 넓히고 있습니다. 그녀들은 무대 위에서 강렬한 존재감을 드러내며 팬들의 사랑을 받고 있습니다.</p><p>Key Activities</p><p>Young Posse has been steadily releasing music and expanding their activities since their debut. They are broadening their musical spectrum through collaborations with various artists. They show a strong presence on stage and are loved by fans.</p><p>✧</p><p>미래/의미</p><p>영파씨는 앞으로 더욱 다양한 음악적 시도를 통해 자신들만의 색깔을 확고히 할 것입니다. 그녀들은 힙합 씬의 새로운 아이콘으로 성장하며 음악계에 긍정적인 영향을 미칠 것입니다. 영파씨의 거침없는 행보를 기대해 주세요.</p><p>Future/Meaning</p><p>Young Posse will solidify their unique color through even more diverse musical attempts in the future. They will grow into a new icon in the hip-hop scene and have a positive impact on the music industry. Please look forward to Young Posse's fearless journey.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] VISA  Pilot3</div>
+<div><a href='https://tidal.com/album/493498781' target='_blank'>https://tidal.com/album/493498781</a></div>
+<div>YOUNG POSSE - VISA</div>
+<div>YOUNG POSSE - Pilot3 (feat. KOONTA)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/493498781' target='_blank'><img src='https://resources.tidal.com/images/bc947598/1fa3/40cf/8dbd/af43ed52a0b7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] LOSE YOUR SHXT ('Hearts' Series Vol. 3)</div>
+<div><a href='https://tidal.com/album/488946417' target='_blank'>https://tidal.com/album/488946417</a></div>
+<div>YOUNG POSSE, 李大奔BENZO - LOSE YOUR SHXT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/488946417' target='_blank'><img src='https://resources.tidal.com/images/5571361c/a6df/427a/b2fe/e965e256856d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Head over Heels, Pt. 2 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/444587890' target='_blank'>https://tidal.com/album/444587890</a></div>
+<div>YOUNG POSSE - UPSIDE DOWN</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/444587890' target='_blank'><img src='https://resources.tidal.com/images/1c9708df/45d8/40eb/97e9/27d46ccf1be1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Growing Pain pt.1  FREE</div>
+<div><a href='https://tidal.com/album/454091658' target='_blank'>https://tidal.com/album/454091658</a></div>
+<div>YOUNG POSSE - YSSR</div>
+<div>YOUNG POSSE - FREESTYLE</div>
+<div>YOUNG POSSE - ADHD</div>
+<div>YOUNG POSSE - School’s Out (SUNHYE, DOEUN)</div>
+<div>YOUNG POSSE - MON3Y 8ANK</div>
+<div>YOUNG POSSE - soju</div>
+<div>YOUNG POSSE - Same Shit, Another One</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/454091658' target='_blank'><img src='https://resources.tidal.com/images/94149d4d/9d00/4e4e/9221/8ed5ad1929e1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] COLD</div>
+<div><a href='https://tidal.com/album/421868227' target='_blank'>https://tidal.com/album/421868227</a></div>
+<div>YOUNG POSSE - COLD (feat.10CM)</div>
+<div>YOUNG POSSE - Lovestagram</div>
+<div>YOUNG POSSE - Blue Dot</div>
+<div>YOUNG POSSE - Daddy Don't Leave Me</div>
+<div>YOUNG POSSE - Santa Claus Left Me No Goodz</div>
+<div>YOUNG POSSE - Oskar's Drawing</div>
+<div>YOUNG POSSE - COLD (YPS Colder Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/421868227' target='_blank'><img src='https://resources.tidal.com/images/d2e249f4/279a/4775/a14d/1d954a9b4dcf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Year 1  We Still Loading</div>
+<div><a href='https://tidal.com/album/394093695' target='_blank'>https://tidal.com/album/394093695</a></div>
+<div>YOUNG POSSE - We Still Loading (FEAT. Los, Rick Bridges, Northfacegawd, DJ SKY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/394093695' target='_blank'><img src='https://resources.tidal.com/images/dfe54b58/b4ae/4bee/96c1/1be51f01378d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] YOUNG POSSE UP (feat. Verbal Jint, NSW yoon, Token)</div>
+<div><a href='https://tidal.com/album/343753791' target='_blank'>https://tidal.com/album/343753791</a></div>
+<div>YOUNG POSSE - YOUNG POSSE UP (feat. Verbal Jint, NSW yoon, Token)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343753791' target='_blank'><img src='https://resources.tidal.com/images/9e0c5254/a43b/4511/9fa6/2736806ab2e7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] XXL EP</div>
+<div><a href='https://tidal.com/album/352330190' target='_blank'>https://tidal.com/album/352330190</a></div>
+<div>YOUNG POSSE - Scars</div>
+<div>YOUNG POSSE - XXL</div>
+<div>YOUNG POSSE - DND (feat.BM of KARD)</div>
+<div>YOUNG POSSE - ROTY</div>
+<div>YOUNG POSSE - Skyline</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352330190' target='_blank'><img src='https://resources.tidal.com/images/c620767f/a568/48be/a884/92c67b88be5a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Street Carol…(With John Park)</div>
+<div><a href='https://tidal.com/album/405546509' target='_blank'>https://tidal.com/album/405546509</a></div>
+<div>YOUNG POSSE, John Park - Street Carol…(With John Park)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/405546509' target='_blank'><img src='https://resources.tidal.com/images/cd6f493c/66a7/4499/be04/ff92d6dd149c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] ATE THAT EP</div>
+<div><a href='https://tidal.com/album/382426211' target='_blank'>https://tidal.com/album/382426211</a></div>
+<div>YOUNG POSSE - Loading…</div>
+<div>YOUNG POSSE - ATE THAT</div>
+<div>YOUNG POSSE - Bananas</div>
+<div>YOUNG POSSE - Umbrella</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/382426211' target='_blank'><img src='https://resources.tidal.com/images/f02d1606/4e75/4922/bc2e/31c4b1552647/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] On My Scars (feat.Lil Cherry, Dbo)</div>
+<div><a href='https://tidal.com/album/371617082' target='_blank'>https://tidal.com/album/371617082</a></div>
+<div>YOUNG POSSE - On My Scars (feat.Lil Cherry, Dbo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/371617082' target='_blank'><img src='https://resources.tidal.com/images/0b8438c5/3215/46ea/8e7a/e0bceda84ee2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] MACARONI CHEESE EP</div>
+<div><a href='https://tidal.com/album/322477809' target='_blank'>https://tidal.com/album/322477809</a></div>
+<div>YOUNG POSSE - POSSE UP!</div>
+<div>YOUNG POSSE - MACARONI CHEESE</div>
+<div>YOUNG POSSE - OTB</div>
+<div>YOUNG POSSE - Cooing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/322477809' target='_blank'><img src='https://resources.tidal.com/images/3aa376a9/0e27/4a95/abee/d2cd50fd1678/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/영파씨 (Young Posse)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
