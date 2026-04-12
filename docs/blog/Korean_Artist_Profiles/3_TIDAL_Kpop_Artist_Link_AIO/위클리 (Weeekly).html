@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 위클리 ( Tidal Weeekly )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 위클리 ( Tidal Weeekly )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/a314f346/bc14/4971/9908/97d90e33a2e5/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/20238853' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 위클리</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>위클리 (Weeekly) – 풋풋한 에너지로 채우는 10대의 이야기, 'VROOM VROOM'처럼 질주하는 성장</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Weeekly</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Weeekly – Filling the teens' stories with fresh energy, a fast-paced growth like 'VROOM VROOM'</div><p>매주 새로운 이야기를 써내려 가는 소녀들, 위클리입니다. 톡톡 튀는 매력과 싱그러운 에너지로 무장한 그녀들은 10대들의 공감대를 자극하며 음악 팬들의 마음을 사로잡고 있어요. 위클리만의 다채로운 음악 세계로 함께 떠나볼까요?</p><p>Here are the girls who write new stories every week, Weeekly. Armed with unique charm and refreshing energy, they are captivating music fans by stimulating the empathy of teenagers. Shall we embark on Weeekly's colorful world of music together?</p><p>✧</p><p>그룹 탄생</p><p>위클리는 Play M 엔터테인먼트에서 오랜만에 선보인 걸그룹이에요. 평균 나이 10대의 멤버들로 구성되어 2020년 데뷔, '매일 새롭고 특별한 한 주를 선사한다'는 의미를 담고 있습니다. 그녀들은 데뷔와 동시에 청량하고 활기찬 콘셉트로 주목받기 시작했어요.</p><p>The Birth of the Group</p><p>Weeekly is a girl group introduced by Play M Entertainment after a long time. Consisting of members in their teens on average, they debuted in 2020, meaning 'to present a new and special week every day.' They began to gain attention with their refreshing and energetic concept upon debut.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>위클리의 음악은 10대들의 일상과 고민을 솔직하게 담아내는 것이 특징이에요. 팝, 댄스, R&B 등 다양한 장르를 소화하며, 풋풋하고 에너지 넘치는 퍼포먼스를 선보입니다. 특히, 그녀들의 무대는 밝고 긍정적인 메시지로 가득 차 있어 보는 이들에게 기분 좋은 에너지를 전달해줘요.</p><p>Music and Performance</p><p>Weeekly's music is characterized by honestly capturing the daily lives and concerns of teenagers. They digest various genres such as pop, dance, and R&B, and present youthful and energetic performances. In particular, their stages are full of bright and positive messages, delivering pleasant energy to viewers.</p><p>✧</p><p>주요 활동</p><p>위클리는 데뷔 이후 꾸준히 앨범을 발매하며 활발한 활동을 이어왔습니다. 다양한 방송 출연과 공연을 통해 팬들과 소통하고 있으며, 글로벌 팬들을 위한 영어 버전 음원도 공개하며 활동 영역을 넓혀가고 있어요. 또한, 자체 제작 콘텐츠를 통해 멤버들의 다양한 매력을 보여주고 있습니다.</p><p>Main Activities</p><p>Weeekly has been actively releasing albums since their debut. They communicate with fans through various broadcast appearances and performances, and are expanding their activities by releasing English versions of their songs for global fans. In addition, they are showing various charms of the members through self-produced content.</p><p>✧</p><p>미래/의미</p><p>위클리는 앞으로도 10대들의 목소리를 대변하며 더욱 성장해나갈 것으로 기대됩니다. 그녀들의 음악은 단순한 아이돌 음악을 넘어, 동시대를 살아가는 청춘들에게 공감과 위로를 전하는 메신저 역할을 할 거예요. 위클리의 밝은 미래를 응원하며, 그녀들이 펼쳐나갈 이야기에 귀 기울여 주세요.</p><p>Future/Meaning</p><p>Weeekly is expected to grow further by representing the voices of teenagers in the future. Their music goes beyond simple idol music and serves as a messenger of empathy and comfort to young people living in the same era. Cheer on Weeekly's bright future and listen to the stories they will unfold.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] Stranger</div>
+<div><a href='https://tidal.com/album/341920245' target='_blank'>https://tidal.com/album/341920245</a></div>
+<div>Weeekly - Stranger</div>
+<div>Weeekly - Stranger (English Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/341920245' target='_blank'><img src='https://resources.tidal.com/images/a2f1dbfd/9b04/4709/9d0a/24e37fd3f485/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Bliss</div>
+<div><a href='https://tidal.com/album/374143089' target='_blank'>https://tidal.com/album/374143089</a></div>
+<div>Weeekly - Twenties</div>
+<div>Weeekly - LIGHTS ON</div>
+<div>Weeekly - Dance Dance Dance!</div>
+<div>Weeekly - Classic</div>
+<div>Weeekly - Page (A Story That Reached Me)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/374143089' target='_blank'><img src='https://resources.tidal.com/images/bdbe44fd/b3f7/41b3/bbd2/fea4a6564cba/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Strong Girl Nam-soon (Original Television Soundtrack), Pt.6</div>
+<div><a href='https://tidal.com/album/327703343' target='_blank'>https://tidal.com/album/327703343</a></div>
+<div>Weeekly - I Wanna Fly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/327703343' target='_blank'><img src='https://resources.tidal.com/images/c006dedc/5579/4bc3/88ec/f2b202b707d8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Good Day (Special Daileee)</div>
+<div><a href='https://tidal.com/album/315778588' target='_blank'>https://tidal.com/album/315778588</a></div>
+<div>Weeekly - Good Day (Special Daileee)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/315778588' target='_blank'><img src='https://resources.tidal.com/images/3f752a0c/d89c/41c7/9918/0041b99db765/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] ColoRise</div>
+<div><a href='https://tidal.com/album/325923975' target='_blank'>https://tidal.com/album/325923975</a></div>
+<div>Weeekly - ODYSSEY</div>
+<div>Weeekly - VROOM VROOM</div>
+<div>Weeekly - Backwards</div>
+<div>Weeekly - Sweet Dream</div>
+<div>Weeekly - A+</div>
+<div>Weeekly - RUBY-DUBY-DU</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/325923975' target='_blank'><img src='https://resources.tidal.com/images/223c5f4d/d959/4284/9c06/dc84f5e5135e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 야오키(YAOKI) Project part.1</div>
+<div><a href='https://tidal.com/album/410428429' target='_blank'>https://tidal.com/album/410428429</a></div>
+<div>Weeekly - Happy Christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/410428429' target='_blank'><img src='https://resources.tidal.com/images/b1c2f904/7f3c/4171/bd14/e3a129fef2eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Play Game _ AWAKE</div>
+<div><a href='https://tidal.com/album/219694863' target='_blank'>https://tidal.com/album/219694863</a></div>
+<div>Weeekly - Ven para</div>
+<div>Weeekly - Solar</div>
+<div>Weeekly - Where Is My Love-</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/219694863' target='_blank'><img src='https://resources.tidal.com/images/b69cdea1/bdb8/4f53/845b/529abdbb419d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Love(Weeekly X Kim Eana Project)</div>
+<div><a href='https://tidal.com/album/238951951' target='_blank'>https://tidal.com/album/238951951</a></div>
+<div>Weeekly - Love(Weeekly X Kim Eana Project)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/238951951' target='_blank'><img src='https://resources.tidal.com/images/c75a8526/1a20/48a9/bf51/7ee22f197bb1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] We play</div>
+<div><a href='https://tidal.com/album/216248016' target='_blank'>https://tidal.com/album/216248016</a></div>
+<div>Weeekly - Yummy!</div>
+<div>Weeekly - Lucky</div>
+<div>Weeekly - After School</div>
+<div>Weeekly - Uni</div>
+<div>Weeekly - Butterfly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216248016' target='_blank'><img src='https://resources.tidal.com/images/7f86d244/f15f/4bd4/abb0/cd7a4fafa68e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Play Game _ Holiday</div>
+<div><a href='https://tidal.com/album/216299930' target='_blank'>https://tidal.com/album/216299930</a></div>
+<div>Weeekly - Weekend</div>
+<div>Weeekly - Check It Out</div>
+<div>Weeekly - Holiday Party</div>
+<div>Weeekly - La Luna</div>
+<div>Weeekly - Memories Of Summer Rain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216299930' target='_blank'><img src='https://resources.tidal.com/images/9210e175/373b/45ed/96a3/897ae4cbc902/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Hello, Me! (Original Television Soundtrack, Pt. 1)</div>
+<div><a href='https://tidal.com/album/174110769' target='_blank'>https://tidal.com/album/174110769</a></div>
+<div>Weeekly - Wake Up</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/174110769' target='_blank'><img src='https://resources.tidal.com/images/a94e79ac/e2ea/42fc/a471/d92a78a6c8e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Girls' World Season 2 OST Part 1</div>
+<div><a href='https://tidal.com/album/210672758' target='_blank'>https://tidal.com/album/210672758</a></div>
+<div>Weeekly - Best Friend (We Can)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210672758' target='_blank'><img src='https://resources.tidal.com/images/725ddadd/8e95/48af/9d71/7c15a9e359e9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 7days Tension</div>
+<div><a href='https://tidal.com/album/216503729' target='_blank'>https://tidal.com/album/216503729</a></div>
+<div>Weeekly - 7days Tension</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216503729' target='_blank'><img src='https://resources.tidal.com/images/e8643ed6/b231/4e14/8fca/c567d43dfd7e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] We can</div>
+<div><a href='https://tidal.com/album/216247348' target='_blank'>https://tidal.com/album/216247348</a></div>
+<div>Weeekly - Unnie</div>
+<div>Weeekly - My Earth</div>
+<div>Weeekly - Zig Zag</div>
+<div>Weeekly - Top Secret</div>
+<div>Weeekly - Weeekly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216247348' target='_blank'><img src='https://resources.tidal.com/images/717f358e/05ef/45f0/9c9a/97fca612f371/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] We are</div>
+<div><a href='https://tidal.com/album/216123900' target='_blank'>https://tidal.com/album/216123900</a></div>
+<div>Weeekly - Weeekly Day</div>
+<div>Weeekly - Universe</div>
+<div>Weeekly - Tag Me (@Me)</div>
+<div>Weeekly - Hello</div>
+<div>Weeekly - Reality</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216123900' target='_blank'><img src='https://resources.tidal.com/images/80ed0a0e/3eb8/4951/8c49/4dbc7556c342/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Wanna Be RYAN (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/216249985' target='_blank'>https://tidal.com/album/216249985</a></div>
+<div>Weeekly - BOOM CHI KI</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216249985' target='_blank'><img src='https://resources.tidal.com/images/4119c684/2d91/40bc/a899/c117550a6d1e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/3_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ3) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/3_TIDAL_Kpop_Artist_Link_AIO/위클리 (Weeekly)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
