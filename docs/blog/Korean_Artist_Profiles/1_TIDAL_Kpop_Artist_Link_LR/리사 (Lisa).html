@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 리사 ( Tidal Lisa )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 리사 ( Tidal Lisa )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/53f9ae47/a559/4985/9b5d/15eae57f6daf/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/39015863' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 리사</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>리사 (Lisa) - 깊은 감성으로 노래하는 이야기, '말리꽃'의 애절함부터 'With You'의 따뜻한 위로까지</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lisa</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Lisa - A storyteller who sings with profound emotion, from the sorrow of 'Mallihwa' to the warm comfort of 'With You'.</div><p>섬세한 감정 표현과 호소력 짙은 목소리로 듣는 이의 마음을 사로잡는 가수, 리사입니다. 다양한 장르를 넘나들며 자신만의 색깔로 음악을 표현하는 그녀의 이야기에 귀 기울여 보세요. 깊은 감성을 담아 노래하는 리사의 음악 세계로 함께 떠나볼까요?</p><p>Lisa is a singer who captivates listeners with her delicate emotional expressions and appealing voice. Let's listen to the story of her music, which crosses various genres and expresses herself in her own unique way. Shall we embark on a journey into Lisa's world of music, filled with deep emotions?</p><p>✧</p><p>섬세한 감성의 시작</p><p>리사는 깊이 있는 감정 표현으로 대중에게 다가가며 자신만의 음악적 영역을 구축해 왔습니다. 그녀의 음악은 단순한 노래를 넘어, 듣는 이에게 진솔한 감정을 전달하는 매개체가 되어줍니다. 특히, 발라드에서 그녀의 섬세한 표현력은 더욱 빛을 발합니다.</p><p>The Beginning of Delicate Emotion</p><p>Lisa has approached the public with deep emotional expressions, building her own musical territory. Her music goes beyond simple songs, becoming a medium that conveys sincere emotions to the listener. In particular, her delicate expressiveness shines even more in ballads.</p><p>✧</p><p>다채로운 음악적 스펙트럼</p><p>리사는 발라드뿐만 아니라 R&B, 팝 등 다양한 장르를 소화하며 폭넓은 음악적 스펙트럼을 보여줍니다. 때로는 감미로운 사랑 노래를, 때로는 강렬한 에너지 넘치는 곡을 통해 팔색조 매력을 선보입니다. 이러한 장르적 시도는 그녀의 음악 세계를 더욱 풍성하게 만듭니다.</p><p>Diverse Musical Spectrum</p><p>Lisa showcases a wide musical spectrum by performing not only ballads but also various genres such as R&B and pop. She presents her multifaceted charm through sometimes sweet love songs and sometimes intensely energetic songs. These genre experiments further enrich her musical world.</p><p>✧</p><p>콜라보레이션을 통한 음악적 교감</p><p>박효신, 바비킴 등 다양한 아티스트와의 콜라보레이션을 통해 리사는 음악적 교감을 나누며 새로운 시너지를 창출해왔습니다. 서로의 강점을 조화롭게 융합하여 완성도 높은 음악을 선보이며, 솔로 활동과는 또 다른 매력을 보여줍니다. 이러한 협업은 그녀의 음악적 성장을 끊임없이 자극합니다.</p><p>Musical Sympathy Through Collaboration</p><p>Through collaborations with various artists such as Park Hyo Shin and Bobby Kim, Lisa has shared musical sympathy and created new synergy. By harmoniously merging each other's strengths, she presents high-quality music and shows a different charm from her solo activities. These collaborations constantly stimulate her musical growth.</p><p>✧</p><p>깊은 울림을 주는 음악, 그리고 미래</p><p>리사의 음악은 시간이 흘러도 변치 않는 깊은 울림을 선사하며, 많은 이들의 마음속에 자리 잡을 것입니다. 앞으로도 그녀는 진솔한 감정을 담은 음악으로 대중과 소통하며, 자신만의 음악적 색깔을 더욱 굳건히 해나갈 것입니다. 그녀의 음악 여정에 지속적인 관심과 응원을 보냅니다.</p><p>Music That Gives Deep Resonance, and the Future</p><p>Lisa's music will deliver a deep resonance that does not change over time, settling in the hearts of many. In the future, she will continue to communicate with the public through music that contains sincere emotions, further solidifying her own musical color. We send continuous interest and support to her musical journey.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] 월간 더 스테이지</div>
+<div><a href='https://tidal.com/album/318365672' target='_blank'>https://tidal.com/album/318365672</a></div>
+<div>Lisa - 말리꽃</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318365672' target='_blank'><img src='https://resources.tidal.com/images/e93e9fe4/f9e2/48b6/b2c4/cf7d689fc6eb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] All I Ask</div>
+<div><a href='https://tidal.com/album/278704573' target='_blank'>https://tidal.com/album/278704573</a></div>
+<div>Lisa - All I Ask</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278704573' target='_blank'><img src='https://resources.tidal.com/images/e1807aca/ecc4/4962/8216/84e8f529d78a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Lazy Love</div>
+<div><a href='https://tidal.com/album/346314774' target='_blank'>https://tidal.com/album/346314774</a></div>
+<div>Lisa - Lazy Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346314774' target='_blank'><img src='https://resources.tidal.com/images/56a581c7/08fd/4f8f/ab2d/2908993f2df0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2006] Mind Blowin′</div>
+<div><a href='https://tidal.com/album/258310836' target='_blank'>https://tidal.com/album/258310836</a></div>
+<div>Lisa - Mind Blowing</div>
+<div>Lisa, Bobby Kim - 인연 (Feat. Bobby Kim)</div>
+<div>Lisa - 어떻게 그대는 왜</div>
+<div>Lisa - 헤어져야 사랑을 알죠</div>
+<div>Lisa - With You (Duet. Park Hyo Shin)</div>
+<div>Lisa - 작은 천국</div>
+<div>Lisa - 아니야 그런말이</div>
+<div>Lisa - Flower</div>
+<div>Lisa - Date Mate</div>
+<div>Lisa - Think Twice</div>
+<div>Lisa - 내게로</div>
+<div>Lisa - You And I</div>
+<div>Lisa - Remember Who You Are</div>
+<div>Lisa - 아름다워</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/258310836' target='_blank'><img src='https://resources.tidal.com/images/53f9ae47/a559/4985/9b5d/15eae57f6daf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/1_TIDAL_Kpop_Artist_Link_LR.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄹ1) TIDAL Kpop Artist Link (LR)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/리사 (Lisa)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
