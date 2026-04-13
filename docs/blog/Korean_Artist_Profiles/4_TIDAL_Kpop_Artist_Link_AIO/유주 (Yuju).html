@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 유주 ( Tidal Yuju )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 유주 ( Tidal Yuju )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/490aca3c/7716/41b0/b1a8/b3a57a84f8b0/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10196098' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 유주</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>유주 (YUJU) - 섬세한 감성으로 빚어낸 다채로운 음악 세계, 'Spring Is Gone by chance'의 아련함과 'DALALA'의 에너지 넘치는 매력을 동시에 지닌 보컬리스트</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Yuju</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>YUJU - A versatile musical world crafted with delicate emotions, a vocalist possessing both the wistfulness of 'Spring Is Gone by chance' and the energetic charm of 'DALALA'.</div><p>독보적인 음색과 뛰어난 가창력으로 사랑받는 아티스트, 유주를 소개합니다. 그녀는 다양한 장르를 소화하며 자신만의 음악적 색깔을 뚜렷하게 보여주고 있어요. 깊은 감성과 섬세한 표현력으로 듣는 이들의 마음을 사로잡는답니다.</p><p>Let me introduce Yuju, an artist loved for her unique tone and outstanding singing ability. She effortlessly digests various genres, clearly showcasing her own musical color. Her deep emotions and delicate expressiveness captivate the hearts of listeners.</p><p>✧</p><p>그룹에서 솔로로, 새로운 시작</p><p>유주는 그룹 활동을 통해 탄탄한 기본기를 다진 후 솔로 아티스트로 새로운 도약을 시작했어요. 그녀는 자신만의 음악적 방향성을 탐구하며 폭넓은 스펙트럼을 보여주고 있습니다. 솔로 데뷔 이후 더욱 깊어진 감성과 음악적 역량을 선보이고 있답니다.</p><p>From Group to Solo, A New Beginning</p><p>Yuju solidified her foundation through group activities and then embarked on a new leap as a solo artist. She explores her own musical direction, showcasing a broad spectrum. Since her solo debut, she has been showcasing even deeper emotions and musical capabilities.</p><p>✧</p><p>음악적 스펙트럼과 퍼포먼스</p><p>유주의 음악은 발라드부터 댄스, R&B까지 다양한 장르를 아우르는 폭넓은 스펙트럼을 자랑해요. 그녀는 섬세한 감정 표현과 파워풀한 가창력을 동시에 선보이며 듣는 이들에게 깊은 인상을 남깁니다. 무대 위에서의 퍼포먼스 역시 그녀의 음악적 매력을 더욱 돋보이게 하는 요소랍니다.</p><p>Musical Spectrum and Performance</p><p>Yuju's music boasts a wide spectrum, encompassing various genres from ballads to dance and R&B. She simultaneously showcases delicate emotional expression and powerful singing ability, leaving a deep impression on listeners. Her performance on stage is also an element that further highlights her musical charm.</p><p>✧</p><p>다채로운 활동과 협업</p><p>솔로 앨범 발매뿐만 아니라 다양한 아티스트와의 협업을 통해 음악적 교류를 활발하게 이어가고 있어요. 그녀는 꾸준한 음악 활동을 통해 자신만의 색깔을 더욱 굳건히 하고 있습니다. 드라마 OST 참여 등을 통해 대중과의 접점을 넓히고 있는 점도 주목할 만하답니다.</p><p>Diverse Activities and Collaborations</p><p>In addition to releasing solo albums, she is actively engaged in musical exchanges through collaborations with various artists. She is solidifying her own color through consistent musical activities. It is also noteworthy that she is expanding her connection with the public through participation in drama OSTs, etc.</p><p>✧</p><p>앞으로의 음악과 의미</p><p>유주는 앞으로도 끊임없이 새로운 음악적 시도를 통해 자신만의 영역을 확장해 나갈 것으로 기대됩니다. 그녀의 음악은 단순한 즐거움을 넘어 듣는 이들에게 깊은 공감과 위로를 선사할 거예요. 진정성 있는 음악으로 오랫동안 사랑받는 아티스트가 될 것이라고 믿습니다.</p><p>Future Music and Meaning</p><p>It is expected that Yuju will continue to expand her own territory through constant new musical attempts in the future. Her music will go beyond simple enjoyment to offer deep empathy and comfort to listeners. I believe she will become an artist who is loved for a long time with sincere music.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Way Back Love, Pt. 1 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/427480064' target='_blank'>https://tidal.com/album/427480064</a></div>
+<div>YUJU - Spring Is Gone by chance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/427480064' target='_blank'><img src='https://resources.tidal.com/images/1614fd68/109b/4592/82d6/d758ba119aa4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Rewind</div>
+<div><a href='https://tidal.com/album/309836170' target='_blank'>https://tidal.com/album/309836170</a></div>
+<div>YUJU - Rewind</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/309836170' target='_blank'><img src='https://resources.tidal.com/images/98c5eebe/38b8/423a/8638/c119d91ceaf3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] O</div>
+<div><a href='https://tidal.com/album/279627068' target='_blank'>https://tidal.com/album/279627068</a></div>
+<div>YUJU - 9 Years</div>
+<div>YUJU - Without U</div>
+<div>YUJU - Dreaming</div>
+<div>YUJU, sokodomo - Peach Blossom (feat. sokodomo)</div>
+<div>YUJU - Full Circle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/279627068' target='_blank'><img src='https://resources.tidal.com/images/b952a615/51cc/4d89/812d/f73998a02453/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] No Way (feat. I'MIN)</div>
+<div><a href='https://tidal.com/album/327743658' target='_blank'>https://tidal.com/album/327743658</a></div>
+<div>YUJU, PATEKO (파테코) - No Way (feat. I’MIN)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/327743658' target='_blank'><img src='https://resources.tidal.com/images/393250f9/1751/45b4/8956/eb04e24c60c2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] My Whole World Is You (From _The story of Park’s marriage contract_ Original Television Sountrack, Pt. 3)</div>
+<div><a href='https://tidal.com/album/331799734' target='_blank'>https://tidal.com/album/331799734</a></div>
+<div>YUJU - My Whole World Is You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/331799734' target='_blank'><img src='https://resources.tidal.com/images/bfbb56d6/cd50/49ea/b73a/7f709c340537/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Happiness index</div>
+<div><a href='https://tidal.com/album/284469595' target='_blank'>https://tidal.com/album/284469595</a></div>
+<div>LeeWoo, YUJU - Happiness index</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/284469595' target='_blank'><img src='https://resources.tidal.com/images/ede95cdb/0873/428f/beb0/a7f146f7dc36/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] DALALA</div>
+<div><a href='https://tidal.com/album/316404374' target='_blank'>https://tidal.com/album/316404374</a></div>
+<div>YUJU - DALALA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/316404374' target='_blank'><img src='https://resources.tidal.com/images/f5845978/a3bd/4684/854a/80fd32f8b29f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Begin Again Open MIC EPISODE. 39</div>
+<div><a href='https://tidal.com/album/305829514' target='_blank'>https://tidal.com/album/305829514</a></div>
+<div>YUJU - Play</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305829514' target='_blank'><img src='https://resources.tidal.com/images/a0560b0e/d004/4939/b598/2e7c245fc26f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] [REC.]</div>
+<div><a href='https://tidal.com/album/211598012' target='_blank'>https://tidal.com/album/211598012</a></div>
+<div>YUJU - Bad Blood (Intro)</div>
+<div>YUJU - Play</div>
+<div>YUJU, Mad Clown - Cold Winter (feat. Mad Clown)</div>
+<div>YUJU - The Killa</div>
+<div>YUJU - Blue Nostalgia</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/211598012' target='_blank'><img src='https://resources.tidal.com/images/ce16f758/4053/4426/bfff/c35221914f98/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] My chilling roommate (Original Television Soundtrack, Pt. 1)</div>
+<div><a href='https://tidal.com/album/232475004' target='_blank'>https://tidal.com/album/232475004</a></div>
+<div>YUJU - Tell me this is real</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/232475004' target='_blank'><img src='https://resources.tidal.com/images/a695b133/2787/47c2/aab5/6cb183e069b5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Love in Contract OST Part 1</div>
+<div><a href='https://tidal.com/album/250473364' target='_blank'>https://tidal.com/album/250473364</a></div>
+<div>YUJU - Real Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/250473364' target='_blank'><img src='https://resources.tidal.com/images/16c61fa3/53b6/4a2f/bb8a/6c0cc78c5066/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Kiss Sixth Sense, Pt. 1 (Original Soundtrack from the Disney+ Original)</div>
+<div><a href='https://tidal.com/album/346678795' target='_blank'>https://tidal.com/album/346678795</a></div>
+<div>YUJU - My Americano</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346678795' target='_blank'><img src='https://resources.tidal.com/images/d24de8b2/ccf4/4779/8dd5/1f89cf3ef022/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Evening</div>
+<div><a href='https://tidal.com/album/239954593' target='_blank'>https://tidal.com/album/239954593</a></div>
+<div>YUJU, BIG Naughty - Evening (feat. BIG Naughty)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/239954593' target='_blank'><img src='https://resources.tidal.com/images/2838da5f/0253/450e/b24a/b19e1bcaf154/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Was It Love_, Pt. 3 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/334933209' target='_blank'>https://tidal.com/album/334933209</a></div>
+<div>YUJU - First Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/334933209' target='_blank'><img src='https://resources.tidal.com/images/0aede3a9/c52e/485d/a747/9f3e54bde633/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Stay (Police University (Original Soundtrack) Part.5)</div>
+<div><a href='https://tidal.com/album/216278396' target='_blank'>https://tidal.com/album/216278396</a></div>
+<div>YUJU - Stay (Prod. by Jinyoung)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216278396' target='_blank'><img src='https://resources.tidal.com/images/d25b904a/3e8b/4819/96c4/23dca09fd3df/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Horangsuwolga(2021)</div>
+<div><a href='https://tidal.com/album/216277482' target='_blank'>https://tidal.com/album/216277482</a></div>
+<div>YUJU - Horangsuwolga(2021)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216277482' target='_blank'><img src='https://resources.tidal.com/images/d5dd7866/905a/4696/8424/06fb4c0dec28/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Falling (Run On (Original Soundtrack) Part.10)</div>
+<div><a href='https://tidal.com/album/216512398' target='_blank'>https://tidal.com/album/216512398</a></div>
+<div>YUJU - Falling</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216512398' target='_blank'><img src='https://resources.tidal.com/images/a57e30d1/a723/4d34/acb7/0d0240bc9ca0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] CYWORLD BGM 2021</div>
+<div><a href='https://tidal.com/album/360801269' target='_blank'>https://tidal.com/album/360801269</a></div>
+<div>YUJU - By Your Side</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/360801269' target='_blank'><img src='https://resources.tidal.com/images/f1cb4a74/af0c/4485/9147/701a4534d3cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] Bossam-Steal the Fate OST Part.11</div>
+<div><a href='https://tidal.com/album/186551864' target='_blank'>https://tidal.com/album/186551864</a></div>
+<div>YUJU - comfort (String Ver)</div>
+<div>YUJU - comfort</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/186551864' target='_blank'><img src='https://resources.tidal.com/images/1c9b38c6/f636/49d1/bd4e/fb5014ade13e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 유별나! 문셰프 (Original Television Soundtrack), Pt. 1</div>
+<div><a href='https://tidal.com/album/410438646' target='_blank'>https://tidal.com/album/410438646</a></div>
+<div>YUJU - 이랬다 저랬다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/410438646' target='_blank'><img src='https://resources.tidal.com/images/9a9ad4bf/73d1/4708/9090/68483cae6603/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] True Beauty, Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196164708' target='_blank'>https://tidal.com/album/196164708</a></div>
+<div>YUJU - I′m in the Mood for Dancing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196164708' target='_blank'><img src='https://resources.tidal.com/images/22b3c560/d3e7/4dcd/842b/d7fa0c958707/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Alice (Original Soundtrack) Part.1</div>
+<div><a href='https://tidal.com/album/341666318' target='_blank'>https://tidal.com/album/341666318</a></div>
+<div>YUJU - Secret (Feat. ISHXRK)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/341666318' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] The Last Exam (Monthly Project 2018 November Yoon Jong Shin)</div>
+<div><a href='https://tidal.com/album/189564489' target='_blank'>https://tidal.com/album/189564489</a></div>
+<div>Yoon Jong Shin, YUJU - The Last Exam (Monthly Project 2018 November Yoon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189564489' target='_blank'><img src='https://resources.tidal.com/images/06e2b267/b02d/4027/b99f/1ef11ef0608e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] My Strange Hero (Original Television Soundtrack) Pt. 5</div>
+<div><a href='https://tidal.com/album/180470658' target='_blank'>https://tidal.com/album/180470658</a></div>
+<div>YUJU - Snowflake Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/180470658' target='_blank'><img src='https://resources.tidal.com/images/46cff33f/b86c/4450/80d1/2bc870915b08/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Love Rain</div>
+<div><a href='https://tidal.com/album/377227258' target='_blank'>https://tidal.com/album/377227258</a></div>
+<div>YUJU, SURAN - Love Rain</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/377227258' target='_blank'><img src='https://resources.tidal.com/images/969fa1c5/0423/4fa8/98e2/2f0d7fb2fef8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Let′s Eat! 3 _ Begins, Pt. 3 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/196142485' target='_blank'>https://tidal.com/album/196142485</a></div>
+<div>YUJU - Just This Song</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142485' target='_blank'><img src='https://resources.tidal.com/images/66aac049/ef5b/4f1e/8968/d348a47b68d7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] HEART SIGNAL</div>
+<div><a href='https://tidal.com/album/216011633' target='_blank'>https://tidal.com/album/216011633</a></div>
+<div>YUJU, JIHOO - HEART SIGNAL</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216011633' target='_blank'><img src='https://resources.tidal.com/images/57773f51/dd9b/431f/a86a/7f04fc9a6e72/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2016] Cherish</div>
+<div><a href='https://tidal.com/album/216047459' target='_blank'>https://tidal.com/album/216047459</a></div>
+<div>YUJU, SUNYOUL - Cherish</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216047459' target='_blank'><img src='https://resources.tidal.com/images/53a79324/2e01/4491/9550/11dae99fa5de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Spring Is Gone by chance (Special Edition)</div>
+<div><a href='https://tidal.com/album/286155657' target='_blank'>https://tidal.com/album/286155657</a></div>
+<div>Loco, YUJU - Spring Is Gone by chance (Acoustic ver.)</div>
+<div>Loco, YUJU - Spring Is Gone by chance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/286155657' target='_blank'><img src='https://resources.tidal.com/images/b72fcf27/a1e4/46dd/83ca/2ceca65a899f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Girl Who Sees Smell (Original Television Soundtrack), Pt.2</div>
+<div><a href='https://tidal.com/album/286156680' target='_blank'>https://tidal.com/album/286156680</a></div>
+<div>Loco, YUJU - Spring Is Gone by chance</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/286156680' target='_blank'><img src='https://resources.tidal.com/images/cf6bae33/adee/4372/945d/a47b2b0a6648/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/4_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ4) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/유주 (Yuju)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
