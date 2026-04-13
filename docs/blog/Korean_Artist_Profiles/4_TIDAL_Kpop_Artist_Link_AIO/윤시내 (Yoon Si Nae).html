@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 윤시내 ( Tidal Yoon Si Nae )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 윤시내 ( Tidal Yoon Si Nae )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/375a50bd/1ef6/4821/825f/b6274feb3e70/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/17945702' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 윤시내</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>열정, 록, 그리고 소울; 'Passion'의 강렬함과 'Maria'의 애절함을 담아 시대를 초월하는 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Yoon Si Nae</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Passion, Rock, and Soul: A timeless diva capturing the intensity of 'Passion' and the sorrow of 'Maria'</div><p>폭발적인 가창력과 무대를 압도하는 카리스마, 윤시내 님은 한국 가요계의 독보적인 디바입니다. 록, 소울, 팝 등 다양한 장르를 넘나들며 자신만의 음악 세계를 구축해 왔어요. 그녀의 음악은 시대를 초월하여 많은 이들에게 깊은 감동과 영감을 선사합니다.</p><p>With explosive vocals and overwhelming stage presence, Yoon Si Nae is a unique diva in the Korean music scene. She has built her own musical world by crossing various genres such as rock, soul, and pop. Her music transcends time, offering deep emotion and inspiration to many.</p><p>✧</p><p>강렬한 탄생</p><p>윤시내 님은 1970년대 후반, 록 음악을 기반으로 가요계에 등장했습니다. 파워풀한 보컬과 에너지 넘치는 퍼포먼스로 단숨에 대중의 이목을 사로잡았어요. 당시 한국 가요계에 신선한 충격을 안겨준 존재였습니다.</p><p>A Powerful Beginning</p><p>Yoon Si Nae emerged in the late 1970s, based on rock music. Her powerful vocals and energetic performances quickly captivated the public's attention. She was a fresh shock to the Korean music scene at the time.</p><p>✧</p><p>장르를 넘나드는 음악적 스펙트럼</p><p>윤시내 님의 음악은 록을 기반으로 하지만, 팝, 소울, 심지어 펑키한 리듬까지 아우릅니다. 'Passion'과 같은 강렬한 록 넘버는 물론, 'Maria'처럼 애절한 발라드까지 소화하는 폭넓은 음악적 스펙트럼을 자랑해요. 그녀의 음악은 단순히 장르로 규정할 수 없는 독창적인 매력을 지니고 있습니다.</p><p>A Musical Spectrum Across Genres</p><p>Yoon Si Nae's music is based on rock, but also encompasses pop, soul, and even funky rhythms. She boasts a wide musical spectrum, capable of handling both intense rock numbers like 'Passion' and heart-wrenching ballads like 'Maria'. Her music has a unique charm that cannot be simply defined by genre.</p><p>✧</p><p>시대를 초월하는 대표곡들</p><p>윤시내 님은 'Passion', 'Maria' 외에도 수많은 히트곡을 발표하며 대중적인 사랑을 받았습니다. 강렬한 록 사운드와 애절한 발라드, 팝적인 감각까지 더해진 그녀의 음악은 오랫동안 많은 사람들의 기억 속에 남아있어요. 그녀의 음악은 시대를 초월하여 여전히 많은 사랑을 받고 있습니다.</p><p>Timeless Hit Songs</p><p>Yoon Si Nae has released numerous hit songs in addition to 'Passion' and 'Maria', receiving widespread public love. Her music, which combines intense rock sounds, heart-wrenching ballads, and pop sensibilities, has remained in the memories of many people for a long time. Her music transcends time and is still loved by many.</p><p>✧</p><p>영원한 디바, 그리고 앞으로의 의미</p><p>윤시내 님은 끊임없는 음악적 열정으로 앞으로도 오랫동안 우리 곁을 지켜줄 영원한 디바입니다. 그녀의 음악은 단순한 노래를 넘어, 시대의 감성을 담아낸 예술 작품으로 기억될 거예요. 앞으로도 그녀의 음악이 우리에게 어떤 감동과 영감을 선사할지 기대됩니다.</p><p>An Eternal Diva, and the Meaning of the Future</p><p>Yoon Si Nae is an eternal diva who will stay with us for a long time to come with her unwavering passion for music. Her music will be remembered as a work of art that captures the emotions of an era, going beyond simple songs. We look forward to the emotion and inspiration her music will bring us in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 윤시내의 POP</div>
+<div><a href='https://tidal.com/album/352316484' target='_blank'>https://tidal.com/album/352316484</a></div>
+<div>윤시내 - ONE NIGHT IN BANGKOK</div>
+<div>윤시내 - Goonies `R` good enough</div>
+<div>윤시내 - DO YOU WANNA FUNK</div>
+<div>윤시내 - I CAN`T STAND THE RAIN</div>
+<div>윤시내 - LOVER BOY</div>
+<div>윤시내 - HOLDING OUT FOR A HERO</div>
+<div>윤시내 - PASSION</div>
+<div>윤시내 - MARIA(YOU QERE THE ONLY ONE)</div>
+<div>윤시내 - I WHO HAVE NOTHING</div>
+<div>윤시내 - HAVE YOU EVER SEEN THE RAIN</div>
+<div>윤시내 - STAND BY ME</div>
+<div>윤시내 - AMAZING GRACE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/352316484' target='_blank'><img src='https://resources.tidal.com/images/81fe0a60/1e88/452c/b58a/459cd2cc4395/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] 인생이란</div>
+<div><a href='https://tidal.com/album/271025378' target='_blank'>https://tidal.com/album/271025378</a></div>
+<div>윤시내 - 인생이란</div>
+<div>윤시내 - 내 잘못 아니예요</div>
+<div>윤시내 - 꽃</div>
+<div>윤시내 - 어쩌란 말인가요</div>
+<div>윤시내 - 가인</div>
+<div>윤시내 - 사랑한국</div>
+<div>윤시내 - 기린</div>
+<div>윤시내 - 이별에서 영원으로</div>
+<div>윤시내 - Fashion</div>
+<div>윤시내 - 열애</div>
+<div>윤시내 - 인생이란(MR)</div>
+<div>윤시내 - 내 잘못 아니예요(MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/271025378' target='_blank'><img src='https://resources.tidal.com/images/a08c90ee/e8f8/4cd3/8f0e/2e6b8786424c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2008] Diva Forever(My Life... My Story...) Diva Forever(My Life... My Story...)</div>
+<div><a href='https://tidal.com/album/253466940' target='_blank'>https://tidal.com/album/253466940</a></div>
+<div>윤시내 - 포옹 Hug</div>
+<div>윤시내 - 미쳐봐 Get Crazy</div>
+<div>윤시내 - 외로운 여자 Lonely Woman</div>
+<div>윤시내 - 누구나 세월이 가면 Time Passes for Everybody</div>
+<div>윤시내 - 다 그렇게 사는거지 Everyone Lives Like That</div>
+<div>윤시내 - 고목 Old Tree</div>
+<div>윤시내 - 내 마음 갈곳을 잃어 My Heart is Lost</div>
+<div>윤시내 - 열애 Passionate Relationship</div>
+<div>윤시내 - DJ에게 To DJ</div>
+<div>윤시내 - Fashion Fashion</div>
+<div>윤시내 - Ain`t No Sunshine When She`s Gone Ain't No Sunshin</div>
+<div>윤시내 - Maria Maria</div>
+<div>윤시내 - Amazing Grace Amazing Grace</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/253466940' target='_blank'><img src='https://resources.tidal.com/images/375a50bd/1ef6/4821/825f/b6274feb3e70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2000] History</div>
+<div><a href='https://tidal.com/album/211825582' target='_blank'>https://tidal.com/album/211825582</a></div>
+<div>윤시내 - Fashion</div>
+<div>윤시내 - 그대 오지 않는 이유</div>
+<div>윤시내 - 내 마음 갈곳을 잃어</div>
+<div>윤시내 - 꿈 속의 꿈</div>
+<div>윤시내 - 그여자의 고백</div>
+<div>윤시내 - 고백</div>
+<div>윤시내 - 산들바</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/211825582' target='_blank'><img src='https://resources.tidal.com/images/ab3befdf/db76/4264/8c05/116a44d3b7a0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] Yeun Si Nae, Na Mee Duet I</div>
+<div><a href='https://tidal.com/album/127784391' target='_blank'>https://tidal.com/album/127784391</a></div>
+<div>윤시내 - 열애</div>
+<div>윤시내 - Wonderful Tonight</div>
+<div>윤시내 - 내게 남겨진 시간</div>
+<div>윤시내 - 비오는 거리에서</div>
+<div>윤시내 - 사랑의 시</div>
+<div>윤시내 - Yesterday</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/127784391' target='_blank'><img src='https://resources.tidal.com/images/fa167b00/c02a/4d69/896e/9dd9432cc12c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1989] 왜냐고묻지말아요_후회</div>
+<div><a href='https://tidal.com/album/297397246' target='_blank'>https://tidal.com/album/297397246</a></div>
+<div>윤시내 - 왜냐고 묻지 말아요</div>
+<div>윤시내 - 그대 잊었나</div>
+<div>윤시내 - 이별이 없는 곳에</div>
+<div>윤시내 - 뒷모습</div>
+<div>윤시내 - 오! 밤</div>
+<div>윤시내 - 후회</div>
+<div>윤시내 - 투나잇</div>
+<div>윤시내 - 흐린날</div>
+<div>윤시내 - 그것은 사랑</div>
+<div>윤시내 - 이별이 없는 곳에(연주곡)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/297397246' target='_blank'><img src='https://resources.tidal.com/images/05916695/8f0d/4ec7/9ebe/4892e567f6d9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/4_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ4) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/윤시내 (Yoon Si Nae)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
