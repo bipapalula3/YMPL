@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이미자 ( Tidal Lee Mi Ja )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이미자 ( Tidal Lee Mi Ja )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/ccbc55c9/60d3/4517/8db2/fc06081ca57b/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10642548' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이미자</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>‘흑산도 아가씨’의 애절한 목소리, ‘노래는 나의 인생’처럼 삶을 노래하는 영원한 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lee Mi Ja</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>The heart-wrenching voice of 'Black Sea Girl,' the eternal diva singing life like 'A Song is My Life'</div><p>대한민국 트로트의 살아있는 역사, 이미자 선생님을 소개합니다. 그녀는 수많은 히트곡을 통해 시대의 아픔과 희망을 노래하며 국민들의 마음을 어루만져 왔습니다. 깊은 감성과 뛰어난 가창력으로 오랫동안 사랑받는 가수입니다.</p><p>Introducing Lee Mi Ja, a living legend of Korean trot music. Through numerous hits, she has sung of the pain and hope of the era, touching the hearts of the nation. She is a beloved singer for her deep emotion and outstanding singing ability.</p><p>✧</p><p>시대의 울림, 이미자의 시작</p><p>이미자 선생님은 1959년 ‘열아홉 순정’으로 데뷔하여 가요계에 혜성처럼 등장했습니다. 특유의 애절한 목소리와 가슴을 울리는 감성으로 단숨에 대중의 마음을 사로잡았습니다. 그녀의 음악은 단순한 유행가를 넘어, 시대의 정서를 담아내는 그릇이 되었습니다.</p><p>Echoes of an Era, The Beginning of Lee Mi Ja</p><p>Lee Mi Ja made a meteoric debut in the music scene in 1959 with 'Nineteen Purity.' Her unique mournful voice and heart-touching emotions quickly captivated the public. Her music became more than just popular songs; it became a vessel for capturing the sentiments of the era.</p><p>✧</p><p>음악적 깊이와 다채로운 표현</p><p>이미자 선생님의 음악은 트로트를 기반으로 하지만, 다양한 장르를 아우르는 폭넓은 스펙트럼을 보여줍니다. ‘황포돛대’의 웅장함, ‘모정’의 애틋함, ‘Till’과 같은 팝 번안곡을 통해 뛰어난 음악적 소화력을 입증했습니다. 그녀의 노래는 단순히 듣는 음악이 아닌, 가슴으로 느끼는 예술입니다.</p><p>Musical Depth and Diverse Expression</p><p>Lee Mi Ja's music is based on trot, but it showcases a wide spectrum that encompasses various genres. The grandeur of 'Hwangpo Sailboat,' the affection of 'Mother's Love,' and her excellent musical digestion through pop translations like 'Till' are evident. Her songs are not just music to listen to, but art to feel in the heart.</p><p>✧</p><p>국민 가수의 주요 활동</p><p>이미자 선생님은 데뷔 이후 수많은 히트곡을 발표하며 대한민국 가요계의 전설로 자리매김했습니다. 그녀의 음악은 드라마, 영화 등 다양한 매체에서 활용되며 대중과의 거리를 좁혔습니다. 오랜 시간 동안 변함없는 사랑을 받으며, 국민 가수로서의 위상을 굳건히 지켜왔습니다.</p><p>Key Activities of a National Singer</p><p>Since her debut, Lee Mi Ja has released numerous hits and established herself as a legend in the Korean music scene. Her music has been used in various media such as dramas and movies, bridging the gap with the public. She has maintained her unwavering love for a long time, firmly maintaining her status as a national singer.</p><p>✧</p><p>영원한 감동, 그리고 미래</p><p>이미자 선생님의 음악은 시대를 초월하여 여전히 많은 사람들에게 깊은 감동을 선사합니다. 그녀의 노래는 단순한 유행가를 넘어, 한국인의 정서와 역사를 담아낸 소중한 문화유산입니다. 앞으로도 그녀의 음악은 영원히 우리 곁에서 함께하며, 삶의 위로와 희망을 전해줄 것입니다.</p><p>Eternal Emotion, and the Future</p><p>Lee Mi Ja's music transcends time and continues to deeply impress many people. Her songs are more than just popular songs; they are precious cultural heritage that contains the emotions and history of Koreans. In the future, her music will continue to be with us forever, conveying comfort and hope in life.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2024] 데뷔 45주년 기념 이미자의 라이브 콘서트</div>
+<div><a href='https://tidal.com/album/385122144' target='_blank'>https://tidal.com/album/385122144</a></div>
+<div>이미자 - 노래는 나의 인생</div>
+<div>이미자 - 열아홉 순정</div>
+<div>이미자 - 황포돛대</div>
+<div>이미자 - 울어라 열풍아</div>
+<div>이미자 - 흑산도 아가씨</div>
+<div>이미자 - 모정</div>
+<div>이미자 - 눈물이 진주라면</div>
+<div>이미자 - 유달산아 말해다오</div>
+<div>이미자 - 정</div>
+<div>이미자 - 하얀 목련</div>
+<div>이미자 - Till</div>
+<div>이미자 - 물레방아 도는데</div>
+<div>이미자 - 가슴 아프게</div>
+<div>이미자 - 신사동 그사람</div>
+<div>이미자 - 봉선화 + 성불사의 밤</div>
+<div>이미자 - 백치 아다다</div>
+<div>이미자 - 비오는 양산도</div>
+<div>이미자 - 목포의 눈물</div>
+<div>이미자 - 애수의 소야곡</div>
+<div>이미자 - 나그네 설움</div>
+<div>이미자 - 번지없는 주막</div>
+<div>이미자 - 울고 넘는 박달재</div>
+<div>이미자 - 눈물 젖은 두만강</div>
+<div>이미자 - 여로</div>
+<div>이미자 - 아씨</div>
+<div>이미자 - 서울이여 안녕</div>
+<div>이미자 - 여자의 일생</div>
+<div>이미자 - 기러기 아빠</div>
+<div>이미자 - 섬마을 선생님</div>
+<div>이미자 - 내 영혼의 노래가 되어</div>
+<div>이미자 - 동백 아가씨</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/385122144' target='_blank'><img src='https://resources.tidal.com/images/f2ad46a3/c2f1/4373/98db/1fcfe20adb9a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] 이미자 Remaster Screen Music Collection</div>
+<div><a href='https://tidal.com/album/368512400' target='_blank'>https://tidal.com/album/368512400</a></div>
+<div>이미자 - Disc1 - 동백 아가씨</div>
+<div>이미자 - Disc2 - 섬마을 선생님</div>
+<div>이미자 - Disc3 - 여자의 인생</div>
+<div>이미자 - Disc4 - 사랑했는데</div>
+<div>이미자 - Disc1 - 흑산도 아가씨</div>
+<div>이미자 - Disc2 - 열아홉 순정</div>
+<div>이미자 - Disc3 - 아씨</div>
+<div>이미자 - Disc4 - 황포돛대</div>
+<div>이미자 - Disc1 - 황혼의 부루스</div>
+<div>이미자 - Disc2 - 기러기 아빠</div>
+<div>이미자 - Disc3 - 울어라 열풍아</div>
+<div>이미자 - Disc4 - 황혼의 엘레지</div>
+<div>이미자 - Disc1 - 한번 준 마음인데</div>
+<div>이미자 - Disc2 - 저 강은 알고 있다</div>
+<div>이미자 - Disc3 - 동백꽃 피는 항구</div>
+<div>이미자 - Disc4 - 임금님의 첫 사랑</div>
+<div>이미자 - Disc1 - 엘레지의 여왕</div>
+<div>이미자 - Disc2 - 옥이 엄마</div>
+<div>이미자 - Disc3 - 아네모네</div>
+<div>이미자 - Disc4 - 빙점</div>
+<div>이미자 - Disc1 - 그리움은 가슴마다</div>
+<div>이미자 - Disc3 - 여로</div>
+<div>이미자 - Disc4 - 지평선은 말이 없다</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/368512400' target='_blank'><img src='https://resources.tidal.com/images/56b0201d/7199/4b21/8b3e/734748e30475/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] 베스트 2(2CD) 베스트 2(2CD)</div>
+<div><a href='https://tidal.com/album/242411425' target='_blank'>https://tidal.com/album/242411425</a></div>
+<div>이미자 - 冬柏 아가씨 冬柏 아가씨</div>
+<div>이미자 - 아네모네 아네모네</div>
+<div>이미자 - 평양 기생 평양 기생</div>
+<div>이미자 - 저강은 알고 있다 저강은 알고 있다</div>
+<div>이미자 - 홍콩의 왼손잡이 홍콩의 왼손잡이</div>
+<div>이미자 - 압록강 칠백리 압록강 칠백리</div>
+<div>이미자 - 비오는 양산도 비오는 양산도</div>
+<div>이미자 - 마포종점 마포종점</div>
+<div>이미자 - 서울손님 서울손님</div>
+<div>이미자 - 못잊을 당신 못잊을 당신</div>
+<div>이미자 - 女子의 一生 女子의 一生</div>
+<div>이미자 - 임이라 부르리라 임이라 부르리라</div>
+<div>이미자 - 꽃한송이 꽃한송이</div>
+<div>이미자 - 아씨 아씨</div>
+<div>이미자 - 정동 대감 정동 대감</div>
+<div>이미자 - 진도 아리랑 진도 아리랑</div>
+<div>이미자 - 물레방아 도는데 물레방아 도는데</div>
+<div>이미자 - 눈물의 연평도 눈물의 연평도</div>
+<div>이미자 - 네온의 부르스 네온의 부르스</div>
+<div>이미자 - 사랑합니다 사랑합니다</div>
+<div>이미자 - 기러기 아빠 기러기 아빠</div>
+<div>이미자 - 그리움은 가슴마다 그리움은 가슴마다</div>
+<div>이미자 - 옥이 엄마 옥이 엄마</div>
+<div>이미자 - 지평선은 말이 없다 지평선은 말이 없다</div>
+<div>이미자 - 빙점 빙점</div>
+<div>이미자 - 첫눈 내린 거리 첫눈 내린 거리</div>
+<div>이미자 - 강촌에 살고 싶네 강촌에 살고 싶네</div>
+<div>이미자 - 서산 갯마을 서산 갯마을</div>
+<div>이미자 - 쌍고동 우는 항구 쌍고동 우는 항구</div>
+<div>이미자 - 재일교포 재일교포</div>
+<div>이미자 - 母情(대사) 母情(대사)</div>
+<div>이미자 - 타국에서 타국에서</div>
+<div>이미자 - 한번준 마음인데 한번준 마음인데</div>
+<div>이미자 - 수심 수심</div>
+<div>이미자 - 아메리카 차이나타운 아메리카 차이나타운</div>
+<div>이미자 - 석양 석양</div>
+<div>이미자 - 물새우는 해변 물새우는 해변</div>
+<div>이미자 - 연포 아가씨 연포 아가씨</div>
+<div>이미자 - 거짓말 항구 거짓말 항구</div>
+<div>이미자 - 정든섬 정든섬</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/242411425' target='_blank'><img src='https://resources.tidal.com/images/0a20a09e/0a06/4b24/9583/c36807f5cf70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] 베스트 1(2CD) 베스트 1(2CD)</div>
+<div><a href='https://tidal.com/album/242408548' target='_blank'>https://tidal.com/album/242408548</a></div>
+<div>이미자 - 노래는 나의 人生 노래는 나의 人生</div>
+<div>이미자 - 황혼의 부르스 황혼의 부르스</div>
+<div>이미자 - 황포 돛대 황포 돛대</div>
+<div>이미자 - 잊을수 없는 연인 잊을수 없는 연인</div>
+<div>이미자 - 유달산아 말해다오 유달산아 말해다오</div>
+<div>이미자 - 당신은 모르리 당신은 모르리</div>
+<div>이미자 - 정착지 정착지</div>
+<div>이미자 - 물새 한 마리 물새 한 마리</div>
+<div>이미자 - 목화 아가씨 목화 아가씨</div>
+<div>이미자 - 엘레지의 女王 엘레지의 女王</div>
+<div>이미자 - 울어라 열풍아 울어라 열풍아</div>
+<div>이미자 - 살아있는 가로수 살아있는 가로수</div>
+<div>이미자 - 밤의 정거장 밤의 정거장</div>
+<div>이미자 - 들국화 들국화</div>
+<div>이미자 - 눈물이 진주라면 눈물이 진주라면</div>
+<div>이미자 - 서울이여 안녕 서울이여 안녕</div>
+<div>이미자 - 추풍령 추풍령</div>
+<div>이미자 - 고향역 고향역</div>
+<div>이미자 - 방울새 방울새</div>
+<div>이미자 - 노래는 나의 人生(반주) 노래는 나의 人生(반주)</div>
+<div>이미자 - 섬마을 先生님 섬마을 先生님</div>
+<div>이미자 - 삼백리 한려수도 삼백리 한려수도</div>
+<div>이미자 - 춘천댁 사공 춘천댁 사공</div>
+<div>이미자 - 낭주골 처녀 낭주골 처녀</div>
+<div>이미자 - 비에 젖은 여인 비에 젖은 여인</div>
+<div>이미자 - 대답해 주세요 대답해 주세요</div>
+<div>이미자 - 동백꽃 피는 항구 동백꽃 피는 항구</div>
+<div>이미자 - 서귀포칠십리 서귀포칠십리</div>
+<div>이미자 - 삼다도 소식 삼다도 소식</div>
+<div>이미자 - 섬처녀 섬처녀</div>
+<div>이미자 - 흑산도 아가씨 흑산도 아가씨</div>
+<div>이미자 - 사랑했는데 사랑했는데</div>
+<div>이미자 - 임금님의 첫사랑 임금님의 첫사랑</div>
+<div>이미자 - 열아홉 순정 열아홉 순정</div>
+<div>이미자 - 떠나도 마음만은 떠나도 마음만은</div>
+<div>이미자 - 가슴 아프게 가슴 아프게</div>
+<div>이미자 - 여로 여로</div>
+<div>이미자 - 대원군 대원군</div>
+<div>이미자 - 장희빈 장희빈</div>
+<div>이미자 - 서귀포 바닷가 서귀포 바닷가</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/242408548' target='_blank'><img src='https://resources.tidal.com/images/c67aeb5a/6d51/4e66/bd3f/a37b78800ab9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1977] 이미자 골든 디럭스 5집</div>
+<div><a href='https://tidal.com/album/431880358' target='_blank'>https://tidal.com/album/431880358</a></div>
+<div>이미자 - 나 이제 알아요</div>
+<div>이미자 - 잊어 버려요</div>
+<div>이미자 - 그리움은 가슴마다</div>
+<div>이미자 - 에델바이스</div>
+<div>이미자 - 섬</div>
+<div>이미자 - 목포의 달밤</div>
+<div>이미자 - 빙 점</div>
+<div>이미자 - 두견새 우는 사연</div>
+<div>이미자 - 진도 아리랑</div>
+<div>이미자 - 마지막 인사</div>
+<div>이미자 - 비에 젖은 여인</div>
+<div>이미자 - 잊을수 없는 연인</div>
+<div>이미자 - 지평선은 말이 없다</div>
+<div>이미자 - 생각 하다가</div>
+<div>이미자 - 남산 마님</div>
+<div>이미자 - 비오는 양산도</div>
+<div>이미자 - 평양기생</div>
+<div>이미자 - 옹달샘</div>
+<div>이미자 - 자주댕기</div>
+<div>이미자 - 오동추야</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431880358' target='_blank'><img src='https://resources.tidal.com/images/4777ecbe/e42f/44bc/be7f/5eb5aba8dfc6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1977] 이미자 골든 디럭스 4집</div>
+<div><a href='https://tidal.com/album/431884303' target='_blank'>https://tidal.com/album/431884303</a></div>
+<div>이미자 - 꽃 씨</div>
+<div>이미자 - 외딴섬</div>
+<div>이미자 - 조각난 밀어</div>
+<div>이미자 - 우 수</div>
+<div>이미자 - 안녕 친구여</div>
+<div>이미자 - 서산 갯마을</div>
+<div>이미자 - 서부의 목장</div>
+<div>이미자 - 돌아가는 삼각지</div>
+<div>이미자 - 수원처녀</div>
+<div>이미자 - 갯마을</div>
+<div>이미자 - 박달재 사연</div>
+<div>이미자 - 에밀레종</div>
+<div>이미자 - 순정의 노래(젊은날의순정)</div>
+<div>이미자 - 안개낀 장충단 공원</div>
+<div>이미자 - 새야 새야</div>
+<div>이미자 - 여 수</div>
+<div>이미자 - 오솔길 아가씨</div>
+<div>이미자 - 벽오동 심은 뜻은</div>
+<div>이미자 - 정동대감</div>
+<div>이미자 - 사랑했는데</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431884303' target='_blank'><img src='https://resources.tidal.com/images/e24e9f21/9da9/4683/a753/737303f7ec70/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1976] 이미자 골든 디럭스 3집</div>
+<div><a href='https://tidal.com/album/431882599' target='_blank'>https://tidal.com/album/431882599</a></div>
+<div>이미자 - 가시리</div>
+<div>이미자 - 그때가 옛날</div>
+<div>이미자 - 영산강 뱃노래</div>
+<div>이미자 - 여자의 마음</div>
+<div>이미자 - 대답해 주세요</div>
+<div>이미자 - 비내리는 영등포</div>
+<div>이미자 - 정착지</div>
+<div>이미자 - 한번준 마음인데</div>
+<div>이미자 - 여로</div>
+<div>이미자 - 제일교포</div>
+<div>이미자 - 연포 아가씨</div>
+<div>이미자 - 첫눈내린 거리</div>
+<div>이미자 - 임금님의 첫사랑</div>
+<div>이미자 - 떠나도 마음만은</div>
+<div>이미자 - 영산포 아가씨</div>
+<div>이미자 - 너무나 사랑한 당신</div>
+<div>이미자 - 물레방아 도는데</div>
+<div>이미자 - 서울이여 안녕</div>
+<div>이미자 - 아씨</div>
+<div>이미자 - 여자의 일생</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431882599' target='_blank'><img src='https://resources.tidal.com/images/b2ca64e4/b1dc/4d6e/8349/8d6985c1f84a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1976] 이미자 골든 디럭스 2집</div>
+<div><a href='https://tidal.com/album/431881787' target='_blank'>https://tidal.com/album/431881787</a></div>
+<div>이미자 - 두고온 고향</div>
+<div>이미자 - 밤의 정거장</div>
+<div>이미자 - 자주댕기</div>
+<div>이미자 - 포구 뱃 사공</div>
+<div>이미자 - 서귀포 바닷가</div>
+<div>이미자 - 아리랑 목동</div>
+<div>이미자 - 섬처녀</div>
+<div>이미자 - 낭주골 처녀</div>
+<div>이미자 - 석양</div>
+<div>이미자 - 타향길</div>
+<div>이미자 - 나룻터 처녀</div>
+<div>이미자 - 황혼의 블루스</div>
+<div>이미자 - 비내리는 호남선</div>
+<div>이미자 - 한많은 대동강</div>
+<div>이미자 - 추풍령</div>
+<div>이미자 - 눈물의 자장가</div>
+<div>이미자 - 공항의 이별</div>
+<div>이미자 - 홍콩의 왼손잡이</div>
+<div>이미자 - 삼백리 한려수도</div>
+<div>이미자 - 울어라 열풍아</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431881787' target='_blank'><img src='https://resources.tidal.com/images/bed70dea/a87c/421f/bfa9/fabacaffb6fa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1976] 이미자 골든 디럭스 1집</div>
+<div><a href='https://tidal.com/album/431876414' target='_blank'>https://tidal.com/album/431876414</a></div>
+<div>이미자 - 떠난 사람</div>
+<div>이미자 - 윤지경</div>
+<div>이미자 - 바람따라 세월따라</div>
+<div>이미자 - 왕비열전</div>
+<div>이미자 - 새벽길</div>
+<div>이미자 - 해운대 에레지</div>
+<div>이미자 - 옥이 엄마</div>
+<div>이미자 - 흑산도 아가씨</div>
+<div>이미자 - 엘리지의 여왕</div>
+<div>이미자 - 비의 블루스</div>
+<div>이미자 - 안 오실까봐</div>
+<div>이미자 - 자장가</div>
+<div>이미자 - 가슴아프게</div>
+<div>이미자 - 그길이 멀다해도</div>
+<div>이미자 - 그리워</div>
+<div>이미자 - 외동 딸</div>
+<div>이미자 - 섹스폰 부는 처녀</div>
+<div>이미자 - 압록강 칠백리</div>
+<div>이미자 - 임이라 부르리까</div>
+<div>이미자 - 옹달샘</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/431876414' target='_blank'><img src='https://resources.tidal.com/images/478126c2/0501/4339/a997/e8c15169e8d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/4_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ4) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/이미자 (Lee Mi Ja)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
