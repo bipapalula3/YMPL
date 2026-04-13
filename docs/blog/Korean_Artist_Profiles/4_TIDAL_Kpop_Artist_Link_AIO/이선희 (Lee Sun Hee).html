@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이선희 ( Tidal Lee Sun Hee )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이선희 ( Tidal Lee Sun Hee )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/57e94d4c/4adc/4fbc/b4cc/5ff9db2201a1/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/5264824' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이선희</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>‘J에게’의 강렬한 데뷔부터 ‘그중에 그대를 만나’의 애틋함까지, 시대를 초월하는 감동을 선사하는 영원한 디바</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lee Sun Hee</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>From the powerful debut with 'J에게' to the heartfelt emotion of 'Meeting You Among Them,' a timeless diva delivering emotions that transcend generations.</div><p>대한민국 가요계의 살아있는 전설, 이선희님을 소개합니다. 폭발적인 가창력과 섬세한 감성으로 수많은 히트곡을 탄생시키며 오랜 시간 동안 사랑받고 있어요. 그녀의 음악은 단순한 노래를 넘어, 삶의 희로애락을 담아낸 한 편의 드라마 같아요.</p><p>Introducing Lee Sun Hee, a living legend of Korean pop music. With her explosive singing ability and delicate emotions, she has created numerous hit songs and has been loved for a long time. Her music is more than just a song; it's like a drama that captures the joys and sorrows of life.</p><p>✧</p><p>데뷔와 전설의 시작</p><p>이선희님은 1984년 강변가요제에서 'J에게'로 대상을 수상하며 화려하게 데뷔했어요. 당시 파격적인 가창력과 무대 매너는 대중을 사로잡았고, 단숨에 스타덤에 올랐습니다. 그녀의 등장은 한국 가요계에 새로운 바람을 불러일으켰다고 해도 과언이 아니에요.</p><p>Debut and the Beginning of a Legend</p><p>Lee Sun Hee made a spectacular debut in 1984 by winning the Grand Prize at the Riverside Song Festival with 'J에게.' Her unconventional singing ability and stage presence captivated the public, and she quickly rose to stardom. It is no exaggeration to say that her appearance brought a fresh breeze to the Korean pop music scene.</p><p>✧</p><p>음악적 깊이와 다채로운 표현</p><p>이선희님의 음악은 팝, 발라드, 록 등 다양한 장르를 아우르며 폭넓은 음악적 스펙트럼을 보여줘요. 그녀의 노래는 단순히 기교적인 면모를 넘어, 진심을 담아 듣는 이의 마음을 움직이는 힘이 있습니다. 특히, 섬세한 감정 표현과 호소력 짙은 목소리는 그녀의 음악을 더욱 특별하게 만들어 줍니다.</p><p>Musical Depth and Diverse Expression</p><p>Lee Sun Hee's music encompasses various genres such as pop, ballad, and rock, showcasing a wide musical spectrum. Her songs go beyond mere technical aspects and have the power to move listeners' hearts with sincerity. In particular, her delicate emotional expression and appealing voice make her music even more special.</p><p>✧</p><p>시대를 초월하는 주요 활동</p><p>수많은 히트곡을 발표하며 대중의 사랑을 받아온 이선희님은 드라마 OST, 공연 등 다양한 활동을 통해 끊임없이 새로운 모습을 보여주고 있어요. 그녀의 음악은 시간이 흘러도 변치 않는 감동을 선사하며, 여러 세대를 아우르는 공감대를 형성하고 있습니다. 또한 후배 가수들에게도 끊임없이 영감을 주는 존재랍니다.</p><p>Major Activities Transcending Generations</p><p>Lee Sun Hee, who has been loved by the public for releasing numerous hit songs, is constantly showing new sides through various activities such as drama OSTs and performances. Her music delivers unchanging emotions even as time passes, forming a consensus that encompasses several generations. She is also a constant source of inspiration for younger singers.</p><p>✧</p><p>미래를 향한 울림과 의미</p><p>이선희님의 음악은 앞으로도 오랫동안 많은 사람들에게 위로와 희망을 전해줄 거예요. 그녀의 목소리는 단순한 유행을 넘어, 시대를 초월하는 감동을 선사하는 영원한 울림으로 남을 것입니다. 앞으로 그녀가 보여줄 음악적 행보가 더욱 기대됩니다.</p><p>Resonance and Meaning for the Future</p><p>Lee Sun Hee's music will continue to provide comfort and hope to many people for a long time to come. Her voice will transcend mere trends and remain an eternal resonance that delivers emotions that transcend generations. We look forward to the musical path she will take in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2022] The Red Sleeve (Original Soundtrack) Part.8</div>
+<div><a href='https://tidal.com/album/216534502' target='_blank'>https://tidal.com/album/216534502</a></div>
+<div>Lee Sun Hee - I'll Leave You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216534502' target='_blank'><img src='https://resources.tidal.com/images/348a7cba/9758/4291/8713/6c1672eb179e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Anbu</div>
+<div><a href='https://tidal.com/album/216145851' target='_blank'>https://tidal.com/album/216145851</a></div>
+<div>Lee Sun Hee - Anbu (Feat. CHANYEOL)</div>
+<div>Lee Sun Hee - Camellia</div>
+<div>Lee Sun Hee - Spring day</div>
+<div>Lee Sun Hee - I am in love</div>
+<div>Lee Sun Hee - My youthful days</div>
+<div>Lee Sun Hee - Mama</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216145851' target='_blank'><img src='https://resources.tidal.com/images/a6513ba3/673c/4df5/bcf3/73de73e7b80e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] le dernier amour</div>
+<div><a href='https://tidal.com/album/216216033' target='_blank'>https://tidal.com/album/216216033</a></div>
+<div>Lee Sun Hee - Memory Of The Wind</div>
+<div>Lee Sun Hee - Please</div>
+<div>Lee Sun Hee - A Glass Of Soju</div>
+<div>Lee Sun Hee - Coward</div>
+<div>Lee Sun Hee - Last Love</div>
+<div>Lee Sun Hee - I will go to you like the first snow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216216033' target='_blank'><img src='https://resources.tidal.com/images/da06a2d3/ab26/4082/94a3/89395fd01b67/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Let's go to Happy Land</div>
+<div><a href='https://tidal.com/album/215971443' target='_blank'>https://tidal.com/album/215971443</a></div>
+<div>Lee Sun Hee - Let's go to Happy Land</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215971443' target='_blank'><img src='https://resources.tidal.com/images/9525248a/a454/42a2/96c0/abf285c684d3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] LEE SUN HEE 15th Album “SERENDIPITY” - DEBUT 30th Anniversary</div>
+<div><a href='https://tidal.com/album/216076764' target='_blank'>https://tidal.com/album/216076764</a></div>
+<div>Lee Sun Hee - Someday</div>
+<div>Lee Sun Hee - Neighborhood (Feat. Kanto of Troy)</div>
+<div>Lee Sun Hee - Meet you</div>
+<div>Lee Sun Hee - Meet him among them</div>
+<div>Lee Sun Hee - Sight seeing</div>
+<div>Lee Sun Hee - Dream</div>
+<div>Lee Sun Hee - Now</div>
+<div>Lee Sun Hee - Letter to me</div>
+<div>Lee Sun Hee - Pretty Pretty</div>
+<div>Lee Sun Hee - Cotton Candy</div>
+<div>Lee Sun Hee - I go</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216076764' target='_blank'><img src='https://resources.tidal.com/images/57e94d4c/4adc/4fbc/b4cc/5ff9db2201a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] 30th Anniversary Lee Sunhee Live</div>
+<div><a href='https://tidal.com/album/216043306' target='_blank'>https://tidal.com/album/216043306</a></div>
+<div>Lee Sun Hee - Overture</div>
+<div>Lee Sun Hee - Dear J</div>
+<div>Lee Sun Hee - A girl's pray</div>
+<div>Lee Sun Hee - The place love fall</div>
+<div>Lee Sun Hee - I want to know</div>
+<div>Lee Sun Hee - When you pass the book of memories</div>
+<div>Lee Sun Hee - I always miss him</div>
+<div>Lee Sun Hee - Bout of laughter</div>
+<div>Lee Sun Hee - Fox rain</div>
+<div>Lee Sun Hee - Destiny</div>
+<div>Lee Sun Hee - Meet him among them</div>
+<div>Lee Sun Hee - Someday</div>
+<div>Lee Sun Hee - When a Lilac is fading</div>
+<div>Lee Sun Hee - My way</div>
+<div>Lee Sun Hee - I am fine</div>
+<div>Lee Sun Hee - Like a flame</div>
+<div>Lee Sun Hee - Conflict</div>
+<div>Lee Sun Hee - Old days</div>
+<div>Lee Sun Hee - Beautiful Landscape</div>
+<div>Lee Sun Hee - I go</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216043306' target='_blank'><img src='https://resources.tidal.com/images/a89241ac/6d8e/414d/9198/6a0686daeb28/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2010] My Girlfriend is Gumiho (Original Soundtrack) Part 1</div>
+<div><a href='https://tidal.com/album/216046607' target='_blank'>https://tidal.com/album/216046607</a></div>
+<div>Lee Sun Hee - Fox rain</div>
+<div>Lee Sun Hee - The person I will love (Piano Ver.)</div>
+<div>Lee Sun Hee - Fox rain (Accoustic Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216046607' target='_blank'><img src='https://resources.tidal.com/images/87df9fb1/f5be/447b/846b/8eeae1dd3d32/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Love</div>
+<div><a href='https://tidal.com/album/216042952' target='_blank'>https://tidal.com/album/216042952</a></div>
+<div>Lee Sun Hee - His scent</div>
+<div>Lee Sun Hee - So bad</div>
+<div>Lee Sun Hee - Love (string version)</div>
+<div>Lee Sun Hee - Love I like itself</div>
+<div>Lee Sun Hee - Sunflower</div>
+<div>Lee Sun Hee - Can I start.. Love-</div>
+<div>Lee Sun Hee - Your way</div>
+<div>Lee Sun Hee - The day I miss you</div>
+<div>Lee Sun Hee - Empty world</div>
+<div>Lee Sun Hee - You Too (Feat. Tiger JK)</div>
+<div>Lee Sun Hee - Love</div>
+<div>Lee Sun Hee - Destiny</div>
+<div>Lee Sun Hee - A girl's pray</div>
+<div>Lee Sun Hee - The place love fall</div>
+<div>Lee Sun Hee - West wind</div>
+<div>Lee Sun Hee - I want to know</div>
+<div>Lee Sun Hee - I always miss you</div>
+<div>Lee Sun Hee - When a Lilac is fading</div>
+<div>Lee Sun Hee - When you turn over the leaves of the book of memor</div>
+<div>Lee Sun Hee - My way</div>
+<div>Lee Sun Hee - If you love me</div>
+<div>Lee Sun Hee - I only know love</div>
+<div>Lee Sun Hee - Farewell</div>
+<div>Lee Sun Hee - I am fine</div>
+<div>Lee Sun Hee - Conflict</div>
+<div>Lee Sun Hee - Old days</div>
+<div>Lee Sun Hee - Performance</div>
+<div>Lee Sun Hee - Beautiful landscape</div>
+<div>Lee Sun Hee - Dear J</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216042952' target='_blank'><img src='https://resources.tidal.com/images/7c1e4163/77fd/4af6/8821/4d5c00bb1a0f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] Like a flame like a butterfly (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/216017610' target='_blank'>https://tidal.com/album/216017610</a></div>
+<div>Lee Sun Hee - Like a flame like a butterfly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216017610' target='_blank'><img src='https://resources.tidal.com/images/0d97a45f/a232/4c8a/b697/d6cd09b1f718/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2007] Destiny</div>
+<div><a href='https://tidal.com/album/216043418' target='_blank'>https://tidal.com/album/216043418</a></div>
+<div>Lee Sun Hee - Destiny (movie -King and the Clown' version)</div>
+<div>Lee Sun Hee - A day</div>
+<div>Lee Sun Hee - I love you</div>
+<div>Lee Sun Hee - Rose</div>
+<div>Lee Sun Hee - A girl's prayer</div>
+<div>Lee Sun Hee - I fell in love</div>
+<div>Lee Sun Hee - The place love fall</div>
+<div>Lee Sun Hee - West wind</div>
+<div>Lee Sun Hee - I want to know</div>
+<div>Lee Sun Hee - I always miss you</div>
+<div>Lee Sun Hee - When a Lilac is fading</div>
+<div>Lee Sun Hee - When you pass the book of memories</div>
+<div>Lee Sun Hee - My way</div>
+<div>Lee Sun Hee - If you love me</div>
+<div>Lee Sun Hee - I only know love</div>
+<div>Lee Sun Hee - Farewell</div>
+<div>Lee Sun Hee - I am fine</div>
+<div>Lee Sun Hee - Conflict</div>
+<div>Lee Sun Hee - Old days</div>
+<div>Lee Sun Hee - Beautiful landscape</div>
+<div>Lee Sun Hee - Dear J</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216043418' target='_blank'><img src='https://resources.tidal.com/images/1955adf4/1eed/494d/8291/37e021281dc9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2005] puberty</div>
+<div><a href='https://tidal.com/album/216772155' target='_blank'>https://tidal.com/album/216772155</a></div>
+<div>Lee Sun Hee - Destiny</div>
+<div>Lee Sun Hee - Rose</div>
+<div>Lee Sun Hee - I want to know 2</div>
+<div>Lee Sun Hee - Under the apple tree</div>
+<div>Lee Sun Hee - Why-</div>
+<div>Lee Sun Hee - Puberty</div>
+<div>Lee Sun Hee - Bicycle</div>
+<div>Lee Sun Hee - My love is getting deeper</div>
+<div>Lee Sun Hee - Piano</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216772155' target='_blank'><img src='https://resources.tidal.com/images/324019e8/633c/40e5/ac20/9ad9b819f13a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2001] My life + Best</div>
+<div><a href='https://tidal.com/album/216046815' target='_blank'>https://tidal.com/album/216046815</a></div>
+<div>Lee Sun Hee - A seperation arietta</div>
+<div>Lee Sun Hee - Borrow this song</div>
+<div>Lee Sun Hee - Pathetique</div>
+<div>Lee Sun Hee - in going live</div>
+<div>Lee Sun Hee - Maybe</div>
+<div>Lee Sun Hee - Confession</div>
+<div>Lee Sun Hee - My Life</div>
+<div>Lee Sun Hee - Can't be better than this</div>
+<div>Lee Sun Hee - Because of you</div>
+<div>Lee Sun Hee - After all the world slept</div>
+<div>Lee Sun Hee - I have to say goodbye</div>
+<div>Lee Sun Hee - Dear J</div>
+<div>Lee Sun Hee - The place love fall</div>
+<div>Lee Sun Hee - When you pass the book of memories</div>
+<div>Lee Sun Hee - Bout of laughter</div>
+<div>Lee Sun Hee - Winter sorrow</div>
+<div>Lee Sun Hee - I want to know</div>
+<div>Lee Sun Hee - If you love me</div>
+<div>Lee Sun Hee - A chrysanthemum</div>
+<div>Lee Sun Hee - My way</div>
+<div>Lee Sun Hee - When a Lilac is fading</div>
+<div>Lee Sun Hee - A boat</div>
+<div>Lee Sun Hee - I always miss him</div>
+<div>Lee Sun Hee - Because I loved him</div>
+<div>Lee Sun Hee - Old days</div>
+<div>Lee Sun Hee - I feel good</div>
+<div>Lee Sun Hee - Beautiful Landscape</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216046815' target='_blank'><img src='https://resources.tidal.com/images/30dba011/48ce/40c8/92b7/6e4bdd986ead/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1998] Dream of Ruby</div>
+<div><a href='https://tidal.com/album/24585668' target='_blank'>https://tidal.com/album/24585668</a></div>
+<div>Lee Sun Hee - Around That Time</div>
+<div>Lee Sun Hee - 내가 바라는 건</div>
+<div>Lee Sun Hee - Beautiful Sadness</div>
+<div>Lee Sun Hee - 너에게 가면</div>
+<div>Lee Sun Hee - Coexistence</div>
+<div>Lee Sun Hee - 낯선 바닷가에서</div>
+<div>Lee Sun Hee - God Willing Again</div>
+<div>Lee Sun Hee - 후회는 이제 너의 몫입니다-</div>
+<div>Lee Sun Hee - If I Come to You</div>
+<div>Lee Sun Hee - 신이 다시 허락한다면</div>
+<div>Lee Sun Hee - If You Love Me</div>
+<div>Lee Sun Hee - Morning Coffee</div>
+<div>Lee Sun Hee - Morning Coffee</div>
+<div>Lee Sun Hee - 나의 이별</div>
+<div>Lee Sun Hee - My Separation</div>
+<div>Lee Sun Hee - 백우</div>
+<div>Lee Sun Hee - On the Unfamiliar Beach</div>
+<div>Lee Sun Hee - 그때 쯤엔</div>
+<div>Lee Sun Hee - Regrets Are Your Part, Now</div>
+<div>Lee Sun Hee - 공존</div>
+<div>Lee Sun Hee - What I Wish</div>
+<div>Lee Sun Hee - 아름다운 슬픔</div>
+<div>Lee Sun Hee - White Rain</div>
+<div>Lee Sun Hee - 그대가 나를 사랑하신다면</div>
+<div>Lee Sun Hee - 낯선 바닷가에서 (Saxophone Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/24585668' target='_blank'><img src='https://resources.tidal.com/images/f97d055e/dd74/48d6/a408/744d68744a28/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1996] First Love</div>
+<div><a href='https://tidal.com/album/61326378' target='_blank'>https://tidal.com/album/61326378</a></div>
+<div>Lee Sun Hee - A Bunch of Small Chrysanthemums</div>
+<div>Lee Sun Hee - A City Hunter</div>
+<div>Lee Sun Hee - Akarakachi</div>
+<div>Lee Sun Hee - Just Loving You</div>
+<div>Lee Sun Hee - The Children in the Castle</div>
+<div>Lee Sun Hee - The Gray City</div>
+<div>Lee Sun Hee - To Near You</div>
+<div>Lee Sun Hee - When Lilac Is Falling</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/61326378' target='_blank'><img src='https://resources.tidal.com/images/febc856a/174d/448d/875c/d9b0b76ea505/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1992] 조각배</div>
+<div><a href='https://tidal.com/album/339560688' target='_blank'>https://tidal.com/album/339560688</a></div>
+<div>Lee Sun Hee - 조각배</div>
+<div>Lee Sun Hee - 언제나 사랑해</div>
+<div>Lee Sun Hee - 초원</div>
+<div>Lee Sun Hee - 작은 연가</div>
+<div>Lee Sun Hee - 성주출이</div>
+<div>Lee Sun Hee - 어느 할머니(조센삐)의 극락</div>
+<div>Lee Sun Hee - 한네의 이별</div>
+<div>Lee Sun Hee - 방황</div>
+<div>Lee Sun Hee - 너를 만나고 싶을 땐</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339560688' target='_blank'><img src='https://resources.tidal.com/images/33e94ff8/6782/4fe0/aadb/be4fa8362990/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1992] Lee Sun Hee 8</div>
+<div><a href='https://tidal.com/album/55908917' target='_blank'>https://tidal.com/album/55908917</a></div>
+<div>Lee Sun Hee - A Little Love Song</div>
+<div>Lee Sun Hee - A Old Woman's Supreme Happiness</div>
+<div>Lee Sun Hee - A Small Boat</div>
+<div>Lee Sun Hee - Always Loving You</div>
+<div>Lee Sun Hee - Glassland</div>
+<div>Lee Sun Hee - Hanne's Separation</div>
+<div>Lee Sun Hee - Seongjupuri</div>
+<div>Lee Sun Hee - Wandering</div>
+<div>Lee Sun Hee - When I Wanna Meet You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/55908917' target='_blank'><img src='https://resources.tidal.com/images/c0e1d531/a38a/46a3/a08b/0b68fe73ed43/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1989] Lee Sun Hee Best</div>
+<div><a href='https://tidal.com/album/24572601' target='_blank'>https://tidal.com/album/24572601</a></div>
+<div>Lee Sun Hee - A Difficult Answer</div>
+<div>Lee Sun Hee - Angels Don't Cry</div>
+<div>Lee Sun Hee - Beautiful Scenery</div>
+<div>Lee Sun Hee - Bye-Bye</div>
+<div>Lee Sun Hee - I Always,For You</div>
+<div>Lee Sun Hee - Lovely Face</div>
+<div>Lee Sun Hee - Take to the Road</div>
+<div>Lee Sun Hee - Though Time Flies</div>
+<div>Lee Sun Hee - When the Night Comes</div>
+<div>Lee Sun Hee - Where My Mind Goes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/24572601' target='_blank'><img src='https://resources.tidal.com/images/56f67efa/8ec3/4b00/b759/5d2d42f433f6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/4_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ4) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/이선희 (Lee Sun Hee)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
