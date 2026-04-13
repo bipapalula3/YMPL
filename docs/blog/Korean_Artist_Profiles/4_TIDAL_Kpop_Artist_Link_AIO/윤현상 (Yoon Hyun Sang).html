@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 윤현상 ( Tidal Yoon Hyun Sang )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 윤현상 ( Tidal Yoon Hyun Sang )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/627cefed/bed8/4ee0/970a/d989b335b1e0/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/10997908' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 윤현상</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>윤현상 – 섬세한 감성으로 빚어낸 음악, '떠도는' 마음을 어루만지고 '집'으로 향하는 따뜻한 위로를 전하는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Yoon Hyun Sang</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Yoon Hyun Sang - A singer-songwriter who crafts music with delicate emotions, comforting 'wandering' hearts and offering warm solace on the way 'Home'.</div><p>감성적인 음색과 진솔한 가사로 듣는 이의 마음을 사로잡는 윤현상님을 소개합니다. 그는 자신만의 음악적 색깔로 다양한 감정을 노래하며 폭넓은 공감을 얻고 있어요. 깊은 감수성이 돋보이는 그의 음악 세계로 함께 떠나볼까요?</p><p>Let me introduce Yoon Hyun Sang, who captivates listeners with his emotional voice and heartfelt lyrics. He sings about various emotions with his unique musical style, gaining wide empathy. Shall we embark on a journey into his musical world filled with deep sensitivity?</p><p>✧</p><p>음악적 시작과 성장</p><p>윤현상님은 독특한 음악적 감수성을 바탕으로 자신만의 길을 걸어왔습니다. 꾸준한 음악 활동을 통해 다양한 스타일을 시도하며 폭넓은 음악적 스펙트럼을 보여주고 있어요. 그의 음악은 듣는 이들에게 깊은 울림을 선사하며 성장해왔습니다.</p><p>Musical Beginnings and Growth</p><p>Yoon Hyun Sang has forged his own path based on his unique musical sensibilities. Through consistent musical activities, he has attempted various styles and demonstrated a broad musical spectrum. His music has grown by providing listeners with deep resonance.</p><p>✧</p><p>감성적인 음악 세계</p><p>그의 음악은 섬세한 감정 표현과 서정적인 가사가 특징입니다. 이별의 아픔, 그리움, 사랑의 설렘 등 다양한 감정을 진솔하게 담아내어 듣는 이들의 공감을 자아내죠. 특히 그의 목소리는 곡의 분위기를 더욱 깊이 있게 만들어줍니다.</p><p>Emotional Musical World</p><p>His music is characterized by delicate emotional expression and lyrical lyrics. He sincerely captures various emotions such as the pain of parting, longing, and the excitement of love, evoking empathy from listeners. In particular, his voice adds depth to the atmosphere of the song.</p><p>✧</p><p>주요 작품과 음악적 특징</p><p>윤현상님의 음악은 발라드를 기반으로 팝, R&B 등 다양한 장르를 융합하는 시도를 보여줍니다. 그는 작사, 작곡 능력 또한 뛰어나 자신만의 색깔을 담은 음악을 만들어내고 있어요. 그의 음악은 듣는 이들에게 위로와 공감을 전하며 꾸준히 사랑받고 있습니다.</p><p>Major Works and Musical Characteristics</p><p>Yoon Hyun Sang's music attempts to fuse various genres such as pop and R&B based on ballads. He also has excellent songwriting and composition skills, creating music with his own unique color. His music is consistently loved by delivering comfort and empathy to listeners.</p><p>✧</p><p>앞으로의 음악적 행보</p><p>앞으로도 윤현상님은 진솔한 음악으로 대중과의 소통을 이어갈 것으로 기대됩니다. 그는 끊임없이 새로운 시도를 하며 더욱 발전된 음악을 선보일 것입니다. 그의 음악은 앞으로도 많은 사람들에게 위로와 감동을 선사할 것입니다.</p><p>Future Musical Direction</p><p>Yoon Hyun Sang is expected to continue communicating with the public through sincere music in the future. He will continue to make new attempts and present more developed music. His music will continue to provide comfort and inspiration to many people in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Wander</div>
+<div><a href='https://tidal.com/album/430821207' target='_blank'>https://tidal.com/album/430821207</a></div>
+<div>Yoon Hyun Sang - Wander</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/430821207' target='_blank'><img src='https://resources.tidal.com/images/2b652b0e/f4bf/447b/9af6/b98a346e0c7b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] i.E</div>
+<div><a href='https://tidal.com/album/359599689' target='_blank'>https://tidal.com/album/359599689</a></div>
+<div>Yoon Hyun Sang - complicated</div>
+<div>Yoon Hyun Sang - Home</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/359599689' target='_blank'><img src='https://resources.tidal.com/images/0f87ec4e/cbae/428d/b39b/5358306b4204/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Someone I Think About Sometimes</div>
+<div><a href='https://tidal.com/album/390338174' target='_blank'>https://tidal.com/album/390338174</a></div>
+<div>Yoon Hyun Sang - Someone I Think About Sometimes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/390338174' target='_blank'><img src='https://resources.tidal.com/images/51e6c564/a126/4e81/908d/f21247cba7ee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] SAEBYEOK.UHGUI</div>
+<div><a href='https://tidal.com/album/223247546' target='_blank'>https://tidal.com/album/223247546</a></div>
+<div>Yoon Hyun Sang - Falling flowers on the flowing water</div>
+<div>Yoon Hyun Sang - Letting go</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/223247546' target='_blank'><img src='https://resources.tidal.com/images/6819d67c/3d1a/4113/a662/8ba7c5c64f22/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Modern, Mild</div>
+<div><a href='https://tidal.com/album/216212186' target='_blank'>https://tidal.com/album/216212186</a></div>
+<div>Yoon Hyun Sang - Fallin'</div>
+<div>Yoon Hyun Sang - Special Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216212186' target='_blank'><img src='https://resources.tidal.com/images/4a7d25fd/301a/4c69/a8ed/162eb634f9c0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Mild</div>
+<div><a href='https://tidal.com/album/278410741' target='_blank'>https://tidal.com/album/278410741</a></div>
+<div>Yoon Hyun Sang - From, Today</div>
+<div>Yoon Hyun Sang - mute-muted</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278410741' target='_blank'><img src='https://resources.tidal.com/images/0153e847/d294/4c52/b853/ad447498f024/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Sad but pretending I'm not</div>
+<div><a href='https://tidal.com/album/196170115' target='_blank'>https://tidal.com/album/196170115</a></div>
+<div>Yoon Hyun Sang - Sad but pretending I′m not</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196170115' target='_blank'><img src='https://resources.tidal.com/images/616a4874/4e2b/40cf/8bc6/53113a3976fa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Legal High Pt. 1 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/104233470' target='_blank'>https://tidal.com/album/104233470</a></div>
+<div>Yoon Hyun Sang - If You're with me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/104233470' target='_blank'><img src='https://resources.tidal.com/images/5c10cbcf/1694/43b3/9aa6/e405cc84ccae/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] LOVER</div>
+<div><a href='https://tidal.com/album/278415276' target='_blank'>https://tidal.com/album/278415276</a></div>
+<div>Yoon Hyun Sang - Layed Memory</div>
+<div>Yoon Hyun Sang - You Give Me Something</div>
+<div>Yoon Hyun Sang - Dancing Universe</div>
+<div>Yoon Hyun Sang - More Than Thought</div>
+<div>Yoon Hyun Sang - #sharp</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278415276' target='_blank'><img src='https://resources.tidal.com/images/8af37a02/2091/4507/88e2/ee8d68abb216/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] Spring Fever</div>
+<div><a href='https://tidal.com/album/278441474' target='_blank'>https://tidal.com/album/278441474</a></div>
+<div>Yoon Hyun Sang - Spring Fever</div>
+<div>Yoon Hyun Sang - Spring Fever (piano ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278441474' target='_blank'><img src='https://resources.tidal.com/images/1a9f744d/049d/4b7d/a928/a764ba45d2e0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] My Memory Warehouse</div>
+<div><a href='https://tidal.com/album/278438057' target='_blank'>https://tidal.com/album/278438057</a></div>
+<div>Yoon Hyun Sang - My Memory Warehouse</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278438057' target='_blank'><img src='https://resources.tidal.com/images/63516bf9/cabc/4f76/9e54/61692c8bc0fa/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] attitude</div>
+<div><a href='https://tidal.com/album/278447162' target='_blank'>https://tidal.com/album/278447162</a></div>
+<div>Yoon Hyun Sang - Weekend</div>
+<div>Yoon Hyun Sang - No more words</div>
+<div>Yoon Hyun Sang - Silhouette</div>
+<div>Yoon Hyun Sang - I wish you would</div>
+<div>Yoon Hyun Sang - Last word</div>
+<div>Yoon Hyun Sang - Mirage</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/278447162' target='_blank'><img src='https://resources.tidal.com/images/f22fcf56/d9e6/43df/b3fa/316df1543d63/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] On the way to love</div>
+<div><a href='https://tidal.com/album/215945663' target='_blank'>https://tidal.com/album/215945663</a></div>
+<div>Seul Ong, Yoon Hyun Sang - On the way to love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215945663' target='_blank'><img src='https://resources.tidal.com/images/63cbb494/dd94/4d3a/aaed/c8a355cd5d9d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] FantastiC (Original Soundtrack) Part.9</div>
+<div><a href='https://tidal.com/album/216009504' target='_blank'>https://tidal.com/album/216009504</a></div>
+<div>Yoon Hyun Sang, 심규선 - Here, take my heart</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216009504' target='_blank'><img src='https://resources.tidal.com/images/a9b9cbf8/b9ff/484f/bf2b/cc6778a28096/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] WAVE</div>
+<div><a href='https://tidal.com/album/216010355' target='_blank'>https://tidal.com/album/216010355</a></div>
+<div>Yoon Hyun Sang - It must be you</div>
+<div>Yoon Hyun Sang - Time forgets</div>
+<div>Yoon Hyun Sang - Tipsy-20 Blues</div>
+<div>Yoon Hyun Sang - Sound of wait (Piano Outro)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216010355' target='_blank'><img src='https://resources.tidal.com/images/d5993535/6276/4f51/8361/1cda66418a32/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Let's Eat Together</div>
+<div><a href='https://tidal.com/album/215969918' target='_blank'>https://tidal.com/album/215969918</a></div>
+<div>Yoon Hyun Sang - Let's Eat Together (Feat. YOON BOMI of Apink)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215969918' target='_blank'><img src='https://resources.tidal.com/images/688b70e1/f598/4313/ac41/d95fdf42f0b6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] PIANOFORTE</div>
+<div><a href='https://tidal.com/album/216046127' target='_blank'>https://tidal.com/album/216046127</a></div>
+<div>Yoon Hyun Sang - Always be with you</div>
+<div>Yoon Hyun Sang - When would it be (Duet with IU)</div>
+<div>Yoon Hyun Sang - Where the love stops</div>
+<div>Yoon Hyun Sang - In October - The 27th Night</div>
+<div>Yoon Hyun Sang - Tonight</div>
+<div>Yoon Hyun Sang - Everywhere in my room (Original Demo Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216046127' target='_blank'><img src='https://resources.tidal.com/images/1be43ed4/2c9d/41ae/a697/a348e12c0405/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/4_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ4) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/윤현상 (Yoon Hyun Sang)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
