@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 윤딴딴 ( Tidal Yun DDanDDan )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 윤딴딴 ( Tidal Yun DDanDDan )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/94b4ee31/0a3d/4aa9/88a0/cd033d65cf22/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/20884165' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a><a href='https://tidal.com/browse/artist/10612071' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 2</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 윤딴딴</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>윤딴딴 - 소소한 일상 속 공감을 노래하는 싱어송라이터, '잘 해보려는 나 알 수 없는 너'의 솔직한 마음을 담아</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Yun DDanDDan</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Yun DDanDDan - A singer-songwriter who sings about empathy in everyday life, capturing the honest feelings of 'Trying to do well, but I don't know you'.</div><p>일상의 이야기를 따뜻한 멜로디와 솔직한 가사로 풀어내는 싱어송라이터 윤딴딴입니다. 그의 음악은 평범한 하루를 특별하게 만들어주는 매력을 지니고 있어요. 듣는 이로 하여금 자신의 이야기를 듣는 듯한 공감을 불러일으키죠.</p><p>Yun DDanDDan is a singer-songwriter who unravels everyday stories with warm melodies and honest lyrics. His music has the charm of making an ordinary day special. It evokes a sense of empathy in listeners, as if they were hearing their own stories.</p><p>✧</p><p>음악적 시작</p><p>윤딴딴은 특유의 편안한 보컬과 공감 가는 가사로 많은 사랑을 받기 시작했어요. 그의 음악은 어쿠스틱 사운드를 기반으로 하여 듣기 편안한 멜로디를 선사합니다. 소소한 일상 속 이야기를 진솔하게 풀어내는 것이 특징입니다.</p><p>Musical Beginnings</p><p>Yun DDanDDan began to receive much love for his unique comfortable vocals and relatable lyrics. His music is based on acoustic sounds, offering easy-to-listen melodies. It is characterized by honestly unraveling stories in small everyday life.</p><p>✧</p><p>음악 및 퍼포먼스 스타일</p><p>그의 음악은 주로 어쿠스틱 팝 장르에 기반하며, 편안하고 따뜻한 분위기를 자아냅니다. 윤딴딴은 기타 연주와 함께 부드러운 보컬을 선보이며, 듣는 이들에게 안정감을 주는 것이 특징입니다. 솔직하고 담백한 가사는 그의 음악에 더욱 깊이를 더합니다.</p><p>Music and Performance Style</p><p>His music is mainly based on the acoustic pop genre, creating a comfortable and warm atmosphere. Yun DDanDDan presents soft vocals with guitar playing, which is characterized by giving listeners a sense of stability. Honest and simple lyrics add depth to his music.</p><p>✧</p><p>주요 활동</p><p>윤딴딴은 꾸준한 음원 발매와 공연을 통해 팬들과 소통하고 있습니다. 다양한 페스티벌과 공연 무대에 오르며 대중적인 인기를 얻고 있습니다. 또한, 다른 아티스트들과의 협업을 통해 음악적 스펙트럼을 넓혀가고 있어요.</p><p>Key Activities</p><p>Yun DDanDDan communicates with fans through continuous music releases and performances. He is gaining popular recognition by appearing on various festivals and performance stages. He is also expanding his musical spectrum through collaborations with other artists.</p><p>✧</p><p>미래와 의미</p><p>윤딴딴은 앞으로도 진솔한 음악으로 많은 사람들에게 위로와 공감을 전할 것으로 기대됩니다. 그의 음악은 평범한 일상 속에서 발견하는 소중한 가치를 되새기게 합니다. 꾸밈없는 음악으로 대중에게 더욱 가까이 다가갈 것입니다.</p><p>Future and Meaning</p><p>Yun DDanDDan is expected to continue to deliver comfort and empathy to many people through his sincere music. His music reminds us of the precious values found in ordinary everyday life. He will get closer to the public with his unadorned music.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Half seventy</div>
+<div><a href='https://tidal.com/album/418850640' target='_blank'>https://tidal.com/album/418850640</a></div>
+<div>Yun DDanDDan - Burnout party</div>
+<div>Yun DDanDDan - Dooseok</div>
+<div>Yun DDanDDan - Just words, Just half</div>
+<div>Yun DDanDDan - Yellow shirts lady</div>
+<div>Yun DDanDDan - Slippery relationship</div>
+<div>Yun DDanDDan - Not like it was</div>
+<div>Yun DDanDDan - At the cabin</div>
+<div>Yun DDanDDan - Don't bet on misery</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/418850640' target='_blank'><img src='https://resources.tidal.com/images/93eeb6ae/403b/435b/884c/09c928de84ea/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 이런 꽃 같은 엔딩 OST Part.1</div>
+<div><a href='https://tidal.com/album/189731174' target='_blank'>https://tidal.com/album/189731174</a></div>
+<div>윤딴딴 - 잘 해보려는 나 알 수 없는 너</div>
+<div>윤딴딴 - 잘 해보려는 나 알 수 없는 너 (Melody Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189731174' target='_blank'><img src='https://resources.tidal.com/images/3e28f2a6/1a78/40ec/9ebd/8c26921119b0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Someone's playlist</div>
+<div><a href='https://tidal.com/album/312153372' target='_blank'>https://tidal.com/album/312153372</a></div>
+<div>Yun DDanDDan - almost there</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/312153372' target='_blank'><img src='https://resources.tidal.com/images/9bc0fefd/9c3a/4812/967a/52fc68a537cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Like Good Neighbors (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/325621803' target='_blank'>https://tidal.com/album/325621803</a></div>
+<div>Yun DDanDDan - Like a Neighbor</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/325621803' target='_blank'><img src='https://resources.tidal.com/images/1ea0ce27/8436/4d20/a885/0ca56a79172a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Korea summer life</div>
+<div><a href='https://tidal.com/album/303066201' target='_blank'>https://tidal.com/album/303066201</a></div>
+<div>Yun DDanDDan - Korea summer life</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/303066201' target='_blank'><img src='https://resources.tidal.com/images/b5b82160/537b/4757/8fa6/4bb6c0aecb6b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] I Say Ya! You Say Yeah!</div>
+<div><a href='https://tidal.com/album/287879360' target='_blank'>https://tidal.com/album/287879360</a></div>
+<div>Yun DDanDDan - I Say Ya! You Say Yeah! (feat. Kyoung Seo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287879360' target='_blank'><img src='https://resources.tidal.com/images/4b14ccd4/d5a4/4893/9fcb/3bbc30110e81/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 싱인더그린 Part 2 Sing in the Green Part 2</div>
+<div><a href='https://tidal.com/album/245443498' target='_blank'>https://tidal.com/album/245443498</a></div>
+<div>윤딴딴 - 나의 꽃 나의 그대 My Flower My Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/245443498' target='_blank'><img src='https://resources.tidal.com/images/9340b968/914f/4e0e/894f/dca88bebb14a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] To my old flame</div>
+<div><a href='https://tidal.com/album/399713075' target='_blank'>https://tidal.com/album/399713075</a></div>
+<div>Yun DDanDDan - Your calls (Intro)</div>
+<div>Yun DDanDDan - We remember those days</div>
+<div>Yun DDanDDan, Yun DDanDDan of 2016 - Just another breakup song (With Yun DDanDDan of 20</div>
+<div>Yun DDanDDan - A boy walking in the winter (Interlude)</div>
+<div>Yun DDanDDan - That time when I was clumsy</div>
+<div>Yun DDanDDan - Living while embracing a beautiful memory like thi</div>
+<div>Yun DDanDDan - This day, we are</div>
+<div>Yun DDanDDan - Living while embracing a beautiful memory like thi</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/399713075' target='_blank'><img src='https://resources.tidal.com/images/ae915aba/fbf3/40c0/8830/8c15b4b37944/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Secret (From _Going to You at a Speed of 493km_ [Original Soundtrack]), Pt.2</div>
+<div><a href='https://tidal.com/album/225748638' target='_blank'>https://tidal.com/album/225748638</a></div>
+<div>Yun DDanDDan - Secret</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/225748638' target='_blank'><img src='https://resources.tidal.com/images/2ebf5bd5/06d8/4d48/9a72/fd43933fb2cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Old Pieces</div>
+<div><a href='https://tidal.com/album/364558728' target='_blank'>https://tidal.com/album/364558728</a></div>
+<div>Yun DDanDDan, Yun DDanDDan of 2016 - Just another breakup song (With Yun DDanDDan of 20</div>
+<div>Yun DDanDDan - This day, we are</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/364558728' target='_blank'><img src='https://resources.tidal.com/images/ec30eb03/38cb/42fa/9818/8255c63c5d49/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Envy you</div>
+<div><a href='https://tidal.com/album/264995327' target='_blank'>https://tidal.com/album/264995327</a></div>
+<div>Yun DDanDDan - Envy you</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/264995327' target='_blank'><img src='https://resources.tidal.com/images/1a5c8dff/7b31/4981/bb96/a406641da4e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Ocean</div>
+<div><a href='https://tidal.com/album/208482587' target='_blank'>https://tidal.com/album/208482587</a></div>
+<div>Yun DDanDDan - Ocean</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208482587' target='_blank'><img src='https://resources.tidal.com/images/0638659b/4dc1/4173/9d15/cc48a1530ab0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Mind stair's record</div>
+<div><a href='https://tidal.com/album/318138108' target='_blank'>https://tidal.com/album/318138108</a></div>
+<div>Yun DDanDDan - An autumn diary</div>
+<div>Yun DDanDDan - After a gloomy day</div>
+<div>Yun DDanDDan - Will smile</div>
+<div>Yun DDanDDan - Heart to the moon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318138108' target='_blank'><img src='https://resources.tidal.com/images/31194a6e/e560/47be/967b/a4d80e9cc02a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Hope still be happy</div>
+<div><a href='https://tidal.com/album/341495410' target='_blank'>https://tidal.com/album/341495410</a></div>
+<div>Yun DDanDDan - When you knock on the shiny door</div>
+<div>Yun DDanDDan - When I think about you</div>
+<div>Yun DDanDDan - Interlude</div>
+<div>Yun DDanDDan - Hope still be happy</div>
+<div>Yun DDanDDan - Home of Ansan, 2013</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/341495410' target='_blank'><img src='https://resources.tidal.com/images/b19eda43/319b/42d0/b10e/e91d05604cd9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] 도도솔솔라라솔 OST Part.5</div>
+<div><a href='https://tidal.com/album/301364222' target='_blank'>https://tidal.com/album/301364222</a></div>
+<div>윤딴딴 - Melody</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/301364222' target='_blank'><img src='https://resources.tidal.com/images/6a96d709/198a/4364/8e7c/e2a84730a58d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] When you knock on the shiny door</div>
+<div><a href='https://tidal.com/album/336656063' target='_blank'>https://tidal.com/album/336656063</a></div>
+<div>Yun DDanDDan - When you knock on the shiny door</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/336656063' target='_blank'><img src='https://resources.tidal.com/images/0c964657/f450/46ae/81d6/b9b199ef065a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Wedding diary</div>
+<div><a href='https://tidal.com/album/189583053' target='_blank'>https://tidal.com/album/189583053</a></div>
+<div>Yun DDanDDan - Wedding diary</div>
+<div>Yun DDanDDan - If you hate. Me too hate-</div>
+<div>Yun DDanDDan - Minimal life</div>
+<div>Yun DDanDDan - Lean on you</div>
+<div>Yun DDanDDan - Us in Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189583053' target='_blank'><img src='https://resources.tidal.com/images/917fcf9c/4adb/4472/b503/6d628371823e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] DDanDDan's Summer 2020 Live Album</div>
+<div><a href='https://tidal.com/album/311981070' target='_blank'>https://tidal.com/album/311981070</a></div>
+<div>Yun DDanDDan - In The Summer (Live Acoustic ver.)</div>
+<div>Yun DDanDDan - Inventor (Live)</div>
+<div>Yun DDanDDan - On The Holiday Road (Live)</div>
+<div>Yun DDanDDan - Two Umbrella (Live)</div>
+<div>Yun DDanDDan - Minimal Life (Live)</div>
+<div>Yun DDanDDan - The Midnight Heat (Live)</div>
+<div>Yun DDanDDan - Wedding Diary (Live)</div>
+<div>Yun DDanDDan - Tiger n Whale (Live)</div>
+<div>Yun DDanDDan - When I Can't Fall Asleep (Live Piano ver.)</div>
+<div>Yun DDanDDan - Whatever (Live Everybody ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/311981070' target='_blank'><img src='https://resources.tidal.com/images/f9c875c0/cdfc/4593/b269/abd792d6f903/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2019] Tiger n Whale</div>
+<div><a href='https://tidal.com/album/189205521' target='_blank'>https://tidal.com/album/189205521</a></div>
+<div>Yun DDanDDan - Tiger n Whale</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189205521' target='_blank'><img src='https://resources.tidal.com/images/90a9f738/059a/4979/a2a4/38aa18d15be7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Our Memory</div>
+<div><a href='https://tidal.com/album/189188231' target='_blank'>https://tidal.com/album/189188231</a></div>
+<div>Yun DDanDDan - Our Memory</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188231' target='_blank'><img src='https://resources.tidal.com/images/cd6fed02/a5a1/49b0/8586/0bc0bbf32059/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Half Sixty</div>
+<div><a href='https://tidal.com/album/189262167' target='_blank'>https://tidal.com/album/189262167</a></div>
+<div>Yun DDanDDan - At The Elementary School</div>
+<div>Yun DDanDDan - Tiger n Whale</div>
+<div>Yun DDanDDan - Hard to Compose</div>
+<div>Yun DDanDDan - Call with Mom</div>
+<div>Yun DDanDDan - Inventor</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189262167' target='_blank'><img src='https://resources.tidal.com/images/c8ae9bd7/cae2/462e/a1f8/91383b28b6e6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Whats wrong with secretary kim (Original Soundtrack) Part.7</div>
+<div><a href='https://tidal.com/album/237700963' target='_blank'>https://tidal.com/album/237700963</a></div>
+<div>Yun DDanDDan - In the end</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/237700963' target='_blank'><img src='https://resources.tidal.com/images/d9ea314e/f648/48f5/94f8/339438f82d90/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Sugar Man2 Part.4</div>
+<div><a href='https://tidal.com/album/216466301' target='_blank'>https://tidal.com/album/216466301</a></div>
+<div>Yang Yoseop, Yun DDanDDan - Aspirin</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216466301' target='_blank'><img src='https://resources.tidal.com/images/7b7a1fa5/0a2b/4532/b1a4/cc4da8442693/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Just in Case</div>
+<div><a href='https://tidal.com/album/188639578' target='_blank'>https://tidal.com/album/188639578</a></div>
+<div>Yun DDanDDan - Just in Case</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188639578' target='_blank'><img src='https://resources.tidal.com/images/8682afb3/71bd/426c/9a37/d11510d638f4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] In My Room</div>
+<div><a href='https://tidal.com/album/188499474' target='_blank'>https://tidal.com/album/188499474</a></div>
+<div>Yun DDanDDan - Room Song</div>
+<div>Yun DDanDDan - Let It Flow</div>
+<div>Yun DDanDDan - In My Room</div>
+<div>Yun DDanDDan - It Will Be Okay</div>
+<div>Yun DDanDDan - Whatever (Live Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188499474' target='_blank'><img src='https://resources.tidal.com/images/08182076/ecf4/4526/b173/bb349beb7d6a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] When I Can't Fall Asleep</div>
+<div><a href='https://tidal.com/album/189188975' target='_blank'>https://tidal.com/album/189188975</a></div>
+<div>Yun DDanDDan - When I Can't Fall Asleep</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188975' target='_blank'><img src='https://resources.tidal.com/images/3bb87ce7/2500/4f05/94fa/f568a4d69df5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] The Package (Original Television Soundtrack), Pt. 5</div>
+<div><a href='https://tidal.com/album/188574927' target='_blank'>https://tidal.com/album/188574927</a></div>
+<div>Yun DDanDDan, EUNHA - You Look Nice Today</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/188574927' target='_blank'><img src='https://resources.tidal.com/images/9d508ac2/b947/42fe/baf2/24959fe647a6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] The Night I Miss You</div>
+<div><a href='https://tidal.com/album/189188965' target='_blank'>https://tidal.com/album/189188965</a></div>
+<div>Yun DDanDDan - The Night I Miss You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188965' target='_blank'><img src='https://resources.tidal.com/images/94b4ee31/0a3d/4aa9/88a0/cd033d65cf22/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Reunited Worlds (Original Soundtrack) Part.4</div>
+<div><a href='https://tidal.com/album/339874847' target='_blank'>https://tidal.com/album/339874847</a></div>
+<div>Yun DDanDDan - We will meet again</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/339874847' target='_blank'><img src='https://tidal.com/img/FB_1200x627.png' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Hotddan</div>
+<div><a href='https://tidal.com/album/189188951' target='_blank'>https://tidal.com/album/189188951</a></div>
+<div>Yun DDanDDan - In The Summer</div>
+<div>Yun DDanDDan - On The Holiday Road</div>
+<div>Yun DDanDDan - I Don't Know How to Drink</div>
+<div>Yun DDanDDan - The Early Morning Heat</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188951' target='_blank'><img src='https://resources.tidal.com/images/013ffee6/2c3a/4dfe/b9d4/76fc7e114475/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] summer flowers</div>
+<div><a href='https://tidal.com/album/404103567' target='_blank'>https://tidal.com/album/404103567</a></div>
+<div>J_ust, Yun DDanDDan - summer flowers</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/404103567' target='_blank'><img src='https://resources.tidal.com/images/fb59855f/0786/4ff5/ba6f/f26961407933/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] The Beginning of Love is From The Move (with SILVERBELL)</div>
+<div><a href='https://tidal.com/album/189188968' target='_blank'>https://tidal.com/album/189188968</a></div>
+<div>Yun DDanDDan, Silverbell - The Beginning of Love is From The Move (with SILVE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188968' target='_blank'><img src='https://resources.tidal.com/images/75490529/3127/4082/8a18/3bd09da0ecf6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] With</div>
+<div><a href='https://tidal.com/album/189188513' target='_blank'>https://tidal.com/album/189188513</a></div>
+<div>Yun DDanDDan - BABY GIRL</div>
+<div>Yun DDanDDan - With</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188513' target='_blank'><img src='https://resources.tidal.com/images/8bcdd623/0f2c/4c07/ab0c/2d62f4c5903d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Two Umbrella</div>
+<div><a href='https://tidal.com/album/189188532' target='_blank'>https://tidal.com/album/189188532</a></div>
+<div>Yun DDanDDan - Two Umbrella</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188532' target='_blank'><img src='https://resources.tidal.com/images/4d0865f7/1312/4a45/aa3e/290534e0c339/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] Fifty-Fifty</div>
+<div><a href='https://tidal.com/album/189188959' target='_blank'>https://tidal.com/album/189188959</a></div>
+<div>Yun DDanDDan - Stay Close (Original Version)</div>
+<div>Yun DDanDDan - Walking in The Winter</div>
+<div>Yun DDanDDan - To Your Eyes</div>
+<div>Yun DDanDDan - Stay Close (Different Version)</div>
+<div>Yun DDanDDan - Walking in The Winter (Studio Live Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189188959' target='_blank'><img src='https://resources.tidal.com/images/a64a5330/3287/4ffe/b948/87cc407155f6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/4_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ4) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/윤딴딴 (Yun DDanDDan)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
