@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이규석 ( Tidal Kyu seok Lee )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이규석 ( Tidal Kyu seok Lee )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/2ea6d3ac/d8e3/4f8f/8d5b/5d1b863c911e/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/35701667' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이규석</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>진정 사랑이라면, 그 마음을 노래하는 영원한 감성 보컬, 이규석</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Kyu seok Lee</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>If it's true love, an eternal emotional vocalist singing that heart, Kyu seok Lee</div><p>따뜻한 감성과 깊이 있는 울림으로 오랫동안 사랑받아온 가수 이규석님을 소개합니다. 그의 음악은 섬세한 가사와 서정적인 멜로디로 듣는 이의 마음을 어루만져 주어요. 시대를 초월하는 그의 음악 세계로 함께 떠나볼까요?</p><p>Let me introduce Kyu seok Lee, a singer who has been loved for a long time for his warm sensibility and deep resonance. His music caresses the hearts of listeners with delicate lyrics and lyrical melodies. Shall we embark on a journey into his timeless world of music?</p><p>✧</p><p>그룹 탄생</p><p>이규석님은 솔로 가수로 데뷔하여 특유의 감성적인 보이스로 대중의 마음을 사로잡았어요. 그의 음악은 사랑과 이별, 그리고 삶의 애환을 진솔하게 담아내 많은 이들에게 공감을 얻었습니다. 꾸준한 활동을 통해 자신만의 음악적 색깔을 확고히 했답니다.</p><p>Group Formation</p><p>Kyu seok Lee debuted as a solo singer and captivated the public with his unique emotional voice. His music honestly portrays love, separation, and the sorrows of life, gaining empathy from many. Through consistent activities, he has firmly established his own musical color.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>이규석님의 음악은 서정적인 발라드를 기반으로 하며, 때로는 포크 음악의 따뜻함도 느껴져요. 그의 무대는 진솔한 감정 표현과 안정적인 가창력이 돋보이며, 듣는 이들에게 깊은 감동을 선사합니다. 편안하면서도 호소력 짙은 그의 목소리는 오랫동안 여운을 남기죠.</p><p>Music and Performance</p><p>Kyu seok Lee's music is based on lyrical ballads, and sometimes you can feel the warmth of folk music. His stage stands out with sincere emotional expression and stable singing ability, giving listeners a deep impression. His comfortable yet appealing voice leaves a lasting impression.</p><p>✧</p><p>주요 활동</p><p>이규석님은 다양한 방송 활동과 콘서트를 통해 팬들과 꾸준히 소통해왔어요. 드라마 OST 참여를 통해 그의 음악은 더욱 폭넓은 대중에게 알려지게 되었답니다. 오랜 시간 동안 변함없는 모습으로 음악 활동을 이어오고 있다는 점이 그의 큰 매력입니다.</p><p>Main Activities</p><p>Kyu seok Lee has consistently communicated with fans through various broadcasting activities and concerts. Through participation in drama OSTs, his music has become known to a wider audience. His continued musical activities with an unchanging appearance for a long time is his great charm.</p><p>✧</p><p>미래/의미</p><p>이규석님의 음악은 시대를 초월하여 많은 사람들의 마음속에 깊이 자리 잡고 있습니다. 앞으로도 그의 따뜻한 음악은 우리에게 위로와 감동을 선사할 것이라고 기대됩니다. 그의 음악 여정이 계속되기를 응원하며, 앞으로 들려줄 이야기가 더욱 기대됩니다.</p><p>Future/Meaning</p><p>Kyu seok Lee's music transcends generations and is deeply rooted in the hearts of many people. It is expected that his warm music will continue to provide us with comfort and inspiration. We support his musical journey and look forward to the stories he will tell in the future.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2023] 진정 사랑이라면</div>
+<div><a href='https://tidal.com/album/270849862' target='_blank'>https://tidal.com/album/270849862</a></div>
+<div>Kyu seok Lee - 진정 사랑이라면</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/270849862' target='_blank'><img src='https://resources.tidal.com/images/33bc0894/4cfc/4920/b755/b160dec2f061/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] 사랑을 피우리라</div>
+<div><a href='https://tidal.com/album/287647682' target='_blank'>https://tidal.com/album/287647682</a></div>
+<div>Kyu seok Lee - 사랑을 피우리라</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287647682' target='_blank'><img src='https://resources.tidal.com/images/d642f183/621c/4511/9c6c/41ca390fa294/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] 그리운 고향 남원이여</div>
+<div><a href='https://tidal.com/album/266782951' target='_blank'>https://tidal.com/album/266782951</a></div>
+<div>Kyu seok Lee - 그리운 고향 남원이여</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/266782951' target='_blank'><img src='https://resources.tidal.com/images/699ab6d3/be09/4a69/8ded/19fee2013a7d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1990] 사랑을 찾아서</div>
+<div><a href='https://tidal.com/album/318414271' target='_blank'>https://tidal.com/album/318414271</a></div>
+<div>Kyu seok Lee - 사랑을 찾아서</div>
+<div>Kyu seok Lee - 사랑하는 건</div>
+<div>Kyu seok Lee - I Love You(그대 사랑)</div>
+<div>Kyu seok Lee - 그대여 이제는</div>
+<div>Kyu seok Lee - 달라진 것 하나도 없네</div>
+<div>Kyu seok Lee - 안개속에 사라져가네</div>
+<div>Kyu seok Lee - 오직 한사람 밖에는</div>
+<div>Kyu seok Lee - 아픔으로</div>
+<div>Kyu seok Lee - 사랑의 향기</div>
+<div>Kyu seok Lee - 안개빛 추억</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318414271' target='_blank'><img src='https://resources.tidal.com/images/04c00d46/3347/4dee/aec7/893610a67f40/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1987] 기차와 소나무</div>
+<div><a href='https://tidal.com/album/318415340' target='_blank'>https://tidal.com/album/318415340</a></div>
+<div>Kyu seok Lee - 기차와 소나무</div>
+<div>Kyu seok Lee - 이제 헤어짐 없이</div>
+<div>Kyu seok Lee - 나의 노래</div>
+<div>Kyu seok Lee - 아름다운 노래를</div>
+<div>Kyu seok Lee - 영혼이 흐느낄 때</div>
+<div>Kyu seok Lee - 언제나 버릇처럼</div>
+<div>Kyu seok Lee - 나만의 그대여</div>
+<div>Kyu seok Lee - 나의 길</div>
+<div>Kyu seok Lee - 잃어버린 시</div>
+<div>Kyu seok Lee - 새벽열차</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/318415340' target='_blank'><img src='https://resources.tidal.com/images/2ea6d3ac/d8e3/4f8f/8d5b/5d1b863c911e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/4_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ4) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/이규석 (Kyu seok Lee)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
