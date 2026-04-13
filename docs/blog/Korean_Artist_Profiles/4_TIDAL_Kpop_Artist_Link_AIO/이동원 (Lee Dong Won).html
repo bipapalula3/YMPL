@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 이동원 ( Tidal Lee Dong Won )</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position:absolute; right:10px; bottom:8px; font-size:12px; color:#f3f4f6; padding:6px 10px; border-radius:8px; backdrop-filter:blur(4px); }
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    .artist-btn { padding:12px 20px; font-size:15px; color:#fff; background:rgba(37,99,235,0.6); border:1px solid rgba(147,197,253,0.6); border-radius:14px; backdrop-filter:blur(6px); transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .artist-btn:hover { background:rgba(29,78,216,0.8); transform:translateY(-2px); box-shadow:0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 이동원 ( Tidal Lee Dong Won )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/a23b1516/6ea9/41db/9b9a/c519911f8f7d/320x320.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/browse/artist/16828561' target='_blank' class='artist-btn'>TIDAL KArtist ▶️ 1</a></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 이동원</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>이동원 – ‘가을 편지’에 실어 보내는 짙은 그리움, ‘부용산’에 담긴 애틋한 향수를 노래하는 시인</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Lee Dong Won</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Lee Dong Won – A poet singing of deep longing in 'Autumn Letter' and tender nostalgia in 'Buyongsan'</div><p>깊은 울림을 주는 목소리로 삶의 풍경을 노래하는 가수, 이동원님을 소개합니다. 그의 음악은 마치 한 편의 시처럼 우리의 마음을 어루만져 주는데요. 진솔한 가사와 따뜻한 멜로디는 듣는 이로 하여금 깊은 감동을 느끼게 합니다.</p><p>Let me introduce Lee Dong Won, a singer who sings the landscapes of life with a deeply resonant voice. His music, like a poem, touches our hearts. Sincere lyrics and warm melodies deeply move the listener.</p><p>✧</p><p>노래, 그 시작</p><p>이동원은 1970년대 후반, 포크 음악계에 등장하여 자신만의 음악 세계를 구축했어요. 그의 노래는 단순한 유행을 넘어, 시대를 초월하는 감동을 선사하며 많은 이들의 사랑을 받았답니다. 특히 서정적인 가사와 멜로디는 그의 음악을 더욱 특별하게 만들었어요.</p><p>The Beginning of Song</p><p>Lee Dong Won appeared in the folk music scene in the late 1970s and established his own musical world. His songs transcended simple trends, delivering timeless emotions and receiving love from many. In particular, his lyrical lyrics and melodies made his music even more special.</p><p>✧</p><p>음악적 색채와 깊이</p><p>그의 음악은 포크를 기반으로 하지만, 클래식, 가곡 등 다양한 장르의 요소를 녹여낸 것이 특징입니다. 깊이 있는 가사와 섬세한 표현력은 듣는 이로 하여금 마치 한 편의 드라마를 보는 듯한 느낌을 선사하는데요. 특히 삶의 애환과 사랑, 그리움 등을 진솔하게 담아낸 가사는 많은 이들의 공감을 얻고 있어요.</p><p>Musical Color and Depth</p><p>His music is based on folk, but it is characterized by incorporating elements of various genres such as classical music and art songs. The profound lyrics and delicate expressiveness give the listener the feeling of watching a drama. In particular, the lyrics that honestly depict the joys and sorrows of life, love, and longing resonate with many.</p><p>✧</p><p>주요 활동 발자취</p><p>이동원은 ‘가을 편지’, ‘향수’ 등 수많은 히트곡을 발표하며 대중적인 인기를 얻었습니다. 콘서트와 방송 출연 등 다양한 활동을 통해 꾸준히 팬들과 소통해왔는데요. 그의 음악은 단순한 노래를 넘어, 삶의 위로와 희망을 전하는 메시지로 자리매김했어요.</p><p>Key Activities</p><p>Lee Dong Won gained popular appeal by releasing numerous hit songs such as 'Autumn Letter' and 'Nostalgia'. He has consistently communicated with fans through various activities such as concerts and broadcasting appearances. His music has become a message of comfort and hope in life, going beyond simple songs.</p><p>✧</p><p>그의 음악이 주는 의미</p><p>이동원의 음악은 시간이 흘러도 변치 않는 감동을 선사합니다. 그의 노래는 단순한 유행을 따르기보다는, 삶의 진솔한 이야기를 담아내어 깊은 공감을 불러일으키는데요. 앞으로도 그의 음악은 많은 사람들에게 위로와 희망을 전하는 따뜻한 선율로 기억될 것입니다.</p><p>The Meaning of His Music</p><p>Lee Dong Won's music delivers unchanging emotions even as time passes. Rather than following simple trends, his songs evoke deep empathy by containing sincere stories of life. In the future, his music will be remembered as a warm melody that conveys comfort and hope to many.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2010] 추남</div>
+<div><a href='https://tidal.com/album/218703202' target='_blank'>https://tidal.com/album/218703202</a></div>
+<div>이동원 - 추남</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/218703202' target='_blank'><img src='https://resources.tidal.com/images/25501fe7/6672/49d7/b7dc/35e3ee9d9642/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2009] 삶과 시</div>
+<div><a href='https://tidal.com/album/218738635' target='_blank'>https://tidal.com/album/218738635</a></div>
+<div>이동원 - 길</div>
+<div>이동원 - 향수</div>
+<div>이동원 - 물</div>
+<div>이동원 - 이별노래</div>
+<div>이동원 - 가을편지</div>
+<div>이동원 - 사랑</div>
+<div>이동원 - 귀천</div>
+<div>이동원 - 실버들</div>
+<div>이동원 - 마흔살 되는 해는</div>
+<div>이동원 - 부용산</div>
+<div>이동원 - 봄길</div>
+<div>이동원 - 이렇게 나는 오늘도</div>
+<div>이동원 - 또 기다리는 편지</div>
+<div>이동원 - 세월이 가면</div>
+<div>이동원 - 아름다운 나라</div>
+<div>이동원 - 애인</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/218738635' target='_blank'><img src='https://resources.tidal.com/images/e5d0a8f4/9455/4600/b2bf/bc95f0fa3ebf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1999] 봄길</div>
+<div><a href='https://tidal.com/album/184618420' target='_blank'>https://tidal.com/album/184618420</a></div>
+<div>이동원 - 봄길</div>
+<div>이동원 - 물나라 수국</div>
+<div>이동원 - 그리움</div>
+<div>이동원 - 명태</div>
+<div>이동원 - 고독한 여자의 미소는 슬퍼</div>
+<div>이동원 - 아름다운 나라</div>
+<div>이동원 - 부용산</div>
+<div>이동원 - 싸릿골</div>
+<div>이동원 - 그 겨울의 찻집</div>
+<div>이동원 - 우리가 원하는 우리나라</div>
+<div>이동원 - 킬리만자로의 표범</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/184618420' target='_blank'><img src='https://resources.tidal.com/images/9ac6cdf4/c84c/4590/bfac/fe15e14455a1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[1984] 이동원 골든 이별노래</div>
+<div><a href='https://tidal.com/album/305406300' target='_blank'>https://tidal.com/album/305406300</a></div>
+<div>이동원 - 이별노래</div>
+<div>이동원 - 장미 그리고 바람</div>
+<div>이동원 - 또 기다리는 편지</div>
+<div>이동원 - 가을 편지</div>
+<div>이동원 - 애인</div>
+<div>이동원 - 세월이 가면</div>
+<div>이동원 - 비는 내리는데</div>
+<div>이동원 - 귀천</div>
+<div>이동원 - 때 아닌 비</div>
+<div>이동원 - 나무는</div>
+<div>이동원 - 불새</div>
+<div>이동원 - 마흔살 되는 해는</div>
+<div>이동원 - 사랑이야</div>
+<div>이동원 - 사랑의 꽃</div>
+<div>이동원 - 헤이</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/305406300' target='_blank'><img src='https://resources.tidal.com/images/36c43bf6/9708/48ea/bbab/ffdede731f83/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/4_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ4) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/4_TIDAL_Kpop_Artist_Link_AIO/이동원 (Lee Dong Won)_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Track Translation (EN/KO/ES/ZH)<br>▶ Open translation page.<br>"
+                 data-ko="📖 트랙 번역 열기 (한/영/스페인/중)<br>▶ 번역 페이지로 이동<br>">
+                 🌐 Track Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open translation page.<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
