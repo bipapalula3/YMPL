@@ -342,7 +342,7 @@ function runSearch(terms, mode) {
   const W = WEIGHTS[mode];
 
   return INDEX
-    .map(item => {
+    .map(function(item) {
       let score = 0;
       let matched = 0;
 
@@ -376,30 +376,32 @@ function runSearch(terms, mode) {
       return { ...item, _score: score };
     })
     .filter(Boolean)
-    .sort((a, b) => b._score - a._score);.sort((a, b) => {
-      const getDate = (title) => {
+    .sort(function(a, b) {
+
+      function getDate(title) {
         if (!title) return null;
-    
-        const match = title.substring(0, 8);
+
+        const match = title.slice(0, 8);
+
         if (/^\d{8}$/.test(match)) {
           return parseInt(match, 10);
         }
         return null;
-      };
-    
+      }
+
       const dateA = getDate(a.title);
       const dateB = getDate(b.title);
-    
-      // 🔥 둘 다 날짜 있으면 → 최신순
-      if (dateA && dateB) {
+
+      // 🔥 둘 다 날짜 있음 → 최신순
+      if (dateA !== null && dateB !== null) {
         return dateB - dateA;
       }
-    
-      // 🔥 하나만 날짜 있으면 → 날짜 있는 쪽 우선
-      if (dateA && !dateB) return -1;
-      if (!dateA && dateB) return 1;
-    
-      // 🔥 둘 다 날짜 없으면 → 기존 score
+
+      // 🔥 날짜 있는 것 우선
+      if (dateA !== null && dateB === null) return -1;
+      if (dateA === null && dateB !== null) return 1;
+
+      // 🔥 기존 점수 정렬
       return b._score - a._score;
     });
 }
