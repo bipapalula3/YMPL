@@ -400,7 +400,7 @@ function search({ updateHistory = true } = {}) {
   if (isEncryptedKey(raw)) {
     const validKeys = buildValidEncryptedKeys(raw);
     if (!validKeys) return;
-
+  
     RESULTS = INDEX.filter(item => {
       const titleKeys = item.keywords?.title || [];
       const trackKeys = item.keywords?.track || [];
@@ -408,32 +408,31 @@ function search({ updateHistory = true } = {}) {
       for (const k of trackKeys) { if (validKeys.has(k.toLowerCase())) return true; }
       return false;
     })
-
+  
+    // ✅🔥 여기 추가 (핵심)
     .sort((a, b) => {
-        const getDate = (title) => {
-          if (!title) return 0;
+      const getDate = (title) => {
+        if (!title) return 0;
+  
+        const match = title.substring(0, 8);
+        if (/^\d{8}$/.test(match)) {
+          return parseInt(match, 10);
+        }
+        return 0;
+      };
+  
+      const dateA = getDate(a.title);
+      const dateB = getDate(b.title);
+  
+      return dateB - dateA; // 최신순
+    });
 
-          const match = title.substring(0, 8);
-          if (/^\d{8}$/.test(match)) {
-            return parseInt(match, 10);
-          }
-          return 0;
-        };
-
-        const dateA = getDate(a.title);
-        const dateB = getDate(b.title);
-
-        return dateB - dateA; // 최신순
-      });
-
-    if (resultCountEl) {
-      // 제목(label)이 있으면 제목을, 없으면 암호키(raw)를 표시
-      resultCountEl.textContent = `${label || raw} 🔍 검색 결과 ${RESULTS.length}건`;
-    }
-
-    renderNextPage();
-    return; // 암호키 검색 완료 후 종료
+  if (resultCountEl) {
+    resultCountEl.textContent = `${label || raw} 🔍 검색 결과 ${RESULTS.length}건`;
   }
+
+  renderNextPage();
+  return;
 
   // 3. 일반 검색 모드
   const terms = splitMixedTokens(raw);
