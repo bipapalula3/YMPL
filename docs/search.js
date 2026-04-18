@@ -409,6 +409,23 @@ function search({ updateHistory = true } = {}) {
       return false;
     });
 
+    .sort((a, b) => {
+        const getDate = (title) => {
+          if (!title) return 0;
+
+          const match = title.substring(0, 8);
+          if (/^\d{8}$/.test(match)) {
+            return parseInt(match, 10);
+          }
+          return 0;
+        };
+
+        const dateA = getDate(a.title);
+        const dateB = getDate(b.title);
+
+        return dateB - dateA; // 최신순
+      });
+
     if (resultCountEl) {
       // 제목(label)이 있으면 제목을, 없으면 암호키(raw)를 표시
       resultCountEl.textContent = `${label || raw} 🔍 검색 결과 ${RESULTS.length}건`;
