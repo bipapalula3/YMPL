@@ -376,7 +376,32 @@ function runSearch(terms, mode) {
       return { ...item, _score: score };
     })
     .filter(Boolean)
-    .sort((a, b) => b._score - a._score);
+    .sort((a, b) => b._score - a._score);.sort((a, b) => {
+      const getDate = (title) => {
+        if (!title) return null;
+    
+        const match = title.substring(0, 8);
+        if (/^\d{8}$/.test(match)) {
+          return parseInt(match, 10);
+        }
+        return null;
+      };
+    
+      const dateA = getDate(a.title);
+      const dateB = getDate(b.title);
+    
+      // 🔥 둘 다 날짜 있으면 → 최신순
+      if (dateA && dateB) {
+        return dateB - dateA;
+      }
+    
+      // 🔥 하나만 날짜 있으면 → 날짜 있는 쪽 우선
+      if (dateA && !dateB) return -1;
+      if (!dateA && dateB) return 1;
+    
+      // 🔥 둘 다 날짜 없으면 → 기존 score
+      return b._score - a._score;
+    });
 }
 
 // -----------------------------
