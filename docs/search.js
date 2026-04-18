@@ -386,55 +386,55 @@ function search({ updateHistory = true } = {}) {
   const raw = EXTERNAL_QUERY.trim();
   if (!raw) return;
 
-  // 1. URL 파라미터에서 제목(label)을 가져옵니다.
   const urlParams = new URLSearchParams(location.search);
   const label = urlParams.get('label');
   const resultCountEl = document.getElementById('resultCount');
 
-  // ✅ 수정된 부분: 히스토리 저장 시 label도 함께 넘겨줍니다.
   if (updateHistory) {
     saveSearchKeyword(raw, label); 
   }
 
-  // 🔥 🔐 2. 암호키 직접 매칭 모드
+  // 🔥 🔐 암호키 검색
   if (isEncryptedKey(raw)) {
     const validKeys = buildValidEncryptedKeys(raw);
     if (!validKeys) return;
-  
-    RESULTS = INDEX.filter(item => {
-      const titleKeys = item.keywords?.title || [];
-      const trackKeys = item.keywords?.track || [];
-      for (const k of titleKeys) { if (validKeys.has(k.toLowerCase())) return true; }
-      for (const k of trackKeys) { if (validKeys.has(k.toLowerCase())) return true; }
-      return false;
-    })
-  
-    // ✅🔥 여기 추가 (핵심)
-    .sort((a, b) => {
-      const getDate = (title) => {
-        if (!title) return 0;
-  
-        const match = title.substring(0, 8);
-        if (/^\d{8}$/.test(match)) {
-          return parseInt(match, 10);
-        }
-        return 0;
-      };
-  
-      const dateA = getDate(a.title);
-      const dateB = getDate(b.title);
-  
-      return dateB - dateA; // 최신순
-    });
 
-  if (resultCountEl) {
-    resultCountEl.textContent = `${label || raw} 🔍 검색 결과 ${RESULTS.length}건`;
-  }
+    RESULTS = INDEX
+      .filter(item => {
+        const titleKeys = item.keywords?.title || [];
+        const trackKeys = item.keywords?.track || [];
+        for (const k of titleKeys) { if (validKeys.has(k.toLowerCase())) return true; }
+        for (const k of trackKeys) { if (validKeys.has(k.toLowerCase())) return true; }
+        return false;
+      })
+      .sort((a, b) => {
+        const getDate = (title) => {
+          if (!title) return 0;
 
-  renderNextPage();
-  return;
+          const match = title.substring(0, 8);
+          if (/^\d{8}$/.test(match)) {
+            return parseInt(match, 10);
+          }
+          return 0;
+        };
 
-  // 3. 일반 검색 모드
+        const dateA = getDate(a.title);
+        const dateB = getDate(b.title);
+
+        return dateB - dateA;
+      });
+
+    if (resultCountEl) {
+      resultCountEl.textContent = `${label || raw} 🔍 검색 결과 ${RESULTS.length}건`;
+    }
+
+    renderNextPage();
+    return;
+  } // ✅🔥 이거 꼭 있어야 함
+
+  // -----------------------------
+  // 일반 검색 모드
+  // -----------------------------
   const terms = splitMixedTokens(raw);
   if (!terms.length) return;
 
@@ -458,7 +458,6 @@ function search({ updateHistory = true } = {}) {
 
   RESULTS = finalResults;
 
-  // 디버그 모드 표시
   if (debugMode) {
     const stat = SEARCH_STATS.get(queryKey) || { count: 0, total: 0 };
     stat.count++; stat.total += RESULTS.length;
@@ -472,7 +471,6 @@ function search({ updateHistory = true } = {}) {
     resultCountEl?.after(debugDiv);
   }
 
-  // 일반 검색 결과 개수 표시
   if (resultCountEl) {
     resultCountEl.textContent = `${label || EXTERNAL_QUERY} 🔍 검색 결과 ${RESULTS.length}건`;
   }
