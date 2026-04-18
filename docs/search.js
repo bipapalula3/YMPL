@@ -407,7 +407,7 @@ function search({ updateHistory = true } = {}) {
       for (const k of titleKeys) { if (validKeys.has(k.toLowerCase())) return true; }
       for (const k of trackKeys) { if (validKeys.has(k.toLowerCase())) return true; }
       return false;
-    });
+    })
 
     .sort((a, b) => {
         const getDate = (title) => {
