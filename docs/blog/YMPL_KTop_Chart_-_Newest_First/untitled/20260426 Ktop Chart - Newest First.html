@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>20260426 Ktop Chart - Newest First</title>
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 4px 10px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 85px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>20260426 Ktop Chart - Newest First</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/716c7074/7d48/44a6/8575/be1447c2b41e/1080x1080.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/playlist/abdd1adc-b9db-442e-ad67-8156c8ac6ae2' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content chart-analysis'><div class='artist-subtitle'>🎧 YMPL Chart</div><div class='artist-subtitle' style='font-size:16px;'>세대와 장르를 아우르는 다채로운 음악 향연, AKMU의 깊이 있는 음악 세계와 BTS의 새로운 시도가 돋보이는 한 주입니다. / A diverse musical feast transcending generations and genres, with AKMU's profound musical world and BTS's new attempts standing out this week.</div><div class='artist-subtitle' style='margin-top:8px;'>🎧 YMPL Chart</div><div class='artist-subtitle' style='font-size:16px;'>A diverse musical feast transcending generations and genres, with AKMU's profound musical world and BTS's new attempts standing out this week.</div><p>이번 주 차트는 다양한 아티스트들의 컴백과 새로운 시도가 돋보입니다. 특히 AKMU의 깊이 있는 음악 세계와 BTS의 색다른 매력을 느낄 수 있는 곡들이 눈에 띕니다. 또한, 신인 그룹들의 활약도 기대되는 한 주입니다. / This week's chart is remarkable for the comebacks and new attempts of various artists. In particular, AKMU's profound musical world and BTS's songs showcasing a different charm stand out. Also, it is a week to look forward to the activities of new groups.</p><p>This week's chart is notable for the comebacks and fresh attempts of various artists. Tracks from AKMU, showcasing their profound musical depth, and BTS, revealing a different charm, are particularly prominent. Additionally, the activities of rising rookie groups are something to look forward to this week.</p><p>✧</p><p>이번 주 차트 흐름</p><p>이번 주 차트는 솔로 아티스트들의 컴백과 그룹들의 새로운 시도가 두드러집니다. 다양한 장르의 음악들이 공존하며, 리스너들에게 폭넓은 선택지를 제공하고 있습니다. 특히, 팝, 힙합, R&B 등 다양한 장르가 혼합된 곡들이 인기를 얻고 있습니다. / This week's chart is characterized by solo artists' comebacks and groups' new attempts. Various genres of music coexist, providing listeners with a wide range of choices. In particular, songs that blend various genres such as pop, hip-hop, and R&B are gaining popularity.</p><p>Chart Trend</p><p>This week's chart showcases comebacks from solo artists and innovative approaches from various groups. Diverse musical genres coexist, offering listeners a wide selection of choices. Tracks blending genres like pop, hip-hop, and R&B are particularly gaining traction.</p><p>✧</p><p>주목해야 할 핵심 곡</p><p>AKMU의 여러 곡들은 특유의 감성과 깊이 있는 메시지를 담고 있어 주목할 만합니다. BTS의 'Body to Body'와 'SWIM'은 기존 스타일과는 다른 새로운 시도를 보여줍니다. IVE의 'BLACKHOLE'과 'BANG BANG'은 강렬한 퍼포먼스와 중독성 있는 멜로디로 팬들을 사로잡을 것으로 예상됩니다. / AKMU's several songs are notable for their unique sensibility and profound messages. BTS's 'Body to Body' and 'SWIM' show new attempts that are different from their existing style. IVE's 'BLACKHOLE' and 'BANG BANG' are expected to captivate fans with their intense performances and addictive melodies.</p><p>Key Tracks to Watch</p><p>AKMU's multiple tracks deserve attention for their unique sensibility and profound messages. BTS's 'Body to Body' and 'SWIM' showcase new experimental sounds distinct from their typical style. IVE's 'BLACKHOLE' and 'BANG BANG' are expected to captivate audiences with their powerful performances and catchy melodies.</p><p>✧</p><p>총평</p><p>이번 주 차트는 다양한 아티스트들의 활약으로 풍성한 음악을 즐길 수 있었습니다. 다음 주에는 또 어떤 새로운 음악들이 차트를 장식할지 기대됩니다. 특히, 신인 그룹들의 성장과 기존 아티스트들의 꾸준한 활동이 기대됩니다. / This week's chart allowed us to enjoy rich music thanks to the activities of various artists. I'm looking forward to seeing what new music will decorate the chart next week. In particular, the growth of new groups and the steady activities of existing artists are expected.</p><p>Conclusion</p><p>This week's chart provided a rich musical experience thanks to the diverse activities of various artists. Anticipation is high for the new music that will grace the charts next week. Notably, the growth of emerging groups and the continued activities of established artists are highly anticipated.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026-04-20] Ode to Love - The 1st Album</div>
+<div><a href='https://tidal.com/album/513758973' target='_blank'>https://tidal.com/album/513758973</a></div>
+<div>NCT WISH - Ode to Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/513758973' target='_blank'><img src='https://resources.tidal.com/images/0578ce8a/d5b2/423f/ac60/00d2b946181c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-04-13] Caligo Pt.2</div>
+<div><a href='https://tidal.com/album/513446658' target='_blank'>https://tidal.com/album/513446658</a></div>
+<div>PLAVE - Born Savage</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/513446658' target='_blank'><img src='https://resources.tidal.com/images/eceabfdc/1767/4466/befb/f8c3bfefff3b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-04-13] 7TH YEAR A Moment of Stillness in the Thorns</div>
+<div><a href='https://tidal.com/album/514462791' target='_blank'>https://tidal.com/album/514462791</a></div>
+<div>TOMORROW X TOGETHER - Stick With You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/514462791' target='_blank'><img src='https://resources.tidal.com/images/76c1ec66/b693/473f/bc38/5fcc67c0c7e6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-04-07] FLOWERING</div>
+<div><a href='https://tidal.com/album/509924956' target='_blank'>https://tidal.com/album/509924956</a></div>
+<div>AKMU (악동뮤지션) - Paradise of Rumors</div>
+<div>AKMU (악동뮤지션) - Spring Colors</div>
+<div>AKMU (악동뮤지션) - Paid with Bugs</div>
+<div>AKMU (악동뮤지션) - Joy, Sorrow, A Beautiful Heart</div>
+<div>AKMU (악동뮤지션) - Sunshine Bless You</div>
+<div>AKMU (악동뮤지션) - Young and Married</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/509924956' target='_blank'><img src='https://resources.tidal.com/images/8a57bc6f/6994/4581/8096/a852e6dabbd5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-03-27] iScreaM Vol.39  RUDE! Remixes</div>
+<div><a href='https://tidal.com/album/508705922' target='_blank'>https://tidal.com/album/508705922</a></div>
+<div>Hearts2Hearts - RUDE!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/508705922' target='_blank'><img src='https://resources.tidal.com/images/554e1cf1/e3a3/44dc/922c/8365468a156e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-03-20] ARIRANG</div>
+<div><a href='https://tidal.com/album/508012127' target='_blank'>https://tidal.com/album/508012127</a></div>
+<div>BTS - Body to Body</div>
+<div>BTS - SWIM</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/508012127' target='_blank'><img src='https://resources.tidal.com/images/d94e2e39/bf5c/4e48/bf20/406f8c4455f3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-03-11] LOVE CATCHER</div>
+<div><a href='https://tidal.com/album/505510726' target='_blank'>https://tidal.com/album/505510726</a></div>
+<div>YENA - Catch Catch</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/505510726' target='_blank'><img src='https://resources.tidal.com/images/a90eca84/aba1/4643/b926/b590da84287d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-03-06] REVIVE+</div>
+<div><a href='https://tidal.com/album/500283189' target='_blank'>https://tidal.com/album/500283189</a></div>
+<div>IVE - BLACKHOLE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/500283189' target='_blank'><img src='https://resources.tidal.com/images/f61a7729/dbaf/4c84/a64d/241a228703ac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-02-27] DEADLINE</div>
+<div><a href='https://tidal.com/album/502133132' target='_blank'>https://tidal.com/album/502133132</a></div>
+<div>BLACKPINK - GO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/502133132' target='_blank'><img src='https://resources.tidal.com/images/0d52fc02/1fce/4714/a0e1/f04db1729ede/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2026-02-09] BANG BANG</div>
+<div><a href='https://tidal.com/album/495831079' target='_blank'>https://tidal.com/album/495831079</a></div>
+<div>IVE - BANG BANG</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/495831079' target='_blank'><img src='https://resources.tidal.com/images/9c1051cb/cc64/433a/8e18/8ddd9c7ae8c6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-01-25] Delulu Pack</div>
+<div><a href='https://tidal.com/album/487532341' target='_blank'>https://tidal.com/album/487532341</a></div>
+<div>KiiiKiii - 404 (New Era)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/487532341' target='_blank'><img src='https://resources.tidal.com/images/8f402fb7/b4b8/4854/a6c9/2fedbc07f1e4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-11-24] NOT CUTE ANYMORE</div>
+<div><a href='https://tidal.com/album/475449955' target='_blank'>https://tidal.com/album/475449955</a></div>
+<div>ILLIT - NOT CUTE ANYMORE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/475449955' target='_blank'><img src='https://resources.tidal.com/images/7e6057fc/2f56/4dd7/b047/d9419b6d0657/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-11-17] ONE MORE TIME</div>
+<div><a href='https://tidal.com/album/471229840' target='_blank'>https://tidal.com/album/471229840</a></div>
+<div>ALLDAY PROJECT - ONE MORE TIME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/471229840' target='_blank'><img src='https://resources.tidal.com/images/f55ebcbe/0ce6/4e90/b35f/335ab5fcab54/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-10-27] No Words Can Say</div>
+<div><a href='https://tidal.com/album/468547987' target='_blank'>https://tidal.com/album/468547987</a></div>
+<div>Roy Kim - No Words Can Say</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/468547987' target='_blank'><img src='https://resources.tidal.com/images/dfaa4548/9f57/4176/8408/26b4e0af2ad4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-10-24] SPAGHETTI</div>
+<div><a href='https://tidal.com/album/468530533' target='_blank'>https://tidal.com/album/468530533</a></div>
+<div>LE SSERAFIM, j-hope - SPAGHETTI</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/468530533' target='_blank'><img src='https://resources.tidal.com/images/da9858f8/4a88/4383/b4c5/bd45d3edb89f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-10-16] TIME CAPSULE</div>
+<div><a href='https://tidal.com/album/467328242' target='_blank'>https://tidal.com/album/467328242</a></div>
+<div>DAVICHI - TIME CAPSULE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/467328242' target='_blank'><img src='https://resources.tidal.com/images/11f4ad86/6a80/411d/bd71/c2f916ca6538/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-10-13] TWS 4th Mini Album 'play hard'</div>
+<div><a href='https://tidal.com/album/465846455' target='_blank'>https://tidal.com/album/465846455</a></div>
+<div>TWS - OVERDRIVE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/465846455' target='_blank'><img src='https://resources.tidal.com/images/410d5268/2276/471d/82bd/bc694b1756cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-10-13] Blue Valentine</div>
+<div><a href='https://tidal.com/album/465846425' target='_blank'>https://tidal.com/album/465846425</a></div>
+<div>NMIXX - Blue Valentine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/465846425' target='_blank'><img src='https://resources.tidal.com/images/44bf3160/6dc7/4893/b2f4/a54b91879d86/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2025-08-15] Golden (from the Netflix film KPop Demon Hunters)</div>
+<div><a href='https://tidal.com/album/445765188' target='_blank'>https://tidal.com/album/445765188</a></div>
+<div>HUNTRX, EJAE, AUDREY NUNA, REI AMI, KPop Demon Hunters Cast - Golden</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/445765188' target='_blank'><img src='https://resources.tidal.com/images/aae92fd7/8f4c/408f/8115/06c2d29af4b0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-08-10] 시작의 아이 ❍ ハジマリのコ Starting With You  ♡</div>
+<div><a href='https://tidal.com/album/452280490' target='_blank'>https://tidal.com/album/452280490</a></div>
+<div>Park Da Hye, Maktub - Starting With You ❍</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/452280490' target='_blank'><img src='https://resources.tidal.com/images/eca00cce/2cad/49cf/ac19/e53a4cff6a84/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-08-04] JAMONG SALGU CLUB</div>
+<div><a href='https://tidal.com/album/449784055' target='_blank'>https://tidal.com/album/449784055</a></div>
+<div>HANRORO - 0+0</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/449784055' target='_blank'><img src='https://resources.tidal.com/images/ecbc0338/8e21/4640/b78b/5d9524f477b8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-07-14] EROS</div>
+<div><a href='https://tidal.com/album/446648120' target='_blank'>https://tidal.com/album/446648120</a></div>
+<div>LEE CHANHYUK - Endangered Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/446648120' target='_blank'><img src='https://resources.tidal.com/images/385343f8/eab5/4c69/84da/1fd4c6151af1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-07-11] JUMP</div>
+<div><a href='https://tidal.com/album/447111620' target='_blank'>https://tidal.com/album/447111620</a></div>
+<div>BLACKPINK - JUMP</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/447111620' target='_blank'><img src='https://resources.tidal.com/images/4fde9490/7c31/4a7f/87b2/ed2a627944d2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-03-06] To Reach You</div>
+<div><a href='https://tidal.com/album/422218705' target='_blank'>https://tidal.com/album/422218705</a></div>
+<div>10CM - To Reach You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/422218705' target='_blank'><img src='https://resources.tidal.com/images/256d51d5/a7bf/4817/b816/d9e7600a5bee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-02-21] Ruby</div>
+<div><a href='https://tidal.com/album/421911994' target='_blank'>https://tidal.com/album/421911994</a></div>
+<div>JENNIE - like JENNIE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/421911994' target='_blank'><img src='https://resources.tidal.com/images/6ee044e7/a904/4552/bec3/e891b15032a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025-02-03] IVE EMPATHY</div>
+<div><a href='https://tidal.com/album/410745678' target='_blank'>https://tidal.com/album/410745678</a></div>
+<div>IVE - REBEL HEART</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/410745678' target='_blank'><img src='https://resources.tidal.com/images/2e455d68/b25c/4063/bbd9/b9972c4edbe9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024-12-06] rosie</div>
+<div><a href='https://tidal.com/album/403461982' target='_blank'>https://tidal.com/album/403461982</a></div>
+<div>ROSÉ - toxic till the end</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/403461982' target='_blank'><img src='https://resources.tidal.com/images/4d7dbc49/dc95/4c55/8d0c/0a38a13ee715/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024-11-22] HOME SWEET HOME (feat. TAEYANG & DAESUNG)</div>
+<div><a href='https://tidal.com/album/400583267' target='_blank'>https://tidal.com/album/400583267</a></div>
+<div>G-DRAGON, Taeyang, Daesung - HOME SWEET HOME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/400583267' target='_blank'><img src='https://resources.tidal.com/images/c5ffd497/68a5/4f07/b509/c58b29b50c14/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024-10-17] If You Ask Me What Love Is</div>
+<div><a href='https://tidal.com/album/391729485' target='_blank'>https://tidal.com/album/391729485</a></div>
+<div>Roy Kim - If You Ask Me What Love Is</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/391729485' target='_blank'><img src='https://resources.tidal.com/images/d920fe7b/3748/4f4a/8681/aed3061b6f0f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024-07-05] Armageddon - The 1st Album</div>
+<div><a href='https://tidal.com/album/385360280' target='_blank'>https://tidal.com/album/385360280</a></div>
+<div>aespa - Supernova</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/385360280' target='_blank'><img src='https://resources.tidal.com/images/2f57959a/42ad/42e3/9910/0857d77b2355/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024-05-07] BLOSSOM - THE 3RD MINI ALBUM</div>
+<div><a href='https://tidal.com/album/360134113' target='_blank'>https://tidal.com/album/360134113</a></div>
+<div>D.O - Popcorn</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/360134113' target='_blank'><img src='https://resources.tidal.com/images/bb439021/3286/453a/ae4b/7c83f9f587b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024-03-18] Fourever</div>
+<div><a href='https://tidal.com/album/350955577' target='_blank'>https://tidal.com/album/350955577</a></div>
+<div>DAY6 - HAPPY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/350955577' target='_blank'><img src='https://resources.tidal.com/images/78260e9a/ffee/4fb4/bc66/760d96ce6000/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024-01-29] 2</div>
+<div><a href='https://tidal.com/album/423513359' target='_blank'>https://tidal.com/album/423513359</a></div>
+<div>i-dle - Fate</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/423513359' target='_blank'><img src='https://resources.tidal.com/images/7a9595cf/3fe2/45de/a4c9/d60405f124b1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/YMPL_KTop_Chart_-_Newest_First/YMPL_KTop_Chart_-_Newest_First.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: YMPL KTop Chart - Newest First
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/YMPL_KTop_Chart_-_Newest_First/untitled/20260426%20Ktop%20Chart%20-%20Newest%20First_trk.html"
+                 id="translateBtn"
+                 data-en="🌐 Translation (EN/KO/ES/ZH)<br>▶ Open Track Page<br>"
+                 data-ko="📖 번역하기 (한/영/스페인/중)<br>▶ 트랙 페이지 열기<br>">
+                 🌐 Translation (EN/KO/ES/ZH)<br>
+                 ▶ Open Track Page<br>
+              </a>
+            </div>
+
+            <script>
+            (function () {
+                const btn = document.getElementById("translateBtn");
+                if (!btn) return;
+
+                let isKo = false;
+
+                // 🔁 버튼 문구 자동 토글 (3초마다)
+                setInterval(() => {
+                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+                    isKo = !isKo;
+                }, 3000);
+            })();
+            </script>
+            
+</body>
+</html>
