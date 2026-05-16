@@ -151,7 +151,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 10px 10px 4px 10px;
+  padding: 6px 2px 6px 2px;
   background: #111217 !important;
   z-index: 9999;
   display: flex;
@@ -167,7 +167,7 @@
   width: calc(100% - 30px);
   margin: 0 auto !important;
   /* 높이 축소 */
-  padding: 8px 14px;
+  padding: 10px 16px;
   background: linear-gradient(145deg, #3d341a, #1f1a0d);
   color: #ffd966 !important;
   text-decoration: none !important;
@@ -176,10 +176,10 @@
   text-align: left;
   /* 줄간격 축소 */
   line-height: 1.1;
-  /* 85 → 42 정도 추천 */
-  min-height: 42px;
+  /* 85 → 46 정도 추천 */
+  min-height: 48px;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   position: relative;
   overflow: hidden;
@@ -189,12 +189,14 @@
   animation: pulseTranslate 3s infinite ease-in-out;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+/* 흐르는 텍스트 */
 .translate-text {
   display: inline-block;
-  padding-left: 100%;
   white-space: nowrap;
+  padding-left: 100%;
   animation: marqueeTranslate 12s linear infinite;
 }
+/* 좌측 흐름 */
 @keyframes marqueeTranslate {
   0% {
     transform: translateX(0%);
@@ -202,7 +204,7 @@
   100% {
     transform: translateX(-100%);
   }
-}    
+}
 .translate-btn:visited { color: #ffd966 !important; }
 .translate-btn:hover {
   transform: scale(1.02);
@@ -701,25 +703,24 @@
      data-en="🌐 Translation (EN/KO/ES/ZH) ▶ Open Track Page"
      data-ko="📖 번역하기 (한/영/스페인/중) ▶ 트랙 페이지 열기">
 
-     <span class="translate-text">
+    <span class="translate-text" id="translateText">
        🌐 Translation (EN/KO/ES/ZH) ▶ Open Track Page
      </span>
-
   </a>
 </div>
 
 <script>
 (function () {
+    const text = document.getElementById("translateText");
     const btn = document.getElementById("translateBtn");
-    if (!btn) return;
-
+    if (!text || !btn) return;
     let isKo = false;
-
-    // 🔁 버튼 문구 자동 토글 (3초마다)
     setInterval(() => {
-        btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
+        text.textContent = isKo
+            ? btn.dataset.en
+            : btn.dataset.ko;
         isKo = !isKo;
-    }, 3000);
+    }, 5000);
 })();
 </script>
             
