@@ -98,38 +98,123 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 10px 10px 4px 10px;
+  padding: 6px 6px 6px 6px;
   background: #111217 !important;
   z-index: 9999;
   display: flex;
   justify-content: center;
 }
+
 .translate-btn {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
   max-width: 900px;
   width: calc(100% - 30px);
   margin: 0 auto !important;
-  padding: 15px 20px;
+  padding: 10px 16px;
   background: linear-gradient(145deg, #3d341a, #1f1a0d);
   color: #ffd966 !important;
   text-decoration: none !important;
   border: 0.4px solid #ffd966;
   border-radius: 8px;
-  text-align: center;
-  line-height: 1.5;
-  min-height: 85px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
   box-sizing: border-box;
   font-size: 16px;
   font-weight: 700;
-  position: relative;
-  overflow: hidden;
+  line-height: 1.1;
   box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
   -webkit-animation: pulseTranslate 3s infinite ease-in-out;
   animation: pulseTranslate 3s infinite ease-in-out;
   transition: transform 0.2s, box-shadow 0.2s;
+}   
+/* =========================================
+   ✅ 페이드 + 정지 + 흐름 반복 마퀴
+========================================= */
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  /* ✅ 좌우 자연스러운 페이드 */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  /* ✅ 전체 반복 */
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  /* ✅ 문장 간격 */
+  padding-right: 40px;
+  /* ✅ 시작/끝 페이드 */
+  opacity: 0;
+  /* ✅ 텍스트 애니메이션 */
+  animation: textFade 24s linear infinite;
+}
+/* =========================================
+   ✅ 흐름 이동
+========================================= */
+@keyframes marqueeFlow {
+  /* -------------------------
+     1️⃣ 처음 정지
+  ------------------------- */
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  /* -------------------------
+     2️⃣ 좌측 흐름
+  ------------------------- */
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  /* -------------------------
+     3️⃣ 마지막 정지
+  ------------------------- */
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+/* =========================================
+   ✅ 페이드 인/아웃
+========================================= */
+@keyframes textFade {
+  /* 시작 투명 */
+  0% {
+    opacity: 0;
+  }
+  /* 페이드 인 */
+  8% {
+    opacity: 1;
+  }
+  /* 유지 */
+  68% {
+    opacity: 1;
+  }
+  /* 페이드 아웃 */
+  100% {
+    opacity: 0;
+  }
 }
 .translate-btn:visited { color: #ffd966 !important; }
 .translate-btn:hover {
@@ -170,83 +255,104 @@
 <h1>타이달 한국가수 링크 (ㅈ2) TIDAL Kpop Artist Link (JG)</h1>
 <div>&nbsp;</div>
 <div><style>
-            /* 헤더를 화면 최상단에 고정 */
             .index-nav-header {
                 width: 100%;
-                background: #0d1117;
-                padding: 10px 0;
-                display: flex;
-                justify-content: flex-end;
-                border-bottom: 1px solid rgba(165, 204, 255, 0.1);
-                
-                /* 핵심: 제목보다 무조건 위에 오도록 고정 */
-                position: fixed; 
-                top: 0;
-                left: 0;
-                z-index: 10000; 
-                box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            }
-
-            /* 헤더가 고정되면서 제목을 가리지 않도록 전체 페이지에 여백 추가 */
-            body.index-page {
-                padding-top: 70px !important; 
-            }
-
-            .custom-select-container {
-                position: relative;
-                margin-right: 20px;
-                width: 240px;
+                background: #0d1117;    
+                padding: 10px 0;          
+                display: flex;         
+                justify-content: flex-end;            
+                border-bottom: 1px solid rgba(165, 204, 255, 0.1);           
+                position: relative;         
+                z-index: 10;           
+                box-shadow: 0 2px 10px rgba(0,0,0,0.35);         
+                margin-bottom: 12px;
+            }       
+            .custom-select-container {          
+                position: relative;         
+                margin-right: 20px;     
+                width: 340px; 
                 font-family: 'Pretendard', sans-serif;
-            }
-
+            }          
             .select-trigger {
-                background: #161b22;
-                color: #a5ccff;
-                border: 1px solid rgba(165, 204, 255, 0.4);
-                padding: 10px 15px;
-                border-radius: 10px;
-                cursor: pointer;
-                font-size: 13px;
-                font-weight: 600;
-                text-align: center;
-                transition: 0.3s;
+                background: rgba(0, 0, 0, 0.72);            
+                color: #c7ddff;            
+                border: 1px solid rgba(165, 204, 255, 0.28);            
+                padding: 11px 16px;            
+                border-radius: 12px;            
+                cursor: pointer;         
+                font-size: 15px;            
+                font-weight: 700;            
+                text-align: center;            
+                transition: 0.22s ease;            
+                white-space: nowrap;            
+                overflow: hidden;            
+                text-overflow: ellipsis;            
+                backdrop-filter: blur(12px);            
+                -webkit-backdrop-filter: blur(12px);            
+                box-shadow:
+                    0 4px 18px rgba(0,0,0,0.45),
+                    0 0 10px rgba(120,160,255,0.05);
+            }   
+            .select-trigger:hover {            
+                background: rgba(10, 10, 10, 0.82);            
+                border-color: rgba(165, 204, 255, 0.45);
+            }            
+            .select-options {            
+                position: absolute;            
+                top: calc(100% + 8px);            
+                right: 0;            
+                width: 100%;            
+                background: rgba(0, 0, 0, 0.82);            
+                backdrop-filter: blur(14px);            
+                -webkit-backdrop-filter: blur(14px);            
+                border: 1px solid rgba(165, 204, 255, 0.14);            
+                border-radius: 14px;            
+                max-height: 0;            
+                overflow-y: auto;            
+                opacity: 0;            
+                visibility: hidden;            
+                transition: all 0.24s ease;            
+                box-shadow:
+                    0 10px 30px rgba(0,0,0,0.55);            
+                scrollbar-width: thin;            
+                -webkit-overflow-scrolling: touch;
             }
-
-            .select-options {
-                position: absolute;
-                top: calc(100% + 8px);
-                right: 0;
-                width: 100%;
-                background: #1c2128;
-                border: 1px solid rgba(165, 204, 255, 0.2);
-                border-radius: 12px;
-                max-height: 0;
-                overflow-y: auto;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
+            .custom-select-container.open .select-options {            
+                max-height: 460px;            
+                opacity: 1;            
+                visibility: visible;            
+                padding: 3px 0;
+            }            
+            .select-option {            
+                padding: 7px 15px;            
+                color: #d6dde8;            
+                cursor: pointer;            
+                font-size: 14px;            
+                font-weight: 500;            
+                line-height: 1.2;            
+                border-bottom:
+                    1px solid rgba(255,255,255,0.025);
+                transition:
+                    background 0.16s ease,
+                    color 0.16s ease;
+            }            
+            .select-option:hover {            
+                background: rgba(140, 180, 255, 0.10);            
+                color: #ffffff;
             }
-
-            .custom-select-container.open .select-options {
-                max-height: 450px;
-                opacity: 1;
-                visibility: visible;
-                padding: 8px 0;
-            }
-
-            .select-option {
-                padding: 12px 18px;
-                color: #b1bac4;
-                cursor: pointer;
-                font-size: 13px;
-                border-bottom: 1px solid rgba(255,255,255,0.03);
-            }
-
-            .select-option:hover { background: rgba(165, 204, 255, 0.1); color: #fff; }
-
-            @media (max-width: 768px) {
-                .custom-select-container { width: 160px; margin-right: 5px; }
-                body.index-page { padding-top: 60px !important; }
+            @media (max-width: 768px) {            
+                .custom-select-container {            
+                    width: 290px;            
+                    margin-right: 6px;
+                }            
+                .select-trigger {            
+                    font-size: 14px;            
+                    padding: 10px 14px;
+                }            
+                .select-option {            
+                    font-size: 13px;            
+                    padding: 7px 13px;
+                }
             }
         </style>
 

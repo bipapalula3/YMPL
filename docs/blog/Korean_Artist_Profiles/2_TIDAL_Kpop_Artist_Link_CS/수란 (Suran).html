@@ -138,38 +138,123 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 10px 10px 4px 10px;
+  padding: 6px 6px 6px 6px;
   background: #111217 !important;
   z-index: 9999;
   display: flex;
   justify-content: center;
 }
+
 .translate-btn {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
   max-width: 900px;
   width: calc(100% - 30px);
   margin: 0 auto !important;
-  padding: 15px 20px;
+  padding: 10px 16px;
   background: linear-gradient(145deg, #3d341a, #1f1a0d);
   color: #ffd966 !important;
   text-decoration: none !important;
   border: 0.4px solid #ffd966;
   border-radius: 8px;
-  text-align: center;
-  line-height: 1.5;
-  min-height: 85px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
   box-sizing: border-box;
   font-size: 16px;
   font-weight: 700;
-  position: relative;
-  overflow: hidden;
+  line-height: 1.1;
   box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
   -webkit-animation: pulseTranslate 3s infinite ease-in-out;
   animation: pulseTranslate 3s infinite ease-in-out;
   transition: transform 0.2s, box-shadow 0.2s;
+}   
+/* =========================================
+   ✅ 페이드 + 정지 + 흐름 반복 마퀴
+========================================= */
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  /* ✅ 좌우 자연스러운 페이드 */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  /* ✅ 전체 반복 */
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  /* ✅ 문장 간격 */
+  padding-right: 40px;
+  /* ✅ 시작/끝 페이드 */
+  opacity: 0;
+  /* ✅ 텍스트 애니메이션 */
+  animation: textFade 24s linear infinite;
+}
+/* =========================================
+   ✅ 흐름 이동
+========================================= */
+@keyframes marqueeFlow {
+  /* -------------------------
+     1️⃣ 처음 정지
+  ------------------------- */
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  /* -------------------------
+     2️⃣ 좌측 흐름
+  ------------------------- */
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  /* -------------------------
+     3️⃣ 마지막 정지
+  ------------------------- */
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+/* =========================================
+   ✅ 페이드 인/아웃
+========================================= */
+@keyframes textFade {
+  /* 시작 투명 */
+  0% {
+    opacity: 0;
+  }
+  /* 페이드 인 */
+  8% {
+    opacity: 1;
+  }
+  /* 유지 */
+  68% {
+    opacity: 1;
+  }
+  /* 페이드 아웃 */
+  100% {
+    opacity: 0;
+  }
 }
 .translate-btn:visited { color: #ffd966 !important; }
 .translate-btn:hover {
@@ -731,28 +816,33 @@
 <div class="translate-btn-wrapper">
               <a class="btn translate-btn"
                  href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/수란 (Suran)_trk.html"
-                 id="translateBtn"
-                 data-en="🌐 Translation (EN/KO/ES/ZH)<br>▶ Open Track Page<br>"
-                 data-ko="📖 번역하기 (한/영/스페인/중)<br>▶ 트랙 페이지 열기<br>">
-                 🌐 Translation (EN/KO/ES/ZH)<br>
-                 ▶ Open Track Page<br>
-              </a>
-            </div>
-
-            <script>
-            (function () {
-                const btn = document.getElementById("translateBtn");
-                if (!btn) return;
-
-                let isKo = false;
-
-                // 🔁 버튼 문구 자동 토글 (3초마다)
-                setInterval(() => {
-                    btn.innerHTML = isKo ? btn.dataset.en : btn.dataset.ko;
-                    isKo = !isKo;
-                }, 3000);
-            })();
-            </script>
+    <div class="translate-marquee-wrapper">
+      <div class="translate-marquee">
+        <div class="translate-track">
+          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (EN/KO/ES/ZH)
+          ▶ Open Track Page
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (한/영/스페인/중)
+          ▶ 트랙 페이지 열기
+        </div>
+        <div class="translate-track">
+          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (EN/KO/ES/ZH)
+          ▶ Open Track Page
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (한/영/스페인/중)
+          ▶ 트랙 페이지 열기
+        </div>
+        <div class="translate-track">
+          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (EN/KO/ES/ZH)
+          ▶ Open Track Page
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (한/영/스페인/중)
+          ▶ 트랙 페이지 열기
+        </div>
+      </div> 
+    </div>
+  </a>
+</div>
             
 </body>
 </html>
