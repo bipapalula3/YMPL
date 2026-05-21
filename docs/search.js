@@ -599,15 +599,15 @@ function renderNextPage() {
     const content = document.createElement('div');
     content.className = 'search-content';
 
-    const title = document.createElement('div');
-    title.className = 'search-title';
-    title.textContent = item.title;
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'search-title';
+    titleDiv.textContent = item.title;
 
     const preview = document.createElement('div');
     preview.className = 'search-preview';
     preview.textContent = item.preview || '';
 
-    content.append(title, preview);
+    content.append(titleDiv, preview);
 
     let img;
     if (item.cover) {
