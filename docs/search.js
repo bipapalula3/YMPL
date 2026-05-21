@@ -523,8 +523,23 @@ function getAdPositions(total) {
 // 렌더링 (카드 전체 클릭 + 커버 이미지 + lazy-load)
 // -----------------------------
 function renderNextPage() {
+
   if (LOADING) return;
   LOADING = true;
+
+  // =========================
+  // URL 파라미터 1회만 읽기
+  // =========================
+  const urlParams =
+    new URLSearchParams(location.search);
+
+  const hideChart =
+    urlParams.get("hideChart") === "true";
+
+  // =========================
+  // 정규식 1회 생성
+  // =========================
+  const dateRegex = /^\d{8}/;
 
   const slice = RESULTS.slice(
     PAGE * PAGE_SIZE,
@@ -545,6 +560,16 @@ function renderNextPage() {
   let renderedCount = PAGE * PAGE_SIZE;
 
   slice.forEach((item, i) => {
+
+    const title = item.title || "";
+
+    // =========================
+    // 안드로이드 검색창 전용 숨김
+    // =========================
+    if (hideChart && dateRegex.test(title)) {
+      return;
+    }
+
     const globalIndex = renderedCount + i;
 
     // 🔶 미들 광고 (웹에서만)
