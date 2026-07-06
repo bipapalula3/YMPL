@@ -306,7 +306,7 @@ function matchScore(token, keyword, weight) {
 function buildValidEncryptedKeys(inputKey) {
   if (!isEncryptedKey(inputKey)) return null;
 
-  const type = inputKey.toUpperCase().match(/[DNT]/)?.[0]; 
+  const type = inputKey.toUpperCase().match(/[DNTO]/)?.[0];
   const today = new Date();
   let days = 90;
   if (type === 'D') days = 360;
