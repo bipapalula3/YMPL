@@ -159,8 +159,17 @@ function renderSearchHistory() {
     const li = document.createElement("li");
     li.textContent = displayTitle;
 
-    if (["Weekly New Kpop Releases", "Ktop Chart - Newest First", "Latest Kpop Debut Albums"].includes(displayTitle)) {
-      li.classList.add("reward-highlight");
+    if (
+        [
+            "Weekly New Kpop Releases",
+            "Ktop Chart - Newest First",
+            "Latest Kpop Debut Albums"
+        ].includes(displayTitle) ||
+        (
+            displayTitle.startsWith("Kdrama OST ")
+        )
+    )   {
+        li.classList.add("reward-highlight");
     }
 
     li.onclick = () => {
