@@ -306,10 +306,13 @@ function matchScore(token, keyword, weight) {
 function buildValidEncryptedKeys(inputKey) {
   if (!isEncryptedKey(inputKey)) return null;
 
-  const type = inputKey.toUpperCase().match(/[DNTO]/)?.[0];
+  // 🛠️ 'O'를 추출할 수 있도록 [DNTO]로 수정되었습니다.
+  const type = inputKey.toUpperCase().match(/[DNTO]/)?.[0]; 
   const today = new Date();
   let days = 90;
+  
   if (type === 'D') days = 360;
+  if (type === 'O') days = 360; // 💡 OST 아카이브 검색 범위 확장
 
   const keys = new Set();
 
