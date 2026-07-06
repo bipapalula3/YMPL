@@ -107,8 +107,9 @@ function debounce(fn, delay = 200) {
 // 🔐 암호 키 검사 함수
 function isEncryptedKey(str) {
   if (!str) return false;
-  const clean = str.trim().toUpperCase(); // 대문자로 변환 후 검사
-  return /^(?=(?:.*\d){8})(?=(?:.*[DNT]){1})[0-9DNT]{9}$/.test(clean);
+  const clean = str.trim().toUpperCase(); 
+  // 🛠️ DNTO 로 변경하여 'O' 식별자를 허용합니다.
+  return /^(?=(?:.*\d){8})(?=(?:.*[DNTO]){1})[0-9DNTO]{9}$/.test(clean);
 }
 
 // 🔐 커스텀 키 생성
