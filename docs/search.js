@@ -645,3 +645,4 @@ window.addEventListener("popstate", function () {
   _handlingBack = true;
   goBackSmart();
 });
+
