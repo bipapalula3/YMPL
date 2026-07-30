@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 영케이 ( Tidal Young K )</title>
+
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 6px 6px 6px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 10px 16px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 40px;
+  opacity: 0;
+  animation: textFade 24s linear infinite;
+}
+@keyframes marqueeFlow {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+@keyframes textFade {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 영케이 ( Tidal Young K )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/eafd1d7b/1252/423d/99da/8bbd7b2d86d7/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/41554082' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 영케이</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>⭐ 영케이 소개 ⭐</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Young K</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>⭐ Young K Introduction ⭐</div><p>❌ AI 프로필 생성 및 JSON 파싱에 실패했습니다. 위의 AI 응답 텍스트와 오류 메시지를 확인하세요.</p><p>❌ AI profile generation and JSON parsing failed. Please check the AI response text and error message above.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] YOUNGEST</div>
+<div><a href='https://tidal.com/album/545894337' target='_blank'>https://tidal.com/album/545894337</a></div>
+<div>Young K - Marionette</div>
+<div>Young K - Shut The Door</div>
+<div>Young K - F world</div>
+<div>Young K - Hey Honey</div>
+<div>Young K - Anthem</div>
+<div>Young K - SPIKE</div>
+<div>Young K - Yonge St</div>
+<div>Young K - million reasons</div>
+<div>Young K - A Hundred Whys for Goodbye</div>
+<div>Young K - Drivin' into Hell</div>
+<div>Young K - whatever</div>
+<div>Young K - Goodbye, Love</div>
+<div>Young K - Heading Home</div>
+<div>Young K - Gypsophila</div>
+<div>Young K - Ordinary Days</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/545894337' target='_blank'><img src='https://resources.tidal.com/images/bc3b37e0/4986/414c/a3b1/0d5e305edef0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] YOUNGEST</div>
+<div><a href='https://tidal.com/album/545664362' target='_blank'>https://tidal.com/album/545664362</a></div>
+<div>Young K - Marionette</div>
+<div>Young K - Shut The Door</div>
+<div>Young K - F world</div>
+<div>Young K - Hey Honey</div>
+<div>Young K - Anthem</div>
+<div>Young K - SPIKE</div>
+<div>Young K - Yonge St</div>
+<div>Young K - million reasons</div>
+<div>Young K - A Hundred Whys for Goodbye</div>
+<div>Young K - Drivin' into Hell</div>
+<div>Young K - whatever</div>
+<div>Young K - Goodbye, Love</div>
+<div>Young K - Heading Home</div>
+<div>Young K - Gypsophila</div>
+<div>Young K - Ordinary Days</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/545664362' target='_blank'><img src='https://resources.tidal.com/images/a9d4706c/8ef4/4f6c/8d40/0b734c5b1740/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] My Royal Nemesis, Pt. 2 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/523815591' target='_blank'>https://tidal.com/album/523815591</a></div>
+<div>Young K - Season of Us (My Royal Nemesis  Original Television Soundtrack)</div>
+<div>Young K - Season of Us (My Royal Nemesis  Original Television Soundtrack) (Instrumental)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/523815591' target='_blank'><img src='https://resources.tidal.com/images/6fea957a/53d0/4446/ae82/f6d7253c2f77/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] let it be summer</div>
+<div><a href='https://tidal.com/album/312579059' target='_blank'>https://tidal.com/album/312579059</a></div>
+<div>Young K - let it be summer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/312579059' target='_blank'><img src='https://resources.tidal.com/images/be4f5823/356f/45f3/afd2/a7712db97785/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] let it be summer</div>
+<div><a href='https://tidal.com/album/312357347' target='_blank'>https://tidal.com/album/312357347</a></div>
+<div>Young K - let it be summer</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/312357347' target='_blank'><img src='https://resources.tidal.com/images/e2a67e9f/54c5/4ea8/88fe/3bc10d58af98/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Move Up K-Billboard Pt.2</div>
+<div><a href='https://tidal.com/album/307093931' target='_blank'>https://tidal.com/album/307093931</a></div>
+<div>Young K - Am I in Love</div>
+<div>Young K - Am I in Love (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/307093931' target='_blank'><img src='https://resources.tidal.com/images/3dae8b80/fe1a/4d15/87f8/fca162e4125a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Letters with notes</div>
+<div><a href='https://tidal.com/album/314023369' target='_blank'>https://tidal.com/album/314023369</a></div>
+<div>Young K - waited</div>
+<div>Young K - nothing but</div>
+<div>Young K - let it be summer</div>
+<div>Young K - Dreamer</div>
+<div>Young K - Bungee Jumping</div>
+<div>Young K - natural</div>
+<div>Young K - STRANGE</div>
+<div>Young K - playground</div>
+<div>Young K - babo</div>
+<div>Young K - what is</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/314023369' target='_blank'><img src='https://resources.tidal.com/images/44956cd4/ca2e/4aa1/b398/d629a1b22f1d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Letters with notes</div>
+<div><a href='https://tidal.com/album/313789660' target='_blank'>https://tidal.com/album/313789660</a></div>
+<div>Young K - waited</div>
+<div>Young K - nothing but</div>
+<div>Young K - let it be summer</div>
+<div>Young K - Dreamer</div>
+<div>Young K - Bungee Jumping</div>
+<div>Young K - natural</div>
+<div>Young K - STRANGE</div>
+<div>Young K - playground</div>
+<div>Young K - babo</div>
+<div>Young K - what is</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/313789660' target='_blank'><img src='https://resources.tidal.com/images/b0b26760/0280/4685/af95/f47795627d73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Eternal</div>
+<div><a href='https://tidal.com/album/296455726' target='_blank'>https://tidal.com/album/296455726</a></div>
+<div>Young K - best song</div>
+<div>Young K - Guard You</div>
+<div>Young K - not gonna love</div>
+<div>Young K - want to love you</div>
+<div>Young K - come as you are</div>
+<div>Young K - goodnight, dear</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296455726' target='_blank'><img src='https://resources.tidal.com/images/b35fbf16/9f45/452b/878d/9949b96ee1f5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] Better Day</div>
+<div><a href='https://tidal.com/album/302364273' target='_blank'>https://tidal.com/album/302364273</a></div>
+<div>Young K - Better Day</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/302364273' target='_blank'><img src='https://resources.tidal.com/images/e2fb3305/cad2/4c84/9037/a8fdd72bab7f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Let me off the earth</div>
+<div><a href='https://tidal.com/album/216251191' target='_blank'>https://tidal.com/album/216251191</a></div>
+<div>Young K - Insomnia (Future Bass Remix)</div>
+<div>Young K - Insomnia (Future Bass Remix Inst)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216251191' target='_blank'><img src='https://resources.tidal.com/images/40f4da6a/be1e/4eea/86f7/a11614a3c63f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Let Me Off The Earth Part.1</div>
+<div><a href='https://tidal.com/album/216180175' target='_blank'>https://tidal.com/album/216180175</a></div>
+<div>Young K - Insomnia</div>
+<div>Young K - Insomnia (Inst)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216180175' target='_blank'><img src='https://resources.tidal.com/images/45b67d26/db6d/497b/82fb/05a94832edfc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/2_TIDAL_Kpop_Artist_Link_AIO.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅇ2) TIDAL Kpop Artist Link (AIO)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_AIO/영케이 (Young K)_trk.html">
+                 
+                 <div class="translate-marquee-wrapper">                
+                     <div class="translate-marquee">
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (EN/KO/ES/ZH)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (한/영/스페인/중)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (EN/KO/ES/ZH)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (한/영/스페인/중)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (EN/KO/ES/ZH)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (한/영/스페인/중)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                    </div> 
+                 </div>
+                 
+              </a>
+            </div>
+            
+            
+</body>
+</html>
