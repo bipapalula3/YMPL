@@ -39,9 +39,9 @@ const DEV_MODE = (() => {
 const SEARCH_STATS = new Map();
 
 // -----------------------------
-// 인덱스 로딩
+// 인덱스 로딩 (Vercel API + docs 경로 지정)
 // -----------------------------
-fetch('artist_song_index.json')
+fetch('https://ympl-vercel-api.vercel.app/api/ympl-data?path=docs/artist_song_index.json&repo=YMPL')
   .then(res => {
     if (!res.ok) throw new Error("index load failed");
     return res.json();
