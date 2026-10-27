@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>20261027 Weekly New Kpop Releases</title>
+
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 6px 6px 6px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 10px 16px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 40px;
+  opacity: 0;
+  animation: textFade 24s linear infinite;
+}
+@keyframes marqueeFlow {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+@keyframes textFade {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>20261027 Weekly New Kpop Releases</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/3ae752bb/f44a/47de/8efe/795aea9d5765/1080x1080.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/playlist/317ef8b1-861e-4676-9f7a-90c5ed0bbb34' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content mbti-analysis'><div class='artist-subtitle'>🧬 MBTI Vibe</div><div class='artist-subtitle' style='font-size:16px;'>이번 주 K-POP은 감성적인 탐구와 강렬한 자기 표현이 공존하는, 마치 INFP와 ESTP의 만남과 같은 다채로운 에너지를 선사합니다. 특히 ILLIT의 'You’re Under Arrest'는 장난기 가득한 매력으로, BABYMONSTER의 'DESERVE'는 당찬 포부로 우리의 귀를 사로잡습니다.</div><div class='artist-subtitle' style='margin-top:8px;'>🧬 MBTI Vibe</div><div class='artist-subtitle' style='font-size:16px;'>This week's K-POP offers a vibrant energy, like the meeting of INFP and ESTP, where emotional exploration and bold self-expression coexist. Particularly, ILLIT's 'You’re Under Arrest' captivates our ears with its playful charm, and BABYMONSTER's 'DESERVE' with its assertive ambition.</div><p>이번 주 신보들은 감성적인 깊이와 에너제틱한 표현이 조화롭게 어우러져 다채로운 음악적 스펙트럼을 보여줍니다. MBTI로 비유하자면, 내면을 탐구하는 INFP의 섬세함과 외부 세계를 적극적으로 경험하는 ESTP의 과감함이 공존하는 듯한 흐름입니다. 잔잔한 감성부터 강렬한 퍼포먼스까지, 다양한 취향을 만족시킬 곡들이 준비되었습니다.</p><p>This week's new releases showcase a diverse musical spectrum, harmoniously blending emotional depth with energetic expression. Metaphorically speaking in MBTI terms, the flow is akin to the coexistence of the INFP's delicacy in exploring the inner world and the ESTP's boldness in actively experiencing the external world. From serene emotions to powerful performances, tracks catering to various tastes are prepared.</p><p>✧</p><p>이번 주 MBTI 흐름</p><p>이번 주 신보들은 감성적인 탐구와 자기 표현이라는 두 축을 중심으로 흐름을 보입니다. eaJ의 'anxiety', HAEUN의 'Still the Sun, Still the Moon', Kim Feel의 'Circle', Yoon Hyun Sang의 'Subtle', 제현 (오메가엑스)의 'Love and Hate', Verbal Jint, NOCHANG, B-Free, YULEUM의 'What If', BOL4의 'Golden Hour', Crush, IU의 'seesaw', ONEW의 'Illusion', WOODZ의 'Come into my world!', jeebanoff의 'Lie' 등은 내면의 감정을 섬세하게 다루며 INFP, ISFP와 같은 감성적인 성향을 드러냅니다. 반면, ILLIT의 'You’re Under Arrest', Dakshood, Yanghongwon의 'Plan B', BABYMONSTER의 'DESERVE', LISA의 'Tarantino', KACHISAN의 'The Last Monster', Babo의 'Wah', KANGDANIEL의 'Blue', YUHZ의 'B.B.B', B THE HOOD의 'CHOP!', wonjin의 'Yuranga', IVE의 'Looks Can Kill', KDA, League of Legends, i-dle, Mimi Webb, Sophie Powers, Miyeon, Soyeon의 'FIRESTARTER' 등은 강렬한 비트와 자신감 넘치는 메시지로 ESTP, ESFP와 같은 외향적이고 활동적인 성향을 보여줍니다. OH MY GIRL의 'FLY HIGH Instrumental', The Stray의 'voyage', EL CAPITXN, BEAUTY SCHOOL DROPOUT의 'Don't Say Love', It's의 'YOUNGONE (01)', LNGSHOT의 'Masterpiece', Lee Eun Sang의 'Garden of Dreams', 야자수(Yajasu)의 'Island', Damons Year의 'EGERO' 등은 전체적인 분위기를 풍성하게 채우며 다양한 MBTI 유형과의 접점을 형성합니다.</p><p>MBTI Trend</p><p>This week's new releases exhibit a flow centered around two axes: emotional exploration and self-expression. Tracks like eaJ's 'anxiety', HAEUN's 'Still the Sun, Still the Moon', Kim Feel's 'Circle', Yoon Hyun Sang's 'Subtle', 제현 (OMEGA X)'s 'Love and Hate', Verbal Jint, NOCHANG, B-Free, YULEUM's 'What If', BOL4's 'Golden Hour', Crush & IU's 'seesaw', ONEW's 'Illusion', WOODZ's 'Come into my world!', and jeebanoff's 'Lie' delve into inner emotions with subtlety, revealing emotional tendencies akin to INFP and ISFP. Conversely, songs such as ILLIT's 'You’re Under Arrest', Dakshood & Yanghongwon's 'Plan B', BABYMONSTER's 'DESERVE', LISA's 'Tarantino', KACHISAN's 'The Last Monster', Babo's 'Wah', KANGDANIEL's 'Blue', YUHZ's 'B.B.B', B THE HOOD's 'CHOP!', wonjin's 'Yuranga', IVE's 'Looks Can Kill', and KDA, League of Legends, i-dle, Mimi Webb, Sophie Powers, Miyeon, Soyeon's 'FIRESTARTER' showcase extroverted and active tendencies, similar to ESTP and ESFP, with strong beats and confident messages. Meanwhile, OH MY GIRL's 'FLY HIGH Instrumental', The Stray's 'voyage', EL CAPITXN & BEAUTY SCHOOL DROPOUT's 'Don't Say Love', It's's 'YOUNGONE (01)', LNGSHOT's 'Masterpiece', Lee Eun Sang's 'Garden of Dreams', 야자수(Yajasu)'s 'Island', and Damons Year's 'EGERO' enrich the overall atmosphere, forming connections with various MBTI types.</p><p>✧</p><p>대표 MBTI 분석</p><p>이번 주 K-POP 신보들은 내면의 깊은 감정을 탐구하는 'INFP' 성향과 강렬한 에너지를 발산하며 자신감을 드러내는 'ESTP' 성향이 두드러집니다. INFP 성향의 곡들은 섬세한 가사와 멜로디로 청자들의 공감을 이끌어내며, ESTP 성향의 곡들은 파워풀한 퍼포먼스와 중독성 있는 비트로 듣는 이들을 사로잡습니다. 이러한 두 가지 상반된 매력이 공존하며 이번 주 음악 트렌드를 이끌고 있습니다.</p><p>Dominant MBTI</p><p>This week's K-POP new releases highlight the 'INFP' tendency, which explores deep inner emotions, and the 'ESTP' tendency, which radiates strong energy and expresses confidence. INFP-leaning songs evoke listener empathy with delicate lyrics and melodies, while ESTP-leaning songs captivate listeners with powerful performances and addictive beats. These two contrasting appeals coexist and lead this week's music trend.</p><p>✧</p><p>총평</p><p>감성적인 깊이와 폭발적인 에너지를 동시에 즐기고 싶은 분들에게 이번 주 신보들을 추천합니다. MBTI로 본다면, 내면의 목소리에 귀 기울이는 INFP 성향이나, 세상에 자신의 존재감을 확실히 드러내고 싶은 ESTP 성향을 가진 분들에게 특히 매력적인 라인업이 될 것입니다. 잔잔한 감동부터 짜릿한 쾌감까지, 다채로운 음악 경험을 통해 한 주간의 활력을 얻어가시길 바랍니다.</p><p>Conclusion</p><p>We recommend this week's new releases to those who wish to enjoy both emotional depth and explosive energy simultaneously. From an MBTI perspective, this lineup will be particularly appealing to individuals with an INFP tendency, who listen to their inner voice, or those with an ESTP tendency, who want to clearly express their presence to the world. We hope you gain a week's worth of vitality through a diverse musical experience, from serene emotions to thrilling exhilaration.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026-10-26] BREAK EVEN</div>
+<div><a href='https://tidal.com/album/572774388' target='_blank'>https://tidal.com/album/572774388</a></div>
+<div>ILLIT - You’re Under Arrest</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/572774388' target='_blank'><img src='https://resources.tidal.com/images/fcceda1b/0253/45b1/bba2/b8177d226285/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-25] Rookie Director Kim Yeon-koung (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/571794014' target='_blank'>https://tidal.com/album/571794014</a></div>
+<div>OH MY GIRL - FLY HIGH Instrumental</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/571794014' target='_blank'><img src='https://resources.tidal.com/images/1b48bc4c/861a/4701/b271/c43b1f175aee/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-24] voyage</div>
+<div><a href='https://tidal.com/album/573053547' target='_blank'>https://tidal.com/album/573053547</a></div>
+<div>The Stray - voyage</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/573053547' target='_blank'><img src='https://resources.tidal.com/images/b6f929d6/f195/4f71/ac5a/a4ffe0f272f8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-24] Plan B</div>
+<div><a href='https://tidal.com/album/570447361' target='_blank'>https://tidal.com/album/570447361</a></div>
+<div>Dakshood, Yanghongwon - Plan B (ft. Lil Gnar, Shyboiitobii, BIG 9ULPO, Costa Cashman)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570447361' target='_blank'><img src='https://resources.tidal.com/images/b4493a53/7f2a/4691/be55/c05cae4969de/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-23] the responsibility of being in love</div>
+<div><a href='https://tidal.com/album/559963656' target='_blank'>https://tidal.com/album/559963656</a></div>
+<div>eaJ - anxiety</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/559963656' target='_blank'><img src='https://resources.tidal.com/images/ca93eaa8/acf8/44f0/a224/ef9f0e70378d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-23] Still the Sun, Still the Moon</div>
+<div><a href='https://tidal.com/album/571591601' target='_blank'>https://tidal.com/album/571591601</a></div>
+<div>HAEUN - Still the Sun, Still the Moon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/571591601' target='_blank'><img src='https://resources.tidal.com/images/74e3683f/d301/4a7c/9929/51ddb5cd323b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-23] Don't Say Love (feat. BEAUTY SCHOOL DROPOUT)</div>
+<div><a href='https://tidal.com/album/564953748' target='_blank'>https://tidal.com/album/564953748</a></div>
+<div>EL CAPITXN, BEAUTY SCHOOL DROPOUT - Don't Say Love</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/564953748' target='_blank'><img src='https://resources.tidal.com/images/e81db827/28fb/4e3c/b9c2/3a5f04a9222f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-23] DESERVE</div>
+<div><a href='https://tidal.com/album/569707862' target='_blank'>https://tidal.com/album/569707862</a></div>
+<div>BABYMONSTER - DESERVE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/569707862' target='_blank'><img src='https://resources.tidal.com/images/b2a5d1ec/2f6f/4374/b4f7/a68a8a6dfc5d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-23] Circle</div>
+<div><a href='https://tidal.com/album/571724798' target='_blank'>https://tidal.com/album/571724798</a></div>
+<div>Kim Feel - Circle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/571724798' target='_blank'><img src='https://resources.tidal.com/images/859892ab/0357/4aca/bad6/dda6ac9e3500/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2026-10-23] Arong Herong Situation</div>
+<div><a href='https://tidal.com/album/571724778' target='_blank'>https://tidal.com/album/571724778</a></div>
+<div>Yoon Hyun Sang - Subtle</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/571724778' target='_blank'><img src='https://resources.tidal.com/images/f595b90e/66ca/46bf/9147/6741a24e886b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-22] ironic</div>
+<div><a href='https://tidal.com/album/569794536' target='_blank'>https://tidal.com/album/569794536</a></div>
+<div>제현 (오메가엑스) - Love and Hate</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/569794536' target='_blank'><img src='https://resources.tidal.com/images/dbc6465c/ae1f/435b/89ed/56abaa8efe68/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-22] What If</div>
+<div><a href='https://tidal.com/album/569405469' target='_blank'>https://tidal.com/album/569405469</a></div>
+<div>Verbal Jint, NOCHANG, B-Free, YULEUM - What If (feat. Nochang, B-Free, YULEUM)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/569405469' target='_blank'><img src='https://resources.tidal.com/images/001a3115/bf85/47da/86dd/8dac9216836d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-22] PRESS PLAY</div>
+<div><a href='https://tidal.com/album/571916339' target='_blank'>https://tidal.com/album/571916339</a></div>
+<div>LISA - Tarantino</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/571916339' target='_blank'><img src='https://resources.tidal.com/images/db3ebc11/5dcb/48a4/b1a1/c32c8c850576/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-22] October Archive</div>
+<div><a href='https://tidal.com/album/572234004' target='_blank'>https://tidal.com/album/572234004</a></div>
+<div>BOL4 - Golden Hour</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/572234004' target='_blank'><img src='https://resources.tidal.com/images/3b2b8841/c6b8/4cac/bc96/59ed2c8f0584/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-22] Here We Are, Kachisan</div>
+<div><a href='https://tidal.com/album/563103467' target='_blank'>https://tidal.com/album/563103467</a></div>
+<div>KACHISAN - The Last Monster</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/563103467' target='_blank'><img src='https://resources.tidal.com/images/88504afe/4fcc/4ded/a696/87d52a5cac14/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-22] B AB O</div>
+<div><a href='https://tidal.com/album/570441789' target='_blank'>https://tidal.com/album/570441789</a></div>
+<div>Babo - Wah</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570441789' target='_blank'><img src='https://resources.tidal.com/images/2a81bff7/555f/444f/853e/3bc318b4056a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-21] seesaw (Feat. IU)</div>
+<div><a href='https://tidal.com/album/569973039' target='_blank'>https://tidal.com/album/569973039</a></div>
+<div>Crush, IU - seesaw (Feat. IU)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/569973039' target='_blank'><img src='https://resources.tidal.com/images/aaa3855b/87f0/445a/aacc/5fd7689a25a3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-21] YOUNGONE (01)</div>
+<div><a href='https://tidal.com/album/570078425' target='_blank'>https://tidal.com/album/570078425</a></div>
+<div>It's - YOUNGONE (01)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570078425' target='_blank'><img src='https://resources.tidal.com/images/679e541f/bd9f/47a3/8ee6/a8e63d11d9a4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2026-10-21] Masterpiece</div>
+<div><a href='https://tidal.com/album/570641724' target='_blank'>https://tidal.com/album/570641724</a></div>
+<div>LNGSHOT - Masterpiece</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570641724' target='_blank'><img src='https://resources.tidal.com/images/e2413a13/123b/439e/8c1c/779d5b4ff771/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-21] Garden of Dreams</div>
+<div><a href='https://tidal.com/album/571852876' target='_blank'>https://tidal.com/album/571852876</a></div>
+<div>Lee Eun Sang - Garden of Dreams</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/571852876' target='_blank'><img src='https://resources.tidal.com/images/e119039e/d584/4ffe/b4e8/cc09bceac2d3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-21] Blue</div>
+<div><a href='https://tidal.com/album/570040038' target='_blank'>https://tidal.com/album/570040038</a></div>
+<div>KANGDANIEL - Blue</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570040038' target='_blank'><img src='https://resources.tidal.com/images/2fea1edb/ef09/4719/9dab/44960bf21d3a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-21] B</div>
+<div><a href='https://tidal.com/album/570348711' target='_blank'>https://tidal.com/album/570348711</a></div>
+<div>YUHZ - B.B.B</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570348711' target='_blank'><img src='https://resources.tidal.com/images/0fcffd52/b96a/470b/b735/5ed5583514ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-20] THE REAL DEAL</div>
+<div><a href='https://tidal.com/album/564871371' target='_blank'>https://tidal.com/album/564871371</a></div>
+<div>B THE HOOD - CHOP!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/564871371' target='_blank'><img src='https://resources.tidal.com/images/3e55b7b3/a292/4207/b52c/05a7bacd5854/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-20] Mangsangrok</div>
+<div><a href='https://tidal.com/album/560031264' target='_blank'>https://tidal.com/album/560031264</a></div>
+<div>wonjin - Yuranga</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/560031264' target='_blank'><img src='https://resources.tidal.com/images/84c949a6/5063/4c1a/8d62/8a2bd07605ef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-20] Island</div>
+<div><a href='https://tidal.com/album/569934783' target='_blank'>https://tidal.com/album/569934783</a></div>
+<div>야자수 - Island</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/569934783' target='_blank'><img src='https://resources.tidal.com/images/e339a1f3/25ce/41b9/ac32/f348d9636f19/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-20] Illusion</div>
+<div><a href='https://tidal.com/album/570029771' target='_blank'>https://tidal.com/album/570029771</a></div>
+<div>ONEW - Illusion</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570029771' target='_blank'><img src='https://resources.tidal.com/images/8213f6a3/e94b/4133/bd56/e60d45903b80/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-20] EGERO</div>
+<div><a href='https://tidal.com/album/570035892' target='_blank'>https://tidal.com/album/570035892</a></div>
+<div>Damons Year - EGERO</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570035892' target='_blank'><img src='https://resources.tidal.com/images/75d40a01/df7e/4e9b/a1ee/86e04898c519/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2026-10-20] Come into my world!</div>
+<div><a href='https://tidal.com/album/571534715' target='_blank'>https://tidal.com/album/571534715</a></div>
+<div>WOODZ - Come into my world!</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/571534715' target='_blank'><img src='https://resources.tidal.com/images/a340b63f/e11b/46f9/9183/202b86ed66ff/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-19] Looks Can Kill</div>
+<div><a href='https://tidal.com/album/570443087' target='_blank'>https://tidal.com/album/570443087</a></div>
+<div>IVE - Looks Can Kill</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570443087' target='_blank'><img src='https://resources.tidal.com/images/2f1fece5/8ba0/4cca/b13b/e6c42c89d7fe/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-10-18] FIRESTARTER</div>
+<div><a href='https://tidal.com/album/570943251' target='_blank'>https://tidal.com/album/570943251</a></div>
+<div>KDA, League of Legends, i-dle, Mimi Webb, Sophie Powers, Miyeon, Soyeon - FIRESTARTER</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570943251' target='_blank'><img src='https://resources.tidal.com/images/8e755c5e/ac33/452e/8570/1835ec0544cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026-09-21] Talking Book 2 [Deluxe Edition]</div>
+<div><a href='https://tidal.com/album/570406555' target='_blank'>https://tidal.com/album/570406555</a></div>
+<div>jeebanoff - Lie</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/570406555' target='_blank'><img src='https://resources.tidal.com/images/14ada41b/a161/4ed9/9f7d/4ff7e0ee6490/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/YMPL_Weekly_New_KPop_Releases/YMPL_Weekly_New_KPop_Releases.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: YMPL Weekly New KPop Releases
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/YMPL_Weekly_New_KPop_Releases/untitled/20261027%20Weekly%20New%20Kpop%20Releases_trk.html">
+                 
+                 <div class="translate-marquee-wrapper">                
+                     <div class="translate-marquee">
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                    </div> 
+                 </div>
+                 
+              </a>
+            </div>
+            
+            
+</body>
+</html>
