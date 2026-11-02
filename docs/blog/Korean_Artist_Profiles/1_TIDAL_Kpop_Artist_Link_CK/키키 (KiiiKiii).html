@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 키키 ( Tidal KiiiKiii )</title>
+
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 6px 6px 6px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 10px 16px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 40px;
+  opacity: 0;
+  animation: textFade 24s linear infinite;
+}
+@keyframes marqueeFlow {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+@keyframes textFade {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 키키 ( Tidal KiiiKiii )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/397fb8c7/4454/425f/83e2/20f81c681794/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/54238675' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 키키</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>핑크빛 마법, 달콤함 속에 숨겨진 짜릿함</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> KiiiKiii</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Pink Magic, A Thrill Hidden in Sweetness</div><p>KiiiKiii는 자신만의 다채로운 색깔로 음악 세계를 펼쳐나가고 있는 아티스트예요. 톡톡 튀는 매력과 개성 넘치는 음악으로 리스너들의 귀를 사로잡고 있답니다. 앞으로 어떤 새로운 이야기를 들려줄지 기대되는 아티스트예요.</p><p>KiiiKiii is an artist painting her musical world with her own diverse colors. She captivates listeners' ears with her bubbly charm and unique music. She is an artist whose future stories we look forward to hearing.</p><p>✧</p><p>KiiiKiii, 새로운 색깔의 시작</p><p>KiiiKiii라는 이름은 마치 새로운 가능성을 열어주는 주문 같아요. 독창적인 아이디어와 감각적인 스타일로 자신만의 음악적 영역을 구축해 나가고 있어요. 신비로우면서도 친근한 매력으로 팬들의 마음을 설레게 한답니다.</p><p>KiiiKiii, The Beginning of a New Color</p><p>The name KiiiKiii feels like a spell that opens up new possibilities. She is building her own musical domain with original ideas and a sensational style. She makes fans' hearts flutter with her mysterious yet approachable charm.</p><p>✧</p><p>개성 가득한 음악과 퍼포먼스</p><p>KiiiKiii의 음악은 듣는 이들에게 신선한 에너지를 선사해요. 다채로운 장르를 넘나들며 보여주는 그녀의 음악적 스펙트럼은 무궁무진하답니다. 무대 위에서는 에너지 넘치는 퍼포먼스로 팬들과 소통하며 잊지 못할 경험을 선사해요.</p><p>Unique Music and Performances</p><p>KiiiKiii's music offers fresh energy to its listeners. Her musical spectrum, crossing various genres, is limitless. On stage, she communicates with fans through energetic performances, providing unforgettable experiences.</p><p>✧</p><p>끊임없는 도전과 성장</p><p>KiiiKiii는 늘 새로운 시도를 통해 자신을 발전시키고 있어요. 실험적이면서도 대중적인 매력을 모두 갖춘 음악으로 팬들에게 끊임없는 즐거움을 선사하죠. 그녀의 음악은 마치 우리가 살아가는 이야기에 색깔을 더해주는 것 같아요.</p><p>Continuous Challenges and Growth</p><p>KiiiKiii is always developing herself through new attempts. She continuously delights her fans with music that possesses both experimental and mainstream appeal. Her music feels like it adds color to the stories of our lives.</p><p>✧</p><p>깊은 울림을 주는 아티스트</p><p>KiiiKiii의 음악은 듣는 이들에게 긍정적인 영감을 주고, 때로는 위로를 건네기도 해요. 앞으로 그녀가 써 내려갈 음악 이야기가 우리 삶에 어떤 다채로운 빛깔을 더해줄지 기대해도 좋을 거예요.</p><p>An Artist Who Gives Deep Resonance</p><p>KiiiKiii's music gives positive inspiration to listeners and sometimes offers comfort. You can look forward to the colorful hues her future musical stories will add to our lives.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] WhyKiiiKiii</div>
+<div><a href='https://tidal.com/album/549331818' target='_blank'>https://tidal.com/album/549331818</a></div>
+<div>KiiiKiii - Ever2Late!</div>
+<div>KiiiKiii - Hey Hi</div>
+<div>KiiiKiii - Pop Off Pop Off</div>
+<div>KiiiKiii - SWEET SOUR</div>
+<div>KiiiKiii - Candy Pink Magic Hole Flip Phone</div>
+<div>KiiiKiii - Blue Hour</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/549331818' target='_blank'><img src='https://resources.tidal.com/images/a7962d18/39ec/42d2/8b2d/795b86ce6956/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Perfect Crown (Original Soundtrack) Part.2</div>
+<div><a href='https://tidal.com/album/515387238' target='_blank'>https://tidal.com/album/515387238</a></div>
+<div>KiiiKiii - Go On</div>
+<div>KiiiKiii - Go On (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/515387238' target='_blank'><img src='https://resources.tidal.com/images/4d72be5e/381f/4e00/bebd/5c5f4b0ad36d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Delulu Pack</div>
+<div><a href='https://tidal.com/album/490970776' target='_blank'>https://tidal.com/album/490970776</a></div>
+<div>KiiiKiii - Delulu</div>
+<div>KiiiKiii - 404 (New Era)</div>
+<div>KiiiKiii - UNDERDOGS</div>
+<div>KiiiKiii - MUNGNYANG</div>
+<div>KiiiKiii - Dizzy</div>
+<div>KiiiKiii - To Me From Me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/490970776' target='_blank'><img src='https://resources.tidal.com/images/21e6f128/31b2/4378/8dc4/8f5b335b355e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] UNCUT GEM</div>
+<div><a href='https://tidal.com/album/422709793' target='_blank'>https://tidal.com/album/422709793</a></div>
+<div>KiiiKiii - DEBUT SONG</div>
+<div>KiiiKiii - GROUNDWORK</div>
+<div>KiiiKiii - I DO ME</div>
+<div>KiiiKiii - THERE THEY GO</div>
+<div>KiiiKiii - BTG</div>
+<div>KiiiKiii - 한 개뿐인 (ONE OFF)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/422709793' target='_blank'><img src='https://resources.tidal.com/images/2a85fd00/e44f/4549/8e64/f690bea04805/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] To Me From Me (Prod. TABLO)</div>
+<div><a href='https://tidal.com/album/468825130' target='_blank'>https://tidal.com/album/468825130</a></div>
+<div>KiiiKiii - To Me From Me (Prod. TABLO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/468825130' target='_blank'><img src='https://resources.tidal.com/images/757ca476/8781/4ea3/94fa/617665462e92/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] I DO ME</div>
+<div><a href='https://tidal.com/album/417044282' target='_blank'>https://tidal.com/album/417044282</a></div>
+<div>KiiiKiii - I DO ME</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/417044282' target='_blank'><img src='https://resources.tidal.com/images/a6b372d4/d8bf/4537/b245/014bcdf63c00/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] DANCING ALONE</div>
+<div><a href='https://tidal.com/album/451638936' target='_blank'>https://tidal.com/album/451638936</a></div>
+<div>KiiiKiii - DANCING ALONE</div>
+<div>KiiiKiii - 딸기게임 (Strawberry Cheesegame)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/451638936' target='_blank'><img src='https://resources.tidal.com/images/e9d742d2/5673/41ea/b2f0/9c52b7d2fe01/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/1_TIDAL_Kpop_Artist_Link_CK.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅋ1) TIDAL Kpop Artist Link (CK)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CK/키키 (KiiiKiii)_trk.html">
+                 
+                 <div class="translate-marquee-wrapper">                
+                     <div class="translate-marquee">
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                    </div> 
+                 </div>
+                 
+              </a>
+            </div>
+            
+            
+</body>
+</html>
