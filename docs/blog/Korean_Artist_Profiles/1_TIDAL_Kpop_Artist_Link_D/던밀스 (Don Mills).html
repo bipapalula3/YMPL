@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 던밀스 ( Tidal Don Mills )</title>
+
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 6px 6px 6px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 10px 16px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 40px;
+  opacity: 0;
+  animation: textFade 24s linear infinite;
+}
+@keyframes marqueeFlow {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+@keyframes textFade {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 던밀스 ( Tidal Don Mills )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/538dce22/327d/4ed0/bcd1/0b30520e028d/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/5165309' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 던밀스</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>⭐ 던밀스 소개 ⭐</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Don Mills</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>⭐ Don Mills Introduction ⭐</div><p>❌ AI 프로필 생성 및 JSON 파싱에 실패했습니다. 위의 AI 응답 텍스트와 오류 메시지를 확인하세요.</p><p>❌ AI profile generation and JSON parsing failed. Please check the AI response text and error message above.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] Whole Squad</div>
+<div><a href='https://tidal.com/album/572249102' target='_blank'>https://tidal.com/album/572249102</a></div>
+<div>J-Reyez, Don Mills - Whole Squad</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/572249102' target='_blank'><img src='https://resources.tidal.com/images/aebd2f81/4224/481b/840f/0a1ceb4988d4/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Whole Squad</div>
+<div><a href='https://tidal.com/album/492617367' target='_blank'>https://tidal.com/album/492617367</a></div>
+<div>J-Reyez, Don Mills - Whole Squad</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/492617367' target='_blank'><img src='https://resources.tidal.com/images/8f231a8e/3e15/4cd9/9418/274c885c12b0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] The Life-Changing Album INSTRUMENTAL</div>
+<div><a href='https://tidal.com/album/420101327' target='_blank'>https://tidal.com/album/420101327</a></div>
+<div>Don Mills - I stood up like I've never collapsed (Inst.)</div>
+<div>Don Mills - This is how we do it (Inst.)</div>
+<div>Don Mills - a ground header (Inst.)</div>
+<div>Don Mills - SNCL Baby (Inst.)</div>
+<div>Don Mills - OK (Inst.)</div>
+<div>Don Mills - hey wake up (Inst.)</div>
+<div>Don Mills - can't live without saggaing pants (Inst.)</div>
+<div>Don Mills - Don Mills Glock (Inst.)</div>
+<div>Don Mills - Keep it (Inst.)</div>
+<div>Don Mills - The Life-Changing SKIT (Inst.)</div>
+<div>Don Mills - If ur in danger, just shut ur mouth and hold it (Inst.)</div>
+<div>Don Mills - Hospital, Court, Work, Filming (Inst.)</div>
+<div>Don Mills - Don Milly what's the Dealie (Inst.)</div>
+<div>Don Mills - OK Remix (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/420101327' target='_blank'><img src='https://resources.tidal.com/images/ee314519/c651/4e8e/9ab5/c835092c1d22/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] I AM BOXER (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/472340943' target='_blank'>https://tidal.com/album/472340943</a></div>
+<div>Don Mills, Yankie, Primary - Art of Boxing</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/472340943' target='_blank'><img src='https://resources.tidal.com/images/bbe13d14/52da/41e2/b8af/1615a1c2676d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] 90s-00s Highway medley</div>
+<div><a href='https://tidal.com/album/446916731' target='_blank'>https://tidal.com/album/446916731</a></div>
+<div>Don Mills - Totally On Fire (Feat. ZENE THE ZILLA)</div>
+<div>Don Mills - Spicy Love (Feat. Polodared)</div>
+<div>Don Mills - Sorry I'm This Hot (Feat. Chin)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/446916731' target='_blank'><img src='https://resources.tidal.com/images/1a3191ba/3aa4/450f/be93/47456aec66e5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] The Life-Changing Album</div>
+<div><a href='https://tidal.com/album/347091057' target='_blank'>https://tidal.com/album/347091057</a></div>
+<div>Don Mills - I stood up like I've never collapsed</div>
+<div>Don Mills - This is how we do it (Feat. KIMISWILD, MADDOEAJI)</div>
+<div>Don Mills - a ground header (Feat. KOR KASH)</div>
+<div>Don Mills - SNCL Baby (Feat. Los)</div>
+<div>Don Mills - OK</div>
+<div>Don Mills - hey wake up</div>
+<div>Don Mills - can't live without saggaing pants (Feat. ODEE, oygli)</div>
+<div>Don Mills - Don Mills Glock (Feat. Owen)</div>
+<div>Don Mills - Keep it (Feat. INJAE)</div>
+<div>Don Mills - The Life-Changing SKIT</div>
+<div>Don Mills - If ur in danger, just shut ur mouth and hold it (Feat. Double Down)</div>
+<div>Don Mills - Hospital, Court, Work, Filming</div>
+<div>Don Mills - Don Milly what's the Dealie (Feat. CROWN J)</div>
+<div>Don Mills - OK Remix (Feat. Polodared, Tray B)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/347091057' target='_blank'><img src='https://resources.tidal.com/images/07d2b4fa/779a/4c3d/81e5/eef12af4b331/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] OK</div>
+<div><a href='https://tidal.com/album/342685111' target='_blank'>https://tidal.com/album/342685111</a></div>
+<div>Don Mills - OK</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/342685111' target='_blank'><img src='https://resources.tidal.com/images/b1bdec19/8904/4e5f/8acd/8e59ddb8d0e2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] I've been lost but I've finally made it</div>
+<div><a href='https://tidal.com/album/384698441' target='_blank'>https://tidal.com/album/384698441</a></div>
+<div>Don Mills - I've been lost but I've finally made it (Feat. Dbo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/384698441' target='_blank'><img src='https://resources.tidal.com/images/0249996c/16bd/4019/b7d4/95e671f8b32c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] A Ground Header MEGA Mix (feat. 김모이, 스카이민혁, SINCE, 토이고, Street Baby, 키츠요지, K$AP RAMA, Poison Mushroom, 오담률, CHERRY BOY 17, 노윤하, 그냥노창)</div>
+<div><a href='https://tidal.com/album/355316441' target='_blank'>https://tidal.com/album/355316441</a></div>
+<div>Don Mills - A Ground Header MEGA Mix (feat. 김모이, 스카이민혁, SINCE, 토이고, Street Baby, 키츠요지, K$AP RAMA, Poison Mushroom, 오담률, CHERRY BOY 17, 노윤하, 그냥노창)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/355316441' target='_blank'><img src='https://resources.tidal.com/images/370e1b5e/3235/4755/8517/ce3c36ed8450/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2023] Stand Up Underground Challenge EP. 06  비켜</div>
+<div><a href='https://tidal.com/album/298353068' target='_blank'>https://tidal.com/album/298353068</a></div>
+<div>Don Mills, CNBA trapboy, Deep Rooted Tree - 비켜</div>
+<div>Deep Rooted Tree - 비켜 (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/298353068' target='_blank'><img src='https://resources.tidal.com/images/f70861ab/95f2/4f8a/b225/aacaef8223cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] The 6ix</div>
+<div><a href='https://tidal.com/album/288449146' target='_blank'>https://tidal.com/album/288449146</a></div>
+<div>Don Mills - The 6ix (feat. Dbo)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288449146' target='_blank'><img src='https://resources.tidal.com/images/17b051f8/8f58/4745/8baa/5b7d9bb912dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] MEERAE 2</div>
+<div><a href='https://tidal.com/album/288448107' target='_blank'>https://tidal.com/album/288448107</a></div>
+<div>Don Mills - MEERAE 2 (feat. KHAN, J4 Prada, Polodared)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288448107' target='_blank'><img src='https://resources.tidal.com/images/c6f46b6d/bda4/4011/9a19/5b6d8ba82522/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] HEALTHY BOY</div>
+<div><a href='https://tidal.com/album/288445632' target='_blank'>https://tidal.com/album/288445632</a></div>
+<div>Don Mills - 우량아 (prod. GRAY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288445632' target='_blank'><img src='https://resources.tidal.com/images/2be0b069/856d/44f7/bcff/817b93eb88cc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] F.O.B</div>
+<div><a href='https://tidal.com/album/288440635' target='_blank'>https://tidal.com/album/288440635</a></div>
+<div>Don Mills - Don Mills Style</div>
+<div>Don Mills - DAEBAK Life (feat. Northfacegawd, UNEDUCATED KID)</div>
+<div>Don Mills - MVP</div>
+<div>Don Mills - F.O.B. Interlude</div>
+<div>Don Mills - Fresh Off the Boat (feat. Los)</div>
+<div>Don Mills - George Brown College</div>
+<div>Don Mills - Yonge Karaoke (feat. Dbo)</div>
+<div>Don Mills - Mangnani Freestyle</div>
+<div>Don Mills - Seoul Again</div>
+<div>Don Mills - Dynamic Duo (feat. Nucksal)</div>
+<div>Don Mills - Terminal</div>
+<div>Don Mills - Home Sweet Home (feat. YDG)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288440635' target='_blank'><img src='https://resources.tidal.com/images/48c34e92/d176/413b/8b7d/e9fda122ec84/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] DAEBAK Life (2021 Remix Version)</div>
+<div><a href='https://tidal.com/album/288440713' target='_blank'>https://tidal.com/album/288440713</a></div>
+<div>Don Mills - DAEBAK Life Remix (feat. Loco, ZENE THE ZILLA, CHANGMO, Queen WA$ABII, MUNCHMAN, SUPERBEE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288440713' target='_blank'><img src='https://resources.tidal.com/images/76fd990b/415b/43eb/9cb2/7fb347290e4c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Bad and Crazy OST Part 1</div>
+<div><a href='https://tidal.com/album/210343608' target='_blank'>https://tidal.com/album/210343608</a></div>
+<div>Don Mills - Bulldozer</div>
+<div>Don Mills - Bulldozer (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/210343608' target='_blank'><img src='https://resources.tidal.com/images/54de47b9/eccb/4baa/8161/02da5457e784/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] BURLUNGBURLUNG</div>
+<div><a href='https://tidal.com/album/288447326' target='_blank'>https://tidal.com/album/288447326</a></div>
+<div>Don Mills - BURLUNGBURLUNG (feat. Northfacegawd)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288447326' target='_blank'><img src='https://resources.tidal.com/images/14a2d62e/5a8b/4339/a4f3/862ce71cc52e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] B.O.T.B. (Best Of The Best)</div>
+<div><a href='https://tidal.com/album/208173193' target='_blank'>https://tidal.com/album/208173193</a></div>
+<div>Gaeko, CHANGMO, Don Mills, Los, DeVita, SOLE, SINCE, BE′O, GRAY - B.O.T.B. (Prod. GRAY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208173193' target='_blank'><img src='https://resources.tidal.com/images/543aa063/a1c3/4342/b12a/c71ee55c33ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] 420</div>
+<div><a href='https://tidal.com/album/243956399' target='_blank'>https://tidal.com/album/243956399</a></div>
+<div>Markez, Sensei Musica, Don Mills - 420</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/243956399' target='_blank'><img src='https://resources.tidal.com/images/9cb7cbec/85d8/4b67/81d3/df977e3cad10/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] THE FIX</div>
+<div><a href='https://tidal.com/album/152568200' target='_blank'>https://tidal.com/album/152568200</a></div>
+<div>Don Mills - THE FIX</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/152568200' target='_blank'><img src='https://resources.tidal.com/images/c2aa54f0/af12/4340/b3a6/fe8111b4603e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Dirty Work (feat. Nuela Charles & Reina)</div>
+<div><a href='https://tidal.com/album/132057675' target='_blank'>https://tidal.com/album/132057675</a></div>
+<div>Don Mills - Dirty Work (feat. Nuela Charles & Reina)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/132057675' target='_blank'><img src='https://resources.tidal.com/images/ee734706/2f7b/43c7/b49d/7100847acf8e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Dead Types (feat. Bryn)</div>
+<div><a href='https://tidal.com/album/126082634' target='_blank'>https://tidal.com/album/126082634</a></div>
+<div>Don Mills - Dead Types (feat. Bryn)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/126082634' target='_blank'><img src='https://resources.tidal.com/images/e21eee02/bbe9/4394/9e12/cdefbb764e8c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Strangers in the Sun (feat. James Edgar)</div>
+<div><a href='https://tidal.com/album/112664555' target='_blank'>https://tidal.com/album/112664555</a></div>
+<div>Don Mills - Strangers in the Sun (feat. James Edgar)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/112664555' target='_blank'><img src='https://resources.tidal.com/images/07c63f97/ffff/4a4a/ac7e/5c1c79b31f7b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] TIME</div>
+<div><a href='https://tidal.com/album/288416269' target='_blank'>https://tidal.com/album/288416269</a></div>
+<div>Don Mills - Nakwon Stores (feat. Car, The Garden)</div>
+<div>Don Mills - Time</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288416269' target='_blank'><img src='https://resources.tidal.com/images/d6a2e378/316d/4e7b/a4eb/eb7cb47197bf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Switch Lanes</div>
+<div><a href='https://tidal.com/album/288415080' target='_blank'>https://tidal.com/album/288415080</a></div>
+<div>Don Mills - Switch Lanes (feat. Jay Park & The Quiett)</div>
+<div>Don Mills - Whole lot of luv (feat. BIGONE & ODEE)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288415080' target='_blank'><img src='https://resources.tidal.com/images/0abc180f/0066/44b1/a151/d13e95f6db73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Mills Way</div>
+<div><a href='https://tidal.com/album/287899398' target='_blank'>https://tidal.com/album/287899398</a></div>
+<div>Don Mills - Mills Gon Do It</div>
+<div>Don Mills - Ouu Yah (feat. Los)</div>
+<div>Don Mills - Yonge and Finch (feat. Dbo)</div>
+<div>Don Mills - It Was Crazy (feat. Beenzino)</div>
+<div>Don Mills - Calm Down</div>
+<div>Don Mills - Mills Gon Do It REMIX (feat. Woodie Gochild, ZENE THE ZILLA, EK, BILL STAX, ODEE, Deepflow, 창모)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287899398' target='_blank'><img src='https://resources.tidal.com/images/000d638f/83a1/44e9/9ed6/5263dc31c80a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Living in the Dream</div>
+<div><a href='https://tidal.com/album/288412353' target='_blank'>https://tidal.com/album/288412353</a></div>
+<div>Don Mills - Korean Air (Prod. Y0UNG VA$$)</div>
+<div>Don Mills - Living in the Dream (Prod. Bronze)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288412353' target='_blank'><img src='https://resources.tidal.com/images/df6465c6/1676/4d88/b67d/858380a81c3d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2017] Mr. Trap Hwang</div>
+<div><a href='https://tidal.com/album/288414083' target='_blank'>https://tidal.com/album/288414083</a></div>
+<div>Don Mills - Mr. Trap Hwang</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288414083' target='_blank'><img src='https://resources.tidal.com/images/42d9ec60/1b03/4ed6/8cf0/e08f52d6a741/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] RIGHT NOW</div>
+<div><a href='https://tidal.com/album/288413396' target='_blank'>https://tidal.com/album/288413396</a></div>
+<div>Don Mills - RIGHT NOW</div>
+<div>Don Mills - MEERAE APT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288413396' target='_blank'><img src='https://resources.tidal.com/images/e6d04844/644a/4045/a78c/8558012a410f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Meerae</div>
+<div><a href='https://tidal.com/album/343855296' target='_blank'>https://tidal.com/album/343855296</a></div>
+<div>Don Mills - Meerae</div>
+<div>Don Mills - Ye I Need (feat. Nucksal, Odee)</div>
+<div>Don Mills - 2.0 (feat. BewhY)</div>
+<div>Don Mills - Stuffs In the Head</div>
+<div>Don Mills - Ssal (feat. J-Tong)</div>
+<div>Don Mills - Drunken Don Mills</div>
+<div>Don Mills - E.D.L (feat. BILL STAX)</div>
+<div>Don Mills - All Age (feat. Dok2, DEEPFLOW)</div>
+<div>Don Mills - That Shit</div>
+<div>Don Mills - Fetish</div>
+<div>Don Mills - Give U a Hug (feat. CHANGMO)</div>
+<div>Don Mills - Air Canada</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/343855296' target='_blank'><img src='https://resources.tidal.com/images/26cf4650/7820/4665/a51a/cacc3f0d0423/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Wild Wild Tuesday 3rd</div>
+<div><a href='https://tidal.com/album/344461631' target='_blank'>https://tidal.com/album/344461631</a></div>
+<div>Don Mills - Wild Hiphop (Feat. C Jamm, Okasian)</div>
+<div>Don Mills - Wild Hiphop (Feat. C Jamm, Okasian) (Instrumental)</div>
+<div>Don Mills - Wild Hiphop (Feat. C Jamm, Okasian) (Acapella)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344461631' target='_blank'><img src='https://resources.tidal.com/images/63e0579f/d8f3/4419/abd8/b5fdf29291fc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Wild Wild Tuesday 2nd</div>
+<div><a href='https://tidal.com/album/344459336' target='_blank'>https://tidal.com/album/344459336</a></div>
+<div>Don Mills - Flirtatious Don Mills</div>
+<div>Don Mills - Flirtatious Don Mills (Instrumental)</div>
+<div>Don Mills - Flirtatious Don Mills (Acapella)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344459336' target='_blank'><img src='https://resources.tidal.com/images/4d42eedc/9047/4ae3/b023/d590d836a427/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Wild Wild Tuesday 1st</div>
+<div><a href='https://tidal.com/album/344458808' target='_blank'>https://tidal.com/album/344458808</a></div>
+<div>Don Mills - I'd rather</div>
+<div>Don Mills - I'd rather (Instrumental)</div>
+<div>Don Mills - I'd rather (Acapella)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344458808' target='_blank'><img src='https://resources.tidal.com/images/75124554/6b0b/4b9e/9df7/2d44c00c21d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Tip</div>
+<div><a href='https://tidal.com/album/344494061' target='_blank'>https://tidal.com/album/344494061</a></div>
+<div>Don Mills - Tip</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344494061' target='_blank'><img src='https://resources.tidal.com/images/3dd2d893/3730/490a/bcb3/d2440461fe35/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2015] Kingsman</div>
+<div><a href='https://tidal.com/album/344494064' target='_blank'>https://tidal.com/album/344494064</a></div>
+<div>Don Mills - Kingsman</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344494064' target='_blank'><img src='https://resources.tidal.com/images/6211813c/d1f0/4310/81b2/45c998ad50bc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2014] YOUNG DON</div>
+<div><a href='https://tidal.com/album/378057932' target='_blank'>https://tidal.com/album/378057932</a></div>
+<div>Don Mills - KANG BAEK HO</div>
+<div>Don Mills - YOUNG DON</div>
+<div>Don Mills, Deepflow - Unique (feat. Deepflow)</div>
+<div>Don Mills - 88</div>
+<div>Don Mills - HOW U FELL</div>
+<div>Don Mills, Samuel Seo - Shoulder Gang (feat. Samuel Seo)</div>
+<div>Don Mills, C.Jamm, Olltii, Psycoban, Wutan - 88 (feat. C.Jamm, Olltii, Psycoban & Wutan) [Remix]</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/378057932' target='_blank'><img src='https://resources.tidal.com/images/209ca8c9/a317/454e/847b/7bba4a479816/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2014] 88</div>
+<div><a href='https://tidal.com/album/344420161' target='_blank'>https://tidal.com/album/344420161</a></div>
+<div>Don Mills - 88</div>
+<div>Don Mills - 88 (Remix) [feat. C.Jamm, Olltii, PSYCOBAN & WUTAN]</div>
+<div>Don Mills - 88 (Instrumental)</div>
+<div>Don Mills - 88 (Acapella)</div>
+<div>Don Mills - 88 Remix (Acapella)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/344420161' target='_blank'><img src='https://resources.tidal.com/images/a250e800/fb96/4217/b7e5/c6d135c79509/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] 휴학한 유학생</div>
+<div><a href='https://tidal.com/album/208823533' target='_blank'>https://tidal.com/album/208823533</a></div>
+<div>Don Mills - 휴학한 유학생</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208823533' target='_blank'><img src='https://resources.tidal.com/images/224db633/04a7/4e4d/a888/318af2fec263/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2013] Don Mills</div>
+<div><a href='https://tidal.com/album/23240721' target='_blank'>https://tidal.com/album/23240721</a></div>
+<div>Don Mills - Don Mills</div>
+<div>Don Mills - Don Mills (Acapella)</div>
+<div>Don Mills - Don Mills (Instrumental)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/23240721' target='_blank'><img src='https://resources.tidal.com/images/b7dffa8a/ca1d/40fa/8354/03d5ec433fc7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_D/1_TIDAL_Kpop_Artist_Link_D.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄷ1) TIDAL Kpop Artist Link (D)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_D/던밀스 (Don Mills)_trk.html">
+                 
+                 <div class="translate-marquee-wrapper">                
+                     <div class="translate-marquee">
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                    </div> 
+                 </div>
+                 
+              </a>
+            </div>
+            
+            
+</body>
+</html>
