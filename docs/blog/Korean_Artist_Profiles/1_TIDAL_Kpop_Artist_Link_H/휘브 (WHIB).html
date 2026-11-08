@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 휘브 ( Tidal WHIB )</title>
+
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 6px 6px 6px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 10px 16px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 40px;
+  opacity: 0;
+  animation: textFade 24s linear infinite;
+}
+@keyframes marqueeFlow {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+@keyframes textFade {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 휘브 ( Tidal WHIB )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/c5623a1d/c283/4e83/9c63/ffa23ad7bd45/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/43686056' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 휘브</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>새로운 시대의 넥스트, 휘브의 에너지</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> WHIB</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>The Next of a New Era, WHIB's Energy</div><p>지금까지 본 적 없는 강력한 퍼포먼스와 매력으로 K팝 씬에 새로운 바람을 일으키고 있는 아티스트, 휘브를 소개해요. 다섯 명의 멤버가 모여 펼치는 짜임새 있는 음악과 무대는 팬들에게 잊지 못할 경험을 선사할 거예요.</p><p>Introducing WHIB, an artist creating a new wave in the K-pop scene with unparalleled powerful performances and charm. The synergy of five members unfolds with cohesive music and stages that promise unforgettable experiences for their fans.</p><p>✧</p><p>다섯 명의 특별한 만남</p><p>휘브는 2023년 11월, 다섯 명의 멤버들이 모여 K팝에 새로운 획을 긋고자 탄생했어요. 각기 다른 매력을 가진 멤버들이 하나의 팀으로 뭉쳐 빛나는 시너지를 만들어내고 있답니다.</p><p>The Special Gathering of Five</p><p>WHIB was born in November 2023 with five members aiming to make their mark on K-pop. Each member, with their unique charms, has united to create a shining synergy as one team.</p><p>✧</p><p>에너지 넘치는 음악과 무대</p><p>휘브의 음악은 강렬한 퍼포먼스와 팝적인 요소를 넘나들며 다채로운 매력을 보여줘요. 듣는 이들의 심장을 뛰게 하는 역동적인 사운드와 파워풀한 안무는 휘브만의 독보적인 무대를 완성합니다.</p><p>Energetic Music and Performances</p><p>WHIB's music showcases a diverse range of charms, oscillating between powerful performances and pop elements. The dynamic sounds that make listeners' hearts race and their powerful choreography complete WHIB's unique stage presence.</p><p>✧</p><p>멈추지 않는 성장</p><p>데뷔 이후 꾸준히 새로운 음악과 퍼포먼스를 선보이며 팬들과 소통해왔어요. 휘브는 끊임없이 도전하고 성장하는 모습을 보여주며 앞으로가 더욱 기대되는 그룹으로 자리매김하고 있습니다.</p><p>Unstoppable Growth</p><p>Since their debut, they have consistently communicated with fans by showcasing new music and performances. WHIB is establishing themselves as a group with high expectations for the future by continuously challenging themselves and demonstrating growth.</p><p>✧</p><p>새로운 역사를 향해</p><p>휘브는 앞으로도 자신들만의 음악 색깔을 더욱 확고히 하며 K팝 팬들에게 신선한 충격과 감동을 선사할 거예요. 휘브가 써내려갈 찬란한 이야기들을 함께 응원해주세요.</p><p>Towards a New History</p><p>WHIB will continue to solidify their unique musical identity and deliver fresh impact and emotion to K-pop fans. Please join us in cheering for the brilliant stories WHIB is about to write.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] ROCK THE NATION</div>
+<div><a href='https://tidal.com/album/491831920' target='_blank'>https://tidal.com/album/491831920</a></div>
+<div>WHIB - WHO'S THE NEXT</div>
+<div>WHIB - ROCK THE NATION</div>
+<div>WHIB - DDANG</div>
+<div>WHIB - ELEVATE</div>
+<div>WHIB - NO SHINE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/491831920' target='_blank'><img src='https://resources.tidal.com/images/c5623a1d/c283/4e83/9c63/ffa23ad7bd45/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] CHERRY PIE</div>
+<div><a href='https://tidal.com/album/547669711' target='_blank'>https://tidal.com/album/547669711</a></div>
+<div>WHIB - PAGES OF US</div>
+<div>WHIB - CHERRY PIE</div>
+<div>WHIB - MOTTO</div>
+<div>WHIB - CAN'T STOP=NOT FOUND</div>
+<div>WHIB - MAKE IT</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/547669711' target='_blank'><img src='https://resources.tidal.com/images/90997073/4fcf/40a2/9760/7170d29079d0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] BANG OUT</div>
+<div><a href='https://tidal.com/album/429002377' target='_blank'>https://tidal.com/album/429002377</a></div>
+<div>WHIB - BANG OUT</div>
+<div>WHIB - Still typing.. (subtitle blank)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/429002377' target='_blank'><img src='https://resources.tidal.com/images/e43bc937/41dd/4e5d/9919/4ea01692f681/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Rush of Joy</div>
+<div><a href='https://tidal.com/album/390374218' target='_blank'>https://tidal.com/album/390374218</a></div>
+<div>WHIB - Rush of Joy</div>
+<div>WHIB - Play</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/390374218' target='_blank'><img src='https://resources.tidal.com/images/91962d95/472d/43b9/9a08/a2de81b6cc6e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] ETERNAL YOUTH  KICK IT</div>
+<div><a href='https://tidal.com/album/363073854' target='_blank'>https://tidal.com/album/363073854</a></div>
+<div>WHIB - KICK IT</div>
+<div>WHIB - IN THE MOOD</div>
+<div>WHIB - KICK IT (English ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/363073854' target='_blank'><img src='https://resources.tidal.com/images/af718e5c/2b1f/42cf/af0f/6f6bd25b9960/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Cut-Out</div>
+<div><a href='https://tidal.com/album/327735888' target='_blank'>https://tidal.com/album/327735888</a></div>
+<div>WHIB - BANG!</div>
+<div>WHIB - DIZZY</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/327735888' target='_blank'><img src='https://resources.tidal.com/images/1f046830/a3b0/4daa/9617/4d583ff2f8c0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/1_TIDAL_Kpop_Artist_Link_H.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅎ1) TIDAL Kpop Artist Link (H)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_H/휘브 (WHIB)_trk.html">
+                 
+                 <div class="translate-marquee-wrapper">                
+                     <div class="translate-marquee">
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                    </div> 
+                 </div>
+                 
+              </a>
+            </div>
+            
+            
+</body>
+</html>
