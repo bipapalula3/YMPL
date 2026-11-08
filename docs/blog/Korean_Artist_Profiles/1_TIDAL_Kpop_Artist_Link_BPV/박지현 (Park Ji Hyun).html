@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>박지현 (Park Ji Hyun)</title>
+
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 6px 6px 6px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 10px 16px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 40px;
+  opacity: 0;
+  animation: textFade 24s linear infinite;
+}
+@keyframes marqueeFlow {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+@keyframes textFade {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>박지현 (Park Ji Hyun)</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/4b0c7b6f/c490/4ea4/89f0/de39d3293f15/1280x1280.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/10924585' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 박지현</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>일상의 풍경을 노래하는 싱어송라이터</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Park Ji Hyun</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Singer-songwriter who sings about everyday scenes</div><p>박지현 님은 따뜻한 감성과 섬세한 멜로디로 많은 이들의 마음을 울리는 싱어송라이터예요. 그녀의 음악은 일상 속 작은 순간들을 포착하여 듣는 이들에게 위로와 공감을 선사하죠. 조용하지만 깊은 울림을 주는 박지현 님의 음악 세계를 만나보세요.</p><p>Park Ji Hyun is a singer-songwriter who touches many hearts with her warm emotions and delicate melodies. Her music captures small moments in everyday life, offering comfort and empathy to listeners. Come and explore the musical world of Park Ji Hyun, which resonates with a quiet yet profound depth.</p><p>✧</p><p>음악의 시작</p><p>박지현 님은 자신만의 음악적 색깔을 구축하며 차근차근 성장해왔어요. 그녀는 주로 자작곡을 통해 자신의 이야기를 풀어내며, 이를 통해 진솔한 아티스트로서의 면모를 보여주고 있어요. 섬세한 감성과 깊이 있는 메시지가 돋보이는 음악을 선보입니다.</p><p>Musical Beginnings</p><p>Park Ji Hyun has steadily grown while building her own unique musical style. She primarily tells her stories through her self-composed songs, showcasing her sincerity as an artist. Her music stands out with delicate emotions and profound messages.</p><p>✧</p><p>음악과 퍼포먼스</p><p>그녀의 음악은 마치 잔잔한 호수처럼, 듣는 이의 마음을 평온하게 만들어주는 힘이 있어요. 다채로운 악기 구성과 섬세한 보컬은 곡의 분위기를 더욱 풍성하게 만들죠. 멜로디 라인은 따라 부르기 쉽지만, 그 안에 담긴 감성은 깊고 울림이 있어요.</p><p>Music and Performance</p><p>Her music has the power to calm the listener's mind, much like a tranquil lake. The diverse instrumental arrangements and delicate vocals enrich the mood of each song. The melody lines are easy to sing along to, yet the emotions contained within are deep and resonant.</p><p>✧</p><p>주요 활동</p><p>박지현 님은 꾸준한 음반 발매와 다양한 공연 활동을 통해 팬들과 소통하고 있어요. 그녀의 음악은 앨범뿐만 아니라 라이브 공연에서도 진가를 발휘하며, 현장감을 더한 생생한 감동을 선사합니다. 음악을 통해 많은 사람들에게 긍정적인 에너지를 전달하고 있어요.</p><p>Key Activities</p><p>Park Ji Hyun consistently communicates with her fans through regular album releases and various performance activities. Her music shines not only on albums but also in live performances, offering vivid emotions enhanced by the live atmosphere. She conveys positive energy to many people through her music.</p><p>✧</p><p>미래와 의미</p><p>박지현 님의 음악은 앞으로도 우리 곁에서 따뜻한 위로와 영감을 주는 존재가 될 거예요. 그녀는 진솔한 음악으로 삶의 다양한 순간들을 아름답게 그려낼 것이라고 기대돼요. 그녀의 음악을 통해 우리 각자의 일상이 더욱 풍요로워지기를 바랍니다.</p><p>Future and Meaning</p><p>Park Ji Hyun's music will continue to be a source of warm comfort and inspiration by our side. We expect her to beautifully portray various moments of life through her sincere music. We hope that our individual daily lives will become richer through her music.</p></div><p># 박지현 (Park Ji Hyun)</p>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2025] Stranger</div>
+<div><a href='https://tidal.com/album/475454024' target='_blank'>https://tidal.com/album/475454024</a></div>
+<div>Park Ji Hyun - Crossroads</div>
+<div>Park Ji Hyun - Green Hour</div>
+<div>Park Ji Hyun - Day off</div>
+<div>Park Ji Hyun - Stranger</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/475454024' target='_blank'><img src='https://resources.tidal.com/images/4b0c7b6f/c490/4ea4/89f0/de39d3293f15/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Serenely dynamic</div>
+<div><a href='https://tidal.com/album/346856384' target='_blank'>https://tidal.com/album/346856384</a></div>
+<div>Park Ji Hyun, Choi In Hwan - Serenely dynamic</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/346856384' target='_blank'><img src='https://resources.tidal.com/images/f33baca0/5351/41fa/bad9/1e6cbd7e45bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Persona</div>
+<div><a href='https://tidal.com/album/296521930' target='_blank'>https://tidal.com/album/296521930</a></div>
+<div>Park Ji Hyun - Persona</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/296521930' target='_blank'><img src='https://resources.tidal.com/images/26549a3c/f39f/4304/9770/83e883af6f25/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Connecting the dots</div>
+<div><a href='https://tidal.com/album/287864841' target='_blank'>https://tidal.com/album/287864841</a></div>
+<div>Park Ji Hyun - Connecting the dots</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/287864841' target='_blank'><img src='https://resources.tidal.com/images/5149094b/1645/49b2/95e7/dc757a397b1b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Room</div>
+<div><a href='https://tidal.com/album/220712711' target='_blank'>https://tidal.com/album/220712711</a></div>
+<div>Park Ji Hyun - Room</div>
+<div>Park Ji Hyun - Clock</div>
+<div>Park Ji Hyun - Drawer</div>
+<div>Park Ji Hyun - Mirror</div>
+<div>Park Ji Hyun - Window</div>
+<div>Park Ji Hyun - Bed</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/220712711' target='_blank'><img src='https://resources.tidal.com/images/f06ca8a4/011e/4421/82c3/87242ee8c7bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] 그만 좀 해요</div>
+<div><a href='https://tidal.com/album/294180511' target='_blank'>https://tidal.com/album/294180511</a></div>
+<div>Park Ji Hyun - 그만 좀 해요</div>
+<div>Park Ji Hyun - 잊을 자신 없는데</div>
+<div>Park Ji Hyun - 세월은 간다</div>
+<div>Park Ji Hyun - 압록강 칠백리</div>
+<div>Park Ji Hyun - 모정</div>
+<div>Park Ji Hyun - 감나무골</div>
+<div>Park Ji Hyun - 진정 사랑한다면</div>
+<div>Park Ji Hyun - 물새우는 해변</div>
+<div>Park Ji Hyun - 조금 더 기다려요</div>
+<div>Park Ji Hyun - 그만 좀 해요(MR)</div>
+<div>Park Ji Hyun - 잊을 자신 없는데(MR)</div>
+<div>Park Ji Hyun - 세월은 간다(MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/294180511' target='_blank'><img src='https://resources.tidal.com/images/0e11e226/f5d9/44e2/b2b2/423937674fdc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] weather forecast</div>
+<div><a href='https://tidal.com/album/498135769' target='_blank'>https://tidal.com/album/498135769</a></div>
+<div>Park Ji Hyun - weather forecast</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/498135769' target='_blank'><img src='https://resources.tidal.com/images/83f3dd58/8cd4/46a2/9b33/9c2e601d2438/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] a weather forecast</div>
+<div><a href='https://tidal.com/album/186023957' target='_blank'>https://tidal.com/album/186023957</a></div>
+<div>Park Ji Hyun - a weather forecast</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/186023957' target='_blank'><img src='https://resources.tidal.com/images/60d83ea5/1664/4b97/93e9/023131532cef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] 세월은간다잊을 자신 없는데</div>
+<div><a href='https://tidal.com/album/281938157' target='_blank'>https://tidal.com/album/281938157</a></div>
+<div>Park Ji Hyun - 세월은 간다</div>
+<div>Park Ji Hyun - 잊을 자신 없는데</div>
+<div>Park Ji Hyun - 그때 그사람</div>
+<div>Park Ji Hyun - 무정 부르스</div>
+<div>Park Ji Hyun - 살아있는 가로수</div>
+<div>Park Ji Hyun - 네온의 블루스</div>
+<div>Park Ji Hyun - 먼데서 오신 손님</div>
+<div>Park Ji Hyun - 정동대감</div>
+<div>Park Ji Hyun - 진도 아리랑</div>
+<div>Park Ji Hyun - 대지의 항구</div>
+<div>Park Ji Hyun - 세월은 간다(MR)</div>
+<div>Park Ji Hyun - 잊을 자신 없는데(MR)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/281938157' target='_blank'><img src='https://resources.tidal.com/images/42f13d98/2c72/4da2/a75d/ab168fec4dca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[1993] 조아조아 정통 Trot 1집</div>
+<div><a href='https://tidal.com/album/263939522' target='_blank'>https://tidal.com/album/263939522</a></div>
+<div>Park Ji Hyun - 우연히 정들었네</div>
+<div>Park Ji Hyun - 다시 한번 생각해줘요</div>
+<div>Park Ji Hyun - 하룻밤 풋사랑</div>
+<div>Park Ji Hyun - 울어라 기타줄</div>
+<div>Park Ji Hyun - 정거장</div>
+<div>Park Ji Hyun - 돌아와요 부산항</div>
+<div>Park Ji Hyun - 울고 넘는 박달재</div>
+<div>Park Ji Hyun - 이정표</div>
+<div>Park Ji Hyun - 지금도 가고싶어</div>
+<div>Park Ji Hyun - 고향무정</div>
+<div>Park Ji Hyun - 떠나가세요</div>
+<div>Park Ji Hyun - 원점</div>
+<div>Park Ji Hyun - 사랑이 무엇이길래</div>
+<div>Park Ji Hyun - 정 때문에</div>
+<div>Park Ji Hyun - 방배동의 밤</div>
+<div>Park Ji Hyun - 서귀포를 아시나요</div>
+<div>Park Ji Hyun - 두줄기 눈물</div>
+<div>Park Ji Hyun - 애정이 꽃피던 시절</div>
+<div>Park Ji Hyun - 바보같은 사나이</div>
+<div>Park Ji Hyun - 나그네설움</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/263939522' target='_blank'><img src='https://resources.tidal.com/images/439e3a35/2c97/4ee0/a641/081edccc42c7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/1_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ1) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_BPV/박지현 (Park Ji Hyun)_trk.html">
+                 
+                 <div class="translate-marquee-wrapper">                
+                     <div class="translate-marquee">
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                    </div> 
+                 </div>
+                 
+              </a>
+            </div>
+            
+            
+</body>
+</html>
