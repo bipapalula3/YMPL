@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 블루 ( Tidal BLOO )</title>
+
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 6px 6px 6px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 10px 16px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 40px;
+  opacity: 0;
+  animation: textFade 24s linear infinite;
+}
+@keyframes marqueeFlow {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+@keyframes textFade {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 블루 ( Tidal BLOO )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/30845b3f/6c03/4724/b7b9/2e8cfcc0e680/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/37282343' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 블루</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>너의 곁을 맴도는 멜로디, BLOO</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> BLOO</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Melodies that linger by your side, BLOO</div><p>감성적인 힙합으로 많은 사랑을 받고 있는 아티스트 BLOO를 소개해요. 그의 음악은 때로는 거칠지만, 그 속에는 솔직하고 섬세한 감성이 녹아있답니다. 당신의 마음에 깊은 울림을 선사할 BLOO의 세계로 함께 떠나볼까요?</p><p>Introducing artist BLOO, who is loved for his emotional hip-hop. His music is sometimes rough, but it contains honest and delicate emotions. Shall we embark on a journey into BLOO's world that will deeply resonate with your heart?</p><p>✧</p><p>음악적 여정의 시작</p><p>BLOO는 자신만의 독창적인 음악 세계를 구축하며 힙합 씬에 새로운 바람을 불어넣고 있어요. 그의 음악은 솔직한 가사와 멜로디 라인을 통해 리스너들에게 진솔한 이야기를 전달하죠. 마치 친구에게 털어놓는 듯한 편안함과 깊은 공감을 선사해요.</p><p>The Beginning of a Musical Journey</p><p>BLOO is creating a unique musical world and bringing a fresh wave to the hip-hop scene. His music conveys sincere stories to listeners through honest lyrics and melodies. It offers a sense of comfort and deep empathy, as if confiding in a friend.</p><p>✧</p><p>힙합과 감성의 조화</p><p>BLOO의 음악은 힙합의 에너지를 바탕으로 하지만, 그 안에 담긴 감성적인 멜로디와 솔직한 표현이 돋보여요. 때로는 거칠고 직설적인 사운드로, 때로는 부드럽고 섬세한 감성으로 듣는 이들의 마음을 사로잡죠. 그의 다채로운 음악 색깔은 폭넓은 팬층을 형성하는 데 기여했어요.</p><p>Harmony of Hip-Hop and Emotion</p><p>BLOO's music is based on the energy of hip-hop, but its emotional melodies and honest expressions stand out. It captivates listeners with sometimes rough and direct sounds, and sometimes with soft and delicate emotions. His diverse musical colors have contributed to forming a broad fanbase.</p><p>✧</p><p>다양한 음악적 스펙트럼</p><p>BLOO는 힙합이라는 장르 안에서도 끊임없이 새로운 시도를 하며 음악적 스펙트럼을 넓혀가고 있어요. 묵직한 비트 위에서 쏟아내는 거침없는 랩핑부터 감미로운 보컬까지, 그의 음악은 다양한 매력을 품고 있답니다. 이러한 음악적 탐구는 많은 리스너들에게 신선한 경험을 제공해요.</p><p>Diverse Musical Spectrum</p><p>BLOO is constantly expanding his musical spectrum by attempting new things even within the hip-hop genre. From uninhibited rapping poured over heavy beats to sweet vocals, his music holds various charms. This musical exploration provides a fresh experience for many listeners.</p><p>✧</p><p>앞으로의 BLOO</p><p>BLOO는 앞으로도 변함없이 자신만의 음악 색깔을 지키면서 대중들과 소통할 거예요. 그의 진솔한 음악은 앞으로도 많은 이들에게 위로와 감동을 선사하며, 힙합 씬에 긍정적인 영향을 줄 것으로 기대돼요. 그의 다음 행보를 주목해주세요.</p><p>The Future of BLOO</p><p>BLOO will continue to communicate with the public while unchangingly maintaining his unique musical color. His sincere music is expected to provide comfort and emotion to many in the future and positively influence the hip-hop scene. Please pay attention to his next steps.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] Arrivaderchi</div>
+<div><a href='https://tidal.com/album/528717061' target='_blank'>https://tidal.com/album/528717061</a></div>
+<div>Slonkers, BLOO - Arrivaderchi</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/528717061' target='_blank'><img src='https://resources.tidal.com/images/1919f938/f43c/4e65/b118/f91708f4dcc5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Fox and the City</div>
+<div><a href='https://tidal.com/album/288222758' target='_blank'>https://tidal.com/album/288222758</a></div>
+<div>BLOO - Want U</div>
+<div>BLOO - muse</div>
+<div>BLOO - daddy II</div>
+<div>BLOO - J</div>
+<div>BLOO - You were so beautiful</div>
+<div>BLOO - gotta move on</div>
+<div>BLOO - I tried to make some money, but then I lost it</div>
+<div>BLOO - fucking tired</div>
+<div>BLOO - hug me tight</div>
+<div>BLOO - Black Angel</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288222758' target='_blank'><img src='https://resources.tidal.com/images/fcf03aea/50bf/4713/a436/82a686727739/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] hug me tight</div>
+<div><a href='https://tidal.com/album/266184532' target='_blank'>https://tidal.com/album/266184532</a></div>
+<div>BLOO - hug me tight</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/266184532' target='_blank'><img src='https://resources.tidal.com/images/deb54a09/009d/4c2d/9a90/94e10c923dac/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] MOON AND BACK</div>
+<div><a href='https://tidal.com/album/202455302' target='_blank'>https://tidal.com/album/202455302</a></div>
+<div>BLOO - but I'll wait for you</div>
+<div>BLOO - Don't say goodbye</div>
+<div>BLOO - Understand Me</div>
+<div>BLOO - Girl in New York</div>
+<div>BLOO - Pick up the phone</div>
+<div>BLOO - DADDY</div>
+<div>BLOO - the day we first met</div>
+<div>BLOO - Girl in New York (jazz)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/202455302' target='_blank'><img src='https://resources.tidal.com/images/09884df4/cd91/4d6f/9c7d/6b4029402271/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Drama</div>
+<div><a href='https://tidal.com/album/183169672' target='_blank'>https://tidal.com/album/183169672</a></div>
+<div>BLOO - Drama</div>
+<div>BLOO - Drama (Instrumental)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183169672' target='_blank'><img src='https://resources.tidal.com/images/8508b298/a1f7/4d32/bf33/9331e9a3f2cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Downtown Baby</div>
+<div><a href='https://tidal.com/album/178941043' target='_blank'>https://tidal.com/album/178941043</a></div>
+<div>Rtee, LyLy, BLOO - Downtown Baby</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/178941043' target='_blank'><img src='https://resources.tidal.com/images/ef326c07/b805/4482/8fcc/d1b73e68110f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Bloo Story</div>
+<div><a href='https://tidal.com/album/183170405' target='_blank'>https://tidal.com/album/183170405</a></div>
+<div>BLOO - Bloo Story</div>
+<div>BLOO - Get Money I Love It</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183170405' target='_blank'><img src='https://resources.tidal.com/images/45ef0714/6e39/4142/b804/c74f8031fcdd/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] BLOO IN WONDERLAND 2</div>
+<div><a href='https://tidal.com/album/187139092' target='_blank'>https://tidal.com/album/187139092</a></div>
+<div>BLOO - Pills and Drinks</div>
+<div>BLOO - Come and kiss me</div>
+<div>BLOO - RAP</div>
+<div>BLOO - Get Money I Love It</div>
+<div>BLOO - Drama</div>
+<div>BLOO - TALK TO ME</div>
+<div>BLOO - in the dark</div>
+<div>BLOO - what if</div>
+<div>BLOO - Stylish2015</div>
+<div>BLOO - anxiety disorder</div>
+<div>BLOO - Hella Lit</div>
+<div>BLOO - Drama (NERD Remix)</div>
+<div>BLOO - Bloo Story</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/187139092' target='_blank'><img src='https://resources.tidal.com/images/b5ea0b3f/9a4c/4114/b86b/c0c1e8743443/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] 5 STARS (To not die X Loopy, BLOO)</div>
+<div><a href='https://tidal.com/album/216279083' target='_blank'>https://tidal.com/album/216279083</a></div>
+<div>Loopy, BLOO - 5 STARS (To not die X Loopy, BLOO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216279083' target='_blank'><img src='https://resources.tidal.com/images/a738d272/0e32/41b6/af21/3fabd9dea27f/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] Nae Tat</div>
+<div><a href='https://tidal.com/album/183168602' target='_blank'>https://tidal.com/album/183168602</a></div>
+<div>BLOO, Nafla - Nae Tat</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183168602' target='_blank'><img src='https://resources.tidal.com/images/258683fd/a094/4863/8e10/5063fc17557b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Hey, Go smile</div>
+<div><a href='https://tidal.com/album/183168604' target='_blank'>https://tidal.com/album/183168604</a></div>
+<div>BLOO - When I Smoke</div>
+<div>BLOO - Let It Go</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/183168604' target='_blank'><img src='https://resources.tidal.com/images/c305a922/f242/4c72/8d2a/2a5e6d92ab24/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] boyfromthemoon</div>
+<div><a href='https://tidal.com/album/182072271' target='_blank'>https://tidal.com/album/182072271</a></div>
+<div>BLOO - boyfromthemoon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072271' target='_blank'><img src='https://resources.tidal.com/images/850e5a26/4e48/49ba/ac44/2453e2cd817d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Voice3 (Original Television Soundtrack), Pt. 3</div>
+<div><a href='https://tidal.com/album/189198989' target='_blank'>https://tidal.com/album/189198989</a></div>
+<div>BLOO - Open Your Eyes</div>
+<div>BLOO - Open Your Eyes (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/189198989' target='_blank'><img src='https://resources.tidal.com/images/d9a13587/7984/435e/9cb7/8c28d95cc48b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] NBA</div>
+<div><a href='https://tidal.com/album/182072255' target='_blank'>https://tidal.com/album/182072255</a></div>
+<div>Nafla, Loopy, BLOO - NBA</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072255' target='_blank'><img src='https://resources.tidal.com/images/76d22a97/6ba6/4f85/a97d/e879458f0624/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] It's Not Love I'm Just Drunk</div>
+<div><a href='https://tidal.com/album/182072291' target='_blank'>https://tidal.com/album/182072291</a></div>
+<div>BLOO - X junk</div>
+<div>BLOO - Haru Ah-chim</div>
+<div>BLOO, niahn - STOP (feat. niahn)</div>
+<div>BLOO - To.dream</div>
+<div>BLOO - I'm gone</div>
+<div>BLOO - boyfromthemoon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072291' target='_blank'><img src='https://resources.tidal.com/images/4768c27a/6563/4d8f/accd/f064a6b41839/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Take Me (feat. nafla)</div>
+<div><a href='https://tidal.com/album/182072228' target='_blank'>https://tidal.com/album/182072228</a></div>
+<div>BLOO, Nafla - Take Me (feat. nafla)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072228' target='_blank'><img src='https://resources.tidal.com/images/6fdd9916/77f9/402f/8d77/92d822d9ecad/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] So Rude</div>
+<div><a href='https://tidal.com/album/182072210' target='_blank'>https://tidal.com/album/182072210</a></div>
+<div>BLOO - So Rude</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072210' target='_blank'><img src='https://resources.tidal.com/images/de932470/7217/49ea/b2f8/7ddf85188b3a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Drink Slow Henny</div>
+<div><a href='https://tidal.com/album/182072193' target='_blank'>https://tidal.com/album/182072193</a></div>
+<div>BLOO - Drink Slow Henny</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072193' target='_blank'><img src='https://resources.tidal.com/images/b40e4378/d644/4afe/8333/23d9cbeb4bc7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2018] BLOO IN WONDERLAND</div>
+<div><a href='https://tidal.com/album/182072232' target='_blank'>https://tidal.com/album/182072232</a></div>
+<div>BLOO - I wish</div>
+<div>BLOO - I'm the one</div>
+<div>BLOO, niahn - GG (feat. niahn)</div>
+<div>BLOO, Nafla - Take Me (feat. nafla)</div>
+<div>BLOO, niahn - Hope (feat. niahn)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072232' target='_blank'><img src='https://resources.tidal.com/images/65c22f63/506e/4d12/81de/2f6a38e623dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Hennessy</div>
+<div><a href='https://tidal.com/album/182072145' target='_blank'>https://tidal.com/album/182072145</a></div>
+<div>BLOO - Hennessy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072145' target='_blank'><img src='https://resources.tidal.com/images/61c3da67/8e1f/4c60/8b04/bda1f3c1f627/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Downtown Baby</div>
+<div><a href='https://tidal.com/album/182072166' target='_blank'>https://tidal.com/album/182072166</a></div>
+<div>BLOO - Downtown Baby</div>
+<div>BLOO - I AM</div>
+<div>BLOO - Hate Me</div>
+<div>BLOO - Sometimes</div>
+<div>BLOO - Downtown Baby (Piano Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072166' target='_blank'><img src='https://resources.tidal.com/images/4f0e505e/da7e/48ba/bd2f/6bbeb3f08927/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] Better</div>
+<div><a href='https://tidal.com/album/182072115' target='_blank'>https://tidal.com/album/182072115</a></div>
+<div>BLOO - Better</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072115' target='_blank'><img src='https://resources.tidal.com/images/7059ba0e/656a/4b39/8791/fb7270a6e07a/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2016] Drive Thru</div>
+<div><a href='https://tidal.com/album/182072109' target='_blank'>https://tidal.com/album/182072109</a></div>
+<div>BLOO - Drive Thru</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/182072109' target='_blank'><img src='https://resources.tidal.com/images/70bf09a2/5081/4d31/b387/88ee2f253652/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/2_TIDAL_Kpop_Artist_Link_BPV.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅂ2) TIDAL Kpop Artist Link (BPV)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_BPV/블루 (BLOO)_trk.html">
+                 
+                 <div class="translate-marquee-wrapper">                
+                     <div class="translate-marquee">
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                    </div> 
+                 </div>
+                 
+              </a>
+            </div>
+            
+            
+</body>
+</html>
