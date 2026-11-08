@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 쏠 ( Tidal SOLE )</title>
+
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 6px 6px 6px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 10px 16px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 40px;
+  opacity: 0;
+  animation: textFade 24s linear infinite;
+}
+@keyframes marqueeFlow {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+@keyframes textFade {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 쏠 ( Tidal SOLE )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/44967f5c/7563/43bb/b975/19c73857ffb3/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/29680432' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 쏠</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>내 안의 숨겨진 목소리를 찾아서</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> SOLE</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>Finding the Hidden Voice Within</div><p>쏠(SOLE)은 독창적인 음악 색깔로 리스너들의 마음을 사로잡는 싱어송라이터예요. 섬세한 감성과 깊이 있는 메시지를 담은 곡들로 자신만의 음악 세계를 펼쳐나가고 있답니다.</p><p>SOLE is a singer-songwriter who captivates listeners with her unique musical style. She continues to unfold her own musical world with songs that contain delicate emotions and profound messages.</p><p>✧</p><p>아티스트의 시작</p><p>쏠은 자신만의 음악적 서사를 구축하며 솔로 아티스트로서의 역량을 꾸준히 보여주고 있어요. 때로는 솔직하고 때로는 몽환적인 음색으로 자신만의 음악적 색깔을 뚜렷하게 만들어가고 있답니다.</p><p>The Artist's Beginning</p><p>SOLE has consistently demonstrated her capabilities as a solo artist, building her own musical narrative. She is distinctly shaping her musical identity with a voice that is sometimes honest and sometimes dreamlike.</p><p>✧</p><p>음악과 퍼포먼스</p><p>쏠의 음악은 다채로운 장르를 넘나들며 폭넓은 스펙트럼을 자랑해요. 감미로운 보컬과 함께 진솔한 가사를 풀어내며, 퍼포먼스를 통해 곡의 메시지를 더욱 풍성하게 전달한답니다.</p><p>Music and Performance</p><p>SOLE's music boasts a wide spectrum, crossing over various genres. Along with her sweet vocals, she unfolds sincere lyrics and enriches the song's message through her performances.</p><p>✧</p><p>주요 활동</p><p>쏠은 자신만의 색깔이 담긴 싱글과 협업 곡들을 통해 활발하게 활동하며 음악적 스펙트럼을 넓혀가고 있어요. 다양한 아티스트와의 시너지를 통해 새로운 음악적 시도를 선보이고 있답니다.</p><p>Key Activities</p><p>SOLE is actively expanding her musical spectrum through singles and collaborative tracks imbued with her unique color. She showcases new musical experiments through synergy with various artists.</p><p>✧</p><p>앞으로의 쏠</p><p>쏠은 앞으로도 깊이 있는 음악과 진솔한 이야기로 많은 사람들에게 위로와 공감을 선사할 것으로 기대돼요. 자신만의 음악 세계를 더욱 깊게 탐구하며 리스너들과 소통하는 아티스트가 될 거예요.</p><p>The Future of SOLE</p><p>SOLE is expected to continue to provide comfort and empathy to many people with her profound music and sincere stories. She will become an artist who deeply explores her own musical world and communicates with listeners.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] Still Shining (Original Soundtrack) Part.3</div>
+<div><a href='https://tidal.com/album/506778862' target='_blank'>https://tidal.com/album/506778862</a></div>
+<div>SOLE - Hidden Words</div>
+<div>SOLE - Hidden Words (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/506778862' target='_blank'><img src='https://resources.tidal.com/images/f9029aa5/1447/4624/84fc/fa4d77aea241/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Honour, Pt. 1 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/494439396' target='_blank'>https://tidal.com/album/494439396</a></div>
+<div>SOLE - Look at My Heels</div>
+<div>SOLE - Look at My Heels (Instrumental)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/494439396' target='_blank'><img src='https://resources.tidal.com/images/bd1b8118/a5c1/4d52/83b3/e87471a010dc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Time Machine</div>
+<div><a href='https://tidal.com/album/379311958' target='_blank'>https://tidal.com/album/379311958</a></div>
+<div>SOLE - Still LOVE</div>
+<div>SOLE - GONE</div>
+<div>SOLE - Just a Moment</div>
+<div>SOLE, THAMA - Situationship (Feat. THAMA)</div>
+<div>SOLE - 1minute</div>
+<div>SOLE - Killing Me Softly</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/379311958' target='_blank'><img src='https://resources.tidal.com/images/f9a8e7ee/f2d4/42a1/b29b/223575877962/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Need you (with Sung Si Kyung)</div>
+<div><a href='https://tidal.com/album/288218338' target='_blank'>https://tidal.com/album/288218338</a></div>
+<div>SOLE, Sung Si Kyung - Need you (with Sung Si Kyung)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/288218338' target='_blank'><img src='https://resources.tidal.com/images/7f76f867/8851/4697/a526/4ba696a49875/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Love or Die (SOLE Ver.)</div>
+<div><a href='https://tidal.com/album/276576325' target='_blank'>https://tidal.com/album/276576325</a></div>
+<div>TNX, SOLE - Love or Die (SOLE Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/276576325' target='_blank'><img src='https://resources.tidal.com/images/f3ff4926/99ff/4c42/928f/a2ffa27ec36b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Different Hearts - SM STATION</div>
+<div><a href='https://tidal.com/album/312586966' target='_blank'>https://tidal.com/album/312586966</a></div>
+<div>GINJO, SOLE - Different Hearts</div>
+<div>GINJO, SOLE - Different Hearts (Instrumental)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/312586966' target='_blank'><img src='https://resources.tidal.com/images/e6ee62a7/3bd7/4155/93dd/b12c000e42c1/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Delightfully Deceitful, Pt. 2 (Original Television Soundtrack)</div>
+<div><a href='https://tidal.com/album/299082660' target='_blank'>https://tidal.com/album/299082660</a></div>
+<div>SOLE - Karma</div>
+<div>SOLE - Karma (Instrumental)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/299082660' target='_blank'><img src='https://resources.tidal.com/images/8125cbc0/582d/4a18/bc51/baadd69dbcb5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] A Love Supreme</div>
+<div><a href='https://tidal.com/album/316172736' target='_blank'>https://tidal.com/album/316172736</a></div>
+<div>SOLE - Love Supreme</div>
+<div>SOLE - I Want to Be Closer to You</div>
+<div>SOLE - Waiting</div>
+<div>SOLE - I′ve Lost My Heart</div>
+<div>SOLE - A Beautiful Farewell</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/316172736' target='_blank'><img src='https://resources.tidal.com/images/e3f02a5f/47f4/44e3/8683/55ec9eabc02c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] imagine club</div>
+<div><a href='https://tidal.com/album/248159656' target='_blank'>https://tidal.com/album/248159656</a></div>
+<div>SOLE - imagine</div>
+<div>SOLE - daydream</div>
+<div>SOLE, Leellamarz - good time (Feat. Leellamarz)</div>
+<div>SOLE - i’m always by your side</div>
+<div>SOLE, JooYoung - blurry (Feat. Jooyoung)</div>
+<div>SOLE - summer</div>
+<div>SOLE - ore ore</div>
+<div>SOLE, BIG Naughty - every day good day (Feat. BIG Naughty)</div>
+<div>SOLE - ivory</div>
+<div>SOLE - still beautiful</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/248159656' target='_blank'><img src='https://resources.tidal.com/images/f372b4cb/ef01/4b7c/9c2d/7782d36309a9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2022] Seoul Check-in OST Part 8</div>
+<div><a href='https://tidal.com/album/232865053' target='_blank'>https://tidal.com/album/232865053</a></div>
+<div>SOLE - Don't Ever Leave Me</div>
+<div>SOLE - Don't Ever Leave Me (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/232865053' target='_blank'><img src='https://resources.tidal.com/images/a7242db6/d1aa/4493/96d2/08cdbb5bb3fb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Little Women OST Part 2</div>
+<div><a href='https://tidal.com/album/250938150' target='_blank'>https://tidal.com/album/250938150</a></div>
+<div>SOLE - LA VIE</div>
+<div>SOLE - LA VIE (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/250938150' target='_blank'><img src='https://resources.tidal.com/images/1fadf723/333d/41e9/86bb/c528ef3c9e0d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] merry merry</div>
+<div><a href='https://tidal.com/album/208173230' target='_blank'>https://tidal.com/album/208173230</a></div>
+<div>SOLE - my winter wonderland</div>
+<div>SOLE - merry merry</div>
+<div>SOLE - warm christmas</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208173230' target='_blank'><img src='https://resources.tidal.com/images/1bbec31c/8026/4be7/8e9e/21da7b80dca3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Why</div>
+<div><a href='https://tidal.com/album/196168923' target='_blank'>https://tidal.com/album/196168923</a></div>
+<div>SOLE - Why (Feat. Gaeko)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196168923' target='_blank'><img src='https://resources.tidal.com/images/17641c0f/d59e/48ba/8ee6/cf72baaaf608/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] The Gift</div>
+<div><a href='https://tidal.com/album/201218396' target='_blank'>https://tidal.com/album/201218396</a></div>
+<div>SOLE - The Gift</div>
+<div>SOLE - The Gift (Instrumental Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/201218396' target='_blank'><img src='https://resources.tidal.com/images/0884fb7b/4807/447e/9679/18d492e033cb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Stay with me</div>
+<div><a href='https://tidal.com/album/196169953' target='_blank'>https://tidal.com/album/196169953</a></div>
+<div>SOLE - Stay with me (Feat. Wonstein)</div>
+<div>SOLE - Stay with me (Solo Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196169953' target='_blank'><img src='https://resources.tidal.com/images/2535b7fc/2eed/4c94/9328/5fb7b9614d5e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] HANG OUT  HIPHOPPLAYA COMPILATION ALBUM 2021 Part 7</div>
+<div><a href='https://tidal.com/album/197829281' target='_blank'>https://tidal.com/album/197829281</a></div>
+<div>SOLE - MYSELF (Feat. 죠지) (Prod. APRO)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/197829281' target='_blank'><img src='https://resources.tidal.com/images/54966796/2e87/4ff7/981a/2416cdc6dd33/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Come over (Bunny and Guys X YU SEUNGWOO, SOLE)</div>
+<div><a href='https://tidal.com/album/216215593' target='_blank'>https://tidal.com/album/216215593</a></div>
+<div>Yu Seungwoo, SOLE - Come over (Bunny and Guys X YU SEUNGWOO, SOLE)</div>
+<div>Yu Seungwoo, SOLE - Come over (Bunny and Guys X YU SEUNGWOO, SOLE) (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216215593' target='_blank'><img src='https://resources.tidal.com/images/30b564ba/e047/4cfd/b256/95b2ec7144ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] B.O.T.B. (Best Of The Best)</div>
+<div><a href='https://tidal.com/album/208173193' target='_blank'>https://tidal.com/album/208173193</a></div>
+<div>Gaeko, CHANGMO, Don Mills, Los, DeVita, SOLE, SINCE, BE′O, GRAY - B.O.T.B. (Prod. GRAY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/208173193' target='_blank'><img src='https://resources.tidal.com/images/543aa063/a1c3/4342/b12a/c71ee55c33ec/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2020] natural mineral</div>
+<div><a href='https://tidal.com/album/196162667' target='_blank'>https://tidal.com/album/196162667</a></div>
+<div>Dynamicduo, HATFELT, 선재 (snzae), THAMA, SOLE - natural mineral</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196162667' target='_blank'><img src='https://resources.tidal.com/images/6b8b3fe2/6edc/4ac5/94b1/85f753a8caf5/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] haPPiness</div>
+<div><a href='https://tidal.com/album/196156362' target='_blank'>https://tidal.com/album/196156362</a></div>
+<div>SOLE - haPPiness</div>
+<div>SOLE - talk</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196156362' target='_blank'><img src='https://resources.tidal.com/images/70b26880/4615/4f58/9083/7351af122c7c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Twenty-Twenty Part.3</div>
+<div><a href='https://tidal.com/album/216247148' target='_blank'>https://tidal.com/album/216247148</a></div>
+<div>SOLE - nothing</div>
+<div>SOLE - nothing (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216247148' target='_blank'><img src='https://resources.tidal.com/images/8528951b/4ef3/4bf4/8652/b6021c0a878c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Mm Mm</div>
+<div><a href='https://tidal.com/album/196161289' target='_blank'>https://tidal.com/album/196161289</a></div>
+<div>SOLE - Mm Mm (Prod. Cosmic Boy)</div>
+<div>SOLE - Mm Mm (Acoustic Ver.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196161289' target='_blank'><img src='https://resources.tidal.com/images/ffa66a58/9105/4620/9886/f32be490b9f7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] Google Map with KozyPop</div>
+<div><a href='https://tidal.com/album/320863979' target='_blank'>https://tidal.com/album/320863979</a></div>
+<div>SOLE, THAMA, Kozypop, Don Mills - Google Map (feat. Don Mills)</div>
+<div>SOLE, THAMA, Kozypop - Google Map (Instrumental)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/320863979' target='_blank'><img src='https://resources.tidal.com/images/13742a40/78df/4c29/9701/bb7ecc9c22b6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] How we live</div>
+<div><a href='https://tidal.com/album/196148507' target='_blank'>https://tidal.com/album/196148507</a></div>
+<div>SOLE - SAME (Feat. THAMA)</div>
+<div>SOLE - LOVIN′ U (Feat. pH-1)</div>
+<div>SOLE - THINK</div>
+<div>SOLE - NINETEEN</div>
+<div>SOLE - Heum</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196148507' target='_blank'><img src='https://resources.tidal.com/images/8c4145ca/6cef/4d07/8514/d427a114b0e0/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Air</div>
+<div><a href='https://tidal.com/album/502782597' target='_blank'>https://tidal.com/album/502782597</a></div>
+<div>Bang Sick, SOLE - Air</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/502782597' target='_blank'><img src='https://resources.tidal.com/images/4f3e0229/64bb/42a3/8f8c/512e7472f1ca/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Slow</div>
+<div><a href='https://tidal.com/album/196142812' target='_blank'>https://tidal.com/album/196142812</a></div>
+<div>SOLE - Slow</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/196142812' target='_blank'><img src='https://resources.tidal.com/images/3654df98/9005/4a91/867c/8c74e30eea15/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2017] RIDE</div>
+<div><a href='https://tidal.com/album/80689566' target='_blank'>https://tidal.com/album/80689566</a></div>
+<div>SOLE, THAMA - RIDE (feat. THAMA)</div>
+<div>SOLE - RIDE (Instrumental)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/80689566' target='_blank'><img src='https://resources.tidal.com/images/35d4c6e5/d227/4b8b/9718/ab2ea9d88f32/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/2_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ2) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/2_TIDAL_Kpop_Artist_Link_CS/쏠 (SOLE)_trk.html">
+                 
+                 <div class="translate-marquee-wrapper">                
+                     <div class="translate-marquee">
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                    </div> 
+                 </div>
+                 
+              </a>
+            </div>
+            
+            
+</body>
+</html>
