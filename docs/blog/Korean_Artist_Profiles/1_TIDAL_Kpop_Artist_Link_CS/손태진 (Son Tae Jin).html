@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 손태진 ( Tidal Son Tae Jin )</title>
+
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 6px 6px 6px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 10px 16px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 40px;
+  opacity: 0;
+  animation: textFade 24s linear infinite;
+}
+@keyframes marqueeFlow {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+@keyframes textFade {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 손태진 ( Tidal Son Tae Jin )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/469149b8/3ca6/4f63/866a/b35a2d930452/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/14482725' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 손태진</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>첫사랑의 설렘, 잊을 수 없는 추억</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> Son Tae Jin</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>The excitement of first love, unforgettable memories</div><p>손태진 님은 때로는 애틋하고 때로는 진솔한 감성으로 듣는 이들의 마음을 사로잡는 아티스트예요. 그의 목소리는 마치 오래된 친구처럼 편안하게 다가와 따뜻한 위로를 선사하죠. 음악을 통해 진심을 전하는 그의 이야기에 귀 기울여 보세요.</p><p>Son Tae Jin is an artist who captivates listeners with his sometimes poignant and sometimes sincere emotions. His voice approaches like an old friend, offering warm comfort. Tune into his story of conveying sincerity through music.</p><p>✧</p><p>음악 여정의 시작</p><p>손태진 님은 음악이라는 언어를 통해 자신의 이야기를 세상과 나누기 시작했어요. 그의 음악은 섬세한 감정선을 따라 흐르며, 풋풋했던 첫사랑의 순간들을 떠올리게 하기도 하고, 잊지 못할 추억들을 되새기게 하죠. 마치 한 편의 서정적인 영화를 보는 듯한 느낌을 선사합니다.</p><p>The Beginning of a Musical Journey</p><p>Son Tae Jin began sharing his story with the world through the language of music. His music flows along delicate emotional lines, sometimes evoking moments of fresh first love and sometimes reflecting on unforgettable memories. It provides a feeling akin to watching a lyrical film.</p><p>✧</p><p>진솔한 감정의 울림</p><p>그의 음악은 솔직하고 꾸밈없는 감정 표현이 돋보여요. 잃어버린 조각을 찾아 나서는 듯한 애절함부터, 모든 것을 다 주고 싶은 순수한 마음까지, 다채로운 감정을 노래하며 깊은 공감을 이끌어내요. 멜로디와 가사가 어우러져 마음 깊은 곳을 건드리는 경험을 선사합니다.</p><p>The Resonance of Sincere Emotion</p><p>His music stands out for its honest and unadorned emotional expression. From the sorrow of searching for a lost piece to the pure heart of wanting to give everything, he evokes deep empathy by singing about diverse emotions. The melody and lyrics combine to offer an experience that touches the depths of the heart.</p><p>✧</p><p>따뜻한 위로와 공감</p><p>손태진 님의 노래는 마치 곁에 있는 친구처럼 따뜻한 위로를 건네는 힘이 있어요. 때로는 밤하늘의 별처럼 반짝이는 희망을, 때로는 안개처럼 짙은 그리움을 노래하며 듣는 이들에게 잊지 못할 순간들을 선물하죠. 그의 음악은 당신의 일상에 작은 쉼표가 되어줄 거예요.</p><p>Warm Comfort and Empathy</p><p>Son Tae Jin's songs have the power to offer warm comfort like a friend by your side. Sometimes singing of hope that sparkles like stars in the night sky, and sometimes of longing as deep as mist, he gifts listeners with unforgettable moments. His music will become a small pause in your daily life.</p><p>✧</p><p>음악으로 이어갈 이야기</p><p>앞으로도 손태진 님은 진솔한 음악으로 우리의 곁을 찾아올 거예요. 그의 목소리가 선사하는 감동과 울림은 세대를 넘어 많은 이들에게 사랑받을 것입니다. 음악을 통해 계속해서 우리의 마음을 두드릴 그의 여정을 기대해 주세요.</p><p>A Story to Continue Through Music</p><p>Moving forward, Son Tae Jin will continue to visit us with sincere music. The emotion and resonance his voice provides will be loved by many across generations. Please look forward to his journey as he continues to touch our hearts through music.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] Summer Nostalgia</div>
+<div><a href='https://tidal.com/album/530919375' target='_blank'>https://tidal.com/album/530919375</a></div>
+<div>Son Tae Jin - My Very First Confession</div>
+<div>Son Tae Jin - Unforgettable</div>
+<div>Son Tae Jin - The Lost Umbrella</div>
+<div>Son Tae Jin - A Boarder</div>
+<div>Son Tae Jin - I'll Give My All To You</div>
+<div>Son Tae Jin - Rose</div>
+<div>Son Tae Jin - I Believe in Music</div>
+<div>Son Tae Jin - A Night like Tonight</div>
+<div>Son Tae Jin - Mist</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/530919375' target='_blank'><img src='https://resources.tidal.com/images/720e5cd6/c099/4cbc/84c3/92eb343515da/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Promise of Spring</div>
+<div><a href='https://tidal.com/album/515398032' target='_blank'>https://tidal.com/album/515398032</a></div>
+<div>Son Tae Jin - My Very First Confession</div>
+<div>Son Tae Jin - Unforgettable</div>
+<div>Son Tae Jin - The Lost Umbrella</div>
+<div>Son Tae Jin - A Boarder</div>
+<div>Son Tae Jin - I'll Give My All To You</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/515398032' target='_blank'><img src='https://resources.tidal.com/images/43f480ee/59d4/42de/9a5d/d2f3658a8c98/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Person That Shares Happiness</div>
+<div><a href='https://tidal.com/album/519523710' target='_blank'>https://tidal.com/album/519523710</a></div>
+<div>Son Tae Jin - Person That Shares Happiness</div>
+<div>Son Tae Jin - Person That Shares Happiness (inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/519523710' target='_blank'><img src='https://resources.tidal.com/images/00cebbe0/b5e3/4ba3/a6bd/771fa2552ca7/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] 첫 번째 남자 OST</div>
+<div><a href='https://tidal.com/album/482957715' target='_blank'>https://tidal.com/album/482957715</a></div>
+<div>Son Tae Jin - Dear My Sun</div>
+<div>Son Tae Jin - Dear My Sun (Instrumental)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/482957715' target='_blank'><img src='https://resources.tidal.com/images/24dbcafa/d3dc/407a/8a2c/fbab543238c3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] The Haunted Palace, Pt. 3 (Original Soundtrack) _436351732_ - 복사본</div>
+<div>Son Tae Jin - Rebloom (The Haunted Palace  Original Television Soundtrack)</div>
+<div>Son Tae Jin - Rebloom (The Haunted Palace  Original Television Soundtrack) (Instrumental)</div>
+<div>&nbsp;</div>
+<div>[2025] The Haunted Palace, Pt. 3 (Original Soundtrack)</div>
+<div><a href='https://tidal.com/album/436351732' target='_blank'>https://tidal.com/album/436351732</a></div>
+<div>Son Tae Jin - Rebloom (The Haunted Palace  Original Television Soundtrack)</div>
+<div>Son Tae Jin - Rebloom (The Haunted Palace  Original Television Soundtrack) (Instrumental)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/436351732' target='_blank'><img src='https://resources.tidal.com/images/4198abbd/1a9c/4fd6/b73a/a1408a2d2cc6/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Melody of Love</div>
+<div><a href='https://tidal.com/album/473369325' target='_blank'>https://tidal.com/album/473369325</a></div>
+<div>Son Tae Jin - Melody of Love</div>
+<div>Son Tae Jin - Melody of Love (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/473369325' target='_blank'><img src='https://resources.tidal.com/images/b4125284/0c13/48bf/9b0e/77375e7ba7bb/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] I'll protect you</div>
+<div><a href='https://tidal.com/album/450180381' target='_blank'>https://tidal.com/album/450180381</a></div>
+<div>Son Tae Jin, JEON YU JIN - I'll protect you</div>
+<div>Son Tae Jin, JEON YU JIN - I'll protect you (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/450180381' target='_blank'><img src='https://resources.tidal.com/images/9551ff3d/2ad3/44d5/84e5/c70eb4080fcc/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Your Profile Photo</div>
+<div><a href='https://tidal.com/album/350955417' target='_blank'>https://tidal.com/album/350955417</a></div>
+<div>Son Tae Jin - Your Profile Photo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/350955417' target='_blank'><img src='https://resources.tidal.com/images/9f85ce31/c94d/4ac0/bb71/f66f72bf303e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] You and I</div>
+<div><a href='https://tidal.com/album/388889672' target='_blank'>https://tidal.com/album/388889672</a></div>
+<div>Son Tae Jin, Shin Seong, Min Soo Hyun, Kim Jungyeon, Park Min su, gong hoon, Enoch - You and I</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/388889672' target='_blank'><img src='https://resources.tidal.com/images/6616410e/3396/4947/a473/8f3077d9d7a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] SHINE</div>
+<div><a href='https://tidal.com/album/395295022' target='_blank'>https://tidal.com/album/395295022</a></div>
+<div>Son Tae Jin - At the End of the Night</div>
+<div>Son Tae Jin - The Mask</div>
+<div>Son Tae Jin - Rose</div>
+<div>Son Tae Jin - Autumn Rain</div>
+<div>Son Tae Jin - It'll be alright</div>
+<div>Son Tae Jin - For you, I Sing</div>
+<div>Son Tae Jin - Sunshine</div>
+<div>Son Tae Jin - Sunshine (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/395295022' target='_blank'><img src='https://resources.tidal.com/images/051988aa/dc6f/44b9/bf22/68660d97da54/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Jo Hang Jo X Son Tae Jin Special</div>
+<div><a href='https://tidal.com/album/386093080' target='_blank'>https://tidal.com/album/386093080</a></div>
+<div>Son Tae Jin - White Night</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/386093080' target='_blank'><img src='https://resources.tidal.com/images/ad61a209/79d8/4d7f/b4e8/a5778bfd2131/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Here, I stand for you</div>
+<div><a href='https://tidal.com/album/340009319' target='_blank'>https://tidal.com/album/340009319</a></div>
+<div>Son Tae Jin, Shin Seong, Enoch - IN MY LIFE</div>
+<div>Son Tae Jin, Shin Seong, Enoch - Here, I stand for you</div>
+<div>Son Tae Jin, Shin Seong, Enoch - IN MY LIFE (Inst.)</div>
+<div>Son Tae Jin, Shin Seong, Enoch - Here, I stand for you (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/340009319' target='_blank'><img src='https://resources.tidal.com/images/2bc9be7e/d9c1/4700/ab32/430cf4ac4539/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Desperate Mrs. Seonju OST Part.2</div>
+<div><a href='https://tidal.com/album/442653623' target='_blank'>https://tidal.com/album/442653623</a></div>
+<div>Son Tae Jin - I'll take you in my arms</div>
+<div>Son Tae Jin - I'll take you in my arms (inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/442653623' target='_blank'><img src='https://resources.tidal.com/images/ac141299/f1ae/469e/a02c/d76291aaca5b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] IN MY LIFE</div>
+<div><a href='https://tidal.com/album/337871841' target='_blank'>https://tidal.com/album/337871841</a></div>
+<div>Son Tae Jin, Shin Seong, Enoch - IN MY LIFE</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/337871841' target='_blank'><img src='https://resources.tidal.com/images/bd2a7e0e/547c/457a/a135/1476436ea694/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Fire Trot WINNER SONG</div>
+<div><a href='https://tidal.com/album/308642993' target='_blank'>https://tidal.com/album/308642993</a></div>
+<div>Son Tae Jin - You make me shine</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/308642993' target='_blank'><img src='https://resources.tidal.com/images/a4619dc1/dce9/4083/bc50/66756fe2d8c3/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2023] Fire Jingle Bells</div>
+<div><a href='https://tidal.com/album/335974943' target='_blank'>https://tidal.com/album/335974943</a></div>
+<div>Son Tae Jin, Shin Seong, Min Soo Hyun, Kim Jungyeon, Park Min su, gong hoon, Enoch - Jingle Bells</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/335974943' target='_blank'><img src='https://resources.tidal.com/images/389fe936/6ef4/431b/9bc6/80730ac10fef/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] The Present 'Today's'</div>
+<div><a href='https://tidal.com/album/216534266' target='_blank'>https://tidal.com/album/216534266</a></div>
+<div>Son Tae Jin - Today</div>
+<div>Son Tae Jin - Roman Guitar</div>
+<div>Son Tae Jin - Emptiness</div>
+<div>Son Tae Jin - At the Park</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216534266' target='_blank'><img src='https://resources.tidal.com/images/7544c57f/2491/4f4d/a252/8a4670bfe403/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2022] Monthly Project 2022 December Yoon Jong Shin</div>
+<div><a href='https://tidal.com/album/306236215' target='_blank'>https://tidal.com/album/306236215</a></div>
+<div>Son Tae Jin - Still with me</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/306236215' target='_blank'><img src='https://resources.tidal.com/images/d53c3b7f/ded5/4528/9cee/b67735ae148e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2021] The Present 'At The Time'</div>
+<div><a href='https://tidal.com/album/216278190' target='_blank'>https://tidal.com/album/216278190</a></div>
+<div>Son Tae Jin - To the end of the world</div>
+<div>Son Tae Jin - A Day In Tongyeong</div>
+<div>Son Tae Jin - Be Deep (Solo Ver.)</div>
+<div>Son Tae Jin - Be Deep (With WENDY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216278190' target='_blank'><img src='https://resources.tidal.com/images/08253819/e92b/41ae/a001/b5420d414284/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2021] Be Deep (With WENDY)</div>
+<div><a href='https://tidal.com/album/216279769' target='_blank'>https://tidal.com/album/216279769</a></div>
+<div>Son Tae Jin - Be Deep (With WENDY)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216279769' target='_blank'><img src='https://resources.tidal.com/images/d61fd449/a4fd/4e51/88be/c1398e56d415/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2020] A Thousand Winds</div>
+<div><a href='https://tidal.com/album/216534682' target='_blank'>https://tidal.com/album/216534682</a></div>
+<div>Duetto, Son Tae Jin - A Thousand Winds</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216534682' target='_blank'><img src='https://resources.tidal.com/images/40abf7a5/e1e7/4e29/92f7/f4663ec6e221/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2019] Orgol</div>
+<div><a href='https://tidal.com/album/216145491' target='_blank'>https://tidal.com/album/216145491</a></div>
+<div>Son Tae Jin - Orgol</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/216145491' target='_blank'><img src='https://resources.tidal.com/images/85167d84/3102/4214/9b16/09d874878300/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2018] Close Your Eyes</div>
+<div><a href='https://tidal.com/album/215967694' target='_blank'>https://tidal.com/album/215967694</a></div>
+<div>Son Tae Jin - Close Your Eyes</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/215967694' target='_blank'><img src='https://resources.tidal.com/images/b99727c4/b5dd/4dcc/94c6/08c664ab35a8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/1_TIDAL_Kpop_Artist_Link_CS.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㅅ1) TIDAL Kpop Artist Link (CS)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_CS/손태진 (Son Tae Jin)_trk.html">
+                 
+                 <div class="translate-marquee-wrapper">                
+                     <div class="translate-marquee">
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                    </div> 
+                 </div>
+                 
+              </a>
+            </div>
+            
+            
+</body>
+</html>
