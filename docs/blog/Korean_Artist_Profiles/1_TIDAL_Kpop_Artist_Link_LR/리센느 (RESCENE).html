@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <meta name='theme-color' content='#111217' />
+  <title>타이달 리센느 ( Tidal RESCENE )</title>
+
+  <link href='https://fonts.googleapis.com/css2?family=Nanum+Barun+Gothic&display=swap' rel='stylesheet'>
+  <style>
+    html { background:#111217; }
+    body {
+      opacity: 1;
+      transition: opacity 0.12s ease;
+    }
+    body.page-fade-out { opacity: 0; }
+    body {
+      background:#111217;
+      color:#e6eef6;
+      font-family:'Nanum Barun Gothic','Nanum Gothic','Malgun Gothic',Arial,sans-serif;
+      font-size:16px;
+      padding:16px;
+      padding-bottom: 70px !important;      line-height:1.6;
+      text-align:left;
+      word-break:break-word;
+      line-break:strict;
+    }
+    a { color:#93c5fd; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    h1 { font-size:22px; margin-top:20px; margin-bottom:16px; text-align:left; letter-spacing:-0.04em; }
+    .artist-subtitle { font-size:18px; letter-spacing:-0.04em; }
+    .album-entry { margin:8px 0 8px; }
+    img {
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:12px;
+      box-shadow:0 0 8px rgba(0,0,0,0.5);
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+    img:hover { transform: scale(1.03); filter: brightness(1.05); }
+    .credit { font-size:12px; color:#aaaaaa; margin-top:4px; text-align:left; }
+    .btn {
+      display:inline-block;
+      padding:10px 16px;
+      background:#1f6feb;
+      color:#fff;
+      border-radius:10px;
+      margin-top:10px;
+      margin-right:20px;
+      font-size:16px;
+      text-align:center;
+    }
+    .artist-image-wrapper { margin: 24px 0; max-width: 750px; }
+    .artist-img-box { position: relative; overflow: hidden; }
+    .artist-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+    .artist-credit-overlay { position: static; margin-top: 8px; font-size: 12px; color: #9ca3af; backdrop-filter: none; } 
+    .artist-link-overlay { position:absolute; left:12px; bottom:12px; display:flex; flex-direction:column-reverse; gap:10px; }
+    @keyframes pulseBtn { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.05); opacity: 1; } }
+    .artist-btn { padding: 12px 20px; font-size: 15px; color: #ffffff !important; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.7); background: #2563eb; border: 1px solid #93c5fd; border-radius: 14px; backdrop-filter: none; box-shadow: 0 4px 12px rgba(37,99,235,0.4); animation: pulseBtn 2s infinite ease-in-out; transition: box-shadow 0.2s ease; }
+    .artist-btn:hover { transform: scale(1.08); opacity: 1; box-shadow: 0 6px 16px rgba(30,64,175,0.6); }
+/* =========================
+   Index Page Artist Media
+   ========================= */
+.index-page .artist-image-wrapper {
+  max-width: 420px;
+  margin: 16px 0 8px 0;
+}
+.index-page .album-entry {
+  margin-bottom: 48px;
+}
+.index-page .artist-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+/* =========================
+   Mobile Tap / Click Smooth
+   ========================= */
+.index-page a,
+.index-page img {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  tap-highlight-color: rgba(0,0,0,0);
+}
+.index-page a,
+.index-page .artist-img {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.index-page a:active,
+.index-page .artist-img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+.index-page a {
+  touch-action: manipulation;
+}
+.translate-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 6px 6px 6px;
+  background: #111217 !important;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+}
+.translate-btn {
+  display: flex;
+  align-items: center;
+  max-width: 900px;
+  width: calc(100% - 30px);
+  margin: 0 auto !important;
+  padding: 10px 16px;
+  background: linear-gradient(145deg, #3d341a, #1f1a0d);
+  color: #ffd966 !important;
+  text-decoration: none !important;
+  border: 0.4px solid #ffd966;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  -webkit-animation: pulseTranslate 3s infinite ease-in-out;
+  animation: pulseTranslate 3s infinite ease-in-out;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.translate-marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+.translate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlow 24s linear infinite;
+}
+.translate-track {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 40px;
+  opacity: 0;
+  animation: textFade 24s linear infinite;
+}
+@keyframes marqueeFlow {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(0);
+  }
+  82% {
+    transform: translateX(calc(-33.333%));
+  }
+  100% {
+    transform: translateX(calc(-33.333%));
+  }
+}
+@keyframes textFade {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.translate-btn:visited { color: #ffd966 !important; }
+.translate-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 217, 102, 0.5);
+}
+.translate-btn::after {
+  content: '';
+  position: absolute; top: -50%; left: -150%;
+  width: 50%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: rotate(30deg);
+  -webkit-animation: shimmerTranslate 5s infinite linear;
+  animation: shimmerTranslate 5s infinite linear;
+}
+@keyframes shimmerTranslate {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+@keyframes pulseTranslate {
+  0%, 100% {
+    transform: scale(1);
+    border-color: #ffd966;
+    box-shadow: 0 0 10px rgba(255, 217, 102, 0.2);
+  }
+  50% {
+    transform: scale(1.01);
+    border-color: #fffb00;
+    box-shadow: 0 0 20px rgba(255, 251, 0, 0.6);
+  }
+}
+.test-ad-card { margin:36px 0; padding:16px; border-radius:14px; background:#0f172a; border:1px dashed #334155; }
+.test-ad-label { font-size:13px; color:#93c5fd; margin-bottom:6px; }
+.test-ad-body { font-size:15px; color:#e5e7eb; }
+  </style>
+</head>
+<body class=''>
+<h1>타이달 리센느 ( Tidal RESCENE )</h1>
+
+                <div class="artist-card">
+                    <div class="artist-media">
+                        <div class='artist-image-wrapper'><div class='artist-img-box'><img src='https://resources.tidal.com/images/c2640c37/174e/486c/9b0b/b6fd168c2163/750x750.jpg' class='artist-img' loading='lazy' alt='Artist image'><div class='artist-link-overlay'><a href='https://tidal.com/artist/46057564' target='_blank' class='artist-btn'>▶ Open in TIDAL 1</a></div></div><div class='artist-credit-overlay'>Image courtesy of TIDAL</div></div>
+                    </div>
+                    <div class="ai-kpop-info">
+                        <div class='ai-content artist-profile'><div class='artist-subtitle' style='line-height:1.3;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> 리센느</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>꿈을 향한 당찬 발걸음, 리센느의 새로운 시작</div><div class='artist-subtitle' style='line-height:1.3; margin-top:8px;'><span style='font-weight:700; text-shadow:0 0 0.6px currentColor;'>🎧</span> RESCENE</div><div class='artist-subtitle' style='line-height:1.3; font-size:16px;'>A Confident Step Towards Dreams, RESCENE's New Beginning</div><p>RESCENE은 강렬한 음악과 퍼포먼스로 자신만의 색깔을 보여주는 아티스트예요. 각 멤버의 개성과 매력이 어우러져 다채로운 음악 세계를 만들어가고 있답니다. 앞으로 펼쳐질 RESCENE의 빛나는 여정을 함께 응원하고 싶어요.</p><p>RESCENE is an artist who showcases their unique color through powerful music and performances. The individuality and charm of each member blend together to create a diverse musical world. We want to cheer for RESCENE's bright journey that will unfold in the future.</p><p>✧</p><p>그룹/아티스트 탄생</p><p>RESCENE이라는 이름 아래, 다섯 명의 멤버들이 모여 꿈을 향한 첫걸음을 내디뎠어요. 서로를 향한 믿음과 열정을 바탕으로 완성된 팀으로, 하나의 목소리를 내기 위해 노력하고 있답니다. 이들이 함께 만들어갈 스토리가 정말 기대돼요.</p><p>Group/Artist's Genesis</p><p>Under the name RESCENE, five members gathered to take their first step towards their dreams. As a team built on mutual trust and passion, they are striving to speak with one voice. The story they will create together is truly exciting.</p><p>✧</p><p>음악 및 퍼포먼스</p><p>RESCENE의 음악은 때로는 강렬하게, 때로는 섬세하게 다가와요. 독창적인 사운드와 퍼포먼스로 무대를 꽉 채우며, 보는 이들의 마음을 사로잡는 매력이 있답니다. 멤버 각자의 개성이 돋보이는 다채로운 음악을 선보이며 끊임없이 발전해나가고 있어요.</p><p>Music and Performance</p><p>RESCENE's music approaches sometimes powerfully, sometimes delicately. They captivate the hearts of the audience by filling the stage with original sounds and performances. Showcasing diverse music where each member's individuality shines, they are constantly evolving.</p><p>✧</p><p>주요 활동</p><p>데뷔 이후 RESCENE은 꾸준한 활동으로 팬들과 소통하고 있어요. 음악뿐만 아니라 다양한 콘텐츠를 통해 자신들의 매력을 보여주며 글로벌 팬들의 사랑을 받고 있답니다. 무대 위 에너지 넘치는 모습과 친근한 모습 모두가 RESCENE의 진솔한 매력이에요.</p><p>Key Activities</p><p>Since their debut, RESCENE has been communicating with fans through consistent activities. They are loved by global fans by showcasing their charms through various content, not just music. Both their energetic stage presence and approachable demeanor are RESCENE's genuine charms.</p><p>✧</p><p>미래/의미</p><p>RESCENE은 앞으로 더욱 성장하며 음악적 스펙트럼을 넓혀갈 아티스트예요. 자신들만의 색깔로 K팝 씬에 새로운 바람을 불러일으킬 것이라 믿어요. RESCENE의 빛나는 미래를 함께 응원하며, 그들의 이야기에 귀 기울여 주세요.</p><p>Future/Meaning</p><p>RESCENE is an artist who will grow further and broaden their musical spectrum in the future. We believe they will bring a new wave to the K-pop scene with their own unique color. Please cheer for RESCENE's bright future and lend an ear to their story.</p></div>
+                    </div>
+                </div>
+                
+
+<div>&nbsp;</div>
+<div>[2026] [RESCENE X ]</div>
+<div><a href='https://tidal.com/album/501344176' target='_blank'>https://tidal.com/album/501344176</a></div>
+<div>RESCENE - Busy Boy</div>
+<div>RESCENE - Busy Boy (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/501344176' target='_blank'><img src='https://resources.tidal.com/images/91cb9505/a123/4f91/b084/913cc1794370/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] [RESCENE X ] - Single</div>
+<div><a href='https://tidal.com/album/501808489' target='_blank'>https://tidal.com/album/501808489</a></div>
+<div>RESCENE - Busy boy</div>
+<div>RESCENE - Busy boy (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/501808489' target='_blank'><img src='https://resources.tidal.com/images/8fb116c4/e565/4e6a/be0c/5dd968115f68/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Runaway</div>
+<div><a href='https://tidal.com/album/511672960' target='_blank'>https://tidal.com/album/511672960</a></div>
+<div>RESCENE - Runaway</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/511672960' target='_blank'><img src='https://resources.tidal.com/images/78c9d7d5/2071/4024/a980/2b01b36eee0c/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Pretty Girl - Special Single</div>
+<div><a href='https://tidal.com/album/540408620' target='_blank'>https://tidal.com/album/540408620</a></div>
+<div>RESCENE - Pretty Girl</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/540408620' target='_blank'><img src='https://resources.tidal.com/images/745f65c2/256e/4e30/b7a7/eae3fd891369/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] PULSE</div>
+<div><a href='https://tidal.com/album/574201196' target='_blank'>https://tidal.com/album/574201196</a></div>
+<div>RESCENE - Finest Thing</div>
+<div>RESCENE - With</div>
+<div>RESCENE - Inside Out</div>
+<div>RESCENE - MEME</div>
+<div>RESCENE - Dragon</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/574201196' target='_blank'><img src='https://resources.tidal.com/images/b8a0c41d/766d/4308/8422/23b8cae351a2/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Music from THE SPECIALS</div>
+<div><a href='https://tidal.com/album/501373791' target='_blank'>https://tidal.com/album/501373791</a></div>
+<div>RESCENE - Higher</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/501373791' target='_blank'><img src='https://resources.tidal.com/images/9f048aa5/6289/47da/8e99/edf963d53a85/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2026] Busy Boy (Galantis Remix)</div>
+<div><a href='https://tidal.com/album/504778640' target='_blank'>https://tidal.com/album/504778640</a></div>
+<div>Galantis, RESCENE - Busy Boy (Galantis Remix)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/504778640' target='_blank'><img src='https://resources.tidal.com/images/101f2c44/4972/4535/b0b8/ee80ad97bf44/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] lip bomb</div>
+<div><a href='https://tidal.com/album/476551098' target='_blank'>https://tidal.com/album/476551098</a></div>
+<div>RESCENE - Heart Drop</div>
+<div>RESCENE - Bloom</div>
+<div>RESCENE - Love Echo</div>
+<div>RESCENE - Hello XO</div>
+<div>RESCENE - MVP</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/476551098' target='_blank'><img src='https://resources.tidal.com/images/a39ba9d9/76db/4cad/845a/1ad3a645521d/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] The First Night With The Duke (Original Television Soundtrack) Pt. 1</div>
+<div><a href='https://tidal.com/album/441363513' target='_blank'>https://tidal.com/album/441363513</a></div>
+<div>RESCENE - BamBamBam</div>
+<div>RESCENE - BamBamBam Instrumental</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/441363513' target='_blank'><img src='https://resources.tidal.com/images/a11edd97/5b04/44f9/976a/252a1d2e49e8/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2025] Love Frequency (Original Soundtrack from Just For Meeting You)</div>
+<div><a href='https://tidal.com/album/461173879' target='_blank'>https://tidal.com/album/461173879</a></div>
+<div>RESCENE - Love Frequency</div>
+<div>RESCENE - Love Frequency (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/461173879' target='_blank'><img src='https://resources.tidal.com/images/28368d4c/5149/4ed7/a807/7b560a943d26/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Heart Drop</div>
+<div><a href='https://tidal.com/album/472076352' target='_blank'>https://tidal.com/album/472076352</a></div>
+<div>RESCENE - Heart Drop</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/472076352' target='_blank'><img src='https://resources.tidal.com/images/d0095d51/29b7/4206/86ee/634f8e39602b/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Glow Up</div>
+<div><a href='https://tidal.com/album/415913896' target='_blank'>https://tidal.com/album/415913896</a></div>
+<div>RESCENE - CRASH</div>
+<div>RESCENE - Glow Up</div>
+<div>RESCENE - Going on</div>
+<div>RESCENE - In my lotion</div>
+<div>RESCENE - Cotton Candy</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/415913896' target='_blank'><img src='https://resources.tidal.com/images/78c59a7f/4fcc/4314/a6a3/d0685bc26a88/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Glow Up (English Version)</div>
+<div><a href='https://tidal.com/album/418419715' target='_blank'>https://tidal.com/album/418419715</a></div>
+<div>RESCENE - Glow Up (English Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/418419715' target='_blank'><img src='https://resources.tidal.com/images/c5499dbb/6078/4b78/a0c6/852c16750be9/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Dearest</div>
+<div><a href='https://tidal.com/album/445614124' target='_blank'>https://tidal.com/album/445614124</a></div>
+<div>RESCENE - Deja Vu</div>
+<div>RESCENE - Mood</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/445614124' target='_blank'><img src='https://resources.tidal.com/images/d4659d2b/fa25/4c4a/b64c/0ec569ea7b0e/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2025] Dearest (Sped Up Version)</div>
+<div><a href='https://tidal.com/album/446927627' target='_blank'>https://tidal.com/album/446927627</a></div>
+<div>RESCENE - Deja Vu (Sped Up Version)</div>
+<div>RESCENE - Mood (Sped Up Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/446927627' target='_blank'><img src='https://resources.tidal.com/images/d1af2603/6ff2/4bb0/89f1/b0c4ce0eaa53/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] YoYo</div>
+<div><a href='https://tidal.com/album/348142861' target='_blank'>https://tidal.com/album/348142861</a></div>
+<div>RESCENE - YoYo</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/348142861' target='_blank'><img src='https://resources.tidal.com/images/c4f1b4ac/6926/443c/9cf2/a09f59dc3683/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] YoYo (Japanese Version)</div>
+<div><a href='https://tidal.com/album/378523936' target='_blank'>https://tidal.com/album/378523936</a></div>
+<div>RESCENE - YoYo (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/378523936' target='_blank'><img src='https://resources.tidal.com/images/cc235112/22c9/406c/9b06/77c87a0ced73/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] UhUh (Japanese Version)</div>
+<div><a href='https://tidal.com/album/400448353' target='_blank'>https://tidal.com/album/400448353</a></div>
+<div>RESCENE - UhUh (Japanese Version)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/400448353' target='_blank'><img src='https://resources.tidal.com/images/95eed6e6/f9c5/4ae3/87b3/a61905255376/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+
+<div>&nbsp;</div>
+<div>[2024] SCENEDROME</div>
+<div><a href='https://tidal.com/album/383661828' target='_blank'>https://tidal.com/album/383661828</a></div>
+<div>RESCENE - Lucky you</div>
+<div>RESCENE - LOVE ATTACK</div>
+<div>RESCENE - New World</div>
+<div>RESCENE - Pinball</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/383661828' target='_blank'><img src='https://resources.tidal.com/images/4a8c1fdd/b3d7/4955/af08/9497d7ba2804/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] ReScene</div>
+<div><a href='https://tidal.com/album/353621672' target='_blank'>https://tidal.com/album/353621672</a></div>
+<div>RESCENE - YoYo</div>
+<div>RESCENE - UhUh</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/353621672' target='_blank'><img src='https://resources.tidal.com/images/d4d3c2eb/78bc/4fc0/ac95/0636e98010cf/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<div>[2024] Counting Star (The Magic Star X RESCENE)</div>
+<div><a href='https://tidal.com/album/371583696' target='_blank'>https://tidal.com/album/371583696</a></div>
+<div>RESCENE - Counting Star</div>
+<div>RESCENE - Counting Star (Inst.)</div>
+<div class='album-entry'>
+<a href='https://tidal.com/album/371583696' target='_blank'><img src='https://resources.tidal.com/images/121587f2/256e/42af/96aa/4809f8a96969/640x640.jpg' style='width:100%; max-width:640px; aspect-ratio:1/1; object-fit:cover;'/></a>
+<div class='credit'>Image courtesy of TIDAL</div></div>
+<div>&nbsp;</div>
+<hr style='margin: 5px 0; border: 0; border-top: 1px solid #334155; opacity: 0.5;'>
+
+            <p style="margin-top:10px;">
+                <a href="https://bipapalula3.github.io/YMPL/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/1_TIDAL_Kpop_Artist_Link_LR.html" 
+                   style="
+                       color:#94a3b8; 
+                       font-size:0.95em;
+                       line-height:1.6;
+                       display:inline-block;
+                       cursor:pointer;
+                       transition:color 0.2s ease, transform 0.1s ease;
+                       text-decoration:underline;
+                       text-decoration-thickness:1px;
+                       text-underline-offset:4px;
+                       margin-bottom:4em;
+                   "
+                   onmouseover="
+                       this.style.color='#e2e8f0';
+                       this.querySelector('.icon').style.transform='scale(1.2)';
+                   "
+                   onmouseout="
+                       this.style.color='#94a3b8';
+                       this.querySelector('.icon').style.transform='scale(1)';
+                   "
+                   onmousedown="this.style.transform='scale(0.96)';"
+                   onmouseup="this.style.transform='scale(1)';">
+
+                    <span class="icon" style="
+                        display:inline-block; 
+                        transition:transform 0.2s ease;
+                    ">
+                    📚
+                    </span>
+
+                    <span style="margin-left:6px;">
+                    INDEX: 타이달 한국가수 링크 (ㄹ1) TIDAL Kpop Artist Link (LR)
+                    </span>
+
+                </a>
+            </p>
+            
+
+            <div class="translate-btn-wrapper">
+              <a class="btn translate-btn"
+                 href="https://bipapalula3.github.io/YMPL/trk/Korean_Artist_Profiles/1_TIDAL_Kpop_Artist_Link_LR/리센느 (RESCENE)_trk.html">
+                 
+                 <div class="translate-marquee-wrapper">                
+                     <div class="translate-marquee">
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                        <div class="translate-track">
+                          🎵 Lyrics View / 📥 Track List Download / 🌐 Translation (MULTI-LANG)
+                          ▶ Open Track Page
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          🎵 가사보기 링크 / 📥 트랙 리스트 다운로드 / 🌐 번역하기 (다국어 곡명 표기)
+                          ▶ 트랙 페이지 열기
+                        </div>
+                    </div> 
+                 </div>
+                 
+              </a>
+            </div>
+            
+            
+</body>
+</html>
